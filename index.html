@@ -14,7 +14,7 @@
     /* ── HERO ── */
     .hero{max-width:1100px;margin:0 auto;padding:110px 48px 90px;display:grid;grid-template-columns:1.1fr .9fr;gap:80px;align-items:center}
     .hero__label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--green);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-    .hero__label::before{content:'';width:28px;height:2px;background:var(--green);border-radius:2px;flex-shrink:0}
+    .hero__label::before{display:none}
     .hero__h1{font-family:var(--font-serif);font-size:clamp(42px,4.8vw,62px);font-weight:400;line-height:1.05;letter-spacing:-2px;color:var(--ink);margin-bottom:24px}
     .hero__h1 em{font-style:italic;color:var(--green)}
     .hero__sub{font-size:17px;color:var(--ink-3);font-weight:300;line-height:1.8;max-width:400px;margin-bottom:40px}
@@ -56,12 +56,12 @@
     .process-hdr h2{font-family:var(--font-serif);font-size:clamp(30px,3.5vw,44px);font-weight:400;color:var(--ink);letter-spacing:-1.2px;line-height:1.15;margin-bottom:14px}
     .process-hdr h2 em{font-style:italic;color:var(--green)}
     .process-hdr p{font-size:15px;color:var(--ink-3);font-weight:300;line-height:1.75;max-width:480px;margin:0 auto}
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(15,23,42,.06);border-radius:22px;overflow:hidden}
-    .step{background:#fff;padding:36px 28px;transition:background .2s}
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:rgba(15,23,42,.06);border-radius:22px;overflow:hidden}
+    .step{background:#fff;padding:40px 32px;transition:background .2s;border-right:1px solid rgba(15,23,42,.06)}.step:last-child{border-right:none}
     .step:hover{background:#f0f7ff}
     .step__n{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#1a3c5e;opacity:.45;margin-bottom:16px}
-    .step__title{font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--ink);margin-bottom:10px}
-    .step__desc{font-size:13px;color:var(--ink-3);line-height:1.7;font-weight:300;margin-bottom:18px}
+    .step__title{font-family:var(--font-serif);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:12px;line-height:1.2}
+    .step__desc{font-size:13.5px;color:var(--ink-3);line-height:1.75;font-weight:300;margin-bottom:20px}
     .step__badge{display:inline-flex;font-size:11px;font-weight:600;color:#1a3c5e;background:#eff6ff;padding:4px 12px;border-radius:20px}
 
     /* ── WHY ── */
@@ -71,8 +71,8 @@
     .why-hdr h2 em{font-style:italic;color:var(--green)}
     .why-hdr p{font-size:15px;color:var(--ink-3);font-weight:300;line-height:1.75}
     .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(15,23,42,.06);border-radius:22px;overflow:hidden}
-    .why-card{background:#fff;padding:36px 30px;transition:background .15s}
-    .why-card:hover{background:#f8fafc}
+    .why-card{background:#fff;border:1px solid rgba(15,23,42,.08);border-radius:20px;padding:36px 30px;transition:box-shadow .2s,transform .2s}
+    .why-card:hover{box-shadow:0 8px 32px rgba(26,60,94,.07);transform:translateY(-2px)}
     .why-n{font-family:var(--font-serif);font-size:13px;color:var(--ink-4);opacity:.5;margin-bottom:14px}
     .why-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:9px;letter-spacing:-.2px}
     .why-text{font-size:13px;color:var(--ink-3);line-height:1.7;font-weight:300}
@@ -178,7 +178,7 @@
 <!-- HERO -->
 <section class="hero" aria-label="Hero">
   <div>
-    <div class="hero__label">Australian Tax Specialists</div>
+    <div class="hero__label">WHV Tax Specialists</div>
     <h1 class="hero__h1">Tax in Australia,<br><em>sorted.</em></h1>
     <p class="hero__sub">From your TFN on day one to your super after you leave &mdash; we handle every tax obligation for Working Holiday backpackers. 100% online, from anywhere in the world.</p>
     <div class="hero__cta">
@@ -223,8 +223,27 @@
   </div>
 </section>
 
+<!-- STATS BAR -->
+<div style="max-width:1100px;margin:0 auto;padding:0 48px">
+  <div style="border-top:1px solid rgba(15,23,42,.07);border-bottom:1px solid rgba(15,23,42,.07);padding:36px 0;display:grid;grid-template-columns:repeat(3,1fr);gap:0">
+    <div style="text-align:center;padding:0 32px;border-right:1px solid rgba(15,23,42,.07)">
+      <div style="font-family:var(--font-serif);font-size:42px;color:#1a3c5e;letter-spacing:-2px;line-height:1;margin-bottom:6px">$3,200</div>
+      <div style="font-size:13px;color:var(--ink-4);font-weight:300">Average tax refund</div>
+    </div>
+    <div style="text-align:center;padding:0 32px;border-right:1px solid rgba(15,23,42,.07)">
+      <div style="font-family:var(--font-serif);font-size:42px;color:#1a3c5e;letter-spacing:-2px;line-height:1;margin-bottom:6px">48<span style="font-size:22px;letter-spacing:0">h</span></div>
+      <div style="font-size:13px;color:var(--ink-4);font-weight:300">Average turnaround</div>
+    </div>
+    <div style="text-align:center;padding:0 32px">
+      <div style="font-family:var(--font-serif);font-size:42px;color:#1a3c5e;letter-spacing:-2px;line-height:1;margin-bottom:6px">5 <span style="font-size:22px;letter-spacing:0">yrs</span></div>
+      <div style="font-size:13px;color:var(--ink-4);font-weight:300">Back-claims accepted</div>
+    </div>
+  </div>
+</div>
+
+
 <!-- SERVICES -->
-<section class="services">
+<section class="services" style="background:#f8fafc;padding-top:110px;padding-bottom:80px;margin-top:0">
   <div class="section-top">
     <div class="section-label">Services</div>
     <h2>Everything covered,<br><em>start to finish.</em></h2>
@@ -279,7 +298,7 @@
 </section>
 
 <!-- WHY US -->
-<section class="why">
+<section class="why" style="background:#ffffff">
   <div class="why-hdr">
     <div>
       <div class="section-label" style="color:#1a3c5e;margin-bottom:14px">Why us</div>
@@ -295,8 +314,8 @@
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="testimonials">
-  <div class="t-hdr">
+<section class="testimonials" style="background:#f8fafc;padding-bottom:80px">
+  <div class="t-hdr" style="text-align:center">
     <div class="section-label" style="color:#1a3c5e;margin-bottom:14px">Client stories</div>
     <h2>From backpackers <em>like you.</em></h2>
   </div>
