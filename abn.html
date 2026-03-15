@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Complete guide to getting your ABN as a Working Holiday Maker. Farm work, freelance, sole trader tax explained.">
+  <meta name="theme-color" content="#faf9f7">
+  <title>ABN Registration Guide &mdash; Working Holiday Tax</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav__logo" aria-label="Working Holiday Tax Home">
+    <div class="nav__logo-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 6L10 9.5L13.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.5" cy="4" r="1.5" fill="#4ade80"/></svg>
+    </div>
+    <span class="nav__logo-text">Working Holiday <span>Tax</span></span>
+  </a>
+  <ul class="nav__links" role="list">
+    <li><a href="tax-return.html" class="nav__link">Tax Return</a></li>
+    <li><a href="tfn.html" class="nav__link">TFN</a></li>
+    <li><a href="superannuation.html" class="nav__link">Super</a></li>
+    <li><a href="abn.html" class="nav__link">ABN</a></li>
+    <li><a href="medicare.html" class="nav__link">Medicare</a></li>
+  </ul>
+  <div class="nav__right">
+    <a href="contact.html" class="btn--nav-ghost">Contact</a>
+    <a href="contact.html" class="btn--nav-solid" onclick="openWA('Hi! I want to get started')">Get started</a>
+    <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="nav__drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div class="nav__drawer-overlay"></div>
+  <div class="nav__drawer-panel">
+    <button class="nav__drawer-close" aria-label="Close menu">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <a href="tax-return.html" class="nav__drawer-link">Tax Return</a>
+    <a href="tfn.html" class="nav__drawer-link">TFN</a>
+    <a href="superannuation.html" class="nav__drawer-link">Superannuation</a>
+    <a href="abn.html" class="nav__drawer-link">ABN</a>
+    <a href="medicare.html" class="nav__drawer-link">Medicare</a>
+    <a href="contact.html" class="nav__drawer-link">Contact</a>
+    <a href="contact.html" class="nav__drawer-cta" onclick="openWA('Hi! I want to get started')">Get started &mdash; free check</a>
+  </div>
+</div>
+<div class="progress-bar" aria-hidden="true"><div class="progress-bar__fill" style="background:var(--amber)"></div></div>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="breadcrumb__sep">&rsaquo;</span><a href="index.html">Guides</a><span class="breadcrumb__sep">&rsaquo;</span><span class="breadcrumb__current">Australian Business Number (ABN)</span></nav>
+<main>
+
+<div class="guide-hero">
+  <div class="tag tag--amber" style="margin-bottom:22px">Farm &middot; Freelance &middot; Festival &middot; Gig work</div>
+  <h1 class="guide-hero__h1">Working for yourself<br>in Australia? You need<br><em style="color:var(--amber)">an ABN.</em></h1>
+  <p class="guide-hero__sub">If you&rsquo;re getting paid without a payslip &mdash; on a farm, at a festival, as a cleaner, or any cash-style job &mdash; you&rsquo;re working as a sole trader. This guide explains exactly what that means, what you owe, and how to stay legal.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px">
+    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--amber-light);border:1px solid rgba(146,96,10,.1);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--amber)">No ABN = wrong tax</div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--amber-light);border:1px solid rgba(146,96,10,.1);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--amber)">Must invoice correctly</div>
+    <div style="display:inline-flex;align-items:center;gap:6px;background:var(--green-light);border:1px solid var(--green-soft);border-radius:100px;padding:5px 12px;font-size:12px;font-weight:500;color:var(--green)">Free to register</div>
+  </div>
+  <div class="guide-hero__cta-row">
+    <a href="contact.html" class="btn btn--primary" onclick="openWA('Hi! I need help with my ABN')">Get my ABN &mdash; free &rarr;</a>
+    <a href="#abn-content" class="btn btn--ghost">Read the guide &darr;</a>
+  </div>
+  <p class="guide-hero__micro">Registration is free at abr.gov.au. Takes 5 minutes.</p>
+</div>
+
+<div class="read-bar"><div class="read-bar__inner">
+  <div class="read-bar__items">
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--amber)"></div><strong>6 min</strong> read</div>
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--amber)"></div>ABN, invoicing, <strong>sole trader tax</strong></div>
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--amber)"></div>Covers farm work and <strong>freelance</strong></div>
+  </div>
+  <a href="#abn-content" class="read-bar__skip">Jump to content &darr;</a>
+</div></div>
+
+<div id="abn-content" class="guide-section">
+  <div class="section-label">Part 1 &mdash; Understand</div>
+  <h2 class="section-heading">TFN vs ABN &mdash; <em>what&rsquo;s the difference?</em></h2>
+  <p class="section-body">Most backpackers have a TFN. Fewer understand when they also need an ABN &mdash; and why it matters.</p>
+  <div class="explainer">
+    <div class="explainer__grid">
+      <div class="explainer__col">
+        <div class="explainer__col-label">TFN work (employee)</div>
+        <p>You work for a company. They pay you a wage. They handle your tax automatically through payroll. You get a payslip. <strong>TFN is all you need.</strong></p>
+        <p>Tax is withheld from every pay. You lodge a tax return at year end to reconcile &mdash; and usually get a refund.</p>
+        <p>Examples: hospitality, retail, warehouse, office, farm work as an employee.</p>
+      </div>
+      <div class="explainer__col">
+        <div class="explainer__col-label">ABN work (sole trader)</div>
+        <p>You work for yourself or contract directly to a business. You invoice them. They pay the full amount &mdash; <strong>no tax withheld.</strong></p>
+        <p>You&rsquo;re responsible for setting aside your own tax. At year end you declare this income in your tax return and pay what&rsquo;s owed.</p>
+        <p>Examples: farm piece-rate, festival crew, freelance, cleaning, deliveries.</p>
+      </div>
+    </div>
+    <div class="explainer__footer" style="background:var(--amber-light);border-top:1px solid rgba(146,96,10,.1)">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L14 13H2L8 2Z" stroke="var(--amber)" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6v3M8 11h.01" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div class="explainer__footer-text" style="color:var(--amber)"><strong>Common mistake:</strong> Many farmers and festivals insist on paying ABN. If you give them your TFN instead, they&rsquo;re required to withhold 47%. Get the ABN to get paid in full.</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Part 2 &mdash; How to register</div>
+  <h2 class="section-heading">Registering your ABN &mdash; <em>step by step.</em></h2>
+  <p class="section-body">The Australian Business Register (ABR) is the official free registration point. Takes 5 minutes if you have your details ready.</p>
+  <div class="explainer">
+    <div class="explainer__grid">
+      <div class="explainer__col">
+        <div class="explainer__col-label">What you&rsquo;ll need</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;background:var(--amber);border-radius:50%;flex-shrink:0;margin-top:6px"></div><span>Your TFN &mdash; must have this first</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;background:var(--amber);border-radius:50%;flex-shrink:0;margin-top:6px"></div><span>Passport details and date of birth</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;background:var(--amber);border-radius:50%;flex-shrink:0;margin-top:6px"></div><span>Australian address (hostel is fine)</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;background:var(--amber);border-radius:50%;flex-shrink:0;margin-top:6px"></div><span>Description of your business activity (e.g. &ldquo;farm labouring&rdquo;, &ldquo;hospitality services&rdquo;)</span></div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:13.5px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;background:var(--amber);border-radius:50%;flex-shrink:0;margin-top:6px"></div><span>Email address &mdash; ABN confirmation sent here</span></div>
+        </div>
+      </div>
+      <div class="explainer__col">
+        <div class="explainer__col-label">The process</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:var(--bg-2);border-radius:8px;padding:12px 14px"><div style="font-size:11px;font-weight:600;color:var(--amber);margin-bottom:3px">Step 1</div><div style="font-size:13px;color:var(--ink-3);font-weight:300">Go to <strong style="color:var(--ink)">abr.gov.au</strong> and click &ldquo;Apply for an ABN&rdquo;</div></div>
+          <div style="background:var(--bg-2);border-radius:8px;padding:12px 14px"><div style="font-size:11px;font-weight:600;color:var(--amber);margin-bottom:3px">Step 2</div><div style="font-size:13px;color:var(--ink-3);font-weight:300">Select &ldquo;Sole trader&rdquo; as your business structure</div></div>
+          <div style="background:var(--bg-2);border-radius:8px;padding:12px 14px"><div style="font-size:11px;font-weight:600;color:var(--amber);margin-bottom:3px">Step 3</div><div style="font-size:13px;color:var(--ink-3);font-weight:300">Enter your details &mdash; use your legal name exactly as it appears on your passport</div></div>
+          <div style="background:var(--green-light);border-radius:8px;padding:12px 14px;border:1px solid var(--green-soft)"><div style="font-size:11px;font-weight:600;color:var(--green);margin-bottom:3px">Done</div><div style="font-size:13px;color:var(--green);font-weight:300">ABN issued instantly or within 20 days</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Part 3 &mdash; Invoicing</div>
+  <h2 class="section-heading">How to invoice &mdash; <em>what must be included.</em></h2>
+  <p class="section-body">Every invoice you send must include specific details. Missing any of these can cause payment delays or tax issues.</p>
+  <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden">
+    <div style="padding:20px 28px;background:var(--bg-2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:14px;font-weight:600;color:var(--ink)">Invoice checklist</div>
+      <div style="font-size:12px;color:var(--ink-4)">Every invoice must include all of these</div>
+    </div>
+    <div style="padding:0">
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0;align-items:center;padding:16px 28px;border-bottom:1px solid var(--line)"><div style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--green)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:14px;color:var(--ink);font-weight:500;padding:0 14px">Your full name and ABN</div><div style="font-size:12px;color:var(--ink-4)">Required</div></div>
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0;align-items:center;padding:16px 28px;border-bottom:1px solid var(--line)"><div style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--green)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:14px;color:var(--ink);font-weight:500;padding:0 14px">Invoice number and date</div><div style="font-size:12px;color:var(--ink-4)">Required</div></div>
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0;align-items:center;padding:16px 28px;border-bottom:1px solid var(--line)"><div style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--green)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:14px;color:var(--ink);font-weight:500;padding:0 14px">Business name and ABN of person you&rsquo;re invoicing</div><div style="font-size:12px;color:var(--ink-4)">Required</div></div>
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0;align-items:center;padding:16px 28px;border-bottom:1px solid var(--line)"><div style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--green)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:14px;color:var(--ink);font-weight:500;padding:0 14px">Description of services provided and hours/units</div><div style="font-size:12px;color:var(--ink-4)">Required</div></div>
+      <div style="display:grid;grid-template-columns:auto 1fr auto;gap:0;align-items:center;padding:16px 28px"><div style="width:20px;height:20px;background:var(--green-light);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--green)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div style="font-size:14px;color:var(--ink);font-weight:500;padding:0 14px">Total amount and payment method</div><div style="font-size:12px;color:var(--ink-4)">Required</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Part 4 &mdash; Tax obligations</div>
+  <h2 class="section-heading">ABN income and tax &mdash; <em>what you actually owe.</em></h2>
+  <p class="section-body">The biggest mistake with ABN work is not setting aside money for tax. Nobody withholds it for you &mdash; you&rsquo;re responsible.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--amber);margin-bottom:12px">WHM 417/462 visa</div>
+      <div style="font-family:var(--font-serif);font-size:36px;color:var(--ink);letter-spacing:-1px;line-height:1;margin-bottom:8px">15%</div>
+      <p style="font-size:13px;color:var(--ink-3);line-height:1.65;font-weight:300">On your first $45,000 of ABN income. Set this aside from every invoice payment so you&rsquo;re not caught out at tax time.</p>
+    </div>
+    <div style="background:var(--amber-light);border:1px solid rgba(146,96,10,.15);border-radius:var(--r-lg);padding:24px">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--amber);margin-bottom:12px">The golden rule</div>
+      <div style="font-family:var(--font-serif);font-size:18px;color:var(--amber);line-height:1.3;margin-bottom:8px">Set aside 15&ndash;20% of every payment</div>
+      <p style="font-size:13px;color:#7a4f08;line-height:1.65;font-weight:300">Put it in a separate account. Touch it only at tax time. This one habit prevents every ABN tax surprise.</p>
+    </div>
+  </div>
+  <div class="warn-block" style="margin-top:14px"><strong>No withholding = your responsibility.</strong> The ATO will catch up at tax time. Underpaying can trigger interest and penalties. Keep records of every invoice you send and every payment you receive.</div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Questions</div>
+  <h2 class="section-heading">Things everyone <em>actually asks</em></h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-item__q">Do I need an ABN for cash jobs?</div><div class="faq-item__a">If the payer is a business and the amount is over $75, technically yes. Most small cash payments between individuals don&rsquo;t require an ABN, but farm and festival work typically does. <strong>When in doubt, register &mdash; it&rsquo;s free and protects you.</strong></div></div>
+    <div class="faq-item"><div class="faq-item__q">Can I have both a TFN and an ABN?</div><div class="faq-item__a"><strong>Yes &mdash; and many backpackers do.</strong> You work a standard job (TFN) and do some farm or freelance work (ABN) at the same time. All income goes into one tax return at the end of the year. <span class="hi">We handle mixed returns all the time.</span></div></div>
+    <div class="faq-item"><div class="faq-item__q">What if I earn under $75,000 &mdash; do I need to charge GST?</div><div class="faq-item__a"><strong>No.</strong> GST registration is only required when your annual ABN income exceeds $75,000. Most backpackers never hit this threshold, so you invoice without GST.</div></div>
+    <div class="faq-item"><div class="faq-item__q">Can I cancel my ABN when I leave Australia?</div><div class="faq-item__a">Yes. You can cancel it online through the ABR at any time. There&rsquo;s no penalty for cancelling, and no obligation to keep it active after you stop working.</div></div>
+    <div class="faq-item"><div class="faq-item__q">The farm wants to pay me ABN but I don&rsquo;t have one yet. What do I do?</div><div class="faq-item__a">Register now at abr.gov.au &mdash; it takes 5 minutes and is usually approved instantly. If they insist before you have it, they can withhold 47% until you provide your ABN. <span class="hi">Don&rsquo;t let that happen.</span></div></div>
+  </div>
+</div>
+
+<div class="final-cta-wrap">
+  <div class="final-cta">
+    <div class="final-cta__top">
+      <div><h2 class="final-cta__h" style="color:#fff">Need help with your ABN<br><em style="color:var(--amber-soft)">or your tax return?</em></h2><p class="final-cta__sub">We register ABNs and lodge returns for backpackers with mixed TFN and ABN income every day.</p></div>
+      <div class="final-cta__right"><a href="contact.html" class="btn btn--white" onclick="openWA('Hi! I need help with my ABN')">Message us on WhatsApp &rarr;</a><div class="final-cta__note">Free check &middot; No commitment</div></div>
+    </div>
+    <div class="final-cta__bottom">
+      <div><div class="final-cta__stat-num">$200</div><div class="final-cta__stat-label">Tax return fee</div></div>
+      <div class="final-cta__div"></div>
+      <div><div class="final-cta__stat-num">ABN</div><div class="final-cta__stat-label">Registration guidance</div></div>
+      <div class="final-cta__div"></div>
+      <div><div class="final-cta__stat-num">48h</div><div class="final-cta__stat-label">Typical turnaround</div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer__inner">
+    <div>
+      <div class="footer__brand">Working Holiday Tax</div>
+      <div class="footer__about">Professional tax services for Working Holiday Visa holders in Australia. Registered tax agent, 100% online, 7 days a week.</div>
+    </div>
+    <div class="footer__col">
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="tfn.html">TFN Application</a></li>
+        <li><a href="abn.html">ABN Registration</a></li>
+        <li><a href="tax-return.html">Tax Return</a></li>
+        <li><a href="superannuation.html">Superannuation</a></li>
+        <li><a href="medicare.html">Medicare</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="client-agreement.html">Client Agreement</a></li>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+        <li><a href="mailto:info@workingholidaytax.com.au">Email us</a></li>
+        <li><a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2025 Working Holiday Tax. All rights reserved.</span>
+    <span class="footer__agent">Tax Agent No. 26233096 &middot; The Accounting Academy Pty Ltd ABN 26 669 927 959</span>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body></html>

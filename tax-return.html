@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Get your Australian tax refund. Complete guide for Working Holiday Makers — deductions, rates, how to lodge.">
+  <meta name="theme-color" content="#faf9f7">
+  <title>Tax Return Guide &mdash; Working Holiday Tax</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav__logo" aria-label="Working Holiday Tax Home">
+    <div class="nav__logo-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 6L10 9.5L13.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.5" cy="4" r="1.5" fill="#4ade80"/></svg>
+    </div>
+    <span class="nav__logo-text">Working Holiday <span>Tax</span></span>
+  </a>
+  <ul class="nav__links" role="list">
+    <li><a href="tax-return.html" class="nav__link">Tax Return</a></li>
+    <li><a href="tfn.html" class="nav__link">TFN</a></li>
+    <li><a href="superannuation.html" class="nav__link">Super</a></li>
+    <li><a href="abn.html" class="nav__link">ABN</a></li>
+    <li><a href="medicare.html" class="nav__link">Medicare</a></li>
+  </ul>
+  <div class="nav__right">
+    <a href="contact.html" class="btn--nav-ghost">Contact</a>
+    <a href="contact.html" class="btn--nav-solid" onclick="openWA('Hi! I want to get started')">Get started</a>
+    <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="nav__drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div class="nav__drawer-overlay"></div>
+  <div class="nav__drawer-panel">
+    <button class="nav__drawer-close" aria-label="Close menu">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <a href="tax-return.html" class="nav__drawer-link">Tax Return</a>
+    <a href="tfn.html" class="nav__drawer-link">TFN</a>
+    <a href="superannuation.html" class="nav__drawer-link">Superannuation</a>
+    <a href="abn.html" class="nav__drawer-link">ABN</a>
+    <a href="medicare.html" class="nav__drawer-link">Medicare</a>
+    <a href="contact.html" class="nav__drawer-link">Contact</a>
+    <a href="contact.html" class="nav__drawer-cta" onclick="openWA('Hi! I want to get started')">Get started &mdash; free check</a>
+  </div>
+</div>
+<div class="progress-bar" aria-hidden="true"><div class="progress-bar__fill" style="background:var(--teal)"></div></div>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="breadcrumb__sep">&rsaquo;</span><a href="index.html">Guides</a><span class="breadcrumb__sep">&rsaquo;</span><span class="breadcrumb__current">Tax Return</span></nav>
+<main>
+
+<div class="guide-hero">
+  <div class="tag tag--teal" style="margin-bottom:22px">Financial year ends 30 June &middot; Deadline 31 October</div>
+  <h1 class="guide-hero__h1">The money Australia<br>owes you is sitting<br><em style="color:var(--teal)">at the ATO.</em></h1>
+  <p class="guide-hero__sub">Every year, thousands of backpackers leave Australia without lodging their tax return &mdash; and leave hundreds or thousands of dollars behind. This guide shows you exactly what you&rsquo;re entitled to and how to get it back.</p>
+  <div style="display:inline-flex;align-items:center;gap:20px;background:var(--teal-light);border:1px solid rgba(14,116,144,.15);border-radius:16px;padding:16px 28px;margin-bottom:28px;flex-wrap:wrap;justify-content:center">
+    <div style="text-align:center"><div style="font-size:11px;font-weight:500;color:var(--teal);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Average WHV refund</div><div style="font-family:var(--font-serif);font-size:36px;color:var(--teal);letter-spacing:-1px;line-height:1">$2,840</div><div style="font-size:11.5px;color:var(--teal);font-weight:300;margin-top:2px">Based on $34,000 income</div></div>
+  </div>
+  <div class="guide-hero__cta-row">
+    <a href="contact.html" class="btn btn--primary" onclick="openWA('Hi! I want to lodge my tax return')">Check my refund &mdash; free &rarr;</a>
+    <a href="#tr-content" class="btn btn--ghost">Read the guide &darr;</a>
+  </div>
+  <p class="guide-hero__micro">No upfront fees. You pay only when your return is lodged.</p>
+</div>
+
+<div class="read-bar"><div class="read-bar__inner">
+  <div class="read-bar__items">
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--teal)"></div><strong>7 min</strong> read</div>
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--teal)"></div>Tax rates, deductions, <strong>deadlines</strong></div>
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--teal)"></div>Covers <strong>TFN + ABN</strong> income</div>
+  </div>
+  <a href="#steps" class="read-bar__skip">Skip to steps &darr;</a>
+</div></div>
+
+<div id="tr-content" class="guide-section">
+  <div class="section-label">Part 1 &mdash; Understand</div>
+  <h2 class="section-heading">What actually is <em>a tax return?</em></h2>
+  <p class="section-body">Most people have heard of it. Almost nobody understands it before they do their first one.</p>
+  <div class="explainer">
+    <div class="explainer__grid">
+      <div class="explainer__col">
+        <div class="explainer__col-label">In plain English</div>
+        <p>Australia runs a financial year from <strong>1 July to 30 June.</strong> During that year, your employer withholds tax from every payslip based on an estimate.</p>
+        <p>At year end, you lodge a tax return &mdash; it tells the ATO exactly what you earned. They calculate your actual tax, compare it to what was withheld, and send you the difference.</p>
+        <p>For most Working Holiday Makers, <strong>the estimate was too high</strong> &mdash; meaning the ATO owes you money. But it doesn&rsquo;t arrive automatically. You have to claim it.</p>
+      </div>
+      <div class="explainer__col">
+        <div class="explainer__col-label">Key dates</div>
+        <div style="background:var(--bg-2);border-radius:10px;padding:18px 20px;margin-bottom:14px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3)"><div style="width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0"></div>Financial year begins &mdash; 1 July</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3)"><div style="width:7px;height:7px;background:var(--teal);border-radius:50%;flex-shrink:0"></div>Year ends, data finalised &mdash; 14 July</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3)"><div style="width:7px;height:7px;background:var(--amber);border-radius:50%;flex-shrink:0"></div>Lodge your return &mdash; by 31 October</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-3)"><div style="width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0"></div>Refund in your account &mdash; 7&ndash;14 days</div>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:var(--ink-4);font-weight:300;line-height:1.6">Using a registered tax agent extends the deadline &mdash; giving you more time even after leaving Australia.</p>
+      </div>
+    </div>
+    <div class="explainer__footer" style="background:var(--teal-light);border-top:1px solid rgba(14,116,144,.1)">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--teal)" stroke-width="1.3"/><path d="M8 5v3M8 10h.01" stroke="var(--teal)" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div class="explainer__footer-text" style="color:var(--teal)"><strong>The refund doesn&rsquo;t come automatically.</strong> The ATO holds it until you lodge. Many backpackers leave without knowing this &mdash; and lose the money entirely.</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Part 2 &mdash; Your tax rate</div>
+  <h2 class="section-heading">Which rate applies <em>to you?</em></h2>
+  <p class="section-body">Your residency status determines your tax rate. It&rsquo;s not based on nationality &mdash; it&rsquo;s based on your visa and time in Australia.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 26px">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;padding:4px 10px;border-radius:6px;margin-bottom:14px;background:var(--teal-light);color:var(--teal)">Most backpackers &mdash; 417/462</div>
+      <h3 style="font-family:var(--font-serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:10px">Working Holiday Maker rate</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">First $45,000</span><span style="font-weight:600;color:var(--teal)">15%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">$45,001 &ndash; $135,000</span><span style="font-weight:600">30%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">Tax-free threshold</span><span style="font-weight:600;color:var(--red)">None</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">Medicare levy</span><span style="font-weight:600;color:var(--green)">Exempt</span></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--ink-4);font-weight:300;line-height:1.6;border-top:1px solid var(--line);padding-top:10px">Applies to most European backpackers (French, Italian, Spanish, Dutch, etc.)</div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 26px">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;padding:4px 10px;border-radius:6px;margin-bottom:14px;background:var(--green-light);color:var(--green)">UK, Germany, Ireland + others</div>
+      <h3 style="font-family:var(--font-serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:10px">NDA country &mdash; resident rate</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">First $18,200</span><span style="font-weight:600;color:var(--green)">Tax-free</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">$18,201 &ndash; $45,000</span><span style="font-weight:600;color:var(--green)">16%</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">Tax-free threshold</span><span style="font-weight:600;color:var(--green)">Yes &mdash; $18,200</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--ink-3);font-weight:300">Medicare levy</span><span style="font-weight:600;color:var(--ink-3)">Case by case</span></div>
+      </div>
+      <div style="font-size:12.5px;color:var(--ink-4);font-weight:300;line-height:1.6;border-top:1px solid var(--line);padding-top:10px">Must have stayed 183+ days with Australia as your main residence. Significantly better refund.</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Part 3 &mdash; Deductions</div>
+  <h2 class="section-heading">Deductions &mdash; money most people <em>leave behind.</em></h2>
+  <p class="section-body">Every deduction reduces your taxable income. Each $100 of deductions adds $15 to your refund. Here are the most common ones backpackers miss.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--green-soft)'" onmouseout="this.style.borderColor=''">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"><path d="M3 13h11M8.5 3v8"/><path d="M5.5 7.5l3 3.5 3-3.5"/></svg></div>
+      <div style="font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:6px">Work uniforms &amp; protective clothing</div>
+      <div style="font-size:13px;color:var(--ink-3);line-height:1.65;font-weight:300;margin-bottom:10px">Clothing required for work that you couldn&rsquo;t wear normally outside of it.</div>
+      <div style="font-size:12px;color:var(--ink-4);font-style:italic;font-weight:300">Safety boots, hi-vis vests, non-slip shoes, branded uniforms</div>
+      <div style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11.5px;font-weight:500;padding:3px 10px;border-radius:6px;background:var(--green-light);color:var(--green)">Receipt if over $300</div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"><rect x="2" y="5" width="13" height="9" rx="2"/><path d="M6 5V3.5a2 2 0 014 0V5"/></svg></div>
+      <div style="font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:6px">Licences &amp; certifications</div>
+      <div style="font-size:13px;color:var(--ink-3);line-height:1.65;font-weight:300;margin-bottom:10px">Licences you paid for that were required for your specific job.</div>
+      <div style="font-size:12px;color:var(--ink-4);font-style:italic;font-weight:300">RSA, White Card, forklift licence, Working With Children</div>
+      <div style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11.5px;font-weight:500;padding:3px 10px;border-radius:6px;background:var(--green-light);color:var(--green)">Must be job-required</div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"><path d="M3 14V5l5-3 5 3v9"/><path d="M7 14v-4h3v4"/></svg></div>
+      <div style="font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:6px">Tools &amp; equipment</div>
+      <div style="font-size:13px;color:var(--ink-3);line-height:1.65;font-weight:300;margin-bottom:10px">Tools you bought yourself and used for work &mdash; not supplied by your employer.</div>
+      <div style="font-size:12px;color:var(--ink-4);font-style:italic;font-weight:300">Hand tools, kitchen knives (chefs), gardening equipment</div>
+      <div style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11.5px;font-weight:500;padding:3px 10px;border-radius:6px;background:var(--green-light);color:var(--green)">Under $300 &mdash; full deduction</div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px">
+      <div style="width:38px;height:38px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="17" height="17" viewBox="0 0 17 17" fill="none" stroke="var(--green)" stroke-width="1.4" stroke-linecap="round"><path d="M3 3h11v11H3zM7 8.5h3M8.5 7v3"/></svg></div>
+      <div style="font-size:14.5px;font-weight:600;color:var(--ink);margin-bottom:6px">Laundry costs</div>
+      <div style="font-size:13px;color:var(--ink-3);line-height:1.65;font-weight:300;margin-bottom:10px">Washing and drying costs for work uniforms you&rsquo;re required to maintain yourself.</div>
+      <div style="font-size:12px;color:var(--ink-4);font-style:italic;font-weight:300">$1 per load (washing + drying), $0.50 washing only</div>
+      <div style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:11.5px;font-weight:500;padding:3px 10px;border-radius:6px;background:var(--green-light);color:var(--green)">ATO fixed rate &mdash; no receipts needed</div>
+    </div>
+  </div>
+  <div class="warn-block" style="margin-top:14px"><strong>Keep every receipt.</strong> The ATO can ask you to prove any deduction up to 5 years after you lodge. A photo on your phone is enough. No receipt = no deduction.</div>
+</div>
+
+<div id="steps" class="steps-wrap">
+  <div class="steps-inner">
+    <div class="section-label" style="color:rgba(165,243,252,.5);margin-bottom:10px">Part 4 &mdash; The process</div>
+    <h2 class="steps-h">How we lodge your return &mdash; <em style="color:var(--teal-soft)">start to finish.</em></h2>
+    <p class="steps-sub">You don&rsquo;t need to navigate myGov, figure out the ATO portal, or worry about getting it wrong. Here&rsquo;s exactly what happens.</p>
+    <div class="steps-list">
+      <div class="step"><div class="step__num">1</div><div class="step__body"><div class="step__title">Message us on WhatsApp</div><div class="step__desc">We do a free eligibility check. We&rsquo;ll confirm what you&rsquo;re entitled to and roughly what your refund looks like &mdash; before you commit to anything.</div><div class="step__tags"><span class="stag stag--free">Free check</span><span class="stag stag--neutral">No commitment</span></div></div><div class="step__time">5 min</div></div>
+      <div class="step"><div class="step__num">2</div><div class="step__body"><div class="step__title">Send us your details</div><div class="step__desc">TFN, income details, and any deduction receipts you have. We pull your payment summary directly from the ATO &mdash; you don&rsquo;t need to dig up payslips.</div><div class="step__tags"><span class="stag stag--neutral">TFN + income</span><span class="stag stag--neutral">Receipts if you have them</span></div></div><div class="step__time">10 min</div></div>
+      <div class="step"><div class="step__num">3</div><div class="step__body"><div class="step__title">We prepare everything</div><div class="step__desc">We review your income, apply every deduction, confirm your residency status, and check for Medicare levy exemption. We don&rsquo;t miss things. That&rsquo;s the job.</div><div class="step__tags"><span class="stag stag--teal">We handle this</span><span class="stag stag--neutral">24&ndash;48 hours</span></div></div><div class="step__time">24&ndash;48h</div></div>
+      <div class="step"><div class="step__num">4</div><div class="step__body"><div class="step__title">You approve and we lodge</div><div class="step__desc">We send you the completed return for your review. Once you confirm, we lodge it with the ATO. You get a copy of the lodgment confirmation.</div><div class="step__tags"><span class="stag stag--neutral">You review first</span><span class="stag stag--neutral">We lodge after approval</span></div></div><div class="step__time">Same day</div></div>
+      <div class="step step--hl"><div class="step__num">5</div><div class="step__body"><div class="step__title">Refund arrives in your bank account</div><div class="step__desc">The ATO deposits your refund directly to the bank account you nominate &mdash; anywhere in the world. Most refunds arrive within 7&ndash;14 days.</div><div class="step__tags"><span class="stag stag--free">Any bank, any country</span></div></div><div class="step__time">7&ndash;14 days</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Questions</div>
+  <h2 class="section-heading">Things everyone <em>actually asks</em></h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-item__q">I already left Australia. Can I still get my refund?</div><div class="faq-item__a">Yes. You can lodge from anywhere in the world. The refund goes to any bank account you nominate &mdash; including accounts in your home country. <span class="hi">This is one of our most common scenarios.</span></div></div>
+    <div class="faq-item"><div class="faq-item__q">I worked for multiple employers. What do I do?</div><div class="faq-item__a">Every employer goes in the same return. We pull all employer records from the ATO using your TFN &mdash; you don&rsquo;t need to chase payslips from each one.</div></div>
+    <div class="faq-item"><div class="faq-item__q">I worked both TFN and ABN jobs. Is that one return?</div><div class="faq-item__a"><strong>Yes &mdash; one return covers everything.</strong> TFN and ABN income are both included in a single lodgment. <span class="hi">We handle mixed returns all the time.</span></div></div>
+    <div class="faq-item"><div class="faq-item__q">I haven&rsquo;t lodged for 3 years. Is it too late?</div><div class="faq-item__a"><strong>No.</strong> You can lodge up to 5 years of back returns. We regularly lodge 2&ndash;4 years at once for backpackers who didn&rsquo;t realise they were owed money.</div></div>
+    <div class="faq-item"><div class="faq-item__q">What happens if I don&rsquo;t lodge?</div><div class="faq-item__a">The ATO applies a Failure to Lodge penalty of <strong>$330 for every 28 days</strong> overdue, up to $1,650. Beyond that, your refund sits with the ATO unclaimed. Using a registered agent extends your deadline.</div></div>
+    <div class="faq-item"><div class="faq-item__q">How much do you charge?</div><div class="faq-item__a">Our fee is <strong>$200 + GST</strong> for a standard tax return. Complex returns are quoted before you commit. You pay only when the return is lodged &mdash; never upfront.</div></div>
+  </div>
+</div>
+
+<div class="final-cta-wrap">
+  <div class="final-cta">
+    <div class="final-cta__top">
+      <div><h2 class="final-cta__h" style="color:#fff">Ready to get back<br><em style="color:var(--teal-soft)">what you&rsquo;re owed?</em></h2><p class="final-cta__sub">Free eligibility check in 2 minutes. We&rsquo;ll tell you exactly what your refund looks like before you commit.</p></div>
+      <div class="final-cta__right"><a href="contact.html" class="btn btn--white" onclick="openWA('Hi! I want to check my tax refund')">Check my refund &mdash; free &rarr;</a><div class="final-cta__note">No upfront fee &middot; Pay only when lodged</div></div>
+    </div>
+    <div class="final-cta__bottom">
+      <div><div class="final-cta__stat-num">$3,200</div><div class="final-cta__stat-label">Average refund</div></div>
+      <div class="final-cta__div"></div>
+      <div><div class="final-cta__stat-num">7 days</div><div class="final-cta__stat-label">Average turnaround</div></div>
+      <div class="final-cta__div"></div>
+      <div><div class="final-cta__stat-num">5 yrs</div><div class="final-cta__stat-label">Back-years claimable</div></div>
+      <div class="final-cta__div"></div>
+      <div><div class="final-cta__stat-num">$200</div><div class="final-cta__stat-label">Flat fee</div></div>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer__inner">
+    <div>
+      <div class="footer__brand">Working Holiday Tax</div>
+      <div class="footer__about">Professional tax services for Working Holiday Visa holders in Australia. Registered tax agent, 100% online, 7 days a week.</div>
+    </div>
+    <div class="footer__col">
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="tfn.html">TFN Application</a></li>
+        <li><a href="abn.html">ABN Registration</a></li>
+        <li><a href="tax-return.html">Tax Return</a></li>
+        <li><a href="superannuation.html">Superannuation</a></li>
+        <li><a href="medicare.html">Medicare</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="client-agreement.html">Client Agreement</a></li>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+        <li><a href="mailto:info@workingholidaytax.com.au">Email us</a></li>
+        <li><a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2025 Working Holiday Tax. All rights reserved.</span>
+    <span class="footer__agent">Tax Agent No. 26233096 &middot; The Accounting Academy Pty Ltd ABN 26 669 927 959</span>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body></html>

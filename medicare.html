@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Most Working Holiday backpackers are exempt from the 2% Medicare levy. Here's how to claim the exemption.">
+  <meta name="theme-color" content="#faf9f7">
+  <title>Medicare Levy Exemption Guide &mdash; Working Holiday Tax</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="nav__logo" aria-label="Working Holiday Tax Home">
+    <div class="nav__logo-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 6L10 9.5L13.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.5" cy="4" r="1.5" fill="#4ade80"/></svg>
+    </div>
+    <span class="nav__logo-text">Working Holiday <span>Tax</span></span>
+  </a>
+  <ul class="nav__links" role="list">
+    <li><a href="tax-return.html" class="nav__link">Tax Return</a></li>
+    <li><a href="tfn.html" class="nav__link">TFN</a></li>
+    <li><a href="superannuation.html" class="nav__link">Super</a></li>
+    <li><a href="abn.html" class="nav__link">ABN</a></li>
+    <li><a href="medicare.html" class="nav__link">Medicare</a></li>
+  </ul>
+  <div class="nav__right">
+    <a href="contact.html" class="btn--nav-ghost">Contact</a>
+    <a href="contact.html" class="btn--nav-solid" onclick="openWA('Hi! I want to get started')">Get started</a>
+    <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="nav__drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+  <div class="nav__drawer-overlay"></div>
+  <div class="nav__drawer-panel">
+    <button class="nav__drawer-close" aria-label="Close menu">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    <a href="tax-return.html" class="nav__drawer-link">Tax Return</a>
+    <a href="tfn.html" class="nav__drawer-link">TFN</a>
+    <a href="superannuation.html" class="nav__drawer-link">Superannuation</a>
+    <a href="abn.html" class="nav__drawer-link">ABN</a>
+    <a href="medicare.html" class="nav__drawer-link">Medicare</a>
+    <a href="contact.html" class="nav__drawer-link">Contact</a>
+    <a href="contact.html" class="nav__drawer-cta" onclick="openWA('Hi! I want to get started')">Get started &mdash; free check</a>
+  </div>
+</div>
+<div class="progress-bar" aria-hidden="true"><div class="progress-bar__fill" style="background:var(--rose-mid)"></div></div>
+<nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="breadcrumb__sep">&rsaquo;</span><a href="index.html">Guides</a><span class="breadcrumb__sep">&rsaquo;</span><span class="breadcrumb__current">Medicare</span></nav>
+<main>
+
+<div class="guide-hero">
+  <div class="tag tag--rose" style="margin-bottom:22px">Most WHV holders don&rsquo;t pay this &middot; Here&rsquo;s why</div>
+  <h1 class="guide-hero__h1">The 2% tax most<br>backpackers think they<br>owe &mdash; but <em style="color:var(--rose-mid)">don&rsquo;t.</em></h1>
+  <p class="guide-hero__sub">Medicare is Australia&rsquo;s public health system, funded by a 2% levy on income. Most Working Holiday Makers are exempt &mdash; but only if they apply for the exemption. Without it, the ATO deducts it automatically.</p>
+  <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:28px">
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:14px;border:1px solid var(--rose-soft);background:var(--rose-light)"><div style="width:8px;height:8px;border-radius:50%;background:var(--rose-mid);flex-shrink:0"></div><span style="font-size:13px;font-weight:500;color:var(--rose-mid)">Without exemption: 2% levy deducted</span></div>
+    <div style="display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:14px;border:1px solid var(--green-soft);background:var(--green-light)"><div style="width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0"></div><span style="font-size:13px;font-weight:500;color:var(--green)">With exemption: $0 Medicare levy</span></div>
+  </div>
+  <div class="guide-hero__cta-row">
+    <a href="contact.html" class="btn btn--primary" onclick="openWA('Hi! I have a question about Medicare')">Check my Medicare status &mdash; free &rarr;</a>
+    <a href="#med-content" class="btn btn--ghost">Read the guide &darr;</a>
+  </div>
+  <p class="guide-hero__micro">We check and apply your exemption as part of every tax return.</p>
+</div>
+
+<div class="read-bar"><div class="read-bar__inner">
+  <div class="read-bar__items">
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--rose-mid)"></div><strong>5 min</strong> read</div>
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--rose-mid)"></div>Who pays, <strong>who doesn&rsquo;t</strong></div>
+    <div class="read-bar__item"><div class="read-bar__dot" style="background:var(--rose-mid)"></div>RHCA countries, <strong>exemption process</strong></div>
+  </div>
+  <a href="#med-content" class="read-bar__skip">Jump to content &darr;</a>
+</div></div>
+
+<div id="med-content" class="guide-section">
+  <div class="section-label">Part 1 &mdash; Understand</div>
+  <h2 class="section-heading">What is Medicare &mdash;<br><em>and what does it cost you?</em></h2>
+  <p class="section-body">Before you worry about it, understand what you&rsquo;re dealing with. Medicare is simpler than it sounds.</p>
+  <div class="explainer">
+    <div class="explainer__grid">
+      <div class="explainer__col">
+        <div class="explainer__col-label">In plain English</div>
+        <p>Medicare is Australia&rsquo;s public healthcare system &mdash; it covers GP visits, hospital treatment, and some medicines. It&rsquo;s funded by a <strong>2% levy on taxable income</strong>, collected through the tax system.</p>
+        <p>Here&rsquo;s the key thing most guides miss: <strong>Medicare access and Medicare levy are two different things.</strong> You can be exempt from paying the levy without having access to Medicare services.</p>
+        <p>The ATO calculates your Medicare levy automatically. If you don&rsquo;t apply for the exemption, they assume you&rsquo;re liable. Applying is how you get that money back.</p>
+      </div>
+      <div class="explainer__col">
+        <div class="explainer__col-label">What it costs without the exemption</div>
+        <div style="background:var(--bg-2);border-radius:10px;padding:20px 22px;margin-bottom:14px">
+          <div style="font-size:13px;color:var(--ink-4);font-weight:300;margin-bottom:10px">Example: $34,000 taxable income</div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span style="color:var(--ink-3);font-weight:300">Without exemption</span><span style="font-weight:600;color:var(--rose-mid)">-$680</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span style="color:var(--ink-3);font-weight:300">With exemption</span><span style="font-weight:600;color:var(--green)">$0</span></div>
+          <hr style="border:none;border-top:1px solid var(--line);margin:10px 0">
+          <div style="display:flex;justify-content:space-between"><span style="font-size:13px;font-weight:500">You save</span><span style="font-family:var(--font-serif);font-size:24px;color:var(--green);letter-spacing:-.5px">$680</span></div>
+        </div>
+        <p style="font-size:13px;color:var(--ink-3);font-weight:300;line-height:1.65">On a full year&rsquo;s income of $50,000, that&rsquo;s <strong style="color:var(--rose-mid)">$1,000</strong> that disappears if you don&rsquo;t apply.</p>
+      </div>
+    </div>
+    <div class="explainer__footer" style="background:var(--rose-light);border-top:1px solid var(--rose-soft)">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="var(--rose-mid)" stroke-width="1.3"/><path d="M8 5v3M8 10h.01" stroke="var(--rose-mid)" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div class="explainer__footer-text" style="color:var(--rose-mid)"><strong>The exemption isn&rsquo;t automatic.</strong> The ATO defaults to charging the levy. We apply this exemption as part of every tax return we lodge &mdash; you don&rsquo;t have to think about it.</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Part 2 &mdash; Who is exempt</div>
+  <h2 class="section-heading">Are you exempt &mdash; <em>or not?</em></h2>
+  <p class="section-body">Your eligibility depends on your visa type and whether your country has a health care agreement with Australia.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 26px">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;padding:4px 10px;border-radius:6px;margin-bottom:14px;background:var(--rose-light);color:var(--rose-mid)">Not eligible for Medicare</div>
+      <h3 style="font-family:var(--font-serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:10px">Most WHV holders &mdash; apply for exemption</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:5px"></div>Hold a 417 or 462 visa and not from an RHCA country</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:5px"></div>Not enrolled in Medicare</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px"></div>Exempt from the levy &mdash; but must apply</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px"></div>Can still receive emergency treatment</div>
+      </div>
+    </div>
+    <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px 26px">
+      <div style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;padding:4px 10px;border-radius:6px;margin-bottom:14px;background:var(--green-light);color:var(--green)">RHCA countries &mdash; limited access</div>
+      <h3 style="font-family:var(--font-serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:10px">Some nationalities have partial Medicare access</h3>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px"></div>From a country with a Reciprocal Health Care Agreement</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:5px"></div>Can enrol in Medicare for basic services</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:5px"></div>Coverage is limited &mdash; not full resident access</div>
+        <div style="display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-3);font-weight:300"><div style="width:5px;height:5px;border-radius:50%;background:var(--rose-mid);flex-shrink:0;margin-top:5px"></div>May still need to pay the levy &mdash; assessed case by case</div>
+      </div>
+    </div>
+  </div>
+  <div style="background:var(--green-light);border:1px solid var(--green-soft);border-radius:var(--r-lg);padding:24px 28px;margin-top:14px">
+    <div style="font-size:14px;font-weight:600;color:var(--green);margin-bottom:6px">RHCA countries &mdash; limited Medicare access</div>
+    <div style="font-size:13px;color:var(--green-mid);font-weight:300;line-height:1.65;margin-bottom:16px">If you&rsquo;re from one of these countries, you can enrol in Medicare for basic services. You may still be exempt from the levy depending on your circumstances.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">United Kingdom</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Ireland</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">New Zealand</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Sweden</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Netherlands</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Finland</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Belgium</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Italy</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Malta</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Norway</div>
+      <div style="background:var(--white);border:1px solid var(--green-soft);border-radius:8px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--green)">Slovenia</div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-section">
+  <div class="section-label">Questions</div>
+  <h2 class="section-heading">Things everyone <em>actually asks</em></h2>
+  <div class="faq-list">
+    <div class="faq-item"><div class="faq-item__q">I already lodged my return and didn&rsquo;t claim the exemption. Can I fix it?</div><div class="faq-item__a"><strong>Yes.</strong> You can amend a tax return up to 2 years after lodgment. If you paid Medicare levy you weren&rsquo;t liable for, we can lodge an amendment and recover the difference. <span class="hi">This is worth doing &mdash; it adds up.</span></div></div>
+    <div class="faq-item"><div class="faq-item__q">I&rsquo;m from the UK. Do I pay the Medicare levy?</div><div class="faq-item__a">It depends on your specific situation. UK nationals have an RHCA agreement &mdash; so if you enrolled in Medicare, you may owe the levy. If you didn&rsquo;t enrol, you may be exempt. <strong>We assess this individually for every UK client.</strong></div></div>
+    <div class="faq-item"><div class="faq-item__q">My employer has been deducting Medicare levy from my payslips. Do I get it back?</div><div class="faq-item__a">Quite possibly, yes. If you&rsquo;re eligible for the exemption, the levy withheld during the year comes back to you as part of your tax refund. <span class="hi">This is one of the most common refund components we recover.</span></div></div>
+    <div class="faq-item"><div class="faq-item__q">What if I had Medicare for part of the year and not the rest?</div><div class="faq-item__a">The levy is pro-rated based on the days you were eligible. We calculate the exact number of days and apply the exemption for the portion of the year you weren&rsquo;t covered.</div></div>
+    <div class="faq-item"><div class="faq-item__q">Is the exemption included in your standard tax return fee?</div><div class="faq-item__a"><strong>Yes.</strong> The Medicare levy exemption is included in every return we lodge &mdash; not an add-on, not an extra charge. It&rsquo;s standard practice.</div></div>
+  </div>
+</div>
+
+<div class="final-cta-wrap">
+  <div class="final-cta">
+    <div class="final-cta__top">
+      <div><h2 class="final-cta__h" style="color:#fff">Don&rsquo;t pay Medicare<br><em style="color:var(--rose-soft)">if you don&rsquo;t have to.</em></h2><p class="final-cta__sub">We check your Medicare status and apply the exemption automatically as part of every tax return. You don&rsquo;t have to think about it.</p></div>
+      <div class="final-cta__right">
+        <a href="contact.html" class="btn btn--white" onclick="openWA('Hi! I want to check my tax return and Medicare')">Check my tax return &mdash; free &rarr;</a>
+        <a href="superannuation.html" style="font-size:13px;color:rgba(255,255,255,.4);font-weight:400;padding:8px 12px;border:1px solid rgba(255,255,255,.1);border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">Also claim my super &rarr;</a>
+        <div class="final-cta__note">Medicare exemption included &middot; No extra charge</div>
+      </div>
+    </div>
+    <div class="final-cta__bottom" style="font-size:13px;color:rgba(255,255,255,.4);font-weight:300;line-height:1.6;padding:20px 48px">The Medicare levy exemption is included in <strong style="color:rgba(255,255,255,.7)">every tax return we lodge</strong>. If you&rsquo;ve overpaid in previous years, <strong style="color:rgba(255,255,255,.7)">we can amend up to 2 years back.</strong></div>
+  </div>
+</div>
+
+</main>
+<footer class="footer" role="contentinfo">
+  <div class="footer__inner">
+    <div>
+      <div class="footer__brand">Working Holiday Tax</div>
+      <div class="footer__about">Professional tax services for Working Holiday Visa holders in Australia. Registered tax agent, 100% online, 7 days a week.</div>
+    </div>
+    <div class="footer__col">
+      <h4>Guides</h4>
+      <ul>
+        <li><a href="tfn.html">TFN Application</a></li>
+        <li><a href="abn.html">ABN Registration</a></li>
+        <li><a href="tax-return.html">Tax Return</a></li>
+        <li><a href="superannuation.html">Superannuation</a></li>
+        <li><a href="medicare.html">Medicare</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="client-agreement.html">Client Agreement</a></li>
+        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+        <li><a href="mailto:info@workingholidaytax.com.au">Email us</a></li>
+        <li><a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer">TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2025 Working Holiday Tax. All rights reserved.</span>
+    <span class="footer__agent">Tax Agent No. 26233096 &middot; The Accounting Academy Pty Ltd ABN 26 669 927 959</span>
+  </div>
+</footer>
+<script src="js/main.js"></script>
+</body></html>
