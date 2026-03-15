@@ -4,9 +4,9 @@
 img,svg{display:block;max-width:100%}
 
 :root{
-  --ink:#111110;--ink-2:#2e2d2a;--ink-3:#6b6960;--ink-4:#a8a69e;
-  --bg:#faf9f7;--bg-2:#f3f1ed;--bg-3:#ebe8e2;--white:#fff;
-  --green:#176448;--green-mid:#1e7d59;--green-light:#eaf4ef;--green-soft:#d2ece0;
+  --ink:#0f172a;--ink-2:#1e293b;--ink-3:#64748b;--ink-4:#94a3b8;
+  --bg:#ffffff;--bg-2:#f8fafc;--bg-3:#f1f5f9;--white:#fff;
+  --green:#16a34a;--green-mid:#15803d;--green-light:#f0fdf4;--green-soft:#bbf7d0;
   --amber:#92600a;--amber-light:#fdf3e3;--amber-soft:#fde68a;
   --teal:#0e7490;--teal-light:#ecfeff;--teal-soft:#a5f3fc;
   --purple:#5b21b6;--purple-mid:#6d28d9;--purple-light:#f5f3ff;--purple-soft:#ddd6fe;
@@ -24,7 +24,7 @@ html{scroll-behavior:smooth}
 body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;overflow-x:hidden}
 
 /* NAV */
-.nav{background:rgba(250,249,247,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);height:60px;display:flex;align-items:center;padding:0 48px;justify-content:space-between;position:sticky;top:0;z-index:100;gap:24px}
+.nav{background:rgba(255,255,255,.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);height:60px;display:flex;align-items:center;padding:0 48px;justify-content:space-between;position:sticky;top:0;z-index:100;gap:24px}
 .nav__logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0}
 .nav__logo-icon{width:32px;height:32px;background:var(--ink);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .nav__logo-text{font-size:14.5px;font-weight:600;color:var(--ink);letter-spacing:-.3px;white-space:nowrap}
@@ -35,7 +35,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);-webkit-
 .nav__right{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .btn--nav-ghost{font-size:13px;font-weight:500;color:var(--ink-3);padding:7px 14px;border:1px solid var(--line-2);border-radius:8px;text-decoration:none;transition:all .15s;white-space:nowrap}
 .btn--nav-ghost:hover{color:var(--ink);background:var(--bg-2)}
-.btn--nav-solid{font-size:13px;font-weight:600;color:#fff;background:var(--ink);padding:7px 16px;border-radius:8px;text-decoration:none;transition:background .2s;white-space:nowrap;cursor:pointer}
+.btn--nav-solid{font-size:13px;font-weight:600;color:#fff;background:#1a3c5e;padding:7px 16px;border-radius:8px;text-decoration:none;transition:background .2s;white-space:nowrap;cursor:pointer}
 .btn--nav-solid:hover{background:var(--green)}
 .nav__hamburger{display:none;width:36px;height:36px;border:1px solid var(--line-2);border-radius:8px;align-items:center;justify-content:center;cursor:pointer;background:transparent;flex-shrink:0}
 
@@ -62,7 +62,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--ink);-webkit-
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-weight:500;border-radius:11px;text-decoration:none;cursor:pointer;transition:background .2s,transform .15s,opacity .15s;border:none;white-space:nowrap;font-size:14.5px}
-.btn--primary{background:var(--ink);color:#fff;padding:13px 26px}
+.btn--primary{background:#1a3c5e;color:#fff;padding:13px 26px}
 .btn--primary:hover{background:var(--green);transform:translateY(-1px)}
 .btn--ghost{background:transparent;color:var(--ink-3);padding:13px 18px;border:1px solid var(--line-2);font-weight:400}
 .btn--ghost:hover{background:var(--bg-2);color:var(--ink)}
