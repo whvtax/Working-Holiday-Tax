@@ -13,103 +13,137 @@
 </head>
 <body>
 <nav class="nav" role="navigation" aria-label="Main navigation">
-  <a href="index.html" class="nav__logo" aria-label="Working Holiday Tax Home">
-    <div class="nav__logo-icon" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 6L10 9.5L13.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.5" cy="4" r="1.5" fill="#4ade80"/></svg>
-    </div>
-    <span class="nav__logo-text">Working Holiday <span>Tax</span></span>
-  </a>
+  <a href="index.html" class="nav__logo"><div class="nav__logo-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 12L6 6L10 9.5L13.5 4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="13.5" cy="4" r="1.5" fill="#4ade80"/></svg></div><span class="nav__logo-text">Working Holiday <span>Tax</span></span></a>
   <ul class="nav__links" role="list">
-    <li><a href="tax-return.html" class="nav__link">Tax Return</a></li>
     <li><a href="tfn.html" class="nav__link">TFN</a></li>
-    <li><a href="superannuation.html" class="nav__link">Super</a></li>
     <li><a href="abn.html" class="nav__link">ABN</a></li>
+    <li><a href="tax-return.html" class="nav__link">Tax Return</a></li>
     <li><a href="medicare.html" class="nav__link">Medicare</a></li>
+    <li><a href="superannuation.html" class="nav__link">Super</a></li>
   </ul>
   <div class="nav__right">
-    <a href="contact.html" class="btn--nav-ghost">Contact</a>
-    <a href="contact.html" class="btn--nav-solid" onclick="openWA('Hi! I want to get started')">Get started</a>
-    <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
+    <a href="#" class="btn--nav-solid" onclick="openWA('Hi! I want to get started')">Get started</a>
+    <button class="nav__hamburger" aria-label="Open menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h12" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg></button>
   </div>
 </nav>
-<div class="nav__drawer" role="dialog" aria-modal="true" aria-label="Navigation menu">
+<div class="nav__drawer" role="dialog" aria-modal="true">
   <div class="nav__drawer-overlay"></div>
   <div class="nav__drawer-panel">
-    <button class="nav__drawer-close" aria-label="Close menu">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </button>
+    <button class="nav__drawer-close" aria-label="Close menu"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round"/></svg></button>
     <a href="tax-return.html" class="nav__drawer-link">Tax Return</a>
     <a href="tfn.html" class="nav__drawer-link">TFN</a>
     <a href="superannuation.html" class="nav__drawer-link">Superannuation</a>
     <a href="abn.html" class="nav__drawer-link">ABN</a>
     <a href="medicare.html" class="nav__drawer-link">Medicare</a>
     <a href="contact.html" class="nav__drawer-link">Contact</a>
-    <a href="contact.html" class="nav__drawer-cta" onclick="openWA('Hi! I want to get started')">Get started &mdash; free check</a>
+    <a href="#" class="nav__drawer-cta" onclick="openWA('Hi!')">Get started</a>
   </div>
 </div>
-<div class="progress-bar" aria-hidden="true"><div class="progress-bar__fill" style="background:var(--ink)"></div></div>
+<div class="progress-bar"><div class="progress-bar__fill" style="background:var(--ink)"></div></div>
 <nav class="breadcrumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="breadcrumb__sep">&rsaquo;</span><span class="breadcrumb__current">Privacy Policy</span></nav>
 <main>
+
 <div class="page-wrap">
   <div style="margin-bottom:48px">
     <div class="tag tag--neutral" style="margin-bottom:16px">Legal document</div>
     <h1 style="font-family:var(--font-serif);font-size:clamp(30px,4vw,42px);font-weight:400;color:var(--ink);letter-spacing:-1px;line-height:1.1;margin-bottom:12px">Privacy Policy</h1>
-    <div style="font-size:13px;color:var(--ink-4);font-weight:300">Last updated: 1 July 2024 &middot; The Accounting Academy Pty Ltd ABN 26 669 927 959</div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;color:var(--ink-4);font-weight:300">
+      <span>Last updated: 1 July 2024</span>
+      <span style="color:var(--line-2)">&middot;</span>
+      <span>The Accounting Academy Pty Ltd ABN 26 669 927 959</span>
+    </div>
   </div>
-  <div class="legal-summary"><div class="legal-summary__label">Plain English summary</div><p class="legal-summary__text">We collect your personal and tax information to do one thing: <strong>prepare and lodge your Australian tax return.</strong> We never sell your data. We never share it except where the law requires. You can ask us to delete it at any time.</p></div>
-  <div class="legal-section"><div class="legal-section__num">01</div><h2 class="legal-section__h">What information we collect</h2><div class="legal-body"><p>To prepare your tax return or super claim, we collect: your full name, date of birth, and contact details; your Tax File Number (TFN); employment and income details; bank account details; passport and visa information for DASP claims and identity verification; and any receipts or documents you send us.</p><p>When you visit our website, we also collect standard non-identifying data like IP address and pages visited.</p></div></div>
+
+  <div style="background:var(--green-light);border:1px solid var(--green-soft);border-radius:var(--r-lg);padding:24px 28px;margin-bottom:40px">
+    <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin-bottom:10px">Plain English summary</div>
+    <p style="font-size:14px;color:var(--green);font-weight:300;line-height:1.75">We collect your personal and tax information to do one thing: <strong style="font-weight:600">prepare and lodge your Australian tax return.</strong> We never sell your data. We never share it except where the law requires. You can ask us to delete it at any time.</p>
+  </div>
+
+  <div class="legal-section">
+    <div class="legal-section__num">01</div>
+    <h2 class="legal-section__heading">What information we collect</h2>
+    <div class="legal-body">
+      <p>To prepare your tax return or super claim, we collect: your full name, date of birth, and contact details; your Tax File Number (TFN); employment and income details; bank account details; passport and visa information; and any receipts or documents you send us.</p>
+      <p>When you visit our website, we also collect standard non-identifying data like IP address and pages visited. This helps us improve the site.</p>
+    </div>
+  </div>
+
   <hr class="divider">
-  <div class="legal-section"><div class="legal-section__num">02</div><h2 class="legal-section__h">How we use your information</h2><div class="legal-body"><p>We use your information solely to provide the services you have requested: preparing and lodging your tax return, processing your super claim, and communicating with you about your return.</p><div class="highlight"><strong>We will never sell your information or share it with advertisers.</strong> Your data exists to complete your return &mdash; nothing else.</div></div></div>
+
+  <div class="legal-section">
+    <div class="legal-section__num">02</div>
+    <h2 class="legal-section__heading">How we use your information</h2>
+    <div class="legal-body">
+      <p>We use your information solely to provide the services you&rsquo;ve requested: preparing and lodging your tax return, processing your super claim, and communicating with you about your return.</p>
+      <div class="highlight"><strong>We will never sell your information or share it with advertisers.</strong> Your data exists to complete your return &mdash; nothing else.</div>
+    </div>
+  </div>
+
   <hr class="divider">
-  <div class="legal-section"><div class="legal-section__num">03</div><h2 class="legal-section__h">Who we share it with</h2><div class="legal-body"><p>We share your information only with: the ATO (to lodge your return), the Tax Practitioners Board (if required for compliance), your super fund (for DASP claims), and trusted subcontractors bound by the same confidentiality obligations. No data brokers, no marketing partners.</p></div></div>
+
+  <div class="legal-section">
+    <div class="legal-section__num">03</div>
+    <h2 class="legal-section__heading">Who we share it with</h2>
+    <div class="legal-body">
+      <p>We share your information only with: the ATO (to lodge your return), the Tax Practitioners Board (if required for compliance), your super fund (for DASP claims), and trusted subcontractors bound by the same confidentiality obligations.</p>
+      <p>That&rsquo;s it. No data brokers, no marketing partners, no third parties beyond what&rsquo;s needed.</p>
+    </div>
+  </div>
+
   <hr class="divider">
-  <div class="legal-section"><div class="legal-section__num">04</div><h2 class="legal-section__h">How we keep it safe</h2><div class="legal-body"><p>SSL encryption, secure digital storage with restricted access, and confidentiality obligations for all staff and contractors.</p><div class="highlight"><strong>We will never ask for your myGov username or password.</strong> We access ATO records through the official registered tax agent portal. If anyone claiming to be us asks for these details, do not provide them.</div></div></div>
+
+  <div class="legal-section">
+    <div class="legal-section__num">04</div>
+    <h2 class="legal-section__heading">How we keep it safe</h2>
+    <div class="legal-body">
+      <p>Our security measures include SSL encryption, secure digital storage with restricted access, and confidentiality obligations for all staff and contractors.</p>
+      <div class="highlight"><strong>We will never ask for your myGov username or password.</strong> We access ATO records through the official registered tax agent portal. If anyone claiming to be us asks for these details, do not provide them.</div>
+    </div>
+  </div>
+
   <hr class="divider">
-  <div class="legal-section"><div class="legal-section__num">05</div><h2 class="legal-section__h">How long we keep it</h2><div class="legal-body"><p>Australian tax law requires registered agents to retain client records for a minimum of <strong>5 to 7 years</strong>. After this period, your data is securely deleted or anonymised.</p></div></div>
+
+  <div class="legal-section">
+    <div class="legal-section__num">05</div>
+    <h2 class="legal-section__heading">How long we keep it</h2>
+    <div class="legal-body">
+      <p>Australian tax law requires registered agents to retain client records for a minimum of <strong>5 to 7 years</strong>. After this period, your data is securely deleted or anonymised.</p>
+    </div>
+  </div>
+
   <hr class="divider">
-  <div class="legal-section"><div class="legal-section__num">06</div><h2 class="legal-section__h">Your rights</h2><div class="legal-body"><p>Under the Privacy Act 1988 (Cth), you have the right to access, correct, or request deletion of your personal information, and to opt out of any marketing communications at any time. Contact us on WhatsApp or by email to exercise any of these rights.</p></div></div>
+
+  <div class="legal-section">
+    <div class="legal-section__num">06</div>
+    <h2 class="legal-section__heading">Your rights</h2>
+    <div class="legal-body">
+      <p>Under the Privacy Act 1988 (Cth), you have the right to access, correct, or request deletion of your personal information, and to opt out of marketing communications at any time. Contact us on WhatsApp or by email to exercise any of these rights.</p>
+    </div>
+  </div>
+
   <hr class="divider">
-  <div class="legal-section"><div class="legal-section__num">07</div><h2 class="legal-section__h">Complaints</h2><div class="legal-body"><p>If you believe we have handled your personal information incorrectly, please contact us directly first. If unsatisfied, you may lodge a complaint with the <strong>Office of the Australian Information Commissioner (OAIC)</strong> at oaic.gov.au.</p></div></div>
+
+  <div class="legal-section">
+    <div class="legal-section__num">07</div>
+    <h2 class="legal-section__heading">Complaints</h2>
+    <div class="legal-body">
+      <p>If you have concerns about how we handle your personal information, contact us directly first. If unsatisfied, you may lodge a complaint with the Office of the Australian Information Commissioner (OAIC) at oaic.gov.au.</p>
+    </div>
+  </div>
+
   <div style="background:var(--ink);border-radius:var(--r-lg);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:48px">
-    <div><div style="font-family:var(--font-serif);font-size:18px;font-weight:400;color:#fff;margin-bottom:4px">Questions about this policy?</div><div style="font-size:13px;color:rgba(255,255,255,.45);font-weight:300">We will explain anything that is not clear.</div></div>
-    <a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer" class="btn btn--white" style="font-size:13.5px">Ask on WhatsApp &rarr;</a>
+    <div><div style="font-family:var(--font-serif);font-size:18px;font-weight:400;color:#fff;margin-bottom:4px">Questions about this policy?</div><div style="font-size:13px;color:rgba(255,255,255,.45);font-weight:300">We&rsquo;ll explain anything that isn&rsquo;t clear.</div></div>
+    <a href="#" class="btn btn--white" onclick="openWA('Hi! I have a question about your privacy policy')">Ask on WhatsApp &rarr;</a>
   </div>
 </div>
+
 </main>
 <footer class="footer" role="contentinfo">
   <div class="footer__inner">
-    <div>
-      <div class="footer__brand">Working Holiday Tax</div>
-      <div class="footer__about">Professional tax services for Working Holiday Visa holders in Australia. Registered tax agent, 100% online, 7 days a week.</div>
-    </div>
-    <div class="footer__col">
-      <h4>Guides</h4>
-      <ul>
-        <li><a href="tfn.html">TFN Application</a></li>
-        <li><a href="abn.html">ABN Registration</a></li>
-        <li><a href="tax-return.html">Tax Return</a></li>
-        <li><a href="superannuation.html">Superannuation</a></li>
-        <li><a href="medicare.html">Medicare</a></li>
-      </ul>
-    </div>
-    <div class="footer__col">
-      <h4>Legal</h4>
-      <ul>
-        <li><a href="client-agreement.html">Client Agreement</a></li>
-        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-      </ul>
-    </div>
-    <div class="footer__col">
-      <h4>Contact</h4>
-      <ul>
-        <li><a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
-        <li><a href="mailto:info@workingholidaytax.com.au">Email us</a></li>
-        <li><a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-        <li><a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer">TikTok</a></li>
-      </ul>
-    </div>
+    <div><div class="footer__brand">Working Holiday Tax</div><div class="footer__about">Professional tax services for Working Holiday Visa holders in Australia. Registered tax agent, 100% online, 7 days a week.</div></div>
+    <div class="footer__col"><h4>Guides</h4><ul><li><a href="tfn.html">TFN</a></li><li><a href="abn.html">ABN</a></li><li><a href="tax-return.html">Tax Return</a></li><li><a href="superannuation.html">Superannuation</a></li><li><a href="medicare.html">Medicare</a></li></ul></div>
+    <div class="footer__col"><h4>Legal</h4><ul><li><a href="client-agreement.html">Client Agreement</a></li><li><a href="privacy-policy.html">Privacy Policy</a></li></ul></div>
+    <div class="footer__col"><h4>Contact</h4><ul><li><a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="mailto:info@workingholidaytax.com.au">Email</a></li><li><a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer">Instagram</a></li><li><a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer">TikTok</a></li></ul></div>
   </div>
   <div class="footer__bottom">
     <span class="footer__copy">&copy; 2025 Working Holiday Tax. All rights reserved.</span>
@@ -117,4 +151,5 @@
   </div>
 </footer>
 <script src="js/main.js"></script>
-</body></html>
+</body>
+</html>
