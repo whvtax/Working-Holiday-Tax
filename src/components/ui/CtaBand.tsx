@@ -14,7 +14,8 @@ interface Props {
 
 export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLabel = 'Check my tax — free', secondaryLabel, secondaryHref = '/calculator', clipTop = false }: Props) {
   return (
-    <section className={`relative overflow-hidden bg-forest-500 py-32 grid-bg ${clipTop ? 'clip-diagonal' : ''}`}>
+    <section className={`relative overflow-hidden py-32 grid-bg ${clipTop ? 'clip-diagonal' : ''}`}
+      style={{ background: '#1A5C44' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
         <div className="text-center max-w-2xl mx-auto relative z-10 reveal">
           <span className="section-label light center mb-5 block">{eyebrow}</span>

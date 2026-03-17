@@ -60,14 +60,14 @@ function Hero() {
         background: 'radial-gradient(circle, rgba(11,82,64,.25) 0%, transparent 65%)',
       }} />
 
-      <div className="flex-1 max-w-7xl mx-auto px-6 md:px-12 lg:px-14 w-full grid grid-cols-1 lg:grid-cols-2 items-center gap-0 py-16 lg:py-28 relative z-10">
+      <div className="flex-1 max-w-7xl mx-auto px-6 md:px-12 lg:px-14 w-full grid grid-cols-1 items-center py-20 lg:py-32 relative z-10">
 
         {/* ── Left copy ── */}
-        <div className="max-w-[560px]">
+        <div className="max-w-[640px]">
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2.5 mb-10">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-300 animate-pulse-dot" aria-hidden="true" />
-            <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">Registered Tax Agent · Australia</span>
+            <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">Working Holiday Visa Specialist</span>
           </div>
 
           {/* H1 — dramatic, clean hierarchy */}
@@ -102,79 +102,6 @@ function Hero() {
           </p>
         </div>
 
-        {/* ── Right — refund UI card, much cleaner ── */}
-        <div className="flex justify-center lg:justify-end items-end lg:items-center pt-14 lg:pt-0 lg:pr-4">
-          <div className="relative w-full max-w-[360px]">
-
-            {/* Main card */}
-            <div className="rounded-2xl p-6 animate-card-float" style={{
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.09)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-            }}>
-              {/* Card header */}
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <p className="text-[10px] font-medium tracking-[0.12em] uppercase mb-1" style={{ color: 'rgba(255,255,255,0.35)' }}>Your estimated refund</p>
-                  <p className="font-serif font-black text-white" style={{ fontSize: '48px', lineHeight: 1, letterSpacing: '-0.04em' }}>$2,840</p>
-                </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1" style={{ background: 'rgba(47,168,128,0.15)', border: '1px solid rgba(47,168,128,0.25)' }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-forest-300" aria-hidden="true" />
-                  <span className="text-[10px] font-semibold tracking-[0.04em] text-forest-300">Approved</span>
-                </span>
-              </div>
-
-              {/* Breakdown rows — clean, no inner boxes */}
-              <div className="space-y-3 mb-5">
-                <div>
-                  <div className="flex justify-between text-[11px] mb-1.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                    <span>Tax withheld</span><span>$7,200</span>
-                  </div>
-                  <div className="h-[2px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
-                    <div className="h-full rounded-full" style={{ width: '100%', background: 'rgba(47,168,128,0.5)' }} />
-                  </div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-[11px] mb-1.5" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                    <span>Tax owed</span><span>$4,360</span>
-                  </div>
-                  <div className="h-[2px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
-                    <div className="h-full rounded-full" style={{ width: '61%', background: '#E9A020' }} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                <div className="flex justify-between items-center">
-                  <span className="text-[12px]" style={{ color: 'rgba(255,255,255,0.35)' }}>Emma T. · UK · WHV 417</span>
-                  <span className="text-[12px] font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>2023–24</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Float chips — minimal, airy */}
-            <div className="absolute -top-3 -right-3 rounded-xl px-3.5 py-2.5 animate-chip-float hidden sm:block" style={{
-              background: 'rgba(255,255,255,0.07)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-            }}>
-              <p className="text-[9px] tracking-[0.08em] uppercase mb-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>Processing</p>
-              <p className="font-serif font-black text-white text-[18px]" style={{ letterSpacing: '-0.03em' }}>9 days</p>
-            </div>
-
-            <div className="absolute -bottom-2 -left-3 rounded-xl px-3.5 py-2.5 animate-chip-float-2 hidden sm:block" style={{
-              background: 'rgba(255,255,255,0.07)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              backdropFilter: 'blur(16px)',
-              WebkitBackdropFilter: 'blur(16px)',
-            }}>
-              <p className="text-[9px] tracking-[0.08em] uppercase mb-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>Super returned</p>
-              <p className="font-serif font-black text-white text-[18px]" style={{ letterSpacing: '-0.03em' }}>$4,100</p>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Stats bar — simpler, more spacious */}
@@ -199,23 +126,6 @@ function Hero() {
   )
 }
 
-// ── MARQUEE ────────────────────────────────────────────────────────────────
-function Marquee() {
-  const items = ['Registered Tax Agent','ATO Approved','Xero Certified Partner','WHV 417 & 462','100% Online','Reply in Minutes','7 Days a Week','TPB #26233096','No Office Visit','Free Eligibility Check']
-  const doubled = [...items, ...items]
-  return (
-    <div className="bg-forest-500 overflow-hidden" aria-hidden="true" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-      <div className="marquee-track">
-        {doubled.map((item, i) => (
-          <span key={i} className="inline-flex items-center gap-3 px-8 py-3.5 text-[11px] font-medium tracking-[0.1em] uppercase" style={{ color: 'rgba(255,255,255,0.42)' }}>
-            <span className="w-[3px] h-[3px] rounded-full flex-shrink-0" style={{ background: '#E9A020' }} />
-            {i % 3 === 1 ? <strong style={{ color: 'rgba(255,255,255,0.82)', fontWeight: 600 }}>{item}</strong> : item}
-          </span>
-        ))}
-      </div>
-    </div>
-  )
-}
 
 // ── SERVICES ───────────────────────────────────────────────────────────────
 const SERVICES = [
@@ -283,15 +193,15 @@ const FEATURES = [
 
 function Why() {
   return (
-    <section className="py-32 lg:py-44 clip-diagonal-sm" style={{ background: '#F0F8F4' }}>
+    <section className="py-32 lg:py-44 clip-diagonal-sm" style={{ background: '#EEF7F2' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+        <div className="grid grid-cols-1 gap-0">
 
           {/* Left */}
           <div className="reveal-left">
             <span className="section-label">Why Working Holiday Tax</span>
             <h2 className="section-h2">Built for backpackers.<br /><em>Backed by experts.</em></h2>
-            <p className="body-lg max-w-[480px] mb-14">
+            <p className="body-lg max-w-[580px] mb-14">
               Every agent knows the ATO rules. Very few know what it means to be 23, in Mildura, with three employers and a flight home in six weeks.
             </p>
 
@@ -311,64 +221,6 @@ function Why() {
             </div>
           </div>
 
-          {/* Right — cleaner refund breakdown, no box-in-box */}
-          <div className="relative reveal-right">
-            {/* Float pills */}
-            <div className="hidden lg:block absolute -top-4 -right-8 rounded-xl px-4 py-3 z-10 animate-fp-float" style={{ background: '#0B5240', color: 'white' }}>
-              <p className="text-[9px] tracking-[0.08em] uppercase mb-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Avg. processing</p>
-              <p className="font-serif font-bold text-white text-[18px]" style={{ letterSpacing: '-0.02em' }}>9 days</p>
-            </div>
-            <div className="hidden lg:block absolute -bottom-4 -left-8 rounded-xl px-4 py-3 z-10 animate-fp-float-2" style={{ background: '#0B5240', color: 'white' }}>
-              <p className="text-[9px] tracking-[0.08em] uppercase mb-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>Clients served</p>
-              <p className="font-serif font-bold text-white text-[18px]" style={{ letterSpacing: '-0.02em' }}>1,200+</p>
-            </div>
-
-            {/* Main breakdown — white card, generous space */}
-            <div className="bg-white rounded-2xl p-9" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 8px 32px rgba(11,82,64,0.08)' }}>
-              <div className="flex items-start justify-between mb-8">
-                <div>
-                  <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-subtle mb-2">Tax refund · 2023–24</p>
-                  <p className="font-serif font-black text-forest-500" style={{ fontSize: '56px', lineHeight: 1, letterSpacing: '-0.04em' }}>$2,450</p>
-                  <p className="text-[13px] text-subtle mt-1.5">Emma T. · WHV 417</p>
-                </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 mt-1" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-forest-400" aria-hidden="true" />
-                  <span className="text-[10.5px] font-semibold text-forest-500 tracking-[0.02em]">Approved</span>
-                </span>
-              </div>
-
-              {/* Bars — no labels cluttering it */}
-              <div className="space-y-3 mb-8">
-                <div>
-                  <div className="flex justify-between text-[12px] text-subtle mb-2"><span>Tax withheld</span><span className="font-medium text-ink">$7,200</span></div>
-                  <div className="h-[3px] bg-border rounded-full overflow-hidden"><div className="h-full bg-forest-500 rounded-full w-full" /></div>
-                </div>
-                <div>
-                  <div className="flex justify-between text-[12px] text-subtle mb-2"><span>Tax owed</span><span className="font-medium text-ink">$4,750</span></div>
-                  <div className="h-[3px] bg-border rounded-full overflow-hidden"><div className="h-full bg-amber rounded-full" style={{ width: '66%' }} /></div>
-                </div>
-              </div>
-
-              {/* Clean data rows */}
-              <div className="space-y-0" style={{ borderTop: '1px solid #EFF6F3' }}>
-                {[
-                  { l: 'Total income',     v: '$31,600',  hi: false },
-                  { l: 'Work deductions',  v: '$1,840',   hi: false },
-                  { l: 'Medicare levy',    v: 'Exempt',   hi: true  },
-                ].map((row, i) => (
-                  <div key={i} className="flex justify-between items-center py-3.5" style={{ borderBottom: '1px solid #EFF6F3' }}>
-                    <span className="text-[13px] text-muted">{row.l}</span>
-                    <span className={`text-[13px] font-semibold ${row.hi ? 'text-forest-400' : 'text-ink'}`}>{row.v}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex justify-between items-center pt-5 mt-1">
-                <span className="text-[14px] font-semibold text-ink">Your refund</span>
-                <span className="font-serif font-black text-forest-500" style={{ fontSize: '22px', letterSpacing: '-0.03em' }}>$2,450</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -403,7 +255,7 @@ function Process() {
             {STEPS.map((s, i) => (
               <div key={i} className="flex gap-7 py-9" style={{ borderTop: i === 0 ? '1px solid #E2EFE9' : '1px solid #E2EFE9', borderBottom: i === STEPS.length - 1 ? '1px solid #E2EFE9' : 'none' }}>
                 <div className="flex-shrink-0 mt-0.5">
-                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500" style={{ background: '#EAF6F1' }}>
+                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500" style={{ background: '#F0F9F5' }}>
                     {s.n}
                   </span>
                 </div>
@@ -420,69 +272,6 @@ function Process() {
   )
 }
 
-// ── CALCULATOR TEASER ──────────────────────────────────────────────────────
-function CalcTeaser() {
-  return (
-    <section className="py-32 lg:py-44 relative overflow-hidden clip-diagonal" style={{
-      background: '#111C17',
-      backgroundImage: 'linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)',
-      backgroundSize: '80px 80px',
-    }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-28 items-center">
-
-          <div className="reveal-left">
-            <span className="section-label light">Tax calculator</span>
-            <h2 className="font-serif font-black text-white mt-3 mb-5" style={{ fontSize: 'clamp(32px,4.5vw,52px)', lineHeight: 1.06, letterSpacing: '-0.035em' }}>
-              See exactly what<br />you&apos;re owed.
-            </h2>
-            <p className="text-[16px] font-light leading-[1.75] mb-10" style={{ color: 'rgba(255,255,255,0.4)', maxWidth: '380px' }}>
-              Instant estimate based on ATO rates. No sign-up, no personal data required.
-            </p>
-            <Link href="/calculator" className="btn-primary" style={{ height: '52px' }}>
-              Open calculator
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </Link>
-          </div>
-
-          {/* Calculator preview — product-quality mockup */}
-          <div className="reveal-right">
-            <div className="rounded-2xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              {/* Top bar */}
-              <div className="px-6 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <p className="text-[11px] font-medium tracking-[0.1em] uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>Tax refund calculator</p>
-              </div>
-              <div className="p-6 space-y-4">
-                {[
-                  { label: 'Total income', placeholder: 'e.g. 30,000', prefix: 'AUD' },
-                  { label: 'Tax withheld', placeholder: 'e.g. 4,500',  prefix: 'AUD' },
-                ].map((f, i) => (
-                  <div key={i}>
-                    <label className="block text-[11px] font-medium tracking-[0.08em] uppercase mb-2" style={{ color: 'rgba(255,255,255,0.32)' }}>{f.label}</label>
-                    <div className="flex items-center gap-0 rounded-xl overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', height: '52px' }}>
-                      <span className="px-4 text-[11px] font-medium tracking-[0.06em]" style={{ color: 'rgba(255,255,255,0.25)', borderRight: '1px solid rgba(255,255,255,0.07)' }}>{f.prefix}</span>
-                      <span className="px-4 text-[14px]" style={{ color: 'rgba(255,255,255,0.2)' }}>{f.placeholder}</span>
-                    </div>
-                  </div>
-                ))}
-                <div>
-                  <label className="block text-[11px] font-medium tracking-[0.08em] uppercase mb-2" style={{ color: 'rgba(255,255,255,0.32)' }}>Visa type</label>
-                  <div className="flex items-center justify-between rounded-xl px-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', height: '52px' }}>
-                    <span className="text-[14px]" style={{ color: 'rgba(255,255,255,0.2)' }}>Working Holiday Maker</span>
-                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1l5 5 5-5" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                </div>
-                <Link href="/calculator" className="w-full flex items-center justify-center gap-2 font-semibold rounded-xl transition-all" style={{ height: '52px', background: '#E9A020', color: '#1A2822', fontSize: '14px' }}>
-                  Calculate my refund
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
 
 // ── TESTIMONIALS ───────────────────────────────────────────────────────────
 const TESTIMONIALS = [
@@ -536,7 +325,7 @@ function Testimonials() {
             ))}
 
             {/* Proof card — clean, no border clutter */}
-            <div className="w-[300px] lg:w-auto flex-shrink-0 rounded-2xl p-7 flex flex-col justify-between" style={{ background: '#EAF6F1' }}>
+            <div className="w-[300px] lg:w-auto flex-shrink-0 rounded-2xl p-7 flex flex-col justify-between" style={{ background: '#F0F9F5' }}>
               <div>
                 <p className="font-serif font-black text-forest-500 mb-1" style={{ fontSize: '52px', lineHeight: 1, letterSpacing: '-0.04em' }}>5.0</p>
                 <p className="text-[13px] text-muted mb-5">Average rating</p>
@@ -561,11 +350,9 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Marquee />
       <Services />
       <Why />
       <Process />
-      <CalcTeaser />
       <Testimonials />
       <CtaBand
         eyebrow="Ready to start?"

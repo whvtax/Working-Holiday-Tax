@@ -150,7 +150,7 @@ export function CalculatorClient() {
                 /* Result state — product-quality, clear hierarchy */
                 <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 8px 32px rgba(11,82,64,.1)' }}>
                   {/* Result header */}
-                  <div className="p-8 pb-7" style={{ background: result.owing ? '#1A2822' : '#0B5240' }}>
+                  <div className="p-8 pb-7" style={{ background: result.owing ? '#1A2822' : '#1A5C44' }}>
                     <p className="text-[11px] font-medium tracking-[0.1em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>{result.label}</p>
                     <p className="font-serif font-black text-white mb-1.5" style={{ fontSize: '56px', lineHeight: 1, letterSpacing: '-0.04em' }}>
                       {result.amount}
