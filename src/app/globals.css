@@ -62,11 +62,8 @@
 
   /* ── Section eyebrow label ── */
   .section-label {
-    @apply inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.12em] uppercase text-forest-400;
-  }
-  .section-label::before {
-    content: ''; display: block; width: 20px; height: 1px;
-    background: #E9A020; border-radius: 1px; flex-shrink: 0;
+    @apply inline-flex items-center gap-3 text-[11px] font-medium tracking-[0.12em] uppercase;
+    color: #E9A020;
   }
   .section-label.light { @apply text-forest-300; }
   .section-label.center { @apply justify-center; }
