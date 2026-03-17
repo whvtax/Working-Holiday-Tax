@@ -61,7 +61,7 @@ export default function MedicarePage() {
               Not everyone is eligible. We help you understand where you stand.
             </p>
             <p className="font-light leading-[1.75] mb-8 mx-auto" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.55)', maxWidth: '440px' }}>
-              Medicare is Australia's public health system. Whether it applies to you depends on your visa type and country of origin.
+              Medicare is Australia&apos;s public health system. Whether it applies to you depends on your visa type and country of origin.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-5">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '48px', padding: '0 24px', fontSize: '14px' }}>
@@ -83,10 +83,10 @@ export default function MedicarePage() {
             <div className="reveal">
               <span className="section-label">What is Medicare?</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(22px,3vw,34px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                Australia's public<br /><em className="not-italic font-normal text-forest-400">health system.</em>
+                Australia&apos;s public<br /><em className="not-italic font-normal text-forest-400">health system.</em>
               </h2>
               <div className="prose-wht max-w-[480px]">
-                <p>Medicare is Australia's publicly funded healthcare system. It gives eligible residents access to free or subsidised medical services — including visits to a GP, treatment at public hospitals, and some specialist appointments.</p>
+                <p>Medicare is Australia&apos;s publicly funded healthcare system. It gives eligible residents access to free or subsidised medical services — including visits to a GP, treatment at public hospitals, and some specialist appointments.</p>
                 <p>Medicare is funded partly through a Medicare levy — a tax of 2% of your taxable income, collected when you lodge your tax return. Not everyone is required to pay it.</p>
               </div>
               <div className="info-block">
