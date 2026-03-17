@@ -57,13 +57,13 @@ function Hero() {
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-3 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Working Holiday Visa Specialist</span>
+            <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11.5px', letterSpacing: '0.18em' }}>Working Holiday Visa Specialist</span>
           </div>
 
           {/* Headline — nowrap on line 1 prevents wrapping */}
           <h1 className="font-serif font-black text-ink mb-5" style={{
             fontSize: 'clamp(20px, 2.8vw, 36px)',
-            lineHeight: 1.1,
+            lineHeight: 1.25,
             letterSpacing: '-0.025em',
           }}>
             <span className="block whitespace-nowrap">Have questions about tax in Australia?</span>
@@ -71,7 +71,7 @@ function Hero() {
           </h1>
 
           {/* Sub */}
-          <p className="font-light leading-[1.7] mb-7" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '420px' }}>
+          <p className="font-light leading-[1.7] mb-9" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '420px' }}>
             From your first TFN application to your final super withdrawal — we guide Working Holiday Visa travellers through every step of tax in Australia.
           </p>
 
@@ -96,19 +96,19 @@ function Hero() {
       {/* 2x2 Trust cards */}
       <div className="relative z-10" style={{ borderTop: '1px solid rgba(10,15,13,0.08)' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { n: '4.9★',   l: 'Google rating' },
               { n: '1,200+', l: 'WHV clients helped' },
               { n: '<1 hr',  l: 'WhatsApp response' },
               { n: '100%',   l: '100% online' },
             ].map((c, i) => (
-              <div key={i} className="rounded-2xl text-center py-4 px-3" style={{
-                background: '#F0F9F5',
-                border: '1px solid #C8EAE0',
+              <div key={i} className="rounded-2xl text-center py-4 px-3 transition-shadow" style={{
+                background: '#ffffff',
+                border: '1.5px solid #C8EAE0',
               }}>
-                <p className="font-serif font-black text-forest-500 mb-1" style={{ fontSize: 'clamp(20px,2.8vw,26px)', letterSpacing: '-0.03em', lineHeight: 1 }}>{c.n}</p>
-                <p className="font-light" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.52)', lineHeight: 1.4 }}>{c.l}</p>
+                <p className="font-serif font-black text-forest-500 mb-1.5" style={{ fontSize: 'clamp(22px,3vw,28px)', letterSpacing: '-0.03em', lineHeight: 1 }}>{c.n}</p>
+                <p className="font-light" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.62)', lineHeight: 1.4 }}>{c.l}</p>
               </div>
             ))}
           </div>
