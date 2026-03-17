@@ -3,56 +3,65 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, PHONE_DISPLAY, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 const cols = [
-  { title: 'Services', links: [{ l:'TFN Application',href:'/tfn'},{l:'Tax Return',href:'/tax-return'},{l:'Superannuation',href:'/superannuation'},{l:'ABN Registration',href:'/abn'},{l:'Medicare',href:'/medicare'}] },
-  { title: 'Tools',    links: [{ l:'Tax Calculator',href:'/calculator'},{l:'Tax Rates Guide',href:'/tax-return#rates'},{l:'Deductions Guide',href:'/tax-return#deductions'},{l:'Residency Guide',href:'/tax-return#residency'},{l:'Super Guide',href:'/superannuation#guide'}] },
-  { title: 'Legal',    links: [{ l:'Client Agreement',href:'/client-agreement'},{l:'Privacy Policy',href:'/privacy'},{l:'Contact Us',href:'/contact'}] },
+  { title: 'Services', links: [{ l: 'TFN Application', href: '/tfn' }, { l: 'Tax Return', href: '/tax-return' }, { l: 'Superannuation', href: '/superannuation' }, { l: 'ABN Registration', href: '/abn' }, { l: 'Medicare', href: '/medicare' }] },
+  { title: 'Tools',    links: [{ l: 'Tax Calculator', href: '/calculator' }, { l: 'Tax Rates', href: '/tax-return#rates' }, { l: 'Deductions', href: '/tax-return#deductions' }, { l: 'Residency', href: '/tax-return#residency' }, { l: 'Super Guide', href: '/superannuation#guide' }] },
+  { title: 'Legal',    links: [{ l: 'Client Agreement', href: '/client-agreement' }, { l: 'Privacy Policy', href: '/privacy' }, { l: 'Contact', href: '/contact' }] },
 ]
 
 export function Footer() {
   return (
-    <footer className="bg-ink pt-[72px] pb-10">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-[52px] md:gap-10">
-          {/* Brand */}
+    <footer style={{ background: '#0A0F0D' }}>
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-16 pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-14 md:gap-10 mb-14">
           <div>
-            <div className="flex items-center gap-2.5 mb-[18px]">
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-                <rect x="2" y="2" width="16" height="16" rx="4" stroke="#2FA880" strokeWidth="1.5"/>
+            <div className="flex items-center gap-2.5 mb-5">
+              <svg width="28" height="28" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+                <rect x="2" y="2" width="16" height="16" rx="4" stroke="#2FA880" strokeWidth="1.4"/>
                 <rect x="12" y="12" width="16" height="16" rx="4" fill="#16775C"/>
-                <line x1="2" y1="2" x2="12" y2="12" stroke="#E9A020" strokeWidth="1.5" strokeLinecap="round"/>
+                <line x1="2" y1="2" x2="12" y2="12" stroke="#E9A020" strokeWidth="1.4" strokeLinecap="round"/>
                 <circle cx="2" cy="2" r="2" fill="#E9A020"/>
               </svg>
-              <span className="font-serif text-[15px] font-bold text-white">Working Holiday Tax</span>
+              <span className="font-serif font-bold text-white" style={{ fontSize: '15px' }}>Working Holiday Tax</span>
             </div>
-            <p className="text-[13px] font-light text-white/32 leading-[1.75] max-w-[240px] mb-6">
-              Australian tax specialists for Working Holiday Visa holders. TFN to super — all online.
+            <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)', maxWidth: '220px' }}>
+              Australian tax specialists for Working Holiday Visa holders.
             </p>
             <div className="space-y-2.5">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[13px] text-white/38 transition-colors hover:text-forest-300">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" stroke="rgba(255,255,255,.22)" strokeWidth=".8"/></svg>{PHONE_DISPLAY}
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 transition-colors" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'rgba(47,168,128,0.9)'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)'}>
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" stroke="rgba(255,255,255,.2)" strokeWidth=".8"/></svg>
+                {PHONE_DISPLAY}
               </a>
-              <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 text-[13px] text-white/38 transition-colors hover:text-forest-300">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x=".5" y="2" width="12" height="9" rx="1.5" stroke="rgba(255,255,255,.22)" strokeWidth=".8"/></svg>{EMAIL}
+              <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 transition-colors" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'rgba(47,168,128,0.9)'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)'}>
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x=".5" y="2" width="12" height="9" rx="1.5" stroke="rgba(255,255,255,.2)" strokeWidth=".8"/></svg>
+                {EMAIL}
               </a>
             </div>
           </div>
-          {/* Columns */}
+
           {cols.map(col => (
             <nav key={col.title} aria-label={`${col.title} links`}>
-              <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-white/22 mb-5">{col.title}</p>
+              <p className="font-medium tracking-[0.1em] uppercase mb-5" style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)' }}>{col.title}</p>
               {col.links.map(lk => (
-                <Link key={lk.href} href={lk.href} className="block text-[13px] text-white/38 mb-3 transition-colors hover:text-white/78">{lk.l}</Link>
+                <Link key={lk.href} href={lk.href} className="block mb-3 transition-colors" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)'}>
+                  {lk.l}
+                </Link>
               ))}
             </nav>
           ))}
         </div>
-        {/* C1 fix: use suppressHydrationWarning on the year span */}
-        <div className="border-t border-white/[0.055] mt-14 pt-7 flex flex-col md:flex-row justify-between items-start md:items-center gap-2.5">
-          <p className="text-[12px] text-white/18" suppressHydrationWarning>
+
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '28px' }}>
+          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.18)' }} suppressHydrationWarning>
             © {new Date().getFullYear()} Working Holiday Tax. All rights reserved.
           </p>
-          <span className="inline-flex items-center gap-2 text-[11px] text-white/20">
-            <span className="w-[5px] h-[5px] rounded-full bg-forest-400" aria-hidden="true" />
+          <span className="inline-flex items-center gap-2" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.18)' }}>
+            <span className="w-1 h-1 rounded-full bg-forest-400" aria-hidden="true" />
             Supervised by {AGENT_NAME} · ABN {AGENT_ABN} · TPB #{AGENT_TPB}
           </span>
         </div>

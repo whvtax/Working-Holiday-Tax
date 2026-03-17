@@ -12,42 +12,44 @@ interface Props {
 }
 
 export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, breadcrumbs, cta }: Props) {
-  const ctaIsExternal = !cta?.href  // no href = WhatsApp = external
+  const ctaIsExternal = !cta?.href
   return (
     <section className="page-header grid-bg relative overflow-hidden bg-ink-2">
-      <div className="absolute pointer-events-none" style={{ top:'-30%', right:'-10%', width:'65%', paddingBottom:'65%', borderRadius:'50%', background:'radial-gradient(circle,rgba(11,82,64,.7) 0%,transparent 68%)' }} aria-hidden="true" />
+      <div className="absolute pointer-events-none" aria-hidden="true" style={{ top: '-30%', right: '-10%', width: '65%', paddingBottom: '65%', borderRadius: '50%', background: 'radial-gradient(circle,rgba(11,82,64,.65) 0%,transparent 68%)' }} />
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 relative z-10">
         {breadcrumbs && (
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] text-white/30 mb-5 reveal">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-6 reveal" style={{ color: 'rgba(255,255,255,0.28)' }}>
             {breadcrumbs.map((b, i) => (
               <span key={i} className="flex items-center gap-2">
-                {i > 0 && <span className="text-white/15" aria-hidden="true">/</span>}
+                {i > 0 && <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.14)' }}>/</span>}
                 {b.href
-                  ? <Link href={b.href} className="hover:text-white/60 transition-colors">{b.label}</Link>
+                  ? <Link href={b.href} className="transition-colors hover:text-white/60">{b.label}</Link>
                   : <span aria-current="page">{b.label}</span>
                 }
               </span>
             ))}
           </nav>
         )}
-        <div className="inline-flex items-center gap-2 bg-forest-300/10 border border-forest-300/22 rounded-full px-3.5 py-1.5 mb-6 reveal delay-1">
-          <span className="w-[6px] h-[6px] rounded-full bg-forest-300" aria-hidden="true" />
-          <span className="text-[10.5px] font-medium tracking-[0.1em] uppercase text-forest-300">{kicker}</span>
+        <div className="inline-flex items-center gap-2.5 mb-7 reveal delay-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-forest-300" aria-hidden="true" />
+          <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">{kicker}</span>
         </div>
-        <h1 className="font-serif font-black text-white tracking-[-2px] leading-[1] mb-5 reveal delay-2" style={{ fontSize: 'clamp(38px,7vw,72px)' }}>
+        <h1 className="font-serif font-black text-white mb-5 reveal delay-2" style={{ fontSize: 'clamp(38px,6.5vw,68px)', lineHeight: 1, letterSpacing: '-0.04em' }}>
           {title}
-          {titleEm && <><br /><em className="not-italic font-normal text-white/50">{titleEm}</em></>}
+          {titleEm && <><br /><em className="not-italic font-normal" style={{ color: 'rgba(255,255,255,0.42)' }}>{titleEm}</em></>}
         </h1>
-        <p className="text-[17px] font-light text-white/48 leading-[1.7] max-w-[500px] mb-9 reveal delay-3">{sub}</p>
+        <p className="font-light leading-[1.7] mb-9 reveal delay-3" style={{ fontSize: '17px', color: 'rgba(255,255,255,0.48)', maxWidth: '480px' }}>{sub}</p>
         {cta && (
           <div className="reveal delay-4">
             <a
               href={cta.href ?? WA_URL}
               target={ctaIsExternal ? '_blank' : '_self'}
               rel={ctaIsExternal ? 'noopener noreferrer' : undefined}
-              className="inline-flex items-center gap-2 h-[52px] px-8 bg-amber text-ink-2 rounded-full text-[14px] font-semibold shadow-[0_4px_20px_rgba(233,160,32,0.3)] transition-all hover:bg-amber-300 hover:text-white hover:-translate-y-0.5"
+              className="btn-primary"
+              style={{ height: '52px' }}
             >
-              {cta.label} →
+              {cta.label}
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
           </div>
         )}

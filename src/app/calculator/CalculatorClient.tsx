@@ -17,12 +17,10 @@ function calc(inc: number, wit: number, visa: string): Result {
     else                    tax = 56838 + (inc - 190000) * 0.45
   }
   const d = wit - tax
-  // H6: guard against division-by-zero when wit === 0
   const safePct = wit > 0 ? Math.min(100, (Math.abs(d) / wit) * 100) : 50
-
-  if (d > 0)  return { label: 'Estimated refund', amount: `$${Math.round(d).toLocaleString()}`,           sub: visa === 'whm' ? 'Working Holiday Maker rate applied' : 'Australian resident rates applied', pct: safePct, owing: false }
-  if (d < 0)  return { label: 'Tax owing',        amount: `$${Math.round(Math.abs(d)).toLocaleString()}`, sub: 'You may owe additional tax. Contact us to discuss your options.',                          pct: safePct, owing: true  }
-  return              { label: 'Balanced',         amount: '$0',                                           sub: 'No refund or tax owing.',                                                                  pct: 50,      owing: false }
+  if (d > 0) return { label: 'Estimated refund', amount: `$${Math.round(d).toLocaleString()}`, sub: visa === 'whm' ? 'Working Holiday Maker rate applied' : 'Australian resident rates applied', pct: safePct, owing: false }
+  if (d < 0) return { label: 'Tax owing',        amount: `$${Math.round(Math.abs(d)).toLocaleString()}`, sub: 'You may owe additional tax. Contact us to discuss.', pct: safePct, owing: true }
+  return             { label: 'Balanced',         amount: '$0', sub: 'No refund or tax owing.', pct: 50, owing: false }
 }
 
 export function CalculatorClient() {
@@ -40,95 +38,147 @@ export function CalculatorClient() {
     setResult(calc(i, w, visa))
   }
 
-  const inputCls = "w-full h-[54px] bg-white border border-border rounded-[12px] px-4 font-sans text-[15px] text-ink outline-none placeholder:text-subtle transition-all focus:border-forest-500 focus:shadow-[0_0_0_3px_rgba(11,82,64,0.1)]"
-
   return (
     <>
-      {/* Header */}
+      {/* Page header */}
       <div className="relative overflow-hidden bg-ink-2 pt-[68px] grid-bg">
-        <div className="absolute pointer-events-none" aria-hidden="true" style={{ top: '-25%', right: '-15%', width: '65%', paddingBottom: '65%', borderRadius: '50%', background: 'radial-gradient(circle,rgba(11,82,64,.6) 0%,transparent 68%)' }} />
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-24 pb-24 relative z-10 text-center">
-          {/* M4: use Link for internal nav */}
-          <nav aria-label="Breadcrumb" className="flex items-center justify-center gap-2 text-[12px] text-white/30 mb-6">
-            <Link href="/" className="hover:text-white/60 transition-colors">Home</Link>
-            <span className="text-white/15" aria-hidden="true">/</span>
+        <div className="absolute pointer-events-none" aria-hidden="true" style={{ top: '-30%', right: '-15%', width: '65%', paddingBottom: '65%', borderRadius: '50%', background: 'radial-gradient(circle,rgba(11,82,64,.6) 0%,transparent 68%)' }} />
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-24 pb-28 relative z-10">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(255,255,255,0.28)' }}>
+            <Link href="/" className="transition-colors hover:text-white/60">Home</Link>
+            <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.15)' }}>/</span>
             <span aria-current="page">Calculator</span>
           </nav>
-          <div className="inline-flex items-center gap-2 bg-forest-300/10 border border-forest-300/22 rounded-full px-3.5 py-1.5 mb-6">
-            <span className="w-[6px] h-[6px] rounded-full bg-forest-300" aria-hidden="true" />
-            <span className="text-[10.5px] font-medium tracking-[0.1em] uppercase text-forest-300">Free tool</span>
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2.5 mb-7">
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-300" aria-hidden="true" />
+              <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">Free tool</span>
+            </div>
+            <h1 className="font-serif font-black text-white mb-4" style={{ fontSize: 'clamp(38px,6vw,64px)', lineHeight: 1, letterSpacing: '-0.04em' }}>
+              Tax Refund Calculator.
+            </h1>
+            <p className="text-[17px] font-light leading-[1.7]" style={{ color: 'rgba(255,255,255,0.42)', maxWidth: '440px' }}>
+              Estimate your Australian tax refund instantly. No sign-up, no personal data stored.
+            </p>
           </div>
-          <h1 className="font-serif font-black text-white tracking-[-2px] leading-[1] mb-5" style={{ fontSize: 'clamp(38px,7vw,72px)' }}>
-            Working Holiday<br /><em className="not-italic font-normal text-white/50">Tax Calculator.</em>
-          </h1>
-          <p className="text-[17px] font-light text-white/48 leading-[1.7] max-w-[460px] mx-auto">
-            Estimate your Australian tax refund instantly. No sign-up, no personal data stored.
-          </p>
         </div>
       </div>
 
-      {/* Form */}
-      <section className="py-28 bg-white">
+      {/* Calculator body */}
+      <section className="py-20 lg:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-          <div className="max-w-xl mx-auto">
-            <div className="bg-forest-50 border border-border rounded-[22px] p-8 md:p-10">
-              <div className="space-y-5">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16 lg:gap-24 items-start">
+
+            {/* Left — form */}
+            <div>
+              <div className="space-y-5 mb-6">
+                {/* Income */}
                 <div>
-                  <label htmlFor="ci" className="block text-[11px] font-medium tracking-[0.1em] uppercase text-muted mb-2">Total income earned (AUD)</label>
-                  <input id="ci" type="number" placeholder="e.g. 30,000" value={income} min={0} inputMode="numeric" onChange={e => setIncome(e.target.value)} className={inputCls} />
+                  <label htmlFor="ci" className="block text-[11px] font-semibold tracking-[0.1em] uppercase text-muted mb-2.5">Total income earned</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[13px] font-medium text-subtle">AUD</span>
+                    <input
+                      id="ci" type="number" placeholder="0" value={income} min={0} inputMode="numeric"
+                      onChange={e => setIncome(e.target.value)}
+                      className="input-base"
+                      style={{ paddingLeft: '56px' }}
+                    />
+                  </div>
                 </div>
+
+                {/* Withheld */}
                 <div>
-                  <label htmlFor="cw" className="block text-[11px] font-medium tracking-[0.1em] uppercase text-muted mb-2">Tax withheld by employer (AUD)</label>
-                  <input id="cw" type="number" placeholder="e.g. 4,500" value={withheld} min={0} inputMode="numeric" onChange={e => setWithheld(e.target.value)} className={inputCls} />
+                  <label htmlFor="cw" className="block text-[11px] font-semibold tracking-[0.1em] uppercase text-muted mb-2.5">Tax withheld by employer</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[13px] font-medium text-subtle">AUD</span>
+                    <input
+                      id="cw" type="number" placeholder="0" value={withheld} min={0} inputMode="numeric"
+                      onChange={e => setWithheld(e.target.value)}
+                      className="input-base"
+                      style={{ paddingLeft: '56px' }}
+                    />
+                  </div>
+                  <p className="text-[12px] text-subtle mt-2">Found on your payment summary or PAYG summary</p>
                 </div>
+
+                {/* Visa */}
                 <div>
-                  <label htmlFor="cv" className="block text-[11px] font-medium tracking-[0.1em] uppercase text-muted mb-2">Tax residency status</label>
+                  <label htmlFor="cv" className="block text-[11px] font-semibold tracking-[0.1em] uppercase text-muted mb-2.5">Tax residency status</label>
                   <div className="relative">
                     <select
-                      id="cv"
-                      value={visa}
-                      onChange={e => setVisa(e.target.value)}
-                      className="w-full h-[54px] bg-white border border-border rounded-[12px] px-4 pr-10 font-sans text-[15px] text-ink outline-none appearance-none cursor-pointer transition-all focus:border-forest-500"
+                      id="cv" value={visa} onChange={e => setVisa(e.target.value)}
+                      className="input-base appearance-none cursor-pointer pr-10"
+                      style={{ color: visa ? undefined : '#8AADA3' }}
                     >
                       <option value="">Select your status</option>
                       <option value="whm">Working Holiday Maker (417 / 462)</option>
                       <option value="res">Australian tax resident</option>
                     </select>
                     <svg className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" width="12" height="8" viewBox="0 0 12 8" fill="none" aria-hidden="true">
-                      <path d="M1 1l5 5 5-5" stroke="#587066" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M1 1l5 5 5-5" stroke="#8AADA3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
                 </div>
-                {err && <p role="alert" className="text-[13px] text-red-500">{err}</p>}
-                <button onClick={run} className="w-full h-[58px] bg-amber text-ink-2 rounded-full text-[15px] font-semibold shadow-[0_4px_20px_rgba(233,160,32,.28)] transition-all hover:bg-amber-300 hover:text-white hover:-translate-y-0.5 mt-2">
-                  Calculate my refund
-                </button>
+
+                {err && <p role="alert" className="text-[13px] text-red-500 font-medium">{err}</p>}
               </div>
 
-              {result && (
-                <div className="border-t border-border mt-8 pt-8">
-                  <p className="text-[11px] font-medium tracking-[0.1em] uppercase text-subtle mb-2">{result.label}</p>
-                  <p className="font-serif font-black text-[52px] tracking-[-2px] leading-none mb-1.5" style={{ color: result.owing ? '#E9A020' : '#0B5240' }}>
-                    {result.amount}
-                  </p>
-                  <p className="text-[12px] text-subtle mb-5">{result.sub}</p>
-                  <div className="h-[2.5px] bg-border rounded-sm overflow-hidden mb-7" aria-hidden="true">
-                    <div className="h-full bg-amber rounded-sm transition-all duration-700" style={{ width: `${result.pct}%` }} />
-                  </div>
-                  <a
-                    href={WA_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full h-[56px] bg-wa text-white rounded-full text-[14.5px] font-semibold flex items-center justify-center gap-2.5 mb-4 transition-all hover:bg-green-600 hover:-translate-y-0.5"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                      <circle cx="10" cy="10" r="9.5" fill="rgba(255,255,255,.14)" />
-                      <path d="M10 3C6.1 3 3 6.1 3 10c0 1.3.36 2.52.98 3.56L3 17l3.5-.96C7.5 16.67 8.73 17 10 17c3.9 0 7-3.1 7-7s-3.1-7-7-7z" fill="white" />
-                      <path d="M13.6 13.1c-.13.35-.84.7-1.16.73-.3.04-.6.16-2-.52-1.7-.8-2.8-2.53-2.88-2.65-.08-.12-.72-1.07-.72-2.04s.52-1.44.7-1.64c.18-.2.4-.24.53-.24h.38c.12 0 .27 0 .4.32.13.32.46 1.37.5 1.47.04.1.06.22 0 .35l-.36.48c-.1.12-.2.25-.08.48.12.23.52.94 1.1 1.46.58.52 1.08.74 1.3.83.22.1.3.08.4-.05l.37-.52c.1-.14.22-.12.36-.06.14.06.94.52 1.1.62.16.1.27.15.3.23.04.32-.08.9-.2 1.2z" fill="rgba(255,255,255,0.9)" />
+              <button onClick={run} className="btn-primary w-full" style={{ height: '56px', fontSize: '15px', borderRadius: '14px' }}>
+                Calculate my refund
+              </button>
+
+              <p className="text-[12px] text-subtle mt-4 leading-[1.6]">
+                Based on current ATO rates. This is an estimate only — your exact refund is confirmed after we review your documents.
+              </p>
+            </div>
+
+            {/* Right — result panel */}
+            <div>
+              {!result ? (
+                /* Empty state — clean, inviting */
+                <div className="rounded-2xl p-8 text-center" style={{ background: '#F7FBF9', border: '1.5px dashed #C8EAE0', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#EAF6F1' }}>
+                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+                      <circle cx="11" cy="11" r="8" stroke="#0B5240" strokeWidth="1.4"/>
+                      <path d="M11 7v4.5l3 2" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round"/>
                     </svg>
-                    Claim this refund on WhatsApp
-                  </a>
-                  <p className="text-[11px] text-subtle leading-[1.65]">Estimate based on standard ATO rates. Exact figure confirmed after document review. No personal data is stored.</p>
+                  </div>
+                  <p className="text-[15px] font-semibold text-ink mb-1.5">Your estimate will appear here</p>
+                  <p className="text-[13px] text-subtle leading-[1.6]">Fill in your income details and hit<br />calculate to see your refund</p>
+                </div>
+              ) : (
+                /* Result state — product-quality, clear hierarchy */
+                <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 8px 32px rgba(11,82,64,.1)' }}>
+                  {/* Result header */}
+                  <div className="p-8 pb-7" style={{ background: result.owing ? '#1A2822' : '#0B5240' }}>
+                    <p className="text-[11px] font-medium tracking-[0.1em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>{result.label}</p>
+                    <p className="font-serif font-black text-white mb-1.5" style={{ fontSize: '56px', lineHeight: 1, letterSpacing: '-0.04em' }}>
+                      {result.amount}
+                    </p>
+                    <p className="text-[13px]" style={{ color: 'rgba(255,255,255,0.48)' }}>{result.sub}</p>
+
+                    {/* Progress bar */}
+                    <div className="mt-6 h-[2px] rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.12)' }}>
+                      <div className="h-full rounded-full transition-all duration-700" style={{ width: `${result.pct}%`, background: result.owing ? '#E9A020' : 'rgba(255,255,255,0.7)' }} />
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <div className="p-6 bg-white">
+                    <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                      className="w-full h-[52px] rounded-xl flex items-center justify-center gap-2.5 font-semibold transition-all mb-4"
+                      style={{ background: '#22C55E', color: 'white', fontSize: '14.5px' }}>
+                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.2)"/>
+                        <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" stroke="white" strokeWidth="0.5"/>
+                        <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3.12.3.42 1.26.46 1.35.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
+                      </svg>
+                      Claim this refund on WhatsApp
+                    </a>
+                    <p className="text-[11.5px] text-subtle leading-[1.6] text-center">
+                      No personal data stored. Estimate only — exact figure confirmed after document review.
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
