@@ -10,33 +10,33 @@ const cols = [
 
 export function Footer() {
   return (
-    <footer style={{ background: '#0A0F0D' }}>
+    <footer style={{ background: '#ffffff', borderTop: '1px solid #E2EFE9' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-16 pb-10">
         <div className="grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-14 md:gap-10 mb-14">
           <div>
             <div className="flex items-center gap-2.5 mb-5">
               <svg width="28" height="28" viewBox="0 0 30 30" fill="none" aria-hidden="true">
-                <rect x="2" y="2" width="16" height="16" rx="4" stroke="#2FA880" strokeWidth="1.4"/>
-                <rect x="12" y="12" width="16" height="16" rx="4" fill="#16775C"/>
+                <rect x="2" y="2" width="16" height="16" rx="4" stroke="#0B5240" strokeWidth="1.4"/>
+                <rect x="12" y="12" width="16" height="16" rx="4" fill="#0B5240"/>
                 <line x1="2" y1="2" x2="12" y2="12" stroke="#E9A020" strokeWidth="1.4" strokeLinecap="round"/>
                 <circle cx="2" cy="2" r="2" fill="#E9A020"/>
               </svg>
-              <span className="font-serif font-bold text-white" style={{ fontSize: '15px' }}>Working Holiday Tax</span>
+              <span className="font-serif font-bold text-ink" style={{ fontSize: '15px' }}>Working Holiday Tax</span>
             </div>
-            <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)', maxWidth: '220px' }}>
+            <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '13px', color: '#587066', maxWidth: '220px' }}>
               Australian tax specialists for Working Holiday Visa holders.
             </p>
             <div className="space-y-2.5">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 transition-colors" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'rgba(47,168,128,0.9)'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)'}>
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" stroke="rgba(255,255,255,.2)" strokeWidth=".8"/></svg>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 transition-colors" style={{ fontSize: '13px', color: '#587066' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#0B5240'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#587066'}>
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" stroke="#CDE3DB" strokeWidth=".8"/></svg>
                 {PHONE_DISPLAY}
               </a>
-              <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 transition-colors" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'rgba(47,168,128,0.9)'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)'}>
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x=".5" y="2" width="12" height="9" rx="1.5" stroke="rgba(255,255,255,.2)" strokeWidth=".8"/></svg>
+              <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 transition-colors" style={{ fontSize: '13px', color: '#587066' }}
+                onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#0B5240'}
+                onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#587066'}>
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x=".5" y="2" width="12" height="9" rx="1.5" stroke="#CDE3DB" strokeWidth=".8"/></svg>
                 {EMAIL}
               </a>
             </div>
@@ -44,11 +44,11 @@ export function Footer() {
 
           {cols.map(col => (
             <nav key={col.title} aria-label={`${col.title} links`}>
-              <p className="font-medium tracking-[0.1em] uppercase mb-5" style={{ fontSize: '10px', color: 'rgba(255,255,255,0.2)' }}>{col.title}</p>
+              <p className="font-medium tracking-[0.1em] uppercase mb-5" style={{ fontSize: '10px', color: '#8AADA3' }}>{col.title}</p>
               {col.links.map(lk => (
-                <Link key={lk.href} href={lk.href} className="block mb-3 transition-colors" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.35)' }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.7)'}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = 'rgba(255,255,255,0.35)'}>
+                <Link key={lk.href} href={lk.href} className="block mb-3 transition-colors" style={{ fontSize: '13px', color: '#587066' }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = '#0B5240'}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#587066'}>
                   {lk.l}
                 </Link>
               ))}
@@ -56,12 +56,12 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '28px' }}>
-          <p style={{ fontSize: '12px', color: 'rgba(255,255,255,0.18)' }} suppressHydrationWarning>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2" style={{ borderTop: '1px solid #E2EFE9', paddingTop: '28px' }}>
+          <p style={{ fontSize: '12px', color: '#8AADA3' }} suppressHydrationWarning>
             © {new Date().getFullYear()} Working Holiday Tax. All rights reserved.
           </p>
-          <span className="inline-flex items-center gap-2" style={{ fontSize: '11px', color: 'rgba(255,255,255,0.18)' }}>
-            <span className="w-1 h-1 rounded-full bg-forest-400" aria-hidden="true" />
+          <span className="inline-flex items-center gap-2" style={{ fontSize: '11px', color: '#8AADA3' }}>
+            <span className="w-1 h-1 rounded-full bg-forest-300" aria-hidden="true" />
             Supervised by {AGENT_NAME} · ABN {AGENT_ABN} · TPB #{AGENT_TPB}
           </span>
         </div>

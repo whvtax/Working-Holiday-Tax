@@ -11,12 +11,9 @@
   }
   body {
     @apply bg-canvas text-body font-sans overflow-x-hidden;
-    cursor: none;
   }
-  @media (hover: none) { body { cursor: auto; } }
   a { @apply no-underline; color: inherit; }
-  button { font-family: inherit; cursor: none; }
-  @media (hover: none) { button { cursor: pointer; } }
+  button { font-family: inherit; }
 }
 
 @layer components {
@@ -29,27 +26,6 @@
     background-size: 200px; mix-blend-mode: overlay;
   }
 
-  /* ── Custom cursor ── */
-  #cursor {
-    position: fixed; z-index: 9999; pointer-events: none;
-    width: 10px; height: 10px; border-radius: 50%;
-    background: #0B5240; transform: translate(-50%,-50%);
-    transition: width .25s cubic-bezier(.16,1,.3,1), height .25s cubic-bezier(.16,1,.3,1), background .2s;
-    will-change: transform; display: none;
-  }
-  #cursor-ring {
-    position: fixed; z-index: 9998; pointer-events: none;
-    width: 36px; height: 36px; border-radius: 50%;
-    border: 1px solid rgba(11,82,64,.22); transform: translate(-50%,-50%);
-    transition: width .4s cubic-bezier(.16,1,.3,1), height .4s cubic-bezier(.16,1,.3,1), border-color .3s;
-    will-change: transform; display: none;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    #cursor, #cursor-ring { display: block; }
-  }
-  body.cursor-hover #cursor  { width: 6px; height: 6px; background: #E9A020; }
-  body.cursor-hover #cursor-ring { width: 48px; height: 48px; border-color: rgba(233,160,32,.3); }
-  body.cursor-click #cursor  { width: 14px; height: 14px; }
 
   /* ── Grid bg ── */
   .grid-bg {

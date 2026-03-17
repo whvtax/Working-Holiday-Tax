@@ -4,7 +4,6 @@ import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { StickyBar } from '@/components/layout/StickyBar'
-import { Cursor } from '@/components/ui/Cursor'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { SITE_URL } from '@/lib/constants'
 
@@ -56,7 +55,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <body>
         <div className="grain" aria-hidden="true" />
-        <Cursor />
         <Nav />
         <main>{children}</main>
         <Footer />

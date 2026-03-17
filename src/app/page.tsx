@@ -48,10 +48,10 @@ function Hero() {
     <section className="relative overflow-hidden pt-[68px] flex flex-col" style={{
       background: '#ffffff',
     }}>
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ backgroundImage: "linear-gradient(rgba(11,82,64,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(11,82,64,.04) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
 
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-12 lg:py-16 relative z-10">
+
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-14 lg:py-20 relative z-10">
         <div className="max-w-[640px]">
 
           {/* Eyebrow */}
@@ -66,9 +66,8 @@ function Hero() {
             lineHeight: 1.02,
             letterSpacing: '-0.03em',
           }}>
-            <span className="block">Have questions</span>
-            <span className="block italic font-normal" style={{ color: 'rgba(10,15,13,0.45)' }}>about tax in Australia?</span>
-            <span className="block">We&apos;ve got you covered.</span>
+            <span className="block">Have questions about tax in Australia?</span>
+            <span className="block" style={{ color: '#0B5240' }}>We&apos;ve got you covered.</span>
           </h1>
 
           {/* Sub */}
@@ -137,7 +136,7 @@ function Trust() {
   ]
 
   return (
-    <section className="py-16 lg:py-24 bg-white">
+    <section className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="max-w-3xl mx-auto text-center mb-12 reveal">
           <span className="section-label center">Why travellers trust us</span>
@@ -185,7 +184,7 @@ const SERVICES = [
 
 function Services() {
   return (
-    <section className="py-16 lg:py-24" style={{ background: '#EEF7F2' }}>
+    <section className="py-20 lg:py-28" style={{ background: '#EEF7F2' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="max-w-3xl mx-auto text-center mb-12 reveal">
           <span className="section-label center">What we help with</span>
@@ -227,34 +226,33 @@ function Process() {
   return (
     <section id="how-it-works" className="py-16 lg:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-20">
 
-          <div className="reveal">
-            <span className="section-label">How it works</span>
-            <h2 className="section-h2">Simple. Guided.<br /><em>No jargon.</em></h2>
-            <p className="body-lg mb-5">You don&apos;t need to understand Australian tax. We do — and we&apos;ll guide you through every step.</p>
-            <p className="text-[13.5px] leading-[1.7]" style={{ color: '#2FA880' }}>
-              <span className="font-semibold" style={{ color: '#0B5240' }}>Free to start.</span> We only charge once your work is ready to submit — and we tell you the fee upfront.
-            </p>
-          </div>
-
-          <div className="flex flex-col reveal delay-1">
-            {STEPS.map((s, i) => (
-              <div key={i} className="flex gap-7 py-7" style={{ borderTop: '1px solid #E2EFE9', borderBottom: i === STEPS.length - 1 ? '1px solid #E2EFE9' : 'none' }}>
-                <div className="flex-shrink-0 mt-0.5">
-                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500" style={{ background: '#EAF6F1' }}>
-                    {s.n}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-[15px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
-                  <p className="text-[14px] font-light text-muted leading-[1.7]">{s.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
+        {/* Heading — top, centered */}
+        <div className="max-w-2xl mx-auto text-center mb-14 reveal">
+          <span className="section-label center">How it works</span>
+          <h2 className="section-h2">Simple. Guided.<br /><em>No jargon.</em></h2>
+          <p className="body-lg">You don&apos;t need to understand Australian tax. We do — and we&apos;ll guide you through every step.</p>
         </div>
+
+        {/* 4 steps — horizontal row on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 reveal delay-1">
+          {STEPS.map((s, i) => (
+            <div key={i} className="flex flex-col px-6 py-8 lg:py-0"
+              style={{ borderLeft: i > 0 ? '1px solid #E2EFE9' : 'none', borderTop: '1px solid #E2EFE9' }}>
+              <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500 mb-5 flex-shrink-0" style={{ background: '#EAF6F1' }}>
+                {s.n}
+              </span>
+              <p className="text-[15px] font-semibold text-ink mb-2" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
+              <p className="text-[13.5px] font-light text-muted leading-[1.7]">{s.body}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Free to start note */}
+        <p className="text-center text-[13px] mt-10 reveal delay-2" style={{ color: '#2FA880' }}>
+          <span className="font-semibold" style={{ color: '#0B5240' }}>Free to start.</span> We only charge once your work is ready to submit — and we tell you the fee upfront.
+        </p>
+
       </div>
     </section>
   )
@@ -287,7 +285,7 @@ const TESTIMONIALS = [
 
 function Testimonials() {
   return (
-    <section className="py-16 lg:py-24" style={{ background: '#F7FBF9' }}>
+    <section className="py-20 lg:py-28" style={{ background: '#F7FBF9' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
         {/* Heading — button sits below, not floated right */}
