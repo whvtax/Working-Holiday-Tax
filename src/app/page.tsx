@@ -60,13 +60,13 @@ function Hero() {
             <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Working Holiday Visa Specialist</span>
           </div>
 
-          {/* Headline */}
+          {/* Headline — nowrap on line 1 prevents wrapping */}
           <h1 className="font-serif font-black text-ink mb-5" style={{
-            fontSize: 'clamp(22px, 3.2vw, 40px)',
-            lineHeight: 1.05,
-            letterSpacing: '-0.03em',
+            fontSize: 'clamp(20px, 2.8vw, 36px)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.025em',
           }}>
-            <span className="block">Have questions about tax in Australia?</span>
+            <span className="block whitespace-nowrap">Have questions about tax in Australia?</span>
             <span className="block" style={{ color: '#0B5240' }}>We&apos;ve got you covered.</span>
           </h1>
 
@@ -76,7 +76,7 @@ function Hero() {
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 items-start mb-7">
+          <div className="flex flex-col sm:flex-row gap-3 items-start mb-5">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '48px', padding: '0 24px', fontSize: '14px' }}>
               Ask us anything — free
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -86,15 +86,16 @@ function Hero() {
             </Link>
           </div>
 
-          <p className="text-[11px] tracking-[0.04em]" style={{ color: 'rgba(10,15,13,0.38)' }}>
-            Free to start · No commitment · 100% online
+          {/* Trust line */}
+          <p className="text-[11.5px] leading-[1.6] mb-10" style={{ color: 'rgba(10,15,13,0.45)' }}>
+            Registered tax agent&nbsp;•&nbsp;ATO compliant&nbsp;•&nbsp;Trusted by 1,200+ WHV travellers
           </p>
         </div>
       </div>
 
       {/* Stats bar */}
       <div className="relative z-10" style={{ borderTop: '1px solid rgba(10,15,13,0.08)' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-5">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6">
           <div className="grid grid-cols-3">
             {[
               { n: '$2.4M+', l: 'Returned to clients' },
@@ -103,8 +104,8 @@ function Hero() {
             ].map((s, i) => (
               <div key={i} className="text-center relative">
                 {i > 0 && <span className="absolute left-0 top-[15%] bottom-[15%] w-px" style={{ background: 'rgba(10,15,13,0.08)' }} aria-hidden="true" />}
-                <span className="block font-serif font-black text-ink mb-0.5" style={{ fontSize: 'clamp(16px,2.4vw,20px)', letterSpacing: '-0.03em' }}>{s.n}</span>
-                <span className="block text-[11px] tracking-[0.04em]" style={{ color: 'rgba(10,15,13,0.55)' }}>{s.l}</span>
+                <span className="block font-serif font-black text-ink mb-1" style={{ fontSize: 'clamp(22px,3vw,28px)', letterSpacing: '-0.03em' }}>{s.n}</span>
+                <span className="block text-[11.5px] tracking-[0.03em]" style={{ color: 'rgba(10,15,13,0.58)' }}>{s.l}</span>
               </div>
             ))}
           </div>
