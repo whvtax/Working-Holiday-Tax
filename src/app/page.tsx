@@ -49,10 +49,10 @@ function Hero() {
       background: '#ffffff',
     }}>
 
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full grid grid-cols-1 lg:grid-cols-[1fr_auto] items-center gap-10 lg:gap-16 py-10 lg:py-14 relative z-10">
 
-
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-10 lg:py-14 relative z-10">
-        <div className="max-w-[650px]">
+        {/* ── Left copy ── */}
+        <div className="max-w-[600px]">
 
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-3 mb-6">
@@ -87,15 +87,45 @@ function Hero() {
           </div>
 
           {/* Trust line */}
-          <p className="text-[11.5px] leading-[1.6] mb-10" style={{ color: 'rgba(10,15,13,0.45)' }}>
+          <p className="text-[11.5px] leading-[1.6]" style={{ color: 'rgba(10,15,13,0.45)' }}>
             Registered tax agent&nbsp;•&nbsp;ATO compliant&nbsp;•&nbsp;Trusted by 1,200+ WHV travellers
           </p>
         </div>
+
+        {/* ── Right: minimal floating service checklist ── */}
+        <div className="hidden lg:block flex-shrink-0 w-[240px]">
+          <div className="rounded-2xl p-6" style={{ background: '#F7FCF9', border: '1px solid #C8EAE0' }}>
+            <p className="font-medium text-ink mb-4" style={{ fontSize: '12px', letterSpacing: '0.06em' }}>We help with</p>
+            <div className="space-y-3">
+              {[
+                'TFN application',
+                'Tax return lodgement',
+                'Super withdrawal (DASP)',
+                'ABN registration',
+                'Tax advice for WHV',
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-2.5">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="flex-shrink-0">
+                    <circle cx="7" cy="7" r="6.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
+                    <path d="M4.5 7l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span style={{ fontSize: '13px', color: 'rgba(10,15,13,0.65)', lineHeight: 1.4 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 pt-4" style={{ borderTop: '1px solid #C8EAE0' }}>
+              <p style={{ fontSize: '11px', color: 'rgba(10,15,13,0.38)', lineHeight: 1.5 }}>
+                Registered tax agent<br />TPB #26233096
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      {/* 2x2 Trust cards */}
-      <div className="relative z-10" style={{ borderTop: '1px solid rgba(10,15,13,0.08)' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6">
+      {/* Trust cards — no divider line */}
+      <div className="relative z-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pb-8">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { n: '4.9★',   l: 'Google rating' },
