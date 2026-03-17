@@ -24,7 +24,7 @@ export function StickyBar() {
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="flex-1 flex items-center justify-center font-semibold transition-colors"
             style={{ height: '52px', background: '#E9A020', color: '#1A2822', borderRadius: '13px', fontSize: '14px' }}>
-            Check my tax — it&apos;s free
+            Free Eligibility Check
           </a>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             aria-label="Contact us on WhatsApp"

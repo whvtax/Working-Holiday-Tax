@@ -5,7 +5,7 @@ import { CtaBand } from '@/components/ui/CtaBand'
 
 export const metadata: Metadata = {
   title: 'Working Holiday Tax — Australian Tax Help for WHV Holders',
-  description: 'TFN, tax return, super withdrawal and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Ask us anything — free.',
+  description: 'TFN, tax return, super withdrawal and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Ask us anything - free.',
 }
 
 // ── ICONS ──────────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ function Hero() {
       background: '#ffffff',
     }}>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full grid grid-cols-1 lg:grid-cols-[1fr_auto] items-center gap-10 lg:gap-16 py-10 lg:py-14 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-10 lg:py-14 relative z-10">
 
         {/* ── Left copy ── */}
         <div className="max-w-[600px]">
@@ -72,13 +72,13 @@ function Hero() {
 
           {/* Sub */}
           <p className="font-light leading-[1.7] mb-9" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '420px' }}>
-            From your first TFN application to your final super withdrawal — we guide Working Holiday Visa travellers through every step of tax in Australia.
+            From your first TFN application to your final super withdrawal - we guide Working Holiday Visa travellers through every step of tax in Australia.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-3 items-start mb-5">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '48px', padding: '0 24px', fontSize: '14px' }}>
-              Ask us anything — free
+              Ask us anything - free
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
             <Link href="#how-it-works" className="btn-ghost-dark" style={{ height: '48px', padding: '0 20px', fontSize: '14px' }}>
@@ -88,38 +88,10 @@ function Hero() {
 
           {/* Trust line */}
           <p className="text-[11.5px] leading-[1.6]" style={{ color: 'rgba(10,15,13,0.45)' }}>
-            Registered tax agent&nbsp;•&nbsp;ATO compliant&nbsp;•&nbsp;Trusted by 1,200+ WHV travellers
+            Under the supervision of a registered tax agent approved by the ATO
           </p>
         </div>
 
-        {/* ── Right: minimal floating service checklist ── */}
-        <div className="hidden lg:block flex-shrink-0 w-[240px]">
-          <div className="rounded-2xl p-6" style={{ background: '#F7FCF9', border: '1px solid #C8EAE0' }}>
-            <p className="font-medium text-ink mb-4" style={{ fontSize: '12px', letterSpacing: '0.06em' }}>We help with</p>
-            <div className="space-y-3">
-              {[
-                'TFN application',
-                'Tax return lodgement',
-                'Super withdrawal (DASP)',
-                'ABN registration',
-                'Tax advice for WHV',
-              ].map((item, i) => (
-                <div key={i} className="flex items-center gap-2.5">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="flex-shrink-0">
-                    <circle cx="7" cy="7" r="6.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                    <path d="M4.5 7l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  <span style={{ fontSize: '13px', color: 'rgba(10,15,13,0.65)', lineHeight: 1.4 }}>{item}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 pt-4" style={{ borderTop: '1px solid #C8EAE0' }}>
-              <p style={{ fontSize: '11px', color: 'rgba(10,15,13,0.38)', lineHeight: 1.5 }}>
-                Registered tax agent<br />TPB #26233096
-              </p>
-            </div>
-          </div>
-        </div>
 
       </div>
 
@@ -131,7 +103,7 @@ function Hero() {
               { n: '4.9★',   l: 'Google rating' },
               { n: '1,200+', l: 'WHV clients helped' },
               { n: '<1 hr',  l: 'WhatsApp response' },
-              { n: '100%',   l: '100% online' },
+              { n: '100%',   l: 'Online service' },
             ].map((c, i) => (
               <div key={i} className="rounded-2xl text-center py-4 px-3 transition-shadow" style={{
                 background: '#ffffff',
@@ -399,7 +371,7 @@ export default function HomePage() {
         eyebrow="Need help?"
         heading="Need help with tax"
         headingEm="in Australia?"
-        sub="Ask us anything — free. Whether it's a TFN, a tax return, your super, or just a question you don't know who else to ask."
+        sub="Ask us anything - free. Whether it's a TFN, a tax return, your super, or just a question you don't know who else to ask."
         primaryLabel="Talk to us on WhatsApp"
         clipTop
       />

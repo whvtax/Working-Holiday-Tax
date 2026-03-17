@@ -12,7 +12,7 @@ interface Props {
   clipTop?: boolean
 }
 
-export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLabel = 'Check my tax — free', secondaryLabel, secondaryHref = '/calculator', clipTop = false }: Props) {
+export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLabel = 'Free Eligibility Check', secondaryLabel, secondaryHref = '/calculator', clipTop = false }: Props) {
   return (
     <section className={`relative overflow-hidden py-24 grid-bg ${''}`}
       style={{ background: '#1A5C44' }}>

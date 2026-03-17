@@ -60,7 +60,7 @@ export function Nav() {
                 style={{ height: '40px', padding: '0 18px', background: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(11,82,64,0.18)' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#16775C' }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0B5240' }}>
-                Check my tax — free
+                Free Eligibility Check
               </a>
             </div>
 
@@ -84,7 +84,7 @@ export function Nav() {
         ))}
         <div className="mt-8">
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '56px', borderRadius: '14px' }}>
-            Check my tax — free →
+            Free Eligibility Check →
           </a>
         </div>
       </div>

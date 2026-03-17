@@ -93,7 +93,7 @@ export default function TaxReturnPage() {
         </div>
       </section>
 
-      <CtaBand eyebrow="Ready?" heading="Get your" headingEm="refund back." sub="Free eligibility check. We tell you exactly what you are entitled to before we start." primaryLabel="Check my tax — free" secondaryLabel="Estimate first" secondaryHref="/calculator" clipTop />
+      <CtaBand eyebrow="Ready?" heading="Get your" headingEm="refund back." sub="Free eligibility check. We tell you exactly what you are entitled to before we start." primaryLabel="Free Eligibility Check" secondaryLabel="Estimate first" secondaryHref="/calculator" clipTop />
     </>
   )
 }
