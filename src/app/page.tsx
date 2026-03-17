@@ -45,33 +45,37 @@ const IconStar = () => (
 // ── HERO ───────────────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section className="relative bg-ink-2 overflow-hidden pt-[68px] flex flex-col">
+    <section className="relative overflow-hidden pt-[68px] flex flex-col" style={{
+      background: 'linear-gradient(135deg, #0f1117 0%, #161b27 50%, #111827 100%)',
+    }}>
       <div className="absolute inset-0 pointer-events-none grid-bg" aria-hidden="true" />
+      {/* Subtle warm accent — top right */}
       <div className="absolute pointer-events-none" aria-hidden="true" style={{
-        top: '-20%', right: '-15%', width: '65%', paddingBottom: '65%',
+        top: '-10%', right: '-10%', width: '55%', paddingBottom: '55%',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(11,82,64,.42) 0%, rgba(11,82,64,.08) 50%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(99,102,241,.08) 0%, rgba(59,130,246,.04) 40%, transparent 70%)',
       }} />
+      {/* Subtle green echo — bottom left, tying to brand */}
       <div className="absolute pointer-events-none" aria-hidden="true" style={{
-        bottom: '-15%', left: '-8%', width: '40%', paddingBottom: '40%',
+        bottom: '-10%', left: '-5%', width: '35%', paddingBottom: '35%',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(11,82,64,.15) 0%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(11,82,64,.18) 0%, transparent 65%)',
       }} />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 w-full flex items-center py-14 lg:py-20 relative z-10">
-        <div className="max-w-[680px]">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-12 lg:py-16 relative z-10">
+        <div className="max-w-[640px]">
 
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2.5 mb-7">
+          <div className="inline-flex items-center gap-2.5 mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-300 animate-pulse-dot" aria-hidden="true" />
             <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">Working Holiday Visa Specialist</span>
           </div>
 
           {/* Headline */}
-          <h1 className="font-serif font-black text-white mb-7" style={{
-            fontSize: 'clamp(44px, 7.5vw, 82px)',
-            lineHeight: 1.0,
-            letterSpacing: '-0.035em',
+          <h1 className="font-serif font-black text-white mb-6" style={{
+            fontSize: 'clamp(38px, 6vw, 68px)',
+            lineHeight: 1.02,
+            letterSpacing: '-0.03em',
           }}>
             <span className="block">Have questions</span>
             <span className="block italic font-normal" style={{ color: 'rgba(255,255,255,0.38)' }}>about tax in Australia?</span>
@@ -79,22 +83,22 @@ function Hero() {
           </h1>
 
           {/* Sub */}
-          <p className="text-[17px] font-light leading-[1.75] mb-10" style={{ color: 'rgba(255,255,255,0.52)', maxWidth: '480px' }}>
+          <p className="text-[16px] font-light leading-[1.75] mb-9" style={{ color: 'rgba(255,255,255,0.50)', maxWidth: '460px' }}>
             From your first TFN application to your final super withdrawal — we guide Working Holiday Visa travellers through every step of tax in Australia.
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 items-start mb-8">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '56px', padding: '0 32px', fontSize: '15px' }}>
+          <div className="flex flex-col sm:flex-row gap-3 items-start mb-7">
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px' }}>
               Ask us anything — free
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
-            <Link href="/calculator" className="btn-ghost-light" style={{ height: '56px', padding: '0 28px', fontSize: '15px' }}>
-              Estimate my refund
+            <Link href="#how-it-works" className="btn-ghost-light" style={{ height: '52px', padding: '0 24px', fontSize: '14.5px' }}>
+              How it works
             </Link>
           </div>
 
-          <p className="text-[12px] tracking-[0.04em]" style={{ color: 'rgba(255,255,255,0.22)' }}>
+          <p className="text-[11.5px] tracking-[0.04em]" style={{ color: 'rgba(255,255,255,0.20)' }}>
             Free to start · No commitment · 100% online
           </p>
         </div>
@@ -102,16 +106,16 @@ function Hero() {
 
       {/* Stats bar */}
       <div className="relative z-10" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 py-6">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-5">
           <div className="grid grid-cols-3">
             {[
-              { n: '$2.4M+', l: 'Tax sorted for clients' },
+              { n: '$2.4M+', l: 'Returned to clients' },
               { n: '1,200+', l: 'WHV holders helped' },
               { n: '5.0 ★',  l: 'Client satisfaction' },
             ].map((s, i) => (
               <div key={i} className="text-center relative">
                 {i > 0 && <span className="absolute left-0 top-[15%] bottom-[15%] w-px" style={{ background: 'rgba(255,255,255,0.06)' }} aria-hidden="true" />}
-                <span className="block font-serif font-black text-white mb-1" style={{ fontSize: 'clamp(20px,3.5vw,28px)', letterSpacing: '-0.03em' }}>{s.n}</span>
+                <span className="block font-serif font-black text-white mb-0.5" style={{ fontSize: 'clamp(18px,3vw,24px)', letterSpacing: '-0.03em' }}>{s.n}</span>
                 <span className="block text-[11px] tracking-[0.04em]" style={{ color: 'rgba(255,255,255,0.28)' }}>{s.l}</span>
               </div>
             ))}
@@ -144,17 +148,17 @@ function Trust() {
   ]
 
   return (
-    <section className="py-28 lg:py-36 bg-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="max-w-2xl mx-auto text-center mb-16 reveal">
+    <section className="py-16 lg:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+        <div className="max-w-3xl mx-auto text-center mb-12 reveal">
           <span className="section-label center">Why travellers trust us</span>
           <h2 className="section-h2">Tax specialists who<br /><em>understand your situation.</em></h2>
           <p className="body-lg">We work exclusively with Working Holiday Visa holders. We know the rules, we know the edge cases, and we know what travellers like you actually need.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 reveal delay-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 reveal delay-2">
           {items.map((item, i) => (
-            <div key={i}>
+            <div key={i} className="pt-6 border-t border-border">
               <div className="w-8 h-px bg-amber mb-6" aria-hidden="true" />
               <h3 className="text-[15px] font-semibold text-ink mb-3" style={{ letterSpacing: '-0.01em' }}>{item.title}</h3>
               <p className="text-[13.5px] font-light text-muted leading-[1.7]">{item.body}</p>
@@ -192,18 +196,18 @@ const SERVICES = [
 
 function Services() {
   return (
-    <section className="py-28 lg:py-36" style={{ background: '#EEF7F2' }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="max-w-2xl mx-auto text-center mb-16 reveal">
+    <section className="py-16 lg:py-24" style={{ background: '#EEF7F2' }}>
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+        <div className="max-w-3xl mx-auto text-center mb-12 reveal">
           <span className="section-label center">What we help with</span>
           <h2 className="section-h2">Everything WHV travellers<br /><em>need for tax in Australia.</em></h2>
           <p className="body-lg">We cover the full tax journey — from the day you arrive to the day you leave.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-forest-200/40 rounded-2xl overflow-hidden reveal delay-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal delay-2">
           {SERVICES.map((s) => (
             <Link key={s.href} href={s.href}
-              className="group bg-white/80 p-8 flex flex-col transition-all hover:bg-white">
+              className="group bg-white rounded-2xl p-7 flex flex-col transition-all hover:shadow-md" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
               <span className="text-[11px] font-medium tracking-[0.1em] uppercase text-subtle mb-7">{s.n}</span>
               <span className="w-10 h-10 rounded-xl flex items-center justify-center mb-5 text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white">
                 {s.icon}
@@ -232,32 +236,35 @@ const STEPS = [
 
 function Process() {
   return (
-    <section className="py-28 lg:py-36 bg-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
+    <section id="how-it-works" className="py-16 lg:py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.6fr] gap-12 lg:gap-20">
 
-        <div className="max-w-xl mb-14 reveal">
-          <span className="section-label">How it works</span>
-          <h2 className="section-h2">Simple. Guided.<br /><em>No jargon.</em></h2>
-          <p className="body-lg mb-5">You don&apos;t need to understand Australian tax. We do — and we&apos;ll guide you through every step.</p>
-          <p className="text-[13.5px] leading-[1.7]" style={{ color: '#2FA880' }}>
-            <span className="font-semibold" style={{ color: '#0B5240' }}>Free to start.</span> We only charge once your work is ready to submit — and we tell you the fee upfront.
-          </p>
-        </div>
+          <div className="reveal">
+            <span className="section-label">How it works</span>
+            <h2 className="section-h2">Simple. Guided.<br /><em>No jargon.</em></h2>
+            <p className="body-lg mb-5">You don&apos;t need to understand Australian tax. We do — and we&apos;ll guide you through every step.</p>
+            <p className="text-[13.5px] leading-[1.7]" style={{ color: '#2FA880' }}>
+              <span className="font-semibold" style={{ color: '#0B5240' }}>Free to start.</span> We only charge once your work is ready to submit — and we tell you the fee upfront.
+            </p>
+          </div>
 
-        <div className="flex flex-col reveal delay-2">
-          {STEPS.map((s, i) => (
-            <div key={i} className="flex gap-7 py-8" style={{ borderTop: '1px solid #E2EFE9', borderBottom: i === STEPS.length - 1 ? '1px solid #E2EFE9' : 'none' }}>
-              <div className="flex-shrink-0 mt-0.5">
-                <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500" style={{ background: '#EAF6F1' }}>
-                  {s.n}
-                </span>
+          <div className="flex flex-col reveal delay-1">
+            {STEPS.map((s, i) => (
+              <div key={i} className="flex gap-7 py-7" style={{ borderTop: '1px solid #E2EFE9', borderBottom: i === STEPS.length - 1 ? '1px solid #E2EFE9' : 'none' }}>
+                <div className="flex-shrink-0 mt-0.5">
+                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500" style={{ background: '#EAF6F1' }}>
+                    {s.n}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-[15px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
+                  <p className="text-[14px] font-light text-muted leading-[1.7]">{s.body}</p>
+                </div>
               </div>
-              <div className="max-w-2xl">
-                <p className="text-[15px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
-                <p className="text-[14px] font-light text-muted leading-[1.7]">{s.body}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
         </div>
       </div>
     </section>
@@ -291,13 +298,13 @@ const TESTIMONIALS = [
 
 function Testimonials() {
   return (
-    <section className="py-28 lg:py-36" style={{ background: '#F7FBF9' }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
+    <section className="py-16 lg:py-24" style={{ background: '#F7FBF9' }}>
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
         {/* Heading — button sits below, not floated right */}
-        <div className="mb-14 reveal">
-          <span className="section-label">Client stories</span>
-          <h2 className="section-h2 mb-4">Travellers we&apos;ve helped.</h2>
+        <div className="text-center mb-12 reveal">
+          <span className="section-label center">Client stories</span>
+          <h2 className="section-h2 mb-5">Travellers we&apos;ve helped.</h2>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark inline-flex">
             Talk to us →
           </a>
