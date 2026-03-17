@@ -190,25 +190,27 @@ const SERVICES = [
 
 function Services() {
   return (
-    <section className="py-20 lg:py-28" style={{ background: '#EEF7F2' }}>
+    <section className="pt-10 pb-16 lg:pt-12 lg:pb-20" style={{ background: '#EEF7F2' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-        <div className="max-w-3xl mx-auto text-center mb-12 reveal">
+        <div className="max-w-2xl mx-auto text-center mb-8 reveal">
           <span className="section-label center">What we help with</span>
-          <h2 className="section-h2">Everything WHV travellers<br /><em>need for tax in Australia.</em></h2>
-          <p className="body-lg">We cover the full tax journey — from the day you arrive to the day you leave.</p>
+          <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px, 3.2vw, 36px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            Everything WHV travellers<br /><em className="not-italic font-normal text-forest-400">need for tax in Australia.</em>
+          </h2>
+          <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '14.5px' }}>We cover the full tax journey — from the day you arrive to the day you leave.</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal delay-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 reveal delay-2">
           {SERVICES.map((s) => (
             <Link key={s.href} href={s.href}
-              className="group bg-white rounded-2xl p-7 flex flex-col transition-all hover:shadow-md" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-              <span className="text-[11px] font-medium tracking-[0.1em] uppercase text-subtle mb-7">{s.n}</span>
-              <span className="w-10 h-10 rounded-xl flex items-center justify-center mb-5 text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white">
+              className="group bg-white rounded-2xl p-5 flex flex-col transition-all hover:shadow-md" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              <span className="text-[11px] font-medium tracking-[0.1em] uppercase text-subtle mb-5">{s.n}</span>
+              <span className="w-9 h-9 rounded-xl flex items-center justify-center mb-4 text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white">
                 {s.icon}
               </span>
-              <h3 className="text-[15px] font-semibold text-ink mb-2.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</h3>
-              <p className="text-[13.5px] font-light text-muted leading-[1.7] flex-1 mb-5">{s.desc}</p>
-              <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-forest-500 transition-all group-hover:gap-3">
+              <h3 className="text-[14px] font-semibold text-ink mb-2" style={{ letterSpacing: '-0.01em' }}>{s.title}</h3>
+              <p className="text-[13px] font-light text-muted leading-[1.7] flex-1 mb-4">{s.desc}</p>
+              <span className="flex items-center gap-1.5 text-[12px] font-medium text-forest-500 transition-all group-hover:gap-3">
                 Learn more
                 <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </span>
