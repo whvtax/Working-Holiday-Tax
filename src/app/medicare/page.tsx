@@ -43,46 +43,46 @@ export default function MedicarePage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-12 lg:py-16">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6 lg:py-12">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-5" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">Medicare</span>
           </nav>
           <div className="max-w-2xl mx-auto text-center">
-            <div className="inline-flex items-center gap-3 mb-6">
+            <div className="inline-flex items-center gap-3 mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Guide</span>
+              <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Guide</span>
             </div>
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(28px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(20px,3vw,32px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               Medicare in Australia —<br /><span style={{ color: '#0B5240' }}>what you need to know.</span>
             </h1>
-            <p className="font-semibold text-ink mb-3" style={{ fontSize: '16px', letterSpacing: '-0.01em' }}>
+            <p className="font-semibold text-ink mb-3" style={{ fontSize: '14.5px', letterSpacing: '-0.01em' }}>
               Not everyone is eligible. We help you understand where you stand.
             </p>
-            <p className="font-light leading-[1.75] mb-8 mx-auto" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.55)', maxWidth: '440px' }}>
+            <p className="font-light leading-[1.75] mb-8 mx-auto" style={{ fontSize: '13.5px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
               Medicare is Australia&apos;s public health system. Whether it applies to you depends on your visa type and country of origin.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-5">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '48px', padding: '0 24px', fontSize: '14px' }}>
-                Ask us on WhatsApp
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center justify-center mb-4">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}>
+                Get started on WhatsApp
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
             </div>
-            <p className="text-[11.5px]" style={{ color: 'rgba(10,15,13,0.38)' }}>
-              Under the supervision of a registered tax agent approved by the ATO
+            <p className="text-[10.5px] sm:text-[11.5px]" style={{ color: 'rgba(10,15,13,0.38)' }}>
+              Registered tax agent&nbsp;•&nbsp;ATO supervised&nbsp;•&nbsp;Free to ask
             </p>
           </div>
         </div>
       </section>
 
       {/* ── WHAT IS MEDICARE ─────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-6 lg:gap-20 items-start">
             <div className="reveal">
               <span className="section-label">What is Medicare?</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(22px,3vw,34px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-1.5 mb-3" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 Australia&apos;s public<br /><em className="not-italic font-normal text-forest-400">health system.</em>
               </h2>
               <div className="prose-wht max-w-[480px]">
@@ -100,9 +100,9 @@ export default function MedicarePage() {
                 { title: 'The Medicare levy', body: '2% of your taxable income. Only paid by people who are eligible for Medicare.' },
                 { title: 'If not eligible',   body: 'You can apply for a Medicare levy exemption when lodging your tax return. This means you will not be charged the levy.' },
               ].map((c, i) => (
-                <div key={i} className="bg-white rounded-xl px-5 py-4" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
-                  <p className="text-[13.5px] font-semibold text-ink mb-1">{c.title}</p>
-                  <p className="text-[13px] font-light text-muted leading-[1.7]">{c.body}</p>
+                <div key={i} className="bg-white rounded-xl px-4 py-3" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
+                  <p className="text-[13px] font-semibold text-ink mb-0.5">{c.title}</p>
+                  <p className="text-[12.5px] font-light text-muted leading-[1.65]">{c.body}</p>
                 </div>
               ))}
             </div>
@@ -111,13 +111,13 @@ export default function MedicarePage() {
       </section>
 
       {/* ── WHO IS ELIGIBLE ──────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-7 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-20">
 
             <div className="reveal">
               <span className="section-label">Eligibility</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(20px,2.8vw,30px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-1.5 mb-3" style={{ fontSize: 'clamp(17px,2.1vw,24px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 Who can access<br /><em className="not-italic font-normal text-forest-400">Medicare?</em>
               </h2>
               <div className="prose-wht max-w-[480px]">
@@ -138,7 +138,7 @@ export default function MedicarePage() {
 
             <div className="reveal delay-1">
               <span className="section-label">Working Holiday Visa holders</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(20px,2.8vw,30px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-1.5 mb-3" style={{ fontSize: 'clamp(17px,2.1vw,24px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 What this means<br /><em className="not-italic font-normal text-forest-400">for you.</em>
               </h2>
               <div className="space-y-0">
@@ -156,8 +156,8 @@ export default function MedicarePage() {
                     body: 'We can help you determine your status and apply the correct treatment when we prepare your tax return.',
                   },
                 ].map((item, i) => (
-                  <div key={i} className="py-5" style={{ borderTop: '1px solid #E2EFE9' }}>
-                    <p className="text-[14px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
+                  <div key={i} className="py-4" style={{ borderTop: '1px solid #E2EFE9' }}>
+                    <p className="text-[13px] font-semibold text-ink mb-0.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
                     <p className="text-[13px] font-light text-muted leading-[1.75]">{item.body}</p>
                   </div>
                 ))}
@@ -169,11 +169,11 @@ export default function MedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mx-auto text-center mb-10 reveal">
+          <div className="max-w-xl mx-auto text-center mb-7 reveal">
             <span className="section-label center">Common confusion</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(17px,2.1vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Questions we hear<br /><em className="not-italic font-normal text-forest-400">all the time.</em>
             </h2>
           </div>
@@ -196,7 +196,7 @@ export default function MedicarePage() {
                 a: 'Travel insurance and Medicare are separate. If you are not eligible for Medicare, travel insurance is the main way to cover medical costs in Australia.',
               },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-xl p-6" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
+              <div key={i} className="bg-white rounded-xl p-5" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
                 <p className="text-[13.5px] font-semibold text-ink mb-2 italic">{item.q}</p>
                 <p className="text-[13px] font-light text-muted leading-[1.7]">{item.a}</p>
               </div>
@@ -206,11 +206,11 @@ export default function MedicarePage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-7 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-2xl mb-10 reveal">
+          <div className="max-w-2xl mb-7 reveal">
             <span className="section-label">Common questions</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-1" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-1" style={{ fontSize: 'clamp(17px,2.1vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Medicare questions, answered.
             </h2>
           </div>
@@ -226,7 +226,7 @@ export default function MedicarePage() {
         heading="Not sure about your"
         headingEm="Medicare status?"
         sub="We determine your Medicare eligibility as part of your tax return and apply the correct treatment automatically."
-        primaryLabel="Ask us on WhatsApp - free"
+        primaryLabel="Get started on WhatsApp"
       />
     </>
   )

@@ -25,19 +25,19 @@ export default function ClientAgreementPage() {
         sub="Last updated: July 1, 2024. By using our services you agree to these terms."
         breadcrumbs={[{label:'Home',href:'/'},{label:'Client Agreement'}]} />
 
-      <section className="py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
-            <div className="bg-forest-100 border border-forest-200 rounded-[16px] p-7 mb-12 reveal">
-              <p className="text-[14px] font-light text-body leading-[1.75]">
+            <div className="rounded-xl px-5 py-4 mb-8" style={{ background: "#EAF6F1", border: "1px solid #C8EAE0" }}>
+              <p className="text-[13px] font-light text-body leading-[1.75]">
                 Working Holiday Tax operates under the supervision of a registered tax agent,{' '}
                 <strong className="font-semibold text-ink">{AGENT_NAME} (ABN: {AGENT_ABN}), Tax Agent Number {AGENT_TPB}</strong>.
               </p>
             </div>
             {sections.map((s,i) => (
-              <div key={i} className={`mb-10 reveal delay-${(i%4)+1}`}>
-                <h2 className="font-serif text-[22px] font-bold text-ink mb-3">{s.title}</h2>
-                <p className="text-[15px] font-light text-body leading-[1.8]">{s.body}</p>
+              <div key={i} className={`mb-7 reveal delay-${(i%4)+1}`}>
+                <h2 className="font-serif text-[16px] font-bold text-ink mb-2">{s.title}</h2>
+                <p className="text-[13px] font-light text-body leading-[1.75]">{s.body}</p>
               </div>
             ))}
           </div>

@@ -40,10 +40,16 @@
   .clip-diagonal-sm { clip-path: polygon(0 2.5%, 100% 0, 100% 100%, 0 100%); }
 
   /* ── Scroll reveal ── */
-  .reveal       { opacity: 0; transform: translateY(24px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
-  .reveal-left  { opacity: 0; transform: translateX(-20px); transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
-  .reveal-right { opacity: 0; transform: translateX(20px);  transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
+  .reveal       { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal-left  { opacity: 0; transform: translateX(-20px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  .reveal-right { opacity: 0; transform: translateX(20px);  transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
   .reveal.visible, .reveal-left.visible, .reveal-right.visible { opacity: 1; transform: none; }
+  /* Fallback: if JS fails or is slow, force visible after 2s so page is never blank */
+  @keyframes reveal-fallback { to { opacity: 1; transform: none; } }
+  .reveal, .reveal-left, .reveal-right { animation: reveal-fallback 0s 2s forwards; }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; animation: none; transition: none; }
+  }
   .delay-1 { transition-delay: .08s; }
   .delay-2 { transition-delay: .16s; }
   .delay-3 { transition-delay: .24s; }
@@ -190,3 +196,56 @@
     transform: translateY(-1px);
   }
 }
+
+  /* ── MOBILE OPTIMISATIONS (< 640px) ─────────────────────────────────────── */
+  @media (max-width: 639px) {
+
+    /* ── Hero ── */
+    .hero-section { padding-top: 0 !important; }
+
+    /* Remove whitespace-nowrap on mobile so headline wraps gracefully */
+    .hero-h1-line1 { white-space: normal !important; }
+
+    /* Trust cards: reduce padding and number size */
+    .trust-card-num { font-size: 16px !important; }
+    .trust-card     { padding: 10px 8px !important; }
+
+    /* ── Buttons: full-width on mobile ── */
+    .btn-primary,
+    .btn-ghost-dark,
+    .btn-ghost-light {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ── Section padding: tighter on mobile ── */
+    section { padding-top: 36px !important; padding-bottom: 36px !important; }
+
+    /* ── Two-col grids: collapse gap ── */
+    .mobile-gap-reduce { gap: 24px !important; }
+
+    /* ── Card padding: tighter on mobile ── */
+    .mobile-card-tight { padding: 14px !important; }
+
+    /* ── Info callout boxes ── */
+    .info-block { padding-left: 14px !important; }
+
+    /* ── Prose text: slightly larger for reading comfort ── */
+    .prose-wht p { font-size: 14px !important; line-height: 1.75 !important; }
+
+    /* ── Section label: tighter ── */
+    .section-label { margin-bottom: 4px !important; }
+
+    /* ── CtaBand: reduce padding ── */
+    .ctaband-inner { padding-top: 36px !important; padding-bottom: 44px !important; }
+
+    /* ── Testimonial cards: single col already, just tighten ── */
+    .testimonial-card { padding: 18px !important; }
+
+    /* ── Footer columns: tighter ── */
+    .footer-inner { padding-top: 28px !important; padding-bottom: 20px !important; }
+    .footer-cols  { gap: 24px !important; }
+
+    /* ── FAQ accordion: larger touch targets ── */
+    .accordion-item button { min-height: 52px; padding-top: 14px !important; padding-bottom: 14px !important; }
+  }

@@ -6,7 +6,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'ABN Registration for Working Holiday Visa Holders',
-  description: 'Register an Australian Business Number as a Working Holiday Visa holder. Simple guidance for contractors and freelancers.',
+  description: 'Register your ABN correctly as a Working Holiday Visa contractor. We handle registration and tax obligations — simple, fast, online.',
 }
 
 const faqs = [
@@ -79,37 +79,37 @@ export default function ABNPage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-12 lg:py-16">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6 lg:py-12">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-5" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">ABN Registration</span>
           </nav>
 
           <div className="max-w-2xl mx-auto text-center">
-            <div className="inline-flex items-center gap-3 mb-6">
+            <div className="inline-flex items-center gap-2.5 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Service guide</span>
+              <span className="font-medium uppercase text-forest-500" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Service guide</span>
             </div>
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(28px,4vw,48px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
-              Working as a contractor<br /><span style={{ color: '#0B5240' }}>in Australia?</span>
+            <h1 className="font-serif font-black text-ink mb-2.5" style={{ fontSize: 'clamp(20px,3.5vw,38px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+              Invoice legally.<br /><span style={{ color: '#0B5240' }}>Pay the right tax.</span>
             </h1>
-            <p className="font-semibold text-ink mb-3" style={{ fontSize: '16px', letterSpacing: '-0.01em' }}>
-              You may need an ABN. We help you register correctly and understand what it means.
+            <p className="font-semibold text-ink mb-3" style={{ fontSize: '14px', letterSpacing: '-0.01em' }}>
+              We register your ABN and make sure your tax obligations are set up correctly from day one.
             </p>
-            <p className="font-light leading-[1.75] mb-8 mx-auto" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.55)', maxWidth: '440px' }}>
-              An Australian Business Number is required when you invoice clients for work. We make sure you register correctly and handle your tax obligations properly.
+            <p className="font-light leading-[1.7] mb-5 mx-auto" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
+              If you are doing freelance, contract, or sole trader work in Australia, you need an ABN. Getting it wrong has consequences — we make sure you get it right.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-5">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '48px', padding: '0 24px', fontSize: '14px' }}>
-                Start on WhatsApp - free
+            <div className="flex flex-col sm:flex-row gap-3 items-center justify-center mb-4">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}>
+                Get started on WhatsApp
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
-              <Link href="#how-to-register" className="btn-ghost-dark" style={{ height: '48px', padding: '0 20px', fontSize: '14px' }}>
+              <Link href="#how-to-register" className="btn-ghost-dark" style={{ height: '46px', padding: '0 18px', fontSize: '13.5px' }}>
                 How to register
               </Link>
             </div>
-            <p className="text-[11.5px]" style={{ color: 'rgba(10,15,13,0.38)' }}>
+            <p className="text-[10.5px] sm:text-[11.5px]" style={{ color: 'rgba(10,15,13,0.38)' }}>
               Under the supervision of a registered tax agent approved by the ATO
             </p>
           </div>
@@ -117,17 +117,17 @@ export default function ABNPage() {
       </section>
 
       {/* ── WHAT IS AN ABN ───────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-6 lg:gap-16 items-start">
             <div className="reveal">
               <span className="section-label">What is an ABN?</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(22px,3vw,34px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                Your identifier<br /><em className="not-italic font-normal text-forest-400">as a sole trader.</em>
+              <h2 className="font-serif font-black text-ink mt-1 mb-2" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+                Your number to invoice<br /><em className="not-italic font-normal text-forest-400">and trade legally.</em>
               </h2>
               <div className="prose-wht max-w-[480px]">
-                <p>An Australian Business Number (ABN) is a unique 11-digit number issued by the Australian Business Register. It identifies you as a sole trader or business when you provide services to clients.</p>
-                <p>When you work under an ABN, you invoice clients directly for your work. You are responsible for managing your own tax — no tax is withheld from your payments by default.</p>
+                <p>An ABN (Australian Business Number) is an 11-digit number that identifies you as a contractor or sole trader. You include it on every invoice you send to clients.</p>
+                <p>Unlike employee work, no tax is withheld from ABN payments. You receive the full invoice amount — and are responsible for reporting and paying tax yourself.</p>
               </div>
               <div className="info-block">
                 <p>An ABN is different from a TFN. Your TFN is used when you work as an employee. Your ABN is used when you work as a contractor or freelancer.</p>
@@ -140,9 +140,9 @@ export default function ABNPage() {
                 { title: 'Cost',             body: 'Free. Registering through the official ABR website has no government fees.' },
                 { title: 'Processing time',  body: 'Most ABNs are issued immediately online. Some applications may require additional review.' },
               ].map((c, i) => (
-                <div key={i} className="bg-white rounded-xl px-5 py-4" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
-                  <p className="text-[13.5px] font-semibold text-ink mb-1">{c.title}</p>
-                  <p className="text-[13px] font-light text-muted leading-[1.7]">{c.body}</p>
+                <div key={i} className="bg-white rounded-xl px-3.5 py-2.5" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
+                  <p className="text-[13px] font-semibold text-ink mb-0.5">{c.title}</p>
+                  <p className="text-[12.5px] font-light text-muted leading-[1.65]">{c.body}</p>
                 </div>
               ))}
             </div>
@@ -151,17 +151,17 @@ export default function ABNPage() {
       </section>
 
       {/* ── WHEN YOU NEED ONE + IMPORTANT TO UNDERSTAND ──────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-7 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-16">
 
             {/* When */}
             <div className="reveal">
               <span className="section-label">When you need one</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(20px,2.8vw,30px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                If you invoice clients<br /><em className="not-italic font-normal text-forest-400">for your work.</em>
+              <h2 className="font-serif font-black text-ink mt-1 mb-3" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+                You need an ABN when<br /><em className="not-italic font-normal text-forest-400">you are not an employee.</em>
               </h2>
-              <p className="font-light text-muted leading-[1.75] mb-6" style={{ fontSize: '14px' }}>
+              <p className="font-light text-muted leading-[1.7] mb-5" style={{ fontSize: '13px' }}>
                 You generally need an ABN when you are providing services as a contractor or freelancer — not as an employee. Common examples include:
               </p>
               <div className="space-y-3 mb-6">
@@ -177,7 +177,7 @@ export default function ABNPage() {
                       <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
                       <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <p className="text-[13.5px] font-light text-body leading-[1.7]">{item}</p>
+                    <p className="text-[12.5px] font-light text-body leading-[1.65]">{item}</p>
                   </div>
                 ))}
               </div>
@@ -186,32 +186,32 @@ export default function ABNPage() {
             {/* Important */}
             <div className="reveal delay-1">
               <span className="section-label">Important to understand</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(20px,2.8vw,30px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                ABN work is different<br /><em className="not-italic font-normal text-forest-400">from employment.</em>
+              <h2 className="font-serif font-black text-ink mt-1 mb-3" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+                ABN means you handle<br /><em className="not-italic font-normal text-forest-400">your own tax.</em>
               </h2>
               <div className="space-y-0">
                 {[
                   {
-                    label: 'No tax withheld',
-                    body: 'When you work under an ABN, clients pay your invoice in full. No tax is deducted at source. You are responsible for setting aside money for your tax liability.',
+                    label: 'No tax is withheld from your pay',
+                    body: 'Clients pay your invoice in full. No tax is taken out automatically. You must set aside money for your tax bill — typically 15–25% of income.',
                   },
                   {
-                    label: 'You lodge a tax return',
-                    body: 'All ABN income must be declared in your annual tax return. The ATO will calculate the tax owed based on your total income for the year.',
+                    label: 'You must declare all ABN income',
+                    body: 'Every dollar earned under your ABN must be reported in your annual tax return. The ATO receives data from business clients — underreporting carries risk.',
                   },
                   {
-                    label: 'No employer super contributions',
-                    body: 'As a sole trader, clients are generally not required to pay superannuation on your invoices. This is different from employment.',
+                    label: 'No super paid on your behalf',
+                    body: 'Unlike employment, clients are not required to pay super on contractor invoices. Your retirement savings are your own responsibility.',
                   },
                 ].map((item, i) => (
-                  <div key={i} className="py-5" style={{ borderTop: '1px solid #E2EFE9' }}>
-                    <p className="text-[14px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
+                  <div key={i} className="py-3.5" style={{ borderTop: '1px solid #E2EFE9' }}>
+                    <p className="text-[12.5px] font-semibold text-ink mb-1" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
                     <p className="text-[13px] font-light text-muted leading-[1.75]">{item.body}</p>
                   </div>
                 ))}
                 <div style={{ borderTop: '1px solid #E2EFE9' }} />
               </div>
-              <div className="mt-6 rounded-xl px-5 py-4" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
+              <div className="mt-6 rounded-xl px-4 py-3" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
                 <p className="text-[13px] font-light text-body leading-[1.75]">
                   <span className="font-semibold text-forest-500">Not sure which applies to you?</span> The employee vs contractor distinction matters for your tax. Ask us and we will help you work it out.
                 </p>
@@ -222,14 +222,14 @@ export default function ABNPage() {
       </section>
 
       {/* ── HOW TO REGISTER ──────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section id="how-to-register" className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mx-auto text-center mb-12 reveal">
+          <div className="max-w-xl mx-auto text-center mb-6 reveal">
             <span className="section-label center">Step by step</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              How to register<br /><em className="not-italic font-normal text-forest-400">for an ABN.</em>
+            <h2 className="font-serif font-black text-ink mt-1 mb-2" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              Getting your ABN<br /><em className="not-italic font-normal text-forest-400">takes about 10 minutes.</em>
             </h2>
-            <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '13.5px' }}>
+            <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '12.5px' }}>
               The process is straightforward. Here is what happens at each stage.
             </p>
           </div>
@@ -240,19 +240,19 @@ export default function ABNPage() {
               <div className="relative flex items-start">
                 <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 3px #EEF7F2, 0 0 0 4px #C8EAE0' }}>
+                  <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white mb-4 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 3px #EEF7F2, 0 0 0 4px #C8EAE0' }}>
                       {s.n}
                     </div>
-                    <p className="text-[13.5px] font-semibold text-ink mb-2 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.7] text-center">{s.body}</p>
+                    <p className="text-[12.5px] font-semibold text-ink mb-1.5 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
+                    <p className="text-[12.5px] font-light text-muted leading-[1.65] text-center">{s.body}</p>
                   </div>
                 ))}
               </div>
             </div>
             <div className="lg:hidden flex flex-col">
               {STEPS.map((s, i) => (
-                <div key={i} className="flex gap-4 pb-7">
+                <div key={i} className="flex gap-3 pb-5">
                   <div className="flex flex-col items-center flex-shrink-0">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white" style={{ background: '#0B5240' }}>{s.n}</div>
                     {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2 min-h-[32px]" style={{ background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
@@ -269,27 +269,27 @@ export default function ABNPage() {
       </section>
 
       {/* ── COMMON MISTAKES ───────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-7 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mb-10 reveal">
+          <div className="max-w-xl mb-7 reveal">
             <span className="section-label">Common mistakes</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              What to get<br /><em className="not-italic font-normal text-forest-400">right from the start.</em>
+            <h2 className="font-serif font-black text-ink mt-1 mb-2" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              Common mistakes that<br /><em className="not-italic font-normal text-forest-400">cost you later.</em>
             </h2>
-            <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '13.5px' }}>
+            <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '12.5px' }}>
               These are the most common issues we see with ABN registrations and obligations.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 reveal delay-1">
             {MISTAKES.map((m, i) => (
-              <div key={i} className="bg-white rounded-xl p-5 flex flex-col" style={{ border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.04)' }}>
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center mb-4 flex-shrink-0" style={{ background: '#FDF0D5' }}>
+              <div key={i} className="bg-white rounded-xl p-3.5 flex flex-col" style={{ border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.04)' }}>
+                <div className="w-6 h-6 rounded-lg flex items-center justify-center mb-3 flex-shrink-0" style={{ background: '#FDF0D5' }}>
                   <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                     <path d="M6 2v4M6 8.5v.5" stroke="#E9A020" strokeWidth="1.5" strokeLinecap="round"/>
                   </svg>
                 </div>
-                <p className="text-[13.5px] font-semibold text-ink mb-2">{m.title}</p>
-                <p className="text-[13px] font-light text-muted leading-[1.7] flex-1">{m.body}</p>
+                <p className="text-[13px] font-semibold text-ink mb-1.5">{m.title}</p>
+                <p className="text-[12.5px] font-light text-muted leading-[1.65] flex-1">{m.body}</p>
               </div>
             ))}
           </div>
@@ -297,11 +297,11 @@ export default function ABNPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#F4F9F6' }}>
+      <section className="py-7 lg:py-14" style={{ background: '#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-2xl mb-10 reveal">
+          <div className="max-w-2xl mb-7 reveal">
             <span className="section-label">Common questions</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-1" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-1" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               ABN questions, answered.
             </h2>
           </div>
@@ -317,7 +317,7 @@ export default function ABNPage() {
         heading="Not sure if you"
         headingEm="need an ABN?"
         sub="We will help you understand your situation and register correctly if needed."
-        primaryLabel="Ask us on WhatsApp - free"
+        primaryLabel="Get started on WhatsApp"
       />
     </>
   )

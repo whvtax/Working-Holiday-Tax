@@ -41,20 +41,20 @@ export function CalculatorClient() {
   return (
     <>
       {/* Page header */}
-      <div className="relative overflow-hidden bg-ink-2 pt-[68px] grid-bg">
+      <div className="relative overflow-hidden bg-white pt-[68px]">
         <div className="absolute pointer-events-none" aria-hidden="true" style={{ top: '-30%', right: '-15%', width: '65%', paddingBottom: '65%', borderRadius: '50%', background: 'radial-gradient(circle,rgba(11,82,64,.6) 0%,transparent 68%)' }} />
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-24 pb-28 relative z-10">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(255,255,255,0.28)' }}>
-            <Link href="/" className="transition-colors hover:text-white/60">Home</Link>
+            <Link href="/" className="transition-colors hover:text-ink/60">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.15)' }}>/</span>
             <span aria-current="page">Calculator</span>
           </nav>
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2.5 mb-7">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-300" aria-hidden="true" />
-              <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">Free tool</span>
+              <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-500">Free tool</span>
             </div>
-            <h1 className="font-serif font-black text-white mb-4" style={{ fontSize: 'clamp(38px,6vw,64px)', lineHeight: 1, letterSpacing: '-0.04em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(38px,6vw,64px)', lineHeight: 1, letterSpacing: '-0.04em' }}>
               Tax Refund Calculator.
             </h1>
             <p className="text-[17px] font-light leading-[1.7]" style={{ color: 'rgba(255,255,255,0.42)', maxWidth: '440px' }}>
@@ -65,7 +65,7 @@ export function CalculatorClient() {
       </div>
 
       {/* Calculator body */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16 lg:gap-24 items-start">
 
@@ -152,7 +152,7 @@ export function CalculatorClient() {
                   {/* Result header */}
                   <div className="p-8 pb-7" style={{ background: result.owing ? '#1A2822' : '#1A5C44' }}>
                     <p className="text-[11px] font-medium tracking-[0.1em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>{result.label}</p>
-                    <p className="font-serif font-black text-white mb-1.5" style={{ fontSize: '56px', lineHeight: 1, letterSpacing: '-0.04em' }}>
+                    <p className="font-serif font-black text-ink mb-1.5" style={{ fontSize: '56px', lineHeight: 1, letterSpacing: '-0.04em' }}>
                       {result.amount}
                     </p>
                     <p className="text-[13px]" style={{ color: 'rgba(255,255,255,0.48)' }}>{result.sub}</p>

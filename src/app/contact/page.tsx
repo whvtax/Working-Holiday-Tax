@@ -12,29 +12,29 @@ export default function ContactPage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-14 lg:py-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
           <div className="max-w-xl mx-auto text-center">
             <div className="inline-flex items-center gap-3 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Get in touch</span>
             </div>
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(32px,5vw,56px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
-              Talk to us.
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(22px,3.5vw,38px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
+              Get your question answered — free.
             </h1>
             <p className="font-light leading-[1.75] mx-auto" style={{ fontSize: '16px', color: 'rgba(10,15,13,0.58)', maxWidth: '380px' }}>
-              Ask anything — TFN, tax return, super, or just a question. We reply fast and there is no commitment.
+              Message us now — free. We reply within the hour, seven days a week. No commitment, no cost to ask.
             </p>
           </div>
         </div>
       </section>
 
       {/* ── CONTACT OPTIONS ──────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mx-auto text-center mb-10 reveal">
+          <div className="max-w-xl mx-auto text-center mb-7 reveal">
             <span className="section-label center">How to reach us</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Choose the way<br /><em className="not-italic font-normal text-forest-400">that works for you.</em>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              WhatsApp is fastest.<br /><em className="not-italic font-normal text-forest-400">We are here 7 days a week.</em>
             </h2>
           </div>
 
@@ -54,7 +54,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-[15px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>WhatsApp</p>
-                  <p className="text-[13px] font-light text-muted">Fastest response - usually under an hour</p>
+                  <p className="text-[13px] font-light text-muted">Replies within the hour — real person, no bots</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-forest-500 group-hover:gap-3 transition-all">
@@ -104,13 +104,13 @@ export default function ContactPage() {
       </section>
 
       {/* ── WHAT TO EXPECT ───────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-7 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto">
-            <div className="text-center mb-10 reveal">
+            <div className="text-center mb-7 reveal">
               <span className="section-label center">What to expect</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                How we work.
+              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+                What happens when you message us.
               </h2>
             </div>
             <div className="space-y-0 reveal delay-1">
@@ -132,8 +132,8 @@ export default function ContactPage() {
                   body: 'Our service is fully online. It does not matter if you are still in Australia or have already left — we can help.',
                 },
               ].map((item, i) => (
-                <div key={i} className="py-5" style={{ borderTop: '1px solid #E2EFE9' }}>
-                  <p className="text-[14px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
+                <div key={i} className="py-4" style={{ borderTop: '1px solid #E2EFE9' }}>
+                  <p className="text-[13px] font-semibold text-ink mb-0.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
                   <p className="text-[13px] font-light text-muted leading-[1.75]">{item.body}</p>
                 </div>
               ))}
@@ -144,18 +144,18 @@ export default function ContactPage() {
       </section>
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-lg mx-auto text-center reveal">
             <span className="section-label center mb-4 block">Ready?</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
-              Start a conversation — free.
+            <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.5vw,28px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+              One message is all it takes.
             </h2>
             <p className="font-light text-muted leading-[1.75] mb-8 mx-auto" style={{ fontSize: '15px', maxWidth: '360px' }}>
-              Tell us what you need. We will explain your situation clearly and let you know how we can help.
+              Tell us your situation. We will explain exactly what you need to do and how we can handle it for you.
             </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px' }}>
-              Message us on WhatsApp
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}>
+              Message us now — free
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
           </div>

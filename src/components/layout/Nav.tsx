@@ -45,8 +45,8 @@ export function Nav() {
                   <Link key={l.href} href={l.href}
                     className="relative text-[13.5px] transition-colors"
                     style={{ color: active ? '#0B5240' : '#587066' }}
-                    onMouseEnter={e => { if (!active) (e.target as HTMLElement).style.color = '#0B5240' }}
-                    onMouseLeave={e => { if (!active) (e.target as HTMLElement).style.color = '#587066' }}>
+                    onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = '#0B5240' }}
+                    onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.color = '#587066' }}>
                     {l.label}
                     {active && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
                   </Link>
@@ -77,13 +77,13 @@ export function Nav() {
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-24 px-8 pb-12 overflow-y-auto transition-transform duration-500 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
         {NAV_LINKS.map(l => (
           <Link key={l.href} href={l.href} onClick={close}
-            className="block font-serif text-[26px] font-bold text-ink py-4 transition-colors hover:text-forest-500"
+            className="block font-serif text-[22px] font-bold text-ink py-4 transition-colors hover:text-forest-500"
             style={{ borderBottom: '1px solid #E2EFE9' }}>
             {l.label}
           </Link>
         ))}
         <div className="mt-8">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '56px', borderRadius: '14px' }}>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '52px', borderRadius: '12px', fontSize: '14px' }}>
             Free Eligibility Check →
           </a>
         </div>

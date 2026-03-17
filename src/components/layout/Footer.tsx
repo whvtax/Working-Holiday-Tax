@@ -10,10 +10,10 @@ const onLeave = (e: React.MouseEvent<HTMLElement>) => (e.currentTarget.style.col
 export function Footer() {
   return (
     <footer style={{ background: '#ffffff', borderTop: '1px solid #E2EFE9' }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-10 pb-6">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-7 sm:pt-10 pb-5 sm:pb-6">
 
         {/* Main columns */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-8 md:gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">
 
           {/* Brand */}
           <div>
@@ -47,6 +47,7 @@ export function Footer() {
             <Link href="/abn"           className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>ABN Registration</Link>
             <Link href="/tax-return"    className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Tax Return</Link>
             <Link href="/superannuation" className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Superannuation</Link>
+            <Link href="/medicare"      className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Medicare</Link>
           </nav>
 
           {/* Contact */}

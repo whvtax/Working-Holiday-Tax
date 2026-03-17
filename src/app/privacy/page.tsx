@@ -25,13 +25,13 @@ export default function PrivacyPage() {
         sub="Last updated: July 1, 2024. We take your privacy seriously."
         breadcrumbs={[{label:'Home',href:'/'},{label:'Privacy Policy'}]} />
 
-      <section className="py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
             {sections.map((s,i) => (
-              <div key={i} className={`mb-10 reveal delay-${(i%4)+1}`}>
-                <h2 className="font-serif text-[22px] font-bold text-ink mb-3">{s.title}</h2>
-                <p className="text-[15px] font-light text-body leading-[1.8]">{s.body}</p>
+              <div key={i} className={`mb-7 reveal delay-${(i%4)+1}`}>
+                <h2 className="font-serif text-[16px] font-bold text-ink mb-2">{s.title}</h2>
+                <p className="text-[13px] font-light text-body leading-[1.75]">{s.body}</p>
               </div>
             ))}
           </div>

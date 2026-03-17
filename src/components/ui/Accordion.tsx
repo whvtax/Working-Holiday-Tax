@@ -6,7 +6,7 @@ export interface AccItem { question: string; answer: string }
 export function Accordion({ items }: { items: AccItem[] }) {
   const [open, setOpen] = useState<number | null>(null)
   return (
-    <div className="max-w-2xl">
+    <div>
       {items.map((item, i) => {
         const contentId = `acc-body-${i}`
         const isOpen = open === i
@@ -17,7 +17,7 @@ export function Accordion({ items }: { items: AccItem[] }) {
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen ? 'true' : 'false'}
               aria-controls={contentId}
-              className="w-full flex items-center justify-between gap-4 py-5 text-left text-[15px] font-medium text-ink transition-colors hover:text-forest-500"
+              className="w-full flex items-center justify-between gap-4 py-4 text-left text-[13.5px] font-medium text-ink transition-colors hover:text-forest-500"
             >
               <span>{item.question}</span>
               <span
@@ -33,7 +33,7 @@ export function Accordion({ items }: { items: AccItem[] }) {
               id={contentId}
               role="region"
               aria-labelledby={undefined}
-              className={`acc-body text-[14px] font-light text-muted leading-relaxed ${isOpen ? 'open' : ''}`}
+              className={`acc-body text-[13px] font-light text-muted leading-[1.7] ${isOpen ? 'open' : ''}`}
             >
               {item.answer}
             </div>

@@ -5,7 +5,7 @@ import { CtaBand } from '@/components/ui/CtaBand'
 
 export const metadata: Metadata = {
  title: 'Working Holiday Tax - Australian Tax Help for WHV Holders',
- description: 'TFN, tax return, super withdrawal and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Ask us anything - free.',
+ description: 'TFN, tax return, super withdrawal and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Get your tax sorted.',
 }
 
 // ── ICONS ──────────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ function Hero() {
  background: '#ffffff',
  }}>
 
- <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-7 lg:py-10 relative z-10">
+ <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-5 lg:py-10 relative z-10">
 
  {/* ── Left copy ── */}
  <div className="max-w-[580px]">
@@ -66,19 +66,19 @@ function Hero() {
  lineHeight: 1.15,
  letterSpacing: '-0.025em',
  }}>
- <span className="block whitespace-nowrap">Have questions about tax in Australia?</span>
- <span className="block" style={{ color: '#0B5240' }}>We&apos;ve got you covered.</span>
+ <span className="block">Your Australian tax,</span>
+ <span className="block" style={{ color: '#0B5240' }}>handled correctly.</span>
  </h1>
 
  {/* Sub */}
  <p className="font-light leading-[1.65] mb-6" style={{ fontSize: '13.5px', color: 'rgba(10,15,13,0.55)', maxWidth: '400px' }}>
- We help Working Holiday Visa travellers handle tax correctly - from TFN to final super withdrawal.
+ TFN, tax return, super withdrawal, ABN — we handle every step so you pay the right tax and get back what you are owed.
  </p>
 
  {/* CTAs */}
- <div className="flex flex-col sm:flex-row gap-2.5 items-start mb-4">
+ <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-start mb-4">
  <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '44px', padding: '0 22px', fontSize: '13.5px' }}>
- Ask us anything - free
+ Get your tax sorted
  <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
  </a>
  <Link href="#how-it-works" className="btn-ghost-dark" style={{ height: '44px', padding: '0 18px', fontSize: '13.5px' }}>
@@ -88,7 +88,7 @@ function Hero() {
 
  {/* Trust line */}
  <p className="text-[10.5px] leading-[1.5]" style={{ color: 'rgba(10,15,13,0.38)' }}>
- Under the supervision of a registered tax agent approved by the ATO
+ Registered tax agent&nbsp;•&nbsp;ATO supervised&nbsp;•&nbsp;1,200+ WHV travellers helped
  </p>
  </div>
 
@@ -97,7 +97,7 @@ function Hero() {
  {/* Trust cards — pulled up, tighter */}
  <div className="relative z-10">
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pb-6">
- <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+ <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
  {[
  { n: '4.9★', l: 'Google rating' },
  { n: '1,200+', l: 'WHV clients helped' },
@@ -124,32 +124,32 @@ function Trust() {
  const items = [
  {
  title: 'We know WHV tax inside out',
- body: 'We handle multiple employers, ABN income, super withdrawals, and residency cases every day.',
+ body: 'Multiple employers, ABN income, super withdrawals, residency questions — we handle these every day.',
  },
  {
  title: 'Registered. Licensed. Accountable.',
- body: 'Your return is prepared under a registered tax agent - no shortcuts.',
+ body: 'Lodged under a registered tax agent (TPB #26233096). Legitimate, accountable, and ATO-compliant.',
  },
  {
  title: 'Real people, fast answers',
- body: 'Message us on WhatsApp and get a real response - usually within minutes.',
+ body: 'WhatsApp replies within minutes — from a real person, seven days a week.',
  },
  {
  title: 'We make it simple',
- body: 'We explain everything clearly and handle the process from start to finish.',
+ body: 'No forms to fill in, no ATO portals to navigate. We do the work and keep you updated.',
  },
  ]
 
  return (
- <section className="py-10 lg:py-13 bg-white">
+ <section className="py-8 lg:py-13 bg-white">
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
  <div className="max-w-2xl mx-auto text-center mb-5 reveal">
           <span className="section-label center">Why travellers trust us</span>
-          <h2 className="font-serif font-black text-ink mt-1 mb-1.5" style={{ fontSize: 'clamp(16px,2.1vw,25px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>Tax specialists who<br /><em className="not-italic font-normal text-forest-400" style={{ fontSize: '92%' }}>understand your situation.</em></h2>
+          <h2 className="font-serif font-black text-ink mt-1 mb-1.5" style={{ fontSize: 'clamp(16px,2.1vw,25px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>Built for WHV travellers.<br /><em className="not-italic font-normal text-forest-400" style={{ fontSize: '92%' }}>We know your situation already.</em></h2>
           <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '12.5px' }}>We work exclusively with Working Holiday Visa holders - so we already understand your situation.</p>
         </div>
 
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 reveal delay-2">
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 reveal delay-2">
  {items.map((item, i) => (
  <div key={i} className="pt-4 border-t border-border">
               <h3 className="text-[13px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{item.title}</h3>
@@ -167,38 +167,38 @@ const SERVICES = [
  {
  n: '01', href: '/tfn', icon: <IconDoc />,
  title: 'TFN Application',
- desc: 'Apply for your TFN correctly the first time. We guide you through the official ATO process.',
+ desc: 'Start work at the right tax rate. We get your TFN application right the first time.',
  },
  {
  n: '02', href: '/tax-return', icon: <IconLock />,
  title: 'Tax Return',
- desc: 'We prepare and lodge your tax return so you receive everything you\'re entitled to - without the stress.',
+ desc: 'Get back what you are owed. We prepare, lodge, and handle the ATO process for you.',
  },
  {
  n: '03', href: '/superannuation', icon: <IconClock />,
  title: 'Super Withdrawal',
- desc: 'We manage your DASP application so you can claim your super after leaving Australia.',
+ desc: 'Your employer paid into your super. We claim it back for you when you leave.',
  },
  {
  n: '04', href: '/abn', icon: <IconPlus />,
  title: 'ABN Registration',
- desc: 'We register your ABN and make sure you\'re set up correctly from day one.',
+ desc: 'Invoice legally and pay the right tax. We register your ABN and set you up correctly.',
  },
 ]
 
 function Services() {
  return (
- <section className="pt-7 pb-10 lg:pt-9 lg:pb-12" style={{ background: '#EEF7F2' }}>
+ <section className="pt-6 pb-8 lg:pt-9 lg:pb-12" style={{ background: '#EEF7F2' }}>
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
  <div className="max-w-2xl mx-auto text-center mb-4 reveal">
  <span className="section-label center">What we help with</span>
  <h2 className="font-serif font-black text-ink mt-1 mb-1.5" style={{ fontSize: 'clamp(16px, 2.1vw, 25px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
- Everything WHV travellers<br /><em className="not-italic font-normal text-forest-400" style={{ fontSize: '92%' }}>need for tax in Australia.</em>
+ Everything you need<br /><em className="not-italic font-normal text-forest-400" style={{ fontSize: '92%' }}>to handle tax in Australia.</em>
  </h2>
- <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '12.5px' }}>We cover the full tax journey - from the day you arrive to the day you leave.</p>
+ <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '12.5px' }}>From your first working day to your final super withdrawal — we handle it all.</p>
  </div>
 
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 reveal delay-2">
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 reveal delay-2">
  {SERVICES.map((s) => (
  <Link key={s.href} href={s.href}
  className="group bg-white rounded-2xl p-3 flex flex-col transition-all hover:shadow-md" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
@@ -222,22 +222,22 @@ function Services() {
 
 // ── PROCESS ────────────────────────────────────────────────────────────────
 const STEPS = [
- { n: '1', title: 'Message us on WhatsApp', body: "Tell us what you need - TFN, tax return, super, or just a question. We'll explain your situation clearly." },
- { n: '2', title: 'Send your documents',     body: 'We give you a simple checklist. Upload what you have - no scanning, no office visits.' },
- { n: '3', title: 'We handle everything',    body: "We prepare, review, and submit everything for you. You don't need to deal with the ATO." },
+ { n: '1', title: 'Tell us what you need', body: 'Message us on WhatsApp. TFN, tax return, super, ABN — or just a question. We respond within the hour.' },
+ { n: '2', title: 'Send your documents',     body: 'We give you a simple checklist. Upload what you have. No scanning, no office visits, no paperwork.' },
+ { n: '3', title: 'We handle it all',        body: 'We prepare, review, and lodge everything on your behalf. You do not touch the ATO portal.' },
  { n: '4', title: 'Done. Money back.',       body: 'Most tax returns are processed within 7-14 days. We keep you updated along the way.' },
 ]
 
 function Process() {
  return (
- <section id="how-it-works" className="py-10 lg:py-14 bg-white">
+ <section id="how-it-works" className="py-8 lg:py-14 bg-white">
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
  {/* Heading */}
  <div className="max-w-2xl mx-auto text-center mb-7 reveal">
           <span className="section-label center">How it works</span>
-          <h2 className="font-serif font-black text-ink mt-1 mb-1.5" style={{ fontSize: 'clamp(16px,2.1vw,25px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>Simple. Guided.<br /><em className="not-italic font-normal text-forest-400" style={{ fontSize: '92%' }}>No jargon.</em></h2>
-          <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '12.5px' }}>You don&apos;t need to understand Australian tax. We do - and we&apos;ll guide you through every step.</p>
+          <h2 className="font-serif font-black text-ink mt-1 mb-1.5" style={{ fontSize: 'clamp(16px,2.1vw,25px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>Four steps.<br /><em className="not-italic font-normal text-forest-400" style={{ fontSize: '92%' }}>We handle the rest.</em></h2>
+          <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '12.5px' }}>You send us your information. We handle everything else.</p>
         </div>
 
  {/* Timeline — desktop: horizontal connector line + circles */}
@@ -267,9 +267,9 @@ function Process() {
    </div>
 
    {/* Mobile layout — vertical stack */}
-   <div className="lg:hidden flex flex-col">
+   <div className="lg:hidden flex flex-col gap-0">
      {STEPS.map((s, i) => (
-       <div key={i} className="flex gap-4 pb-7">
+       <div key={i} className="flex gap-3 pb-5">
          <div className="flex flex-col items-center flex-shrink-0">
            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white" style={{ background: '#0B5240' }}>
              {s.n}
@@ -324,13 +324,13 @@ const TESTIMONIALS = [
 
 function Testimonials() {
  return (
- <section className="py-10 lg:py-14" style={{ background: '#F4F9F6' }}>
+ <section className="py-8 lg:py-14" style={{ background: '#F4F9F6' }}>
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
  {/* Heading */}
  <div className="text-center mb-5 reveal">
    <span className="section-label center">Client stories</span>
-   <h2 className="font-serif font-black text-ink mt-1 mb-3" style={{ fontSize: 'clamp(16px,2.1vw,25px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>Travellers we&apos;ve helped.</h2>
+   <h2 className="font-serif font-black text-ink mt-1 mb-3" style={{ fontSize: 'clamp(16px,2.1vw,25px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>Real results from real travellers.</h2>
    <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark inline-flex" style={{ height: '36px', padding: '0 16px', fontSize: '12.5px' }}>
      Check your eligibility →
    </a>
@@ -340,7 +340,7 @@ function Testimonials() {
  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 reveal delay-1">
    {TESTIMONIALS.map((t, i) => (
      <div key={i}
-       className="bg-white rounded-2xl p-5 flex flex-col"
+       className="bg-white rounded-2xl p-4 sm:p-5 flex flex-col testimonial-card"
        style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
        <div className="flex gap-0.5 mb-3">
          {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
@@ -367,7 +367,7 @@ function Testimonials() {
  </div>
 
  {/* Stats strip */}
- <div className="mt-4 pt-4 flex flex-col sm:flex-row items-center justify-center gap-5 reveal delay-3" style={{ borderTop: '1px solid #E2EFE9' }}>
+ <div className="mt-4 pt-4 grid grid-cols-2 sm:flex sm:flex-row items-center justify-center gap-4 sm:gap-5 reveal delay-3" style={{ borderTop: '1px solid #E2EFE9' }}>
    <div className="text-center">
      <p className="font-serif font-black text-forest-500" style={{ fontSize: '20px', letterSpacing: '-0.03em', lineHeight: 1 }}>4.9★</p>
      <p className="text-[11.5px] text-subtle mt-1">Google rating</p>
@@ -404,11 +404,11 @@ export default function HomePage() {
  <Process />
  <Testimonials />
  <CtaBand
- eyebrow="Need help?"
- heading="Need help with tax"
- headingEm="in Australia?"
- sub="Get clear answers and start your tax process today - we handle everything for you."
- primaryLabel="Get started on WhatsApp"
+ eyebrow="Start here"
+ heading="Your tax, done right —"
+ headingEm="from anywhere in the world."
+ sub="We handle TFN, tax return, super, and ABN for Working Holiday Visa travellers. Start with a free message."
+ primaryLabel="Get your tax sorted"
  clipTop
  />
  </>
