@@ -189,7 +189,7 @@ const SERVICES = [
 
 function Services() {
  return (
- <section className="pt-8 pb-12 lg:pt-10 lg:pb-16" style={{ background: '#EEF7F2' }}>
+ <section className="pt-10 pb-14 lg:pt-12 lg:pb-18" style={{ background: '#EEF7F2' }}>
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
  <div className="max-w-2xl mx-auto text-center mb-6 reveal">
  <span className="section-label center">What we help with</span>
@@ -231,28 +231,61 @@ const STEPS = [
 
 function Process() {
  return (
- <section id="how-it-works" className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+ <section id="how-it-works" className="py-16 lg:py-24 bg-white">
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
- {/* Heading - top, centered */}
- <div className="max-w-2xl mx-auto text-center mb-8 reveal">
+ {/* Heading */}
+ <div className="max-w-2xl mx-auto text-center mb-10 reveal">
           <span className="section-label center">How it works</span>
           <h2 className="font-serif font-black text-ink mt-1.5 mb-2" style={{ fontSize: 'clamp(19px,2.6vw,30px)', lineHeight: 1.12, letterSpacing: '-0.025em' }}>Simple. Guided.<br /><em className="not-italic font-normal text-forest-400">No jargon.</em></h2>
           <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '13.5px' }}>You don&apos;t need to understand Australian tax. We do - and we&apos;ll guide you through every step.</p>
         </div>
 
- {/* 4 steps - horizontal row on desktop */}
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 reveal delay-1">
- {STEPS.map((s, i) => (
- <div key={i} className="flex flex-col px-5 py-6 lg:py-0"
- style={{ borderLeft: i > 0 ? '1px solid #E2EFE9' : 'none', borderTop: '1px solid #E2EFE9' }}>
- <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500 mb-4 flex-shrink-0" style={{ background: '#EAF6F1' }}>
- {s.n}
- </span>
- <p className="text-[14px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
- <p className="text-[13px] font-light text-muted leading-[1.7]">{s.body}</p>
- </div>
- ))}
+ {/* Timeline — desktop: horizontal connector line + circles */}
+ <div className="reveal delay-1">
+
+   {/* Desktop layout */}
+   <div className="hidden lg:block">
+     {/* Connector line behind the circles */}
+     <div className="relative flex items-start">
+       {/* The line sits at the vertical centre of the circles (circle h=32px, top-0) */}
+       <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{
+         background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)',
+         zIndex: 0,
+       }} aria-hidden="true" />
+
+       {STEPS.map((s, i) => (
+         <div key={i} className="flex-1 flex flex-col items-center px-4" style={{ zIndex: 1 }}>
+           {/* Circle on the line */}
+           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 3px #EEF7F2, 0 0 0 4px #C8EAE0' }}>
+             {s.n}
+           </div>
+           <p className="text-[14px] font-semibold text-ink mb-1.5 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
+           <p className="text-[13px] font-light text-muted leading-[1.7] text-center">{s.body}</p>
+         </div>
+       ))}
+     </div>
+   </div>
+
+   {/* Mobile layout — vertical stack */}
+   <div className="lg:hidden flex flex-col">
+     {STEPS.map((s, i) => (
+       <div key={i} className="flex gap-4 pb-7">
+         <div className="flex flex-col items-center flex-shrink-0">
+           <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white" style={{ background: '#0B5240' }}>
+             {s.n}
+           </div>
+           {i < STEPS.length - 1 && (
+             <div className="flex-1 w-px mt-2 min-h-[32px]" style={{ background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />
+           )}
+         </div>
+         <div className="pt-1 pb-2">
+           <p className="text-[14px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
+           <p className="text-[13px] font-light text-muted leading-[1.7]">{s.body}</p>
+         </div>
+       </div>
+     ))}
+   </div>
  </div>
 
  {/* Free to start note */}
@@ -292,68 +325,69 @@ const TESTIMONIALS = [
 
 function Testimonials() {
  return (
- <section className="py-14 lg:py-20 bg-white">
+ <section className="py-16 lg:py-24" style={{ background: '#F4F9F6' }}>
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
- {/* Heading - button sits below, not floated right */}
- <div className="text-center mb-8 reveal">
- <span className="section-label center">Client stories</span>
- <h2 className="section-h2 mb-5">Travellers we&apos;ve helped.</h2>
- <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark inline-flex">
- Talk to us →
- </a>
+ {/* Heading */}
+ <div className="text-center mb-7 reveal">
+   <span className="section-label center">Client stories</span>
+   <h2 className="font-serif font-black text-ink mt-1.5 mb-3" style={{ fontSize: 'clamp(19px,2.6vw,30px)', lineHeight: 1.12, letterSpacing: '-0.025em' }}>Travellers we&apos;ve helped.</h2>
+   <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark inline-flex" style={{ height: '40px', padding: '0 18px', fontSize: '13px' }}>
+     Talk to us →
+   </a>
  </div>
 
- {/* Cards - all uniform: white bg, same shadow, same padding */}
- <div className="grid grid-cols-1 md:grid-cols-3 gap-5 reveal delay-1">
- {TESTIMONIALS.map((t, i) => (
- <div key={i}
- className="bg-white rounded-2xl p-8 flex flex-col"
- style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
- <div className="flex gap-0.5 mb-5">
- {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
- </div>
- <p className="text-[15px] font-light text-body leading-[1.8] flex-1 mb-5">
- &ldquo;{t.quote}&rdquo;
- </p>
- <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid #E2EFE9' }}>
- <div className="flex items-center gap-3">
- <div className="w-8 h-8 rounded-full bg-forest-100 flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-forest-500">
- {t.name[0]}
- </div>
- <div>
- <p className="text-[12.5px] font-semibold text-ink">{t.name}</p>
- <p className="text-[11.5px] text-subtle">{t.from}</p>
- </div>
- </div>
- <span className="font-serif font-black text-[19px] text-forest-500" style={{ letterSpacing: '-0.03em' }}>
- {t.amount}
- </span>
- </div>
- </div>
- ))}
+ {/* Cards */}
+ <div className="grid grid-cols-1 md:grid-cols-3 gap-4 reveal delay-1">
+   {TESTIMONIALS.map((t, i) => (
+     <div key={i}
+       className="bg-white rounded-2xl p-6 flex flex-col"
+       style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
+       <div className="flex gap-0.5 mb-4">
+         {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
+       </div>
+       <p className="text-[14px] font-light text-body leading-[1.75] flex-1 mb-4">
+         &ldquo;{t.quote}&rdquo;
+       </p>
+       <div className="flex items-center justify-between pt-3.5" style={{ borderTop: '1px solid #E2EFE9' }}>
+         <div className="flex items-center gap-2.5">
+           <div className="w-7 h-7 rounded-full bg-forest-100 flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-forest-500">
+             {t.name[0]}
+           </div>
+           <div>
+             <p className="text-[12px] font-semibold text-ink">{t.name}</p>
+             <p className="text-[11px] text-subtle">{t.from}</p>
+           </div>
+         </div>
+         <span className="font-serif font-black text-[17px] text-forest-500" style={{ letterSpacing: '-0.03em' }}>
+           {t.amount}
+         </span>
+       </div>
+     </div>
+   ))}
  </div>
 
- {/* Stats strip - tighter gap to cards */}
- <div className="mt-8 pt-8 flex flex-col sm:flex-row items-center justify-center gap-8 reveal delay-3" style={{ borderTop: '1px solid #E2EFE9' }}>
- <div className="text-center">
- <p className="font-serif font-black text-forest-500 text-[28px]" style={{ letterSpacing: '-0.03em' }}>5.0</p>
- <div className="flex gap-0.5 justify-center mt-1">
- {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
+ {/* Stats strip */}
+ <div className="mt-6 pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 reveal delay-3" style={{ borderTop: '1px solid #E2EFE9' }}>
+   <div className="text-center">
+     <p className="font-serif font-black text-forest-500" style={{ fontSize: '24px', letterSpacing: '-0.03em', lineHeight: 1 }}>5.0</p>
+     <div className="flex gap-0.5 justify-center mt-1">
+       {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
+     </div>
+     <p className="text-[11.5px] text-subtle mt-1">Average rating</p>
+   </div>
+   <div className="hidden sm:block w-px h-8 bg-border" aria-hidden="true" />
+   <div className="text-center">
+     <p className="font-serif font-black text-forest-500" style={{ fontSize: '24px', letterSpacing: '-0.03em', lineHeight: 1 }}>1,200+</p>
+     <p className="text-[11.5px] text-subtle mt-1.5">WHV holders helped</p>
+   </div>
+   <div className="hidden sm:block w-px h-8 bg-border" aria-hidden="true" />
+   <div className="text-center">
+     <p className="font-serif font-black text-forest-500" style={{ fontSize: '24px', letterSpacing: '-0.03em', lineHeight: 1 }}>$2.4M+</p>
+     <p className="text-[11.5px] text-subtle mt-1.5">Tax sorted for clients</p>
+   </div>
  </div>
- <p className="text-[12px] text-subtle mt-1">Average rating</p>
- </div>
- <div className="hidden sm:block w-px h-10 bg-border" aria-hidden="true" />
- <div className="text-center">
- <p className="font-serif font-black text-forest-500 text-[28px]" style={{ letterSpacing: '-0.03em' }}>1,200+</p>
- <p className="text-[12px] text-subtle mt-1">WHV holders helped</p>
- </div>
- <div className="hidden sm:block w-px h-10 bg-border" aria-hidden="true" />
- <div className="text-center">
- <p className="font-serif font-black text-forest-500 text-[28px]" style={{ letterSpacing: '-0.03em' }}>$2.4M+</p>
- <p className="text-[12px] text-subtle mt-1">Tax sorted for clients</p>
- </div>
- </div>
+
  </div>
  </section>
  )
