@@ -1,64 +1,164 @@
 import type { Metadata } from 'next'
-import { PageHeader } from '@/components/ui/PageHeader'
-import { Accordion } from '@/components/ui/Accordion'
+import Link from 'next/link'
 import { WA_URL, EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
-  description: 'Get in touch with Working Holiday Tax. We reply within minutes, 7 days a week.',
+  title: 'Contact Working Holiday Tax',
+  description: 'Get in touch with Working Holiday Tax. Ask anything about TFN, tax returns, super, or ABN. We reply fast.',
 }
-
-const faqs = [
-  { question: 'How fast do you reply?',                    answer: 'Usually within a few minutes on WhatsApp during business hours. For emails we aim to respond within 2–4 hours.' },
-  { question: 'Is asking questions free?',                  answer: 'Yes. Asking questions and your eligibility check are completely free. We only charge once your return is ready to lodge — and we tell you the fee upfront.' },
-  { question: 'Can I contact you after leaving Australia?', answer: 'Yes. Our service is 100% online and available from anywhere in the world. Many clients contact us after they have already left Australia.' },
-  { question: 'What languages do you support?',             answer: 'We primarily operate in English. Contact us and we will do our best to assist regardless of language.' },
-]
 
 export default function ContactPage() {
   return (
     <>
-      <PageHeader
-        kicker="Get in touch"
-        title="We're here"
-        titleEm="to help you."
-        sub="Ask us anything about your Australian tax. Most questions get answered within minutes."
-        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
-      />
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden pt-[68px] bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-14 lg:py-20">
+          <div className="max-w-xl mx-auto text-center">
+            <div className="inline-flex items-center gap-3 mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+              <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Get in touch</span>
+            </div>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(32px,5vw,56px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
+              Talk to us.
+            </h1>
+            <p className="font-light leading-[1.75] mx-auto" style={{ fontSize: '16px', color: 'rgba(10,15,13,0.58)', maxWidth: '380px' }}>
+              Ask anything — TFN, tax return, super, or just a question. We reply fast and there is no commitment.
+            </p>
+          </div>
+        </div>
+      </section>
 
-      <section className="py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
+      {/* ── CONTACT OPTIONS ──────────────────────────────────────────────── */}
+      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+          <div className="max-w-xl mx-auto text-center mb-10 reveal">
+            <span className="section-label center">How to reach us</span>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              Choose the way<br /><em className="not-italic font-normal text-forest-400">that works for you.</em>
+            </h2>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto mb-24">
+          <div className="max-w-2xl mx-auto space-y-4 reveal delay-1">
+
+            {/* WhatsApp — primary, most prominent */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="text-center border border-border rounded-[18px] p-8 transition-all hover:border-forest-300 hover:-translate-y-1 block reveal delay-1">
-              <p className="text-[15px] font-semibold text-ink mb-1">WhatsApp</p>
-              <p className="text-[13px] font-light text-muted">0424 513 998</p>
-              <p className="text-[12px] text-subtle mt-0.5">Fastest response</p>
+              className="flex items-center justify-between w-full rounded-2xl p-6 transition-all hover:shadow-md group"
+              style={{ background: '#ffffff', border: '1.5px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#22C55E' }}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.2)"/>
+                    <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" stroke="white" strokeWidth="0.5"/>
+                    <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3.12.3.42 1.26.46 1.35.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[15px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>WhatsApp</p>
+                  <p className="text-[13px] font-light text-muted">Fastest response - usually under an hour</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-forest-500 group-hover:gap-3 transition-all">
+                <span className="text-[13px] font-medium hidden sm:block">Message us</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8.5 4l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
             </a>
+
+            {/* Email */}
             <a href={`mailto:${EMAIL}`}
-              className="text-center border border-border rounded-[18px] p-8 transition-all hover:border-forest-300 hover:-translate-y-1 block reveal delay-2">
-              <p className="text-[15px] font-semibold text-ink mb-1">Email</p>
-              <p className="text-[13px] font-light text-muted">{EMAIL}</p>
-              <p className="text-[12px] text-subtle mt-0.5">Within 2–4 hours</p>
+              className="flex items-center justify-between w-full rounded-2xl p-6 transition-all hover:shadow-md group"
+              style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+              <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <rect x="1.5" y="3.5" width="15" height="11" rx="2" stroke="#0B5240" strokeWidth="1.3"/>
+                    <path d="M1.5 6.5l6.6 4.2a1.5 1.5 0 001.8 0L16.5 6.5" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[15px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>Email</p>
+                  <p className="text-[13px] font-light text-muted">{EMAIL}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-forest-500 group-hover:gap-3 transition-all">
+                <span className="text-[13px] font-medium hidden sm:block">Send email</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8.5 4l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
             </a>
-            <div className="text-center border border-border rounded-[18px] p-8 reveal delay-3">
-              <p className="text-[15px] font-semibold text-ink mb-1">Available</p>
-              <p className="text-[13px] font-light text-muted">7 days a week</p>
-              <p className="text-[12px] text-subtle mt-0.5">Worldwide support</p>
+
+            {/* Social row */}
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { label: 'Instagram', handle: '@workingholidaytax', href: 'https://instagram.com/workingholidaytax', color: '#E2EFE9' },
+                { label: 'TikTok',    handle: '@workingholidaytax', href: 'https://tiktok.com/@workingholidaytax',    color: '#E2EFE9' },
+              ].map((s) => (
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                  className="flex flex-col rounded-2xl p-5 transition-all hover:shadow-md"
+                  style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+                  <p className="text-[14px] font-semibold text-ink mb-0.5" style={{ letterSpacing: '-0.01em' }}>{s.label}</p>
+                  <p className="text-[12.5px] font-light text-muted">{s.handle}</p>
+                </a>
+              ))}
             </div>
           </div>
+        </div>
+      </section>
 
+      {/* ── WHAT TO EXPECT ───────────────────────────────────────────────── */}
+      <section className="py-14 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto">
-            <div className="mb-14 reveal">
-              <span className="section-label">FAQs</span>
-              <h2 className="section-h2">Quick answers.</h2>
+            <div className="text-center mb-10 reveal">
+              <span className="section-label center">What to expect</span>
+              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.8vw,32px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+                How we work.
+              </h2>
             </div>
-            <div className="reveal delay-1">
-              <Accordion items={faqs} />
+            <div className="space-y-0 reveal delay-1">
+              {[
+                {
+                  label: 'Fast responses',
+                  body: 'We aim to reply within one hour on WhatsApp during business hours. For emails, we respond within a few hours.',
+                },
+                {
+                  label: 'Real people',
+                  body: 'You are talking to a real person — not a bot or automated system. We read every message and respond personally.',
+                },
+                {
+                  label: 'No commitment',
+                  body: 'Asking questions is free. We only charge once we have agreed on what work you need and you decide to proceed.',
+                },
+                {
+                  label: 'Available from anywhere',
+                  body: 'Our service is fully online. It does not matter if you are still in Australia or have already left — we can help.',
+                },
+              ].map((item, i) => (
+                <div key={i} className="py-5" style={{ borderTop: '1px solid #E2EFE9' }}>
+                  <p className="text-[14px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
+                  <p className="text-[13px] font-light text-muted leading-[1.75]">{item.body}</p>
+                </div>
+              ))}
+              <div style={{ borderTop: '1px solid #E2EFE9' }} />
             </div>
           </div>
+        </div>
+      </section>
 
+      {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
+      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+          <div className="max-w-lg mx-auto text-center reveal">
+            <span className="section-label center mb-4 block">Ready?</span>
+            <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+              Start a conversation — free.
+            </h2>
+            <p className="font-light text-muted leading-[1.75] mb-8 mx-auto" style={{ fontSize: '15px', maxWidth: '360px' }}>
+              Tell us what you need. We will explain your situation clearly and let you know how we can help.
+            </p>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px' }}>
+              Message us on WhatsApp
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </a>
+          </div>
         </div>
       </section>
     </>
