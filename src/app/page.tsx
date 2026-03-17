@@ -142,20 +142,19 @@ function Trust() {
  ]
 
  return (
- <section className="py-20 lg:py-28 bg-white">
+ <section className="py-14 lg:py-20 bg-white">
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
- <div className="max-w-3xl mx-auto text-center mb-12 reveal">
- <span className="section-label center">Why travellers trust us</span>
- <h2 className="section-h2">Tax specialists who<br /><em>understand your situation.</em></h2>
- <p className="body-lg">We work exclusively with Working Holiday Visa holders. We know the rules, we know the edge cases, and we know what travellers like you actually need.</p>
- </div>
+ <div className="max-w-2xl mx-auto text-center mb-8 reveal">
+          <span className="section-label center">Why travellers trust us</span>
+          <h2 className="font-serif font-black text-ink mt-1.5 mb-2" style={{ fontSize: 'clamp(19px,2.6vw,30px)', lineHeight: 1.12, letterSpacing: '-0.025em' }}>Tax specialists who<br /><em className="not-italic font-normal text-forest-400">understand your situation.</em></h2>
+          <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '13.5px' }}>We work exclusively with WHV holders. We know the rules, the edge cases, and what travellers like you need.</p>
+        </div>
 
- <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 reveal delay-2">
+ <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 reveal delay-2">
  {items.map((item, i) => (
- <div key={i} className="pt-6 border-t border-border">
- <div className="w-8 h-px bg-amber mb-6" aria-hidden="true" />
- <h3 className="text-[15px] font-semibold text-ink mb-3" style={{ letterSpacing: '-0.01em' }}>{item.title}</h3>
- <p className="text-[13.5px] font-light text-muted leading-[1.7]">{item.body}</p>
+ <div key={i} className="pt-5 border-t border-border">
+              <h3 className="text-[14px] font-semibold text-ink mb-2" style={{ letterSpacing: '-0.01em' }}>{item.title}</h3>
+ <p className="text-[13px] font-light text-muted leading-[1.7]">{item.body}</p>
  </div>
  ))}
  </div>
@@ -232,32 +231,32 @@ const STEPS = [
 
 function Process() {
  return (
- <section id="how-it-works" className="py-16 lg:py-24 bg-white">
+ <section id="how-it-works" className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
  {/* Heading - top, centered */}
- <div className="max-w-2xl mx-auto text-center mb-14 reveal">
- <span className="section-label center">How it works</span>
- <h2 className="section-h2">Simple. Guided.<br /><em>No jargon.</em></h2>
- <p className="body-lg">You don&apos;t need to understand Australian tax. We do - and we&apos;ll guide you through every step.</p>
- </div>
+ <div className="max-w-2xl mx-auto text-center mb-8 reveal">
+          <span className="section-label center">How it works</span>
+          <h2 className="font-serif font-black text-ink mt-1.5 mb-2" style={{ fontSize: 'clamp(19px,2.6vw,30px)', lineHeight: 1.12, letterSpacing: '-0.025em' }}>Simple. Guided.<br /><em className="not-italic font-normal text-forest-400">No jargon.</em></h2>
+          <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '13.5px' }}>You don&apos;t need to understand Australian tax. We do - and we&apos;ll guide you through every step.</p>
+        </div>
 
  {/* 4 steps - horizontal row on desktop */}
  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 reveal delay-1">
  {STEPS.map((s, i) => (
- <div key={i} className="flex flex-col px-6 py-8 lg:py-0"
+ <div key={i} className="flex flex-col px-5 py-6 lg:py-0"
  style={{ borderLeft: i > 0 ? '1px solid #E2EFE9' : 'none', borderTop: '1px solid #E2EFE9' }}>
- <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500 mb-5 flex-shrink-0" style={{ background: '#EAF6F1' }}>
+ <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500 mb-4 flex-shrink-0" style={{ background: '#EAF6F1' }}>
  {s.n}
  </span>
- <p className="text-[15px] font-semibold text-ink mb-2" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
- <p className="text-[13.5px] font-light text-muted leading-[1.7]">{s.body}</p>
+ <p className="text-[14px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
+ <p className="text-[13px] font-light text-muted leading-[1.7]">{s.body}</p>
  </div>
  ))}
  </div>
 
  {/* Free to start note */}
- <p className="text-center text-[13px] mt-10 reveal delay-2" style={{ color: '#2FA880' }}>
+ <p className="text-center text-[13px] mt-8 reveal delay-2" style={{ color: '#2FA880' }}>
  <span className="font-semibold" style={{ color: '#0B5240' }}>Free to start.</span> We only charge once your work is ready to submit - and we tell you the fee upfront.
  </p>
 
@@ -293,11 +292,11 @@ const TESTIMONIALS = [
 
 function Testimonials() {
  return (
- <section className="py-20 lg:py-28" style={{ background: '#F7FBF9' }}>
+ <section className="py-14 lg:py-20 bg-white">
  <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
 
  {/* Heading - button sits below, not floated right */}
- <div className="text-center mb-12 reveal">
+ <div className="text-center mb-8 reveal">
  <span className="section-label center">Client stories</span>
  <h2 className="section-h2 mb-5">Travellers we&apos;ve helped.</h2>
  <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark inline-flex">
