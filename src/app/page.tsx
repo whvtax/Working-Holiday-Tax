@@ -93,19 +93,22 @@ function Hero() {
         </div>
       </div>
 
-      {/* Stats bar */}
+      {/* 2x2 Trust cards */}
       <div className="relative z-10" style={{ borderTop: '1px solid rgba(10,15,13,0.08)' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6">
-          <div className="grid grid-cols-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { n: '$2.4M+', l: 'Returned to clients' },
-              { n: '1,200+', l: 'WHV holders helped' },
-              { n: '5.0 ★',  l: 'Client satisfaction' },
-            ].map((s, i) => (
-              <div key={i} className="text-center relative">
-                {i > 0 && <span className="absolute left-0 top-[15%] bottom-[15%] w-px" style={{ background: 'rgba(10,15,13,0.08)' }} aria-hidden="true" />}
-                <span className="block font-serif font-black text-ink mb-1" style={{ fontSize: 'clamp(22px,3vw,28px)', letterSpacing: '-0.03em' }}>{s.n}</span>
-                <span className="block text-[11.5px] tracking-[0.03em]" style={{ color: 'rgba(10,15,13,0.58)' }}>{s.l}</span>
+              { n: '4.9★',   l: 'Google rating' },
+              { n: '1,200+', l: 'WHV clients helped' },
+              { n: '<1 hr',  l: 'WhatsApp response' },
+              { n: '100%',   l: '100% online' },
+            ].map((c, i) => (
+              <div key={i} className="rounded-2xl text-center py-4 px-3" style={{
+                background: '#F0F9F5',
+                border: '1px solid #C8EAE0',
+              }}>
+                <p className="font-serif font-black text-forest-500 mb-1" style={{ fontSize: 'clamp(20px,2.8vw,26px)', letterSpacing: '-0.03em', lineHeight: 1 }}>{c.n}</p>
+                <p className="font-light" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.52)', lineHeight: 1.4 }}>{c.l}</p>
               </div>
             ))}
           </div>
