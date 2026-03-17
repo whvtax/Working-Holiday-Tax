@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
@@ -42,6 +42,13 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
+}
+
+// M3: explicit viewport export (Next.js 14 App Router recommendation)
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#0B5240',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

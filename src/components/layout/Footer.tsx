@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { WA_URL, EMAIL, PHONE_DISPLAY, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
@@ -15,7 +16,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2.5 mb-[18px]">
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
                 <rect x="2" y="2" width="16" height="16" rx="4" stroke="#2FA880" strokeWidth="1.5"/>
                 <rect x="12" y="12" width="16" height="16" rx="4" fill="#16775C"/>
                 <line x1="2" y1="2" x2="12" y2="12" stroke="#E9A020" strokeWidth="1.5" strokeLinecap="round"/>
@@ -28,27 +29,30 @@ export function Footer() {
             </p>
             <div className="space-y-2.5">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[13px] text-white/38 transition-colors hover:text-forest-300">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="6" stroke="rgba(255,255,255,.22)" strokeWidth=".8"/></svg>{PHONE_DISPLAY}
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" stroke="rgba(255,255,255,.22)" strokeWidth=".8"/></svg>{PHONE_DISPLAY}
               </a>
               <a href={`mailto:${EMAIL}`} className="flex items-center gap-2 text-[13px] text-white/38 transition-colors hover:text-forest-300">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x=".5" y="2" width="12" height="9" rx="1.5" stroke="rgba(255,255,255,.22)" strokeWidth=".8"/></svg>{EMAIL}
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><rect x=".5" y="2" width="12" height="9" rx="1.5" stroke="rgba(255,255,255,.22)" strokeWidth=".8"/></svg>{EMAIL}
               </a>
             </div>
           </div>
           {/* Columns */}
           {cols.map(col => (
-            <div key={col.title}>
+            <nav key={col.title} aria-label={`${col.title} links`}>
               <p className="text-[10px] font-medium tracking-[0.12em] uppercase text-white/22 mb-5">{col.title}</p>
               {col.links.map(lk => (
                 <Link key={lk.href} href={lk.href} className="block text-[13px] text-white/38 mb-3 transition-colors hover:text-white/78">{lk.l}</Link>
               ))}
-            </div>
+            </nav>
           ))}
         </div>
+        {/* C1 fix: use suppressHydrationWarning on the year span */}
         <div className="border-t border-white/[0.055] mt-14 pt-7 flex flex-col md:flex-row justify-between items-start md:items-center gap-2.5">
-          <p className="text-[12px] text-white/18">© {new Date().getFullYear()} Working Holiday Tax. All rights reserved.</p>
+          <p className="text-[12px] text-white/18" suppressHydrationWarning>
+            © {new Date().getFullYear()} Working Holiday Tax. All rights reserved.
+          </p>
           <span className="inline-flex items-center gap-2 text-[11px] text-white/20">
-            <span className="w-[5px] h-[5px] rounded-full bg-forest-400" />
+            <span className="w-[5px] h-[5px] rounded-full bg-forest-400" aria-hidden="true" />
             Supervised by {AGENT_NAME} · ABN {AGENT_ABN} · TPB #{AGENT_TPB}
           </span>
         </div>
