@@ -72,13 +72,13 @@ function Hero() {
 
           {/* H1 — dramatic, clean hierarchy */}
           <h1 className="font-serif font-black text-white mb-7" style={{
-            fontSize: 'clamp(52px, 8.5vw, 88px)',
-            lineHeight: 0.95,
-            letterSpacing: '-0.04em',
+            fontSize: 'clamp(44px, 7.5vw, 82px)',
+            lineHeight: 1.0,
+            letterSpacing: '-0.035em',
           }}>
-            <span className="block">Your tax,</span>
-            <span className="block italic font-normal" style={{ color: 'rgba(255,255,255,0.38)' }}>handled</span>
-            <span className="block">completely.</span>
+            <span className="block">Have questions</span>
+            <span className="block italic font-normal" style={{ color: 'rgba(255,255,255,0.38)' }}>about tax in Australia?</span>
+            <span className="block">We&apos;ve got you covered.</span>
           </h1>
 
           {/* Sub — one sentence, much cleaner */}
