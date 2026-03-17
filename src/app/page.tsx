@@ -223,10 +223,10 @@ function Services() {
 
 // ── PROCESS ────────────────────────────────────────────────────────────────
 const STEPS = [
- { n: '1', title: 'Message us on WhatsApp', body: 'Tell us what you need - TFN, tax return, super, or a question.' },
- { n: '2', title: 'Send your documents', body: 'We give you a simple checklist. No scanning, no office visits.' },
- { n: '3', title: 'We handle everything', body: 'We prepare and submit everything for you.' },
- { n: '4', title: 'Done. Money back.', body: 'Most tax returns are processed within 7-14 days.' },
+ { n: '1', title: 'Message us on WhatsApp', body: "Tell us what you need - TFN, tax return, super, or just a question. We'll explain your situation clearly." },
+ { n: '2', title: 'Send your documents',     body: 'We give you a simple checklist. Upload what you have - no scanning, no office visits.' },
+ { n: '3', title: 'We handle everything',    body: "We prepare, review, and submit everything for you. You don't need to deal with the ATO." },
+ { n: '4', title: 'Done. Money back.',       body: 'Most tax returns are processed within 7-14 days. We keep you updated along the way.' },
 ]
 
 function Process() {
