@@ -62,7 +62,7 @@ function Hero() {
 
           {/* Headline */}
           <h1 className="font-serif font-black text-ink mb-5" style={{
-            fontSize: 'clamp(28px, 4.5vw, 52px)',
+            fontSize: 'clamp(22px, 3.2vw, 40px)',
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
           }}>
