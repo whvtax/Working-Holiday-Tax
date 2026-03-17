@@ -46,44 +46,33 @@ const IconStar = () => (
 function Hero() {
   return (
     <section className="relative overflow-hidden pt-[68px] flex flex-col" style={{
-      background: 'linear-gradient(135deg, #0f1117 0%, #161b27 50%, #111827 100%)',
+      background: '#ffffff',
     }}>
-      <div className="absolute inset-0 pointer-events-none grid-bg" aria-hidden="true" />
-      {/* Subtle warm accent — top right */}
-      <div className="absolute pointer-events-none" aria-hidden="true" style={{
-        top: '-10%', right: '-10%', width: '55%', paddingBottom: '55%',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(99,102,241,.08) 0%, rgba(59,130,246,.04) 40%, transparent 70%)',
-      }} />
-      {/* Subtle green echo — bottom left, tying to brand */}
-      <div className="absolute pointer-events-none" aria-hidden="true" style={{
-        bottom: '-10%', left: '-5%', width: '35%', paddingBottom: '35%',
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(11,82,64,.18) 0%, transparent 65%)',
-      }} />
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true" style={{ backgroundImage: "linear-gradient(rgba(11,82,64,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(11,82,64,.04) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
+
 
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 w-full flex items-center py-12 lg:py-16 relative z-10">
         <div className="max-w-[640px]">
 
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2.5 mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-forest-300 animate-pulse-dot" aria-hidden="true" />
-            <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">Working Holiday Visa Specialist</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+            <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-500">Working Holiday Visa Specialist</span>
           </div>
 
           {/* Headline */}
-          <h1 className="font-serif font-black text-white mb-6" style={{
+          <h1 className="font-serif font-black text-ink mb-6" style={{
             fontSize: 'clamp(38px, 6vw, 68px)',
             lineHeight: 1.02,
             letterSpacing: '-0.03em',
           }}>
             <span className="block">Have questions</span>
-            <span className="block italic font-normal" style={{ color: 'rgba(255,255,255,0.38)' }}>about tax in Australia?</span>
+            <span className="block italic font-normal" style={{ color: 'rgba(10,15,13,0.45)' }}>about tax in Australia?</span>
             <span className="block">We&apos;ve got you covered.</span>
           </h1>
 
           {/* Sub */}
-          <p className="text-[16px] font-light leading-[1.75] mb-9" style={{ color: 'rgba(255,255,255,0.50)', maxWidth: '460px' }}>
+          <p className="text-[16px] font-light leading-[1.75] mb-9" style={{ color: 'rgba(10,15,13,0.58)', maxWidth: '460px' }}>
             From your first TFN application to your final super withdrawal — we guide Working Holiday Visa travellers through every step of tax in Australia.
           </p>
 
@@ -93,19 +82,19 @@ function Hero() {
               Ask us anything — free
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
-            <Link href="#how-it-works" className="btn-ghost-light" style={{ height: '52px', padding: '0 24px', fontSize: '14.5px' }}>
+            <Link href="#how-it-works" className="btn-ghost-dark" style={{ height: '52px', padding: '0 24px', fontSize: '14.5px' }}>
               How it works
             </Link>
           </div>
 
-          <p className="text-[11.5px] tracking-[0.04em]" style={{ color: 'rgba(255,255,255,0.20)' }}>
+          <p className="text-[11.5px] tracking-[0.04em]" style={{ color: 'rgba(10,15,13,0.38)' }}>
             Free to start · No commitment · 100% online
           </p>
         </div>
       </div>
 
       {/* Stats bar */}
-      <div className="relative z-10" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="relative z-10" style={{ borderTop: '1px solid rgba(10,15,13,0.08)' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-5">
           <div className="grid grid-cols-3">
             {[
@@ -114,9 +103,9 @@ function Hero() {
               { n: '5.0 ★',  l: 'Client satisfaction' },
             ].map((s, i) => (
               <div key={i} className="text-center relative">
-                {i > 0 && <span className="absolute left-0 top-[15%] bottom-[15%] w-px" style={{ background: 'rgba(255,255,255,0.06)' }} aria-hidden="true" />}
-                <span className="block font-serif font-black text-white mb-0.5" style={{ fontSize: 'clamp(18px,3vw,24px)', letterSpacing: '-0.03em' }}>{s.n}</span>
-                <span className="block text-[11px] tracking-[0.04em]" style={{ color: 'rgba(255,255,255,0.28)' }}>{s.l}</span>
+                {i > 0 && <span className="absolute left-0 top-[15%] bottom-[15%] w-px" style={{ background: 'rgba(10,15,13,0.08)' }} aria-hidden="true" />}
+                <span className="block font-serif font-black text-ink mb-0.5" style={{ fontSize: 'clamp(18px,3vw,24px)', letterSpacing: '-0.03em' }}>{s.n}</span>
+                <span className="block text-[11px] tracking-[0.04em]" style={{ color: 'rgba(10,15,13,0.45)' }}>{s.l}</span>
               </div>
             ))}
           </div>
