@@ -45,24 +45,24 @@ const IconStar = () => (
 // ── HERO ───────────────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section className="relative bg-ink-2 overflow-hidden pt-[68px] min-h-svh flex flex-col">
+    <section className="relative bg-ink-2 overflow-hidden pt-[68px] flex flex-col">
       <div className="absolute inset-0 pointer-events-none grid-bg" aria-hidden="true" />
       <div className="absolute pointer-events-none" aria-hidden="true" style={{
-        top: '-30%', right: '-20%', width: '80%', paddingBottom: '80%',
+        top: '-20%', right: '-15%', width: '65%', paddingBottom: '65%',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(11,82,64,.65) 0%, rgba(11,82,64,.15) 45%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(11,82,64,.42) 0%, rgba(11,82,64,.08) 50%, transparent 70%)',
       }} />
       <div className="absolute pointer-events-none" aria-hidden="true" style={{
-        bottom: '-20%', left: '-10%', width: '50%', paddingBottom: '50%',
+        bottom: '-15%', left: '-8%', width: '40%', paddingBottom: '40%',
         borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(11,82,64,.25) 0%, transparent 65%)',
+        background: 'radial-gradient(circle, rgba(11,82,64,.15) 0%, transparent 65%)',
       }} />
 
-      <div className="flex-1 max-w-7xl mx-auto px-6 md:px-12 lg:px-14 w-full flex items-center py-20 lg:py-32 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 w-full flex items-center py-14 lg:py-20 relative z-10">
         <div className="max-w-[680px]">
 
           {/* Eyebrow */}
-          <div className="inline-flex items-center gap-2.5 mb-10">
+          <div className="inline-flex items-center gap-2.5 mb-7">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-300 animate-pulse-dot" aria-hidden="true" />
             <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-300">Working Holiday Visa Specialist</span>
           </div>
@@ -102,7 +102,7 @@ function Hero() {
 
       {/* Stats bar */}
       <div className="relative z-10" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 py-8">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 py-6">
           <div className="grid grid-cols-3">
             {[
               { n: '$2.4M+', l: 'Tax sorted for clients' },
@@ -146,8 +146,8 @@ function Trust() {
   return (
     <section className="py-28 lg:py-36 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="max-w-xl mb-16 reveal">
-          <span className="section-label">Why travellers trust us</span>
+        <div className="max-w-2xl mx-auto text-center mb-16 reveal">
+          <span className="section-label center">Why travellers trust us</span>
           <h2 className="section-h2">Tax specialists who<br /><em>understand your situation.</em></h2>
           <p className="body-lg">We work exclusively with Working Holiday Visa holders. We know the rules, we know the edge cases, and we know what travellers like you actually need.</p>
         </div>
@@ -194,8 +194,8 @@ function Services() {
   return (
     <section className="py-28 lg:py-36" style={{ background: '#EEF7F2' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="max-w-xl mb-16 reveal">
-          <span className="section-label">What we help with</span>
+        <div className="max-w-2xl mx-auto text-center mb-16 reveal">
+          <span className="section-label center">What we help with</span>
           <h2 className="section-h2">Everything WHV travellers<br /><em>need for tax in Australia.</em></h2>
           <p className="body-lg">We cover the full tax journey — from the day you arrive to the day you leave.</p>
         </div>
@@ -234,32 +234,30 @@ function Process() {
   return (
     <section className="py-28 lg:py-36 bg-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
-        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-16 lg:gap-28">
 
-          <div className="lg:sticky lg:top-24 lg:self-start reveal-left">
-            <span className="section-label">How it works</span>
-            <h2 className="section-h2">Simple. Guided.<br /><em>No jargon.</em></h2>
-            <p className="body-lg mb-8">You don&apos;t need to understand Australian tax. We do — and we&apos;ll guide you through every step.</p>
-            <p className="text-[13.5px] leading-[1.7]" style={{ color: '#2FA880' }}>
-              <span className="font-semibold" style={{ color: '#0B5240' }}>Free to start.</span> We only charge once your work is ready to submit — and we tell you the fee upfront.
-            </p>
-          </div>
+        <div className="max-w-xl mb-14 reveal">
+          <span className="section-label">How it works</span>
+          <h2 className="section-h2">Simple. Guided.<br /><em>No jargon.</em></h2>
+          <p className="body-lg mb-5">You don&apos;t need to understand Australian tax. We do — and we&apos;ll guide you through every step.</p>
+          <p className="text-[13.5px] leading-[1.7]" style={{ color: '#2FA880' }}>
+            <span className="font-semibold" style={{ color: '#0B5240' }}>Free to start.</span> We only charge once your work is ready to submit — and we tell you the fee upfront.
+          </p>
+        </div>
 
-          <div className="flex flex-col reveal-right">
-            {STEPS.map((s, i) => (
-              <div key={i} className="flex gap-7 py-8" style={{ borderTop: '1px solid #E2EFE9', borderBottom: i === STEPS.length - 1 ? '1px solid #E2EFE9' : 'none' }}>
-                <div className="flex-shrink-0 mt-0.5">
-                  <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500" style={{ background: '#EAF6F1' }}>
-                    {s.n}
-                  </span>
-                </div>
-                <div>
-                  <p className="text-[15px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
-                  <p className="text-[14px] font-light text-muted leading-[1.7]">{s.body}</p>
-                </div>
+        <div className="flex flex-col reveal delay-2">
+          {STEPS.map((s, i) => (
+            <div key={i} className="flex gap-7 py-8" style={{ borderTop: '1px solid #E2EFE9', borderBottom: i === STEPS.length - 1 ? '1px solid #E2EFE9' : 'none' }}>
+              <div className="flex-shrink-0 mt-0.5">
+                <span className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-forest-500" style={{ background: '#EAF6F1' }}>
+                  {s.n}
+                </span>
               </div>
-            ))}
-          </div>
+              <div className="max-w-2xl">
+                <p className="text-[15px] font-semibold text-ink mb-1.5" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
+                <p className="text-[14px] font-light text-muted leading-[1.7]">{s.body}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -296,38 +294,38 @@ function Testimonials() {
     <section className="py-28 lg:py-36" style={{ background: '#F7FBF9' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
 
-        <div className="flex justify-between items-end flex-wrap gap-5 mb-16 reveal">
-          <div>
-            <span className="section-label">Client stories</span>
-            <h2 className="section-h2 mb-0">Travellers we&apos;ve helped.</h2>
-          </div>
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark">
+        {/* Heading — button sits below, not floated right */}
+        <div className="mb-14 reveal">
+          <span className="section-label">Client stories</span>
+          <h2 className="section-h2 mb-4">Travellers we&apos;ve helped.</h2>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost-dark inline-flex">
             Talk to us →
           </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 reveal delay-1">
+        {/* Cards — all uniform: white bg, same shadow, same padding */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 reveal delay-1">
           {TESTIMONIALS.map((t, i) => (
             <div key={i}
-              className={`rounded-2xl p-8 flex flex-col ${t.featured ? 'bg-forest-500' : 'bg-white'}`}
-              style={t.featured ? {} : { boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
-              <div className="flex gap-0.5 mb-6">
+              className="bg-white rounded-2xl p-8 flex flex-col"
+              style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
+              <div className="flex gap-0.5 mb-5">
                 {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
               </div>
-              <p className={`text-[15px] font-light leading-[1.8] flex-1 mb-6 ${t.featured ? 'text-white/80' : 'text-body'}`}>
+              <p className="text-[15px] font-light text-body leading-[1.8] flex-1 mb-5">
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <div className="flex items-center justify-between pt-5" style={{ borderTop: `1px solid ${t.featured ? 'rgba(255,255,255,0.1)' : '#E2EFE9'}` }}>
+              <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <div className="flex items-center gap-3">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 ${t.featured ? 'bg-white/10 text-white' : 'bg-forest-100 text-forest-500'}`}>
+                  <div className="w-8 h-8 rounded-full bg-forest-100 flex items-center justify-center text-[11px] font-bold flex-shrink-0 text-forest-500">
                     {t.name[0]}
                   </div>
                   <div>
-                    <p className={`text-[12.5px] font-semibold ${t.featured ? 'text-white' : 'text-ink'}`}>{t.name}</p>
-                    <p className={`text-[11.5px] ${t.featured ? 'text-white/40' : 'text-subtle'}`}>{t.from}</p>
+                    <p className="text-[12.5px] font-semibold text-ink">{t.name}</p>
+                    <p className="text-[11.5px] text-subtle">{t.from}</p>
                   </div>
                 </div>
-                <span className={`font-serif font-black text-[20px] ${t.featured ? 'text-amber' : 'text-forest-500'}`} style={{ letterSpacing: '-0.03em' }}>
+                <span className="font-serif font-black text-[19px] text-forest-500" style={{ letterSpacing: '-0.03em' }}>
                   {t.amount}
                 </span>
               </div>
@@ -335,23 +333,23 @@ function Testimonials() {
           ))}
         </div>
 
-        {/* Social proof strip */}
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-8 reveal delay-3">
+        {/* Stats strip — tighter gap to cards */}
+        <div className="mt-8 pt-8 flex flex-col sm:flex-row items-center justify-center gap-8 reveal delay-3" style={{ borderTop: '1px solid #E2EFE9' }}>
           <div className="text-center">
-            <p className="font-serif font-black text-forest-500 text-[32px]" style={{ letterSpacing: '-0.03em' }}>5.0</p>
+            <p className="font-serif font-black text-forest-500 text-[28px]" style={{ letterSpacing: '-0.03em' }}>5.0</p>
             <div className="flex gap-0.5 justify-center mt-1">
               {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
             </div>
             <p className="text-[12px] text-subtle mt-1">Average rating</p>
           </div>
-          <div className="hidden sm:block w-px h-12 bg-border" aria-hidden="true" />
+          <div className="hidden sm:block w-px h-10 bg-border" aria-hidden="true" />
           <div className="text-center">
-            <p className="font-serif font-black text-forest-500 text-[32px]" style={{ letterSpacing: '-0.03em' }}>1,200+</p>
+            <p className="font-serif font-black text-forest-500 text-[28px]" style={{ letterSpacing: '-0.03em' }}>1,200+</p>
             <p className="text-[12px] text-subtle mt-1">WHV holders helped</p>
           </div>
-          <div className="hidden sm:block w-px h-12 bg-border" aria-hidden="true" />
+          <div className="hidden sm:block w-px h-10 bg-border" aria-hidden="true" />
           <div className="text-center">
-            <p className="font-serif font-black text-forest-500 text-[32px]" style={{ letterSpacing: '-0.03em' }}>$2.4M+</p>
+            <p className="font-serif font-black text-forest-500 text-[28px]" style={{ letterSpacing: '-0.03em' }}>$2.4M+</p>
             <p className="text-[12px] text-subtle mt-1">Tax sorted for clients</p>
           </div>
         </div>
@@ -365,8 +363,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <Trust />
       <Services />
+      <Trust />
       <Process />
       <Testimonials />
       <CtaBand
