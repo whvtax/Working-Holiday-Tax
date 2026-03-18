@@ -43,34 +43,6 @@ const IconStar = () => (
 )
 
 
-// ── AVATARS ────────────────────────────────────────────────────────────────
-function Avatar({ id }: { id: string }) {
-  // Distinct illustrated profile avatars using SVG
-  const configs: Record<string, { bg: string; skin: string; hair: string }> = {
-    liam: { bg: '#DBEAFE', skin: '#FDDCB5', hair: '#6B3F1F' },
-    emma: { bg: '#FCE7F3', skin: '#F5C4A0', hair: '#1A1A1A' },
-    max:  { bg: '#D1FAE5', skin: '#FDDCB5', hair: '#8B4513' },
-  }
-  const c = configs[id] || configs.liam
-  return (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" className="flex-shrink-0">
-      <circle cx="16" cy="16" r="16" fill={c.bg} />
-      {/* Hair */}
-      <ellipse cx="16" cy="11" rx="7" ry="6.5" fill={c.hair} />
-      <rect x="9" y="11" width="14" height="5" fill={c.hair} />
-      {/* Face */}
-      <ellipse cx="16" cy="15" rx="5.5" ry="6" fill={c.skin} />
-      {/* Eyes */}
-      <circle cx="13.8" cy="14.5" r="0.9" fill="#3B2A1A" />
-      <circle cx="18.2" cy="14.5" r="0.9" fill="#3B2A1A" />
-      {/* Smile */}
-      <path d="M13.5 17.5 Q16 19.5 18.5 17.5" stroke="#3B2A1A" strokeWidth="0.8" strokeLinecap="round" fill="none" />
-      {/* Shoulders */}
-      <ellipse cx="16" cy="28" rx="9" ry="5" fill={c.hair} opacity="0.7" />
-    </svg>
-  )
-}
-
 // ── HERO ───────────────────────────────────────────────────────────────────
 function Hero() {
   return (
@@ -97,12 +69,12 @@ function Hero() {
 
           {/* Sub */}
           <p className="font-light leading-[1.7] mb-5" style={{ fontSize: '13.5px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
-            We handle everything and maximise your tax refund.
+            TFN, ABN, Tax Return, Super Withdrawal - we handle the paperwork so you can enjoy your time in Australia.
           </p>
 
           {/* Money signal */}
-          <p className="font-light mb-5" style={{ fontSize: '12.5px', color: 'rgba(10,15,13,0.52)' }}>
-            TFN, ABN, Tax Return, Super - handled from start to finish.
+          <p className="font-light mb-5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)', fontStyle: 'italic' }}>
+            Most WHV travellers overpay tax - we make sure you don&apos;t.
           </p>
 
           {/* CTAs */}
@@ -127,6 +99,27 @@ function Hero() {
       </div>
 
 
+      {/* Trust cards */}
+      <div className="relative z-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            {[
+              { n: '4.9★',   l: 'Google rating' },
+              { n: '1,200+', l: 'WHV clients helped' },
+              { n: '<1 hr',  l: 'WhatsApp response' },
+              { n: '100%',   l: 'Online service' },
+            ].map((c, i) => (
+              <div key={i} className="rounded-xl text-center py-3 px-2" style={{
+                background: '#ffffff',
+                border: '1.5px solid #C8EAE0',
+              }}>
+                <p className="font-serif font-black text-forest-500 mb-1" style={{ fontSize: 'clamp(17px,2.2vw,21px)', letterSpacing: '-0.03em', lineHeight: 1 }}>{c.n}</p>
+                <p className="font-light" style={{ fontSize: '10.5px', color: 'rgba(10,15,13,0.55)', lineHeight: 1.35 }}>{c.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
@@ -168,7 +161,7 @@ function Trust() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 reveal delay-2">
           {TRUST_ITEMS.map((item, i) => (
-            <div key={i} className="pt-5 text-center" style={{ borderTop: '2px solid #E9A020' }}>
+            <div key={i} className="pt-5 border-t border-border text-center">
               <h3 className="text-[13px] font-semibold text-ink mb-2" style={{ letterSpacing: '-0.01em' }}>{item.title}</h3>
               <p className="text-[12.5px] font-light text-muted leading-[1.7]">{item.body}</p>
             </div>
@@ -243,7 +236,7 @@ function Services() {
 
 // ── PROCESS ────────────────────────────────────────────────────────────────
 const STEPS = [
-  { n: '1', title: 'Tell us your situation', body: 'TFN, ABN, tax return or super - or just a question. Tell us your situation and we reply quickly.' },
+  { n: '1', title: 'Tell us what you need',  body: 'TFN, ABN, tax return or super - or just a question. Tell us your situation and we reply quickly.' },
   { n: '2', title: 'Send your documents',    body: 'We give you a simple checklist. Upload what you have - no scanning, no office visits needed.' },
   { n: '3', title: 'We handle everything',   body: 'We prepare, review, and lodge everything for you - no ATO portals, no confusion, no stress.' },
   { n: '4', title: 'Get your money back',    body: 'Most tax returns are processed within 7–14 days. We keep you updated every step of the way.' },
@@ -315,27 +308,33 @@ function Process() {
 }
 
 // ── TESTIMONIALS ───────────────────────────────────────────────────────────
-const TESTIMONIALS: { name: string; from: string; quote: string; amount: string; avatar: string }[] = [
+const TESTIMONIALS = [
   {
     name: "Liam O'Brien",
     from: 'Ireland · WHV 417',
     quote: 'I was stressed about my super - four months, three different employers. They guided me through everything and helped me get it all back.',
     amount: '$3,200',
-    avatar: 'liam',
+    initials: 'L',
+    bgColor: '#DBEAFE',
+    textColor: '#1E40AF',
   },
   {
     name: 'Emma T.',
     from: 'United Kingdom · WHV 417',
     quote: 'Got my TFN sorted in two days, and they handled my entire tax return when I left. No stress - just money back in my account.',
     amount: '$2,450',
-    avatar: 'emma',
+    initials: 'E',
+    bgColor: '#FCE7F3',
+    textColor: '#9D174D',
   },
   {
     name: 'Max Fischer',
     from: 'Germany · WHV 417',
     quote: 'Fast, clear, and genuinely helpful. They explained everything simply and helped me get my super back after I left.',
     amount: '$4,100',
-    avatar: 'max',
+    initials: 'M',
+    bgColor: '#D1FAE5',
+    textColor: '#065F46',
   },
 ]
 
@@ -373,7 +372,11 @@ function Testimonials() {
               {/* Footer row */}
               <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <div className="flex items-center gap-2.5">
-                  <Avatar id={t.avatar} />
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
+                    style={{ background: t.bgColor, color: t.textColor }}>
+                    {t.initials}
+                  </div>
                   <div>
                     <p className="text-[12px] font-semibold text-ink leading-tight">{t.name}</p>
                     <p className="text-[11px] text-subtle leading-tight mt-0.5">{t.from}</p>
@@ -429,7 +432,7 @@ export default function HomePage() {
         heading="Your tax, done right."
         headingEm="From anywhere in Australia and abroad."
         sub={<>TFN, tax return, super, and ABN - handled for Working Holiday travellers.<br />Start with a free check.</>}
-        primaryLabel="Check your eligibility"
+        primaryLabel="Check what you need →"
         clipTop
       />
     </>
