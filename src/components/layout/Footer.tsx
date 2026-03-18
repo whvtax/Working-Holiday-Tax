@@ -25,13 +25,13 @@ export function Footer() {
               <span className="font-serif font-bold text-ink" style={{ fontSize: '13.5px' }}>Working Holiday Tax</span>
             </div>
             <p className="font-light leading-[1.65] mb-4" style={{ fontSize: '12px', color: '#587066', maxWidth: '200px' }}>
-              Australian tax help for Working Holiday Visa holders.
+              Australian tax help for Working Holiday Makers in Australia.
             </p>
             {/* Mini CTA */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
               style={{ fontSize: '12px', color: '#0B5240' }}>
-              Get help on WhatsApp
+              Ask us anything →
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
           </div>
@@ -42,7 +42,7 @@ export function Footer() {
             <Link href="/tfn"           className={linkCls} style={linkStyle}>TFN Application</Link>
             <Link href="/abn"           className={linkCls} style={linkStyle}>ABN Registration</Link>
             <Link href="/tax-return"    className={linkCls} style={linkStyle}>Tax Return</Link>
-            <Link href="/superannuation" className={linkCls} style={linkStyle}>Superannuation</Link>
+            <Link href="/superannuation" className={linkCls} style={linkStyle}>Super Withdrawal</Link>
             <Link href="/medicare"      className={linkCls} style={linkStyle}>Medicare</Link>
           </nav>
 
