@@ -1,11 +1,12 @@
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { WA_URL } from '@/lib/constants'
 
 interface Props {
   eyebrow?: string
   heading: string
   headingEm?: string
-  sub: string
+  sub: ReactNode
   primaryLabel?: string
   secondaryLabel?: string
   secondaryHref?: string

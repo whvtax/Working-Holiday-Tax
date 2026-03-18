@@ -43,7 +43,6 @@ export function Footer() {
             <Link href="/abn"           className={linkCls} style={linkStyle}>ABN Registration</Link>
             <Link href="/tax-return"    className={linkCls} style={linkStyle}>Tax Return</Link>
             <Link href="/superannuation" className={linkCls} style={linkStyle}>Super Withdrawal</Link>
-            <Link href="/medicare"      className={linkCls} style={linkStyle}>Medicare</Link>
           </nav>
 
           {/* Contact */}
