@@ -29,9 +29,8 @@ export function Footer() {
             </p>
             {/* Mini CTA */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium transition-colors"
-              style={{ fontSize: '12px', color: '#0B5240' }}
-              className="hover-forest-light transition-colors">
+              className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
+              style={{ fontSize: '12px', color: '#0B5240' }}>
               Get help on WhatsApp
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>

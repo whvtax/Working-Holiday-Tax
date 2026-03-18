@@ -79,9 +79,8 @@ function InlineCTA({ label = 'Get your TFN sorted — start here' }: { label?: s
   return (
     <div className="mt-6">
       <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 font-medium transition-colors"
-        style={{ fontSize: '13px', color: '#0B5240' }}
-className="hover-forest-light transition-colors">
+        className="inline-flex items-center gap-2 font-medium transition-colors hover-forest-light"
+        style={{ fontSize: '13px', color: '#0B5240' }}>
         {label}
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
           <path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -346,9 +345,8 @@ export default function TFNPage() {
               <span className="font-semibold text-forest-500">Not sure if you are doing it right?</span> We guide you through the entire process and check everything before you submit.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="flex-shrink-0 inline-flex items-center gap-1.5 font-semibold whitespace-nowrap transition-colors"
-              style={{ fontSize: '12.5px', color: '#0B5240' }}
-className="hover-forest-light transition-colors">
+              className="flex-shrink-0 inline-flex items-center gap-1.5 font-semibold whitespace-nowrap transition-colors hover-forest-light"
+              style={{ fontSize: '12.5px', color: '#0B5240' }}>
               We handle this for you
               <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
