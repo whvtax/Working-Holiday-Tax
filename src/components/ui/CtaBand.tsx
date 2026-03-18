@@ -37,7 +37,6 @@ export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLa
               fontSize: '14px',
             }}>
               {primaryLabel}
-              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
             {secondaryLabel && (
               <Link href={secondaryHref} className="btn-ghost-light" style={{ height: '46px' }}>
