@@ -249,3 +249,8 @@
     /* ── FAQ accordion: larger touch targets ── */
     .accordion-item button { min-height: 52px; padding-top: 14px !important; padding-bottom: 14px !important; }
   }
+
+  /* ── Hover utilities (CSS-only, safe in server components) ── */
+  .hover-forest:hover { color: #0B5240; }
+  .hover-forest-light:hover { color: #16775C; }
+  .hover-forest-bg:hover { background: #EAF6F1; border-color: #0B5240; }

@@ -2,10 +2,8 @@
 import Link from 'next/link'
 import { WA_URL, EMAIL } from '@/lib/constants'
 
-const linkCls = "block mb-2.5 transition-colors"
+const linkCls = "block mb-2.5 transition-colors hover-forest"
 const linkStyle = { fontSize: '12.5px', color: '#587066' }
-const onEnter = (e: React.MouseEvent<HTMLElement>) => (e.currentTarget.style.color = '#0B5240')
-const onLeave = (e: React.MouseEvent<HTMLElement>) => (e.currentTarget.style.color = '#587066')
 
 export function Footer() {
   return (
@@ -33,8 +31,7 @@ export function Footer() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 font-medium transition-colors"
               style={{ fontSize: '12px', color: '#0B5240' }}
-              onMouseEnter={e => (e.currentTarget.style.color = '#16775C')}
-              onMouseLeave={e => (e.currentTarget.style.color = '#0B5240')}>
+              className="hover-forest-light transition-colors">
               Get help on WhatsApp
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
@@ -43,27 +40,27 @@ export function Footer() {
           {/* Services */}
           <nav aria-label="Services links">
             <p className="font-semibold tracking-[0.12em] uppercase mb-3" style={{ fontSize: '9.5px', color: '#587066' }}>Services</p>
-            <Link href="/tfn"           className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>TFN Application</Link>
-            <Link href="/abn"           className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>ABN Registration</Link>
-            <Link href="/tax-return"    className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Tax Return</Link>
-            <Link href="/superannuation" className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Superannuation</Link>
-            <Link href="/medicare"      className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Medicare</Link>
+            <Link href="/tfn"           className={linkCls} style={linkStyle}>TFN Application</Link>
+            <Link href="/abn"           className={linkCls} style={linkStyle}>ABN Registration</Link>
+            <Link href="/tax-return"    className={linkCls} style={linkStyle}>Tax Return</Link>
+            <Link href="/superannuation" className={linkCls} style={linkStyle}>Superannuation</Link>
+            <Link href="/medicare"      className={linkCls} style={linkStyle}>Medicare</Link>
           </nav>
 
           {/* Contact */}
           <nav aria-label="Contact links">
             <p className="font-semibold tracking-[0.12em] uppercase mb-3" style={{ fontSize: '9.5px', color: '#587066' }}>Contact</p>
-            <a href={`mailto:${EMAIL}`} className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Email</a>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>WhatsApp</a>
-            <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>TikTok</a>
-            <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Instagram</a>
+            <a href={`mailto:${EMAIL}`} className={linkCls} style={linkStyle}>Email</a>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>WhatsApp</a>
+            <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>TikTok</a>
+            <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>Instagram</a>
           </nav>
 
           {/* Legal */}
           <nav aria-label="Legal links">
             <p className="font-semibold tracking-[0.12em] uppercase mb-3" style={{ fontSize: '9.5px', color: '#587066' }}>Legal</p>
-            <Link href="/client-agreement" className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Client Agreement</Link>
-            <Link href="/privacy"          className={linkCls} style={linkStyle} onMouseEnter={onEnter} onMouseLeave={onLeave}>Privacy Policy</Link>
+            <Link href="/client-agreement" className={linkCls} style={linkStyle}>Client Agreement</Link>
+            <Link href="/privacy"          className={linkCls} style={linkStyle}>Privacy Policy</Link>
           </nav>
         </div>
 
