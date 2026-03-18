@@ -9,9 +9,9 @@ export const AGENT_TPB     = '26233096'
 
 export const NAV_LINKS = [
   { label: 'TFN',         href: '/tfn' },
+  { label: 'ABN',         href: '/abn' },
   { label: 'Tax Return',  href: '/tax-return' },
   { label: 'Super',       href: '/superannuation' },
-  { label: 'ABN',         href: '/abn' },
   { label: 'Medicare',    href: '/medicare' },
   { label: 'Contact',     href: '/contact' },
 ] as const
