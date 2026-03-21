@@ -25,7 +25,7 @@ export function Footer() {
               <span className="font-serif font-bold text-ink" style={{ fontSize: '13.5px' }}>Working Holiday Tax</span>
             </div>
             <p className="font-light leading-[1.65] mb-4" style={{ fontSize: '12px', color: '#587066', maxWidth: '200px' }}>
-              Australian tax help for Working Holiday Makers in Australia.
+              Tax help in Australia for Working Holiday travellers.
             </p>
             {/* Mini CTA */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
@@ -39,10 +39,10 @@ export function Footer() {
           {/* Services */}
           <nav aria-label="Services links">
             <p className="font-semibold tracking-[0.12em] uppercase mb-3" style={{ fontSize: '9.5px', color: '#587066' }}>Services</p>
-            <Link href="/tfn"           className={linkCls} style={linkStyle}>TFN Application</Link>
-            <Link href="/abn"           className={linkCls} style={linkStyle}>ABN Registration</Link>
-            <Link href="/tax-return"    className={linkCls} style={linkStyle}>Tax Return</Link>
-            <Link href="/superannuation" className={linkCls} style={linkStyle}>Super Withdrawal</Link>
+            <Link href="/tfn"           className={linkCls} style={linkStyle}>TFN application</Link>
+            <Link href="/abn"           className={linkCls} style={linkStyle}>ABN registration</Link>
+            <Link href="/tax-return"    className={linkCls} style={linkStyle}>Tax return</Link>
+            <Link href="/superannuation" className={linkCls} style={linkStyle}>Super withdrawal</Link>
           </nav>
 
           {/* Contact */}

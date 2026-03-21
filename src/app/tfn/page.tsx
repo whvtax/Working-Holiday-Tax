@@ -12,42 +12,42 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: 'Can I start work before I receive my TFN?',
-    answer: 'Yes. But you must provide your TFN within 28 days. Until then, your employer will withhold tax at 47%.',
+    answer: 'Yes. You can start working, but you must provide your TFN within 28 days. Until then, your employer may withhold tax at a higher rate.',
   },
   {
     question: 'Where will my TFN be sent?',
-    answer: 'By post to your Australian address. Use an address where you can receive mail for at least 28 days.',
+    answer: 'Your TFN is sent by post to your Australian address. Make sure you use an address where you can receive mail.',
   },
   {
     question: 'Can I get a TFN on a tourist visa?',
-    answer: 'No. You need a work visa, such as a Working Holiday Visa (417 or 462).',
+    answer: 'No. You need a valid work visa, such as a Working Holiday visa 417 or 462.',
   },
   {
     question: 'What if I lose my TFN?',
-    answer: 'You can find it in previous tax returns or through your ATO account, or request it again from the ATO.',
+    answer: 'You can find your TFN in previous tax returns, request it from the ATO, or ask your tax agent.',
   },
   {
     question: 'What is a TFN Declaration Form?',
-    answer: 'A form you complete when starting a job. It tells your employer how much tax to withhold.',
+    answer: 'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.',
   },
 ]
 
 const MISTAKES = [
   {
-    title: 'Incorrect visa details',
-    body: 'Use the exact visa subclass from your passport or ImmiAccount. Errors are the most common cause of delays.',
+    title: 'Incorrect personal details',
+    body: 'Make sure your personal details and visa subclass match your passport and ImmiAccount. Errors here can delay your application.',
   },
   {
     title: 'Wrong postal address',
-    body: 'Your TFN is sent by post. Use a stable Australian address where you can receive mail.',
+    body: 'Your TFN is sent by post. Use a reliable Australian address where you can receive mail (you can use your hostel address).',
   },
   {
     title: 'Applying too late',
-    body: 'You have 28 days after starting work. Apply as early as possible to avoid delays.',
+    body: 'You must provide your TFN within 28 days of starting work. Apply early to avoid delays.',
   },
   {
     title: 'Using unofficial websites',
-    body: 'Apply only through the official ATO website. The application is free - avoid unnecessary fees.',
+    body: 'Apply only through the official ATO website. The application is free, so avoid unnecessary fees.',
   },
 ]
 
@@ -55,22 +55,22 @@ const STEPS = [
   {
     n: '1',
     title: 'Check your eligibility',
-    body: 'Make sure you have a valid work visa (WHV 417 or 462) and your passport details ready.',
+    body: 'Make sure you are in Australia and have a valid visa and your passport details ready.',
   },
   {
     n: '2',
     title: 'Submit your application',
-    body: 'Apply through the official ATO website. Takes around 10 minutes and is completely free.',
+    body: 'Apply through the official ATO website. The process takes around 10 minutes and is free.',
   },
   {
     n: '3',
     title: 'ATO reviews your details',
-    body: 'Processing usually takes 7-28 days. In some cases, you can confirm by phone within a week.',
+    body: 'Your application is reviewed by the ATO, and you will receive confirmation by email.',
   },
   {
     n: '4',
     title: 'Receive your TFN',
-    body: 'Your TFN arrives by post. Provide it to your employer as soon as you receive it.',
+    body: 'Your TFN is sent by post once your application is approved. You can receive it by phone after about a week.',
   },
 ]
 
@@ -95,19 +95,19 @@ export default function TFNPage() {
             </div>
 
             <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(22px,3.5vw,40px)', lineHeight: 1.06, letterSpacing: '-0.025em' }}>
-              Get your TFN sorted fast<br />
+              Get your TFN sorted quickly<br />
               <span style={{ color: '#0B5240' }}>and start working sooner.</span>
             </h1>
 
             <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '14.5px', color: 'rgba(10,15,13,0.6)', maxWidth: '520px' }}>
-              Without a TFN, you pay 47% tax. Apply before you start working - we handle everything for you.
+              Without a TFN you pay 47% tax. Apply before you start work.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center mb-5">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary"
                 style={{ height: '46px', padding: '0 24px', fontSize: '14px' }}>
-                Start your TFN now →
+                Start your TFN →
               </a>
               <Link href="#how-to-apply"
                 className="btn-ghost-dark"
@@ -117,7 +117,7 @@ export default function TFNPage() {
             </div>
 
             <p className="text-[11px]" style={{ color: 'rgba(10,15,13,0.38)' }}>
-              Free to start&nbsp;•&nbsp;Registered tax agent&nbsp;•&nbsp;1,200+ WHV travellers helped
+              Handled under a registered tax agent&nbsp;•&nbsp;Fully ATO compliant
             </p>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function TFNPage() {
             <div className="reveal">
               <span className="section-label">What is a TFN?</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                A number you need to work and pay<br />
+                A Tax File Number you need to work and pay<br />
                 <em className="not-italic font-normal text-forest-400">the correct tax in Australia.</em>
               </h2>
               <div className="space-y-3 mb-5 max-w-[460px]">
@@ -152,17 +152,17 @@ export default function TFNPage() {
                 ))}
               </div>
               <div className="info-block">
-                <p>Free to apply. Your TFN usually arrives within 7-28 days by post.</p>
+                <p>Free to apply. Your TFN usually arrives within 7 to 28 days by post.</p>
               </div>
             </div>
 
             {/* Right — fact cards */}
             <div className="grid grid-cols-1 gap-3 reveal delay-1">
               {[
-                { title: 'Issued by',       body: 'The Australian Taxation Office (ATO) - Australia\'s official tax authority.' },
-                { title: 'Processing time', body: 'Usually 7-28 days by post. In some cases, confirmation is available within a week.' },
-                { title: 'Cost',            body: 'Free via the ATO. We offer a guided service to help you apply quickly and correctly.' },
-                { title: 'What you need',   body: 'Passport, valid visa, Australian address, and a contact email.' },
+                { title: 'Issued by',       body: 'The Australian Taxation Office (ATO), Australia\'s official tax authority.' },
+                { title: 'Delivery address',  body: 'After approval, your TFN is issued and sent by post to your Australian address.' },
+                { title: 'Application cost', body: 'Free via the ATO. We offer a guided service to help you apply correctly.' },
+                { title: 'What you need',   body: 'Passport, valid visa, Australian address, contact email, and an Australian phone number.' },
               ].map((c, i) => (
                 <div key={i} className="bg-white rounded-xl px-4 py-3.5" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
                   <p className="text-[13px] font-semibold text-ink mb-1">{c.title}</p>
@@ -183,22 +183,22 @@ export default function TFNPage() {
             <div className="reveal">
               <span className="section-label">Why you need one</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                No TFN means 47% tax<br />
-                <em className="not-italic font-normal text-forest-400">on your income.</em>
+                Without a TFN, 47% tax is withheld<br />
+                <em className="not-italic font-normal text-forest-400">from your income.</em>
               </h2>
               <div className="space-y-0">
                 {[
                   {
                     label: 'Legal requirement',
-                    body: 'Every employer in Australia requires your TFN. Without it, 47% tax is withheld.',
+                    body: 'Employers in Australia require your TFN for tax purposes. Without it, higher tax is withheld.',
                   },
                   {
                     label: 'Correct tax rate',
-                    body: 'With a TFN, you pay the correct rate - from 15%, not 47%.',
+                    body: 'With a TFN, you pay the correct tax rate starting from 15% for WHV holders.',
                   },
                   {
                     label: 'Tax refund',
-                    body: 'You need a TFN to lodge a tax return and claim back any overpaid tax.',
+                    body: 'A TFN is required to lodge your tax return, set up a super account, and open a bank account.',
                   },
                 ].map((item, i) => (
                   <div key={i} className="py-4" style={{ borderTop: '1px solid #E2EFE9' }}>
@@ -212,7 +212,7 @@ export default function TFNPage() {
                 <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
                   style={{ fontSize: '13px', color: '#0B5240' }}>
-                  Apply now - we guide you through it →
+                  Apply now and get guided support →
                 </a>
               </div>
             </div>
@@ -221,11 +221,11 @@ export default function TFNPage() {
             <div className="reveal delay-1">
               <span className="section-label">Who needs a TFN?</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                Anyone earning income<br />
-                <em className="not-italic font-normal text-forest-400">in Australia needs a TFN.</em>
+                If you earn income in Australia,<br />
+                <em className="not-italic font-normal text-forest-400">you need a TFN.</em>
               </h2>
               <p className="font-light text-muted leading-[1.7] mb-4" style={{ fontSize: '13px' }}>
-                You need a TFN if you work, earn income, or plan to lodge a tax return. This includes:
+                No matter your visa or job, if you earn income in Australia, you need a TFN.
               </p>
               <div className="space-y-3 mb-5">
                 {[
@@ -245,7 +245,6 @@ export default function TFNPage() {
               </div>
               <div className="rounded-xl px-4 py-4" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
                 <p className="text-[13px] font-light text-body leading-[1.7]">
-                  <span className="font-semibold text-forest-500">Apply as soon as you arrive.</span>{' '}
                   You can start working, but you must provide your TFN within 28 days.
                 </p>
               </div>
@@ -266,10 +265,10 @@ export default function TFNPage() {
               <em className="not-italic font-normal text-forest-400">Start working sooner.</em>
             </h2>
             <p className="font-semibold text-ink mb-1" style={{ fontSize: '13.5px' }}>
-              We guide you through the entire process.
+              Get guided support throughout the process.
             </p>
             <p className="font-light text-muted" style={{ fontSize: '12.5px' }}>
-              Free to apply. Simple, fast, and fully guided.
+              Free to apply. Simple and fully guided.
             </p>
           </div>
 
@@ -309,7 +308,7 @@ export default function TFNPage() {
 
           <div className="text-center mt-8 reveal delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 24px', fontSize: '14px' }}>
-              Start your TFN now →
+              Start your TFN →
             </a>
           </div>
         </div>
@@ -323,11 +322,11 @@ export default function TFNPage() {
           <div className="max-w-xl mb-8 reveal">
             <span className="section-label">Avoid these mistakes</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-2" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              4 common mistakes that delay<br />
-              <em className="not-italic font-normal text-forest-400">your TFN.</em>
+              4 mistakes that delay<br />
+              <em className="not-italic font-normal text-forest-400">your TFN application.</em>
             </h2>
             <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '13px' }}>
-              These mistakes can delay your application and your ability to work.
+              These mistakes can delay your application and delay when you can start working.
             </p>
           </div>
 
@@ -347,7 +346,7 @@ export default function TFNPage() {
 
           <div className="mt-6 rounded-xl px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 reveal delay-2" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
             <p className="text-[13px] font-light text-body leading-[1.65]">
-              Not sure you are doing it right? We guide you through the entire process and check everything before you submit.
+              Not sure you are doing it right? We check everything and guide you before you submit.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="flex-shrink-0 inline-flex items-center gap-1.5 font-semibold whitespace-nowrap transition-colors hover-forest-light"
@@ -370,12 +369,12 @@ export default function TFNPage() {
                 TFN questions, answered.
               </h2>
               <p className="font-light text-muted leading-[1.65] mb-5" style={{ fontSize: '13px' }}>
-                Still unsure? Ask us directly - we reply within minutes.
+                Still unsure? Ask our tax experts.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '42px', padding: '0 18px', fontSize: '13px' }}>
-                Ask us now →
+                Get help now →
               </a>
             </div>
 
@@ -390,10 +389,10 @@ export default function TFNPage() {
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <CtaBand
         eyebrow="Apply now"
-        heading="Start working at the correct tax rate."
+        heading="Start working with the correct tax rate."
         headingEm=""
-        sub="We help you apply in minutes - no errors, no delays, no 47% tax."
-        primaryLabel="Start your TFN now →"
+        sub="Apply in minutes with expert guidance. No errors, no delays, no overpaid tax."
+        primaryLabel="Start your TFN application"
       />
     </>
   )

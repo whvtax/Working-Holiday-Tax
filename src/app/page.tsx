@@ -63,18 +63,18 @@ function Hero() {
             lineHeight: 1.12,
             letterSpacing: '-0.025em',
           }}>
-            Got questions about WHV tax in Australia?{' '}
-            <span style={{ color: '#0B5240' }}>We take care of everything.</span>
+            Confused about tax in Australia?{' '}
+            <span style={{ color: '#0B5240' }}>We&apos;ve got you covered.</span>
           </h1>
 
           {/* Sub */}
           <p className="font-light leading-[1.7] mb-5" style={{ fontSize: '13.5px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
-            TFN, ABN, Tax Return, Super Withdrawal - we handle the paperwork so you can enjoy your time in Australia.
+            TFN, ABN, Tax Return &amp; Super - we handle everything for you, so you don&apos;t have to stress about paperwork.
           </p>
 
           {/* Money signal */}
           <p className="font-light mb-5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)', fontStyle: 'italic' }}>
-            Most WHV travellers overpay tax - we make sure you don&apos;t.
+            Most backpackers overpay tax in Australia, we make sure you don&apos;t.
           </p>
 
           {/* CTAs */}
@@ -82,7 +82,7 @@ function Hero() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary"
               style={{ height: '44px', padding: '0 22px', fontSize: '13.5px' }}>
-              Ask us anything →
+              Get help with your tax
             </a>
             <Link href="#how-it-works"
               className="btn-ghost-dark"
@@ -106,7 +106,7 @@ function Hero() {
             {[
               { n: '4.9★',   l: 'Google rating' },
               { n: '1,200+', l: 'WHV clients helped' },
-              { n: '<1 hr',  l: 'WhatsApp response' },
+              { n: '<1 hr',  l: 'Response time' },
               { n: '100%',   l: 'Online service' },
             ].map((c, i) => (
               <div key={i} className="rounded-xl text-center py-3 px-2" style={{
@@ -128,19 +128,19 @@ function Hero() {
 const TRUST_ITEMS = [
   {
     title: 'WHV tax specialists',
-    body: 'Multiple employers, ABN income, super withdrawals, residency questions - we deal with these every day.',
+    body: 'Working Holiday tax is all we do. We handle complex situations every day.',
   },
   {
     title: 'Registered. Compliant. Accountable.',
-    body: 'Handled under a registered tax agent. Fully compliant, accountable, and ATO-approved for all services.',
+    body: 'Handled under a registered tax agent. Fully compliant and accountable for every service.',
   },
   {
     title: 'Real people, fast answers',
-    body: 'Human support, professional service, and full guidance throughout the entire process.',
+    body: 'Real people who respond quickly. We guide you through the whole process.',
   },
   {
     title: 'We make it simple',
-    body: 'No forms, no ATO portals, no office visits - we handle the work and keep you updated.',
+    body: 'No forms, no stress, no confusion. We handle the process and keep you updated.',
   },
 ]
 
@@ -151,11 +151,11 @@ function Trust() {
         <div className="max-w-xl mx-auto text-center mb-8 reveal">
           <span className="section-label center">Why travellers trust us</span>
           <h2 className="font-serif font-black text-ink mt-1.5 mb-2" style={{ fontSize: 'clamp(17px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-            Built for WHV travellers.{' '}
-            <em className="not-italic font-normal text-forest-400">We understand your situation from day one.</em>
+            Built for Working Holiday travellers.{' '}
+            <em className="not-italic font-normal text-forest-400">We understand exactly what you need.</em>
           </h2>
           <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '13px' }}>
-            We work with Working Holiday travellers - so we know exactly what you need.
+            We work with Working Holiday travellers every day, so we know what works and what doesn&apos;t.
           </p>
         </div>
 
@@ -182,17 +182,17 @@ const SERVICES = [
   {
     n: '02', href: '/tax-return', icon: <IconLock />,
     title: 'Tax Return',
-    desc: 'Get your tax refund without the hassle. We prepare, lodge, and handle everything with the ATO for you.',
+    desc: 'Get your tax refund fast and stress free. We handle everything with the ATO for you.',
   },
   {
     n: '03', href: '/superannuation', icon: <IconClock />,
     title: 'Super Withdrawal',
-    desc: 'Your employer paid into your super - we help you claim it back when you leave Australia.',
+    desc: 'Claim your super back when you leave Australia. We handle the full process for you.',
   },
   {
     n: '04', href: '/abn', icon: <IconPlus />,
     title: 'ABN Registration',
-    desc: 'Work legally and invoice properly. We register your ABN and set everything up correctly from the start.',
+    desc: 'Set up your ABN so you can work and invoice properly. We handle everything for you from day one.',
   },
 ]
 
@@ -203,11 +203,11 @@ function Services() {
         <div className="max-w-xl mx-auto text-center mb-7 reveal">
           <span className="section-label center">What we help with</span>
           <h2 className="font-serif font-black text-ink mt-1.5 mb-2" style={{ fontSize: 'clamp(17px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-            Everything you need to handle<br />
-            <em className="not-italic font-normal text-forest-400">your tax and paperwork in Australia.</em>
+            Everything you need to sort your tax<br />
+            <em className="not-italic font-normal text-forest-400">in Australia without the stress.</em>
           </h2>
           <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '13px' }}>
-            From your first working day to your final super withdrawal - we take care of every step.
+            From your first job to your final refund, we take care of it for you.
           </p>
         </div>
 
@@ -236,10 +236,10 @@ function Services() {
 
 // ── PROCESS ────────────────────────────────────────────────────────────────
 const STEPS = [
-  { n: '1', title: 'Tell us what you need',  body: 'TFN, ABN, tax return or super - or just a question. Tell us your situation and we reply quickly.' },
-  { n: '2', title: 'Send your documents',    body: 'We give you a simple checklist. Upload what you have - no scanning, no office visits needed.' },
-  { n: '3', title: 'We handle everything',   body: 'We prepare, review, and lodge everything for you - no ATO portals, no confusion, no stress.' },
-  { n: '4', title: 'Get your money back',    body: 'Most tax returns are processed within 7–14 days. We keep you updated every step of the way.' },
+  { n: '1', title: 'Tell us what you need.',  body: 'TFN, ABN, tax return or super. Share your situation and get clear guidance.' },
+  { n: '2', title: 'Send your details.',    body: 'Follow a simple checklist and upload your personal details easily.' },
+  { n: '3', title: 'We manage your tax process.',   body: 'We prepare and lodge your return correctly with no confusion or delays.' },
+  { n: '4', title: 'Get your refund.',    body: 'Most returns are processed within 7 to 14 days and you stay updated throughout.' },
 ]
 
 function Process() {
@@ -250,11 +250,11 @@ function Process() {
         <div className="max-w-xl mx-auto text-center mb-8 reveal">
           <span className="section-label center">How it works</span>
           <h2 className="font-serif font-black text-ink mt-1.5 mb-2" style={{ fontSize: 'clamp(17px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-            Four simple steps.{' '}
-            <em className="not-italic font-normal text-forest-400">We handle the rest.</em>
+            How it works in 4 simple steps.{' '}
+            <em className="not-italic font-normal text-forest-400">We take care of it for you.</em>
           </h2>
           <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '13px' }}>
-            You send us your details - we take care of everything else.
+            You send us your details and we take care of the rest.
           </p>
         </div>
 
@@ -321,7 +321,7 @@ const TESTIMONIALS = [
   {
     name: 'Emma T.',
     from: 'United Kingdom · WHV 417',
-    quote: 'Got my TFN sorted in two days, and they handled my entire tax return when I left. No stress - just money back in my account.',
+    quote: 'Got my TFN sorted in two days, and they handled my entire tax return when I left. No stress, just money back in my account.',
     amount: '$2,450',
     initials: 'E',
     bgColor: '#FCE7F3',
@@ -346,12 +346,12 @@ function Testimonials() {
         <div className="text-center mb-6 reveal">
           <span className="section-label center">Client stories</span>
           <h2 className="font-serif font-black text-ink mt-1.5 mb-3" style={{ fontSize: 'clamp(17px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-            Real results from travellers just like you.
+            Real experiences from backpackers like you.
           </h2>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-ghost-dark inline-flex"
             style={{ height: '36px', padding: '0 18px', fontSize: '13px' }}>
-            Check your eligibility →
+            Check if you are eligible →
           </a>
         </div>
 
@@ -395,7 +395,7 @@ function Testimonials() {
           {[
             { n: '4.9★',   l: 'Google rating' },
             { n: '1,200+', l: 'WHV clients helped' },
-            { n: '<1 hr',  l: 'WhatsApp response' },
+            { n: '<1 hr',  l: 'Response time' },
             { n: '100%',   l: 'Online service' },
           ].map((s, i, arr) => (
             <div key={i} className="contents">
@@ -429,9 +429,9 @@ export default function HomePage() {
       <Testimonials />
       <CtaBand
         eyebrow="Start here"
-        heading="Your tax, done right."
-        headingEm="From anywhere in Australia and abroad."
-        sub={<>TFN, tax return, super, and ABN - handled for Working Holiday travellers.<br />Start with a free check.</>}
+        heading="Get your tax done right."
+        headingEm="From anywhere in Australia or overseas."
+        sub={<>TFN, tax return, super, and ABN handled for Working Holiday travellers.<br />Start with a free check.</>}
         primaryLabel="Check what you need →"
         clipTop
       />

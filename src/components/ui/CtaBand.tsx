@@ -46,7 +46,7 @@ export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLa
             )}
           </div>
           <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.02em' }}>
-            Free to start&nbsp;•&nbsp;1,200+ WHV travellers helped&nbsp;•&nbsp;Response in under 1 hour
+            Free to start&nbsp;•&nbsp;1,200+ Working Holiday travellers helped&nbsp;•&nbsp;Response time within 1 hour
           </p>
         </div>
       </div>
