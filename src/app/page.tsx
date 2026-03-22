@@ -46,50 +46,60 @@ const IconStar = () => (
 function Hero() {
   return (
     <section className="relative overflow-hidden pt-[68px] bg-white hero-section">
-      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-6 pb-6 lg:pt-14 lg:pb-12 text-center">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-8 pb-8 lg:pt-16 lg:pb-14 text-center">
 
         {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 mb-6">
+        <div className="inline-flex items-center gap-2 mb-4">
           <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-          <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Working Holiday Visa Specialist</span>
+          <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>
+            Working Holiday Visa Specialist
+          </span>
         </div>
 
-        {/* Headline */}
-        <h1 className="font-serif font-black text-ink mb-5 mx-auto" style={{
-          fontSize: 'clamp(28px,4vw,50px)',
-          lineHeight: 1.06,
+        {/* Headline — 2–3 clean lines, balanced */}
+        <h1 className="font-serif font-black text-ink mx-auto" style={{
+          fontSize: 'clamp(26px,3.8vw,46px)',
+          lineHeight: 1.1,
           letterSpacing: '-0.03em',
-          maxWidth: '820px',
+          maxWidth: '18ch',
+          marginBottom: '12px',
+          textWrap: 'balance',
         }}>
           Confused about tax in Australia?{' '}
           <span style={{ color: '#0B5240' }}>We&apos;ve got you covered.</span>
         </h1>
 
-        {/* Supporting text */}
-        <p className="font-light leading-[1.8] mb-6 mx-auto" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '520px' }}>
-          TFN, ABN, Tax Return &amp; Super - we handle everything for you, so you don&apos;t have to stress about paperwork.
+        {/* Subtext */}
+        <p className="font-light mx-auto" style={{
+          fontSize: '15px',
+          lineHeight: 1.65,
+          color: 'rgba(10,15,13,0.55)',
+          maxWidth: '28ch',
+          marginBottom: '24px',
+          textWrap: 'balance',
+        }}>
+          TFN, ABN, Tax Return &amp; Super - we handle everything for you.
         </p>
 
-        {/* ONE primary CTA */}
-        <div className="mb-5">
+        {/* Single CTA */}
+        <div style={{ marginBottom: '16px' }}>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex"
-            style={{ height: '52px', padding: '0 40px', fontSize: '16px', borderRadius: '100px' }}>
+            style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '300px', width: '100%' }}>
             Get help with your tax
           </a>
         </div>
 
-        {/* Trust indicators directly under CTA */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+        {/* Trust row */}
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5">
           {[
             { n: '4.9★', l: 'Google rating' },
-            { n: '1,200+', l: 'WHV clients helped' },
-            { n: '<1 hr', l: 'Response time' },
-            { n: 'ATO', l: 'Compliant' },
+            { n: '1,200+', l: 'clients helped' },
+            { n: '<1 hr', l: 'response time' },
           ].map((c, i) => (
-            <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
-              {i > 0 && <span className="hidden sm:inline" style={{ color: 'rgba(10,15,13,0.18)' }}>•</span>}
-              <span className="font-semibold" style={{ color: 'rgba(10,15,13,0.65)' }}>{c.n}</span>
+            <span key={i} className="inline-flex items-center gap-1" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.4)' }}>
+              {i > 0 && <span className="hidden sm:inline" style={{ marginRight: '4px', color: 'rgba(10,15,13,0.15)' }}>•</span>}
+              <span className="font-semibold" style={{ color: 'rgba(10,15,13,0.6)' }}>{c.n}</span>
               <span>{c.l}</span>
             </span>
           ))}
@@ -103,16 +113,28 @@ function Hero() {
 function Urgency() {
   return (
     <section style={{ background: '#0B5240' }}>
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10 py-8 lg:py-10 text-center">
-        <p className="font-serif font-black text-white mb-2" style={{ fontSize: 'clamp(20px,3vw,32px)', letterSpacing: '-0.025em', lineHeight: 1.1 }}>
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-7 lg:py-10 text-center">
+        <p className="font-serif font-black text-white mx-auto" style={{
+          fontSize: 'clamp(18px,2.6vw,28px)',
+          letterSpacing: '-0.02em',
+          lineHeight: 1.15,
+          maxWidth: '24ch',
+          marginBottom: '8px',
+          textWrap: 'balance',
+        }}>
           Without a TFN, 47% tax is withheld from every payslip.
         </p>
-        <p className="font-light mb-6" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)' }}>
-          Most backpackers overpay tax in Australia — we make sure you don&apos;t.
+        <p className="font-light mx-auto" style={{
+          fontSize: '13.5px',
+          color: 'rgba(255,255,255,0.6)',
+          maxWidth: '28ch',
+          marginBottom: '20px',
+        }}>
+          Most backpackers overpay tax in Australia - we make sure you don&apos;t.
         </p>
         <a href={WA_URL} target="_blank" rel="noopener noreferrer"
           className="inline-flex items-center gap-2 font-semibold transition-all"
-          style={{ height: '48px', padding: '0 28px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
+          style={{ height: '48px', padding: '0 28px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '300px', width: '100%', justifyContent: 'center' }}>
           Get your TFN sorted now
         </a>
       </div>
@@ -120,46 +142,54 @@ function Urgency() {
   )
 }
 
-// ── 3. SOLUTION ─────────────────────────────────────────────────────────────
+// ── 3. SOLUTION / WHY US ─────────────────────────────────────────────────────
 function Solution() {
   return (
     <section className="py-10 lg:py-16 bg-white">
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10 text-center">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
         <span className="section-label center">Why us</span>
-        <h2 className="font-serif font-black text-ink mt-2 mb-4 mx-auto" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '680px' }}>
+        <h2 className="font-serif font-black text-ink mx-auto" style={{
+          fontSize: 'clamp(22px,3vw,38px)',
+          lineHeight: 1.1,
+          letterSpacing: '-0.025em',
+          maxWidth: '22ch',
+          marginTop: '8px',
+          marginBottom: '12px',
+          textWrap: 'balance',
+        }}>
           Built for Working Holiday travellers.{' '}
           <em className="not-italic font-normal text-forest-400">We understand exactly what you need.</em>
         </h2>
-        <p className="font-light text-muted leading-[1.7] mb-12 mx-auto" style={{ fontSize: '15px', maxWidth: '480px' }}>
-          We work with Working Holiday travellers every day, so we know what works and what doesn&apos;t.
+        <p className="font-light text-muted mx-auto" style={{ fontSize: '14px', lineHeight: 1.65, maxWidth: '30ch', marginBottom: '40px' }}>
+          We work with Working Holiday travellers every day, so we know what works.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12 reveal">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 reveal" style={{ marginBottom: '40px' }}>
           {[
-            { title: 'WHV tax specialists',           body: 'Working Holiday tax is all we do. We handle complex situations every day.' },
-            { title: 'Registered. Compliant.',         body: 'Handled under a registered tax agent. Fully compliant and ATO-approved.' },
-            { title: 'Real people, fast answers',      body: 'Real people who respond quickly. We guide you through the whole process.' },
-            { title: 'We make it simple',              body: 'No forms, no stress, no confusion. We handle it and keep you updated.' },
+            { title: 'WHV tax specialists',       body: 'Working Holiday tax is all we do. We handle complex situations every day.' },
+            { title: 'Registered. Compliant.',    body: 'Handled under a registered tax agent. Fully compliant and ATO-approved.' },
+            { title: 'Real people, fast answers', body: 'Real people who respond quickly. We guide you through the whole process.' },
+            { title: 'We make it simple',         body: 'No forms, no stress, no confusion. We handle it and keep you updated.' },
           ].map((item, i) => (
             <div key={i} className="pt-5 border-t border-border text-left">
-              <h3 className="text-[14px] font-semibold text-ink mb-2">{item.title}</h3>
-              <p className="text-[13px] font-light text-muted leading-[1.7]">{item.body}</p>
+              <h3 className="text-[13.5px] font-semibold text-ink mb-1.5">{item.title}</h3>
+              <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch' }}>{item.body}</p>
             </div>
           ))}
         </div>
 
-        {/* CTA after solution */}
-        <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-          className="btn-primary inline-flex"
-          style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px' }}>
-          Get help with your tax
-        </a>
+        {/* Single CTA — no repeat of hero */}
+        <Link href="#how-it-works"
+          className="btn-ghost-dark inline-flex"
+          style={{ height: '44px', padding: '0 24px', fontSize: '13.5px' }}>
+          See how it works
+        </Link>
       </div>
     </section>
   )
 }
 
-// ── 4. SOCIAL PROOF (early) ─────────────────────────────────────────────────
+// ── 4. SOCIAL PROOF ─────────────────────────────────────────────────────────
 const TESTIMONIALS = [
   {
     name: "Liam O'Brien",
@@ -193,10 +223,17 @@ const TESTIMONIALS = [
 function SocialProof() {
   return (
     <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-10 reveal">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="text-center reveal" style={{ marginBottom: '32px' }}>
           <span className="section-label center">Client stories</span>
-          <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,3vw,36px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+          <h2 className="font-serif font-black text-ink mx-auto" style={{
+            fontSize: 'clamp(20px,2.8vw,34px)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.025em',
+            maxWidth: '24ch',
+            marginTop: '8px',
+            textWrap: 'balance',
+          }}>
             Real experiences from backpackers like you.
           </h2>
         </div>
@@ -204,26 +241,26 @@ function SocialProof() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 reveal delay-1">
           {TESTIMONIALS.map((t, i) => (
             <div key={i}
-              className="bg-white rounded-2xl p-6 flex flex-col"
-              style={{ boxShadow: '0 1px 4px rgba(0,0,0,.04), 0 4px 24px rgba(11,82,64,.07)' }}>
-              <div className="flex gap-0.5 mb-4">
+              className="bg-white rounded-2xl flex flex-col"
+              style={{ padding: '20px', boxShadow: '0 1px 4px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
+              <div className="flex gap-0.5" style={{ marginBottom: '12px' }}>
                 {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
               </div>
-              <p className="text-[13.5px] font-light text-body leading-[1.8] flex-1 mb-5">
+              <p className="text-[13px] font-light text-body leading-[1.75] flex-1" style={{ marginBottom: '16px' }}>
                 &ldquo;{t.quote}&rdquo;
               </p>
-              <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid #E2EFE9' }}>
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold flex-shrink-0"
+              <div className="flex items-center justify-between" style={{ paddingTop: '14px', borderTop: '1px solid #E2EFE9' }}>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0"
                     style={{ background: t.bgColor, color: t.textColor }}>
                     {t.initials}
                   </div>
                   <div>
-                    <p className="text-[12.5px] font-semibold text-ink leading-tight">{t.name}</p>
-                    <p className="text-[11.5px] text-subtle leading-tight mt-0.5">{t.from}</p>
+                    <p className="text-[12px] font-semibold text-ink leading-tight">{t.name}</p>
+                    <p className="text-[11px] text-subtle leading-tight" style={{ marginTop: '2px' }}>{t.from}</p>
                   </div>
                 </div>
-                <span className="font-serif font-black text-forest-500 flex-shrink-0" style={{ fontSize: '18px', letterSpacing: '-0.03em' }}>
+                <span className="font-serif font-black text-forest-500 flex-shrink-0" style={{ fontSize: '17px', letterSpacing: '-0.03em' }}>
                   {t.amount}
                 </span>
               </div>
@@ -231,23 +268,25 @@ function SocialProof() {
           ))}
         </div>
 
-        {/* Stats */}
-        <div className="mt-10 pt-8 flex flex-wrap items-center justify-center gap-8 reveal delay-2" style={{ borderTop: '1px solid #E2EFE9' }}>
-          {[
-            { n: '4.9★',   l: 'Google rating' },
-            { n: '1,200+', l: 'WHV clients helped' },
-            { n: '<1 hr',  l: 'Response time' },
-            { n: '100%',   l: 'Online service' },
-          ].map((s, i) => (
-            <div key={i} className="text-center">
-              <p className="font-serif font-black text-forest-500" style={{ fontSize: '22px', letterSpacing: '-0.03em', lineHeight: 1 }}>{s.n}</p>
-              <p className="text-[12px] text-subtle mt-1">{s.l}</p>
-            </div>
-          ))}
+        {/* Stats — tighter, more visual weight */}
+        <div className="reveal delay-2" style={{ marginTop: '32px', paddingTop: '28px', borderTop: '1px solid #E2EFE9' }}>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+            {[
+              { n: '4.9★',   l: 'Google rating' },
+              { n: '1,200+', l: 'WHV clients helped' },
+              { n: '<1 hr',  l: 'Response time' },
+              { n: '100%',   l: 'Online service' },
+            ].map((s, i) => (
+              <div key={i} className="text-center">
+                <p className="font-serif font-black text-forest-500" style={{ fontSize: 'clamp(20px,3vw,26px)', letterSpacing: '-0.03em', lineHeight: 1 }}>{s.n}</p>
+                <p className="text-[11.5px] text-subtle" style={{ marginTop: '4px' }}>{s.l}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-center" style={{ marginTop: '16px', fontSize: '11px', color: 'rgba(10,15,13,0.3)', letterSpacing: '0.02em' }}>
+            Thousands of dollars returned to travellers every year.
+          </p>
         </div>
-        <p className="text-center mt-5" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.32)' }}>
-          Thousands of dollars returned to travellers every year.
-        </p>
       </div>
     </section>
   )
@@ -258,20 +297,28 @@ const STEPS = [
   { n: '1', title: 'Tell us what you need.',  body: 'TFN, ABN, tax return or super. Share your situation and get clear guidance.' },
   { n: '2', title: 'Send your details.',       body: 'Follow a simple checklist and upload your personal details easily.' },
   { n: '3', title: 'We manage your tax.',      body: 'We prepare and lodge your return correctly with no confusion or delays.' },
-  { n: '4', title: 'Get your refund.',         body: 'Most returns are processed within 7 to 14 days and you stay updated throughout.' },
+  { n: '4', title: 'Get your refund.',         body: 'Most returns are processed within 7 to 14 days and you stay updated.' },
 ]
 
 function Process() {
   return (
     <section id="how-it-works" className="py-10 lg:py-16 bg-white">
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-14 reveal">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="text-center reveal" style={{ marginBottom: '48px' }}>
           <span className="section-label center">How it works</span>
-          <h2 className="font-serif font-black text-ink mt-2 mb-3 mx-auto" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '600px' }}>
-            How it works in 4 simple steps.{' '}
+          <h2 className="font-serif font-black text-ink mx-auto" style={{
+            fontSize: 'clamp(22px,3vw,38px)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.025em',
+            maxWidth: '22ch',
+            marginTop: '8px',
+            marginBottom: '10px',
+            textWrap: 'balance',
+          }}>
+            4 simple steps.{' '}
             <em className="not-italic font-normal text-forest-400">We take care of it for you.</em>
           </h2>
-          <p className="font-light text-muted" style={{ fontSize: '15px' }}>
+          <p className="font-light text-muted" style={{ fontSize: '14px' }}>
             You send us your details and we take care of the rest.
           </p>
         </div>
@@ -284,40 +331,41 @@ function Process() {
                 background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)',
               }} aria-hidden="true" />
               {STEPS.map((s, i) => (
-                <div key={i} className="flex-1 flex flex-col items-center px-6" style={{ zIndex: 1 }}>
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0 bg-white" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #fff, 0 0 0 5px #C8EAE0' }}>
+                <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white flex-shrink-0" style={{ background: '#0B5240', marginBottom: '16px', boxShadow: '0 0 0 4px #fff, 0 0 0 5px #C8EAE0' }}>
                     {s.n}
                   </div>
-                  <p className="text-[14px] font-semibold text-ink mb-2 text-center">{s.title}</p>
-                  <p className="text-[12.5px] font-light text-muted leading-[1.7] text-center">{s.body}</p>
+                  <p className="text-[13.5px] font-semibold text-ink text-center" style={{ marginBottom: '6px' }}>{s.title}</p>
+                  <p className="text-[12px] font-light text-muted leading-[1.65] text-center">{s.body}</p>
                 </div>
               ))}
             </div>
           </div>
-          {/* Mobile */}
-          <div className="lg:hidden flex flex-col">
+
+          {/* Mobile — tighter vertical rhythm */}
+          <div className="lg:hidden flex flex-col" style={{ gap: '0' }}>
             {STEPS.map((s, i) => (
-              <div key={i} className="flex gap-4 pb-7">
+              <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length - 1 ? '20px' : '0' }}>
                 <div className="flex flex-col items-center flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white" style={{ background: '#0B5240' }}>{s.n}</div>
-                  {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2 min-h-[32px]" style={{ background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white flex-shrink-0" style={{ background: '#0B5240' }}>{s.n}</div>
+                  {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2" style={{ minHeight: '20px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
                 </div>
-                <div className="pt-1">
-                  <p className="text-[14px] font-semibold text-ink mb-1">{s.title}</p>
-                  <p className="text-[13px] font-light text-muted leading-[1.7]">{s.body}</p>
+                <div style={{ paddingTop: '3px' }}>
+                  <p className="text-[13.5px] font-semibold text-ink" style={{ marginBottom: '4px' }}>{s.title}</p>
+                  <p className="text-[12.5px] font-light text-muted leading-[1.65]">{s.body}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="text-center mt-12 reveal delay-2">
+        <div className="text-center reveal delay-2" style={{ marginTop: '40px' }}>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex"
-            style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px' }}>
+            style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px', maxWidth: '300px', width: '100%' }}>
             Get help with your tax
           </a>
-          <p className="mt-3 text-[12px]" style={{ color: '#2FA880' }}>
+          <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
             Free to start&nbsp;•&nbsp;No upfront fees&nbsp;•&nbsp;Personal support throughout
           </p>
         </div>
@@ -328,41 +376,48 @@ function Process() {
 
 // ── 6. SERVICES ─────────────────────────────────────────────────────────────
 const SERVICES = [
-  { n: '01', href: '/tfn',          icon: <IconDoc />,   title: 'TFN Application',   desc: 'Start working at the correct tax rate from day one. We handle your TFN application properly the first time.' },
-  { n: '02', href: '/tax-return',   icon: <IconLock />,  title: 'Tax Return',         desc: 'Get your tax refund fast and stress free. We handle everything with the ATO for you.' },
+  { n: '01', href: '/tfn',           icon: <IconDoc />,   title: 'TFN Application',  desc: 'Start working at the correct tax rate from day one. We handle your TFN application properly the first time.' },
+  { n: '02', href: '/tax-return',    icon: <IconLock />,  title: 'Tax Return',        desc: 'Get your tax refund fast and stress free. We handle everything with the ATO for you.' },
   { n: '03', href: '/superannuation', icon: <IconClock />, title: 'Super Withdrawal', desc: 'Claim your super back when you leave Australia. We handle the full process for you.' },
-  { n: '04', href: '/abn',          icon: <IconPlus />,  title: 'ABN Registration',   desc: 'Set up your ABN so you can work and invoice properly. We handle everything for you from day one.' },
+  { n: '04', href: '/abn',           icon: <IconPlus />,  title: 'ABN Registration',  desc: 'Set up your ABN so you can work and invoice properly. We handle everything for you.' },
 ]
 
 function Services() {
   return (
     <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
-        <div className="text-center mb-10 reveal">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="text-center reveal" style={{ marginBottom: '32px' }}>
           <span className="section-label center">What we help with</span>
-          <h2 className="font-serif font-black text-ink mt-2 mb-3 mx-auto" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '640px' }}>
-            Everything you need to sort your tax<br />
-            <em className="not-italic font-normal text-forest-400">in Australia without the stress.</em>
+          <h2 className="font-serif font-black text-ink mx-auto" style={{
+            fontSize: 'clamp(22px,3vw,38px)',
+            lineHeight: 1.1,
+            letterSpacing: '-0.025em',
+            maxWidth: '22ch',
+            marginTop: '8px',
+            marginBottom: '10px',
+            textWrap: 'balance',
+          }}>
+            Everything you need to sort your tax in Australia.
           </h2>
-          <p className="font-light text-muted" style={{ fontSize: '15px' }}>
+          <p className="font-light text-muted" style={{ fontSize: '14px' }}>
             From your first job to your final refund, we take care of it for you.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal delay-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 reveal delay-1">
           {SERVICES.map((s) => (
             <Link key={s.href} href={s.href}
-              className="group bg-white rounded-2xl p-5 flex flex-col transition-all hover:shadow-lg"
-              style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-              <span className="text-[10px] font-medium tracking-[0.1em] uppercase text-subtle mb-3">{s.n}</span>
-              <span className="w-9 h-9 rounded-lg flex items-center justify-center mb-4 text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0">
+              className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
+              style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              <span className="text-[10px] font-medium tracking-[0.1em] uppercase text-subtle" style={{ marginBottom: '10px' }}>{s.n}</span>
+              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0" style={{ marginBottom: '12px' }}>
                 {s.icon}
               </span>
-              <h3 className="text-[14px] font-semibold text-ink mb-2">{s.title}</h3>
-              <p className="text-[12.5px] font-light text-muted leading-[1.7] flex-1 mb-4">{s.desc}</p>
-              <span className="flex items-center gap-1.5 text-[12.5px] font-medium text-forest-600 transition-all group-hover:gap-3">
+              <h3 className="text-[13.5px] font-semibold text-ink" style={{ marginBottom: '6px' }}>{s.title}</h3>
+              <p className="text-[12px] font-light text-muted leading-[1.65] flex-1" style={{ marginBottom: '14px' }}>{s.desc}</p>
+              <span className="flex items-center gap-1.5 text-[12px] font-medium text-forest-600 transition-all group-hover:gap-3">
                 Learn more
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2.5 6.5h8M7.5 3.5l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </span>
             </Link>
           ))}
@@ -376,19 +431,12 @@ function Services() {
 export default function HomePage() {
   return (
     <>
-      {/* 1. Hero */}
       <Hero />
-      {/* 2. Urgency */}
       <Urgency />
-      {/* 3. Solution */}
       <Solution />
-      {/* 4. Social proof */}
       <SocialProof />
-      {/* 5. How it works */}
       <Process />
-      {/* 6. Services */}
       <Services />
-      {/* 7. Final CTA */}
       <CtaBand
         eyebrow="Start here"
         heading="Get your tax done right."
