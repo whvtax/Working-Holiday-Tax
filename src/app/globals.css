@@ -74,7 +74,7 @@
   .section-label.light { @apply text-forest-300; }
   .section-label.center { @apply justify-center; }
 
-  /* ── Section heading — tighter, more editorial ── */
+  /* ── Section heading  -  tighter, more editorial ── */
   .section-h2 {
     @apply font-serif font-black text-ink leading-[1.05] mt-3 mb-5;
     font-size: clamp(32px, 4.8vw, 56px);
@@ -128,7 +128,7 @@
   .scrollbar-none { scrollbar-width: none; -ms-overflow-style: none; }
   .scrollbar-none::-webkit-scrollbar { display: none; }
 
-  /* ── Input base — shared between calculator and any future forms ── */
+  /* ── Input base  -  shared between calculator and any future forms ── */
   .input-base {
     @apply w-full bg-white text-ink font-sans outline-none transition-all;
     height: 56px;

@@ -132,7 +132,7 @@ export default function ABNPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-start">
 
-            {/* Left — left-aligned */}
+            {/* Left  -  left-aligned */}
             <div className="reveal">
               <span className="section-label">What is an ABN?</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -149,7 +149,7 @@ export default function ABNPage() {
                 </p>
               </div>
 
-              {/* TFN vs ABN comparison — visually prominent */}
+              {/* TFN vs ABN comparison  -  visually prominent */}
               <div className="mt-5 rounded-xl px-4 py-4 max-w-[520px]" style={{ background: '#EAF6F1', borderLeft: '3px solid #0B5240' }}>
                 <p className="text-[13.5px] font-semibold text-ink leading-[1.8]">
                   TFN = employee income<br />
@@ -158,7 +158,7 @@ export default function ABNPage() {
               </div>
             </div>
 
-            {/* Right — fact cards, tighter */}
+            {/* Right  -  fact cards, tighter */}
             <div className="grid grid-cols-1 gap-2.5 reveal delay-1">
               {[
                 { title: 'Issued by',       body: 'The Australian Business Register, administered by the ATO.' },
@@ -181,7 +181,7 @@ export default function ABNPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-            {/* When — left-aligned */}
+            {/* When  -  left-aligned */}
             <div className="reveal">
               <span className="section-label">When you need one</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -212,7 +212,7 @@ export default function ABNPage() {
               </div>
             </div>
 
-            {/* Important — left-aligned */}
+            {/* Important  -  left-aligned */}
             <div className="reveal delay-1">
               <span className="section-label">Important to understand</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -337,7 +337,7 @@ export default function ABNPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-8 lg:gap-16 items-start">
 
-            {/* Left — left-aligned */}
+            {/* Left  -  left-aligned */}
             <div className="reveal">
               <span className="section-label">Questions</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -353,7 +353,7 @@ export default function ABNPage() {
               </a>
             </div>
 
-            {/* Right — left-aligned, max-width constrained */}
+            {/* Right  -  left-aligned, max-width constrained */}
             <div className="reveal delay-1 max-w-[700px]">
               <Accordion items={faqs} />
             </div>

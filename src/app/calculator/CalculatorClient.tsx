@@ -72,7 +72,7 @@ export function CalculatorClient() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16 lg:gap-24 items-start">
 
-            {/* Left — form */}
+            {/* Left  -  form */}
             <div>
               <div className="space-y-5 mb-6">
                 {/* Income */}
@@ -131,14 +131,14 @@ export function CalculatorClient() {
               </button>
 
               <p className="text-[12px] text-subtle mt-4 leading-[1.6]">
-                Based on current ATO rates. This is an estimate only — your exact refund is confirmed after we review your documents.
+                Based on current ATO rates. This is an estimate only  -  your exact refund is confirmed after we review your documents.
               </p>
             </div>
 
-            {/* Right — result panel */}
+            {/* Right  -  result panel */}
             <div>
               {!result ? (
-                /* Empty state — clean, inviting */
+                /* Empty state  -  clean, inviting */
                 <div className="rounded-2xl p-8 text-center" style={{ background: '#F7FBF9', border: '1.5px dashed #C8EAE0', minHeight: '320px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: '#EAF6F1' }}>
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
@@ -150,7 +150,7 @@ export function CalculatorClient() {
                   <p className="text-[13px] text-subtle leading-[1.6]">Fill in your income details and hit<br />calculate to see your refund</p>
                 </div>
               ) : (
-                /* Result state — product-quality, clear hierarchy */
+                /* Result state  -  product-quality, clear hierarchy */
                 <div className="rounded-2xl overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 8px 32px rgba(11,82,64,.1)' }}>
                   {/* Result header */}
                   <div className="p-8 pb-7" style={{ background: result.owing ? '#1A2822' : '#1A5C44' }}>
@@ -179,7 +179,7 @@ export function CalculatorClient() {
                       Claim this refund on WhatsApp
                     </a>
                     <p className="text-[11.5px] text-subtle leading-[1.6] text-center">
-                      No personal data stored. Estimate only — exact figure confirmed after document review.
+                      No personal data stored. Estimate only  -  exact figure confirmed after document review.
                     </p>
                   </div>
                 </div>

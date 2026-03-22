@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     question: 'What is the Medicare levy exemption?',
-    answer: 'If you are not eligible for Medicare — which applies to most Working Holiday Visa holders — you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
+    answer: 'If you are not eligible for Medicare  -  which applies to most Working Holiday Visa holders  -  you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
   },
   {
     question: 'I am from the UK. Am I eligible for Medicare?',
@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     question: 'If I am not eligible for Medicare, do I still pay the levy?',
-    answer: 'Not if you apply for an exemption. If you are not eligible for Medicare, you should claim a Medicare levy exemption on your tax return — which means you will not be charged.',
+    answer: 'Not if you apply for an exemption. If you are not eligible for Medicare, you should claim a Medicare levy exemption on your tax return  -  which means you will not be charged.',
   },
   {
     question: 'What is private health insurance and do I need it?',
@@ -170,17 +170,17 @@ export default function MedicarePage() {
       {/* ── MEDICARE LEVY EXEMPTION ──────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-2xl reveal">
-            <span className="section-label">Medicare levy exemption</span>
+          <div className="max-w-2xl mx-auto text-center reveal">
+            <span className="section-label center">Medicare levy exemption</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Medicare levy exemption.
             </h2>
-            <p className="font-light text-muted leading-[1.7] mb-8" style={{ fontSize: '13.5px', maxWidth: '520px' }}>
+            <p className="font-light text-muted leading-[1.7] mb-8 mx-auto" style={{ fontSize: '13.5px', maxWidth: '520px' }}>
               If you are not from a country eligible for Medicare, you will need a Medicare levy exemption before lodging your tax return.
             </p>
 
             {/* Video placeholder */}
-            <div className="reveal delay-1 rounded-2xl flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px]"
+            <div className="reveal delay-1 rounded-2xl flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px] mx-auto"
               style={{
                 background: '#EEF7F2',
                 border: '1.5px solid #C8EAE0',

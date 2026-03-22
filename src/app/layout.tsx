@@ -25,8 +25,8 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Working Holiday Tax — Australian Tax for WHV Holders',
-    template: '%s — Working Holiday Tax',
+    default: 'Working Holiday Tax  -  Australian Tax for WHV Holders',
+    template: '%s  -  Working Holiday Tax',
   },
   description:
     'Tax return, TFN, super and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Start for free.',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax — Australian Tax for WHV Holders',
+    title: 'Working Holiday Tax  -  Australian Tax for WHV Holders',
     description: 'Tax return, TFN, super and ABN for Working Holiday Visa holders in Australia.',
   },
   twitter: { card: 'summary_large_image' },

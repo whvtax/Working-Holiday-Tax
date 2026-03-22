@@ -128,7 +128,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-16 items-start">
 
-            {/* Left — explanation, left-aligned */}
+            {/* Left  -  explanation, left-aligned */}
             <div className="reveal">
               <span className="section-label">What is a TFN?</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -156,7 +156,7 @@ export default function TFNPage() {
               </div>
             </div>
 
-            {/* Right — fact cards */}
+            {/* Right  -  fact cards */}
             <div className="grid grid-cols-1 gap-3 reveal delay-1">
               {[
                 { title: 'Issued by',       body: 'The Australian Taxation Office (ATO), Australia\'s official tax authority.' },
@@ -179,7 +179,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
 
-            {/* Why — left-aligned */}
+            {/* Why  -  left-aligned */}
             <div className="reveal">
               <span className="section-label">Why you need one</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -217,7 +217,7 @@ export default function TFNPage() {
               </div>
             </div>
 
-            {/* Who — left-aligned */}
+            {/* Who  -  left-aligned */}
             <div className="reveal delay-1">
               <span className="section-label">Who needs a TFN?</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -276,7 +276,7 @@ export default function TFNPage() {
             {/* Desktop timeline */}
             <div className="hidden lg:block">
               <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-3.5 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
+                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-3.5 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-4" style={{ zIndex: 1 }}>
                     <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white mb-4 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 3px #EEF7F2, 0 0 0 4px #C8EAE0' }}>
@@ -362,7 +362,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-8 lg:gap-16 items-start">
 
-            {/* Left — left-aligned */}
+            {/* Left  -  left-aligned */}
             <div className="reveal">
               <span className="section-label">Questions</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -378,7 +378,7 @@ export default function TFNPage() {
               </a>
             </div>
 
-            {/* Right — accordion, left-aligned, max-width constrained */}
+            {/* Right  -  accordion, left-aligned, max-width constrained */}
             <div className="reveal delay-1 max-w-[680px]">
               <Accordion items={faqs} />
             </div>

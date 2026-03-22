@@ -6,7 +6,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
-  description: 'Claim your Australian superannuation after leaving. Your employer paid 11.5% of your wages into super — we help you get it back via DASP.',
+  description: 'Claim your Australian superannuation after leaving. Your employer paid 11.5% of your wages into super  -  we help you get it back via DASP.',
 }
 
 const faqs = [
@@ -205,7 +205,7 @@ export default function SuperannuationPage() {
             {/* Desktop */}
             <div className="hidden lg:block">
               <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-3.5 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
+                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-3.5 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
                     <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white mb-4 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 3px #EEF7F2, 0 0 0 4px #C8EAE0' }}>

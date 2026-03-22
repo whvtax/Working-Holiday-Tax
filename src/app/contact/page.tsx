@@ -40,7 +40,7 @@ export default function ContactPage() {
 
           <div className="max-w-2xl mx-auto space-y-4 reveal delay-1">
 
-            {/* WhatsApp — primary, most prominent */}
+            {/* WhatsApp  -  primary, most prominent */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-between w-full rounded-2xl p-6 transition-all hover:shadow-md group"
               style={{ background: '#ffffff', border: '1.5px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
@@ -54,7 +54,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-[15px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>WhatsApp</p>
-                  <p className="text-[13px] font-light text-muted">Replies within the hour — real person, no bots</p>
+                  <p className="text-[13px] font-light text-muted">Replies within the hour  -  real person, no bots</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-forest-500 group-hover:gap-3 transition-all">

@@ -6,7 +6,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Tax Return in Australia for WHV Holders',
-  description: 'Get your Australian tax refund. We prepare and lodge your tax return for WHV holders — online, fast, and handled for you.',
+  description: 'Get your Australian tax refund. We prepare and lodge your tax return for WHV holders  -  online, fast, and handled for you.',
 }
 
 const faqs = [
@@ -160,7 +160,7 @@ export default function TaxReturnPage() {
       {/* ── TAX RATES ────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-3xl reveal">
+          <div className="reveal">
             <span className="section-label">Tax rates</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-2" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Tax rates in Australia.
@@ -170,7 +170,7 @@ export default function TaxReturnPage() {
             </p>
 
             {/* Two tables side by side on desktop, stacked on mobile */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 min-w-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 min-w-0">
 
               {/* WHV table */}
               <div className="min-w-0">
@@ -185,9 +185,9 @@ export default function TaxReturnPage() {
                     </thead>
                     <tbody>
                       {[
-                        ['$0 – $45,000',         '15%'],
-                        ['$45,001 – $135,000',   '$6,750 + 30%'],
-                        ['$135,001 – $190,000',  '$33,750 + 37%'],
+                        ['$0 - $45,000',         '15%'],
+                        ['$45,001 - $135,000',   '$6,750 + 30%'],
+                        ['$135,001 - $190,000',  '$33,750 + 37%'],
                         ['$190,001+',            '$54,100 + 45%'],
                       ].map(([income, rate], i) => (
                         <tr key={i} style={{ borderTop: '1px solid #E2EFE9', background: i % 2 === 0 ? '#ffffff' : '#F7FCF9' }}>
@@ -213,10 +213,10 @@ export default function TaxReturnPage() {
                     </thead>
                     <tbody>
                       {[
-                        ['$0 – $18,200',         'Nil'],
-                        ['$18,201 – $45,000',    '16%'],
-                        ['$45,001 – $135,000',   '$4,288 + 30%'],
-                        ['$135,001 – $190,000',  '$31,288 + 37%'],
+                        ['$0 - $18,200',         'Nil'],
+                        ['$18,201 - $45,000',    '16%'],
+                        ['$45,001 - $135,000',   '$4,288 + 30%'],
+                        ['$135,001 - $190,000',  '$31,288 + 37%'],
                         ['$190,001+',            '$51,638 + 45%'],
                       ].map(([income, rate], i) => (
                         <tr key={i} style={{ borderTop: '1px solid #E2EFE9', background: i % 2 === 0 ? '#ffffff' : '#F7FCF9' }}>
@@ -243,8 +243,8 @@ export default function TaxReturnPage() {
       {/* ── WHAT YOU CAN CLAIM ───────────────────────────────────────────── */}
       <section className="py-7 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mb-7 reveal">
-            <span className="section-label">Deductions</span>
+          <div className="max-w-xl mx-auto text-center mb-7 reveal">
+            <span className="section-label center">Deductions</span>
             <h2 className="font-serif font-black text-ink mt-1 mb-2" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Work-related deductions<br /><em className="not-italic font-normal text-forest-400">can affect your tax outcome.</em>
             </h2>
@@ -285,7 +285,7 @@ export default function TaxReturnPage() {
           <div className="reveal delay-1">
             <div className="hidden lg:block">
               <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
+                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
                     <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white mb-4 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 3px #EEF7F2, 0 0 0 4px #C8EAE0' }}>
@@ -359,11 +359,7 @@ export default function TaxReturnPage() {
                   </div>
                 ))}
               </div>
-              <div className="rounded-xl px-4 py-3 mb-3" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
-                <p className="text-[13px] font-light text-body leading-[1.75]">
-                  Not sure what you have? We can help you check what is required.
-                </p>
-              </div>
+
               <div className="rounded-xl px-4 py-3" style={{ background: '#FEF2F2', border: '1px solid #FECACA' }}>
                 <p className="text-[12.5px] font-light leading-[1.75]" style={{ color: '#991B1B' }}>
                   A registered tax agent will never ask for your passwords, SMS verification codes, or access to your myGov or myID account.
