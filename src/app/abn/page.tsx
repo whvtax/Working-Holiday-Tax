@@ -12,65 +12,65 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: 'Can I have both a TFN and an ABN?',
-    answer: 'Yes. You can have both - one for employment (TFN) and one for contracting (ABN).',
+    answer: 'Yes. You can have both, one for employment and one for contract work.',
   },
   {
-    question: 'Is the ABN registration free?',
-    answer: 'Yes. ABN registration is free.',
+    question: 'Can I get an ABN without a TFN?',
+    answer: 'No. You must have a TFN before applying for an ABN.',
   },
   {
     question: 'Do I need to register for GST?',
-    answer: 'Only if you earn over $75,000 per year. Most people don\'t need GST.',
+    answer: 'Only if you earn over $75,000 per year. Most people on a Working Holiday do not need GST.',
   },
   {
     question: 'What happens to my ABN when I leave Australia?',
-    answer: 'You can cancel your ABN when you stop working. Do it through the official ABR website.',
+    answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.',
   },
   {
     question: 'Can my ABN be rejected?',
-    answer: 'Yes. If you\'re not running a real business, your ABN can be rejected.',
+    answer: 'Yes. If your details do not match your work, your ABN may be rejected.',
   },
 ]
 
 const MISTAKES = [
   {
-    title: 'Using ABN as an employee',
-    body: 'If your employer controls your work, you\'re likely an employee.',
+    title: 'Working as an employee with an ABN',
+    body: 'If your employer controls your work, you may be considered an employee.',
   },
   {
-    title: 'Wrong activity description',
-    body: 'Your ABN activity must match what you do.',
+    title: 'Incorrect business activity',
+    body: 'Your ABN activity should match the work you actually do.',
   },
   {
-    title: 'Not tracking your income',
-    body: 'You must track your income and set aside tax.',
+    title: 'Not tracking your income properly',
+    body: 'You need to track your income and set aside money for tax.',
   },
   {
     title: 'Not lodging your tax return',
-    body: 'ABN income must be reported.',
+    body: 'You must report your ABN income in your tax return.',
   },
 ]
 
 const STEPS = [
   {
     n: '1',
-    title: 'Check if you need one',
-    body: 'Make sure you\'re working as a contractor (not employee). Have your TFN and basic details ready.',
+    title: 'Check if you need an ABN',
+    body: 'Make sure you are working as a contractor and not as an employee. Have your TFN and basic details ready before you apply.',
   },
   {
     n: '2',
-    title: 'Submit your registration',
-    body: 'Apply online in about 10 minutes - free.',
+    title: 'Submit your application',
+    body: 'Apply online with your personal and work details in a few minutes. The process is simple, free, and done online.',
   },
   {
     n: '3',
     title: 'Application review',
-    body: 'Most ABNs are approved instantly. Some may take longer.',
+    body: 'Your application is reviewed online after you submit your details. Most ABNs are approved instantly, while some may take longer.',
   },
   {
     n: '4',
     title: 'Receive your ABN',
-    body: 'Receive your ABN and start invoicing.',
+    body: 'Once approved, your ABN is issued and ready to use immediately. You can start working and invoicing without any delays.',
   },
 ]
 
@@ -94,24 +94,24 @@ export default function ABNPage() {
             </div>
 
             <h1 className="font-serif font-black text-ink mb-3" style={{ fontSize: 'clamp(22px,3.5vw,40px)', lineHeight: 1.06, letterSpacing: '-0.025em' }}>
-              Invoice legally.<br />
-              <span style={{ color: '#0B5240' }}>Pay the right tax.</span>
+              Work legally with an ABN.<br />
+              <span style={{ color: '#0B5240' }}>Pay the correct tax.</span>
             </h1>
 
             <p className="font-semibold text-ink mb-2" style={{ fontSize: '14.5px', letterSpacing: '-0.01em' }}>
-              Set up your ABN properly from day one - and avoid costly mistakes.
+              Set up your ABN correctly from day one and avoid costly mistakes.
             </p>
 
             <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.58)', maxWidth: '520px' }}>
-              If you&apos;re working as a freelancer or contractor in Australia, you need an ABN.
-              We make sure you get it right - quickly and correctly.
+              If you work as a freelancer or contractor in Australia, you need an ABN.
+              We make sure it&apos;s set up correctly from the start.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center mb-5">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary"
                 style={{ height: '46px', padding: '0 24px', fontSize: '14px' }}>
-                Register my ABN →
+                Register your ABN →
               </a>
               <Link href="#how-to-register"
                 className="btn-ghost-dark"
@@ -121,7 +121,7 @@ export default function ABNPage() {
             </div>
 
             <p className="text-[11px]" style={{ color: 'rgba(10,15,13,0.38)' }}>
-              Under the supervision of a registered tax agent approved by the ATO
+              Handled under a registered tax agent&nbsp;•&nbsp;Fully ATO compliant
             </p>
           </div>
         </div>
@@ -136,18 +136,16 @@ export default function ABNPage() {
             <div className="reveal">
               <span className="section-label">What is an ABN?</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                Your number to invoice<br />
-                <em className="not-italic font-normal text-forest-400">and trade legally.</em>
+                An Australian Business Number lets you work<br />
+                <em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
               </h2>
 
               <div className="space-y-4 max-w-[520px]">
                 <p className="text-[13.5px] font-light text-body leading-[1.75]">
-                  An ABN is an 11-digit number that lets you work as a contractor or freelancer in Australia.
-                  You use it on every invoice you send.
+                  An ABN is an 11 digit number that identifies you when working as a contractor or freelancer in Australia. You include it on every invoice you send.
                 </p>
                 <p className="text-[13.5px] font-light text-body leading-[1.75]">
-                  With an ABN, no tax is taken out automatically.
-                  You receive the full amount - and handle your own tax.
+                  With an ABN, no tax is withheld automatically. You receive the full amount and manage your own tax.
                 </p>
               </div>
 
@@ -155,7 +153,7 @@ export default function ABNPage() {
               <div className="mt-5 rounded-xl px-4 py-4 max-w-[520px]" style={{ background: '#EAF6F1', borderLeft: '3px solid #0B5240' }}>
                 <p className="text-[13.5px] font-semibold text-ink leading-[1.8]">
                   TFN = employee income<br />
-                  ABN = contractor or freelance income
+                  ABN = freelance income
                 </p>
               </div>
             </div>
@@ -163,10 +161,10 @@ export default function ABNPage() {
             {/* Right — fact cards, tighter */}
             <div className="grid grid-cols-1 gap-2.5 reveal delay-1">
               {[
-                { title: 'Issued by',       body: 'The Australian Business Register (ABR), administered by the ATO.' },
-                { title: 'Format',          body: 'An 11-digit number you include on all invoices.' },
-                { title: 'Cost',            body: 'Free. No government fees.' },
-                { title: 'Processing time', body: 'Most ABNs are issued immediately online.' },
+                { title: 'Issued by',       body: 'The Australian Business Register, administered by the ATO.' },
+                { title: 'Format',          body: 'An 11 digit number you include on your invoices.' },
+                { title: 'Cost',            body: 'Free to apply. No government fees.' },
+                { title: 'Processing time', body: 'Most ABNs are issued immediately online after approval.' },
               ].map((c, i) => (
                 <div key={i} className="bg-white rounded-xl px-4 py-3" style={{ border: '1px solid #C8EAE0', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
                   <p className="text-[13px] font-semibold text-ink mb-0.5">{c.title}</p>
@@ -191,15 +189,15 @@ export default function ABNPage() {
                 <em className="not-italic font-normal text-forest-400">you are not an employee.</em>
               </h2>
               <p className="font-light text-muted leading-[1.7] mb-5" style={{ fontSize: '13px' }}>
-                You need an ABN if you work as a contractor or freelancer - not an employee. For example:
+                If you are not paid as an employee, you will usually need an ABN to invoice your work. For example:
               </p>
               <div className="space-y-2.5">
                 {[
                   ['Freelance work', '(design, photography, writing)'],
-                  ['Contract trades', 'or labour work'],
-                  ['Farm or harvest work', 'on ABN'],
-                  ['Remote or online work', 'for Australian clients'],
-                  ['Any work', 'where you invoice clients'],
+                  ['Contract or casual jobs', 'where you invoice'],
+                  ['Farm or harvest work', 'paid on ABN'],
+                  ['Remote work', 'for Australian clients'],
+                  ['Any job', 'where you send invoices instead of payslips'],
                 ].map(([bold, rest], i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
@@ -225,15 +223,15 @@ export default function ABNPage() {
                 {[
                   {
                     label: 'No tax withheld',
-                    body: 'You get paid in full - no tax is withheld. Set aside ~15-25% for tax.',
+                    body: 'You receive the full payment. You are responsible for setting aside money for tax.',
                   },
                   {
                     label: 'Report all income',
-                    body: 'You must report all ABN income in your tax return. The ATO can track this.',
+                    body: 'All ABN income must be reported in your tax return.',
                   },
                   {
                     label: 'No super paid for you',
-                    body: 'No super is paid for you. You are responsible for your own savings.',
+                    body: 'Super is not paid automatically. You need to manage your own savings.',
                   },
                 ].map((item, i) => (
                   <div key={i} className="py-3.5" style={{ borderTop: '1px solid #E2EFE9' }}>
@@ -246,7 +244,7 @@ export default function ABNPage() {
               <div className="mt-5 rounded-xl px-4 py-3" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
                 <p className="text-[13px] font-light text-body leading-[1.7]">
                   <span className="font-semibold text-forest-500">Not sure if you need an ABN?</span>{' '}
-                  We&apos;ll help you figure it out.
+                  We can help you figure it out.
                 </p>
               </div>
             </div>
@@ -310,11 +308,11 @@ export default function ABNPage() {
           <div className="max-w-xl mb-8 reveal">
             <span className="section-label">Common mistakes</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-2" style={{ fontSize: 'clamp(18px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Common mistakes that<br />
-              <em className="not-italic font-normal text-forest-400">cost you later.</em>
+              4 common mistakes that<br />
+              <em className="not-italic font-normal text-forest-400">can cost you later.</em>
             </h2>
             <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '13px' }}>
-              These are the most common issues with ABN registrations and obligations.
+              These are common mistakes that can delay your setup and cause problems later.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 reveal delay-1">
@@ -346,7 +344,7 @@ export default function ABNPage() {
                 ABN questions, answered.
               </h2>
               <p className="font-light text-muted leading-[1.65] mb-5" style={{ fontSize: '13px' }}>
-                Still unsure? Ask us directly - we reply within minutes.
+                Still unsure? Ask our tax experts.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
@@ -367,9 +365,9 @@ export default function ABNPage() {
       <CtaBand
         eyebrow="Not sure?"
         heading="Not sure if you need an ABN?"
-        headingEm="We'll tell you in minutes."
-        sub="We'll tell you if you need an ABN and set it up correctly."
-        primaryLabel="Get started on WhatsApp"
+        headingEm="Get a clear answer in minutes."
+        sub="We&apos;ll tell you if you need an ABN and help you set it up correctly."
+        primaryLabel="Chat with experts"
       />
     </>
   )

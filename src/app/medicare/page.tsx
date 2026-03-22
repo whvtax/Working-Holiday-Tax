@@ -43,13 +43,13 @@ export default function MedicarePage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6 lg:py-12">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-5" style={{ color: 'rgba(10,15,13,0.35)' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-8 lg:py-14">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-6" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">Medicare</span>
           </nav>
-          <div className="max-w-2xl mx-auto text-center">
+          <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-3 mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Guide</span>
@@ -60,10 +60,10 @@ export default function MedicarePage() {
             <p className="font-semibold text-ink mb-3" style={{ fontSize: '14.5px', letterSpacing: '-0.01em' }}>
               Not everyone is eligible. We help you understand where you stand.
             </p>
-            <p className="font-light leading-[1.75] mb-8 mx-auto" style={{ fontSize: '13.5px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
+            <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '13.5px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
               Medicare is Australia&apos;s public health system. Whether it applies to you depends on your visa type and country of origin.
             </p>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center justify-center mb-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-stretch sm:items-center mb-5">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}>
                 Get started on WhatsApp
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>

@@ -13,7 +13,7 @@ export default function ContactPage() {
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
-          <div className="max-w-xl mx-auto text-center">
+          <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-3 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Get in touch</span>
@@ -21,7 +21,7 @@ export default function ContactPage() {
             <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(22px,3.5vw,38px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
               Get your question answered — free.
             </h1>
-            <p className="font-light leading-[1.75] mx-auto" style={{ fontSize: '16px', color: 'rgba(10,15,13,0.58)', maxWidth: '380px' }}>
+            <p className="font-light leading-[1.75]" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '480px' }}>
               Message us now — free. We reply within the hour, seven days a week. No commitment, no cost to ask.
             </p>
           </div>
@@ -151,7 +151,7 @@ export default function ContactPage() {
             <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.5vw,28px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               One message is all it takes.
             </h2>
-            <p className="font-light text-muted leading-[1.75] mb-8 mx-auto" style={{ fontSize: '15px', maxWidth: '360px' }}>
+            <p className="font-light text-muted leading-[1.75] mb-6" style={{ fontSize: '15px', maxWidth: '360px' }}>
               Tell us your situation. We will explain exactly what you need to do and how we can handle it for you.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}>

@@ -60,15 +60,15 @@ export default function SuperannuationPage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-6 lg:py-12">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-5" style={{ color: 'rgba(10,15,13,0.35)' }}>
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-8 lg:py-14">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-6" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">Superannuation</span>
           </nav>
 
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2.5 mb-3">
+          <div className="max-w-[640px]">
+            <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Service guide</span>
             </div>
@@ -78,10 +78,10 @@ export default function SuperannuationPage() {
             <p className="font-semibold text-ink mb-2.5" style={{ fontSize: '14px', letterSpacing: '-0.01em' }}>
               Every employer in Australia pays 11.5% of your wages into a super fund — on top of your salary. That money is yours. We help you claim it back.
             </p>
-            <p className="font-light leading-[1.7] mb-5 mx-auto" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
+            <p className="font-light leading-[1.7] mb-5" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.55)', maxWidth: '420px' }}>
               Once you leave Australia and your visa expires, you can claim it all back through a DASP (Departing Australia Superannuation Payment). We manage the process from start to finish.
             </p>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5 items-stretch sm:items-center justify-center mb-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-2.5 items-stretch sm:items-stretch sm:items-center mb-5">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}>
                 Claim my super now
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
