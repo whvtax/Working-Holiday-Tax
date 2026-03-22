@@ -11,7 +11,7 @@ export default function ContactPage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white">
+      <section className="relative overflow-hidden pt-[68px] bg-white hero-min">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
           <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-3 mb-6">

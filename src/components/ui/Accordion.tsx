@@ -17,12 +17,12 @@ export function Accordion({ items }: { items: AccItem[] }) {
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
               aria-controls={contentId}
-              className="w-full flex items-center justify-between gap-4 py-4 text-left text-[13.5px] font-medium text-ink transition-colors hover:text-forest-500"
+              className="w-full flex items-center justify-between gap-3 py-3.5 text-left text-[13px] font-medium text-ink transition-colors hover:text-forest-500"
             >
               <span>{item.question}</span>
               <span
                 aria-hidden="true"
-                className={`w-7 h-7 rounded-full border border-border flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isOpen ? 'bg-forest-500 border-forest-500 rotate-45' : ''}`}
+                className={`w-6 h-6 rounded-full border border-border flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isOpen ? 'bg-forest-500 border-forest-500 rotate-45' : ''}`}
               >
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                   <path d="M2 2l6 6M8 2l-6 6" stroke={isOpen ? '#fff' : '#0B5240'} strokeWidth="1.3" strokeLinecap="round" />
@@ -33,7 +33,7 @@ export function Accordion({ items }: { items: AccItem[] }) {
               id={contentId}
               role="region"
               aria-labelledby={undefined}
-              className={`acc-body text-[13px] font-light text-muted leading-[1.7] ${isOpen ? 'open' : ''}`}
+              className={`acc-body text-[12.5px] font-light text-muted leading-[1.65] ${isOpen ? 'open' : ''}`}
             >
               {item.answer}
             </div>

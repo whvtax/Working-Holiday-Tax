@@ -126,7 +126,7 @@ export function CalculatorClient() {
                 {err && <p role="alert" className="text-[13px] text-red-500 font-medium">{err}</p>}
               </div>
 
-              <button onClick={run} className="btn-primary w-full" style={{ height: '56px', fontSize: '15px', borderRadius: '14px' }}>
+              <button onClick={run} className="btn-primary w-full" style={{ height: '52px', fontSize: '15px', borderRadius: '14px' }}>
                 Calculate my refund
               </button>
 

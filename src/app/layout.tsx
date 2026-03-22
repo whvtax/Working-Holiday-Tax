@@ -3,7 +3,6 @@ import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
-import { StickyBar } from '@/components/layout/StickyBar'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { SITE_URL } from '@/lib/constants'
 
@@ -58,7 +57,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main>{children}</main>
         <Footer />
-        <StickyBar />
         <RevealObserver />
       </body>
     </html>
