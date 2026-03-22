@@ -52,7 +52,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
+    <html lang="en-AU" className={`${playfair.variable} ${dmSans.variable}`}>
       <body>
         <div className="grain" aria-hidden="true" />
         <Nav />

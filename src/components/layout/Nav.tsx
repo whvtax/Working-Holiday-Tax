@@ -64,7 +64,7 @@ export function Nav() {
               </a>
             </div>
 
-            <button onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open ? 'true' : 'false'}
+            <button onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}
               className="flex flex-col justify-center gap-[5px] w-10 h-10 bg-transparent border-none p-2 lg:hidden">
               <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
               <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-200 w-5 ${open ? 'opacity-0' : ''}`} />

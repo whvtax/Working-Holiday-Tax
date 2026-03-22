@@ -15,7 +15,7 @@ export function Accordion({ items }: { items: AccItem[] }) {
             {/* H4: proper aria-controls/id pairing; H5: aria-expanded as string */}
             <button
               onClick={() => setOpen(isOpen ? null : i)}
-              aria-expanded={isOpen ? 'true' : 'false'}
+              aria-expanded={isOpen}
               aria-controls={contentId}
               className="w-full flex items-center justify-between gap-4 py-4 text-left text-[13.5px] font-medium text-ink transition-colors hover:text-forest-500"
             >

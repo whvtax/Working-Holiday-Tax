@@ -31,10 +31,13 @@ export function CalculatorClient() {
   const [err,      setErr]      = useState('')
 
   const run = () => {
-    const i = parseFloat(income) || 0
-    const w = parseFloat(withheld) || 0
+    const i = Math.min(Math.max(parseFloat(income) || 0, 0), 10_000_000)
+    const w = Math.min(Math.max(parseFloat(withheld) || 0, 0), 5_000_000)
     if (!i || !w || !visa) { setErr('Please fill in all three fields.'); return }
+    if (w > i) { setErr('Tax withheld cannot exceed total income.'); return }
     setErr('')
+    const allowedVisa = ['whm', 'res']
+    if (!allowedVisa.includes(visa)) { setErr('Invalid selection.'); return }
     setResult(calc(i, w, visa))
   }
 
@@ -78,7 +81,7 @@ export function CalculatorClient() {
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[13px] font-medium text-subtle">AUD</span>
                     <input
-                      id="ci" type="number" placeholder="0" value={income} min={0} inputMode="numeric"
+                      id="ci" type="number" placeholder="0" value={income} min={0} max={10000000} inputMode="numeric"
                       onChange={e => setIncome(e.target.value)}
                       className="input-base"
                       style={{ paddingLeft: '56px' }}
@@ -92,7 +95,7 @@ export function CalculatorClient() {
                   <div className="relative">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[13px] font-medium text-subtle">AUD</span>
                     <input
-                      id="cw" type="number" placeholder="0" value={withheld} min={0} inputMode="numeric"
+                      id="cw" type="number" placeholder="0" value={withheld} min={0} max={5000000} inputMode="numeric"
                       onChange={e => setWithheld(e.target.value)}
                       className="input-base"
                       style={{ paddingLeft: '56px' }}

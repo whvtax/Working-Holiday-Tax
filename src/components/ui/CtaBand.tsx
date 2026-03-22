@@ -11,9 +11,10 @@ interface Props {
   secondaryLabel?: string
   secondaryHref?: string
   clipTop?: boolean
+  trustLine?: string
 }
 
-export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLabel = 'Free Eligibility Check', secondaryLabel, secondaryHref = '/calculator', clipTop = false }: Props) {
+export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLabel = 'Free Eligibility Check', secondaryLabel, secondaryHref = '/calculator', clipTop = false, trustLine }: Props) {
   return (
     <section className="relative overflow-hidden grid-bg py-9 sm:py-[48px]" style={{ background: '#1A5C44' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
@@ -46,7 +47,7 @@ export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLa
             )}
           </div>
           <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.4)', letterSpacing: '0.02em' }}>
-            Free to start&nbsp;•&nbsp;1,200+ Working Holiday travellers helped&nbsp;•&nbsp;Response within 1 hour
+            {trustLine ?? <>Free to start&nbsp;•&nbsp;1,200+ Working Holiday travellers helped&nbsp;•&nbsp;Response within 1 hour</>}
           </p>
         </div>
       </div>
