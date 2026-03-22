@@ -81,7 +81,7 @@ export default function TaxReturnPage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white hero-min">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pt-10 pb-10 lg:pt-16 lg:pb-16">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
@@ -95,7 +95,7 @@ export default function TaxReturnPage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Tax Return</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(30px,4.5vw,52px)', lineHeight: 1.04, letterSpacing: '-0.03em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(26px,4vw,48px)', lineHeight: 1.04, letterSpacing: '-0.03em' }}>
               Lodge your tax return correctly.<br />
               <span style={{ color: '#0B5240' }}>We handle everything for you.</span>
             </h1>
@@ -107,7 +107,7 @@ export default function TaxReturnPage() {
             {/* Primary CTA */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex mb-5"
-              style={{ height: '52px', padding: '0 36px', fontSize: '16px', borderRadius: '14px' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '16px', borderRadius: '100px' }}>
               Start your tax return
             </a>
 
@@ -147,11 +147,11 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mb-10 reveal">
             <span className="section-label">What we do for you</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px,2.8vw,34px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               We handle your tax return from start to finish.
             </h2>
             <p className="font-light text-muted leading-[1.7]" style={{ fontSize: '14px' }}>
@@ -206,11 +206,11 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── EARLY SOCIAL PROOF ────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-8 lg:py-10 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Real results</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Real experiences from backpackers like you.
             </h2>
           </div>
@@ -238,11 +238,11 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">Why not do it yourself?</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               There is a better way.
             </h2>
           </div>
@@ -312,11 +312,11 @@ export default function TaxReturnPage() {
       </div>
 
       {/* ── TAX RATES ────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-3xl reveal">
             <span className="section-label">Tax rates</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-2" style={{ fontSize: 'clamp(22px,2.8vw,32px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-2" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               Tax rates in Australia.
             </h2>
             <p className="font-light text-muted leading-[1.7] mb-8" style={{ fontSize: '13.5px', maxWidth: '520px' }}>
@@ -379,11 +379,11 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">Deductions</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px,2.8vw,32px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               Work-related deductions<br />
               <em className="not-italic font-normal text-forest-400">can affect your tax outcome.</em>
             </h2>
@@ -410,11 +410,11 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-14 lg:py-20 bg-white">
+      <section id="how-it-works" className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-12 reveal">
             <span className="section-label center">How it works</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-2" style={{ fontSize: 'clamp(22px,2.8vw,32px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-2" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               From your documents<br />
               <em className="not-italic font-normal text-forest-400">to your tax outcome.</em>
             </h2>
@@ -463,13 +463,13 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
             <div className="reveal">
               <span className="section-label">Timing</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 Typical timeline<br />
                 <em className="not-italic font-normal text-forest-400">for your tax return.</em>
               </h2>
@@ -490,7 +490,7 @@ export default function TaxReturnPage() {
 
             <div className="reveal delay-1">
               <span className="section-label">What to have ready</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 Documents<br />
                 <em className="not-italic font-normal text-forest-400">you will need.</em>
               </h2>
@@ -521,12 +521,12 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 lg:gap-16 items-start">
             <div className="reveal">
               <span className="section-label">Questions</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px,2.8vw,32px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
                 Tax return questions, answered.
               </h2>
               <p className="font-light text-muted leading-[1.65] mb-6" style={{ fontSize: '13.5px' }}>

@@ -199,54 +199,46 @@
   /* ── MOBILE OPTIMISATIONS (< 640px) ─────────────────────────────────────── */
   @media (max-width: 639px) {
 
-    /* ── Hero ── */
-    .hero-section { padding-top: 0 !important; }
+    /* ── Horizontal padding: 20px on all sides — no text touches edges ── */
+    .max-w-7xl { padding-left: 20px !important; padding-right: 20px !important; }
 
-    /* Remove whitespace-nowrap on mobile so headline wraps gracefully */
-    .hero-h1-line1 { white-space: normal !important; }
+    /* ── Section padding: 48px top/bottom max ── */
+    section { padding-top: 48px !important; padding-bottom: 48px !important; }
 
-    /* Trust cards: reduce padding and number size */
-    .trust-card-num { font-size: 16px !important; }
-    .trust-card     { padding: 10px 8px !important; }
+    /* ── Hero: limit height, keep CTA above fold ── */
+    .hero-min { min-height: 0 !important; }
 
-    /* ── Buttons: full-width on mobile ── */
+    /* ── Buttons: full-width, 48px tall, properly centered ── */
     .btn-primary,
     .btn-ghost-dark,
     .btn-ghost-light {
-      width: 100%;
-      justify-content: center;
+      width: 100% !important;
+      justify-content: center !important;
+      height: 50px !important;
+      font-size: 15px !important;
     }
 
-    /* ── Section padding: tighter on mobile ── */
-    section { padding-top: 48px !important; padding-bottom: 48px !important; }
-
-    /* ── Two-col grids: collapse gap ── */
-    .mobile-gap-reduce { gap: 24px !important; }
-
-    /* ── Card padding: tighter on mobile ── */
-    .mobile-card-tight { padding: 14px !important; }
-
-    /* ── Info callout boxes ── */
-    .info-block { padding-left: 14px !important; }
-
-    /* ── Prose text: slightly larger for reading comfort ── */
+    /* ── Typography: comfortable reading ── */
     .prose-wht p { font-size: 14px !important; line-height: 1.75 !important; }
-
-    /* ── Section label: tighter ── */
     .section-label { margin-bottom: 4px !important; }
 
-    /* ── CtaBand: reduce padding ── */
-    .ctaband-inner { padding-top: 36px !important; padding-bottom: 44px !important; }
+    /* ── Cards: tighter padding ── */
+    .mobile-card-tight { padding: 14px !important; }
+    .info-block { padding-left: 14px !important; }
 
-    /* ── Testimonial cards: single col already, just tighten ── */
-    .testimonial-card { padding: 18px !important; }
+    /* ── Trust cards: compact ── */
+    .trust-card-num { font-size: 16px !important; }
+    .trust-card     { padding: 10px 8px !important; }
 
-    /* ── Footer columns: tighter ── */
-    .footer-inner { padding-top: 28px !important; padding-bottom: 20px !important; }
+    /* ── FAQ accordion: compact touch targets ── */
+    .accordion-item button { min-height: 44px !important; padding-top: 10px !important; padding-bottom: 10px !important; }
+
+    /* ── CtaBand ── */
+    .ctaband-inner { padding-top: 40px !important; padding-bottom: 48px !important; }
+
+    /* ── Footer ── */
+    .footer-inner { padding-top: 32px !important; padding-bottom: 24px !important; }
     .footer-cols  { gap: 24px !important; }
-
-    /* ── FAQ accordion: larger touch targets ── */
-    .accordion-item button { min-height: 44px; padding-top: 10px !important; padding-bottom: 10px !important; }
   }
 
   /* ── Hero height system ── */

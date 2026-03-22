@@ -46,7 +46,7 @@ const IconStar = () => (
 function Hero() {
   return (
     <section className="relative overflow-hidden pt-[68px] bg-white">
-      <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10 pt-14 pb-12 lg:pt-24 lg:pb-20 text-center">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-8 pb-8 lg:pt-16 lg:pb-14 text-center">
 
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 mb-6">
@@ -56,7 +56,7 @@ function Hero() {
 
         {/* Headline */}
         <h1 className="font-serif font-black text-ink mb-5 mx-auto" style={{
-          fontSize: 'clamp(32px, 5vw, 58px)',
+          fontSize: 'clamp(26px, 5vw, 52px)',
           lineHeight: 1.06,
           letterSpacing: '-0.03em',
           maxWidth: '820px',
@@ -66,12 +66,12 @@ function Hero() {
         </h1>
 
         {/* Supporting text */}
-        <p className="font-light leading-[1.8] mb-10 mx-auto" style={{ fontSize: '17px', color: 'rgba(10,15,13,0.58)', maxWidth: '520px' }}>
+        <p className="font-light leading-[1.8] mb-6 mx-auto" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '520px' }}>
           TFN, ABN, Tax Return &amp; Super - we handle everything for you, so you don&apos;t have to stress about paperwork.
         </p>
 
         {/* ONE primary CTA */}
-        <div className="mb-7">
+        <div className="mb-5">
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex"
             style={{ height: '52px', padding: '0 40px', fontSize: '16px', borderRadius: '100px' }}>
@@ -123,7 +123,7 @@ function Urgency() {
 // ── 3. SOLUTION ─────────────────────────────────────────────────────────────
 function Solution() {
   return (
-    <section className="py-16 lg:py-24 bg-white">
+    <section className="py-10 lg:py-16 bg-white">
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10 text-center">
         <span className="section-label center">Why us</span>
         <h2 className="font-serif font-black text-ink mt-2 mb-4 mx-auto" style={{ fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '680px' }}>
@@ -192,7 +192,7 @@ const TESTIMONIALS = [
 
 function SocialProof() {
   return (
-    <section className="py-16 lg:py-24" style={{ background: '#F4F9F6' }}>
+    <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="text-center mb-10 reveal">
           <span className="section-label center">Client stories</span>
@@ -263,7 +263,7 @@ const STEPS = [
 
 function Process() {
   return (
-    <section id="how-it-works" className="py-16 lg:py-24 bg-white">
+    <section id="how-it-works" className="py-10 lg:py-16 bg-white">
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="text-center mb-14 reveal">
           <span className="section-label center">How it works</span>
@@ -336,7 +336,7 @@ const SERVICES = [
 
 function Services() {
   return (
-    <section className="py-16 lg:py-24" style={{ background: '#EEF7F2' }}>
+    <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="text-center mb-10 reveal">
           <span className="section-label center">What we help with</span>

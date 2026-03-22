@@ -44,7 +44,7 @@ export default function MedicarePage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white hero-min">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pt-10 pb-10 lg:pt-16 lg:pb-16">
+        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
@@ -57,7 +57,7 @@ export default function MedicarePage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Guide</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(28px,4vw,48px)', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(26px,4vw,48px)', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
               Medicare in Australia for WHV
               <br /><span style={{ color: '#0B5240' }}>what you need to know.</span>
             </h1>
@@ -68,7 +68,7 @@ export default function MedicarePage() {
 
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex mb-5"
-              style={{ height: '52px', padding: '0 36px', fontSize: '16px', borderRadius: '14px' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '16px', borderRadius: '100px' }}>
               Check your eligibility
             </a>
 
@@ -109,11 +109,11 @@ export default function MedicarePage() {
       </section>
 
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mb-10 reveal">
             <span className="section-label">Your two scenarios</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px,2.8vw,34px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               You either pay the Medicare levy<br />
               <em className="not-italic font-normal text-forest-400">or you may be exempt.</em>
             </h2>
@@ -163,11 +163,11 @@ export default function MedicarePage() {
       </section>
 
       {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mb-10 reveal">
             <span className="section-label">What we do for you</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px,2.8vw,34px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               We handle it as part<br />
               <em className="not-italic font-normal text-forest-400">of your tax return.</em>
             </h2>
@@ -228,11 +228,11 @@ export default function MedicarePage() {
       </div>
 
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl reveal">
             <span className="section-label">Medicare levy exemption</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px,2.8vw,32px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               Medicare levy exemption.
             </h2>
             <p className="font-light text-muted leading-[1.7] mb-8" style={{ fontSize: '14px', maxWidth: '520px' }}>
@@ -253,12 +253,12 @@ export default function MedicarePage() {
       </section>
 
       {/* ── WHAT IS MEDICARE (DETAIL) ─────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 items-start">
             <div className="reveal">
               <span className="section-label">What is Medicare?</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 Australia&apos;s public<br />
                 <em className="not-italic font-normal text-forest-400">health system.</em>
               </h2>
@@ -302,11 +302,11 @@ export default function MedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Common confusion</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Questions we hear all the time.
             </h2>
           </div>
@@ -327,12 +327,12 @@ export default function MedicarePage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-14 lg:py-20 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 lg:gap-16 items-start">
             <div className="reveal">
               <span className="section-label">Questions</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(22px,2.8vw,32px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
                 Medicare questions, answered.
               </h2>
               <p className="font-light text-muted leading-[1.65] mb-6" style={{ fontSize: '13.5px' }}>
