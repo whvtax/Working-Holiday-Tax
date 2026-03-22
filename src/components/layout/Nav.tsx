@@ -87,6 +87,20 @@ export function Nav() {
             Free Eligibility Check →
           </a>
         </div>
+
+        {/* Partner logos — mobile menu */}
+        <div className="flex items-center gap-3 mt-6 pt-5" style={{ borderTop: '1px solid #F0F5F2' }}>
+          <div className="flex items-center justify-center rounded-lg" style={{ width: '56px', height: '32px', background: '#f5f9f7', border: '1px solid #E2EFE9' }}>
+            <svg viewBox="0 0 40 14" width="38" height="13" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Xero" role="img">
+              <path d="M7 0a7 7 0 100 14A7 7 0 007 0zm3.54 9.47L8.47 7.4l2.06-2.07a.5.5 0 10-.7-.7L7.76 6.69 5.7 4.63a.5.5 0 10-.71.7L7.05 7.4l-2.07 2.07a.5.5 0 10.71.7l2.07-2.06 2.07 2.06a.5.5 0 10.71-.7zM16.5 9.5V4.52a.5.5 0 011 0v.28a2.48 2.48 0 011.93-.9 2.53 2.53 0 012.52 2.52V9.5a.5.5 0 01-1 0V6.42a1.53 1.53 0 00-1.52-1.52 1.53 1.53 0 00-1.52 1.52V9.5a.5.5 0 01-1 0zm8.04-3.24a2.26 2.26 0 012.21-1.9 2.24 2.24 0 012.2 1.9H24.54zm5.42.73c0-.12 0-.24-.02-.36a3.24 3.24 0 00-3.19-2.75 3.24 3.24 0 100 6.48 3.23 3.23 0 002.86-1.73.5.5 0 10-.88-.47 2.24 2.24 0 01-1.98 1.2 2.24 2.24 0 01-2.2-1.87H29.5a.5.5 0 00.5-.5zm3.53 3.01a.5.5 0 01-.5-.5V4.52a.5.5 0 011 0v.42a2.74 2.74 0 011.88-.94.5.5 0 010 1 1.76 1.76 0 00-1.75 1.74V9.5a.5.5 0 01-.63.5z" fill="#13B5EA"/>
+            </svg>
+          </div>
+          <div className="flex items-center justify-center rounded-lg overflow-hidden" style={{ width: '32px', height: '32px', background: '#f5f9f7', border: '1px solid #E2EFE9' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={22} height={22} style={{ objectFit: 'contain' }} />
+          </div>
+          <span className="font-light" style={{ fontSize: '11px', color: 'rgba(10,15,13,0.4)' }}>Registered tax agent</span>
+        </div>
       </div>
     </>
   )
