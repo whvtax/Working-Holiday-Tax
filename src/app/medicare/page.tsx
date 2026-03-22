@@ -124,7 +124,7 @@ export default function MedicarePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 reveal delay-1">
             <div className="bg-white rounded-2xl" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px' }} style={{ background: '#EAF6F1' }}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#EAF6F1' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#0B5240" strokeWidth="1.4"/>
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
@@ -138,7 +138,7 @@ export default function MedicarePage() {
             </div>
 
             <div className="bg-white rounded-2xl" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px' }} style={{ background: '#FFFCF5' }}>
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#FFFCF5' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#C47E10" strokeWidth="1.4"/>
                   <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
