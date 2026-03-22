@@ -29,7 +29,7 @@ export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, brea
             ))}
           </nav>
         )}
-        <div className="max-w-2xl mx-auto text-center">
+        <div className="max-w-[640px]">
           <div className="inline-flex items-center gap-3 mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
             <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>{kicker}</span>
@@ -38,7 +38,7 @@ export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, brea
             {title}
             {titleEm && <><br /><span style={{ color: '#0B5240' }}>{titleEm}</span></>}
           </h1>
-          <p className="font-light leading-[1.7] mb-7 mx-auto" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.55)', maxWidth: '440px' }}>{sub}</p>
+          <p className="font-light leading-[1.7] mb-7" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.55)', maxWidth: '480px' }}>{sub}</p>
           {cta && (
             <a
               href={cta.href ?? WA_URL}
