@@ -74,16 +74,16 @@ export function Nav() {
         </div>
       </nav>
 
-      <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-24 px-8 pb-12 overflow-y-auto transition-transform duration-500 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[76px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
         {NAV_LINKS.map(l => (
           <Link key={l.href} href={l.href} onClick={close}
-            className="block font-serif text-[22px] font-bold text-ink py-4 transition-colors hover:text-forest-500"
-            style={{ borderBottom: '1px solid #E2EFE9' }}>
+            className="block font-sans text-[15px] font-medium text-ink py-3 transition-colors hover:text-forest-500"
+            style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
             {l.label}
           </Link>
         ))}
-        <div className="mt-8">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '52px', borderRadius: '12px', fontSize: '14px' }}>
+        <div className="mt-6">
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '46px', borderRadius: '100px', fontSize: '14px' }}>
             Free Eligibility Check →
           </a>
         </div>
