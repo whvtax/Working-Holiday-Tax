@@ -45,8 +45,8 @@ const IconStar = () => (
 // ── 1. HERO ─────────────────────────────────────────────────────────────────
 function Hero() {
   return (
-    <section className="relative overflow-hidden pt-[68px] bg-white">
-      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-8 pb-8 lg:pt-16 lg:pb-14 text-center">
+    <section className="relative overflow-hidden pt-[68px] bg-white hero-section">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-6 pb-6 lg:pt-14 lg:pb-12 text-center">
 
         {/* Eyebrow */}
         <div className="inline-flex items-center gap-2 mb-6">
@@ -56,7 +56,7 @@ function Hero() {
 
         {/* Headline */}
         <h1 className="font-serif font-black text-ink mb-5 mx-auto" style={{
-          fontSize: 'clamp(26px, 5vw, 52px)',
+          fontSize: 'clamp(28px,4vw,50px)',
           lineHeight: 1.06,
           letterSpacing: '-0.03em',
           maxWidth: '820px',
@@ -126,7 +126,7 @@ function Solution() {
     <section className="py-10 lg:py-16 bg-white">
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10 text-center">
         <span className="section-label center">Why us</span>
-        <h2 className="font-serif font-black text-ink mt-2 mb-4 mx-auto" style={{ fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '680px' }}>
+        <h2 className="font-serif font-black text-ink mt-2 mb-4 mx-auto" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '680px' }}>
           Built for Working Holiday travellers.{' '}
           <em className="not-italic font-normal text-forest-400">We understand exactly what you need.</em>
         </h2>
@@ -196,7 +196,7 @@ function SocialProof() {
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="text-center mb-10 reveal">
           <span className="section-label center">Client stories</span>
-          <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(22px,3vw,36px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+          <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,3vw,36px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
             Real experiences from backpackers like you.
           </h2>
         </div>
@@ -267,7 +267,7 @@ function Process() {
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="text-center mb-14 reveal">
           <span className="section-label center">How it works</span>
-          <h2 className="font-serif font-black text-ink mt-2 mb-3 mx-auto" style={{ fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '600px' }}>
+          <h2 className="font-serif font-black text-ink mt-2 mb-3 mx-auto" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '600px' }}>
             How it works in 4 simple steps.{' '}
             <em className="not-italic font-normal text-forest-400">We take care of it for you.</em>
           </h2>
@@ -340,7 +340,7 @@ function Services() {
       <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-10">
         <div className="text-center mb-10 reveal">
           <span className="section-label center">What we help with</span>
-          <h2 className="font-serif font-black text-ink mt-2 mb-3 mx-auto" style={{ fontSize: 'clamp(24px,3.5vw,40px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '640px' }}>
+          <h2 className="font-serif font-black text-ink mt-2 mb-3 mx-auto" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.08, letterSpacing: '-0.025em', maxWidth: '640px' }}>
             Everything you need to sort your tax<br />
             <em className="not-italic font-normal text-forest-400">in Australia without the stress.</em>
           </h2>

@@ -43,7 +43,7 @@ export default function MedicarePage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min">
+      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
@@ -57,7 +57,7 @@ export default function MedicarePage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Guide</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(26px,4vw,48px)', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
               Medicare in Australia for WHV
               <br /><span style={{ color: '#0B5240' }}>what you need to know.</span>
             </h1>
@@ -92,7 +92,7 @@ export default function MedicarePage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-8 lg:py-10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
             <div>
-              <p className="font-serif font-black text-white mb-1.5" style={{ fontSize: 'clamp(18px,2.5vw,28px)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              <p className="font-serif font-black text-white mb-1.5" style={{ fontSize: 'clamp(20px,2.5vw,28px)', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
                 Not sure about your Medicare status?
               </p>
               <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)' }}>
@@ -258,7 +258,7 @@ export default function MedicarePage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 items-start">
             <div className="reveal">
               <span className="section-label">What is Medicare?</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(20px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 Australia&apos;s public<br />
                 <em className="not-italic font-normal text-forest-400">health system.</em>
               </h2>
@@ -306,7 +306,7 @@ export default function MedicarePage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Common confusion</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Questions we hear all the time.
             </h2>
           </div>

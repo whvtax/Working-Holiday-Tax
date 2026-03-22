@@ -79,7 +79,7 @@ export default function ABNPage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min">
+      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
@@ -93,7 +93,7 @@ export default function ABNPage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>ABN Registration</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(26px,4vw,48px)', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
               Work legally with an ABN.<br />
               <span style={{ color: '#0B5240' }}>Pay the correct tax.</span>
             </h1>

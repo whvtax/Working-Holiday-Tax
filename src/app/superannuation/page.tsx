@@ -71,7 +71,7 @@ export default function SuperannuationPage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min">
+      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
@@ -85,7 +85,7 @@ export default function SuperannuationPage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Super Withdrawal</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(26px,4vw,48px)', lineHeight: 1.04, letterSpacing: '-0.03em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(28px,3.5vw,44px)', lineHeight: 1.04, letterSpacing: '-0.03em' }}>
               Don&apos;t leave money behind.<br />
               <span style={{ color: '#0B5240' }}>Get your super back.</span>
             </h1>
@@ -119,7 +119,7 @@ export default function SuperannuationPage() {
       <section style={{ background: '#0B5240' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
           <div className="max-w-[680px] mx-auto text-center">
-            <p className="font-serif font-black text-white mb-3" style={{ fontSize: 'clamp(24px,3.5vw,42px)', letterSpacing: '-0.025em', lineHeight: 1.08 }}>
+            <p className="font-serif font-black text-white mb-3" style={{ fontSize: 'clamp(28px,3.5vw,44px)', letterSpacing: '-0.025em', lineHeight: 1.08 }}>
               Thousands of dollars could be waiting for you.
             </p>
             <p className="font-light mb-6" style={{ fontSize: '16px', color: 'rgba(255,255,255,0.65)' }}>
@@ -203,7 +203,7 @@ export default function SuperannuationPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Real results</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(20px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Real experiences from backpackers like you.
             </h2>
           </div>
@@ -301,7 +301,7 @@ export default function SuperannuationPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
             <div className="reveal">
               <span className="section-label">Who can claim?</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(20px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 You can claim your super when<br />
                 <em className="not-italic font-normal text-forest-400">you leave Australia.</em>
               </h2>
@@ -322,7 +322,7 @@ export default function SuperannuationPage() {
 
             <div className="reveal delay-1">
               <span className="section-label">What you will need</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(18px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(20px,2.2vw,26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 What you will need<br />
                 <em className="not-italic font-normal text-forest-400">to claim your super.</em>
               </h2>

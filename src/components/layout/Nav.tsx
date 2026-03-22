@@ -74,7 +74,7 @@ export function Nav() {
         </div>
       </nav>
 
-      <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[76px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
         {NAV_LINKS.map(l => (
           <Link key={l.href} href={l.href} onClick={close}
             className="block font-sans text-[15px] font-medium text-ink py-3 transition-colors hover:text-forest-500"

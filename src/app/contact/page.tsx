@@ -11,14 +11,14 @@ export default function ContactPage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min">
+      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
           <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-3 mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Get in touch</span>
             </div>
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(22px,3.5vw,38px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
+            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(20px,3.5vw,38px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
               Get clear answers
             </h1>
             <p className="font-light leading-[1.75]" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '480px' }}>
@@ -33,7 +33,7 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-7 reveal">
             <span className="section-label center">How to reach us</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Contact options<br /><em className="not-italic font-normal text-forest-400">We respond quickly across all channels.</em>
             </h2>
           </div>
@@ -109,7 +109,7 @@ export default function ContactPage() {
           <div className="max-w-xl mx-auto">
             <div className="text-center mb-7 reveal">
               <span className="section-label center">What to expect</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(16px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(20px,2vw,22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 What happens when you contact us:
               </h2>
             </div>
@@ -148,7 +148,7 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-lg mx-auto text-center reveal">
             <span className="section-label center mb-4 block">Ready?</span>
-            <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(18px,2.5vw,28px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(20px,2.5vw,28px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               Start with a quick check.
             </h2>
             <p className="font-light text-muted leading-[1.75] mb-6" style={{ fontSize: '15px', maxWidth: '360px' }}>

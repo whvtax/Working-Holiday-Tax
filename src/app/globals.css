@@ -196,58 +196,107 @@
   }
 
 
-  /* ── MOBILE OPTIMISATIONS (< 640px) ─────────────────────────────────────── */
+  /* ════════════════════════════════════════════════════════════════════════
+     MOBILE DESIGN SYSTEM  (< 640px)
+     Single source of truth for all mobile layout, spacing, and sizing.
+     ════════════════════════════════════════════════════════════════════════ */
   @media (max-width: 639px) {
 
-    /* ── Horizontal padding: 20px on all sides — no text touches edges ── */
+    /* ── 1. GLOBAL SIDE PADDING ─────────────────────────────────────────── */
     .max-w-7xl { padding-left: 20px !important; padding-right: 20px !important; }
 
-    /* ── Section padding: 48px top/bottom max ── */
-    section { padding-top: 48px !important; padding-bottom: 48px !important; }
+    /* ── 2. SECTION SPACING SYSTEM ──────────────────────────────────────── */
+    /* All sections: 64px vertical rhythm */
+    section { padding-top: 56px !important; padding-bottom: 56px !important; }
+    /* Hero sections get tighter bottom (content flows into urgency strip) */
+    section.hero-section { padding-top: 72px !important; padding-bottom: 48px !important; }
 
-    /* ── Hero: limit height, keep CTA above fold ── */
+    /* ── 3. HERO SYSTEM ──────────────────────────────────────────────────── */
     .hero-min { min-height: 0 !important; }
+    /* Hero headings */
+    .hero-h1 {
+      font-size: 28px !important;
+      line-height: 1.2 !important;
+      max-width: 20ch !important;
+      margin-bottom: 12px !important;
+      text-wrap: balance !important;
+    }
+    /* Hero subtext */
+    .hero-sub {
+      font-size: 15px !important;
+      line-height: 1.6 !important;
+      max-width: 28ch !important;
+      margin-bottom: 20px !important;
+    }
 
-    /* ── Buttons: full-width, 48px tall, properly centered ── */
+    /* ── 4. CTA SYSTEM ───────────────────────────────────────────────────── */
     .btn-primary,
     .btn-ghost-dark,
     .btn-ghost-light {
       width: 100% !important;
+      max-width: 320px !important;
+      height: 52px !important;
+      font-size: 16px !important;
       justify-content: center !important;
-      height: 50px !important;
-      font-size: 15px !important;
+      display: flex !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      border-radius: 999px !important;
+    }
+    /* CTA wrapper spacing */
+    .cta-wrap {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 12px !important;
+      margin-top: 24px !important;
+      margin-bottom: 8px !important;
     }
 
-    /* ── Typography: comfortable reading ── */
-    .prose-wht p { font-size: 14px !important; line-height: 1.75 !important; }
-    .section-label { margin-bottom: 4px !important; }
+    /* ── 5. TEXT WIDTH CONTROL ───────────────────────────────────────────── */
+    h1 { max-width: 22ch; text-wrap: balance; word-break: normal; }
+    h2 { max-width: 24ch; text-wrap: balance; word-break: normal; }
+    p  { max-width: 32ch; word-break: normal; }
 
-    /* ── Cards: tighter padding ── */
-    .mobile-card-tight { padding: 14px !important; }
+    /* ── 6. CARD SYSTEM ──────────────────────────────────────────────────── */
+    /* All info/content cards */
+    [class*="rounded-xl"],
+    [class*="rounded-2xl"] {
+      border-radius: 16px !important;
+    }
+    /* Card internal padding */
+    .card-mobile { padding: 20px !important; }
+
+    /* ── 7. TYPOGRAPHY ───────────────────────────────────────────────────── */
+    .prose-wht p  { font-size: 15px !important; line-height: 1.75 !important; }
+    .section-label { margin-bottom: 4px !important; }
     .info-block { padding-left: 14px !important; }
 
-    /* ── Trust cards: compact ── */
-    .trust-card-num { font-size: 16px !important; }
-    .trust-card     { padding: 10px 8px !important; }
+    /* ── 8. TRUST STATS ──────────────────────────────────────────────────── */
+    .trust-card-num { font-size: 17px !important; }
+    .trust-card     { padding: 12px 8px !important; }
 
-    /* ── FAQ accordion: compact touch targets ── */
-    .accordion-item button { min-height: 44px !important; padding-top: 10px !important; padding-bottom: 10px !important; }
+    /* ── 9. FAQ ACCORDION ────────────────────────────────────────────────── */
+    .accordion-item button {
+      min-height: 48px !important;
+      padding-top: 12px !important;
+      padding-bottom: 12px !important;
+      font-size: 13.5px !important;
+    }
 
-    /* ── CtaBand ── */
-    .ctaband-inner { padding-top: 40px !important; padding-bottom: 48px !important; }
+    /* ── 10. CTABAND ─────────────────────────────────────────────────────── */
+    .ctaband-inner { padding-top: 48px !important; padding-bottom: 56px !important; }
 
-    /* ── Footer ── */
-    .footer-inner { padding-top: 32px !important; padding-bottom: 24px !important; }
-    .footer-cols  { gap: 24px !important; }
+    /* ── 11. FOOTER ──────────────────────────────────────────────────────── */
+    .footer-inner { padding-top: 36px !important; padding-bottom: 28px !important; }
+    .footer-cols  { gap: 28px !important; }
+
+    /* ── 12. ELEMENT GAPS ────────────────────────────────────────────────── */
+    .gap-between { gap: 16px !important; }
   }
 
-  /* ── Hero height system ── */
-  .hero-min {
-    min-height: 70vh;
-  }
-  @media (min-width: 1024px) {
-    .hero-min { min-height: auto; }
-  }
+  /* ── Hero min-height (non-mobile) ── */
+  .hero-min { min-height: auto; }
 
   /* ── Hover utilities (CSS-only, safe in server components) ── */
   .hover-forest:hover { color: #0B5240; }
