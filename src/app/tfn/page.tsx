@@ -94,10 +94,14 @@ export default function TFNPage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>TFN Application</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(22px,3.5vw,40px)', lineHeight: 1.06, letterSpacing: '-0.025em' }}>
+            <h1 className="font-serif font-black text-ink mb-3" style={{ fontSize: 'clamp(22px,3.5vw,40px)', lineHeight: 1.06, letterSpacing: '-0.025em' }}>
               Get your TFN sorted quickly<br />
               <span style={{ color: '#0B5240' }}>and start working sooner.</span>
             </h1>
+
+            <p className="font-semibold text-ink mb-2" style={{ fontSize: '14.5px', letterSpacing: '-0.01em' }}>
+              We guide you through every step and make sure your application is correct the first time.
+            </p>
 
             <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '14.5px', color: 'rgba(10,15,13,0.6)', maxWidth: '520px' }}>
               Without a TFN you pay 47% tax. Apply before you start work.
