@@ -104,7 +104,7 @@ export default function ABNPage() {
 
             <p className="font-light leading-[1.75] mb-6" style={{ fontSize: '14px', color: 'rgba(10,15,13,0.58)', maxWidth: '520px' }}>
               If you work as a freelancer or contractor in Australia, you need an ABN.
-              We make sure it's set up correctly from the start.
+              We make sure it&apos;s set up correctly from the start.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center mb-5">
