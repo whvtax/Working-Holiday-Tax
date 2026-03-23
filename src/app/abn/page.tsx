@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
@@ -60,7 +60,7 @@ export default function ABNPage() {
             <span aria-current="page">ABN Registration</span>
           </nav>
 
-          <div className="max-w-[600px]">
+          <div className="max-w-[600px] mx-auto">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>ABN Registration</span>
@@ -95,7 +95,7 @@ export default function ABNPage() {
             <div style={{ marginBottom: '16px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
-                style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%' }}>
+                style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', display: 'flex', marginLeft: 'auto', marginRight: 'auto' }}>
               Register your ABN →
               </a>
             </div>
@@ -152,8 +152,7 @@ export default function ABNPage() {
               marginBottom: '10px',
               textWrap: 'balance',
             }}>
-              We tell you what you need.{' '}
-              <em className="not-italic font-normal text-forest-400">Then we set it up correctly.</em>
+              We tell you what you need.<br /><em className="not-italic font-normal text-forest-400">Then we set it up correctly.</em>
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '30ch', margin: '0 auto' }}>
               If you are working as a freelancer or contractor in Australia, you need an ABN. We make sure it&apos;s set up correctly from the start.
@@ -201,8 +200,7 @@ export default function ABNPage() {
               marginBottom: '8px',
               textWrap: 'balance',
             }}>
-              Setting up an ABN incorrectly{' '}
-              <em className="not-italic font-normal text-forest-400">can cost you later.</em>
+              Setting up an ABN incorrectly<br /><em className="not-italic font-normal text-forest-400">can cost you later.</em>
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '32ch' }}>
               These are common mistakes that can delay your setup and cause problems later.
@@ -252,8 +250,7 @@ export default function ABNPage() {
               marginBottom: '10px',
               textWrap: 'balance',
             }}>
-              Getting your ABN{' '}
-              <em className="not-italic font-normal text-forest-400">takes about 10 minutes.</em>
+              Getting your ABN<br /><em className="not-italic font-normal text-forest-400">takes about 10 minutes.</em>
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
               The process is straightforward. We guide you through every step.
@@ -312,8 +309,7 @@ export default function ABNPage() {
                 marginBottom: '20px',
                 textWrap: 'balance',
               }}>
-                An Australian Business Number lets you work{' '}
-                <em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
+                An Australian Business Number lets you work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
               </h2>
 
               <div style={{ marginBottom: '20px' }}>
@@ -420,10 +416,7 @@ export default function ABNPage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <RelatedServices items={[
-        { label: 'Tax Return',       desc: 'Declare your income and claim your refund', href: '/tax-return' },
-        { label: 'Super Withdrawal', desc: 'Claim your super when you leave',         href: '/superannuation' },
-      ]} />
+      
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <CtaBand
@@ -431,7 +424,7 @@ export default function ABNPage() {
         heading="Not sure if you need an ABN?"
         headingEm="Get a clear answer in minutes."
         sub="We'll tell you if you need an ABN and set it up correctly."
-        primaryLabel="Chat with experts"
+        primaryLabel="Chat with experts →"
       />
     </>
   )

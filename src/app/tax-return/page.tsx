@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
@@ -89,7 +89,7 @@ export default function TaxReturnPage() {
             <span aria-current="page">Tax Return</span>
           </nav>
 
-          <div className="max-w-[620px]">
+          <div className="max-w-[620px] mx-auto">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Tax Return</span>
@@ -107,7 +107,7 @@ export default function TaxReturnPage() {
             {/* Primary CTA */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
+              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', display: 'flex', marginLeft: 'auto', marginRight: 'auto', marginBottom: '16px' }}>
               Start your tax return →
             </a>
 
@@ -383,8 +383,7 @@ export default function TaxReturnPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Deductions</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Work-related deductions{' '}
-              <em className="not-italic font-normal text-forest-400">can affect your tax outcome.</em>
+              Work-related deductions<br /><em className="not-italic font-normal text-forest-400">can affect your tax outcome.</em>
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
               You may be able to claim work-related deductions. Only expenses directly related to your work and supported by records or receipts can be included.
@@ -414,8 +413,7 @@ export default function TaxReturnPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              From your documents{' '}
-              <em className="not-italic font-normal text-forest-400">to your tax outcome.</em>
+              From your documents<br /><em className="not-italic font-normal text-forest-400">to your tax outcome.</em>
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '14px' }}>
               Send us your details. We prepare and lodge your tax return with the ATO.
@@ -554,11 +552,7 @@ export default function TaxReturnPage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <RelatedServices items={[
-        { label: 'Super Withdrawal',  desc: 'Claim your super when you leave', href: '/superannuation' },
-        { label: 'Medicare',          desc: 'Understand your Medicare status', href: '/medicare' },
-        { label: 'ABN Registration',  desc: 'Work as a contractor legally', href: '/abn' },
-      ]} />
+      
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <CtaBand
@@ -567,7 +561,7 @@ export default function TaxReturnPage() {
         heading="Need help with"
         headingEm="your tax return?"
         sub="We review your details and lodge your tax return with the ATO."
-        primaryLabel="Get started"
+        primaryLabel="Get started →"
         trustLine="Check your eligibility for free"
       />
     </>

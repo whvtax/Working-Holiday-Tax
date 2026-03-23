@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
@@ -79,7 +79,7 @@ export default function SuperannuationPage() {
             <span aria-current="page">Superannuation</span>
           </nav>
 
-          <div className="max-w-[620px]">
+          <div className="max-w-[620px] mx-auto">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Super Withdrawal</span>
@@ -96,7 +96,7 @@ export default function SuperannuationPage() {
 
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
+              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', display: 'flex', marginLeft: 'auto', marginRight: 'auto', marginBottom: '16px' }}>
               Claim your super →
             </a>
 
@@ -128,7 +128,7 @@ export default function SuperannuationPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold transition-all"
               style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '300px', width: '100%', justifyContent: 'center' }}>
-              Claim your super now
+              Claim your super now →
             </a>
           </div>
         </div>
@@ -140,8 +140,7 @@ export default function SuperannuationPage() {
           <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label">This is your money</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              Your money sitting in a fund{' '}
-              <em className="not-italic font-normal text-forest-400">waiting to be claimed.</em>
+              Your money sitting in a fund<br /><em className="not-italic font-normal text-forest-400">waiting to be claimed.</em>
             </h2>
           </div>
 
@@ -388,10 +387,7 @@ export default function SuperannuationPage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <RelatedServices items={[
-        { label: 'Tax Return',        desc: 'Declare your income and claim your refund', href: '/tax-return' },
-        { label: 'Medicare',          desc: 'Understand your Medicare status', href: '/medicare' },
-      ]} />
+      
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <CtaBand
@@ -400,7 +396,7 @@ export default function SuperannuationPage() {
         heading="Thousands of dollars"
         headingEm="could be waiting for you."
         sub="We find your super, handle your claim, and make sure you get every dollar."
-        primaryLabel="Claim your super"
+        primaryLabel="Claim your super →"
       />
     </>
   )

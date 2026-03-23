@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
@@ -51,7 +51,7 @@ export default function MedicarePage() {
             <span aria-current="page">Medicare</span>
           </nav>
 
-          <div className="max-w-[620px]">
+          <div className="max-w-[620px] mx-auto">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Guide</span>
@@ -68,7 +68,7 @@ export default function MedicarePage() {
 
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
+              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', display: 'flex', marginLeft: 'auto', marginRight: 'auto', marginBottom: '16px' }}>
               Check your eligibility →
             </a>
 
@@ -361,10 +361,7 @@ export default function MedicarePage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <RelatedServices items={[
-        { label: 'Tax Return',        desc: 'Lodge your return and claim your refund', href: '/tax-return' },
-        { label: 'Super Withdrawal',  desc: 'Claim your super when you leave', href: '/superannuation' },
-      ]} />
+      
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <CtaBand
@@ -373,7 +370,7 @@ export default function MedicarePage() {
         heading="Not sure about your Medicare status?"
         headingEm=""
         sub="We determine your eligibility as part of your tax return and apply the correct treatment."
-        primaryLabel="Check your eligibility"
+        primaryLabel="Check your eligibility →"
       />
     </>
   )

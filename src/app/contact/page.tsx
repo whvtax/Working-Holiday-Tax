@@ -154,7 +154,7 @@ export default function ContactPage() {
             <p className="font-light text-muted leading-[1.75] mb-6" style={{ fontSize: '15px', maxWidth: '360px' }}>
               Tell us your situation. We will review it and outline your options clearly.
             </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px' }}>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary mx-auto" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px', display: 'flex' }}>
               Check your eligibility →
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
