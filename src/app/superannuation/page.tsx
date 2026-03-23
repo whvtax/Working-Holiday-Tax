@@ -78,7 +78,7 @@ export default function SuperannuationPage() {
             <span aria-current="page">Superannuation</span>
           </nav>
 
-          <div className="max-w-[640px]">
+          <div className="max-w-[640px] mx-auto text-center">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Super Withdrawal</span>
@@ -97,22 +97,17 @@ export default function SuperannuationPage() {
               Most payments received within a few weeks. Fully online.
             </p>
 
-            {/* Hero CTAs */}
-            <div className="flex flex-row gap-3 items-center" style={{ marginBottom:'20px' }}>
+            <div className="flex justify-center" style={{ marginBottom:'20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex"
-                style={{ height:'52px', padding:'0 32px', fontSize:'15px', borderRadius:'100px' }}>
+                className="btn-primary inline-flex justify-center"
+                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', width:'100%', maxWidth:'260px' }}>
                 Claim your super →
-              </a>
-              <a href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
-                How it works →
               </a>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-nowrap gap-x-4 overflow-x-auto">
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'320px', margin:'0 auto' }}>
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)', whiteSpace:'nowrap' }}>
+                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   {t}
                 </span>
@@ -348,8 +343,8 @@ export default function SuperannuationPage() {
       <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
-            <div className="reveal">
-              <span className="section-label" style={{display:"flex",justifyContent:"center",textAlign:"center"}}>Questions</span>
+            <div className="reveal text-center lg:text-left">
+              <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
                 Super questions, answered.
               </h2>

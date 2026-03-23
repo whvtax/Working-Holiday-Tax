@@ -198,4 +198,69 @@
   .hover-forest:hover       { color: #0B5240; }
   .hover-forest-light:hover { color: #16775C; }
   .hover-forest-bg:hover    { background: #EAF6F1; border-color: #0B5240; }
+  /* ── Mobile-first centered hero layout ── */
+  @media (max-width: 639px) {
+    /* Hero inner text alignment */
+    .hero-section .max-w-\[640px\],
+    .hero-section .max-w-\[620px\] {
+      text-align: center !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    /* Center hero paragraphs */
+    .hero-section p {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Ensure single primary CTA full-width centered */
+    .hero-section .btn-primary {
+      display: flex !important;
+      justify-content: center !important;
+      width: 100% !important;
+      max-width: 300px !important;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    /* Trust badge grid */
+    .hero-section .grid-cols-2 {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    /* FAQ left column center on mobile */
+    .faq-col-left {
+      text-align: center !important;
+    }
+    .faq-col-left .btn-primary {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    /* Informational sections center */
+    .info-section-center {
+      text-align: center !important;
+    }
+    .info-section-center ul,
+    .info-section-center ol {
+      text-align: left;
+      display: inline-block;
+    }
+
+    /* Contact cards full width */
+    .contact-card {
+      width: 100% !important;
+    }
+
+    /* Section heading consistent spacing */
+    .section-heading-block {
+      margin-bottom: 28px;
+    }
+    .section-heading-block h2 {
+      margin-bottom: 10px;
+    }
+  }
+
 }
