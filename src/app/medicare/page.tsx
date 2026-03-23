@@ -99,14 +99,14 @@ export default function MedicarePage() {
       </section>
 
       {/* ── NOT SURE? — MAIN ENTRY POINT ──────────────────────────────────── */}
-      <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
-          <div style={{ maxWidth: '560px' }}>
-            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(18px,2.2vw,26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '8px' }}>
-              Not sure about your<br />Medicare status?
+      <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+          <div className="max-w-[560px] mx-auto text-center">
+            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(18px,2.2vw,26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
+              Not sure about your Medicare status?
             </p>
-            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px', maxWidth: '38ch' }}>
-              We determine your eligibility and apply the correct treatment when we prepare your tax return.
+            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
+              We determine your eligibility and apply the correct treatment.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
@@ -236,7 +236,7 @@ export default function MedicarePage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-start">
             <div className="reveal">
-              <span className="section-label">What is Medicare?</span>
+              <span className="section-label" style={{display:"flex",justifyContent:"center",textAlign:"center"}}>What is Medicare?</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 1.87vw, 20px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
                 Australia&apos;s public<br />
                 <em className="not-italic font-normal text-forest-400">health system.</em>

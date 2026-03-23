@@ -32,7 +32,7 @@ export default function ContactPage() {
       <section className="py-10 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-7 reveal">
-            <span className="section-label center">How to reach us</span>
+            <span className="section-label center" style={{textAlign:"center",display:"flex",justifyContent:"center"}}>How to reach us</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(17px, 1.7vw, 19px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               Contact options<br /><em className="not-italic font-normal text-forest-400">We respond quickly across all channels.</em>
             </h2>
@@ -87,17 +87,36 @@ export default function ContactPage() {
 
             {/* Social row */}
             <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'Instagram', handle: '@workingholidaytax', href: 'https://instagram.com/workingholidaytax', color: '#E2EFE9' },
-                { label: 'TikTok',    handle: '@workingholidaytax', href: 'https://tiktok.com/@workingholidaytax',    color: '#E2EFE9' },
-              ].map((s) => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                  className="flex flex-col rounded-2xl p-5 transition-all hover:shadow-md"
-                  style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
-                  <p className="text-[14px] font-semibold text-ink mb-0.5" style={{ letterSpacing: '-0.01em' }}>{s.label}</p>
-                  <p className="text-[12.5px] font-light text-muted">{s.handle}</p>
-                </a>
-              ))}
+              <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-2xl p-5 transition-all hover:shadow-md group"
+                style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[14px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>Instagram</p>
+                    <p className="text-[12.5px] font-light text-muted">@workingholidaytax</p>
+                  </div>
+                </div>
+              </a>
+              <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer"
+                className="flex items-center justify-between rounded-2xl p-5 transition-all hover:shadow-md group"
+                style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#010101' }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.79 1.52V6.76a4.85 4.85 0 01-1.02-.07z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[14px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>TikTok</p>
+                    <p className="text-[12.5px] font-light text-muted">@workingholidaytax</p>
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
         </div>
@@ -113,31 +132,24 @@ export default function ContactPage() {
                 What happens when you contact us:
               </h2>
             </div>
-            <div className="space-y-0 reveal delay-1">
+            <div className="flex flex-col reveal delay-1" style={{ gap: '0' }}>
               {[
-                {
-                  label: 'Fast responses',
-                  body: 'We aim to respond as quickly as possible during business hours.',
-                },
-                {
-                  label: 'Real people',
-                  body: 'You will speak directly with a real person who reviews your case.',
-                },
-                {
-                  label: 'No commitment',
-                  body: 'There is no cost to ask questions. You decide if and how to proceed.',
-                },
-                {
-                  label: 'Available from anywhere',
-                  body: 'Our service is fully online and accessible from anywhere.',
-                },
-              ].map((item, i) => (
-                <div key={i} className="py-4" style={{ borderTop: '1px solid #E2EFE9' }}>
-                  <p className="text-[13px] font-semibold text-ink mb-0.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
-                  <p className="text-[13px] font-light text-muted leading-[1.75]">{item.body}</p>
+                { n: '1', label: 'Tell us what you need', body: 'Share your situation — TFN, return, super or ABN.' },
+                { n: '2', label: 'We review your case',   body: 'A real person responds within 24 hours.' },
+                { n: '3', label: 'We handle everything',  body: 'No commitment. You decide how to proceed.' },
+              ].map((item, i, arr) => (
+                <div key={i} className="flex gap-4" style={{ paddingBottom: i < arr.length - 1 ? '18px' : '0' }}>
+                  <div className="flex flex-col items-center flex-shrink-0">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#0B5240', fontSize: '12px' }}>{item.n}</div>
+                    {i < arr.length - 1 && <div className="flex-1 w-px mt-2" style={{ minHeight: '18px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
+                  </div>
+                  <div style={{ paddingTop: '3px' }}>
+                    <p className="text-[13px] font-semibold text-ink mb-0.5" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
+                    <p className="text-[13px] font-light text-muted leading-[1.65]">{item.body}</p>
+                  </div>
                 </div>
               ))}
-              <div style={{ borderTop: '1px solid #E2EFE9' }} />
+              <div style={{ borderTop: '1px solid #E2EFE9', marginTop: '18px' }} />
             </div>
           </div>
         </div>

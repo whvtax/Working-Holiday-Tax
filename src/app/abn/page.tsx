@@ -41,10 +41,9 @@ const MISTAKES = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Check if you need an ABN',  body: 'Make sure you are working as a contractor and not as an employee. Have your TFN and basic details ready before you apply.' },
-  { n: '2', title: 'Submit your application',   body: 'Apply online with your personal and work details in a few minutes. The process is simple, free, and done online.' },
-  { n: '3', title: 'Application review',        body: 'Your application is reviewed online after you submit your details. Most ABNs are approved instantly, while some may take longer.' },
-  { n: '4', title: 'Receive your ABN',          body: 'Once approved, your ABN is issued and ready to use immediately. You can start working and invoicing without any delays.' },
+  { n: '1', title: 'Tell us what you need', body: 'Share your work type and visa details.' },
+  { n: '2', title: 'Send your details',     body: 'TFN and passport info. Takes minutes.' },
+  { n: '3', title: 'We handle everything',  body: 'We register your ABN correctly for you.' },
 ]
 
 export default function ABNPage() {
@@ -106,11 +105,11 @@ export default function ABNPage() {
       </section>
 
       {/* ── URGENCY STRIP ─────────────────────────────────────────────────── */}
-      <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10 text-center">
-          <div className="max-w-[560px] mx-auto">
-            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(18px,2.2vw,26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '8px' }}>
-              Not sure if you need an ABN?<br />Get a clear answer in minutes.
+      <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+          <div className="max-w-[560px] mx-auto text-center">
+            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(18px,2.2vw,26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
+              Not sure if you need an ABN?
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
               We tell you exactly what applies to your situation.
@@ -235,7 +234,7 @@ export default function ABNPage() {
             {/* Desktop */}
             <div className="hidden lg:block">
               <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
+                <div className="absolute left-[calc(16.6%)] right-[calc(16.6%)] top-4 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white flex-shrink-0" style={{ background: '#0B5240', marginBottom: '16px', boxShadow: '0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>
@@ -273,7 +272,7 @@ export default function ABNPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-center">
 
             <div className="reveal">
-              <span className="section-label">What is an ABN?</span>
+              <span className="section-label" style={{display:"flex",justifyContent:"center",textAlign:"center"}}>What is an ABN?</span>
               <h2 className="font-serif font-black text-ink" style={{
                 fontSize: 'clamp(15px, 1.87vw, 22px)',
                 lineHeight: 1.1,
@@ -327,7 +326,7 @@ export default function ABNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
             <div className="reveal">
-              <span className="section-label">Questions</span>
+              <span className="section-label" style={{display:"flex",justifyContent:"center",textAlign:"center"}}>Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
                 ABN questions, answered.
               </h2>

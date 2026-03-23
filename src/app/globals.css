@@ -14,6 +14,24 @@
   @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   a { @apply no-underline; color: inherit; }
   button { font-family: inherit; }
+
+  /* ── Green CTA section mobile fix ── */
+  @media (max-width: 639px) {
+    section[style*="background: '#0B5240'"],
+    section[style*='background:#0B5240'],
+    section[style*="background: rgb(11, 82, 64)"] {
+      height: auto !important;
+      padding-top: 48px !important;
+      padding-bottom: 48px !important;
+      overflow: visible !important;
+    }
+
+    /* Button bottom spacing */
+    .btn-primary, .btn-ghost-dark {
+      margin-bottom: 8px;
+    }
+  }
+
 }
 
 @layer components {

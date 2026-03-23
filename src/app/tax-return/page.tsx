@@ -43,10 +43,9 @@ const DEDUCTIONS = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Send us your details',     body: 'Provide your income details, payment summaries, and any work-related expenses.' },
-  { n: '2', title: 'We review everything',     body: 'We check your income, deductions, and residency status to ensure accuracy.' },
-  { n: '3', title: 'We prepare and lodge',     body: 'We prepare your tax return and lodge it with the ATO on your behalf.' },
-  { n: '4', title: 'ATO processes your return', body: 'The ATO reviews your return and issues a Notice of Assessment with the outcome.' },
+  { n: '1', title: 'Tell us what you need', body: 'Share your income and employment details.' },
+  { n: '2', title: 'Send your details',     body: 'Payment summaries and basic info.' },
+  { n: '3', title: 'We handle everything',  body: 'We prepare, lodge and keep you updated.' },
 ]
 
 const TESTIMONIALS = [
@@ -134,13 +133,13 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
-      <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
-          <div style={{ maxWidth: '560px' }}>
-            <p className="font-serif font-black text-white mb-2" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1 }}>
+      <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+          <div className="max-w-[560px] mx-auto text-center">
+            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
               Most WHV travellers overpay tax.<br />We make sure you don&apos;t.
             </p>
-            <p className="font-light mb-5" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)' }}>
+            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
               Refund or payment — we handle it correctly.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
@@ -365,7 +364,7 @@ export default function TaxReturnPage() {
             </div>
 
             <div className="mt-5 rounded-xl px-5 py-3 mx-auto" style={{ background: '#FFFCF5', border: '1.5px solid #E9A020', borderRadius: '12px', maxWidth: 'fit-content' }}>
-              <p className="font-light text-body" style={{ fontSize: '12.5px', lineHeight: 1.5 }}>
+              <p className="font-light text-body" style={{ fontSize: '12.5px', lineHeight: 1.5, textAlign: 'center' }}>
                 If your employer is not registered as a Working Holiday employer, you may be taxed at 30% instead of the Working Holiday rate.
               </p>
             </div>
@@ -396,7 +395,7 @@ export default function TaxReturnPage() {
 
           <div className="mt-6 max-w-xl reveal delay-2">
             <div className="info-block">
-              <p>Personal expenses, fines, and commuting costs are not claimable.</p>
+              <p style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Personal expenses, fines, and commuting costs are not claimable.</p>
             </div>
           </div>
         </div>
@@ -418,7 +417,7 @@ export default function TaxReturnPage() {
           <div className="reveal delay-1">
             <div className="hidden lg:block">
               <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
+                <div className="absolute left-[calc(16.6%)] right-[calc(16.6%)] top-4 h-px" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex: 0 }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #ffffff, 0 0 0 5px #C8EAE0' }}>
@@ -517,7 +516,7 @@ export default function TaxReturnPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
             <div className="reveal">
-              <span className="section-label">Questions</span>
+              <span className="section-label" style={{display:'flex',justifyContent:'center',textAlign:'center'}}>Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
                 Tax return questions, answered.
               </h2>

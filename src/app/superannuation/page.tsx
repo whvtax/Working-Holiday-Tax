@@ -34,10 +34,9 @@ const faqs = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Confirm eligibility',   body: 'Make sure your visa has expired or been cancelled. We confirm eligibility before starting.' },
-  { n: '2', title: 'Locate your super',     body: 'We find all your super accounts, including any held by the ATO. Nothing is missed.' },
-  { n: '3', title: 'We submit the DASP',    body: 'We prepare and submit your super claim to the ATO on your behalf. Fully handled.' },
-  { n: '4', title: 'Receive your payment',  body: 'Once approved, your super is paid to your bank account within a few weeks.' },
+  { n: '1', title: 'Tell us what you need', body: 'Share your visa and employment details.' },
+  { n: '2', title: 'Send your details',     body: 'Passport, TFN and super fund info.' },
+  { n: '3', title: 'We handle everything',  body: 'We submit your DASP and track the payment.' },
 ]
 
 const TESTIMONIALS = [
@@ -124,14 +123,14 @@ export default function SuperannuationPage() {
       </section>
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
-      <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14">
+      <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-[560px] mx-auto text-center">
-            <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '8px', textWrap: 'balance' }}>
-              Thousands of dollars could be waiting for you.
+            <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
+              Your super is waiting for you.
             </p>
             <p className="font-light mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
-              Once you leave Australia, you can claim your super back. We manage the full process for you from start to finish.
+              Once you leave Australia, you can claim your super back. We manage the full process for you.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold transition-all"
@@ -255,7 +254,7 @@ export default function SuperannuationPage() {
           <div className="reveal delay-1">
             <div className="hidden lg:block">
               <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
+                <div className="absolute left-[calc(16.6%)] right-[calc(16.6%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>
@@ -350,7 +349,7 @@ export default function SuperannuationPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
             <div className="reveal">
-              <span className="section-label">Questions</span>
+              <span className="section-label" style={{display:"flex",justifyContent:"center",textAlign:"center"}}>Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
                 Super questions, answered.
               </h2>

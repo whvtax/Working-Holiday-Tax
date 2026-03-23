@@ -22,17 +22,16 @@ const TESTIMONIALS = [
 ]
 
 const STEPS = [
-  { n:'1', title:'Tell us what you need.',  body:'TFN, ABN, tax return or super. Share your situation and we guide you.' },
-  { n:'2', title:'Send your details.',       body:'Follow a simple checklist and upload your personal details easily.' },
-  { n:'3', title:'We manage your tax.',      body:'We prepare and lodge your return correctly. No confusion, no delays.' },
-  { n:'4', title:'Get your refund.',         body:'Most returns are processed within 7 to 14 days and you stay updated.' },
+  { n:'1', title:'Tell us what you need', body:'TFN, ABN, tax return or super.' },
+  { n:'2', title:'Send your details',     body:'A short checklist. Takes a few minutes.' },
+  { n:'3', title:'We handle everything',  body:'We prepare, lodge and keep you updated.' },
 ]
 
 const SERVICES = [
-  { n:'01', href:'/tfn',           icon:<IconDoc />,   title:'TFN Application',  desc:'Start working at the correct tax rate from day one. We handle your TFN application properly the first time.' },
-  { n:'02', href:'/tax-return',    icon:<IconLock />,  title:'Tax Return',        desc:'Get your tax refund fast and stress free. We handle everything with the ATO for you.' },
-  { n:'03', href:'/superannuation', icon:<IconClock />, title:'Super Withdrawal', desc:'Claim your super back when you leave Australia. We handle the full process for you.' },
-  { n:'04', href:'/abn',           icon:<IconPlus />,  title:'ABN Registration',  desc:'Set up your ABN so you can work and invoice properly. We handle everything for you.' },
+  { n:'01', href:'/tfn',            icon:<IconDoc />,   title:'TFN Application',  desc:'Start working at the correct tax rate from day one.' },
+  { n:'02', href:'/abn',            icon:<IconPlus />,  title:'ABN Registration',  desc:'Set up your ABN so you can work and invoice properly.' },
+  { n:'03', href:'/tax-return',     icon:<IconLock />,  title:'Tax Return',        desc:'Get your tax refund handled correctly with the ATO.' },
+  { n:'04', href:'/superannuation', icon:<IconClock />, title:'Super Withdrawal',  desc:'Claim your super back when you leave Australia.' },
 ]
 
 export default function HomePage() {
@@ -183,7 +182,7 @@ export default function HomePage() {
           {/* Desktop */}
           <div className="hidden lg:block" style={{ marginBottom:'48px' }}>
             <div className="relative flex items-start">
-              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
+              <div className="absolute left-[calc(16.6%)] right-[calc(16.6%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
               {STEPS.map((s,i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex:1 }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style={{ background:'#0B5240', fontSize:'13px', marginBottom:'16px', boxShadow:'0 0 0 4px #fff, 0 0 0 5px #C8EAE0' }}>{s.n}</div>
@@ -228,7 +227,7 @@ export default function HomePage() {
               Everything you need<br />
               <em className="not-italic font-normal text-forest-400">to sort your tax in Australia.</em>
             </h2>
-            <p className="font-light text-muted" style={{ fontSize:'15px' }}>From your first job to your final refund, we take care of it for you.</p>
+            <p className="font-light text-muted" style={{ fontSize:'15px', textAlign:'center' }}>From your first job to your final refund,<br />we take care of it for you.</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

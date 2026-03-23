@@ -19,10 +19,9 @@ const faqs = [
 ]
 
 const STEPS = [
-  { n:'1', title:'Check your eligibility',   body:'Make sure you are in Australia and have a valid visa and your passport details ready.' },
-  { n:'2', title:'Submit your application',  body:'Apply through the official ATO website. The process takes around 10 minutes and is free.' },
-  { n:'3', title:'ATO reviews your details', body:'Your application is reviewed by the ATO, and you will receive confirmation by email.' },
-  { n:'4', title:'Receive your TFN',         body:'Your TFN arrives by post once approved. You can also receive it by phone after a week.' },
+  { n:'1', title:'Tell us what you need', body:'Share your visa details and situation.' },
+  { n:'2', title:'Send your details',     body:'Passport and basic info. Takes minutes.' },
+  { n:'3', title:'We handle everything',  body:'We submit your application correctly.' },
 ]
 
 const TESTIMONIALS = [
@@ -57,7 +56,7 @@ export default function TFNPage() {
             </h1>
 
             <p className="font-semibold text-ink" style={{ fontSize:'15px', letterSpacing:'-0.01em', marginBottom:'6px' }}>
-              We guide you through every step and make sure your application is correct the first time.
+              We make sure your application is correct the first time.
             </p>
 
             <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'44ch', marginBottom:'24px' }}>
@@ -228,7 +227,7 @@ export default function TFNPage() {
           {/* Desktop */}
           <div className="hidden lg:block" style={{ marginBottom:'40px' }}>
             <div className="relative flex items-start">
-              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex:0 }} aria-hidden="true" />
+              <div className="absolute left-[calc(16.6%)] right-[calc(16.6%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex:0 }} aria-hidden="true" />
               {STEPS.map((s,i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex:1 }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style={{ background:'#0B5240', fontSize:'13px', marginBottom:'16px', boxShadow:'0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>{s.n}</div>
@@ -268,7 +267,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-7 items-start">
             <div>
-              <span className="section-label">Questions</span>
+              <span className="section-label center" style={{textAlign:"center",display:"flex",justifyContent:"center"}}>Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
                 TFN questions,<br />answered.
               </h2>
