@@ -22,7 +22,7 @@ const TESTIMONIALS = [
 ]
 
 const STEPS = [
-  { n:'1', title:'Tell us what you need.',  body:'TFN, ABN, tax return or super. Get clear guidance on what applies to you.' },
+  { n:'1', title:'Tell us what you need.',  body:'TFN, ABN, tax return or super. Share your situation and we guide you.' },
   { n:'2', title:'Send your details.',       body:'Follow a simple checklist and upload your personal details easily.' },
   { n:'3', title:'We manage your tax.',      body:'We prepare and lodge your return correctly. No confusion, no delays.' },
   { n:'4', title:'Get your refund.',         body:'Most returns are processed within 7 to 14 days and you stay updated.' },
@@ -104,9 +104,9 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" style={{ marginBottom:'40px' }}>
             {[
-              { title:'WHV tax specialists',       body:'Working Holiday tax is all we do. We handle complex situations every day.' },
+              { title:'WHV tax specialists',       body:'Working Holiday tax is all we do. We handle your situation every day.' },
               { title:'Registered. Compliant.',    body:'Handled under a registered tax agent. Fully compliant and ATO-approved.' },
-              { title:'Real people, fast answers', body:'Real people who respond quickly. We guide you through the whole process.' },
+              { title:'Real people, fast answers', body:'Real people who respond quickly and guide you through the process.' },
               { title:'We make it simple',         body:'No forms, no stress, no confusion. We handle it and keep you updated.' },
             ].map((item,i) => (
               <div key={i} className="pt-5 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
