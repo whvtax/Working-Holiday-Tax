@@ -172,8 +172,7 @@ export default function TFNPage() {
       <section className="py-12 lg:py-20" style={{ background:'#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-12">
 
-          <div className="max-w-xl lg:max-w-2xl mx-auto text-center"
-            style={{ marginBottom:'32px' }} className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
+          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Why use our service</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.21vw, 30px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
@@ -218,7 +217,7 @@ export default function TFNPage() {
             ))}
           </div>
 
-          <div className="text-center" style={{ marginTop:'8px' }} className="text-center mt-6 lg:mt-10">
+          <div className="text-center mt-6 lg:mt-10">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
@@ -236,7 +235,7 @@ export default function TFNPage() {
       <section className="py-10 lg:py-18 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-12">
 
-          <div className="text-center" style={{ marginBottom:'24px' }} className="text-center mb-7 lg:mb-10">
+          <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">What travellers say</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(17px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'30ch' }}>
@@ -418,7 +417,7 @@ export default function TFNPage() {
             ))}
           </div>
 
-          <div className="text-center" style={{ marginTop:'8px' }} className="text-center mt-8 lg:mt-12">
+          <div className="text-center mt-8 lg:mt-12">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary"
               style={{ height:'52px', padding:'0 40px', fontSize:'15px', maxWidth:'320px', width:'100%', display:'inline-flex', alignItems:'center', justifyContent:'center' }}>

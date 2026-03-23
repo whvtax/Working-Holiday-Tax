@@ -126,7 +126,7 @@ export default function SuperannuationPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-[560px] mx-auto text-center">
             <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
-              Don't leave your super behind.
+              Don&apos;t leave your super behind.
             </p>
             <p className="font-light" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
               When you leave Australia, you can claim your super back. We handle everything for you.
