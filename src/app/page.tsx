@@ -22,9 +22,9 @@ const TESTIMONIALS = [
 ]
 
 const STEPS = [
-  { n:'1', title:'Tell us what you need.',  body:'TFN, ABN, tax return or super. Share your situation and get clear guidance.' },
+  { n:'1', title:'Tell us what you need.',  body:'TFN, ABN, tax return or super. Get clear guidance on what applies to you.' },
   { n:'2', title:'Send your details.',       body:'Follow a simple checklist and upload your personal details easily.' },
-  { n:'3', title:'We manage your tax.',      body:'We prepare and lodge your return correctly with no confusion or delays.' },
+  { n:'3', title:'We manage your tax.',      body:'We prepare and lodge your return correctly. No confusion, no delays.' },
   { n:'4', title:'Get your refund.',         body:'Most returns are processed within 7 to 14 days and you stay updated.' },
 ]
 
@@ -46,7 +46,7 @@ export default function HomePage() {
             <span className="font-medium uppercase" style={{ fontSize:'10px', letterSpacing:'0.18em', color:'rgba(11,82,64,0.65)' }}>Working Holiday Visa Specialist</span>
           </div>
 
-          <h1 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(32px,4.2vw,52px)', lineHeight:1.08, letterSpacing:'-0.032em', marginBottom:'16px' }}>
+          <h1 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(23px, 3.06vw, 37px)', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'16px' }}>
             Confused about tax in Australia?<br />
             <span style={{ color:'#0B5240' }}>We&apos;ve got you covered.</span>
           </h1>
@@ -76,11 +76,11 @@ export default function HomePage() {
       {/* ── URGENCY STRIP ────────────────────────────────────────────────── */}
       <section style={{ background:'#0B5240' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-10 text-center">
-          <p className="font-serif font-black text-white mx-auto" style={{ fontSize:'clamp(20px,2.8vw,32px)', letterSpacing:'-0.025em', lineHeight:1.1, marginBottom:'8px' }}>
+          <p className="font-serif font-black text-white mx-auto" style={{ fontSize:'clamp(17px, 2.38vw, 27px)', letterSpacing:'-0.025em', lineHeight:1.1, marginBottom:'8px' }}>
             Without a TFN, 47% tax is withheld<br />from every payslip.
           </p>
-          <p className="font-light mx-auto" style={{ fontSize:'14px', color:'rgba(255,255,255,0.6)', maxWidth:'36ch', marginBottom:'20px' }}>
-            Most backpackers overpay tax in Australia - we make sure you don&apos;t.
+          <p className="font-light mx-auto" style={{ fontSize:'14px', color:'rgba(255,255,255,0.6)', maxWidth:'36ch', marginBottom:'20px', textAlign:'center' }}>
+            Most backpackers overpay tax in Australia<br />we make sure you don&apos;t.
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-semibold transition-all"
@@ -94,12 +94,12 @@ export default function HomePage() {
       <section className="py-14 lg:py-20 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
           <span className="section-label center">Why us</span>
-          <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(24px,3vw,38px)', lineHeight:1.08, letterSpacing:'-0.025em', maxWidth:'26ch', marginTop:'10px', marginBottom:'12px' }}>
+          <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(17px, 2.17vw, 27px)', lineHeight:1.08, letterSpacing:'-0.025em', maxWidth:'26ch', marginTop:'10px', marginBottom:'12px' }}>
             Built for Working Holiday travellers.<br />
             <em className="not-italic font-normal text-forest-400">We understand exactly what you need.</em>
           </h2>
-          <p className="font-light text-muted mx-auto" style={{ fontSize:'15px', lineHeight:1.65, maxWidth:'38ch', marginBottom:'48px' }}>
-            We work with Working Holiday travellers every day, so we know what works.
+          <p className="font-light text-muted mx-auto" style={{ fontSize:'15px', lineHeight:1.65, maxWidth:'38ch', marginBottom:'48px', textAlign:'center' }}>
+            We work with Working Holiday travellers every day,<br />so we know what works.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" style={{ marginBottom:'40px' }}>
@@ -109,7 +109,7 @@ export default function HomePage() {
               { title:'Real people, fast answers', body:'Real people who respond quickly. We guide you through the whole process.' },
               { title:'We make it simple',         body:'No forms, no stress, no confusion. We handle it and keep you updated.' },
             ].map((item,i) => (
-              <div key={i} className="pt-5 text-left" style={{ borderTop:'1px solid #E2EFE9' }}>
+              <div key={i} className="pt-5 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize:'13.5px', marginBottom:'6px' }}>{item.title}</h3>
                 <p className="font-light text-muted leading-[1.65]" style={{ fontSize:'12.5px' }}>{item.body}</p>
               </div>
@@ -127,7 +127,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="text-center" style={{ marginBottom:'36px' }}>
             <span className="section-label center">Client stories</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(22px,2.8vw,34px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(19px, 2.38vw, 29px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px' }}>
               Real experiences from backpackers like you.
             </h2>
           </div>
@@ -159,7 +159,7 @@ export default function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {[{n:'4.9★',l:'Google rating'},{n:'1,200+',l:'WHV clients helped'},{n:'<1 hr',l:'Response time'},{n:'100%',l:'Online service'}].map((s,i) => (
                 <div key={i} className="text-center">
-                  <p className="font-serif font-black text-forest-500" style={{ fontSize:'clamp(20px,3vw,26px)', letterSpacing:'-0.03em', lineHeight:1 }}>{s.n}</p>
+                  <p className="font-serif font-black text-forest-500" style={{ fontSize:'clamp(17px, 2.55vw, 22px)', letterSpacing:'-0.03em', lineHeight:1 }}>{s.n}</p>
                   <p className="text-subtle" style={{ fontSize:'11.5px', marginTop:'4px' }}>{s.l}</p>
                 </div>
               ))}
@@ -173,7 +173,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="text-center" style={{ marginBottom:'48px' }}>
             <span className="section-label center">How it works</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(24px,3vw,38px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(20px, 2.55vw, 32px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
               4 simple steps.<br />
               <em className="not-italic font-normal text-forest-400">We take care of it for you.</em>
             </h2>
@@ -224,7 +224,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="text-center" style={{ marginBottom:'36px' }}>
             <span className="section-label center">What we help with</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(24px,3vw,38px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(20px, 2.55vw, 32px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
               Everything you need<br />
               <em className="not-italic font-normal text-forest-400">to sort your tax in Australia.</em>
             </h2>
@@ -253,7 +253,7 @@ export default function HomePage() {
         eyebrow="Start here"
         heading="Get your tax done right."
         headingEm="From anywhere in Australia or overseas."
-        sub={<>TFN, tax return, super, and ABN handled for Working Holiday travellers.<br />Start with a free check.</>}
+        sub="TFN, ABN, tax return, and super handled for Working Holiday travellers."
         primaryLabel="Get help with your tax →"
         clipTop
       />

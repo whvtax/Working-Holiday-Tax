@@ -51,7 +51,7 @@ export default function TFNPage() {
               <span className="font-medium uppercase" style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>TFN Application</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(28px,3.8vw,48px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
+            <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px, 3.23vw, 41px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
               Get your TFN sorted quickly<br />
               <span style={{ color:'#0B5240' }}>and start working sooner.</span>
             </h1>
@@ -90,7 +90,7 @@ export default function TFNPage() {
       <section style={{ background:'#0B5240' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
           <div className="max-w-[560px]">
-            <p className="font-serif font-black text-white" style={{ fontSize:'clamp(20px,2.6vw,30px)', letterSpacing:'-0.025em', lineHeight:1.1, marginBottom:'8px' }}>
+            <p className="font-serif font-black text-white" style={{ fontSize:'clamp(17px, 2.21vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.1, marginBottom:'8px' }}>
               Without a TFN, 47% tax is withheld<br />from every payslip.
             </p>
             <p className="font-light" style={{ fontSize:'14px', color:'rgba(255,255,255,0.65)', marginBottom:'20px', maxWidth:'38ch' }}>
@@ -110,7 +110,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div style={{ maxWidth:'520px', marginBottom:'32px' }}>
             <span className="section-label">Why use our service</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(22px,2.6vw,32px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px' }}>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(19px, 2.21vw, 27px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px' }}>
               We handle everything for you.
             </h2>
             <p className="font-light text-muted" style={{ fontSize:'14px', lineHeight:1.65 }}>
@@ -148,7 +148,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'28px' }}>
             <span className="section-label center">What travellers say</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(20px,2.4vw,28px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px' }}>
               Real experiences from backpackers like you.
             </h2>
           </div>
@@ -178,7 +178,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'28px' }}>
             <span className="section-label center">Why not do it yourself?</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(20px,2.4vw,28px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px' }}>
               There is a better way.
             </h2>
           </div>
@@ -225,7 +225,7 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'40px' }}>
             <span className="section-label center">How to apply</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(22px,2.6vw,32px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(19px, 2.21vw, 27px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px' }}>
               Apply in minutes.<br />
               <em className="not-italic font-normal text-forest-400">Start working sooner.</em>
             </h2>
@@ -276,7 +276,7 @@ export default function TFNPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 lg:gap-16 items-start">
             <div>
               <span className="section-label">Questions</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(20px,2.4vw,28px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
                 TFN questions,<br />answered.
               </h2>
               <p className="font-light text-muted" style={{ fontSize:'13.5px', lineHeight:1.65, marginBottom:'24px' }}>Still unsure? Ask our tax experts.</p>

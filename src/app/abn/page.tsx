@@ -68,7 +68,7 @@ export default function ABNPage() {
 
             {/* Headline — matches TFN system */}
             <h1 className="font-serif font-black text-ink" style={{
-              fontSize: 'clamp(26px,3.8vw,44px)',
+              fontSize: 'clamp(22px, 3.23vw, 37px)',
               lineHeight: 1.1,
               letterSpacing: '-0.03em',
               maxWidth: '18ch',
@@ -144,7 +144,7 @@ export default function ABNPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '40px' }}>
             <span className="section-label center">How we help</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{
-              fontSize: 'clamp(20px,2.4vw,28px)',
+              fontSize: 'clamp(17px, 2.04vw, 24px)',
               lineHeight: 1.1,
               letterSpacing: '-0.025em',
               maxWidth: '22ch',
@@ -192,7 +192,7 @@ export default function ABNPage() {
           <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label">Common mistakes</span>
             <h2 className="font-serif font-black text-ink" style={{
-              fontSize: 'clamp(20px,2.4vw,28px)',
+              fontSize: 'clamp(17px, 2.04vw, 24px)',
               lineHeight: 1.1,
               letterSpacing: '-0.025em',
               maxWidth: '22ch',
@@ -242,7 +242,7 @@ export default function ABNPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{
-              fontSize: 'clamp(20px,2.4vw,28px)',
+              fontSize: 'clamp(17px, 2.04vw, 24px)',
               lineHeight: 1.1,
               letterSpacing: '-0.025em',
               maxWidth: '22ch',
@@ -301,7 +301,7 @@ export default function ABNPage() {
             <div className="reveal">
               <span className="section-label">What is an ABN?</span>
               <h2 className="font-serif font-black text-ink" style={{
-                fontSize: 'clamp(18px,2.2vw,26px)',
+                fontSize: 'clamp(15px, 1.87vw, 22px)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.025em',
                 maxWidth: '22ch',
@@ -387,7 +387,7 @@ export default function ABNPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 lg:gap-16 items-start">
             <div className="reveal">
               <span className="section-label">Questions</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
                 ABN questions, answered.
               </h2>
               <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '28ch', marginBottom: '24px' }}>
