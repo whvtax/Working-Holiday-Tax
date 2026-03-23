@@ -46,7 +46,7 @@ export function CalculatorClient() {
       {/* Page header */}
       <div className="relative overflow-hidden bg-white pt-[68px]">
         <div className="absolute pointer-events-none" aria-hidden="true" style={{ top: '-30%', right: '-15%', width: '65%', paddingBottom: '65%', borderRadius: '50%', background: 'radial-gradient(circle,rgba(11,82,64,.6) 0%,transparent 68%)' }} />
-        <div className="max-w-[1100px] mx-auto px-5 md:px-8 pt-24 pb-28 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-24 pb-28 relative z-10">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(255,255,255,0.28)' }}>
             <Link href="/" className="transition-colors hover:text-ink/60">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.15)' }}>/</span>
@@ -69,7 +69,7 @@ export function CalculatorClient() {
 
       {/* Calculator body */}
       <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16 lg:gap-24 items-start">
 
             {/* Left  -  form */}
