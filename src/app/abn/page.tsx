@@ -124,7 +124,7 @@ export default function ABNPage() {
               Not sure if you need an ABN?<br />Get a clear answer in minutes.
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              No obligation. We tell you exactly what applies to your situation.
+              We tell you exactly what applies to your situation.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
@@ -152,7 +152,7 @@ export default function ABNPage() {
               We tell you what you need.<br /><em className="not-italic font-normal text-forest-400">Then we set it up correctly.</em>
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '30ch', margin: '0 auto' }}>
-              We make sure it&apos;s set up correctly from the start.
+              We make sure it&apos;s set up correctly.
             </p>
           </div>
 
@@ -281,7 +281,7 @@ export default function ABNPage() {
       {/* ── WHAT IS AN ABN ────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-center">
 
             <div className="reveal">
               <span className="section-label">What is an ABN?</span>

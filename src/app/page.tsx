@@ -105,7 +105,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" style={{ marginBottom:'40px' }}>
             {[
               { title:'WHV tax specialists',       body:'Working Holiday tax is all we do. We handle your situation every day.' },
-              { title:'Registered. Compliant.',    body:'Registered tax agent. Fully compliant and ATO-approved.' },
+              { title:'Registered. Compliant.',    body:'Under the supervision of a registered tax agent.' },
               { title:'Real people, fast answers', body:'Real people who respond quickly and guide you through the process.' },
               { title:'We make it simple',         body:'No forms, no stress, no confusion. We handle it and keep you updated.' },
             ].map((item,i) => (

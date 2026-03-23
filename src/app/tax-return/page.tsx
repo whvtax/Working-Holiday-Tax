@@ -129,12 +129,12 @@ export default function TaxReturnPage() {
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14">
-          <div className="max-w-[560px]">
-            <p className="font-serif font-black text-white mb-2" style={{ fontSize: 'clamp(15px, 2.21vw, 24px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '24ch', textWrap: 'balance' }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14 text-center">
+          <div className="max-w-[560px] mx-auto">
+            <p className="font-serif font-black text-white mb-2 mx-auto" style={{ fontSize: 'clamp(15px, 2.21vw, 24px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '24ch', textWrap: 'balance' }}>
               Most working holiday travellers overpay tax - we make sure you don&apos;t.
             </p>
-            <p className="font-light mb-5" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)' }}>
+            <p className="font-light mb-5 mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)' }}>
               You may have tax to pay or be eligible for a refund. Either way, we handle it correctly.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
@@ -149,12 +149,12 @@ export default function TaxReturnPage() {
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label">What we do for you</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
+          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
+            <span className="section-label center">What we do for you</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               We handle your tax return from start to finish.
             </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
               No stress, no confusion. Just a correctly lodged return and the best possible outcome.
             </p>
           </div>
@@ -298,29 +298,19 @@ export default function TaxReturnPage() {
       </section>
 
 
-      {/* ── CROSS LINK ────────────────────────────────────────────────────── */}
-      <div style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9', background: '#ffffff' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
-            Leaving Australia? You may also be owed superannuation.
-          </p>
-          <a href="/superannuation" className="inline-flex items-center gap-1.5 font-semibold whitespace-nowrap transition-colors hover-forest-light flex-shrink-0" style={{ fontSize: '13px', color: '#0B5240' }}>
-            Claim your super →
-          </a>
-        </div>
-      </div>
 
       {/* ── TAX RATES ────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="max-w-3xl reveal">
-            <span className="section-label">Tax rates</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', maxWidth: '22ch', textWrap: 'balance' }}>
+          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
+            <span className="section-label center">Tax rates</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               Tax rates in Australia.
             </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.65, marginBottom: '28px', maxWidth: '36ch' }}>
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '40ch' }}>
               There are different tax rates for Working Holiday visa holders and Australian residents.
             </p>
+          </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
               {[
@@ -373,7 +363,6 @@ export default function TaxReturnPage() {
                 If your employer is not registered as a Working Holiday employer, you may be taxed at 30% instead of the Working Holiday rate.
               </p>
             </div>
-          </div>
         </div>
       </section>
 
