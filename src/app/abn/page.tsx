@@ -71,7 +71,13 @@ export default function ABNPage() {
                 marginBottom:'10px',
                 maxWidth:'18ch',
               }}>
-              Set up your ABN and start working as a contractor
+              {/* Desktop: 2 lines — line 1 black, line 2 green */}
+              <span className="hidden lg:block">
+                Set up your ABN and<br />
+                <span style={{ color:'#0B5240' }}>start working as a contractor</span>
+              </span>
+              {/* Mobile: single flow */}
+              <span className="lg:hidden">Set up your ABN and start working as a contractor</span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -104,8 +110,7 @@ export default function ABNPage() {
               </a>
             </div>
 
-            <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
-              style={{ maxWidth:'380px' }}>
+            <div className="grid grid-cols-2 lg:flex lg:flex-nowrap items-center gap-x-5 lg:gap-x-7 gap-y-2">
               {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>

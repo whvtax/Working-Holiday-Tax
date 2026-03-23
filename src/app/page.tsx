@@ -72,8 +72,7 @@ export default function HomePage() {
           </div>
 
           {/* Mobile: 2×2 grid · Desktop: single row */}
-          <div className="grid grid-cols-2 lg:flex lg:flex-nowrap items-center justify-center gap-x-6 gap-y-2 lg:gap-x-8 mx-auto"
-            style={{ maxWidth:'340px' }}>
+          <div className="grid grid-cols-2 lg:flex lg:flex-nowrap items-center justify-center gap-x-6 gap-y-2 lg:gap-x-7 mx-auto">
             {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((label,i) => (
               <span key={i} className="inline-flex items-center gap-1.5"
                 style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
