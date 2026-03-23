@@ -94,7 +94,7 @@ export default function TFNPage() {
               Without a TFN, 47% tax is withheld<br />from every payslip.
             </p>
             <p className="font-light" style={{ fontSize:'14px', color:'rgba(255,255,255,0.65)', marginBottom:'20px', maxWidth:'38ch', margin:'0 auto 20px' }}>
-              Apply before you start work to pay the correct rate from day one.
+              Apply before you start work to pay the correct rate<br />from day one.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
@@ -266,7 +266,7 @@ export default function TFNPage() {
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-7 items-start">
             <div>
               <span className="section-label">Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
@@ -291,14 +291,6 @@ export default function TFNPage() {
         body="If you are working as a contractor or freelancer, you may also need an ABN to invoice clients correctly."
         cta="Check if you need an ABN →"
         href="/abn"
-      />
-
-      <CtaBand
-        eyebrow="Apply now"
-        heading="Start working with the correct tax rate."
-        headingEm=""
-        sub="Apply in minutes with expert guidance. No errors, no delays, no overpaid tax."
-        primaryLabel="Start your TFN application →"
       />
     </>
   )
