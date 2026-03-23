@@ -156,7 +156,7 @@ export default function ContactPage() {
               {[
                 { n: '1', label: 'Tell us about your situation', body: 'Share your situation - TFN, tax return, super or ABN' },
                 { n: '2', label: 'We review your case',   body: 'A real person reviews your situation within 24 hours' },
-                { n: '3', label: 'We handle everything',  body: 'No commitment - you decide how to proceed' },
+                { n: '3', label: 'We handle everything for you', body: 'No commitment - you decide how to proceed' },
               ].map((item, i, arr) => (
                 <div key={i} className="flex gap-4 w-full" style={{ paddingBottom: i < arr.length - 1 ? '18px' : '0' }}>
                   <div className="flex flex-col items-center flex-shrink-0">

@@ -75,7 +75,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-x-6 gap-y-2 lg:gap-x-8 lg:gap-y-3 mx-auto"
             style={{ maxWidth:'340px' }}
             ref={undefined}>
-            {['4.9★ Google rating','1,200+ clients helped','ATO compliant','By a registered tax agent'].map((label,i) => (
+            {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((label,i) => (
               <span key={i} className="inline-flex items-center gap-1.5"
                 style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -129,7 +129,7 @@ export default function HomePage() {
               { title:'Backpacker tax refund experts',   body:'We focus only on working holiday tax, so we know how to get you the most back.' },
               { title:'Registered Australian tax agent', body:'Your tax is handled properly, safely, and fully compliant with all ATO rules.' },
               { title:'Real support, no tax jargon',     body:'We guide you step by step and explain everything clearly in simple English.' },
-              { title:'We handle everything for you',    body:'No paperwork or stress, we take care of everything from start to finish.' },
+              { title:'We handle everything for you',    body:'No paperwork or stress, we handle everything for you from start to finish.' },
             ].map((item,i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.3vw, 14.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
@@ -140,7 +140,7 @@ export default function HomePage() {
 
           <div style={{ marginTop:'8px' }} className="lg:mt-4">
             <Link href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'44px', padding:'0 24px', fontSize:'13.5px' }}>
-              Start your tax refund →
+              Start your tax return →
             </Link>
           </div>
         </div>
@@ -195,7 +195,7 @@ export default function HomePage() {
           <div style={{ marginTop:'28px', paddingTop:'24px', borderTop:'1px solid #E2EFE9' }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
-                {n:'4.9★', l:'average rating'},
+                {n:'4.9★', l:'from 300+ reviews'},
                 {n:'1,200+', l:'backpackers helped'},
                 {n:'< 1 hr', l:'Most replies within 1 hour'},
                 {n:'100%', l:'Fully online, no paperwork'},
@@ -220,11 +220,11 @@ export default function HomePage() {
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(20px, 2.55vw, 34px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'24ch' }}>
-              Get your tax refund<br />in 3 simple steps
+              How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize:'clamp(14px, 1.4vw, 16px)', lineHeight:1.7, maxWidth:'32ch', marginBottom:'4px' }}>
-              <em className="not-italic text-forest-400">We handle everything &ndash; you just get paid</em>
+              <em className="not-italic text-forest-400">We handle everything for you &ndash; you just get paid</em>
             </p>
             <p className="font-light text-muted"
               style={{ fontSize:'clamp(13px, 1.2vw, 14px)', marginTop:'6px' }}>
@@ -283,7 +283,7 @@ export default function HomePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Get started →
+              Start your tax return →
             </a>
             <p style={{ marginTop:'10px', fontSize:'12px', color:'#2FA880' }}>
               Free to start&nbsp;&bull;&nbsp;No upfront fees&nbsp;&bull;&nbsp;Personal support throughout
@@ -301,11 +301,11 @@ export default function HomePage() {
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(20px, 2.55vw, 34px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'22ch' }}>
               Everything you need<br />
-              <em className="not-italic font-normal text-forest-400">to sort your tax in Australia.</em>
+              <em className="not-italic font-normal text-forest-400">to manage your tax in Australia.</em>
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize:'clamp(13px, 1.3vw, 15px)', textAlign:'center', lineHeight:1.7, maxWidth:'36ch' }}>
-              From your first job to your final refund, we take care of it for you.
+              From your first job to your final refund, we handle everything for you.
             </p>
           </div>
 

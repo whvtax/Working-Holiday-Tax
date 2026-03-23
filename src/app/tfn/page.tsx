@@ -90,7 +90,7 @@ export default function TFNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
                 style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
-                Start your TFN application →
+                Apply for a TFN →
               </a>
               <a href="#how-to-apply"
                 className="hidden lg:inline-flex btn-ghost-dark justify-center"
@@ -101,7 +101,7 @@ export default function TFNPage() {
 
             <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
               style={{ maxWidth:'380px' }}>
-              {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -144,7 +144,7 @@ export default function TFNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center justify-center font-semibold"
                 style={{ height:'50px', padding:'0 32px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'15px', maxWidth:'320px', width:'100%' }}>
-                Start your TFN application →
+                Apply for a TFN →
               </a>
             </div>
           </div>
@@ -177,8 +177,8 @@ export default function TFNPage() {
             {[
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Done correctly the first time', body:'We check everything before submission to avoid errors or delays.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Start working at the correct tax rate', body:'Get your TFN sorted early so everything is set up correctly from day one.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'No ATO forms or confusion', body:"We take care of the process so you don't need to deal with government systems." },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Fast, guided, and fully online', body:'Tell us your details and we handle everything from there.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'No ATO forms or confusion', body:"We handle everything for you so you don't need to deal with government systems." },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Fast, guided, and fully online', body:'Tell us your details and we handle everything for you from there.' },
             ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
                 style={{
@@ -208,7 +208,7 @@ export default function TFNPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Start your TFN application →
+              Apply for a TFN →
             </a>
           </div>
         </div>
@@ -326,7 +326,7 @@ export default function TFNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
-                Start your TFN application →
+                Apply for a TFN →
               </a>
             </div>
           </div>
@@ -345,8 +345,7 @@ export default function TFNPage() {
             <span className="section-label center">How to apply</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.21vw, 30px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
-              Apply in minutes.<br />
-              <em className="not-italic font-normal text-forest-400">Start working sooner.</em>
+              How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted"
               style={{ fontSize:'clamp(13px, 1.3vw, 15px)', lineHeight:1.7 }}>
@@ -408,7 +407,7 @@ export default function TFNPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary"
               style={{ height:'52px', padding:'0 40px', fontSize:'15px', maxWidth:'320px', width:'100%', display:'inline-flex', alignItems:'center', justifyContent:'center' }}>
-              Start your TFN application →
+              Apply for a TFN →
             </a>
           </div>
         </div>

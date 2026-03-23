@@ -124,7 +124,7 @@ export default function SuperannuationPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
                 style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
-                Claim your super now →
+                Claim your super →
               </a>
               <a href="#how-it-works"
                 className="hidden lg:inline-flex btn-ghost-dark justify-center"
@@ -135,7 +135,7 @@ export default function SuperannuationPage() {
 
             <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
               style={{ maxWidth:'380px' }}>
-              {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -155,7 +155,7 @@ export default function SuperannuationPage() {
               Don&apos;t leave your super behind.
             </p>
             <p className="font-light" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
-              When you leave Australia, you can claim your super back. We handle everything for you.
+              When you leave Australia, you can claim your super back. We handle everything for you from start to finish.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold transition-all"
@@ -269,7 +269,7 @@ export default function SuperannuationPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Claim your super in 4 simple steps
+              How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
               Simple, guided process from start to finish
@@ -309,7 +309,7 @@ export default function SuperannuationPage() {
 
           <div className="text-center mt-10 reveal delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
-              Claim your super now →
+              Claim your super →
             </a>
           </div>
         </div>
@@ -383,7 +383,7 @@ export default function SuperannuationPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
                 style={{ height:'48px', padding:'0 24px', fontSize:'14px', width:'100%', maxWidth:'200px' }}>
-                Get help from experts →
+                Get help now →
               </a>
             </div>
             <div className="reveal delay-1 max-w-[680px]">

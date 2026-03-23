@@ -144,7 +144,7 @@ export default function TaxReturnPage() {
 
             <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
               style={{ maxWidth:'380px' }}>
-              {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -164,7 +164,7 @@ export default function TaxReturnPage() {
               Most WHV travellers overpay tax.<br />We help you get it back.
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              Whether you’re owed money or need to pay, we handle everything correctly.
+              Whether you’re owed money or need to pay, we handle everything for you correctly.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold transition-all"
@@ -209,7 +209,7 @@ export default function TaxReturnPage() {
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
                 title: 'No stress, no confusion',
-                body: 'Send your details and we handle everything - no ATO portals or paperwork.',
+                body: 'Send your details and we handle everything for you - no ATO portals or paperwork.',
               },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
@@ -453,7 +453,7 @@ export default function TaxReturnPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              From your documents<br /><em className="not-italic font-normal text-forest-400">to your tax outcome.</em>
+              How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '14px' }}>
               Simple, guided process from start to finish

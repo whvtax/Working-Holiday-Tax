@@ -95,7 +95,7 @@ export default function ABNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
                 style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
-                Start your ABN registration →
+                Register your ABN →
               </a>
               <a href="#how-to-register"
                 className="hidden lg:inline-flex btn-ghost-dark justify-center"
@@ -106,7 +106,7 @@ export default function ABNPage() {
 
             <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
               style={{ maxWidth:'380px' }}>
-              {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -185,7 +185,7 @@ export default function ABNPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%' }}>
-              Start your ABN registration →
+              Register your ABN →
             </a>
             <p style={{ marginTop:'10px', fontSize:'12px', color:'rgba(10,15,13,0.4)' }}>
               Australian Business Register compliant
@@ -237,7 +237,7 @@ export default function ABNPage() {
             <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
-              Getting your ABN<br /><em className="not-italic font-normal text-forest-400">takes about 10 minutes.</em>
+              How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted"
               style={{ fontSize:'clamp(13px,1.2vw,14.5px)', lineHeight:1.7 }}>
