@@ -44,9 +44,9 @@ const DEDUCTIONS = [
 
 const STEPS = [
   { n: '1', title: 'Send us your details',     body: 'Provide your income details, payment summaries, and any work-related expenses.' },
-  { n: '2', title: 'We review everything',     body: 'We check your income, deductions, and residency status to ensure everything is correct.' },
-  { n: '3', title: 'We prepare and lodge',     body: 'We prepare your tax return and lodge it directly with the ATO on your behalf.' },
-  { n: '4', title: 'ATO processes your return', body: 'The ATO reviews your return and issues a Notice of Assessment with the final outcome.' },
+  { n: '2', title: 'We review everything',     body: 'We check your income, deductions, and residency status to ensure accuracy.' },
+  { n: '3', title: 'We prepare and lodge',     body: 'We prepare your tax return and lodge it with the ATO on your behalf.' },
+  { n: '4', title: 'ATO processes your return', body: 'The ATO reviews your return and issues a Notice of Assessment with the outcome.' },
 ]
 
 const TESTIMONIALS = [
@@ -129,17 +129,17 @@ export default function TaxReturnPage() {
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14 text-center">
-          <div className="max-w-[560px] mx-auto">
-            <p className="font-serif font-black text-white mb-2 mx-auto" style={{ fontSize: 'clamp(15px, 2.21vw, 24px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '24ch', textWrap: 'balance' }}>
-              Most working holiday travellers overpay tax - we make sure you don&apos;t.
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
+          <div style={{ maxWidth: '560px' }}>
+            <p className="font-serif font-black text-white mb-2" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1 }}>
+              Most WHV travellers overpay tax.<br />We make sure you don&apos;t.
             </p>
-            <p className="font-light mb-5 mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)' }}>
-              You may have tax to pay or be eligible for a refund. Either way, we handle it correctly.
+            <p className="font-light mb-5" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)' }}>
+              Refund or payment — we handle it correctly.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-semibold transition-all"
-              style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '300px', width: '100%', justifyContent: 'center' }}>
+              className="inline-flex items-center justify-center font-semibold transition-all"
+              style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
               Check my refund now →
             </a>
           </div>
@@ -335,7 +335,7 @@ export default function TaxReturnPage() {
                 },
               ].map((table, ti) => (
                 <div key={ti} className="min-w-0 flex flex-col">
-                  <h3 className="font-semibold text-ink mb-3" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>{table.label}</h3>
+                  <h3 className="font-semibold text-ink mb-3 text-center" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>{table.label}</h3>
                   <div className="rounded-xl overflow-hidden flex-1" style={{ border: '1px solid #C8EAE0' }}>
                     <table className="w-full" style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                       <thead>
@@ -358,8 +358,8 @@ export default function TaxReturnPage() {
               ))}
             </div>
 
-            <div className="mt-5 rounded-xl px-4 py-3" style={{ background: '#FFFCF5', border: '1.5px solid #E9A020', borderRadius: '12px' }}>
-              <p className="font-light text-body leading-[1.7]" style={{ fontSize: '12.5px' }}>
+            <div className="mt-5 rounded-xl px-5 py-3 mx-auto" style={{ background: '#FFFCF5', border: '1.5px solid #E9A020', borderRadius: '12px', maxWidth: 'fit-content' }}>
+              <p className="font-light text-body" style={{ fontSize: '12.5px', lineHeight: 1.5 }}>
                 If your employer is not registered as a Working Holiday employer, you may be taxed at 30% instead of the Working Holiday rate.
               </p>
             </div>
@@ -375,7 +375,7 @@ export default function TaxReturnPage() {
               Work-related deductions<br /><em className="not-italic font-normal text-forest-400">can affect your tax outcome.</em>
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
-              You may be able to claim work-related deductions. Only expenses directly related to your work and supported by records or receipts can be included.
+              You may be able to claim work-related deductions. Only expenses supported by records can be included.
             </p>
           </div>
 
@@ -390,7 +390,7 @@ export default function TaxReturnPage() {
 
           <div className="mt-6 max-w-xl reveal delay-2">
             <div className="info-block">
-              <p>Personal expenses, fines, and travel between home and your regular workplace are not claimable.</p>
+              <p>Personal expenses, fines, and commuting costs are not claimable.</p>
             </div>
           </div>
         </div>
@@ -461,7 +461,7 @@ export default function TaxReturnPage() {
               </h2>
               <div className="space-y-0">
                 {[
-                  { label: 'Our preparation',  body: 'We typically prepare your tax return within 24 hours after receiving all required details.' },
+                  { label: 'Our preparation',  body: 'We typically prepare your return within 24 hours of receiving your details.' },
                   { label: 'ATO processing',   body: 'The ATO usually processes tax returns within 7 to 14 business days. During peak periods, processing may take longer.' },
                   { label: 'Final outcome',    body: 'Once the ATO issues a Notice of Assessment, your final tax outcome is confirmed and any amount due is paid to your Australian bank account.' },
                 ].map((item, i) => (
@@ -496,7 +496,7 @@ export default function TaxReturnPage() {
                   </div>
                 ))}
               </div>
-              <div className="rounded-xl px-4 py-3" style={{ background: '#FEF2F2', border: '1px solid #FECACA', padding: '12px 16px', borderRadius: '12px' }}>
+              <div className="rounded-xl px-4 py-3 text-center" style={{ background: '#FEF2F2', border: '1px solid #FECACA', padding: '12px 16px', borderRadius: '12px' }}>
                 <p className="font-light leading-[1.75]" style={{ fontSize: '12.5px', color: '#991B1B' }}>
                   A registered tax agent will never ask for your passwords, SMS verification codes, or access to your myGov or myID account.
                 </p>
@@ -534,25 +534,13 @@ export default function TaxReturnPage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What's next?"
-        heading="Lodged your return? Now claim your super."
+        heading="Don't forget to claim your super."
         body="Your employer paid superannuation on top of your wages. When you leave Australia, you can claim it all back."
         cta="Learn about super withdrawal →"
         href="/superannuation"
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      
-
-      {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <CtaBand
-        eyebrow="Need help?"
-
-        heading="Need help with"
-        headingEm="your tax return?"
-        sub="We review your details and lodge your tax return with the ATO."
-        primaryLabel="Get started →"
-        trustLine="Check your eligibility for free"
-      />
     </>
   )
 }
