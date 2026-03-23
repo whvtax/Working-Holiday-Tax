@@ -199,7 +199,7 @@ export default function HomePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary w-full sm:w-auto justify-center"
               style={{ height: '56px', padding: '0 44px', fontSize: '16px', maxWidth: '320px' }}>
-              Start on WhatsApp — it's free →
+              Start on WhatsApp — it&apos;s free →
             </a>
             <Link href="/calculator" className="btn-ghost-dark w-full sm:w-auto justify-center"
               style={{ height: '56px', padding: '0 28px', fontSize: '15px', maxWidth: '240px' }}>
@@ -254,7 +254,7 @@ export default function HomePage() {
             <div>
               <span className="section-label" style={{ marginBottom: '12px', display: 'inline-flex' }}>Tax refund calculator</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 3vw, 36px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '16px' }}>
-                Find out if you're owed a refund — in 30 seconds.
+                Find out if you&apos;re owed a refund — in 30 seconds.
               </h2>
               <p className="font-light text-muted" style={{ fontSize: '15px', lineHeight: 1.7, marginBottom: '24px', maxWidth: '40ch' }}>
                 Enter your income and the tax your employer withheld. The calculator applies the correct Working Holiday Maker rate and shows your estimated position.
@@ -344,7 +344,7 @@ export default function HomePage() {
           <div className="text-center" style={{ marginBottom: '40px' }}>
             <span className="section-label center">Why choose us</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(24px, 3vw, 36px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginTop: '10px', marginBottom: '10px' }}>
-              We don't do general tax.<br />
+              We don&apos;t do general tax.<br />
               <span style={{ color: '#0B5240' }}>We do working holiday tax.</span>
             </h2>
           </div>
@@ -502,7 +502,7 @@ export default function HomePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex w-full sm:w-auto justify-center"
               style={{ height: '54px', padding: '0 44px', fontSize: '16px', maxWidth: '340px', margin: '0 auto' }}>
-              Start on WhatsApp — it's free →
+              Start on WhatsApp — it&apos;s free →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12.5px', color: '#587066' }}>
               No commitment to proceed · Response within 24 hours
@@ -524,7 +524,7 @@ export default function HomePage() {
                 Questions we hear every day.
               </h2>
               <p className="font-light text-muted" style={{ fontSize: '14px', lineHeight: 1.65, marginBottom: '24px' }}>
-                Don't see your question here? Message us — it usually takes a few minutes to get an answer.
+                Don&apos;t see your question here? Message us — it usually takes a few minutes to get an answer.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex w-full sm:w-auto justify-center"
@@ -571,7 +571,7 @@ export default function HomePage() {
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex w-full sm:w-auto justify-center"
             style={{ height: '56px', padding: '0 48px', fontSize: '16px', maxWidth: '360px', margin: '0 auto 16px' }}>
-            Start on WhatsApp — it's free →
+            Start on WhatsApp — it&apos;s free →
           </a>
 
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-2" style={{ marginTop: '16px' }}>
