@@ -353,9 +353,6 @@ export default function ABNPage() {
         </div>
       </section>
 
-
-      </div>
-
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
@@ -390,8 +387,6 @@ export default function ABNPage() {
         href="/tax-return"
       />
 
-      {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      
 
     </>
   )
