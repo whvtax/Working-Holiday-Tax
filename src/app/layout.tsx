@@ -5,6 +5,7 @@ import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
+import { StickyBar } from '@/components/layout/StickyBar'
 import { SITE_URL } from '@/lib/constants'
 
 const playfair = Playfair_Display({
@@ -25,18 +26,18 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Working Holiday Tax  -  Australian Tax for WHV Holders',
+    default: 'Working Holiday Tax — Australian Tax for WHV Holders',
     template: '%s  -  Working Holiday Tax',
   },
   description:
-    'Tax return, TFN, super and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Start for free.',
+    'TFN, tax return, super and ABN for Working Holiday Visa holders in Australia. Clear process, personal guidance, professional oversight.',
   keywords: ['working holiday tax', 'WHV tax return', 'TFN application Australia', 'backpacker tax', 'superannuation Australia'],
   openGraph: {
     type: 'website',
     locale: 'en_AU',
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax  -  Australian Tax for WHV Holders',
+    title: 'Working Holiday Tax — Australian Tax for WHV Holders',
     description: 'Tax return, TFN, super and ABN for Working Holiday Visa holders in Australia.',
   },
   twitter: { card: 'summary_large_image' },
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <RevealObserver />
         <ScrollToTop />
+        <StickyBar />
       </body>
     </html>
   )

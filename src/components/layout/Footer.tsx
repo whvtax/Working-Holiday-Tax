@@ -8,7 +8,7 @@ const linkStyle = { fontSize: '12.5px', color: '#587066' }
 export function Footer() {
   return (
     <footer style={{ background: '#ffffff', borderTop: '1px solid #E2EFE9' }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-7 sm:pt-10 pb-5 sm:pb-6">
+      <div className="max-w-[1100px] mx-auto px-5 md:px-8 pt-7 sm:pt-10 pb-5 sm:pb-6">
 
         {/* Main columns */}
         <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">
@@ -51,7 +51,7 @@ export function Footer() {
               {/* Security / SSL */}
               <div className="flex items-center justify-center rounded-full"
                 style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}
-                title="Secure & encrypted">
+                title="Secure & encrypted" role="img" aria-label="Secure and encrypted">
                 <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
                   <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -76,6 +76,7 @@ export function Footer() {
             <Link href="/abn"           className={linkCls} style={linkStyle}>ABN registration</Link>
             <Link href="/tax-return"    className={linkCls} style={linkStyle}>Tax return</Link>
             <Link href="/superannuation" className={linkCls} style={linkStyle}>Super withdrawal</Link>
+            <Link href="/medicare" className={linkCls} style={linkStyle}>Medicare</Link>
           </nav>
 
           {/* Contact */}

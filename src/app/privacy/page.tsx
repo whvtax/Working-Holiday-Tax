@@ -66,7 +66,7 @@ export default function PrivacyPage() {
       />
 
       <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-2xl">
             {sections.map((s, i) => (
               <div key={i} className={`mb-7 reveal delay-${(i % 4) + 1}`}>

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
 import { NextStep } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
@@ -46,8 +45,8 @@ export default function MedicarePage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
+      <section className="relative overflow-hidden pt-[68px] bg-white">
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 pt-8 pb-6 lg:pt-14 lg:pb-12">
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
@@ -87,7 +86,7 @@ export default function MedicarePage() {
 
             {/* Trust badges */}
             <div className="flex flex-nowrap gap-x-4 overflow-x-auto">
-              {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
+              {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'Professional oversight'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)', whiteSpace:'nowrap' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   {t}
@@ -100,7 +99,7 @@ export default function MedicarePage() {
 
       {/* ── NOT SURE? — MAIN ENTRY POINT ──────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 py-8 lg:py-10">
           <div style={{ maxWidth: '560px' }}>
             <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(18px,2.2vw,26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '8px' }}>
               Not sure about your<br />Medicare status?
@@ -118,8 +117,9 @@ export default function MedicarePage() {
       </section>
 
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+      <section style={{ padding: "80px 0" }}
+        className="" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Your two scenarios</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px' }}>
@@ -173,7 +173,7 @@ export default function MedicarePage() {
 
       {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">What we do for you</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
@@ -207,8 +207,9 @@ export default function MedicarePage() {
       </section>
 
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+      <section style={{ padding: "80px 0" }}
+        className="" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-2xl mx-auto text-center reveal">
             <span className="section-label center">Medicare levy exemption</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -233,7 +234,7 @@ export default function MedicarePage() {
 
       {/* ── WHAT IS MEDICARE (DETAIL) ─────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-start">
             <div className="reveal">
               <span className="section-label">What is Medicare?</span>
@@ -269,8 +270,9 @@ export default function MedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+      <section style={{ padding: "80px 0" }}
+        className="" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
             <span className="section-label center">Common confusion</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(15px, 1.87vw, 20px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '8px', textWrap: 'balance' }}>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <div className="relative bg-white min-h-svh flex items-center justify-center overflow-hidden pt-[68px]">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 relative z-10 text-center py-20">
+      <div className="max-w-[1100px] mx-auto px-5 md:px-8 relative z-10 text-center py-20">
         <p className="font-serif font-black leading-none mb-4" style={{ fontSize: 'clamp(60px,15vw,120px)', color: 'rgba(11,82,64,0.08)' }} aria-hidden="true">404</p>
         <h1 className="font-serif font-black text-ink mb-3" style={{ fontSize: 'clamp(22px,3.5vw,36px)', letterSpacing: '-0.025em', lineHeight: 1.1 }}>
           Page not found

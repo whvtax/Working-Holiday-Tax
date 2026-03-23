@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
-  description: 'Claim your Australian superannuation after leaving. Your employer paid 12% of your wages into super - we help you get it back via DASP.',
+  description: 'Claim your Australian superannuation after leaving. We guide you through the DASP process with professional oversight.',
 }
 
 const faqs = [
@@ -20,12 +19,12 @@ const faqs = [
     answer: 'Super withdrawals for Working Holiday visa holders are taxed at 65%.',
   },
   {
-    question: 'I left Australia years ago - can I still claim?',
+    question: 'I left Australia years ago — can I still claim?',
     answer: 'Yes. There is no time limit to claim your super. Even if your balance was transferred to the ATO, you can still claim it.',
   },
   {
-    question: 'I worked for multiple employers - do I have multiple super accounts?',
-    answer: 'You may have multiple super accounts from different employers. We help you find and combine everything before submitting your claim.',
+    question: 'I worked for multiple employers — do I have multiple super accounts?',
+    answer: 'You may have multiple super accounts from different employers. We help you find and consolidate everything before submitting your claim.',
   },
   {
     question: 'Do I receive super if I worked under an ABN?',
@@ -34,31 +33,35 @@ const faqs = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Confirm eligibility',   body: 'Make sure your visa has expired or been cancelled. We confirm eligibility before starting.' },
-  { n: '2', title: 'Locate your super',     body: 'We find all your super accounts, including any held by the ATO. Nothing is missed.' },
-  { n: '3', title: 'We submit the DASP',    body: 'We prepare and submit your super claim to the ATO on your behalf. Fully handled.' },
-  { n: '4', title: 'Receive your payment',  body: 'Once approved, your super is paid to your bank account within a few weeks.' },
+  { n: '1', title: 'Confirm eligibility',     body: 'Check if you can claim your super.' },
+  { n: '2', title: 'Locate your funds',        body: 'We help identify your super accounts.' },
+  { n: '3', title: 'We prepare and submit',    body: 'Handled correctly with the ATO.' },
+  { n: '4', title: 'You receive your payment', body: 'We guide you until completion.' },
+]
+
+const BENEFITS = [
+  { title: 'Check your eligibility',    body: 'We confirm if you can make a claim.' },
+  { title: 'Understand your super',     body: 'We help you identify your funds.' },
+  { title: 'Claim handled correctly',   body: 'Prepared with professional oversight.' },
+  { title: 'Clear, guided process',     body: 'We support you step by step.' },
 ]
 
 const TESTIMONIALS = [
-  {
-    name: "Liam O'Brien",
-    from: 'Ireland · WHV 417',
-    quote: 'I was stressed about my super - four months, three different employers. They guided me through everything and helped me get it all back.',
-    amount: '$3,200',
-    initials: 'L',
-    bgColor: '#DBEAFE',
-    textColor: '#1E40AF',
-  },
-  {
-    name: 'Max Fischer',
-    from: 'Germany · WHV 417',
-    quote: 'Fast, clear, and genuinely helpful. They explained everything simply and helped me get my super back after I left.',
-    amount: '$4,100',
-    initials: 'M',
-    bgColor: '#D1FAE5',
-    textColor: '#065F46',
-  },
+  { name: 'Liam', from: 'UK',      quote: 'Clear and simple process from start to finish.',                    initials: 'L', bgColor: '#DBEAFE', textColor: '#1E40AF' },
+  { name: 'Max',  from: 'Germany', quote: 'Everything was explained clearly and handled professionally.',       initials: 'M', bgColor: '#D1FAE5', textColor: '#065F46' },
+]
+
+const WHEN_CAN_CLAIM = [
+  'When you have left Australia',
+  'When your visa has expired or been cancelled',
+  'When your employment has ended',
+]
+
+const WHAT_YOU_NEED = [
+  'Passport details',
+  'Tax File Number (if available)',
+  'Super fund details (if known)',
+  'Bank account for payment',
 ]
 
 const IconStar = () => (
@@ -67,169 +70,132 @@ const IconStar = () => (
   </svg>
 )
 
+const TickIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
+    <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
+    <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
+
 export default function SuperannuationPage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 pt-10 pb-12 lg:pt-14 lg:pb-14">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-6" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">Superannuation</span>
           </nav>
 
           <div className="max-w-[640px]">
-            <div className="inline-flex items-center gap-2.5 mb-4">
+            <div className="inline-flex items-center gap-2 mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Super Withdrawal</span>
             </div>
 
-                        <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px,3.2vw,40px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              Claim your super back<br />
-              <span style={{ color:'#0B5240' }}>when you leave Australia.</span>
+            <h1 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(28px, 3.8vw, 48px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '16px' }}>
+              Claim your super when you leave Australia,{' '}
+              <span style={{ color: '#0B5240' }}>the right way.</span>
             </h1>
 
-            <p className="font-semibold text-ink" style={{ fontSize:'15px', letterSpacing:'-0.01em', marginBottom:'6px' }}>
-              We handle the full DASP process on your behalf.
+            <p style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.6)', maxWidth: '44ch', marginBottom: '28px', fontWeight: 300 }}>
+              We guide you through the process and handle your claim with professional oversight.
             </p>
 
-            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'44ch', marginBottom:'24px' }}>
-              Most payments received within a few weeks. Fully online.
-            </p>
-
-            {/* Hero CTAs */}
-            <div className="flex flex-row gap-3 items-center" style={{ marginBottom:'20px' }}>
+            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center" style={{ marginBottom: '20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex"
-                style={{ height:'52px', padding:'0 32px', fontSize:'15px', borderRadius:'100px' }}>
-                Claim your super →
+                className="btn-primary inline-flex justify-center"
+                style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px' }}>
+                Start your super claim →
               </a>
-              <a href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
+              <Link href="#how-it-works" className="btn-ghost-dark inline-flex justify-center" style={{ height: '52px', padding: '0 24px', fontSize: '15px' }}>
                 How it works →
-              </a>
+              </Link>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-nowrap gap-x-4 overflow-x-auto">
-              {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)', whiteSpace:'nowrap' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  {t}
-                </span>
-              ))}
-            </div>
+            <p style={{ fontSize: '13px', color: 'rgba(10,15,13,0.4)' }}>
+              Used by working holiday travellers across Australia
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
+      {/* ── GREEN STRIP ──────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14">
-          <div className="max-w-[560px] mx-auto text-center">
-            <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '8px', textWrap: 'balance' }}>
-              Thousands of dollars could be waiting for you.
-            </p>
-            <p className="font-light mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
-              Once you leave Australia, you can claim your super back. We manage the full process for you from start to finish.
-            </p>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 py-10 text-center">
+          <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(18px, 2.5vw, 28px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '8px' }}>
+            You may have super to claim.
+          </p>
+          <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)', maxWidth: '46ch', margin: '0 auto 20px', lineHeight: 1.65, fontWeight: 300 }}>
+            If you worked in Australia, you may have funds available. We help you understand your eligibility.
+          </p>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center justify-center font-semibold w-full sm:w-auto"
+            style={{ height: '48px', padding: '0 28px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '240px', margin: '0 auto' }}>
+            Check your eligibility →
+          </a>
+        </div>
+      </section>
+
+      {/* ── BENEFITS ─────────────────────────────────────────────────────── */}
+      <section style={{ background: '#EEF7F2', padding: '80px 0' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
+          <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '36px' }}>
+            <span className="section-label center">What we do for you</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(24px, 2.8vw, 32px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginTop: '10px' }}>
+              Guided from start to finish.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" style={{ marginBottom: '36px', alignItems: 'stretch' }}>
+            {BENEFITS.map((item, i) => (
+              <div key={i} className="bg-white rounded-2xl flex flex-col"
+                style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)', height: '100%' }}>
+                <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '8px', lineHeight: 1.3 }}>{item.title}</p>
+                <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.65 }}>{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-semibold transition-all"
-              style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '300px', width: '100%', justifyContent: 'center' }}>
-              Claim your super now →
+              className="btn-primary inline-flex w-full sm:w-auto justify-center"
+              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '280px', margin: '0 auto' }}>
+              Start your super claim →
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── CLARITY — THIS IS YOUR MONEY ──────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">This is your money</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              Your money sitting in a fund<br /><em className="not-italic font-normal text-forest-400">waiting to be claimed.</em>
+      {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
+      <section className="bg-white" style={{ padding: '80px 0' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
+          <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '32px' }}>
+            <span className="section-label center">What travellers say</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(24px, 2.8vw, 32px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginTop: '10px' }}>
+              Real experiences from travellers like you.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 reveal delay-1">
-            {[
-              {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/><path d="M11 7v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: 'Employers pay it for you',
-                body: 'Super is 12% of your wages, paid by your employer on top of your salary. Required by law.',
-              },
-              {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="3" y="6" width="16" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M7 6V5a4 4 0 018 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M9 12l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-                title: 'It belongs to you',
-                body: 'The money sits in your super fund while you work. When you leave Australia, it is yours to claim.',
-              },
-              {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3v18M3 11h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: 'We claim it back for you',
-                body: 'We find all your accounts, prepare the DASP, and submit everything. You receive the payment.',
-              },
-            ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl" style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-forest-500" style={{ background: '#EAF6F1', marginBottom: '12px' }}>
-                  {item.icon}
-                </div>
-                <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '6px' }}>{item.title}</p>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Key facts strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 reveal delay-2">
-            {[
-              { title: 'Contribution rate',  body: '12% of your wages paid into your super fund.' },
-              { title: 'Who can claim',      body: 'WHV holders who have left Australia and whose visa has expired.' },
-              { title: 'Processing time',    body: 'Usually up to 28 days after approval.' },
-              { title: 'Payment method',     body: 'Paid directly to your bank account.' },
-            ].map((c, i) => (
-              <div key={i} className="bg-white rounded-xl px-4 py-3.5" style={{ border: '1px solid #C8EAE0' }}>
-                <p className="text-[12px] font-semibold text-ink mb-1">{c.title}</p>
-                <p className="text-[12px] font-light text-muted leading-[1.6]">{c.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center reveal delay-3" style={{ marginTop: '28px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
-              style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              Check your eligibility →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── EARLY SOCIAL PROOF ────────────────────────────────────────────── */}
-      <section className="py-8 lg:py-10 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">Real results</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(17px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Real experiences from backpackers like you.
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto reveal delay-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto" style={{ alignItems: 'stretch' }}>
             {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 flex flex-col" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
-                <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
+              <div key={i} className="bg-white rounded-2xl flex flex-col"
+                style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9', height: '100%' }}>
+                <div className="flex gap-0.5" style={{ marginBottom: '12px' }}>
                   {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
                 </div>
-                <p className="text-[13px] font-light text-body leading-[1.75] flex-1" style={{ marginBottom: '14px' }}>&ldquo;{t.quote}&rdquo;</p>
-                <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold flex-shrink-0" style={{ background: t.bgColor, color: t.textColor }}>{t.initials}</div>
-                    <div>
-                      <p className="text-[12.5px] font-semibold text-ink">{t.name}</p>
-                      <p className="text-[11.5px] text-subtle mt-0.5">{t.from}</p>
-                    </div>
+                <p className="font-light text-body flex-1" style={{ fontSize: '14px', lineHeight: 1.75, marginBottom: '16px' }}>
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div className="flex items-center gap-2.5" style={{ paddingTop: '14px', borderTop: '1px solid #E2EFE9' }}>
+                  <div className="rounded-full flex items-center justify-center font-bold flex-shrink-0"
+                    style={{ width: '32px', height: '32px', fontSize: '11px', background: t.bgColor, color: t.textColor }}>{t.initials}</div>
+                  <div>
+                    <p className="font-semibold text-ink" style={{ fontSize: '12px', lineHeight: 1.2 }}>{t.name}</p>
+                    <p className="text-subtle" style={{ fontSize: '11px', marginTop: '2px' }}>{t.from}</p>
                   </div>
-                  <span className="font-serif font-black text-forest-500" style={{ fontSize: '17px', letterSpacing: '-0.03em' }}>{t.amount}</span>
                 </div>
               </div>
             ))}
@@ -237,149 +203,148 @@ export default function SuperannuationPage() {
         </div>
       </section>
 
-
-
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
+      <section id="how-it-works" style={{ background: '#EEF7F2', padding: '80px 0' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
+          <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Four steps to claim your super.
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(24px, 2.8vw, 32px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginTop: '10px' }}>
+              4 simple steps.
             </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
-              We find your super, prepare your claim, and submit everything for you.
-            </p>
           </div>
 
-          <div className="reveal delay-1">
-            <div className="hidden lg:block">
-              <div className="relative flex items-start">
-                <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
-                {STEPS.map((s, i) => (
-                  <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>
-                      {s.n}
-                    </div>
-                    <p className="text-[14px] font-semibold text-ink mb-2 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.7] text-center">{s.body}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="lg:hidden flex flex-col">
+          {/* Desktop */}
+          <div className="hidden lg:block" style={{ marginBottom: '48px' }}>
+            <div className="relative flex items-start">
+              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px"
+                style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
               {STEPS.map((s, i) => (
-                <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length - 1 ? '20px' : '0' }}>
-                  <div className="flex flex-col items-center flex-shrink-0">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-[12px] font-bold text-white" style={{ background: '#0B5240' }}>{s.n}</div>
-                    {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2" style={{ minHeight: '20px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
-                  </div>
-                  <div style={{ paddingTop: '3px' }}>
-                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.65]">{s.body}</p>
-                  </div>
+                <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
+                    style={{ background: '#0B5240', fontSize: '13px', marginBottom: '16px', boxShadow: '0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>{s.n}</div>
+                  <p className="font-semibold text-ink text-center" style={{ fontSize: '13.5px', marginBottom: '6px' }}>{s.title}</p>
+                  <p className="font-light text-muted text-center" style={{ fontSize: '12.5px', lineHeight: 1.65 }}>{s.body}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="text-center mt-10 reveal delay-2">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
-              Claim your super →
+          {/* Mobile */}
+          <div className="lg:hidden flex flex-col" style={{ marginBottom: '32px' }}>
+            {STEPS.map((s, i) => (
+              <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length - 1 ? '20px' : '0' }}>
+                <div className="flex flex-col items-center flex-shrink-0">
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-white"
+                    style={{ background: '#0B5240', fontSize: '12px' }}>{s.n}</div>
+                  {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2"
+                    style={{ minHeight: '20px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
+                </div>
+                <div style={{ paddingTop: '3px' }}>
+                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '4px' }}>{s.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.65 }}>{s.body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+              className="btn-primary inline-flex w-full sm:w-auto justify-center"
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '280px', margin: '0 auto' }}>
+              Start your super claim →
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── ELIGIBILITY + WHAT YOU NEED ───────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
-            <div className="reveal">
-              <span className="section-label">Who can claim?</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
-                You can claim your super when<br />
-                <em className="not-italic font-normal text-forest-400">you leave Australia.</em>
+      {/* ── ELIGIBILITY + REQUIREMENTS ───────────────────────────────────── */}
+      <section className="bg-white" style={{ padding: '80px 0' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+
+            <div>
+              <span className="section-label">Eligibility</span>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px, 2.4vw, 28px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '24px' }}>
+                When you can claim.
               </h2>
-              <div className="space-y-0">
-                {[
-                  { label: 'Your visa has expired or been cancelled', body: 'You can apply as soon as you leave Australia - no need to wait.' },
-                  { label: 'You no longer hold an Australian visa',   body: 'You must not have another active visa in Australia.' },
-                  { label: 'You have super contributions',           body: 'Make sure your latest super payment has been received from your employer.' },
-                ].map((item, i) => (
-                  <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{item.label}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.65]">{item.body}</p>
+              <div className="flex flex-col" style={{ gap: '14px' }}>
+                {WHEN_CAN_CLAIM.map((item, i) => (
+                  <div key={i} className="flex items-start gap-3">
+                    <TickIcon />
+                    <p className="font-light text-body" style={{ fontSize: '14px', lineHeight: 1.65 }}>{item}</p>
                   </div>
                 ))}
-                <div style={{ borderTop: '1px solid #E2EFE9' }} />
               </div>
             </div>
 
-            <div className="reveal delay-1">
-              <span className="section-label">What you will need</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
-                What you will need<br />
-                <em className="not-italic font-normal text-forest-400">to claim your super.</em>
+            <div>
+              <span className="section-label">Requirements</span>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px, 2.4vw, 28px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '24px' }}>
+                What you may need.
               </h2>
-              <div className="space-y-3.5 mb-5">
-                {[
-                  'Passport details',
-                  'Tax File Number (TFN)',
-                  'Super fund name and member number (if known)',
-                  'Super fund start date (if known)',
-                  'Overseas bank account details for your payment',
-                ].map((item, i) => (
+              <div className="flex flex-col" style={{ gap: '14px' }}>
+                {WHAT_YOU_NEED.map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                      <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <p className="text-[13.5px] font-light text-body leading-[1.65]">{item}</p>
+                    <TickIcon />
+                    <p className="font-light text-body" style={{ fontSize: '14px', lineHeight: 1.65 }}>{item}</p>
                   </div>
                 ))}
               </div>
-
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
-            <div className="reveal">
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      <section style={{ background: '#F4F9F6', padding: '80px 0' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-8 lg:gap-12 items-start">
+            <div>
               <span className="section-label">Questions</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 2.5vw, 30px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '12px' }}>
                 Super questions, answered.
               </h2>
-              <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '28ch', marginBottom: '24px' }}>
-                Not sure if you can claim or how much you&apos;ll get? Ask our experts.
+              <p className="font-light text-muted" style={{ fontSize: '14px', lineHeight: 1.65, marginBottom: '24px' }}>
+                Still unsure? We&apos;re happy to help.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex"
-                style={{ height: '48px', padding: '0 22px', fontSize: '14px' }}>
-              Get help from experts →
+                className="btn-primary inline-flex w-full sm:w-auto justify-center"
+                style={{ height: '48px', padding: '0 24px', fontSize: '14px' }}>
+                Get help →
               </a>
             </div>
-            <div className="reveal delay-1 max-w-[680px]">
+            <div className="max-w-[680px]" style={{ alignSelf: 'start' }}>
               <Accordion items={faqs} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
+      {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden" style={{ background: '#1A5C44', padding: '80px 0' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 text-center">
+          <h2 className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(24px, 3.2vw, 40px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
+            Claim your super the right way.
+          </h2>
+          <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.65)', maxWidth: '42ch', margin: '0 auto 28px', lineHeight: 1.7, fontWeight: 300 }}>
+            Simple process, clear guidance, and support from start to finish.
+          </p>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+            className="btn-primary inline-flex w-full sm:w-auto justify-center"
+            style={{ height: '54px', padding: '0 40px', fontSize: '15px', maxWidth: '280px', margin: '0 auto' }}>
+            Start your super claim →
+          </a>
+        </div>
+      </section>
+
+      {/* ── MEDICARE STRIP ───────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What's next?"
         heading="Check your Medicare status."
-        body="Depending on your country of origin, you may be eligible for Medicare in Australia - or entitled to a Medicare levy exemption."
+        body="You may need to understand your Medicare obligations before leaving Australia."
         cta="Check Medicare eligibility →"
         href="/medicare"
       />
-
-      {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
     </>
   )
 }

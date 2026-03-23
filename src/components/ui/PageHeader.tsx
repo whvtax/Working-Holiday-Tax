@@ -15,7 +15,7 @@ export function PageHeader({ kicker = 'Service guide', title, titleEm, sub, brea
   const ctaIsExternal = !cta?.href
   return (
     <section className="relative overflow-hidden pt-[68px] bg-white">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-9 lg:py-12 relative z-10">
+      <div className="max-w-[1100px] mx-auto px-5 md:px-8 py-9 lg:py-12 relative z-10">
         {breadcrumbs && (
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
             {breadcrumbs.map((b, i) => (
