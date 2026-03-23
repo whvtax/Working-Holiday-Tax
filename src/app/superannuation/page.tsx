@@ -97,7 +97,7 @@ export default function SuperannuationPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
-              Claim your super
+              Claim your super →
             </a>
 
             <div className="flex flex-wrap gap-x-4 gap-y-1.5">
@@ -289,7 +289,7 @@ export default function SuperannuationPage() {
 
           <div className="text-center mt-10 reveal delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
-              Claim your super
+              Claim your super →
             </a>
           </div>
         </div>
@@ -368,7 +368,7 @@ export default function SuperannuationPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '48px', padding: '0 22px', fontSize: '14px' }}>
-                Get help from experts →
+              Get help from experts →
               </a>
             </div>
             <div className="reveal delay-1 max-w-[680px]">

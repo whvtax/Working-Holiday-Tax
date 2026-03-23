@@ -69,7 +69,7 @@ export default function MedicarePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
-              Check your eligibility
+              Check your eligibility →
             </a>
 
             <div className="flex flex-wrap gap-x-4 gap-y-1.5">
@@ -341,7 +341,7 @@ export default function MedicarePage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '48px', padding: '0 22px', fontSize: '14px' }}>
-                Get help now →
+              Get help now →
               </a>
             </div>
             <div className="reveal delay-1 max-w-[680px]">

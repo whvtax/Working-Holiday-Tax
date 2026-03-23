@@ -96,17 +96,10 @@ export default function ABNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%' }}>
-                Register your ABN →
+              Register your ABN →
               </a>
             </div>
 
-            {/* Secondary — text link only */}
-            <p style={{ fontSize: '13px', color: 'rgba(10,15,13,0.45)', marginBottom: '20px' }}>
-              Not sure if you need one?{' '}
-              <a href="#how-to-register" className="hover-forest-light transition-colors font-medium" style={{ color: '#0B5240' }}>
-                See how it works
-              </a>
-            </p>
 
             {/* Trust badges — same system as TFN */}
             <div className="flex flex-wrap gap-x-4 gap-y-1.5">
@@ -407,7 +400,7 @@ export default function ABNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '48px', padding: '0 22px', fontSize: '14px' }}>
-                Ask us now →
+              Ask us now →
               </a>
             </div>
             <div className="reveal delay-1 max-w-[680px]">

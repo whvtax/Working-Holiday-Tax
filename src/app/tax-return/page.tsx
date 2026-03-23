@@ -108,7 +108,7 @@ export default function TaxReturnPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
-              Start your tax return
+              Start your tax return →
             </a>
 
             {/* Trust under CTA */}
@@ -198,7 +198,7 @@ export default function TaxReturnPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
-              Start your tax return
+              Start your tax return →
             </a>
           </div>
         </div>
@@ -289,7 +289,7 @@ export default function TaxReturnPage() {
                 <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                   className="btn-primary inline-flex"
                   style={{ height: '46px', padding: '0 20px', fontSize: '13.5px', maxWidth: '240px', width: '100%' }}>
-                  Start your tax return
+              Start your tax return →
                 </a>
               </div>
             </div>
@@ -322,7 +322,7 @@ export default function TaxReturnPage() {
               There are different tax rates for Working Holiday visa holders and Australian residents.
             </p>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
               {[
                 {
                   label: 'Working Holiday visa holders',
@@ -344,9 +344,9 @@ export default function TaxReturnPage() {
                   ],
                 },
               ].map((table, ti) => (
-                <div key={ti} className="min-w-0">
+                <div key={ti} className="min-w-0 flex flex-col">
                   <h3 className="font-semibold text-ink mb-3" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>{table.label}</h3>
-                  <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #C8EAE0' }}>
+                  <div className="rounded-xl overflow-hidden flex-1" style={{ border: '1px solid #C8EAE0' }}>
                     <table className="w-full" style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                       <thead>
                         <tr style={{ background: '#EAF6F1' }}>
@@ -455,7 +455,7 @@ export default function TaxReturnPage() {
 
           <div className="text-center mt-10 reveal delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 32px', fontSize: '15px' }}>
-              Start your tax return
+              Start your tax return →
             </a>
           </div>
         </div>
@@ -534,7 +534,7 @@ export default function TaxReturnPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '48px', padding: '0 22px', fontSize: '14px' }}>
-                Get help now →
+              Get help now →
               </a>
             </div>
             <div className="reveal delay-1 max-w-[680px]">

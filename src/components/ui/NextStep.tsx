@@ -26,7 +26,7 @@ export function NextStep({ eyebrow, heading, body, cta, href, external }: NextSt
           <a href={href} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex"
             style={{ height: '48px', padding: '0 28px', fontSize: '14.5px' }}>
-            {cta}
+              {cta} →
           </a>
         ) : (
           <Link href={href}

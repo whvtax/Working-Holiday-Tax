@@ -38,7 +38,7 @@ export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLa
               padding: '0 28px',
               fontSize: '14px',
             }}>
-              {primaryLabel}
+              {primaryLabel} →
             </a>
             {secondaryLabel && (
               <Link href={secondaryHref} className="btn-ghost-light" style={{ height: '46px' }}>

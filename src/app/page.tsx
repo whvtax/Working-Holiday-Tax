@@ -86,7 +86,7 @@ function Hero() {
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex"
             style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '300px', width: '100%' }}>
-            Get help with your tax
+              Get help with your tax →
           </a>
         </div>
 
@@ -375,7 +375,7 @@ function Process() {
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex"
             style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px', maxWidth: '300px', width: '100%' }}>
-            Get help with your tax
+              Get help with your tax →
           </a>
           <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
             Free to start&nbsp;•&nbsp;No upfront fees&nbsp;•&nbsp;Personal support throughout

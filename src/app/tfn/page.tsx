@@ -86,16 +86,14 @@ export default function TFNPage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>TFN Application</span>
             </div>
 
-            {/* Headline — 18ch max, balanced 2–3 lines */}
+            {/* Headline — 2 lines on desktop */}
             <h1 className="font-serif font-black text-ink" style={{
               fontSize: 'clamp(26px,3.5vw,42px)',
               lineHeight: 1.1,
               letterSpacing: '-0.03em',
-              maxWidth: '18ch',
               marginBottom: '12px',
-              textWrap: 'balance',
             }}>
-              Get your TFN sorted quickly{' '}
+              Get your TFN sorted quickly<br />
               <span style={{ color: '#0B5240' }}>and start working sooner.</span>
             </h1>
 
@@ -118,8 +116,8 @@ export default function TFNPage() {
               Start your TFN →
             </a>
 
-            {/* Trust badges — 2 clean rows via flex-wrap with nowrap items */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 16px' }}>
+            {/* Trust badges — single row on desktop */}
+            <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '0 20px', overflowX: 'auto' }}>
               {[
                 '1,200+ travellers helped',
                 'Response within 1 hour',
@@ -338,7 +336,7 @@ export default function TFNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '46px', padding: '0 22px', fontSize: '13.5px', maxWidth: '300px', width: '100%' }}>
-                Start your TFN →
+              Start your TFN →
               </a>
             </div>
           </div>
@@ -447,7 +445,7 @@ export default function TFNPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '48px', padding: '0 22px', fontSize: '14px' }}>
-                Get help now →
+              Get help now →
               </a>
             </div>
 

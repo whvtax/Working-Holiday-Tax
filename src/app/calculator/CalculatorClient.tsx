@@ -127,7 +127,7 @@ export function CalculatorClient() {
               </div>
 
               <button onClick={run} className="btn-primary w-full" style={{ height: '52px', fontSize: '15px', borderRadius: '100px' }}>
-                Calculate my refund
+                Calculate my refund →
               </button>
 
               <p className="text-[12px] text-subtle mt-4 leading-[1.6]">

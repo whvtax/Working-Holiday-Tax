@@ -84,7 +84,7 @@ export function Nav() {
         ))}
         <div className="mt-6">
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '46px', borderRadius: '100px', fontSize: '14px' }}>
-            Free Eligibility Check →
+              Free Eligibility Check →
           </a>
         </div>
 
