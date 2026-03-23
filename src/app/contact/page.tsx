@@ -133,13 +133,13 @@ export default function ContactPage() {
                 What happens when you contact us
               </h2>
             </div>
-            <div className="flex flex-col reveal delay-1" style={{ gap: '0' }}>
+            <div className="flex flex-col items-center reveal delay-1" style={{ gap: '0', maxWidth:'380px', margin:'0 auto' }}>
               {[
                 { n: '1', label: 'Tell us what you need', body: 'Share your situation — TFN, return, super or ABN.' },
                 { n: '2', label: 'We review your case',   body: 'A real person responds within 24 hours.' },
                 { n: '3', label: 'We handle everything',  body: 'No commitment. You decide how to proceed.' },
               ].map((item, i, arr) => (
-                <div key={i} className="flex gap-4" style={{ paddingBottom: i < arr.length - 1 ? '18px' : '0' }}>
+                <div key={i} className="flex gap-4 w-full" style={{ paddingBottom: i < arr.length - 1 ? '18px' : '0' }}>
                   <div className="flex flex-col items-center flex-shrink-0">
                     <div className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-white" style={{ background: '#0B5240', fontSize: '12px' }}>{item.n}</div>
                     {i < arr.length - 1 && <div className="flex-1 w-px mt-2" style={{ minHeight: '18px', background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
@@ -150,7 +150,7 @@ export default function ContactPage() {
                   </div>
                 </div>
               ))}
-              <div style={{ borderTop: '1px solid #E2EFE9', marginTop: '18px' }} />
+              <div style={{ borderTop: '1px solid #E2EFE9', marginTop: '18px', width:'100%' }} />
             </div>
           </div>
         </div>
@@ -167,9 +167,10 @@ export default function ContactPage() {
             <p className="font-light text-muted leading-[1.75] mb-6" style={{ fontSize: '15px', maxWidth: '360px' }}>
               Tell us your situation. We will review it and outline your options clearly.
             </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary mx-auto" style={{ height: '46px', padding: '0 22px', fontSize: '13.5px', display: 'flex' }}>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center justify-center mx-auto"
+              style={{ height: '52px', padding: '0 32px', fontSize: '15px', width:'100%', maxWidth:'280px' }}>
               Check your eligibility →
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
           </div>
         </div>

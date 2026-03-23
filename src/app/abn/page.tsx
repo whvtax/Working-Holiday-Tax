@@ -67,7 +67,7 @@ export default function ABNPage() {
 
             {/* Headline — matches TFN system */}
                         <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px,3.2vw,40px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              Register your ABN correctly<br />
+              Register your ABN correctly{' '}
               <span style={{ color:'#0B5240' }}>and start working legally.</span>
             </h1>
 
@@ -75,7 +75,7 @@ export default function ABNPage() {
               We handle the registration so your ABN matches your actual work.
             </p>
 
-            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'44ch', marginBottom:'24px' }}>
+            <p className="font-light mx-auto" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
               No rejections, no delays. Set up correctly from the start.
             </p>
 
@@ -88,7 +88,7 @@ export default function ABNPage() {
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'320px', margin:'0 auto' }}>
+            <div className="flex flex-col items-center gap-2">
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -267,7 +267,7 @@ export default function ABNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-center">
 
-            <div className="reveal">
+            <div className="reveal text-center lg:text-left">
               <span className="section-label center">What is an ABN?</span>
               <h2 className="font-serif font-black text-ink" style={{
                 fontSize: 'clamp(15px, 1.87vw, 22px)',
@@ -282,10 +282,10 @@ export default function ABNPage() {
               </h2>
 
               <div style={{ marginBottom: '20px' }}>
-                <p className="text-[13.5px] font-light text-body leading-[1.75]" style={{ maxWidth: '36ch', marginBottom: '12px' }}>
+                <p className="text-[13.5px] font-light text-body leading-[1.75] mx-auto lg:mx-0" style={{ maxWidth: '36ch', marginBottom: '12px' }}>
                   An ABN is an 11 digit number that identifies you when working as a contractor or freelancer in Australia. You include it on every invoice you send.
                 </p>
-                <p className="text-[13.5px] font-light text-body leading-[1.75]" style={{ maxWidth: '36ch' }}>
+                <p className="text-[13.5px] font-light text-body leading-[1.75] mx-auto lg:mx-0" style={{ maxWidth: '36ch' }}>
                   With an ABN, no tax is withheld automatically. You receive the full amount and manage your own tax.
                 </p>
               </div>
@@ -321,18 +321,18 @@ export default function ABNPage() {
       <section className="py-10 lg:py-14" style={{ background: '#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
-            <div className="reveal text-center lg:text-left">
+            <div className="text-center">
               <span className="section-label center">Questions</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '10px', textWrap: 'balance' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
                 ABN questions, answered.
               </h2>
-              <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '28ch', marginBottom: '24px' }}>
-                Still unsure? Ask our tax experts.
+              <p className="font-light text-muted" style={{ fontSize:'13px', lineHeight:1.65, marginBottom:'24px' }}>
+                Have a question? Message us on WhatsApp.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex"
-                style={{ height: '48px', padding: '0 22px', fontSize: '14px' }}>
-              Ask us now →
+                className="btn-primary inline-flex items-center justify-center"
+                style={{ height:'48px', padding:'0 24px', fontSize:'14px', width:'100%', maxWidth:'200px' }}>
+                Ask us now →
               </a>
             </div>
             <div className="reveal delay-1 max-w-[680px]">

@@ -51,7 +51,7 @@ export default function TFNPage() {
             </div>
 
             <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px, 3.23vw, 41px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              Get your TFN sorted quickly<br />
+              Get your TFN sorted quickly{' '}
               <span style={{ color:'#0B5240' }}>and start working sooner.</span>
             </h1>
 
@@ -59,7 +59,7 @@ export default function TFNPage() {
               We make sure your application is correct the first time.
             </p>
 
-            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'44ch', marginBottom:'24px' }}>
+            <p className="font-light mx-auto" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
               Without a TFN you pay 47% tax. Apply before you start work.
             </p>
 
@@ -71,7 +71,7 @@ export default function TFNPage() {
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'320px', margin:'0 auto' }}>
+            <div className="flex flex-col items-center gap-2">
               {['1,200+ travellers helped','Response within 1 hour','ATO compliant','By a registered tax agent'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <CheckIcon />{t}
@@ -263,13 +263,17 @@ export default function TFNPage() {
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-7 items-start">
-            <div className="text-center lg:text-left">
+            <div className="text-center">
               <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
                 TFN questions, answered.
               </h2>
-              <p className="font-light text-muted" style={{ fontSize:'13.5px', lineHeight:1.65, marginBottom:'24px' }}>Have a question? Message us on WhatsApp.</p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex justify-center lg:justify-start" style={{ height:'48px', padding:'0 22px', fontSize:'14px', width:'100%', maxWidth:'200px' }}>
+              <p className="font-light text-muted" style={{ fontSize:'13px', lineHeight:1.65, marginBottom:'24px' }}>
+                Have a question? Message us on WhatsApp.
+              </p>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                className="btn-primary inline-flex items-center justify-center"
+                style={{ height:'48px', padding:'0 24px', fontSize:'14px', width:'100%', maxWidth:'200px' }}>
                 Get help now →
               </a>
             </div>

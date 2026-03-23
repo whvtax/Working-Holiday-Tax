@@ -54,14 +54,14 @@ export default function MedicarePage() {
             <span aria-current="page">Medicare</span>
           </nav>
 
-          <div className="max-w-[640px]">
+          <div className="max-w-[640px] mx-auto text-center">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Guide</span>
             </div>
 
                         <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px,3.2vw,40px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              Understand your Medicare status<br />
+              Understand your Medicare status{' '}
               <span style={{ color:'#0B5240' }}>before you lodge your return.</span>
             </h1>
 
@@ -69,26 +69,21 @@ export default function MedicarePage() {
               We determine your eligibility and apply the correct treatment.
             </p>
 
-            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'44ch', marginBottom:'24px' }}>
+            <p className="font-light mx-auto" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
               Not everyone is eligible. We help you understand where you stand.
             </p>
 
-            {/* Hero CTAs */}
-            <div className="flex flex-row gap-3 items-center" style={{ marginBottom:'20px' }}>
+            <div className="flex justify-center" style={{ marginBottom:'24px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex"
-                style={{ height:'52px', padding:'0 32px', fontSize:'15px', borderRadius:'100px' }}>
+                className="btn-primary inline-flex items-center justify-center"
+                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', width:'100%', maxWidth:'280px' }}>
                 Check your eligibility →
-              </a>
-              <a href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
-                How it works →
               </a>
             </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-nowrap gap-x-4 overflow-x-auto">
+            <div className="flex flex-col items-center gap-2">
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)', whiteSpace:'nowrap' }}>
+                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   {t}
                 </span>
@@ -238,7 +233,7 @@ export default function MedicarePage() {
             <div className="reveal text-center lg:text-left">
               <span className="section-label center">What is Medicare?</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 1.87vw, 20px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
-                Australia&apos;s public<br />
+                Australia&apos;s public{' '}
                 <em className="not-italic font-normal text-forest-400">health system.</em>
               </h2>
               <div className="prose-wht max-w-[480px]">
