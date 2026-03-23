@@ -209,12 +209,12 @@ export default function MedicarePage() {
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="max-w-2xl reveal">
-            <span className="section-label">Medicare levy exemption</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
+          <div className="max-w-2xl mx-auto text-center reveal">
+            <span className="section-label center">Medicare levy exemption</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               Medicare levy exemption.
             </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch', marginBottom: '28px' }}>
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch', marginBottom: '28px' }}>
               If you are not from a country eligible for Medicare, you will need a Medicare levy exemption before lodging your tax return.
             </p>
             <div className="reveal delay-1 rounded-2xl flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px] mx-auto"
