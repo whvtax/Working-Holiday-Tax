@@ -4,6 +4,7 @@ import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
+import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { SITE_URL } from '@/lib/constants'
 
 const playfair = Playfair_Display({
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <RevealObserver />
+        <ScrollToTop />
       </body>
     </html>
   )

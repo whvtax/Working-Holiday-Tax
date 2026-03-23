@@ -203,30 +203,63 @@
   @media (max-width: 639px) {
 
     /* ── 1. GLOBAL SIDE PADDING ─────────────────────────────────────────── */
-    .max-w-7xl { padding-left: 20px !important; padding-right: 20px !important; }
+    .max-w-7xl,
+    .max-w-5xl { padding-left: 20px !important; padding-right: 20px !important; }
 
     /* ── 2. SECTION SPACING SYSTEM ──────────────────────────────────────── */
-    /* All sections: 64px vertical rhythm */
     section { padding-top: 56px !important; padding-bottom: 56px !important; }
-    /* Hero sections get tighter bottom (content flows into urgency strip) */
-    section.hero-section { padding-top: 72px !important; padding-bottom: 48px !important; }
 
     /* ── 3. HERO SYSTEM ──────────────────────────────────────────────────── */
     .hero-min { min-height: 0 !important; }
-    /* Hero headings */
-    .hero-h1 {
-      font-size: 28px !important;
-      line-height: 1.2 !important;
-      max-width: 20ch !important;
-      margin-bottom: 12px !important;
-      text-wrap: balance !important;
+
+    /* Hero inner container */
+    .hero-inner {
+      padding-top: 72px !important;
+      padding-bottom: 48px !important;
+      text-align: center !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
     }
-    /* Hero subtext */
-    .hero-sub {
+
+    /* Hero h1 */
+    .hero-inner h1 {
+      font-size: 30px !important;
+      line-height: 1.18 !important;
+      letter-spacing: -0.025em !important;
+      max-width: 20ch !important;
+      margin-bottom: 14px !important;
+      text-wrap: balance !important;
+      word-break: normal !important;
+    }
+
+    /* Hero semibold subheadline */
+    .hero-inner .hero-semibold {
       font-size: 15px !important;
-      line-height: 1.6 !important;
+      line-height: 1.55 !important;
       max-width: 28ch !important;
-      margin-bottom: 20px !important;
+      margin-bottom: 8px !important;
+      text-align: center !important;
+    }
+
+    /* Hero body text */
+    .hero-inner .hero-body {
+      font-size: 15px !important;
+      line-height: 1.65 !important;
+      max-width: 28ch !important;
+      margin-bottom: 24px !important;
+      text-align: center !important;
+    }
+
+    /* Hero breadcrumb — hide on mobile to save space */
+    .hero-breadcrumb { display: none !important; }
+
+    /* Hero trust badges */
+    .hero-trust {
+      justify-content: center !important;
+      flex-wrap: wrap !important;
+      gap: 10px 16px !important;
+      margin-top: 16px !important;
     }
 
     /* ── 4. CTA SYSTEM ───────────────────────────────────────────────────── */
@@ -243,29 +276,24 @@
       margin-right: auto !important;
       border-radius: 999px !important;
     }
-    /* CTA wrapper spacing */
-    .cta-wrap {
-      display: flex !important;
+
+    /* CTA row — stack vertically, center */
+    .hero-cta-row {
       flex-direction: column !important;
       align-items: center !important;
+      width: 100% !important;
       gap: 12px !important;
-      margin-top: 24px !important;
-      margin-bottom: 8px !important;
+      margin-bottom: 0 !important;
     }
 
     /* ── 5. TEXT WIDTH CONTROL ───────────────────────────────────────────── */
-    h1 { max-width: 22ch; text-wrap: balance; word-break: normal; }
-    h2 { max-width: 24ch; text-wrap: balance; word-break: normal; }
-    p  { max-width: 32ch; word-break: normal; }
+    h1 { text-wrap: balance; word-break: normal; }
+    h2 { text-wrap: balance; word-break: normal; max-width: 26ch; }
+    p  { word-break: normal; }
 
     /* ── 6. CARD SYSTEM ──────────────────────────────────────────────────── */
-    /* All info/content cards */
     [class*="rounded-xl"],
-    [class*="rounded-2xl"] {
-      border-radius: 16px !important;
-    }
-    /* Card internal padding */
-    .card-mobile { padding: 20px !important; }
+    [class*="rounded-2xl"] { border-radius: 16px !important; }
 
     /* ── 7. TYPOGRAPHY ───────────────────────────────────────────────────── */
     .prose-wht p  { font-size: 15px !important; line-height: 1.75 !important; }
@@ -291,8 +319,8 @@
     .footer-inner { padding-top: 36px !important; padding-bottom: 28px !important; }
     .footer-cols  { gap: 28px !important; }
 
-    /* ── 12. ELEMENT GAPS ────────────────────────────────────────────────── */
-    .gap-between { gap: 16px !important; }
+    /* ── 12. COMPARISON sections ─────────────────────────────────────────── */
+    .compare-grid { grid-template-columns: 1fr !important; }
   }
 
   /* ── Hero min-height (non-mobile) ── */

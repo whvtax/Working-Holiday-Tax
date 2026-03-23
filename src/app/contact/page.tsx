@@ -29,7 +29,7 @@ export default function ContactPage() {
       </section>
 
       {/* ── CONTACT OPTIONS ──────────────────────────────────────────────── */}
-      <section className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center mb-7 reveal">
             <span className="section-label center">How to reach us</span>
@@ -104,7 +104,7 @@ export default function ContactPage() {
       </section>
 
       {/* ── WHAT TO EXPECT ───────────────────────────────────────────────── */}
-      <section className="py-7 lg:py-14 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto">
             <div className="text-center mb-7 reveal">
@@ -144,7 +144,7 @@ export default function ContactPage() {
       </section>
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <section className="py-7 lg:py-14" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-lg mx-auto text-center reveal">
             <span className="section-label center mb-4 block">Ready?</span>

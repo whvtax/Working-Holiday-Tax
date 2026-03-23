@@ -182,7 +182,7 @@ export default function TaxReturnPage() {
                 body: 'Send us your details and we handle everything. No ATO portals, no paperwork.',
               },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-forest-500" style={{ background: '#EAF6F1' }}>
                   {item.icon}
                 </div>
@@ -368,7 +368,7 @@ export default function TaxReturnPage() {
               ))}
             </div>
 
-            <div className="mt-5 rounded-xl px-4 py-3" style={{ background: '#FFFCF5', border: '1px solid #F0D99A' }}>
+            <div className="mt-5 rounded-xl px-4 py-3" style={{ background: '#FFFCF5', border: '1.5px solid #E9A020', borderRadius: '12px' }}>
               <p className="font-light text-body leading-[1.7]" style={{ fontSize: '12.5px' }}>
                 If your employer is not registered as a Working Holiday employer, you may be taxed at 30% instead of the Working Holiday rate.
               </p>

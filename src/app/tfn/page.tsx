@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
-import { NextStep, RelatedServices } from '@/components/ui/NextStep'
+import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
@@ -124,6 +124,7 @@ export default function TFNPage() {
                 '1,200+ travellers helped',
                 'Response within 1 hour',
                 'ATO compliant',
+                'By a registered tax agent',
               ].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)', whiteSpace: 'nowrap' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true">
@@ -208,7 +209,7 @@ export default function TFNPage() {
                 body: 'Tell us your details and we take care of the rest. Reply within the hour.',
               },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
+              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
                 <div className="flex items-center justify-center flex-shrink-0 text-forest-500" style={{ width: '34px', height: '34px', minWidth: '34px', background: '#EAF6F1', borderRadius: '8px' }}>
                   {item.icon}
                 </div>
@@ -465,13 +466,6 @@ export default function TFNPage() {
         cta="Check if you need an ABN →"
         href="/abn"
       />
-
-      {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      <RelatedServices items={[
-        { label: 'ABN Registration', desc: 'Work as a contractor legally',     href: '/abn' },
-        { label: 'Tax Return',       desc: 'Claim your refund at year end',    href: '/tax-return' },
-        { label: 'Super Withdrawal', desc: 'Claim your super when you leave',  href: '/superannuation' },
-      ]} />
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
       <CtaBand

@@ -90,17 +90,29 @@ function Hero() {
           </a>
         </div>
 
-        {/* Trust row */}
-        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5">
+        {/* Trust row — 4 indicators with icons */}
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
           {[
-            { n: '4.9★', l: 'Google rating' },
-            { n: '1,200+', l: 'clients helped' },
-            { n: '<1 hr', l: 'response time' },
-          ].map((c, i) => (
-            <span key={i} className="inline-flex items-center gap-1" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.4)' }}>
-              {i > 0 && <span className="hidden sm:inline" style={{ marginRight: '4px', color: 'rgba(10,15,13,0.15)' }}>•</span>}
-              <span className="font-semibold" style={{ color: 'rgba(10,15,13,0.6)' }}>{c.n}</span>
-              <span>{c.l}</span>
+            {
+              icon: <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+              label: '4.9★ Google rating',
+            },
+            {
+              icon: <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+              label: '1,200+ clients helped',
+            },
+            {
+              icon: <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+              label: 'ATO compliant',
+            },
+            {
+              icon: <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+              label: 'By a registered tax agent',
+            },
+          ].map((item, i) => (
+            <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.5)' }}>
+              {item.icon}
+              {item.label}
             </span>
           ))}
         </div>

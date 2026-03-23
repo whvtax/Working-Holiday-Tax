@@ -146,7 +146,7 @@ export default function ABNPage() {
       </section>
 
       {/* ── HOW WE HELP ───────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '40px' }}>
             <span className="section-label center">How we help</span>
@@ -195,7 +195,7 @@ export default function ABNPage() {
       </section>
 
       {/* ── COMMON MISTAKES ───────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#FFFDF7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#FFFDF7' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label">Common mistakes</span>
@@ -219,7 +219,7 @@ export default function ABNPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal delay-1" style={{ marginBottom: '28px' }}>
             {MISTAKES.map((m, i) => (
               <div key={i} className="rounded-xl flex flex-col"
-                style={{ padding: '18px', background: '#FFFCF5', border: '1.5px solid #F0D99A', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+                style={{ padding: '20px', background: '#FFFCF5', border: '1.5px solid #F0D99A', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
                 <div className="flex items-center justify-center rounded-lg flex-shrink-0" style={{ width: '30px', height: '30px', background: '#FDF0D5', border: '1px solid #F0D99A', marginBottom: '12px' }}>
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                     <path d="M6 2v4M6 8.5v.5" stroke="#C47E10" strokeWidth="1.8" strokeLinecap="round"/>
@@ -246,7 +246,7 @@ export default function ABNPage() {
       </section>
 
       {/* ── HOW TO REGISTER ───────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section id="how-to-register" className="py-10 lg:py-14" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">Step by step</span>
@@ -304,9 +304,9 @@ export default function ABNPage() {
       </section>
 
       {/* ── WHAT IS AN ABN ────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-start">
 
             <div className="reveal">
               <span className="section-label">What is an ABN?</span>
@@ -393,7 +393,7 @@ export default function ABNPage() {
       </div>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 lg:gap-16 items-start">
             <div className="reveal">
@@ -428,7 +428,6 @@ export default function ABNPage() {
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
       <RelatedServices items={[
-        { label: 'TFN Application',  desc: 'Required to work in Australia',          href: '/tfn' },
         { label: 'Tax Return',       desc: 'Declare your income and claim your refund', href: '/tax-return' },
         { label: 'Super Withdrawal', desc: 'Claim your super when you leave',         href: '/superannuation' },
       ]} />

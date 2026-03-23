@@ -123,7 +123,7 @@ export default function MedicarePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 reveal delay-1">
-            <div className="bg-white rounded-2xl" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+            <div className="bg-white rounded-2xl" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#EAF6F1' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#0B5240" strokeWidth="1.4"/>
@@ -137,7 +137,7 @@ export default function MedicarePage() {
               <p className="text-[11.5px] font-medium text-forest-500">You may access limited Medicare services</p>
             </div>
 
-            <div className="bg-white rounded-2xl" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+            <div className="bg-white rounded-2xl" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
               <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#FFFCF5' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#C47E10" strokeWidth="1.4"/>
@@ -165,9 +165,9 @@ export default function MedicarePage() {
       {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label">What we do for you</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
+          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
+            <span className="section-label center">What we do for you</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
               We handle it as part{" "}
               <em className="not-italic font-normal text-forest-400">of your tax return.</em>
             </h2>
@@ -188,7 +188,7 @@ export default function MedicarePage() {
                 body: 'Without the correct exemption, the 2% Medicare levy may be charged. We make sure that does not happen if you are not eligible.',
               },
             ].map((item, i) => (
-              <div key={i} className="rounded-2xl" style={{ padding: '18px', background: '#EEF7F2', border: '1px solid #C8EAE0' }}>
+              <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#EEF7F2', border: '1px solid #C8EAE0' }}>
                 <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '6px' }}>{item.title}</p>
                 <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch' }}>{item.body}</p>
               </div>
@@ -196,7 +196,7 @@ export default function MedicarePage() {
           </div>
 
           {/* Trust badges */}
-          <div className="mt-8 flex flex-wrap gap-4 reveal delay-2">
+          <div className="mt-8 flex flex-wrap gap-4 justify-center reveal delay-2">
             {[
               'Handled under a registered tax agent',
               'Fully ATO compliant',
@@ -238,7 +238,7 @@ export default function MedicarePage() {
             <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch', marginBottom: '28px' }}>
               If you are not from a country eligible for Medicare, you will need a Medicare levy exemption before lodging your tax return.
             </p>
-            <div className="reveal delay-1 rounded-2xl flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px]"
+            <div className="reveal delay-1 rounded-2xl flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px] mx-auto"
               style={{ background: '#ffffff', border: '1px solid #C8EAE0', width: '100%', maxWidth: '640px' }}>
               <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4 flex-shrink-0"
                 style={{ background: '#EAF6F1', border: '1.5px solid #C8EAE0' }}>
@@ -255,7 +255,7 @@ export default function MedicarePage() {
       {/* ── WHAT IS MEDICARE (DETAIL) ─────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 lg:gap-20 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-16 items-start">
             <div className="reveal">
               <span className="section-label">What is Medicare?</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(18px,2.2vw,24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
@@ -364,7 +364,6 @@ export default function MedicarePage() {
       <RelatedServices items={[
         { label: 'Tax Return',        desc: 'Lodge your return and claim your refund', href: '/tax-return' },
         { label: 'Super Withdrawal',  desc: 'Claim your super when you leave', href: '/superannuation' },
-        { label: 'TFN Application',   desc: 'Required to work in Australia', href: '/tfn' },
       ]} />
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}

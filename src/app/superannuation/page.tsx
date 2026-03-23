@@ -163,7 +163,7 @@ export default function SuperannuationPage() {
                 body: 'We find all your accounts, prepare the DASP, and submit everything. You receive the payment.',
               },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl" style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              <div key={i} className="bg-white rounded-2xl" style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-forest-500" style={{ background: '#EAF6F1', marginBottom: '12px' }}>
                   {item.icon}
                 </div>
@@ -391,7 +391,6 @@ export default function SuperannuationPage() {
       <RelatedServices items={[
         { label: 'Tax Return',        desc: 'Declare your income and claim your refund', href: '/tax-return' },
         { label: 'Medicare',          desc: 'Understand your Medicare status', href: '/medicare' },
-        { label: 'TFN Application',   desc: 'Required to work in Australia', href: '/tfn' },
       ]} />
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
