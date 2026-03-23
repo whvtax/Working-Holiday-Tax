@@ -117,8 +117,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
-      <section style={{ padding: "80px 0" }}
-        className="" style={{ background: '#EEF7F2' }}>
+      <section style={{ padding: '80px 0', background: '#EEF7F2' }}>
         <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Your two scenarios</span>
@@ -207,8 +206,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section style={{ padding: "80px 0" }}
-        className="" style={{ background: '#EEF7F2' }}>
+      <section style={{ padding: '80px 0', background: '#EEF7F2' }}>
         <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-2xl mx-auto text-center reveal">
             <span className="section-label center">Medicare levy exemption</span>
@@ -270,8 +268,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section style={{ padding: "80px 0" }}
-        className="" style={{ background: '#EEF7F2' }}>
+      <section style={{ padding: '80px 0', background: '#EEF7F2' }}>
         <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
             <span className="section-label center">Common confusion</span>
