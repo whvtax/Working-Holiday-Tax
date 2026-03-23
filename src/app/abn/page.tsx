@@ -118,20 +118,18 @@ export default function ABNPage() {
       </section>
 
       {/* ── URGENCY STRIP ─────────────────────────────────────────────────── */}
-      <section style={{ background: '#1A5C44' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-6 lg:py-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
-              <p className="font-semibold text-white" style={{ fontSize: '15px', marginBottom: '4px' }}>
-                Not sure if you need an ABN?
-              </p>
-              <p className="font-light" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.65)' }}>
-                Get a clear answer in minutes - no obligation.
-              </p>
-            </div>
+      <section style={{ background: '#0B5240' }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
+          <div style={{ maxWidth: '560px' }}>
+            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(18px,2.2vw,26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '8px' }}>
+              Not sure if you need an ABN?<br />Get a clear answer in minutes.
+            </p>
+            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
+              No obligation. We tell you exactly what applies to your situation.
+            </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="flex-shrink-0 inline-flex items-center gap-2 font-semibold transition-all"
-              style={{ height: '44px', padding: '0 22px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '13.5px', whiteSpace: 'nowrap' }}>
+              className="inline-flex items-center justify-center font-semibold"
+              style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
               Chat with experts →
             </a>
           </div>
@@ -155,7 +153,7 @@ export default function ABNPage() {
               We tell you what you need.<br /><em className="not-italic font-normal text-forest-400">Then we set it up correctly.</em>
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '30ch', margin: '0 auto' }}>
-              If you are working as a freelancer or contractor in Australia, you need an ABN. We make sure it&apos;s set up correctly from the start.
+              If you&apos;re working as a freelancer, you need an ABN. We make sure it&apos;s set up correctly from the start.
             </p>
           </div>
 
@@ -180,7 +178,7 @@ export default function ABNPage() {
               Register your ABN →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(10,15,13,0.4)' }}>
-              Free to start&nbsp;•&nbsp;Registered tax agent&nbsp;•&nbsp;ATO compliant
+              ATO compliant
             </p>
           </div>
         </div>
@@ -189,9 +187,9 @@ export default function ABNPage() {
       {/* ── COMMON MISTAKES ───────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#FFFDF7' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label">Common mistakes</span>
-            <h2 className="font-serif font-black text-ink" style={{
+          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
+            <span className="section-label center">Common mistakes</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{
               fontSize: 'clamp(17px, 2.04vw, 24px)',
               lineHeight: 1.1,
               letterSpacing: '-0.025em',
@@ -202,7 +200,7 @@ export default function ABNPage() {
             }}>
               Setting up an ABN incorrectly<br /><em className="not-italic font-normal text-forest-400">can cost you later.</em>
             </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '32ch' }}>
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '32ch' }}>
               These are common mistakes that can delay your setup and cause problems later.
             </p>
           </div>
@@ -222,13 +220,13 @@ export default function ABNPage() {
             ))}
           </div>
 
-          <div className="rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 reveal delay-2"
-            style={{ padding: '18px 22px', background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
-            <p className="text-[13.5px] font-light text-body leading-[1.65]">
+          <div className="rounded-xl flex flex-col items-center text-center gap-3 reveal delay-2 mx-auto"
+            style={{ padding: '16px 24px', background: '#EAF6F1', border: '1px solid #C8EAE0', maxWidth: '560px' }}>
+            <p className="font-light text-body leading-[1.65]" style={{ fontSize: '13.5px' }}>
               Not sure you are doing it right? We check everything and guide you before you submit.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="flex-shrink-0 inline-flex items-center gap-1.5 font-semibold whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 font-semibold"
               style={{ fontSize: '13.5px', color: '#0B5240' }}>
               We handle it for you →
             </a>
@@ -330,20 +328,6 @@ export default function ABNPage() {
             </div>
 
             <div className="reveal delay-1">
-              <div className="grid grid-cols-1 gap-3" style={{ marginBottom: '24px' }}>
-                {[
-                  { title: 'Issued by',       body: 'The Australian Business Register, administered by the ATO.' },
-                  { title: 'Format',          body: 'An 11 digit number you include on your invoices.' },
-                  { title: 'Cost',            body: 'Free to apply. No government fees.' },
-                  { title: 'Processing time', body: 'Most ABNs are issued immediately online after approval.' },
-                ].map((c, i) => (
-                  <div key={i} className="rounded-xl" style={{ padding: '14px 18px', border: '1px solid #E2EFE9', background: '#FAFCFB' }}>
-                    <p className="text-[13px] font-semibold text-ink" style={{ marginBottom: '2px' }}>{c.title}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.65]">{c.body}</p>
-                  </div>
-                ))}
-              </div>
-
               <span className="section-label block" style={{ marginBottom: '12px' }}>When you need one</span>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
@@ -369,16 +353,7 @@ export default function ABNPage() {
         </div>
       </section>
 
-      {/* ── CROSS LINK ────────────────────────────────────────────────────── */}
-      <div style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9', background: '#ffffff' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
-            Working in Australia? Make sure you also have a TFN.
-          </p>
-          <a href="/tfn" className="inline-flex items-center gap-1.5 font-semibold whitespace-nowrap transition-colors hover-forest-light flex-shrink-0" style={{ fontSize: '13px', color: '#0B5240' }}>
-            Apply for your TFN →
-          </a>
-        </div>
+
       </div>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
@@ -418,14 +393,6 @@ export default function ABNPage() {
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
       
 
-      {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <CtaBand
-        eyebrow="Not sure?"
-        heading="Not sure if you need an ABN?"
-        headingEm="Get a clear answer in minutes."
-        sub="We'll tell you if you need an ABN and set it up correctly."
-        primaryLabel="Chat with experts →"
-      />
     </>
   )
 }

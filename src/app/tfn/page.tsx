@@ -177,7 +177,7 @@ export default function TFNPage() {
       <section className="py-12 lg:py-16" style={{ background:'#F4F9F6' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'28px' }}>
-            <span className="section-label center">Why not do it yourself?</span>
+            <span className="section-label center">Why not do it yourself</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px' }}>
               There is a better way.
             </h2>
@@ -287,7 +287,7 @@ export default function TFNPage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What's next?"
-        heading="Got your TFN? Now protect your income."
+        heading="Do you already have your TFN?"
         body="If you are working as a contractor or freelancer, you may also need an ABN to invoice clients correctly."
         cta="Check if you need an ABN →"
         href="/abn"
