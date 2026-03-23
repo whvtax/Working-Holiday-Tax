@@ -16,15 +16,16 @@ const IconStar = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hid
 const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 const TESTIMONIALS = [
-  { name:"Liam O'Brien", from:'Ireland · WHV 417', quote:'I was stressed about my super - four months, three different employers. They guided me through everything and helped me get it all back.', amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
-  { name:'Emma T.', from:'United Kingdom · WHV 417', quote:'Got my TFN sorted in two days, and they handled my entire tax return when I left. No stress, just money back in my account.', amount:'$2,450', initials:'E', bgColor:'#FCE7F3', textColor:'#9D174D' },
-  { name:'Max Fischer', from:'Germany · WHV 417', quote:'Fast, clear, and genuinely helpful. They explained everything simply and helped me get my super back after I left.', amount:'$4,100', initials:'M', bgColor:'#D1FAE5', textColor:'#065F46' },
+  { name:"Liam O'Brien", from:'Ireland · WHV 417', quote:'I had multiple employers and no idea what to do. They handled everything and made it easy.', amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
+  { name:'Emma T.', from:'United Kingdom · WHV 417', quote:'They handled my TFN and tax return fast. I didn\'t have to stress about anything.', amount:'$2,450', initials:'E', bgColor:'#FCE7F3', textColor:'#9D174D' },
+  { name:'Max Fischer', from:'Germany · WHV 417', quote:'They explained everything simply and helped me claim money I didn\'t even know about.', amount:'$4,100', initials:'M', bgColor:'#D1FAE5', textColor:'#065F46' },
 ]
 
 const STEPS = [
-  { n:'1', title:'Tell us what you need', body:'TFN, ABN, tax return or super.' },
-  { n:'2', title:'Send your details',     body:'A short checklist. Takes a few minutes.' },
-  { n:'3', title:'We handle everything',  body:'We prepare, lodge and keep you updated.' },
+  { n:'1', title:'Tell us about your situation', body:'TFN, tax return, super - we\'ll guide you.' },
+  { n:'2', title:'Send your details in minutes',  body:'Quick checklist, no complicated forms.' },
+  { n:'3', title:'We handle everything for you',  body:'We prepare, lodge, and manage it all.' },
+  { n:'4', title:'Get your money back',           body:'Refund goes straight to your account.' },
 ]
 
 const SERVICES = [
@@ -58,7 +59,7 @@ export default function HomePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Get help with your tax →
+              Start your tax return →
             </a>
           </div>
 
@@ -76,15 +77,15 @@ export default function HomePage() {
       <section style={{ background:'#0B5240' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-10 text-center">
           <p className="font-serif font-black text-white mx-auto" style={{ fontSize:'clamp(17px, 2.38vw, 27px)', letterSpacing:'-0.025em', lineHeight:1.1, marginBottom:'8px' }}>
-            Without a TFN, 47% tax is withheld<br />from every payslip.
+            Without a TFN, you lose 47% of your income.
           </p>
           <p className="font-light mx-auto" style={{ fontSize:'14px', color:'rgba(255,255,255,0.6)', maxWidth:'36ch', marginBottom:'20px', textAlign:'center' }}>
-            Most backpackers overpay tax in Australia<br />we make sure you don&apos;t.
+            Most backpackers lose money before they even realise it. Don&apos;t be one of them.
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="inline-flex items-center justify-center font-semibold transition-all"
             style={{ height:'48px', padding:'0 28px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'300px', width:'100%' }}>
-            Get your TFN sorted now →
+            Stop losing money – get your TFN →
           </a>
         </div>
       </section>
@@ -94,19 +95,18 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
           <span className="section-label center">Why us</span>
           <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(17px, 2.17vw, 27px)', lineHeight:1.08, letterSpacing:'-0.025em', maxWidth:'26ch', marginTop:'10px', marginBottom:'12px' }}>
-            Built for Working Holiday travellers.<br />
-            <em className="not-italic font-normal text-forest-400">We understand exactly what you need.</em>
+            Built for backpackers who don&apos;t want to lose money on tax.
           </h2>
           <p className="font-light text-muted mx-auto" style={{ fontSize:'15px', lineHeight:1.65, maxWidth:'38ch', marginBottom:'48px', textAlign:'center' }}>
-            We work with Working Holiday travellers every day,<br />so we know what works.
+            We deal with this every day - and know exactly how to maximise your refund.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8" style={{ marginBottom:'40px' }}>
             {[
-              { title:'WHV tax specialists',       body:'Working Holiday tax is all we do. We handle your situation every day.' },
-              { title:'Registered. Compliant.',    body:'Under the supervision of a registered tax agent.' },
-              { title:'Real people, fast answers', body:'Real people who respond quickly and guide you through the process.' },
-              { title:'We make it simple',         body:'No forms, no stress, no confusion. We handle it and keep you updated.' },
+              { title:'Backpacker tax refund experts', body:'We focus only on working holiday tax, so we know how to get you the most back.' },
+              { title:'Registered Australian tax agent', body:'Your tax is handled properly, safely, and fully compliant with all ATO rules.' },
+              { title:'Real support, no tax jargon', body:'We guide you step by step and explain everything clearly in simple English.' },
+              { title:'We handle everything for you', body:'No paperwork or stress, we take care of everything from start to finish.' },
             ].map((item,i) => (
               <div key={i} className="pt-5 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize:'13.5px', marginBottom:'6px' }}>{item.title}</h3>
@@ -116,7 +116,7 @@ export default function HomePage() {
           </div>
 
           <Link href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'44px', padding:'0 24px', fontSize:'13.5px' }}>
-            See how it works →
+            Start your tax refund →
           </Link>
         </div>
       </section>
@@ -127,7 +127,7 @@ export default function HomePage() {
           <div className="text-center" style={{ marginBottom:'36px' }}>
             <span className="section-label center">Client stories</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(19px, 2.38vw, 29px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Real experiences from backpackers like you.
+              See how much backpackers like you are getting back.
             </h2>
           </div>
 
@@ -156,7 +156,7 @@ export default function HomePage() {
 
           <div style={{ marginTop:'32px', paddingTop:'28px', borderTop:'1px solid #E2EFE9' }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {[{n:'4.9★',l:'Google rating'},{n:'1,200+',l:'WHV clients helped'},{n:'<1 hr',l:'Response time'},{n:'100%',l:'Online service'}].map((s,i) => (
+              {[{n:'4.9★',l:'average rating'},{n:'1,200+',l:'backpackers helped'},{n:'< 1 hr',l:'Most replies within 1 hour'},{n:'100%',l:'Fully online, no paperwork'}].map((s,i) => (
                 <div key={i} className="text-center">
                   <p className="font-serif font-black text-forest-500" style={{ fontSize:'clamp(17px, 2.55vw, 22px)', letterSpacing:'-0.03em', lineHeight:1 }}>{s.n}</p>
                   <p className="text-subtle" style={{ fontSize:'11.5px', marginTop:'4px' }}>{s.l}</p>
@@ -173,16 +173,16 @@ export default function HomePage() {
           <div className="text-center" style={{ marginBottom:'48px' }}>
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(20px, 2.55vw, 32px)', lineHeight:1.08, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-              4 simple steps.<br />
-              <em className="not-italic font-normal text-forest-400">We take care of it for you.</em>
+              Get your tax refund in 3 simple steps<br />
+              <em className="not-italic font-normal text-forest-400">We handle everything - you just get paid</em>
             </h2>
-            <p className="font-light text-muted" style={{ fontSize:'15px' }}>You send us your details and we take care of the rest.</p>
+            <p className="font-light text-muted" style={{ fontSize:'15px' }}>Takes just a few minutes to start, we do the rest.</p>
           </div>
 
           {/* Desktop */}
           <div className="hidden lg:block" style={{ marginBottom:'48px' }}>
             <div className="relative flex items-start">
-              <div className="absolute left-[calc(16.6%)] right-[calc(16.6%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
+              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
               {STEPS.map((s,i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex:1 }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style={{ background:'#0B5240', fontSize:'13px', marginBottom:'16px', boxShadow:'0 0 0 4px #fff, 0 0 0 5px #C8EAE0' }}>{s.n}</div>
@@ -211,7 +211,7 @@ export default function HomePage() {
 
           <div className="text-center">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 32px', fontSize:'15px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Get help with your tax →
+              Get started →
             </a>
             <p style={{ marginTop:'10px', fontSize:'12px', color:'#2FA880' }}>Free to start&nbsp;•&nbsp;No upfront fees&nbsp;•&nbsp;Personal support throughout</p>
           </div>
@@ -250,10 +250,11 @@ export default function HomePage() {
 
       <CtaBand
         eyebrow="Start here"
-        heading="Get your tax done right."
-        headingEm="From anywhere in Australia or overseas."
-        sub="TFN, ABN, tax return, and super handled for Working Holiday travellers."
-        primaryLabel="Get help with your tax"
+        heading="Get your tax sorted properly"
+        headingEm="Wherever you are - in Australia or overseas"
+        sub=""
+        primaryLabel="Get started"
+        trustLine="We usually respond within 1 hour"
         clipTop
       />
     </>
