@@ -108,8 +108,8 @@ export default function TaxReturnPage() {
                 marginBottom:'10px',
                 maxWidth:'18ch',
               }}>
-              Get your tax refund{''}
-              <span style={{ color:'#0B5240' }}>fast and stress-free.</span>
+              <span className="hidden lg:block">Get your tax refund fast &amp;<br /><span style={{ color:'#0B5240' }}>stress-free.</span></span>
+              <span className="lg:hidden">Get your tax refund fast and stress-free.</span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -344,7 +344,6 @@ export default function TaxReturnPage() {
             </p>
           </div>
 
-            <p className="text-center font-light text-muted mx-auto" style={{ fontSize: '14px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '24px' }}>Most WHV travellers pay 15% on their first $45,000 — but many overpay and claim it back later.</p>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-7 items-stretch">
               {[
                 {

@@ -41,7 +41,7 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         {/* Mobile: compact padding · Desktop: generous padding */}
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-20 lg:pb-20 text-center">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-14 lg:pb-12 text-center">
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
@@ -51,19 +51,19 @@ export default function HomePage() {
           {/* Mobile: natural wrap · Desktop: explicit 2-line break */}
           <h1 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize:'clamp(23px, 3.06vw, 42px)', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px', maxWidth:'18ch' }}>
-            Confused about tax in Australia?{' '}
-            <span style={{ color:'#0B5240' }}>We&apos;ve got you covered.</span>
+            <span className="hidden lg:block">Confused about tax in Australia?<br /><span style={{ color:'#0B5240' }}>We&apos;ve got you covered.</span></span>
+            <span className="lg:hidden">Confused about tax in Australia?{' '}<span style={{ color:'#0B5240' }}>We&apos;ve got you covered.</span></span>
           </h1>
 
           {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
             style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
-            TFN, ABN, Tax Return &amp; Super - we handle everything for you,
-            so you don&apos;t have to stress about paperwork.
+            <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super - we handle everything for you<br />so you don&apos;t have to stress about paperwork.</span>
+            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super - we handle everything for you, so you don&apos;t have to stress about paperwork.</span>
           </p>
 
           {/* Mobile: tighter top margin · Desktop: more breathing room */}
-          <div style={{ marginTop:'24px', marginBottom:'16px' }} className="lg:mt-10 lg:mb-6">
+          <div style={{ marginTop:'24px', marginBottom:'16px' }} className="lg:mt-8 lg:mb-4">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
@@ -72,9 +72,8 @@ export default function HomePage() {
           </div>
 
           {/* Mobile: 2×2 grid · Desktop: single row */}
-          <div className="grid grid-cols-2 lg:flex lg:flex-wrap items-center justify-center gap-x-6 gap-y-2 lg:gap-x-8 lg:gap-y-3 mx-auto"
-            style={{ maxWidth:'340px' }}
-            ref={undefined}>
+          <div className="grid grid-cols-2 lg:flex lg:flex-nowrap items-center justify-center gap-x-6 gap-y-2 lg:gap-x-8 mx-auto"
+            style={{ maxWidth:'340px' }}>
             {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((label,i) => (
               <span key={i} className="inline-flex items-center gap-1.5"
                 style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
@@ -101,7 +100,7 @@ export default function HomePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold transition-all"
               style={{ height:'48px', padding:'0 28px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'320px', width:'100%' }}>
-              Stop losing money &ndash; get your TFN &rarr;
+              Stop losing money, get your TFN →
             </a>
           </div>
         </div>
@@ -115,7 +114,8 @@ export default function HomePage() {
 
           <h2 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize:'clamp(17px, 2.17vw, 30px)', lineHeight:1.12, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'10px', marginBottom:'10px' }}>
-            Built for backpackers who don&apos;t want to<br className="hidden lg:block" /> lose money on tax.
+            <span className="hidden lg:block">Built for backpackers who don&apos;t want<br />to lose money on tax.</span>
+            <span className="lg:hidden">Built for backpackers who don&apos;t want to lose money on tax.</span>
           </h2>
 
           <p className="font-light text-muted mx-auto"
@@ -132,7 +132,7 @@ export default function HomePage() {
               { title:'We handle everything for you',    body:'No paperwork or stress, we handle everything for you from start to finish.' },
             ].map((item,i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.3vw, 14.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
+                <h3 className="font-semibold text-ink lg:whitespace-nowrap lg:overflow-hidden lg:text-ellipsis" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
                 <p className="font-light text-muted leading-[1.7]" style={{ fontSize:'clamp(12px, 1.1vw, 13px)' }}>{item.body}</p>
               </div>
             ))}
@@ -224,12 +224,9 @@ export default function HomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize:'clamp(14px, 1.4vw, 16px)', lineHeight:1.7, maxWidth:'32ch', marginBottom:'4px' }}>
-              <em className="not-italic text-forest-400">We handle everything for you &ndash; you just get paid</em>
+              <em className="not-italic text-forest-400">We handle everything for you, you just get paid.</em>
             </p>
-            <p className="font-light text-muted"
-              style={{ fontSize:'clamp(13px, 1.2vw, 14px)', marginTop:'6px' }}>
-              Takes just a few minutes to start, we do the rest.
-            </p>
+
           </div>
 
           {/* Desktop 4-step horizontal — bigger circles, thicker connector */}
@@ -332,9 +329,9 @@ export default function HomePage() {
       <CtaBand
         eyebrow="Start here"
         heading="Get your tax sorted properly"
-        headingEm="Wherever you are - in Australia or overseas"
+        headingEm="in Australia or abroad."
         sub=""
-        primaryLabel="Get started"
+        primaryLabel="Start your tax return"
         trustLine="We usually respond within 1 hour"
         clipTop
       />

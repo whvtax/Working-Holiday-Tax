@@ -192,6 +192,29 @@
     .footer-inner { padding-top: 32px !important; padding-bottom: 24px !important; }
   }
 
+
+  /* ══════════════════════════════════════════════════════════════════
+     DESKTOP TYPOGRAPHY SYSTEM (lg: 1024px+)
+     H1 Hero:   44px / lh 1.06 / ls -0.03em
+     H2 Section: 30px / lh 1.1  / ls -0.025em
+     Subtitle:   16px / lh 1.4
+     Body:       14px / lh 1.7
+     Small:      12.5px / lh 1.65
+     ══════════════════════════════════════════════════════════════════ */
+  @media (min-width: 1024px) {
+    /* Enforce uniform hero H1 size */
+    section h1.font-serif {
+      font-size: 44px !important;
+      line-height: 1.06 !important;
+      letter-spacing: -0.03em !important;
+    }
+    /* Enforce uniform section H2 size */
+    section h2.font-serif {
+      font-size: 30px;
+      line-height: 1.1;
+    }
+  }
+
   /* ── Hover utilities ── */
   .hover-forest:hover       { color: #0B5240; }
   .hover-forest-light:hover { color: #16775C; }

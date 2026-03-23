@@ -91,7 +91,7 @@ export default function MedicarePage() {
                 maxWidth:'38ch',
                 marginBottom:'0',
               }}>
-              Not everyone is eligible — we help you understand exactly where you stand
+              Not everyone is eligible — we help you understand where you stand
             </p>
 
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4"
@@ -151,7 +151,7 @@ export default function MedicarePage() {
               <em className="not-italic font-normal text-forest-400">or you may be exempt</em>
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '36ch' }}>
-              Eligibility depends on your visa and country of origin
+              Eligibility depends on your visa and country of origin.
             </p>
           </div>
 
@@ -321,7 +321,7 @@ export default function MedicarePage() {
       <NextStep
         eyebrow="What's next?"
         heading="Ready to lodge your tax return"
-        body="We apply your Medicare status correctly so you don't overpay tax"
+        body="We apply your Medicare status correctly\nso you don't overpay tax"
         cta="Start your tax return →"
         href="/tax-return"
       />

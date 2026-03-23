@@ -155,7 +155,7 @@ export default function SuperannuationPage() {
               Don&apos;t leave your super behind.
             </p>
             <p className="font-light" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
-              When you leave Australia, you can claim your super back. We handle everything for you from start to finish.
+              You can claim it back once you leave. We handle everything for you.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold transition-all"
@@ -397,7 +397,7 @@ export default function SuperannuationPage() {
       <NextStep
         eyebrow="What's next?"
         heading="Check if you're eligible for Medicare"
-        body="Depending on your country, you may be eligible for Medicare - or exempt from the Medicare levy."
+        body="Depending on your country, you may be eligible for Medicare or exempt from the Medicare levy."
         cta="Check your Medicare eligibility →"
         href="/medicare"
       />

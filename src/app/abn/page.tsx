@@ -150,11 +150,15 @@ export default function ABNPage() {
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">How we help</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
-              We help you choose the right setup<br /><em className="not-italic font-normal text-forest-400">Then we handle everything for you</em>
+              style={{ fontSize:'clamp(19px,2.2vw,30px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              We help you choose the right setup
             </h2>
+            <p className="font-semibold mx-auto"
+              style={{ fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.4, color:'#0B5240', maxWidth:'28ch', margin:'6px auto 10px', letterSpacing:'-0.01em' }}>
+              Then we handle everything for you
+            </p>
             <p className="font-light text-muted"
-              style={{ fontSize:'clamp(13px,1.2vw,14px)', lineHeight:1.7, maxWidth:'30ch', margin:'0 auto' }}>
+              style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'30ch', margin:'0 auto', color:'rgba(10,15,13,0.5)' }}>
               Simple, clear, and set up correctly from the start
             </p>
           </div>
@@ -295,7 +299,7 @@ export default function ABNPage() {
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           {/* Desktop: tighter gap between columns */}
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-8 lg:gap-10 items-start">
 
             <div className="text-center lg:text-left">
               <span className="section-label center">What is an ABN?</span>
@@ -319,7 +323,7 @@ export default function ABNPage() {
             <div>
               <span className="section-label block" style={{ marginBottom:'10px' }}>When you need one</span>
               {/* Mobile: tighter gap */}
-              <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+              <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
                 {[
                   ['Freelance work', '(design, photography, writing)'],
                   ['Contract or casual jobs', 'where you invoice'],
@@ -332,7 +336,7 @@ export default function ABNPage() {
                       <circle cx="7" cy="7" r="6.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
                       <path d="M4.5 7l2 2 3-3" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
-                    <p className="font-light text-body leading-[1.6]" style={{ fontSize:'13px' }}>
+                    <p className="font-light text-body leading-[1.5]" style={{ fontSize:'12.5px' }}>
                       <span className="font-semibold">{bold}</span> {rest}
                     </p>
                   </div>

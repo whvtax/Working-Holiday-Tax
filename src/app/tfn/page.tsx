@@ -65,7 +65,8 @@ export default function TFNPage() {
                 marginBottom:'10px',
                 maxWidth:'18ch',
               }}>
-              Get your TFN sorted quickly and start working sooner
+              <span className="hidden lg:block">Get your TFN sorted quickly &amp;<br />start working sooner</span>
+              <span className="lg:hidden">Get your TFN sorted quickly and start working sooner</span>
             </h1>
 
             <p className="font-semibold text-ink"
