@@ -111,13 +111,13 @@ export default function MedicarePage() {
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl mx-auto reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label">Your two scenarios</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              You either pay the Medicare levy{" "}
+          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
+            <span className="section-label center">Your two scenarios</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px' }}>
+              You either pay the Medicare levy<br />
               <em className="not-italic font-normal text-forest-400">or you may be exempt.</em>
             </h2>
-            <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '36ch' }}>
               Medicare is Australia&apos;s public health system. Eligibility depends on your visa type and country of origin.
             </p>
           </div>
@@ -361,17 +361,6 @@ export default function MedicarePage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      
-
-      {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <CtaBand
-        eyebrow="Not sure?"
-
-        heading="Not sure about your Medicare status?"
-        headingEm=""
-        sub="We determine your eligibility as part of your tax return and apply the correct treatment."
-        primaryLabel="Check your eligibility →"
-      />
     </>
   )
 }

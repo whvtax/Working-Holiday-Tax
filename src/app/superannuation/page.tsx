@@ -34,10 +34,10 @@ const faqs = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Confirm eligibility',   body: 'Make sure you have left Australia and your visa has expired or been cancelled. We confirm you are eligible before starting.' },
+  { n: '1', title: 'Confirm eligibility',   body: 'Make sure your visa has expired or been cancelled. We confirm eligibility before starting.' },
   { n: '2', title: 'Locate your super',     body: 'We find all your super accounts, including any held by the ATO. Nothing is missed.' },
-  { n: '3', title: 'We submit the DASP',    body: 'We prepare and submit your super claim to the ATO on your behalf. Everything handled correctly.' },
-  { n: '4', title: 'Receive your payment',  body: 'Once approved, your super is paid to your bank account. Most payments received within a few weeks.' },
+  { n: '3', title: 'We submit the DASP',    body: 'We prepare and submit your super claim to the ATO on your behalf. Fully handled.' },
+  { n: '4', title: 'Receive your payment',  body: 'Once approved, your super is paid to your bank account within a few weeks.' },
 ]
 
 const TESTIMONIALS = [
@@ -137,9 +137,9 @@ export default function SuperannuationPage() {
       {/* ── CLARITY — THIS IS YOUR MONEY ──────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label">This is your money</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
+          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
+            <span className="section-label center">This is your money</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
               Your money sitting in a fund<br /><em className="not-italic font-normal text-forest-400">waiting to be claimed.</em>
             </h2>
           </div>
@@ -230,17 +230,6 @@ export default function SuperannuationPage() {
       </section>
 
 
-      {/* ── CROSS LINK ────────────────────────────────────────────────────── */}
-      <div style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9', background: '#ffffff' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
-            Have you also lodged your Australian tax return?
-          </p>
-          <a href="/tax-return" className="inline-flex items-center gap-1.5 font-semibold whitespace-nowrap transition-colors hover-forest-light flex-shrink-0" style={{ fontSize: '13px', color: '#0B5240' }}>
-            Lodge your tax return →
-          </a>
-        </div>
-      </div>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
@@ -342,11 +331,7 @@ export default function SuperannuationPage() {
                   </div>
                 ))}
               </div>
-              <div className="rounded-xl px-4 py-3.5" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
-                <p className="text-[13px] font-light text-body leading-[1.7]">
-                  Not sure what you have? We&apos;ll help you figure it out.
-                </p>
-              </div>
+
             </div>
           </div>
         </div>
@@ -387,17 +372,6 @@ export default function SuperannuationPage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
-      
-
-      {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <CtaBand
-        eyebrow="Ready to claim?"
-
-        heading="Thousands of dollars"
-        headingEm="could be waiting for you."
-        sub="We find your super, handle your claim, and make sure you get every dollar."
-        primaryLabel="Claim your super →"
-      />
     </>
   )
 }
