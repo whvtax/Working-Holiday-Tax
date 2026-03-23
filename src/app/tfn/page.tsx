@@ -63,15 +63,19 @@ export default function TFNPage() {
               Without a TFN you pay 47% tax. Apply before you start work.
             </p>
 
-            <div className="flex justify-center" style={{ marginBottom:'20px' }}>
+            {/* Mobile: primary only. Desktop (sm+): primary + How it works */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3" style={{ marginBottom:'20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center"
-                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', width:'100%', maxWidth:'280px' }}>
+                className="btn-primary inline-flex justify-center w-full sm:w-auto"
+                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'280px' }}>
                 Start your TFN →
+              </a>
+              <a href="#how-to-apply" className="hidden sm:inline-flex btn-ghost-dark justify-center" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
+                How it works →
               </a>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 mx-auto" style={{ maxWidth:'300px' }}>
               {['1,200+ travellers helped','Response within 1 hour','ATO compliant','By a registered tax agent'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <CheckIcon />{t}

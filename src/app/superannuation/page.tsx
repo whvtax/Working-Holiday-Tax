@@ -97,15 +97,19 @@ export default function SuperannuationPage() {
               Most payments received within a few weeks. Fully online.
             </p>
 
-            <div className="flex justify-center" style={{ marginBottom:'20px' }}>
+            {/* Mobile: primary only. Desktop (sm+): primary + How it works */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3" style={{ marginBottom:'20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center"
-                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', width:'100%', maxWidth:'260px' }}>
+                className="btn-primary inline-flex justify-center w-full sm:w-auto"
+                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'260px' }}>
                 Claim your super →
+              </a>
+              <a href="#how-it-works" className="hidden sm:inline-flex btn-ghost-dark justify-center" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
+                How it works →
               </a>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 mx-auto" style={{ maxWidth:'300px' }}>
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
