@@ -79,7 +79,7 @@ export default function SuperannuationPage() {
             <span aria-current="page">Superannuation</span>
           </nav>
 
-          <div className="max-w-[620px] mx-auto">
+          <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Super Withdrawal</span>
@@ -111,7 +111,7 @@ export default function SuperannuationPage() {
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <div className="flex flex-nowrap gap-x-4 overflow-x-auto">
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)', whiteSpace:'nowrap' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
