@@ -91,12 +91,16 @@ export default function ABNPage() {
               Set up your ABN correctly from day one and avoid costly mistakes.
             </p>
 
-            {/* Single primary CTA */}
-            <div style={{ marginBottom: '20px' }}>
+            {/* Hero CTAs */}
+            <div className="flex flex-row gap-3 items-center" style={{ marginBottom: '20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
                 style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px' }}>
-              Register your ABN →
+                Register your ABN →
+              </a>
+              <a href="#how-it-works" className="btn-ghost-dark inline-flex"
+                style={{ height: '52px', padding: '0 24px', fontSize: '15px' }}>
+                How it works →
               </a>
             </div>
 

@@ -104,24 +104,27 @@ export default function TaxReturnPage() {
               If you earned income in Australia, you are required to lodge a tax return. We make sure everything is done accurately and on time.
             </p>
 
-            {/* Primary CTA */}
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', display: 'flex', marginLeft: 'auto', marginRight: 'auto', marginBottom: '16px' }}>
-              Start your tax return →
-            </a>
+            {/* Hero CTAs */}
+            <div className="flex flex-row gap-3 items-center" style={{ marginBottom: '20px' }}>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                className="btn-primary inline-flex"
+                style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px' }}>
+                Start your tax return →
+              </a>
+              <a href="#how-it-works" className="btn-ghost-dark inline-flex"
+                style={{ height: '52px', padding: '0 24px', fontSize: '15px' }}>
+                How it works →
+              </a>
+            </div>
 
-            {/* Trust under CTA */}
-            <div className="flex flex-wrap gap-x-4 gap-y-1.5">
-              {['1,200+ travellers helped', '4.9 Google rating', 'Response within 1 hour'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '12.5px', color: 'rgba(10,15,13,0.45)' }}>
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-                    <circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                    <path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {{['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
+                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)', whiteSpace: 'nowrap' }}>
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   {t}
                 </span>
-              ))}
+              ))}}
             </div>
           </div>
         </div>
