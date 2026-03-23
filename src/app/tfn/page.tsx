@@ -44,7 +44,7 @@ export default function TFNPage() {
             <span aria-current="page">TFN Application</span>
           </nav>
 
-          <div className="max-w-[640px] mx-auto text-center">
+          <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-2 mb-5">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>TFN Application</span>
@@ -59,23 +59,22 @@ export default function TFNPage() {
               We make sure your application is correct the first time.
             </p>
 
-            <p className="font-light mx-auto" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
+            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
               Without a TFN you pay 47% tax. Apply before you start work.
             </p>
 
-            {/* Mobile: primary only. Desktop (sm+): primary + How it works */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3" style={{ marginBottom:'20px' }}>
+            <div className="flex flex-col gap-3" style={{ marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center w-full sm:w-auto"
-                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'280px' }}>
+                className="btn-primary inline-flex justify-center w-full"
+                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px' }}>
                 Start your TFN →
               </a>
-              <a href="#how-to-apply" className="hidden sm:inline-flex btn-ghost-dark justify-center" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
+              <a href="#how-to-apply" className="btn-ghost-dark inline-flex justify-center w-full" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
                 How it works →
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 mx-auto" style={{ maxWidth:'300px' }}>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'340px' }}>
               {['1,200+ travellers helped','Response within 1 hour','ATO compliant','By a registered tax agent'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <CheckIcon />{t}

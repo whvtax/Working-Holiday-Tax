@@ -78,7 +78,7 @@ export default function SuperannuationPage() {
             <span aria-current="page">Superannuation</span>
           </nav>
 
-          <div className="max-w-[640px] mx-auto text-center">
+          <div className="max-w-[640px]">
             <div className="inline-flex items-center gap-2.5 mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Super Withdrawal</span>
@@ -93,23 +93,22 @@ export default function SuperannuationPage() {
               We handle the full DASP process on your behalf.
             </p>
 
-            <p className="font-light mx-auto" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
+            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
               Most payments received within a few weeks. Fully online.
             </p>
 
-            {/* Mobile: primary only. Desktop (sm+): primary + How it works */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3" style={{ marginBottom:'20px' }}>
+            <div className="flex flex-col gap-3" style={{ marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center w-full sm:w-auto"
-                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'260px' }}>
+                className="btn-primary inline-flex justify-center w-full"
+                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px' }}>
                 Claim your super →
               </a>
-              <a href="#how-it-works" className="hidden sm:inline-flex btn-ghost-dark justify-center" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
+              <a href="#how-it-works" className="btn-ghost-dark inline-flex justify-center w-full" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
                 How it works →
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 mx-auto" style={{ maxWidth:'300px' }}>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'340px' }}>
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -128,7 +127,7 @@ export default function SuperannuationPage() {
             <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
               Your super is waiting for you.
             </p>
-            <p className="font-light mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
+            <p className="font-light" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
               Once you leave Australia, you can claim your super back. We manage the full process for you.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
