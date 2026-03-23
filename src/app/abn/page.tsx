@@ -92,22 +92,21 @@ export default function ABNPage() {
             </p>
 
             {/* Single primary CTA */}
-            <div style={{ marginBottom: '16px' }}>
+            <div style={{ marginBottom: '20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
-                style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', display: 'flex', marginLeft: 'auto', marginRight: 'auto' }}>
+                style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px' }}>
               Register your ABN →
               </a>
             </div>
 
-
-            {/* Trust badges — same system as TFN */}
-            <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+            {/* Trust badges */}
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <circle cx="6" cy="6" r="5.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                    <path d="M3.5 6l2 2 3-3" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)', whiteSpace: 'nowrap' }}>
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                    <circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
+                    <path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                   {t}
                 </span>
@@ -119,8 +118,8 @@ export default function ABNPage() {
 
       {/* ── URGENCY STRIP ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
-          <div style={{ maxWidth: '560px' }}>
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10 text-center">
+          <div className="max-w-[560px] mx-auto">
             <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(18px,2.2vw,26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '8px' }}>
               Not sure if you need an ABN?<br />Get a clear answer in minutes.
             </p>
@@ -153,7 +152,7 @@ export default function ABNPage() {
               We tell you what you need.<br /><em className="not-italic font-normal text-forest-400">Then we set it up correctly.</em>
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '30ch', margin: '0 auto' }}>
-              If you&apos;re working as a freelancer, you need an ABN. We make sure it&apos;s set up correctly from the start.
+              We make sure it&apos;s set up correctly from the start.
             </p>
           </div>
 
@@ -178,7 +177,7 @@ export default function ABNPage() {
               Register your ABN →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(10,15,13,0.4)' }}>
-              ATO compliant
+              Australian Business Register compliant
             </p>
           </div>
         </div>
@@ -218,18 +217,6 @@ export default function ABNPage() {
                 <p className="text-[12.5px] font-light text-muted leading-[1.65] flex-1">{m.body}</p>
               </div>
             ))}
-          </div>
-
-          <div className="rounded-xl flex flex-col items-center text-center gap-3 reveal delay-2 mx-auto"
-            style={{ padding: '16px 24px', background: '#EAF6F1', border: '1px solid #C8EAE0', maxWidth: '560px' }}>
-            <p className="font-light text-body leading-[1.65]" style={{ fontSize: '13.5px' }}>
-              Not sure you are doing it right? We check everything and guide you before you submit.
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-semibold"
-              style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              We handle it for you →
-            </a>
           </div>
         </div>
       </section>
@@ -318,13 +305,6 @@ export default function ABNPage() {
                   With an ABN, no tax is withheld automatically. You receive the full amount and manage your own tax.
                 </p>
               </div>
-
-              <div className="rounded-xl" style={{ padding: '16px 20px', background: '#EAF6F1', borderLeft: '3px solid #0B5240' }}>
-                <p className="text-[14px] font-semibold text-ink leading-[1.8]">
-                  TFN = employee income<br />
-                  ABN = freelance income
-                </p>
-              </div>
             </div>
 
             <div className="reveal delay-1">
@@ -381,7 +361,7 @@ export default function ABNPage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What's next?"
-        heading="ABN sorted? Time to lodge your tax return."
+        heading="Time to lodge your tax return?"
         body="At the end of the Australian financial year, you will need to lodge a tax return and declare your ABN income."
         cta="Learn about tax returns →"
         href="/tax-return"
