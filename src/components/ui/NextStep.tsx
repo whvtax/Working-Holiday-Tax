@@ -13,25 +13,25 @@ export function NextStep({ eyebrow, heading, body, cta, href, external }: NextSt
   const inner = (
     <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
       <div className="max-w-[560px] mx-auto text-center reveal">
-        <span className="inline-block font-medium uppercase mb-3" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.5)' }}>
+        <span className="inline-block font-medium uppercase mb-3" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)' }}>
           {eyebrow}
         </span>
-        <h2 className="font-serif font-black text-ink mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+        <h2 className="font-serif font-black mb-3" style={{ fontSize: 'clamp(20px,2.6vw,30px)', lineHeight: 1.1, letterSpacing: '-0.025em', color: '#ffffff' }}>
           {heading}
         </h2>
-        <p className="font-light text-muted leading-[1.7] mb-6" style={{ fontSize: '14px', maxWidth: '400px', margin: '0 auto 24px' }}>
+        <p className="font-light leading-[1.7] mb-6" style={{ fontSize: '14px', maxWidth: '400px', margin: '0 auto 24px', color: 'rgba(255,255,255,0.65)' }}>
           {body}
         </p>
         {external ? (
           <a href={href} target="_blank" rel="noopener noreferrer"
-            className="btn-primary inline-flex"
-            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px' }}>
-              {cta} →
+            className="inline-flex items-center justify-center font-semibold transition-all"
+            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px', background: '#E9A020', color: '#1A2822', borderRadius: '100px' }}>
+              {cta}
           </a>
         ) : (
           <Link href={href}
-            className="btn-primary inline-flex"
-            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px' }}>
+            className="inline-flex items-center justify-center font-semibold transition-all"
+            style={{ height: '48px', padding: '0 28px', fontSize: '14.5px', background: '#E9A020', color: '#1A2822', borderRadius: '100px' }}>
             {cta}
           </Link>
         )}
@@ -40,7 +40,7 @@ export function NextStep({ eyebrow, heading, body, cta, href, external }: NextSt
   )
 
   return (
-    <section style={{ background: '#F4F9F6', borderTop: '1px solid #E2EFE9' }}>
+    <section style={{ background: '#0B5240' }}>
       {inner}
     </section>
   )

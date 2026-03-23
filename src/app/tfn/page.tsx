@@ -22,7 +22,7 @@ const STEPS = [
   { n:'1', title:'Check your eligibility',   body:'Make sure you are in Australia and have a valid visa and your passport details ready.' },
   { n:'2', title:'Submit your application',  body:'Apply through the official ATO website. The process takes around 10 minutes and is free.' },
   { n:'3', title:'ATO reviews your details', body:'Your application is reviewed by the ATO, and you will receive confirmation by email.' },
-  { n:'4', title:'Receive your TFN',         body:'Your TFN is sent by post once your application is approved. You can receive it by phone after about a week.' },
+  { n:'4', title:'Receive your TFN',         body:'Your TFN arrives by post once approved. You can also receive it by phone after a week.' },
 ]
 
 const TESTIMONIALS = [
@@ -88,12 +88,12 @@ export default function TFNPage() {
 
       {/* ── URGENCY ───────────────────────────────────────────────────────── */}
       <section style={{ background:'#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10">
-          <div className="max-w-[560px]">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10 text-center">
+          <div className="max-w-[560px] mx-auto">
             <p className="font-serif font-black text-white" style={{ fontSize:'clamp(17px, 2.21vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.1, marginBottom:'8px' }}>
               Without a TFN, 47% tax is withheld<br />from every payslip.
             </p>
-            <p className="font-light" style={{ fontSize:'14px', color:'rgba(255,255,255,0.65)', marginBottom:'20px', maxWidth:'38ch' }}>
+            <p className="font-light" style={{ fontSize:'14px', color:'rgba(255,255,255,0.65)', marginBottom:'20px', maxWidth:'38ch', margin:'0 auto 20px' }}>
               Apply before you start work to pay the correct rate from day one.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
@@ -108,9 +108,9 @@ export default function TFNPage() {
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16" style={{ background:'#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div style={{ maxWidth:'520px', marginBottom:'32px' }}>
-            <span className="section-label">Why use our service</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(19px, 2.21vw, 27px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px' }}>
+          <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'32px' }}>
+            <span className="section-label center">Why use our service</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(19px, 2.21vw, 27px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px' }}>
               We handle everything for you.
             </h2>
             <p className="font-light text-muted" style={{ fontSize:'14px', lineHeight:1.65 }}>
@@ -212,13 +212,6 @@ export default function TFNPage() {
         </div>
       </section>
 
-      {/* ── CROSS LINK ────────────────────────────────────────────────────── */}
-      <div style={{ borderTop:'1px solid #E2EFE9', borderBottom:'1px solid #E2EFE9', background:'#ffffff' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <p className="font-light text-muted" style={{ fontSize:'13.5px' }}>Planning to work as a contractor or freelancer?</p>
-          <a href="/abn" className="inline-flex items-center gap-1.5 font-semibold whitespace-nowrap transition-colors hover-forest-light flex-shrink-0" style={{ fontSize:'13px', color:'#0B5240' }}>Check if you need an ABN →</a>
-        </div>
-      </div>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
       <section id="how-to-apply" className="py-12 lg:py-16" style={{ background:'#EEF7F2' }}>
@@ -273,7 +266,7 @@ export default function TFNPage() {
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
             <div>
               <span className="section-label">Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
