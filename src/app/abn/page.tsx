@@ -67,39 +67,27 @@ export default function ABNPage() {
             </div>
 
             {/* Headline — matches TFN system */}
-            <h1 className="font-serif font-black text-ink" style={{
-              fontSize: 'clamp(22px, 3.23vw, 37px)',
-              lineHeight: 1.1,
-              letterSpacing: '-0.03em',
-              maxWidth: '18ch',
-              marginBottom: '12px',
-              textWrap: 'balance',
-            }}>
-              Work legally with an ABN.{' '}
-              <span style={{ color: '#0B5240' }}>Pay the correct tax.</span>
+                        <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px,3.2vw,40px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
+              Register your ABN correctly<br />
+              <span style={{ color:'#0B5240' }}>and start working legally.</span>
             </h1>
 
-            {/* Subtext */}
-            <p className="font-light" style={{
-              fontSize: '15px',
-              lineHeight: 1.65,
-              color: 'rgba(10,15,13,0.6)',
-              maxWidth: '26ch',
-              marginBottom: '24px',
-              textWrap: 'balance',
-            }}>
-              Set up your ABN correctly from day one and avoid costly mistakes.
+            <p className="font-semibold text-ink" style={{ fontSize:'15px', letterSpacing:'-0.01em', marginBottom:'6px' }}>
+              We handle the registration so your ABN matches your actual work.
+            </p>
+
+            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'44ch', marginBottom:'24px' }}>
+              No rejections, no delays. Set up correctly from the start.
             </p>
 
             {/* Hero CTAs */}
-            <div className="flex flex-row gap-3 items-center" style={{ marginBottom: '20px' }}>
+            <div className="flex flex-row gap-3 items-center" style={{ marginBottom:'20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
-                style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px' }}>
+                style={{ height:'52px', padding:'0 32px', fontSize:'15px', borderRadius:'100px' }}>
                 Register your ABN →
               </a>
-              <a href="#how-it-works" className="btn-ghost-dark inline-flex"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px' }}>
+              <a href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
                 How it works →
               </a>
             </div>
@@ -107,11 +95,8 @@ export default function ABNPage() {
             {/* Trust badges */}
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)', whiteSpace: 'nowrap' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-                    <circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                    <path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)', whiteSpace:'nowrap' }}>
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   {t}
                 </span>
               ))}

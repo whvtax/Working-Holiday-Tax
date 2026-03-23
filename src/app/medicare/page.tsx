@@ -60,24 +60,27 @@ export default function MedicarePage() {
               <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Guide</span>
             </div>
 
-            <h1 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(22px, 3.23vw, 37px)', lineHeight: 1.1, letterSpacing: '-0.03em', maxWidth: '18ch', marginBottom: '12px', textWrap: 'balance' }}>
-              Medicare in Australia for WHV
-              <br /><span style={{ color: '#0B5240' }}>what you need to know.</span>
+                        <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px,3.2vw,40px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
+              Understand your Medicare status<br />
+              <span style={{ color:'#0B5240' }}>before you lodge your return.</span>
             </h1>
 
-            <p className="font-light" style={{ fontSize: '14.5px', lineHeight: 1.65, color: 'rgba(10,15,13,0.6)', maxWidth: '26ch', marginBottom: '24px', textWrap: 'balance' }}>
+            <p className="font-semibold text-ink" style={{ fontSize:'15px', letterSpacing:'-0.01em', marginBottom:'6px' }}>
+              We determine your eligibility and apply the correct treatment.
+            </p>
+
+            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'44ch', marginBottom:'24px' }}>
               Not everyone is eligible. We help you understand where you stand.
             </p>
 
             {/* Hero CTAs */}
-            <div className="flex flex-row gap-3 items-center" style={{ marginBottom: '20px' }}>
+            <div className="flex flex-row gap-3 items-center" style={{ marginBottom:'20px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
-                style={{ height: '52px', padding: '0 32px', fontSize: '15px', borderRadius: '100px' }}>
+                style={{ height:'52px', padding:'0 32px', fontSize:'15px', borderRadius:'100px' }}>
                 Check your eligibility →
               </a>
-              <a href="#how-it-works" className="btn-ghost-dark inline-flex"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px' }}>
+              <a href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
                 How it works →
               </a>
             </div>
@@ -85,7 +88,7 @@ export default function MedicarePage() {
             {/* Trust badges */}
             <div className="flex flex-wrap gap-x-5 gap-y-2">
               {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)', whiteSpace: 'nowrap' }}>
+                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)', whiteSpace:'nowrap' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   {t}
                 </span>
@@ -248,7 +251,7 @@ export default function MedicarePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 reveal delay-1">
+            <div className="grid grid-cols-1 gap-4 reveal delay-1" style={{ alignSelf: 'start' }}>
               {[
                 { title: 'Administered by',  body: 'Services Australia, on behalf of the Australian Government.' },
                 { title: 'What it covers',   body: 'GP visits, public hospital treatment, and some specialist and diagnostic services for eligible individuals.' },
@@ -280,7 +283,8 @@ export default function MedicarePage() {
               { q: '"Why is Medicare levy showing on my tax bill?"', a: 'If Medicare levy was not exempted during the year, it may appear when you lodge. We sort this out as part of preparing your return.' },
               { q: '"I don\'t use Medicare — why am I being charged?"', a: 'Without a levy exemption on file, the ATO may calculate it automatically. Claiming the exemption on your tax return corrects this.' },
               { q: '"Does my travel insurance replace Medicare?"', a: 'Travel insurance and Medicare are separate. If you are not eligible for Medicare, travel insurance is the main way to cover medical costs in Australia.' },
-        { q: '"Does my Working Holiday visa affect my Medicare?"', a: 'Yes. Most WHV holders are not eligible unless from an RHCA country. We apply the correct exemption as part of your tax return.' },
+              { q: '"Does my Working Holiday visa affect my Medicare?"', a: 'Yes. Most WHV holders are not eligible unless from an RHCA country. We apply the correct exemption as part of your tax return.' },
+              { q: '"Can I get a Medicare card on a Working Holiday visa?"', a: 'Only if you are from an RHCA country. If not, you are not entitled to a Medicare card and should apply for a levy exemption instead.' },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
                 <p className="text-[13px] font-semibold text-ink italic" style={{ marginBottom: '6px' }}>{item.q}</p>
