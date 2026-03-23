@@ -50,10 +50,15 @@ export default function HomePage() {
 
           {/* Mobile: natural wrap · Desktop: explicit 2-line break */}
           <h1 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(23px, 3.06vw, 42px)', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px', maxWidth:'18ch' }}>
-            <span className="hidden lg:block">Confused about tax in Australia?<br /><span style={{ color:'#0B5240' }}>We&apos;ve got you covered.</span></span>
-            <span className="lg:hidden">Confused about tax in Australia?{' '}<span style={{ color:'#0B5240' }}>We&apos;ve got you covered.</span></span>
-          </h1>
+            style={{ fontSize:'23px, 3.06vw, 42px', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px' }}>
+              {/* Desktop: locked 2 lines — nowrap per line */}
+              <span className="hidden lg:block">
+                <span style={{ display:'block', whiteSpace:'nowrap' }}>Confused about tax in Australia?</span>
+                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>We’ve got you covered.</span>
+              </span>
+              {/* Mobile: natural wrap */}
+              <span className="lg:hidden">Confused about tax in Australia? We’ve got you covered.</span>
+            </h1>
 
           {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
@@ -72,9 +77,9 @@ export default function HomePage() {
           </div>
 
           {/* Mobile: 2×2 grid · Desktop: single row */}
-          <div className="grid grid-cols-2 lg:flex lg:flex-nowrap items-center justify-center gap-x-6 gap-y-2 lg:gap-x-7 mx-auto">
+          <div className="flex flex-col items-center gap-y-2 lg:flex-row lg:flex-nowrap lg:gap-y-0 lg:gap-x-7 mx-auto">
             {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((label,i) => (
-              <span key={i} className="inline-flex items-center gap-1.5"
+              <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
               </span>

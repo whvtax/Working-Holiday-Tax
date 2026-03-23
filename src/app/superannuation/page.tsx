@@ -97,35 +97,38 @@ export default function SuperannuationPage() {
                 lineHeight:1.06,
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
-                maxWidth:'18ch',
               }}>
-              {/* Desktop: 2 lines — line 1 black, line 2 green */}
+              {/* Desktop: locked 2 lines — nowrap per line */}
               <span className="hidden lg:block">
-                Claim your super back<br />
-                <span style={{ color:'#0B5240' }}>when you leave Australia</span>
+                <span style={{ display:'block', whiteSpace:'nowrap' }}>Claim your super back</span>
+                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>when you leave Australia</span>
               </span>
-              {/* Mobile: single flow */}
+              {/* Mobile: natural wrap */}
               <span className="lg:hidden">Claim your super back when you leave Australia</span>
             </h1>
 
             <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(14px,1.3vw,15.5px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.4 }}>
+              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
+              
               We handle the full DASP process on your behalf.
+            
             </p>
 
             <p className="font-light"
               style={{
-                fontSize:'clamp(13px,1.2vw,14.5px)',
-                lineHeight:1.7,
-                color:'rgba(10,15,13,0.6)',
-                maxWidth:'38ch',
+                fontSize:'clamp(13px,1.2vw,15px)',
+                lineHeight:1.65,
+                color:'rgba(10,15,13,0.58)',
+                maxWidth:'44ch',
                 marginBottom:'0',
               }}>
+              
               Most payments received within a few weeks. Fully online.
+            
             </p>
 
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4"
-              style={{ marginTop:'22px', marginBottom:'18px', maxWidth:'480px' }}>
+              style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
                 style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
@@ -138,9 +141,9 @@ export default function SuperannuationPage() {
               </a>
             </div>
 
-            <div className="grid grid-cols-2 lg:flex lg:flex-nowrap items-center gap-x-5 lg:gap-x-7 gap-y-2">
+            <div className="flex flex-col items-start gap-y-2 lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
               {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((t,i) => (
-                <span key={i} className="inline-flex items-center gap-1.5"
+                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
                 </span>
