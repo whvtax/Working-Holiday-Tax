@@ -9,11 +9,14 @@ export function Accordion({ items }: { items: AccItem[] }) {
     <div>
       {items.map((item, i) => {
         const contentId = `acc-body-${i}`
+        const triggerId   = `acc-trigger-${i}`
         const isOpen = open === i
         return (
           <div key={i} className="border-b border-border first:border-t">
             {/* H4: proper aria-controls/id pairing; H5: aria-expanded as string */}
             <button
+              type="button"
+              id={triggerId}
               onClick={() => setOpen(isOpen ? null : i)}
               aria-expanded={isOpen}
               aria-controls={contentId}
@@ -32,7 +35,7 @@ export function Accordion({ items }: { items: AccItem[] }) {
             <div
               id={contentId}
               role="region"
-              aria-labelledby={undefined}
+              aria-labelledby={triggerId}
               className={`acc-body text-[12.5px] font-light text-muted leading-[1.65] ${isOpen ? 'open' : ''}`}
             >
               {item.answer}

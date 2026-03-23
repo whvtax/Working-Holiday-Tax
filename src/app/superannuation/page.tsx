@@ -71,49 +71,74 @@ export default function SuperannuationPage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-8" style={{ color: 'rgba(10,15,13,0.35)' }}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+            style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
-            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
+            <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">Superannuation</span>
           </nav>
 
-          <div className="max-w-[640px]">
-            <div className="inline-flex items-center gap-2.5 mb-4">
+          <div className="max-w-[560px] lg:max-w-[700px]">
+
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Super Withdrawal</span>
+              <span className="font-medium uppercase"
+                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
+                Super Withdrawal
+              </span>
             </div>
 
-                        <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px,3.2vw,40px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              Claim your super back easily{' '}
+            <h1 className="font-serif font-black text-ink"
+              style={{
+                fontSize:'clamp(24px,3.2vw,44px)',
+                lineHeight:1.06,
+                letterSpacing:'-0.03em',
+                marginBottom:'10px',
+                maxWidth:'18ch',
+              }}>
+              Claim your super back easily{''}
               <span style={{ color:'#0B5240' }}>when you leave Australia</span>
             </h1>
 
-            <p className="font-semibold text-ink" style={{ fontSize:'15px', letterSpacing:'-0.01em', marginBottom:'6px' }}>
-              We handle everything for you - from start to finish.
+            <p className="font-semibold text-ink"
+              style={{ fontSize:'clamp(14px,1.3vw,15.5px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.4 }}>
+              We handle the full DASP process on your behalf.
             </p>
 
-            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
-              Most payments are received within a few weeks - no confusion, fully online.
+            <p className="font-light"
+              style={{
+                fontSize:'clamp(13px,1.2vw,14.5px)',
+                lineHeight:1.7,
+                color:'rgba(10,15,13,0.6)',
+                maxWidth:'38ch',
+                marginBottom:'0',
+              }}>
+              Most payments received within a few weeks. Fully online.
             </p>
 
-            <div className="flex flex-col gap-3" style={{ marginBottom:'20px', maxWidth:'480px' }}>
+            <div className="flex flex-col lg:flex-row gap-3 lg:gap-4"
+              style={{ marginTop:'22px', marginBottom:'18px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center w-full"
-                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px' }}>
+                className="btn-primary inline-flex justify-center"
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
                 Claim your super now →
               </a>
-              <a href="#how-it-works" className="btn-ghost-dark inline-flex justify-center w-full" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
+              <a href="#how-it-works"
+                className="hidden lg:inline-flex btn-ghost-dark justify-center"
+                style={{ height:'54px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
                 See how it works →
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'340px' }}>
-              {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  {t}
+            <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
+              style={{ maxWidth:'380px' }}>
+              {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
+                <span key={i} className="inline-flex items-center gap-1.5"
+                  style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
                 </span>
               ))}
             </div>
@@ -121,9 +146,10 @@ export default function SuperannuationPage() {
         </div>
       </section>
 
+
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
-      <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+      <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto text-center">
             <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
               Don&apos;t leave your super behind.
@@ -142,7 +168,7 @@ export default function SuperannuationPage() {
 
       {/* ── CLARITY — THIS IS YOUR MONEY ──────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">This is your money</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
@@ -150,7 +176,7 @@ export default function SuperannuationPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-10 reveal delay-1">
             {[
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/><path d="M11 7v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
@@ -168,7 +194,7 @@ export default function SuperannuationPage() {
                 body: 'We find your super, prepare everything, and submit your claim - you receive the payment.',
               },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl" style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              <div key={i} className="bg-white rounded-2xl flex flex-col" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-forest-500" style={{ background: '#EAF6F1', marginBottom: '12px' }}>
                   {item.icon}
                 </div>
@@ -179,14 +205,14 @@ export default function SuperannuationPage() {
           </div>
 
           {/* Key facts strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 reveal delay-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-5 reveal delay-2">
             {[
               { title: 'Contribution rate',  body: '12% of your wages is paid into your super fund.' },
               { title: 'Who can claim',      body: 'Working Holiday visa holders who have left Australia and their visa has expired.' },
               { title: 'Processing time',    body: 'Usually paid within a few weeks after approval.' },
               { title: 'Payment method',     body: 'Paid directly to your bank account.' },
             ].map((c, i) => (
-              <div key={i} className="bg-white rounded-xl px-4 py-3.5" style={{ border: '1px solid #C8EAE0' }}>
+              <div key={i} className="bg-white rounded-xl px-4 py-3.5 flex flex-col" style={{ border: '1px solid #C8EAE0' }}>
                 <p className="text-[12px] font-semibold text-ink mb-1">{c.title}</p>
                 <p className="text-[12px] font-light text-muted leading-[1.6]">{c.body}</p>
               </div>
@@ -205,14 +231,14 @@ export default function SuperannuationPage() {
 
       {/* ── EARLY SOCIAL PROOF ────────────────────────────────────────────── */}
       <section className="py-8 lg:py-10 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Real results</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(17px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               See how travellers like you got their super back
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto reveal delay-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
             {TESTIMONIALS.map((t, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 flex flex-col" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
                 <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
@@ -239,7 +265,7 @@ export default function SuperannuationPage() {
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -291,8 +317,8 @@ export default function SuperannuationPage() {
 
       {/* ── ELIGIBILITY + WHAT YOU NEED ───────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             <div className="reveal text-center lg:text-left">
               <span className="section-label center lg:text-left">Who can claim?</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
@@ -344,8 +370,8 @@ export default function SuperannuationPage() {
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 lg:gap-10 items-start">
             <div className="text-center">
               <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>

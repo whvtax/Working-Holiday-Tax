@@ -36,28 +36,20 @@ const CheckIcon = () => (<svg width="12" height="12" viewBox="0 0 13 13" fill="n
 export default function TFNPage() {
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      {/*
-        Mobile:  left-aligned, stacked, full-width buttons, 2×2 badge grid
-        Desktop: wider column (max-w-[720px]), more vertical spacing
-      */}
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-12
-                        pt-10 pb-10
-                        lg:pt-20 lg:pb-20">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <nav aria-label="Breadcrumb"
-            className="flex items-center gap-2 mb-5 lg:mb-8"
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
             <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">TFN Application</span>
           </nav>
 
-          {/* Desktop: wider column, left-aligned */}
-          <div className="max-w-[560px] lg:max-w-[720px]">
+          <div className="max-w-[560px] lg:max-w-[700px]">
 
-            <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase"
                 style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
@@ -65,59 +57,54 @@ export default function TFNPage() {
               </span>
             </div>
 
-            {/* Desktop: max-width keeps headline at 2 clean lines */}
             <h1 className="font-serif font-black text-ink"
               style={{
-                fontSize:'clamp(24px, 3.23vw, 44px)',
-                lineHeight:1.07,
+                fontSize:'clamp(24px,3.2vw,44px)',
+                lineHeight:1.06,
                 letterSpacing:'-0.03em',
-                marginBottom:'14px',
+                marginBottom:'10px',
                 maxWidth:'18ch',
               }}>
               Get your TFN sorted quickly and start working sooner
             </h1>
 
-            {/* Subheading */}
             <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(14px, 1.4vw, 16px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
+              style={{ fontSize:'clamp(14px,1.3vw,15.5px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.4 }}>
               We make sure your TFN is done correctly the first time
             </p>
 
-            {/* Supporting paragraph — mobile: 2 lines; desktop: natural */}
             <p className="font-light"
               style={{
-                fontSize:'clamp(13.5px, 1.25vw, 15px)',
+                fontSize:'clamp(13px,1.2vw,14.5px)',
                 lineHeight:1.7,
                 color:'rgba(10,15,13,0.6)',
-                maxWidth:'36ch',
+                maxWidth:'38ch',
                 marginBottom:'0',
               }}>
               Without a TFN, you may be taxed at a higher rate.<br />
               Takes just a few minutes to get started.
             </p>
 
-            {/* CTA buttons — mobile: stacked full-width; desktop: equal-width side-by-side */}
             <div className="flex flex-col lg:flex-row gap-3 lg:gap-4"
-              style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
+              style={{ marginTop:'22px', marginBottom:'18px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
                 Start your TFN application →
               </a>
               <a href="#how-to-apply"
-                className="btn-ghost-dark inline-flex justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
+                className="hidden lg:inline-flex btn-ghost-dark justify-center"
+                style={{ height:'54px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
                 See how it works →
               </a>
             </div>
 
-            {/* Trust badges — mobile: 2×2 grid; desktop: single row */}
-            <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-6 lg:gap-x-8 gap-y-2.5 lg:gap-y-2"
+            <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
               style={{ maxWidth:'380px' }}>
               {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
-                  <CheckIcon />{t}
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
                 </span>
               ))}
             </div>

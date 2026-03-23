@@ -80,50 +80,74 @@ export default function TaxReturnPage() {
   return (
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white hero-min hero-section">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 pt-8 pb-6 lg:pt-14 lg:pb-12">
+      <section className="relative overflow-hidden pt-[68px] bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-[12px] mb-6" style={{ color: 'rgba(10,15,13,0.35)' }}>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+            style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
             <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
-            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
+            <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
             <span aria-current="page">Tax Return</span>
           </nav>
 
-          <div className="max-w-[640px]">
-            <div className="inline-flex items-center gap-2.5 mb-4">
+          <div className="max-w-[560px] lg:max-w-[700px]">
+
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>Tax Return</span>
+              <span className="font-medium uppercase"
+                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
+                Tax Return
+              </span>
             </div>
 
-                        <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px,3.2vw,40px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              Get your tax refund sorted properly{' '}
-              <span style={{ color:'#0B5240' }}>and maximise your return</span>
+            <h1 className="font-serif font-black text-ink"
+              style={{
+                fontSize:'clamp(24px,3.2vw,44px)',
+                lineHeight:1.06,
+                letterSpacing:'-0.03em',
+                marginBottom:'10px',
+                maxWidth:'18ch',
+              }}>
+              Get your tax refund{''}
+              <span style={{ color:'#0B5240' }}>fast and stress-free.</span>
             </h1>
 
-            <p className="font-semibold text-ink" style={{ fontSize:'15px', letterSpacing:'-0.01em', marginBottom:'6px' }}>
-              We handle everything for you - from start to finish.
+            <p className="font-semibold text-ink"
+              style={{ fontSize:'clamp(14px,1.3vw,15.5px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.4 }}>
+              We handle everything with the ATO on your behalf.
             </p>
 
-            <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
-              Most returns are lodged within 24 hours - no confusion, no delays.
+            <p className="font-light"
+              style={{
+                fontSize:'clamp(13px,1.2vw,14.5px)',
+                lineHeight:1.7,
+                color:'rgba(10,15,13,0.6)',
+                maxWidth:'38ch',
+                marginBottom:'0',
+              }}>
+              Most refunds are lodged within 24 hours. No confusion, no delays.
             </p>
 
-            <div className="flex flex-col gap-3" style={{ marginBottom:'20px', maxWidth:'480px' }}>
+            <div className="flex flex-col lg:flex-row gap-3 lg:gap-4"
+              style={{ marginTop:'22px', marginBottom:'18px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex justify-center w-full"
-                style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px' }}>
+                className="btn-primary inline-flex justify-center"
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
                 Start your tax return →
               </a>
-              <a href="#how-it-works" className="btn-ghost-dark inline-flex justify-center w-full" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
+              <a href="#how-it-works"
+                className="hidden lg:inline-flex btn-ghost-dark justify-center"
+                style={{ height:'54px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
                 See how it works →
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'340px' }}>
-              {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  {t}
+            <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-x-5 lg:gap-x-7 gap-y-2"
+              style={{ maxWidth:'380px' }}>
+              {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
+                <span key={i} className="inline-flex items-center gap-1.5"
+                  style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
                 </span>
               ))}
             </div>
@@ -131,9 +155,10 @@ export default function TaxReturnPage() {
         </div>
       </section>
 
+
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto text-center">
             <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
               Most WHV travellers overpay tax.<br />We help you get it back.
@@ -152,7 +177,7 @@ export default function TaxReturnPage() {
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">What we do for you</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -187,7 +212,7 @@ export default function TaxReturnPage() {
                 body: 'Send your details and we handle everything - no ATO portals or paperwork.',
               },
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
                 <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-forest-500" style={{ background: '#EAF6F1' }}>
                   {item.icon}
                 </div>
@@ -212,7 +237,7 @@ export default function TaxReturnPage() {
 
       {/* ── EARLY SOCIAL PROOF ────────────────────────────────────────────── */}
       <section className="py-8 lg:py-10 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Real results</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(17px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -220,7 +245,7 @@ export default function TaxReturnPage() {
             </h2>
           </div>
           <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Real refunds from real travellers</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto reveal delay-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
             {TESTIMONIALS.map((t, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 flex flex-col" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
                 <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
@@ -245,7 +270,7 @@ export default function TaxReturnPage() {
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">Why not do it yourself?</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(17px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
@@ -253,7 +278,7 @@ export default function TaxReturnPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto reveal delay-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
             <div className="rounded-2xl" style={{ padding: '18px 20px', background: '#fff', border: '1px solid #E2EFE9' }}>
               <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-muted mb-4">Lodge via ATO yourself</p>
               <div className="space-y-3">
@@ -307,8 +332,8 @@ export default function TaxReturnPage() {
 
 
       {/* ── TAX RATES ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Tax rates</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -320,7 +345,7 @@ export default function TaxReturnPage() {
           </div>
 
             <p className="text-center font-light text-muted mx-auto" style={{ fontSize: '14px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '24px' }}>Most WHV travellers pay 15% on their first $45,000 — but many overpay and claim it back later.</p>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-7 items-stretch">
               {[
                 {
                   label: 'Working Holiday visa holders',
@@ -383,7 +408,7 @@ export default function TaxReturnPage() {
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Deductions</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -394,7 +419,7 @@ export default function TaxReturnPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 reveal delay-1">
             {DEDUCTIONS.map((d, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px 18px', border: '1px solid #E2EFE9', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
                 <p className="text-[13px] font-semibold text-ink" style={{ marginBottom: '5px' }}>{d.title}</p>
@@ -423,8 +448,8 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
+      <section id="how-it-works" className="py-10 lg:py-14 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -477,8 +502,8 @@ export default function TaxReturnPage() {
 
       {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
             <div className="reveal text-center lg:text-left">
               <span className="section-label center lg:text-left">Timing</span>
@@ -542,9 +567,9 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-6 lg:gap-10 items-start">
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-6 lg:gap-10 items-start">
             <div className="text-center">
               <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>

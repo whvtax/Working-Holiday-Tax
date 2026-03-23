@@ -12,16 +12,35 @@ export default function ContactPage() {
     <>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
-          <div className="max-w-[640px] mx-auto text-center">
-            <div className="inline-flex items-center gap-3 mb-6 justify-center">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+
+          <div className="max-w-[560px] lg:max-w-[700px] mx-auto text-center">
+
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4 justify-center">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-              <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Get in touch</span>
+              <span className="font-medium uppercase"
+                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
+                Get in touch
+              </span>
             </div>
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(22px, 2.98vw, 36px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
+
+            <h1 className="font-serif font-black text-ink"
+              style={{
+                fontSize:'clamp(24px,3.2vw,44px)',
+                lineHeight:1.06,
+                letterSpacing:'-0.03em',
+                marginBottom:'10px',
+              }}>
               Get clear answers about your situation
             </h1>
-            <p className="font-light leading-[1.75] mx-auto" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '440px' }}>
+
+            <p className="font-light mx-auto"
+              style={{
+                fontSize:'clamp(13px,1.2vw,14.5px)',
+                lineHeight:1.7,
+                color:'rgba(10,15,13,0.6)',
+                maxWidth:'38ch',
+              }}>
               Tell us about your situation - we review it and explain your next steps clearly. No obligation.
             </p>
           </div>
@@ -29,8 +48,8 @@ export default function ContactPage() {
       </section>
 
       {/* ── CONTACT OPTIONS ──────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+      <section className="py-8 lg:py-11" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-7 reveal">
             <span className="section-label center" style={{textAlign:"center",display:"flex",justifyContent:"center"}}>How to reach us</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(17px, 1.7vw, 19px)', lineHeight: 1.1, letterSpacing: '-0.025em', textAlign:'center' }}>
@@ -39,12 +58,12 @@ export default function ContactPage() {
             <p className="font-light text-muted text-center" style={{ fontSize:'14px' }}>We respond quickly - real people, no bots</p>
           </div>
 
-          <div className="max-w-2xl mx-auto space-y-3 reveal delay-1">
+          <div className="max-w-2xl mx-auto space-y-3 lg:space-y-4 reveal delay-1">
 
             {/* WhatsApp  -  primary, most prominent */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-between w-full rounded-2xl p-6 transition-all hover:shadow-md group"
-              style={{ background: '#ffffff', border: '1.5px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
+              style={{ background: '#ffffff', border: '2px solid #C8EAE0', boxShadow: '0 2px 8px rgba(11,82,64,.08)' }}>
               <div className="flex items-center gap-4">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: '#22C55E' }}>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -124,8 +143,8 @@ export default function ContactPage() {
       </section>
 
       {/* ── WHAT TO EXPECT ───────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+      <section className="py-8 lg:py-12 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto">
             <div className="text-center mb-7 reveal">
               <span className="section-label center">What to expect</span>
@@ -157,8 +176,8 @@ export default function ContactPage() {
       </section>
 
       {/* ── FINAL CTA ─────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+      <section className="py-8 lg:py-11" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-lg mx-auto text-center reveal">
             <span className="section-label center mb-4 block">Ready?</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(17px, 2.12vw, 24px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
