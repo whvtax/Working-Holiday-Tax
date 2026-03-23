@@ -7,9 +7,10 @@ interface NextStepProps {
   cta: string
   href: string
   external?: boolean
+  trustLine?: string
 }
 
-export function NextStep({ eyebrow, heading, body, cta, href, external }: NextStepProps) {
+export function NextStep({ eyebrow, heading, body, cta, href, external, trustLine }: NextStepProps) {
   const inner = (
     <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
       <div className="max-w-[560px] mx-auto text-center reveal">
@@ -34,6 +35,9 @@ export function NextStep({ eyebrow, heading, body, cta, href, external }: NextSt
             style={{ height: '48px', padding: '0 28px', fontSize: '14.5px', background: '#E9A020', color: '#1A2822', borderRadius: '100px' }}>
             {cta}
           </Link>
+        )}
+        {trustLine && (
+          <p style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(255,255,255,0.45)' }}>{trustLine}</p>
         )}
       </div>
     </div>

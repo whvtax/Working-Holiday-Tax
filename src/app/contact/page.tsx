@@ -19,10 +19,10 @@ export default function ContactPage() {
               <span className="font-medium uppercase text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.16em' }}>Get in touch</span>
             </div>
             <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(22px, 2.98vw, 36px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
-              Get clear answers
+              Get clear answers about your situation
             </h1>
             <p className="font-light leading-[1.75] mx-auto" style={{ fontSize: '15px', color: 'rgba(10,15,13,0.58)', maxWidth: '440px' }}>
-              Send us your details. We will review your situation and explain the next steps clearly. No obligation to proceed.
+              Tell us about your situation - we review it and explain your next steps clearly. No obligation.
             </p>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function ContactPage() {
             <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(17px, 1.7vw, 19px)', lineHeight: 1.1, letterSpacing: '-0.025em', textAlign:'center' }}>
               Contact options
             </h2>
-            <p className="font-light text-muted text-center" style={{ fontSize:'14px' }}>We respond quickly across all channels.</p>
+            <p className="font-light text-muted text-center" style={{ fontSize:'14px' }}>We respond quickly - real people, no bots</p>
           </div>
 
           <div className="max-w-2xl mx-auto space-y-3 reveal delay-1">
@@ -55,11 +55,11 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-[15px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>WhatsApp</p>
-                  <p className="text-[13px] font-light text-muted">Replies within the hour  -  real person, no bots</p>
+                  <p className="text-[13px] font-light text-muted">Replies within the hour - real person, no bots</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-forest-500 group-hover:gap-3 transition-all">
-                <span className="text-[13px] font-medium hidden sm:block">Message us</span>
+                <span className="text-[13px] font-medium hidden sm:block">Message us on WhatsApp</span>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8.5 4l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
             </a>
@@ -81,7 +81,7 @@ export default function ContactPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2 text-forest-500 group-hover:gap-3 transition-all">
-                <span className="text-[13px] font-medium hidden sm:block">Send email</span>
+                <span className="text-[13px] font-medium hidden sm:block">Send us an email</span>
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2.5 7h9M8.5 4l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </div>
             </a>
@@ -130,14 +130,14 @@ export default function ContactPage() {
             <div className="text-center mb-7 reveal">
               <span className="section-label center">What to expect</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(17px, 1.7vw, 19px)', lineHeight: 1.1, letterSpacing: '-0.025em', textAlign:'center' }}>
-                What happens when you contact us
+                What happens after you contact us
               </h2>
             </div>
             <div className="flex flex-col items-center reveal delay-1" style={{ gap: '0', maxWidth:'380px', margin:'0 auto' }}>
               {[
-                { n: '1', label: 'Tell us what you need', body: 'Share your situation — TFN, return, super or ABN.' },
-                { n: '2', label: 'We review your case',   body: 'A real person responds within 24 hours.' },
-                { n: '3', label: 'We handle everything',  body: 'No commitment. You decide how to proceed.' },
+                { n: '1', label: 'Tell us about your situation', body: 'Share your situation - TFN, tax return, super or ABN' },
+                { n: '2', label: 'We review your case',   body: 'A real person reviews your situation within 24 hours' },
+                { n: '3', label: 'We handle everything',  body: 'No commitment - you decide how to proceed' },
               ].map((item, i, arr) => (
                 <div key={i} className="flex gap-4 w-full" style={{ paddingBottom: i < arr.length - 1 ? '18px' : '0' }}>
                   <div className="flex flex-col items-center flex-shrink-0">
@@ -162,10 +162,10 @@ export default function ContactPage() {
           <div className="max-w-lg mx-auto text-center reveal">
             <span className="section-label center mb-4 block">Ready?</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(17px, 2.12vw, 24px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
-              Start with a quick check.
+              Start with a quick check
             </h2>
             <p className="font-light text-muted leading-[1.75] mb-6" style={{ fontSize: '15px', maxWidth: '360px' }}>
-              Tell us your situation. We will review it and outline your options clearly.
+              Tell us your situation - we’ll review it and explain your options clearly
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex items-center justify-center mx-auto"
