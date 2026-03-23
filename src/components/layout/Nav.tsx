@@ -2,7 +2,15 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { NAV_LINKS, WA_URL } from '@/lib/constants'
+import { WA_URL } from '@/lib/constants'
+
+const NAV_LINKS = [
+  { label: 'TFN',        href: '/tfn' },
+  { label: 'Tax Return', href: '/tax-return' },
+  { label: 'Super',      href: '/superannuation' },
+  { label: 'ABN',        href: '/abn' },
+  { label: 'Contact',    href: '/contact' },
+] as const
 
 const Logo = () => (
   <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
@@ -32,13 +40,13 @@ export function Nav() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-canvas/92 backdrop-blur-2xl' : ''}`}
-        style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-canvas/92 backdrop-blur-2xl' : 'bg-white'}`}
+        style={{ borderBottom: '1px solid rgba(205,227,219,0.45)' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8">
           <div className="h-[68px] flex items-center justify-between gap-5">
             <Logo />
 
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-7">
               {NAV_LINKS.map(l => {
                 const active = pathname === l.href
                 return (
@@ -54,13 +62,11 @@ export function Nav() {
               })}
             </div>
 
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex items-center">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-semibold text-white transition-all"
-                style={{ height: '40px', padding: '0 18px', background: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(11,82,64,0.18)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#16775C' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0B5240' }}>
-                Free Eligibility Check
+                className="btn-primary"
+                style={{ height: '40px', padding: '0 20px', fontSize: '13px' }}>
+                Start now →
               </a>
             </div>
 
@@ -83,34 +89,9 @@ export function Nav() {
           </Link>
         ))}
         <div className="mt-6">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '46px', borderRadius: '100px', fontSize: '14px' }}>
-              Free Eligibility Check →
-          </a>
-        </div>
-
-        {/* Partner badges — 3 circles */}
-        <div className="flex items-center gap-2.5 mt-6 pt-5" style={{ borderTop: '1px solid #F0F5F2' }}>
-          <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
-            aria-label="Xero"
-            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70"
-            style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}>
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
-            </svg>
-          </a>
-          <div className="flex items-center justify-center rounded-full"
-            style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}>
-            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
-              <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
-            aria-label="Registered Tax Practitioners Board"
-            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
-            style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={22} height={22} style={{ objectFit: 'contain' }} />
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close}
+            className="btn-primary w-full justify-center" style={{ height: '48px', borderRadius: '100px', fontSize: '15px' }}>
+            Start now →
           </a>
         </div>
       </div>
