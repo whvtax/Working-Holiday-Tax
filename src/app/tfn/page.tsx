@@ -19,14 +19,15 @@ const faqs = [
 ]
 
 const STEPS = [
-  { n:'1', title:'Tell us what you need', body:'Share your visa details and situation.' },
-  { n:'2', title:'Send your details',     body:'Passport and basic info. Takes minutes.' },
-  { n:'3', title:'We handle everything',  body:'We submit your application correctly.' },
+  { n:'1', title:'Tell us about your situation', body:'Share your visa details so we can guide you correctly.' },
+  { n:'2', title:'Send your details in minutes',  body:'Passport and basic info - quick and simple.' },
+  { n:'3', title:'We handle everything for you',  body:'We prepare and submit your TFN correctly.' },
+  { n:'4', title:'Receive your TFN',             body:'You receive your TFN by post or phone within a week.' },
 ]
 
 const TESTIMONIALS = [
-  { name:"Liam O'Brien", from:'Ireland · WHV 417', quote:'I was stressed about my super - four months, three different employers. They guided me through everything and helped me get it all back.', amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
-  { name:'Emma T.', from:'United Kingdom · WHV 417', quote:'Got my TFN sorted in two days, and they handled my entire tax return when I left. No stress, just money back in my account.', amount:'$2,450', initials:'E', bgColor:'#FCE7F3', textColor:'#9D174D' },
+  { name:"Liam O'Brien", from:'Ireland · WHV 417', quote:'I had multiple employers and no idea what to do. They guided me through everything and made the process simple.', amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
+  { name:'Emma T.', from:'United Kingdom · WHV 417', quote:'Got my TFN sorted in just two days, and everything was handled clearly from start to finish. No stress, just a smooth and easy process.', amount:'$2,450', initials:'E', bgColor:'#FCE7F3', textColor:'#9D174D' },
 ]
 
 const IconStar = () => (<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
@@ -51,31 +52,31 @@ export default function TFNPage() {
             </div>
 
             <h1 className="font-serif font-black text-ink" style={{ fontSize:'clamp(24px, 3.23vw, 41px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              Get your TFN sorted quickly{' '}
-              <span style={{ color:'#0B5240' }}>and start working sooner.</span>
+              Get your TFN sorted quickly and start working sooner
             </h1>
 
             <p className="font-semibold text-ink" style={{ fontSize:'15px', letterSpacing:'-0.01em', marginBottom:'6px' }}>
-              We make sure your application is correct the first time.
+              We make sure your TFN is done correctly the first time
             </p>
 
             <p className="font-light" style={{ fontSize:'14.5px', lineHeight:1.65, color:'rgba(10,15,13,0.6)', maxWidth:'40ch', marginBottom:'24px' }}>
-              Without a TFN you pay 47% tax. Apply before you start work.
+              Without a TFN, you may be taxed at a higher rate
+              Takes just a few minutes to get started
             </p>
 
             <div className="flex flex-col gap-3" style={{ marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center w-full"
                 style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px' }}>
-                Start your TFN →
+                Start your TFN application →
               </a>
               <a href="#how-to-apply" className="btn-ghost-dark inline-flex justify-center w-full" style={{ height:'52px', padding:'0 24px', fontSize:'15px' }}>
-                How it works →
+                See how it works →
               </a>
             </div>
 
             <div className="grid grid-cols-2 gap-x-6 gap-y-2" style={{ maxWidth:'340px' }}>
-              {['1,200+ travellers helped','Response within 1 hour','ATO compliant','By a registered tax agent'].map((t,i) => (
+              {['1,200+ travellers helped','Most replies within 1 hour','ATO compliant','Handled by a registered tax agent'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5" style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <CheckIcon />{t}
                 </span>
@@ -90,15 +91,15 @@ export default function TFNPage() {
         <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-8 lg:py-10 text-center">
           <div className="max-w-[560px] mx-auto">
             <p className="font-serif font-black text-white" style={{ fontSize:'clamp(17px, 2.21vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.1, marginBottom:'8px' }}>
-              Without a TFN, 47% tax is withheld<br />from every payslip.
+              Without a TFN, you could be taxed at a much higher rate
             </p>
             <p className="font-light" style={{ fontSize:'14px', color:'rgba(255,255,255,0.65)', marginBottom:'20px', maxWidth:'38ch', margin:'0 auto 20px' }}>
-              Apply before you start work to pay the correct rate<br />from day one.
+              Getting your TFN sorted early helps you avoid unnecessary deductions and delays
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
               style={{ height:'46px', padding:'0 24px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px' }}>
-              Apply now →
+              Start your TFN application →
             </a>
           </div>
         </div>
@@ -110,19 +111,19 @@ export default function TFNPage() {
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'32px' }}>
             <span className="section-label center">Why use our service</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(19px, 2.21vw, 27px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px' }}>
-              We handle everything for you.
+              We handle your TFN from start to finish
             </h2>
             <p className="font-light text-muted" style={{ fontSize:'14px', lineHeight:1.65 }}>
-              No ATO portals, no confusing forms, no risk of mistakes.
+              No ATO portals, no confusing forms, and no unnecessary delays
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ marginBottom:'32px' }}>
             {[
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Done correctly the first time', body:'We check everything before submission. No errors, no re-submissions, no delays.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Start working at the correct rate immediately', body:'Get your TFN fast and start earning without overpaying tax from day one.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'No ATO forms or confusion', body:'We handle the process so you never need to touch a government portal.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Fast, guided, and fully online', body:'Tell us your details and we take care of the rest. Reply within the hour.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Done correctly the first time', body:'We check everything before submission to avoid errors or delays.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Start working at the correct tax rate', body:'Get your TFN sorted early so everything is set up correctly from day one.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'No ATO forms or confusion', body:"We take care of the process so you don't need to deal with government systems." },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Fast, guided, and fully online', body:'Tell us your details and we handle everything from there.' },
             ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4" style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
                 <div className="flex items-center justify-center flex-shrink-0 text-forest-500" style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>{item.icon}</div>
@@ -136,7 +137,7 @@ export default function TFNPage() {
 
           <div className="text-center">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 32px', fontSize:'15px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Start your TFN →
+              Start your TFN application →
             </a>
           </div>
         </div>
@@ -148,7 +149,7 @@ export default function TFNPage() {
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'28px' }}>
             <span className="section-label center">What travellers say</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px' }}>
-              Real experiences from backpackers like you.
+              See how backpackers like you got their TFN sorted quickly
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
@@ -178,14 +179,14 @@ export default function TFNPage() {
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom:'28px' }}>
             <span className="section-label center">Why not do it yourself</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize:'clamp(17px, 2.04vw, 24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px' }}>
-              There is a better way.
+              There’s a simpler way to get your TFN sorted
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-3xl mx-auto">
             <div className="rounded-2xl" style={{ padding:'20px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
-              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'16px' }}>Apply via ATO yourself</p>
+              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'16px' }}>Apply through the ATO yourself</p>
               <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
-                {['Confusing government forms','Risk of mistakes that cause delays','No guidance if something goes wrong','You figure out the process alone'].map((item,i) => (
+                {['Confusing government forms and steps','Small mistakes can delay your TFN','No support if something goes wrong','You handle the whole process on your own'].map((item,i) => (
                   <div key={i} className="flex items-start gap-2">
                     <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'2px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF2F2" stroke="#FECACA" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#DC2626" strokeWidth="1.3" strokeLinecap="round"/></svg>
                     <p className="font-light text-muted" style={{ fontSize:'12.5px', lineHeight:1.6 }}>{item}</p>
@@ -194,9 +195,9 @@ export default function TFNPage() {
               </div>
             </div>
             <div className="rounded-2xl" style={{ padding:'20px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
-              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'16px' }}>Use our guided service</p>
+              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'16px' }}>Use our guided TFN service</p>
               <div style={{ display:'flex', flexDirection:'column', gap:'10px', marginBottom:'20px' }}>
-                {['Fast, guided process from start to finish','No errors - we check everything for you','Done correctly the first time','Real support if you have any questions'].map((item,i) => (
+                {['Simple, guided process from start to finish','We check everything before submission','Done correctly the first time','Real support if you need help at any step'].map((item,i) => (
                   <div key={i} className="flex items-start gap-2">
                     <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'2px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     <p className="font-semibold text-ink" style={{ fontSize:'12.5px', lineHeight:1.6 }}>{item}</p>
@@ -204,7 +205,7 @@ export default function TFNPage() {
                 ))}
               </div>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'46px', padding:'0 22px', fontSize:'13.5px', width:'100%', justifyContent:'center' }}>
-                Start your TFN →
+                Start your TFN application →
               </a>
             </div>
           </div>
@@ -221,13 +222,13 @@ export default function TFNPage() {
               Apply in minutes.<br />
               <em className="not-italic font-normal text-forest-400">Start working sooner.</em>
             </h2>
-            <p className="font-light text-muted" style={{ fontSize:'14px' }}>Free to apply. Simple and fully guided.</p>
+            <p className="font-light text-muted" style={{ fontSize:'14px' }}>Simple, guided process from start to finish</p>
           </div>
 
           {/* Desktop */}
           <div className="hidden lg:block" style={{ marginBottom:'40px' }}>
             <div className="relative flex items-start">
-              <div className="absolute left-[calc(16.6%)] right-[calc(16.6%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex:0 }} aria-hidden="true" />
+              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-px" style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)', zIndex:0 }} aria-hidden="true" />
               {STEPS.map((s,i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex:1 }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white flex-shrink-0" style={{ background:'#0B5240', fontSize:'13px', marginBottom:'16px', boxShadow:'0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>{s.n}</div>
@@ -256,7 +257,7 @@ export default function TFNPage() {
 
           <div className="text-center">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height:'52px', padding:'0 32px', fontSize:'15px', maxWidth:'300px', width:'100%', display:'inline-flex', alignItems:'center', justifyContent:'center' }}>
-              Start your TFN →
+              Start your TFN application →
             </a>
           </div>
         </div>
@@ -290,9 +291,9 @@ export default function TFNPage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What's next?"
-        heading="Do you already have your TFN?"
-        body="If you are working as a contractor or freelancer, you may also need an ABN to invoice clients correctly."
-        cta="Check if you need an ABN →"
+        heading="Already have your TFN?"
+        body="If you're working as a contractor or freelancer, you may also need an ABN to invoice correctly"
+        cta="Check your ABN eligibility →"
         href="/abn"
       />
     </>
