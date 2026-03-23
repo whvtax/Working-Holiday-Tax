@@ -125,7 +125,7 @@ function Hero() {
 function Urgency() {
   return (
     <section style={{ background: '#0B5240' }}>
-      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-7 lg:py-10 text-center">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14 text-center">
         <p className="font-serif font-black text-white mx-auto" style={{
           fontSize: 'clamp(18px,2.6vw,28px)',
           letterSpacing: '-0.02em',
@@ -416,11 +416,11 @@ function Services() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 reveal delay-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 reveal delay-1">
           {SERVICES.map((s) => (
             <Link key={s.href} href={s.href}
               className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
-              style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
               <span className="text-[10px] font-medium tracking-[0.1em] uppercase text-subtle" style={{ marginBottom: '10px' }}>{s.n}</span>
               <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0" style={{ marginBottom: '12px' }}>
                 {s.icon}

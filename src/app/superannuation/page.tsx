@@ -96,7 +96,7 @@ export default function SuperannuationPage() {
 
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '280px', width: '100%', marginBottom: '16px' }}>
+              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
               Claim your super
             </a>
 
@@ -117,7 +117,7 @@ export default function SuperannuationPage() {
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-7 lg:py-10">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14">
           <div className="max-w-[560px] mx-auto text-center">
             <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(20px,2.6vw,30px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '8px', textWrap: 'balance' }}>
               Thousands of dollars could be waiting for you.
@@ -127,7 +127,7 @@ export default function SuperannuationPage() {
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold transition-all"
-              style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '260px', width: '100%', justifyContent: 'center' }}>
+              style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '300px', width: '100%', justifyContent: 'center' }}>
               Claim your super now
             </a>
           </div>
@@ -288,7 +288,7 @@ export default function SuperannuationPage() {
           </div>
 
           <div className="text-center mt-10 reveal delay-2">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '280px', width: '100%' }}>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
               Claim your super
             </a>
           </div>

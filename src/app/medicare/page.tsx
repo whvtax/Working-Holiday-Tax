@@ -68,7 +68,7 @@ export default function MedicarePage() {
 
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '280px', width: '100%', marginBottom: '16px' }}>
+              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginBottom: '16px' }}>
               Check your eligibility
             </a>
 
@@ -111,7 +111,7 @@ export default function MedicarePage() {
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
-          <div className="max-w-xl reveal" style={{ marginBottom: '32px' }}>
+          <div className="max-w-xl mx-auto reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label">Your two scenarios</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               You either pay the Medicare levy{" "}
@@ -272,7 +272,7 @@ export default function MedicarePage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 reveal delay-1">
+            <div className="grid grid-cols-1 gap-4 reveal delay-1">
               {[
                 { title: 'Administered by',  body: 'Services Australia, on behalf of the Australian Government.' },
                 { title: 'What it covers',   body: 'GP visits, public hospital treatment, and some specialist and diagnostic services for eligible individuals.' },

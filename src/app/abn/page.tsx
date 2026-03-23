@@ -110,7 +110,7 @@ export default function ABNPage() {
 
             {/* Trust badges — same system as TFN */}
             <div className="flex flex-wrap gap-x-4 gap-y-1.5">
-              {['1,200+ travellers helped', 'ATO compliant', 'Response within 1 hour'].map((t, i) => (
+              {['1,200+ travellers helped', 'Response within 1 hour', 'ATO compliant', 'By a registered tax agent'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap" style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
                     <circle cx="6" cy="6" r="5.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>

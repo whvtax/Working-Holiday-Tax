@@ -34,8 +34,8 @@ export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLa
           }}>{sub}</p>
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center justify-center mb-4">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{
-              height: '46px',
-              padding: '0 26px',
+              height: '50px',
+              padding: '0 28px',
               fontSize: '14px',
             }}>
               {primaryLabel}

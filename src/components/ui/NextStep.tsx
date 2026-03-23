@@ -59,7 +59,7 @@ export function RelatedServices({ items }: { items: RelatedItem[] }) {
         <div className="flex flex-wrap gap-3">
           {items.map((item, i) => (
             <Link key={i} href={item.href}
-              className="flex-1 min-w-[140px] rounded-xl px-4 py-3 transition-all hover:shadow-md group"
+              className="flex-1 min-w-[160px] rounded-xl px-4 py-3 transition-all hover:shadow-md group"
               style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
               <p className="text-[13px] font-semibold text-ink mb-0.5 group-hover:text-forest-500 transition-colors">{item.label}</p>
               <p className="text-[11.5px] font-light text-muted">{item.desc}</p>

@@ -129,7 +129,7 @@ export default function TaxReturnPage() {
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-7 lg:py-10">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14">
           <div className="max-w-[560px]">
             <p className="font-serif font-black text-white mb-2" style={{ fontSize: 'clamp(18px,2.6vw,28px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '24ch', textWrap: 'balance' }}>
               Most working holiday travellers overpay tax - we make sure you don&apos;t.
@@ -139,7 +139,7 @@ export default function TaxReturnPage() {
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold transition-all"
-              style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '280px', width: '100%', justifyContent: 'center' }}>
+              style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '300px', width: '100%', justifyContent: 'center' }}>
               Check my refund now →
             </a>
           </div>
@@ -197,7 +197,7 @@ export default function TaxReturnPage() {
           <div className="text-center reveal delay-2" style={{ marginTop: '32px' }}>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '280px', width: '100%' }}>
+              style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
               Start your tax return
             </a>
           </div>

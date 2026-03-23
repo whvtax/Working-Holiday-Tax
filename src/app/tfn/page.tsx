@@ -141,7 +141,7 @@ export default function TFNPage() {
 
       {/* ── URGENCY ───────────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240' }}>
-        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-7 lg:py-10">
+        <div className="max-w-7xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14">
           <div style={{ maxWidth: '560px' }}>
             <p className="font-serif font-black text-white" style={{
               fontSize: 'clamp(18px,2.6vw,28px)',
@@ -186,7 +186,7 @@ export default function TFNPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 reveal delay-1" style={{ marginBottom: '32px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 reveal delay-1" style={{ marginBottom: '32px' }}>
             {[
               {
                 icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
@@ -337,7 +337,7 @@ export default function TFNPage() {
               </div>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex"
-                style={{ height: '46px', padding: '0 22px', fontSize: '13.5px', maxWidth: '260px', width: '100%' }}>
+                style={{ height: '46px', padding: '0 22px', fontSize: '13.5px', maxWidth: '300px', width: '100%' }}>
                 Start your TFN →
               </a>
             </div>
