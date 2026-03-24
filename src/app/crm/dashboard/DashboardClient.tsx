@@ -50,6 +50,15 @@ export default function DashboardClient() {
     Promise.all([loadTasks(), loadClients()]).finally(() => setLoading(false))
   }, [loadTasks, loadClients])
 
+  const [seeding, setSeeding] = useState(false)
+
+  async function loadSeedData() {
+    setSeeding(true)
+    await fetch('/api/crm/seed', { method: 'POST' })
+    await Promise.all([loadTasks(), loadClients()])
+    setSeeding(false)
+  }
+
   async function lockAndExit() {
     await fetch('/api/crm/logout', { method:'POST' })
     window.location.replace('/crm')
@@ -313,6 +322,11 @@ export default function DashboardClient() {
             </nav>
           </div>
           <div className="sb-bottom">
+            {tasks.length === 0 && clients.length === 0 && (
+              <button style={{width:'100%',padding:'7px 10px',background:'rgba(255,255,255,0.08)',border:'none',borderRadius:8,color:'rgba(255,255,255,0.5)',fontSize:11,cursor:'pointer',fontFamily:'inherit',marginBottom:6}} onClick={loadSeedData} disabled={seeding}>
+                {seeding ? 'Loading...' : '+ Load demo data'}
+              </button>
+            )}
             <button className="sb-lock" onClick={lockAndExit}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock &amp; Exit
