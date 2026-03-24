@@ -27,10 +27,6 @@ export default function ClientPage() {
   const [showHandle, setShowHandle]       = useState(false)
   const [toast, setToast]                 = useState('')
 
-  useEffect(() => {
-    fetch('/api/crm/session').then(r=>r.json()).then(d=>{ if(!d.ok) router.push('/crm') })
-  }, [router])
-
   async function load() {
     setLoading(true)
     const res  = await fetch(`/api/crm/clients/${id}`)

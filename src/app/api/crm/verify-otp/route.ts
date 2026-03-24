@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      path: '/crm',
+      path: '/',
       maxAge: 8 * 60 * 60,
     })
     return res

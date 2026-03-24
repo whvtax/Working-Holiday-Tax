@@ -29,10 +29,6 @@ export default function Dashboard() {
   const [newClient, setNewClient]       = useState({ fullName:'', whatsapp:'', country:'', taxYear:'2023-24' as TaxYear })
   const [addingSaving, setAddingSaving] = useState(false)
 
-  useEffect(() => {
-    fetch('/api/crm/session').then(r=>r.json()).then(d=>{ if(!d.ok) router.push('/crm') })
-  }, [router])
-
   const load = useCallback(async () => {
     setLoading(true)
     const res = await fetch('/api/crm/clients?showHandled=true')
