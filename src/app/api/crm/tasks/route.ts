@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAllClients } from '@/lib/db'
+import { getAllTasks } from '@/lib/db'
 import { validateSession } from '@/lib/crm-store'
 
 function auth(req: NextRequest) {
@@ -9,10 +9,10 @@ function auth(req: NextRequest) {
 export async function GET(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
   try {
-    const clients = await getAllClients()
-    return NextResponse.json({ ok: true, clients })
+    const tasks = await getAllTasks()
+    return NextResponse.json({ ok: true, tasks })
   } catch (err) {
-    console.error('[GET clients]', err)
+    console.error('[GET tasks]', err)
     return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   }
 }
