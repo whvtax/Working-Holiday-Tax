@@ -31,11 +31,11 @@ export function Footer() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
               style={{ fontSize: '12px', color: '#0B5240' }}>
-              Ask us anything →
+              Ask us anything
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>
 
-            {/* Partner badges — 3 circles, no background */}
+            {/* Partner badges - 3 circles, no background */}
             <div className="flex items-center gap-2.5 mt-5">
 
               {/* Xero */}
@@ -58,7 +58,7 @@ export function Footer() {
                 </svg>
               </div>
 
-              {/* TPB — Tax Practitioners Board */}
+              {/* TPB - Tax Practitioners Board */}
               <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
                 aria-label="Registered Tax Practitioners Board"
                 className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
@@ -82,7 +82,7 @@ export function Footer() {
           <nav aria-label="Contact links">
             <p className="font-semibold tracking-[0.12em] uppercase mb-3" style={{ fontSize: '9.5px', color: '#587066' }}>Contact</p>
             <a href={`mailto:${EMAIL}`} className={linkCls} style={linkStyle}>Email</a>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>WhatsApp</a>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>Message us</a>
             <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>TikTok</a>
             <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>Instagram</a>
           </nav>

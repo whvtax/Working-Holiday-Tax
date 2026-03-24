@@ -42,7 +42,7 @@ export function CalculatorClient() {
     if (!i || !w || !visa) { setErr('Please fill in all three fields.'); return }
     if (w > i) { setErr('Tax withheld cannot exceed total income.'); return }
     setErr('')
-    // Allowlist check — never trust client-side select value
+    // Allowlist check - never trust client-side select value
     const allowedVisa = ['whm', 'res'] as const
     if (!(allowedVisa as readonly string[]).includes(visa)) { setErr('Invalid selection.'); return }
     setResult(calc(i, w, visa as 'whm' | 'res'))
@@ -183,7 +183,7 @@ export function CalculatorClient() {
                         <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" stroke="white" strokeWidth="0.5"/>
                         <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3.12.3.42 1.26.46 1.35.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
                       </svg>
-                      Claim this refund on WhatsApp
+                      Claim this refund now
                     </a>
                     <p className="text-[11.5px] text-subtle leading-[1.6] text-center">
                       No personal data stored. Estimate only  -  exact figure confirmed after document review.

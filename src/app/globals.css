@@ -101,7 +101,7 @@
   .input-base:focus { border-color: #0B5240; box-shadow: 0 0 0 3px rgba(11,82,64,0.08); }
 
   /* ══════════════════════════════════════════════════════════════════
-     DESIGN TOKENS — single source of truth
+     DESIGN TOKENS - single source of truth
      ══════════════════════════════════════════════════════════════════ */
 
   /* Primary CTA */
@@ -165,7 +165,7 @@
       padding-bottom: 40px !important;
     }
 
-    /* Buttons — full-width, centered */
+    /* Buttons - full-width, centered */
     .btn-primary, .btn-ghost-dark, .btn-ghost-light {
       width: 100% !important;
       max-width: 320px !important;
@@ -178,7 +178,7 @@
       border-radius: 999px !important;
     }
 
-    /* Hero dual-CTA — שניהם מלאי רוחב אחד מתחת לשני */
+    /* Hero dual-CTA - שניהם מלאי רוחב אחד מתחת לשני */
     .hero-cta-pair {
       max-width: 100% !important;
       width: 100% !important;
@@ -194,22 +194,17 @@
       flex: unset !important;
     }
 
-    /* Ghost button — same visual weight as primary */
+    /* Ghost button - same visual weight as primary */
     .hero-cta-pair .btn-ghost-dark {
       border: 1.5px solid #C8EAE0 !important;
       color: #0B5240 !important;
     }
 
-    /* Uniform hero H1 size on mobile */
-    section h1.font-serif {
-      font-size: 26px !important;
-      line-height: 1.08 !important;
-      letter-spacing: -0.03em !important;
-    }
+    /* Uniform hero H1 size on mobile - set per page inline */
 
     /* ── UNIFORM SECTION TYPOGRAPHY (mobile) ──────────────────────────
        כותרת ראשית H2: 20px אחיד
-       inline style עוקף CSS — לכן משתמשים ב-!important
+       inline style עוקף CSS - לכן משתמשים ב-!important
     ─────────────────────────────────────────────────────────────────── */
     section h2.font-serif.font-black {
       font-size: 20px !important;

@@ -10,10 +10,10 @@ export function RevealObserver() {
     document.querySelectorAll(selectors).forEach(el => {
       const rect = el.getBoundingClientRect()
       if (rect.top > window.innerHeight) {
-        // Below fold — add animate class to enable opacity:0 + transition
+        // Below fold - add animate class to enable opacity:0 + transition
         el.classList.add('animate')
       }
-      // Above fold or in view — leave as-is (opacity:1, no animation)
+      // Above fold or in view - leave as-is (opacity:1, no animation)
     })
 
     // Now observe below-fold elements

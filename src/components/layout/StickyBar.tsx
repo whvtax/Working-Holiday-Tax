@@ -27,7 +27,7 @@ export function StickyBar() {
             Free Eligibility Check
           </a>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-            aria-label="Contact us on WhatsApp"
+            aria-label="Contact us"
             className="flex items-center justify-center flex-shrink-0 transition-all hover:scale-105"
             style={{ width: '52px', height: '52px', borderRadius: '13px', background: '#22C55E' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">

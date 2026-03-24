@@ -73,15 +73,15 @@ export default function MedicarePage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines — nowrap per line */}
+              {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Understand your Medicare status</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>before you lodge your tax return</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block' }}>Understand your Medicare status</span>
-                <span style={{ display:'block', color:'#0B5240' }}>before you lodge your tax return</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Understand your Medicare status</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>before you lodge your tax return</span>
               </span>
             </h1>
 
@@ -132,7 +132,7 @@ export default function MedicarePage() {
       </section>
 
 
-      {/* ── NOT SURE? — MAIN ENTRY POINT ──────────────────────────────────── */}
+      {/* ── NOT SURE? - MAIN ENTRY POINT ──────────────────────────────────── */}
       <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto text-center">
@@ -275,7 +275,7 @@ export default function MedicarePage() {
               </h2>
               <div className="prose-wht max-w-[480px]">
                 <p>Medicare gives access to subsidised healthcare in Australia and is partly funded by a 2% levy on taxable income</p>
-                <p>Eligibility depends on your visa and country — not everyone needs to pay the levy</p>
+                <p>Eligibility depends on your visa and country - not everyone needs to pay the levy</p>
                 <p>Most Working Holiday visa holders are not eligible and may qualify for a Medicare levy exemption</p>
               </div>
               <div className="info-block">
@@ -313,9 +313,9 @@ export default function MedicarePage() {
             {[
               { q: '"Do I need to sign up for Medicare?"', a: "You only need to sign up if you're from an eligible RHCA country. Otherwise, we apply the exemption in your tax return." },
               { q: '"Why is Medicare levy showing on my tax bill?"', a: "If your Medicare status wasn't applied correctly, the levy may appear. We fix this when preparing your tax return." },
-              { q: '"I don\'t use Medicare — why am I being charged?"', a: "If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you don't overpay." },
-              { q: '"Does my travel insurance replace Medicare?"', a: "No — travel insurance and Medicare are separate. If you're not eligible, travel insurance covers your medical costs." },
-              { q: '"Does my Working Holiday visa affect my Medicare?"', a: "Yes — most WHV holders are not eligible unless from an RHCA country. We handle this correctly in your tax return." },
+              { q: '"I don\'t use Medicare - why am I being charged?"', a: "If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you don't overpay." },
+              { q: '"Does my travel insurance replace Medicare?"', a: "No - travel insurance and Medicare are separate. If you're not eligible, travel insurance covers your medical costs." },
+              { q: '"Does my Working Holiday visa affect my Medicare?"', a: "Yes - most WHV holders are not eligible unless from an RHCA country. We handle this correctly in your tax return." },
               { q: '"Can I get a Medicare card on a Working Holiday visa?"', a: "Only if you're from an eligible RHCA country. Otherwise, we apply a Medicare levy exemption instead." },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>

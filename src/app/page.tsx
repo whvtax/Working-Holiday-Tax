@@ -50,21 +50,24 @@ export default function HomePage() {
 
           {/* Mobile: natural wrap · Desktop: explicit 2-line break */}
           <h1 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'23px, 3.06vw, 42px', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              {/* Desktop: locked 2 lines — nowrap per line */}
+            style={{ fontSize:'clamp(20px, 3.06vw, 42px)', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px' }}>
+              {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Confused about tax in Australia?</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>We’ve got you covered.</span>
               </span>
 
-              <span className="lg:hidden"><span style={{ display:'block' }}>Confused about tax in Australia?</span><span style={{ display:'block', color:'#0B5240' }}>We’ve got you covered.</span></span>
+              <span className="lg:hidden" style={{ display:'block' }}>
+                <span style={{ display:'block', whiteSpace:'nowrap', fontSize:'22px' }}>Confused about tax in Australia?</span>
+                <span style={{ display:'block', color:'#0B5240', whiteSpace:'nowrap', fontSize:'22px' }}>We’ve got you covered.</span>
+              </span>
             </h1>
 
           {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
             style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
             <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
-            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super —<br />we handle everything for you</span>
+            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super -<br />we handle everything for you</span>
           </p>
 
           {/* Mobile: tighter top margin · Desktop: more breathing room */}
@@ -129,10 +132,10 @@ export default function HomePage() {
           {/* Mobile: 1-col · Desktop: 4-col with bigger padding and gap */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom:'36px' }}>
             {[
-              { title:'Backpacker tax refund experts',   body:'We focus only on working holiday tax, so we know how to get you the most back.' },
-              { title:'ATO Compliant Service',             body:'Fully compliant with ATO rules, under a registered tax agent\'s supervision.' },
-              { title:'Real support, no tax jargon',     body:'We guide you step by step and explain everything clearly in simple English.' },
-              { title:'We handle everything for you',    body:'No paperwork or stress, we handle everything for you from start to finish.' },
+              { title:'Backpacker tax refund experts',   body:<>We focus only on working holiday tax,<br />so we know how to get you the most back.</> },
+              { title:'ATO Compliant Service',             body:<>Fully compliant with ATO rules,<br />under a registered tax agent&apos;s supervision.</> },
+              { title:'Real support, no tax jargon',     body:<>We guide you step by step and explain<br />everything clearly in simple English.</> },
+              { title:'We handle everything for you',    body:<>No paperwork or stress, we handle<br />everything for you from start to finish.</> },
             ].map((item,i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink lg:whitespace-nowrap lg:overflow-hidden lg:text-ellipsis" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
@@ -194,7 +197,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Stats — mobile 2×2 grid, desktop 4-col, bigger numbers on desktop */}
+          {/* Stats - mobile 2×2 grid, desktop 4-col, bigger numbers on desktop */}
           <div style={{ marginTop:'28px', paddingTop:'24px', borderTop:'1px solid #E2EFE9' }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
@@ -232,7 +235,7 @@ export default function HomePage() {
 
           </div>
 
-          {/* Desktop 4-step horizontal — bigger circles, thicker connector */}
+          {/* Desktop 4-step horizontal - bigger circles, thicker connector */}
           <div className="hidden lg:block" style={{ marginBottom:'56px' }}>
             <div className="relative flex items-start">
               {/* Thicker, darker connector line */}
@@ -255,7 +258,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mobile vertical steps — bigger circles, more spacing */}
+          {/* Mobile vertical steps - bigger circles, more spacing */}
           <div className="lg:hidden flex flex-col" style={{ marginBottom:'32px' }}>
             {STEPS.map((s,i) => (
               <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length-1 ? '24px':'0' }}>
@@ -333,7 +336,7 @@ export default function HomePage() {
         eyebrow="Start here"
         heading="Get your tax sorted properly"
         headingEm="in Australia or abroad."
-        sub="We handle your TFN, tax return, super and ABN — all online."
+        sub={<>We handle your TFN, tax return, super and ABN<span className="hidden lg:inline"> - all in one place.</span><span className="lg:hidden"><br />all in one place.</span></>}
         primaryLabel="Start your tax return"
         trustLine="We usually respond within 1 hour"
         clipTop

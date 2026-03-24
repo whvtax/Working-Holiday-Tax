@@ -98,15 +98,15 @@ export default function SuperannuationPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines — nowrap per line */}
+              {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Claim your super back</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>when you leave Australia</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block' }}>Claim your super back</span>
-                <span style={{ display:'block', color:'#0B5240' }}>when you leave Australia</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Claim your super back</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>when you leave Australia</span>
               </span>
             </h1>
 
@@ -176,7 +176,7 @@ export default function SuperannuationPage() {
         </div>
       </section>
 
-      {/* ── CLARITY — THIS IS YOUR MONEY ──────────────────────────────────── */}
+      {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
@@ -391,7 +391,7 @@ export default function SuperannuationPage() {
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
-                Have a question? Message us on WhatsApp.
+                Have a question? Message us directly.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"

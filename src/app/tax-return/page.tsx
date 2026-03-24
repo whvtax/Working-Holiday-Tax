@@ -107,15 +107,15 @@ export default function TaxReturnPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines — nowrap per line */}
+              {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Get your tax refund</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>fast &amp; stress-free.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block' }}>Get your tax refund</span>
-                <span style={{ display:'block', color:'#0B5240' }}>fast &amp; stress-free.</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Get your tax refund</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>fast &amp; stress-free.</span>
               </span>
             </h1>
 
@@ -134,9 +134,8 @@ export default function TaxReturnPage() {
                 maxWidth:'44ch',
                 marginBottom:'0',
               }}>
-              
-              Most refunds are lodged within 24 hours. No confusion, no delays.
-            
+              <span className="hidden lg:inline">Most refunds are lodged within 24 hours. No confusion, no delays.</span>
+              <span className="lg:hidden" style={{ fontSize:'12.5px', whiteSpace:'nowrap' }}>Most refunds are lodged within 24 hours. No confusion, no delays.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -174,7 +173,8 @@ export default function TaxReturnPage() {
               Most WHV travellers overpay tax.<br />We help you get it back.
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              No matter your situation, we handle your tax the right way.
+              <span className="hidden lg:inline">we handle your tax the right way.</span>
+              <span className="lg:hidden">No matter your situation, we handle your tax the right way.</span>
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold transition-all"
@@ -219,7 +219,7 @@ export default function TaxReturnPage() {
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
                 title: 'No stress, no confusion',
-                body: 'Send your details and we handle everything for you - no ATO portals or paperwork.',
+                body: 'Send your details and we handle everything for you. No ATO portals or paperwork.',
               },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
@@ -254,7 +254,7 @@ export default function TaxReturnPage() {
               See how much backpackers like you get back
             </h2>
           </div>
-          <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Real refunds from real travellers</p>
+          <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Real refunds from real backpackers</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
             {TESTIMONIALS.map((t, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 flex flex-col" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
@@ -350,7 +350,8 @@ export default function TaxReturnPage() {
               How much tax you actually pay in Australia
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '40ch' }}>
-              Tax rates are different depending on your visa and situation.
+              <span className="hidden lg:inline">Tax rates are different depending on your visa and situation.</span>
+              <span className="lg:hidden">Tax rates are different depending on your<br />visa and situation.</span>
             </p>
           </div>
 
@@ -409,7 +410,7 @@ export default function TaxReturnPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center justify-center font-medium transition-all"
                 style={{ fontSize: '14px', color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                Not sure if you paid too much tax? Check your refund now →
+                <span className="hidden lg:inline">Not sure if you paid too much tax? Check your refund now →</span><span className="lg:hidden">Not sure if you paid too much tax?<br />Check your refund now →</span>
               </a>
             </div>
         </div>
@@ -439,7 +440,7 @@ export default function TaxReturnPage() {
 
           <div className="mt-6 max-w-xl reveal delay-2">
             <div className="info-block">
-              <p style={{whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>Personal expenses, fines, and daily travel to work are not claimable.</p>
+              <p><span className="hidden lg:inline">Personal expenses, fines, and daily travel to work are not claimable.</span><span className="lg:hidden">Personal expenses, fines, and daily travel to work<br />are not claimable.</span></p>
             </div>
           </div>
 
@@ -521,9 +522,9 @@ export default function TaxReturnPage() {
               </h2>
               <div className="space-y-0">
                 {[
-                  { label: 'Our preparation',  body: 'We prepare your return within 24 hours of receiving your details.' },
-                  { label: 'ATO processing',   body: 'The ATO usually processes returns within 7–14 business days. This can be longer during busy periods.' },
-                  { label: 'Final outcome',    body: 'Once your return is processed, your refund is paid directly to your Australian bank account.' },
+                  { label: 'Our preparation',  body: <><span className="hidden lg:inline">We prepare your return within 24 hours of receiving your details.</span><span className="lg:hidden">We prepare your return within 24 hours<br />of receiving your details.</span></> },
+                  { label: 'ATO processing',   body: <><span className="hidden lg:inline">The ATO usually processes returns within 7–14 business days. This can be longer during busy periods.</span><span className="lg:hidden">The ATO usually processes returns within 7–14 business days.<br />This can be longer during busy periods.</span></> },
+                  { label: 'Final outcome',    body: <><span className="hidden lg:inline">Once your return is processed, your refund is paid directly to your Australian bank account.</span><span className="lg:hidden">Once your return is processed, your refund is paid directly<br />to your Australian bank account.</span></> },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
                     <p className="text-[13px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{item.label}</p>
@@ -564,7 +565,7 @@ export default function TaxReturnPage() {
           </div>
           <div className="text-center mt-10 reveal">
             <p className="font-light text-muted" style={{ fontSize: '15px', lineHeight: 1.65, marginBottom: '16px' }}>
-              Ready to get your refund? Start your tax return in minutes.
+              <span className="hidden lg:inline">Ready to get your refund? Start your tax return in minutes.</span><span className="lg:hidden">Ready to get your refund?</span>
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
@@ -588,7 +589,7 @@ export default function TaxReturnPage() {
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
-                Have a question? Message us on WhatsApp.
+                Have a question? Message us directly.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"

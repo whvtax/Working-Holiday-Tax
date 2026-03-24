@@ -70,23 +70,22 @@ export default function ABNPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines — nowrap per line */}
+              {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Set up your ABN and</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>start working as a contractor</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block' }}>Set up your ABN and</span>
-                <span style={{ display:'block', color:'#0B5240' }}>start working as a contractor</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Set up your ABN and</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>start working as a contractor</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              
-              We make sure your ABN is set up correctly for the work you do.
-            
+              <span className="hidden lg:inline">We make sure your ABN is set up correctly for the work you do.</span>
+              <span className="lg:hidden" style={{ fontSize:'13px', whiteSpace:'nowrap' }}>We make sure your ABN is set up correctly for the work you do.</span>
             </p>
 
             <p className="font-light"
@@ -98,7 +97,7 @@ export default function ABNPage() {
                 marginBottom:'0',
               }}>
               
-              No rejections or delays — set up correctly from the start.
+              No rejections or delays - set up correctly from the start.
             
             </p>
 
@@ -170,11 +169,11 @@ export default function ABNPage() {
             </p>
             <p className="font-light text-muted"
               style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'30ch', margin:'0 auto', color:'rgba(10,15,13,0.5)' }}>
-              Simple, clear, and set up correctly from the start
+              Simple, clear, and set up correctly
             </p>
           </div>
 
-          {/* Cards — equal height via items-stretch; mobile gap-4, desktop gap-6 */}
+          {/* Cards - equal height via items-stretch; mobile gap-4, desktop gap-6 */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { n:'01', title:'We help you choose the right setup', body:'Not sure if you need an ABN? We check your situation and give you a clear answer.' },
@@ -260,7 +259,7 @@ export default function ABNPage() {
             </p>
           </div>
 
-          {/* Desktop — full-width spread, thicker line, bigger circles */}
+          {/* Desktop - full-width spread, thicker line, bigger circles */}
           <div className="hidden lg:block" style={{ marginBottom:'48px' }}>
             <div className="relative flex items-start">
               <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
@@ -281,7 +280,7 @@ export default function ABNPage() {
             </div>
           </div>
 
-          {/* Mobile — compact vertical, subtle line */}
+          {/* Mobile - compact vertical, subtle line */}
           <div className="lg:hidden flex flex-col" style={{ marginBottom:'28px', gap:'0' }}>
             {STEPS.map((s,i) => (
               <div key={i} className="flex gap-3.5" style={{ paddingBottom: i < STEPS.length-1 ? '18px':'0' }}>
@@ -309,51 +308,20 @@ export default function ABNPage() {
       {/* ── WHAT IS AN ABN ────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          {/* Desktop: tighter gap between columns */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start max-w-4xl mx-auto">
-
-            <div className="text-center lg:text-left">
-              <span className="section-label center">What is an ABN?</span>
-              <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'16px', textWrap:'balance' }}>
-                An Australian Business Number (ABN) lets you work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
-              </h2>
-              {/* Mobile: tighter maxWidth; desktop: 36ch */}
-              <div>
-                <p className="font-light text-body leading-[1.75] mx-auto lg:mx-0"
-                  style={{ maxWidth:'34ch', marginBottom:'14px', fontSize:'13.5px' }}>
-                  An ABN is an 11-digit number that identifies you when working as a contractor or freelancer in Australia. You include it on every invoice you send.
-                </p>
-                <p className="font-light text-body leading-[1.75] mx-auto lg:mx-0"
-                  style={{ maxWidth:'34ch', fontSize:'13.5px' }}>
-                  With an ABN, you get paid the full amount with no tax withheld automatically. You stay in control of your income and manage your own tax.
-                </p>
-              </div>
-            </div>
-
-            <div>
-              <span className="section-label block" style={{ marginBottom:'10px' }}>When you need one</span>
-              {/* Mobile: tighter gap */}
-              <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
-                {[
-                  ['Freelance work', '(design, photography, writing)'],
-                  ['Contract or casual jobs', 'where you invoice'],
-                  ['Farm or harvest work', 'paid on ABN'],
-                  ['Remote work', 'for Australian clients'],
-                  ['Any job', 'where you invoice instead of receiving payslips'],
-                ].map(([bold, rest],i) => (
-                  <div key={i} className="flex items-start gap-2">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="7" cy="7" r="6.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                      <path d="M4.5 7l2 2 3-3" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <p className="font-light text-body leading-[1.5]" style={{ fontSize:'12.5px' }}>
-                      <span className="font-semibold">{bold}</span> {rest}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="max-w-xl mx-auto text-center">
+            <span className="section-label center">What is an ABN?</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'16px', textWrap:'balance' }}>
+              An Australian Business Number (ABN) lets you work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
+            </h2>
+            <p className="font-light text-body leading-[1.75] mx-auto"
+              style={{ maxWidth:'40ch', marginBottom:'14px', fontSize:'13.5px' }}>
+              An ABN is an 11-digit number that identifies you when working as a contractor or freelancer in Australia. You include it on every invoice you send.
+            </p>
+            <p className="font-light text-body leading-[1.75] mx-auto"
+              style={{ maxWidth:'40ch', fontSize:'13.5px' }}>
+              With an ABN, you get paid the full amount with no tax withheld automatically. You stay in control of your income and manage your own tax.
+            </p>
           </div>
         </div>
       </section>
@@ -371,7 +339,7 @@ export default function ABNPage() {
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
-                Have a question? Message us on WhatsApp.
+                Have a question? Message us directly.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"

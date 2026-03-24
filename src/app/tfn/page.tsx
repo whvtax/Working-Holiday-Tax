@@ -59,21 +59,22 @@ export default function TFNPage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize:'clamp(24px,3.2vw,44px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'10px' }}>
-              {/* Desktop: 2 lines — line 1 black, line 2 green */}
+              {/* Desktop: 2 lines - line 1 black, line 2 green */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Get your TFN sorted quickly &amp;</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>start working sooner</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block' }}>Get your TFN sorted quickly &amp;</span>
-                <span style={{ display:'block', color:'#0B5240' }}>start working sooner</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Get your TFN sorted quickly &amp;</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>start working sooner</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              We make sure your TFN is done correctly the first time.
+              <span className="hidden lg:inline">We make sure your TFN is done correctly the first time.</span>
+              <span className="lg:hidden" style={{ fontSize:'13px', whiteSpace:'nowrap' }}>We make sure your TFN is done correctly the first time.</span>
             </p>
 
             <p className="font-light"
@@ -141,7 +142,8 @@ export default function TFNPage() {
             </h2>
             <p className="font-light text-muted"
               style={{ fontSize:'clamp(13px, 1.3vw, 15px)', lineHeight:1.7 }}>
-              No ATO portals, no confusing forms, and no unnecessary delays
+              <span className="hidden lg:inline">No ATO portals, no confusing forms, and no unnecessary delays</span>
+              <span className="lg:hidden">No ATO portals, no confusing forms<br />and no unnecessary delays</span>
             </p>
           </div>
 
@@ -341,7 +343,7 @@ export default function TFNPage() {
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
-                Have a question? Message us on WhatsApp.
+                Have a question? Message us directly.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
