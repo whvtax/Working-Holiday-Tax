@@ -1,10 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 
 export default function CrmLoginPage() {
-  const router = useRouter()
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
   const [loading, setLoading]   = useState(false)
@@ -22,12 +20,13 @@ export default function CrmLoginPage() {
       const data = await res.json()
       if (!data.ok) {
         setError(data.message ?? 'Incorrect password.')
+        setLoading(false)
       } else {
-        window.location.href = '/crm/dashboard'
+        // Hard redirect — lets browser fully reload with the new cookie
+        window.location.replace('/crm/dashboard')
       }
     } catch {
       setError('Network error. Please try again.')
-    } finally {
       setLoading(false)
     }
   }
