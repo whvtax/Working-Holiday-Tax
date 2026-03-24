@@ -1,9 +1,12 @@
+// src/app/api/crm/login/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import {
   hashPassword, verifyPassword,
   recordFailedAttempt, resetFailedAttempts, isLockedOut,
-  generateOtp, storeOtp,
+  generateOtp,
 } from '@/lib/crm-store'
+import { kv } from '@vercel/kv'
+import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +14,6 @@ export async function POST(req: NextRequest) {
 
     const ADMIN_EMAIL   = process.env.CRM_ADMIN_EMAIL   ?? 'info@workingholidaytax.com.au'
     const RESEND_KEY    = process.env.RESEND_API_KEY     ?? ''
-    // Set CRM_PASSWORD in Vercel environment variables
     const rawPassword   = process.env.CRM_PASSWORD      ?? 'WHVtax2024!#'
     const PASSWORD_HASH = hashPassword(rawPassword)
 
@@ -27,9 +29,11 @@ export async function POST(req: NextRequest) {
 
     resetFailedAttempts()
 
-    // Generate and send OTP
+    // Generate OTP and store in KV (shared across all serverless instances)
     const otp = generateOtp()
-    storeOtp(otp)
+    const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
+    await kv.set('crm_otp', otpHash, { ex: 600 }) // expires in 10 minutes
+
     await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
 
     return NextResponse.json({ ok: true, otpSent: true })
@@ -43,7 +47,7 @@ export async function POST(req: NextRequest) {
 async function sendOtpEmail(to: string, apiKey: string, otp: string) {
   if (!apiKey) { console.log('[DEV] OTP code:', otp); return }
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
-  await fetch('https://api.resend.com/emails', {
+  const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -64,6 +68,10 @@ async function sendOtpEmail(to: string, apiKey: string, otp: string) {
       `,
     }),
   })
+  if (!res.ok) {
+    const body = await res.text()
+    console.error('[Resend error]', res.status, body)
+  }
 }
 
 async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
@@ -76,7 +84,7 @@ async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
       from:    'Working Holiday Tax <noreply@workingholidaytax.com.au>',
       to:      [to],
       subject: '⚠️ CRM login blocked',
-      html: `<div style="font-family:system-ui,sans-serif;max-width:460px;margin:0 auto;"><div style="background:#b91c1c;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;"><h1 style="color:#fff;font-size:20px;margin:0;font-weight:600;">Login attempt blocked</h1></div><div style="background:#f9fafb;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 16px 16px;padding:32px;"><p style="font-size:14px;color:#333;margin:0 0 16px;"><strong>${attempts} failed login attempts</strong> on your CRM.</p><p style="font-size:13px;color:#888;">Time: ${time} (Sydney)</p><div style="background:#fff5f5;border-left:3px solid #b91c1c;padding:12px 16px;margin-top:16px;font-size:13px;color:#555;">Change your CRM password if you did not do this.</div></div></div>`,
+      html: `<p>${attempts} failed login attempts at ${time}</p>`,
     }),
   })
 }
