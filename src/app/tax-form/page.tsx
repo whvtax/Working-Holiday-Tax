@@ -390,7 +390,8 @@ export default function TaxFormPage() {
           <p className="form-footer-note">Your information is encrypted and securely stored. We will never share your data with third parties.</p>
 
         </form>
-      </div>
+        </div>{/* form-inner */}
+      </div>{/* form-page */}
     </>
   )
 }
