@@ -98,7 +98,7 @@ export default function MedicarePage() {
                 marginBottom:'0',
               }}>
               
-              Not everyone is eligible — we help you understand where you stand.
+              Not everyone is eligible, we help you understand your status..
             
             </p>
 
@@ -245,7 +245,7 @@ export default function MedicarePage() {
               Medicare levy exemption
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch', marginBottom: '28px' }}>
-              If you&apos;re not eligible for Medicare, you may need a Medicare levy exemption before lodging your tax return
+              If you&apos;re not eligible for Medicare,<br />you may need a Medicare levy exemption before lodging your tax return
             </p>
             <div className="reveal delay-1 rounded-2xl flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px] mx-auto"
               style={{ background: '#ffffff', border: '1px solid #C8EAE0', width: '100%', maxWidth: '640px' }}>

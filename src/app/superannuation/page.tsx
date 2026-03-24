@@ -161,7 +161,7 @@ export default function SuperannuationPage() {
             <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
               Don&apos;t leave your super behind.
             </p>
-            <p className="font-light" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
+            <p className="font-light mx-auto text-center" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
               You can claim it back once you leave. We handle everything for you.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"

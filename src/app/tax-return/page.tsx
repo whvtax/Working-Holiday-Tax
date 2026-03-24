@@ -171,7 +171,7 @@ export default function TaxReturnPage() {
               Most WHV travellers overpay tax.<br />We help you get it back.
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              Whether you’re owed money or need to pay, we handle everything for you correctly.
+              No matter your situation, we handle your tax the right way.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold transition-all"

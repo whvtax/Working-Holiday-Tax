@@ -307,7 +307,7 @@ export default function ABNPage() {
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           {/* Desktop: tighter gap between columns */}
-          <div className="grid grid-cols-1 lg:grid-cols-[55%_45%] gap-8 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start max-w-4xl mx-auto">
 
             <div className="text-center lg:text-left">
               <span className="section-label center">What is an ABN?</span>
