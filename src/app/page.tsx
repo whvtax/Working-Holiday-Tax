@@ -77,8 +77,8 @@ export default function HomePage() {
           </div>
 
           {/* Mobile: 2×2 grid · Desktop: single row */}
-          <div className="flex flex-col items-center gap-y-2 lg:flex-row lg:flex-nowrap lg:justify-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((label,i) => (
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
+            {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served.','Most replies within 1 hour'].map((label,i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -333,7 +333,7 @@ export default function HomePage() {
         eyebrow="Start here"
         heading="Get your tax sorted properly"
         headingEm="in Australia or abroad."
-        sub=""
+        sub="We handle your TFN, tax return, super and ABN — all online."
         primaryLabel="Start your tax return"
         trustLine="We usually respond within 1 hour"
         clipTop

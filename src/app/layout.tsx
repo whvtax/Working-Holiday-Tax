@@ -5,7 +5,6 @@ import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { StickyBar } from '@/components/layout/StickyBar'
 import { SITE_URL } from '@/lib/constants'
 
 const playfair = Playfair_Display({
@@ -39,6 +38,7 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax  -  Australian Tax for WHV Holders',
     description: 'Tax return, TFN, super and ABN for Working Holiday Visa holders in Australia.',
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax' }],
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
@@ -62,7 +62,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <RevealObserver />
         <ScrollToTop />
-        <StickyBar />
       </body>
     </html>
   )

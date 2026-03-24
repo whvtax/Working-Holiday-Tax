@@ -8,7 +8,7 @@ const linkStyle = { fontSize: '12.5px', color: '#587066' }
 export function Footer() {
   return (
     <footer style={{ background: '#ffffff', borderTop: '1px solid #E2EFE9' }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14 pt-7 sm:pt-10 pb-5 sm:pb-6">
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-7 sm:pt-10 pb-5 sm:pb-6">
 
         {/* Main columns */}
         <div className="grid grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-6 md:gap-8 mb-6 md:mb-8">

@@ -12,7 +12,7 @@ interface NextStepProps {
 
 export function NextStep({ eyebrow, heading, body, cta, href, external, trustLine }: NextStepProps) {
   const inner = (
-    <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 py-10 lg:py-14">
+    <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-10 lg:py-14">
       <div className="max-w-[560px] mx-auto text-center reveal">
         <span className="inline-block font-medium uppercase mb-3" style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(255,255,255,0.5)' }}>
           {eyebrow}
@@ -56,7 +56,7 @@ interface RelatedItem { label: string; desc: string; href: string }
 export function RelatedServices({ items }: { items: RelatedItem[] }) {
   return (
     <section className="py-8 lg:py-10 bg-white" style={{ borderTop: '1px solid #E2EFE9' }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
         <p className="font-medium uppercase mb-4" style={{ fontSize: '10px', letterSpacing: '0.14em', color: 'rgba(11,82,64,0.5)' }}>
           Related services
         </p>

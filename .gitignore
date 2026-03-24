@@ -10,3 +10,9 @@ npm-debug.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# Additional secret file patterns
+.env.production
+.env.staging
+.env.test
+*.env

@@ -68,7 +68,7 @@
 
   /* ── Accordion ── */
   .acc-body { max-height: 0; overflow: hidden; transition: max-height .45s cubic-bezier(.16,1,.3,1), padding .3s; }
-  .acc-body.open { max-height: 600px; padding-bottom: 20px; }
+  .acc-body.open { max-height: 1200px; padding-bottom: 20px; }
 
   /* ── Section label ── */
   .section-label {
@@ -202,8 +202,8 @@
      Small:      12.5px / lh 1.65
      ══════════════════════════════════════════════════════════════════ */
   @media (min-width: 1024px) {
-    /* Enforce uniform hero H1 size */
-    section h1.font-serif {
+    /* Enforce uniform hero H1 size (excludes calculator which uses clamp(38px,6vw,64px)) */
+    section h1.font-serif:not(.calc-h1) {
       font-size: 44px !important;
       line-height: 1.06 !important;
       letter-spacing: -0.03em !important;

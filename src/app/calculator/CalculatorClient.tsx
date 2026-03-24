@@ -5,7 +5,7 @@ import { WA_URL } from '@/lib/constants'
 
 type Result = { label: string; amount: string; sub: string; pct: number; owing: boolean }
 
-function calc(inc: number, wit: number, visa: string): Result {
+function calc(inc: number, wit: number, visa: 'whm' | 'res'): Result {
   let tax = 0
   if (visa === 'whm') {
     tax = inc <= 45000 ? inc * 0.15 : 6750 + (inc - 45000) * 0.3
@@ -31,14 +31,21 @@ export function CalculatorClient() {
   const [err,      setErr]      = useState('')
 
   const run = () => {
-    const i = Math.min(Math.max(parseFloat(income) || 0, 0), 10_000_000)
-    const w = Math.min(Math.max(parseFloat(withheld) || 0, 0), 5_000_000)
+    // Strip anything that isn't a digit or decimal point before parsing
+    const safeInc = income.replace(/[^0-9.]/g, '')
+    const safeWit = withheld.replace(/[^0-9.]/g, '')
+    const rawI = parseFloat(safeInc)
+    const rawW = parseFloat(safeWit)
+    // Explicit NaN check then clamp to sane bounds
+    const i = isFinite(rawI) ? Math.min(Math.max(rawI, 0), 10_000_000) : 0
+    const w = isFinite(rawW) ? Math.min(Math.max(rawW, 0), 5_000_000)  : 0
     if (!i || !w || !visa) { setErr('Please fill in all three fields.'); return }
     if (w > i) { setErr('Tax withheld cannot exceed total income.'); return }
     setErr('')
-    const allowedVisa = ['whm', 'res']
-    if (!allowedVisa.includes(visa)) { setErr('Invalid selection.'); return }
-    setResult(calc(i, w, visa))
+    // Allowlist check — never trust client-side select value
+    const allowedVisa = ['whm', 'res'] as const
+    if (!(allowedVisa as readonly string[]).includes(visa)) { setErr('Invalid selection.'); return }
+    setResult(calc(i, w, visa as 'whm' | 'res'))
   }
 
   return (
@@ -57,7 +64,7 @@ export function CalculatorClient() {
               <span className="w-1.5 h-1.5 rounded-full bg-forest-300" aria-hidden="true" />
               <span className="text-[11px] font-medium tracking-[0.12em] uppercase text-forest-500">Free tool</span>
             </div>
-            <h1 className="font-serif font-black text-ink mb-4" style={{ fontSize: 'clamp(38px,6vw,64px)', lineHeight: 1, letterSpacing: '-0.04em' }}>
+            <h1 className="font-serif font-black text-ink mb-4 calc-h1" style={{ fontSize: 'clamp(38px,6vw,64px)', lineHeight: 1, letterSpacing: '-0.04em' }}>
               Tax Refund Calculator.
             </h1>
             <p className="text-[17px] font-light leading-[1.7]" style={{ color: 'rgba(255,255,255,0.42)', maxWidth: '440px' }}>
@@ -126,7 +133,7 @@ export function CalculatorClient() {
                 {err && <p role="alert" className="text-[13px] text-red-500 font-medium">{err}</p>}
               </div>
 
-              <button onClick={run} className="btn-primary w-full" style={{ height: '52px', fontSize: '15px', borderRadius: '100px' }}>
+              <button type="button" onClick={run} className="btn-primary w-full" style={{ height: '52px', fontSize: '15px', borderRadius: '100px' }}>
                 Calculate my refund →
               </button>
 
@@ -155,7 +162,7 @@ export function CalculatorClient() {
                   {/* Result header */}
                   <div className="p-8 pb-7" style={{ background: result.owing ? '#1A2822' : '#1A5C44' }}>
                     <p className="text-[11px] font-medium tracking-[0.1em] uppercase mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>{result.label}</p>
-                    <p className="font-serif font-black text-ink mb-1.5" style={{ fontSize: '56px', lineHeight: 1, letterSpacing: '-0.04em' }}>
+                    <p className="font-serif font-black mb-1.5" style={{ fontSize: '56px', lineHeight: 1, letterSpacing: '-0.04em', color: '#ffffff' }}>
                       {result.amount}
                     </p>
                     <p className="text-[13px]" style={{ color: 'rgba(255,255,255,0.48)' }}>{result.sub}</p>

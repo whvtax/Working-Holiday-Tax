@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { WA_URL, EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
@@ -183,7 +182,7 @@ export default function ContactPage() {
             <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(17px, 2.12vw, 24px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
               Start with a quick check
             </h2>
-            <p className="font-light text-muted leading-[1.75] mb-6" style={{ fontSize: '15px', maxWidth: '360px' }}>
+            <p className="font-light text-muted leading-[1.75] mb-6 mx-auto text-center" style={{ fontSize: '15px', maxWidth: '360px' }}>
               Tell us your situation - we’ll review it and explain your options clearly
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"

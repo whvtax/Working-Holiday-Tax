@@ -78,7 +78,7 @@ export default function TFNPage() {
               Without a TFN, you may be taxed at a higher rate.
             </p>
 
-            <div className="flex flex-col lg:flex-row gap-3 lg:gap-4"
+            <div className="flex flex-col gap-3 lg:flex-row lg:gap-4"
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
@@ -86,14 +86,14 @@ export default function TFNPage() {
                 Apply for a TFN →
               </a>
               <a href="#how-to-apply"
-                className="hidden lg:inline-flex btn-ghost-dark justify-center"
+                className="inline-flex btn-ghost-dark justify-center"
                 style={{ height:'54px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
                 See how it works →
               </a>
             </div>
 
-            <div className="flex flex-col items-start gap-y-2 lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((t,i) => (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served.','Most replies within 1 hour'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

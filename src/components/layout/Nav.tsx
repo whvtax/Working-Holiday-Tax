@@ -34,7 +34,7 @@ export function Nav() {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-canvas/92 backdrop-blur-2xl' : ''}`}
         style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
-        <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-[68px] flex items-center justify-between gap-5">
             <Logo />
 
@@ -77,42 +77,17 @@ export function Nav() {
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
         {NAV_LINKS.map(l => (
           <Link key={l.href} href={l.href} onClick={close}
-            className="block font-sans text-[15px] font-medium text-ink py-3 transition-colors hover:text-forest-500"
+            className="block font-sans text-[17px] font-medium text-ink py-4 transition-colors hover:text-forest-500"
             style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
             {l.label}
           </Link>
         ))}
         <div className="mt-6">
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '46px', borderRadius: '100px', fontSize: '14px' }}>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '54px', borderRadius: '100px', fontSize: '15px' }}>
               Free Eligibility Check →
           </a>
         </div>
 
-        {/* Partner badges — 3 circles */}
-        <div className="flex items-center gap-2.5 mt-6 pt-5" style={{ borderTop: '1px solid #F0F5F2' }}>
-          <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
-            aria-label="Xero"
-            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70"
-            style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}>
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
-            </svg>
-          </a>
-          <div className="flex items-center justify-center rounded-full"
-            style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}>
-            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
-              <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
-            aria-label="Registered Tax Practitioners Board"
-            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
-            style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={22} height={22} style={{ objectFit: 'contain' }} />
-          </a>
-        </div>
       </div>
     </>
   )
