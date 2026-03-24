@@ -9,8 +9,8 @@ function auth(req: NextRequest) {
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
   try {
-    const { year, refundAmount } = await req.json()
-    await addTaxReturn(params.id, { year, refundAmount: Number(refundAmount), completedAt: new Date().toISOString() })
+    const { year, refundAmount, type } = await req.json()
+    await addTaxReturn(params.id, { year, refundAmount: Number(refundAmount), type: type ?? 'refund', completedAt: new Date().toISOString() })
     return NextResponse.json({ ok: true })
   } catch (err) {
     return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })

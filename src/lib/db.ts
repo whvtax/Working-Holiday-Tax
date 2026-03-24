@@ -12,12 +12,14 @@ export type ClientRecord = {
   email: string
   country: string
   taxReturns: TaxReturn[]   // history of completed returns
+  notes: string
   createdAt: string
 }
 
 export type TaxReturn = {
   year: string        // e.g. "2023-24"
   refundAmount: number
+  type: 'refund' | 'owed'
   completedAt: string
 }
 
@@ -56,6 +58,7 @@ export async function initDb() {
       email       TEXT NOT NULL DEFAULT '',
       country     TEXT NOT NULL DEFAULT '',
       tax_returns TEXT NOT NULL DEFAULT '[]',
+      notes       TEXT NOT NULL DEFAULT '',
       created_at  TEXT NOT NULL DEFAULT ''
     )
   `
@@ -97,6 +100,7 @@ function toClient(r: Record<string,unknown>): ClientRecord {
     email: r.email as string,
     country: r.country as string,
     taxReturns,
+    notes: r.notes as string ?? '',
     createdAt: r.created_at as string,
   }
 }
@@ -188,9 +192,9 @@ export async function completeTask(taskId: string): Promise<void> {
     `
   } else {
     await sql`
-      INSERT INTO crm_clients (id, full_name, dob, whatsapp, email, country, tax_returns, created_at)
+      INSERT INTO crm_clients (id, full_name, dob, whatsapp, email, country, tax_returns, notes, created_at)
       VALUES (${task.clientId}, ${task.clientName}, ${task.dob}, ${task.whatsapp},
-              ${task.email}, ${task.country}, '[]', ${new Date().toISOString()})
+              ${task.email}, ${task.country}, '[]', '', ${new Date().toISOString()})
     `
   }
 

@@ -19,18 +19,23 @@ type View = 'dashboard'|'clients'|'client-detail'
 export default function DashboardClient() {
   const router = useRouter()
   const [view, setView]                 = useState<View>('dashboard')
+  const [taskView, setTaskView]          = useState<'list'|'detail'>('list')
   const [tasks, setTasks]               = useState<Task[]>([])
   const [clients, setClients]           = useState<Client[]>([])
   const [activeTask, setActiveTask]     = useState<Task|null>(null)
   const [activeClient, setActiveClient] = useState<Client|null>(null)
   const [search, setSearch]             = useState('')
+  const [yearFilter, setYearFilter]      = useState<string>('all')
   const [taskNotes, setTaskNotes]       = useState('')
   const [notesSaved, setNotesSaved]     = useState(false)
   const [loading, setLoading]           = useState(true)
   // tax return form
+  const [clientNotes, setClientNotes]     = useState('')
+  const [clientNotesSaved, setClientNotesSaved] = useState(false)
   const [showAddReturn, setShowAddReturn] = useState(false)
   const [newYear, setNewYear]           = useState('')
   const [newRefund, setNewRefund]       = useState('')
+  const [newType, setNewType]           = useState<'refund'|'owed'>('refund')
   const [confirmComplete, setConfirmComplete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
 
@@ -83,23 +88,47 @@ export default function DashboardClient() {
     if (activeTask?.id === taskId) setActiveTask(prev => prev ? {...prev, done:true} : null)
   }
 
-  async function completeTask(taskId: string) {
+  async function deleteTaskOnly(taskId: string) {
+    // Just delete the task — client already done, no archiving needed
     await fetch(`/api/crm/tasks/${taskId}`, {
       method:'PATCH', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ action:'complete' }),
     })
     setActiveTask(null)
     setConfirmComplete(null)
+    await loadTasks()
+  }
+
+  async function completeTask(taskId: string) {
+    await fetch(`/api/crm/tasks/${taskId}`, {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'complete' }),
+    })
+    setActiveTask(null)
+    setTaskView('list')
+    setConfirmComplete(null)
     await Promise.all([loadTasks(), loadClients()])
+  }
+
+  async function saveClientNotes() {
+    if (!activeClient) return
+    try {
+      await fetch(`/api/crm/clients/${activeClient.id}/notes`, {
+        method:'PATCH', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ notes: clientNotes }),
+      })
+    } catch {}
+    setClientNotesSaved(true)
+    setTimeout(() => setClientNotesSaved(false), 2500)
   }
 
   async function addTaxReturn() {
     if (!activeClient || !newYear || !newRefund) return
     await fetch(`/api/crm/clients/${activeClient.id}/tax-returns`, {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ year:newYear, refundAmount:parseFloat(newRefund) }),
+      body: JSON.stringify({ year:newYear, refundAmount:parseFloat(newRefund), type:newType }),
     })
-    setNewYear(''); setNewRefund(''); setShowAddReturn(false)
+    setNewYear(''); setNewRefund(''); setNewType('refund'); setShowAddReturn(false)
     const res = await fetch(`/api/crm/clients/${activeClient.id}`)
     const d   = await res.json()
     if (d.ok) setActiveClient(d.client)
@@ -137,13 +166,18 @@ export default function DashboardClient() {
   const pendingTasks = tasks.filter(t => !t.done)
   const doneTasks    = tasks.filter(t =>  t.done)
 
-  const visibleClients = clients.filter(c =>
-    !search ||
-    c.fullName.toLowerCase().includes(search.toLowerCase()) ||
-    c.country?.toLowerCase().includes(search.toLowerCase()) ||
-    c.email?.toLowerCase().includes(search.toLowerCase()) ||
-    c.whatsapp?.includes(search)
-  )
+  const visibleClients = clients.filter(c => {
+    const matchSearch = !search ||
+      c.fullName.toLowerCase().includes(search.toLowerCase()) ||
+      c.country?.toLowerCase().includes(search.toLowerCase()) ||
+      c.email?.toLowerCase().includes(search.toLowerCase()) ||
+      c.whatsapp?.includes(search)
+    const matchYear = yearFilter === 'all' || c.taxReturns.some(r => r.year === yearFilter)
+    return matchSearch && matchYear
+  })
+
+  // All unique tax years across clients
+  const allYears = [...new Set(clients.flatMap(c => c.taxReturns.map(r => r.year)))].sort().reverse()
 
   const totalRefunds = clients.reduce((sum, c) =>
     sum + c.taxReturns.reduce((s, r) => s + r.refundAmount, 0), 0)
@@ -309,7 +343,7 @@ export default function DashboardClient() {
             </div>
             <div className="sb-divider"/>
             <nav className="sb-nav">
-              <button className={`sb-item ${view==='dashboard'?'active':''}`} onClick={()=>{setView('dashboard');setActiveTask(null)}}>
+              <button className={`sb-item ${view==='dashboard'?'active':''}`} onClick={()=>{setView('dashboard');setActiveTask(null);setTaskView('list')}}>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>
                 Tasks
                 {pendingTasks.length > 0 && <span className="sb-badge">{pendingTasks.length}</span>}
@@ -337,8 +371,90 @@ export default function DashboardClient() {
         {/* Main */}
         <main className="main">
 
+          {/* ── TASK DETAIL FULL PAGE ── */}
+          {view === 'dashboard' && taskView === 'detail' && activeTask && (
+            <div className="page">
+              <button className="back-btn" onClick={()=>setTaskView('list')}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                Back to Tasks
+              </button>
+
+              {/* Client header */}
+              <div className="c-card" style={{marginBottom:14}}>
+                <div className="c-hdr">
+                  <div className="c-av">
+                    {activeTask.clientName.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()}
+                  </div>
+                  <div>
+                    <div className="c-name">{activeTask.clientName}</div>
+                    <div className="c-sub">{activeTask.country} · Tax year {activeTask.taxYear} · Submitted {fmtDate(activeTask.submittedAt)}</div>
+                  </div>
+                  {activeTask.done
+                    ? <span style={{marginLeft:'auto',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Done</span>
+                    : <span style={{marginLeft:'auto',background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
+                  }
+                </div>
+                {/* Details grid */}
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
+                  {[
+                    ['Date of birth', activeTask.dob],
+                    ['WhatsApp', activeTask.whatsapp],
+                    ['Email', activeTask.email],
+                    ['AU Phone', activeTask.auPhone],
+                    ['Address', activeTask.address],
+                    ['TFN 🔒', activeTask.tfn],
+                    ['Bank details 🔒', activeTask.bankDetails],
+                    ['Employer', activeTask.primaryJob],
+                    ['Marital status', activeTask.marital],
+                    ['Tax status', activeTask.taxStatus],
+                    ['How they heard', activeTask.howHeard],
+                  ].map(([label, value]) => (
+                    <div key={label} style={{display:'flex',padding:'9px 0',borderBottom:'1px solid #f5f5f5',gap:12}}>
+                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:120,flexShrink:0}}>{label}</span>
+                      <span style={{fontSize:13,color:'#0a1410'}}>{value||'—'}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Notes */}
+              <div className="ret-section" style={{marginBottom:14}}>
+                <div style={{fontSize:13,fontWeight:600,color:'#0a1410',marginBottom:10,display:'flex',alignItems:'center',gap:7}}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#0E5C42" strokeWidth="1.8"/><path d="M8 13h8M8 17h5" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  Notes
+                </div>
+                <textarea
+                  style={{width:'100%',border:'1.5px solid #e4ede8',borderRadius:10,padding:'11px 13px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:100,lineHeight:1.6,boxSizing:'border-box'}}
+                  placeholder="Add notes..."
+                  value={taskNotes}
+                  onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}
+                />
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:8}}>
+                  {notesSaved ? <span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span> : <span/>}
+                  <button style={{padding:'6px 14px',border:'none',borderRadius:8,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===activeTask.notes?0.4:1}} disabled={taskNotes===activeTask.notes} onClick={saveNotes}>Save notes</button>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div style={{display:'flex',gap:10}}>
+                {!activeTask.done && (
+                  <button
+                    style={{flex:1,padding:'12px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}}
+                    onClick={async()=>{ await markDone(activeTask.id); setActiveTask({...activeTask,done:true}) }}>
+                    ✓ Mark as done
+                  </button>
+                )}
+                <button
+                  style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}
+                  onClick={()=>setConfirmComplete(activeTask.id)}>
+                  🗑️ Delete task
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* ── DASHBOARD / TASKS ── */}
-          {view === 'dashboard' && (
+          {view === 'dashboard' && taskView === 'list' && (
             <div className="page">
               <div className="page-title">Tasks</div>
               <div className="page-sub">Tax return submissions awaiting processing</div>
@@ -355,7 +471,7 @@ export default function DashboardClient() {
                     <div className="task-list">
                       {pendingTasks.map(t => (
                         <div key={t.id} className={`task-card ${activeTask?.id===t.id?'active-card':''}`}
-                          onClick={()=>{ setActiveTask(t); setTaskNotes(t.notes) }}>
+                          onClick={()=>{ setActiveTask(t); setTaskNotes(t.notes); setTaskView('detail') }}>
                           <div className="task-dot"/>
                           <div className="task-info">
                             <div className="task-name">{t.clientName}</div>
@@ -376,7 +492,7 @@ export default function DashboardClient() {
                       <div className="task-list">
                         {doneTasks.map(t => (
                           <div key={t.id} className={`task-card ${activeTask?.id===t.id?'active-card':''}`}
-                            onClick={()=>{ setActiveTask(t); setTaskNotes(t.notes) }}
+                            onClick={()=>{ setActiveTask(t); setTaskNotes(t.notes); setTaskView('detail') }}
                             style={{opacity:0.65}}>
                             <div className="task-dot done"/>
                             <div className="task-info">
@@ -439,17 +555,49 @@ export default function DashboardClient() {
             </div>
           )}
 
+          )}
+
           {/* ── CLIENTS LIST ── */}
           {view === 'clients' && (
             <div className="page">
-              <div className="cl-hdr">
-                <div className="cl-title-text">Clients</div>
-                <div className="search-wrap">
-                  <svg className="search-ico" width="13" height="13" viewBox="0 0 24 24" fill="none">
+              {/* Top row: title + count + year filter */}
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
+                <div style={{display:'flex',alignItems:'center',gap:12}}>
+                  <div className="cl-title-text">Clients</div>
+                  <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
+                    {visibleClients.length} {yearFilter !== 'all' ? `in ${yearFilter}` : 'total'}
+                  </span>
+                </div>
+                <div style={{display:'flex',alignItems:'center',gap:8}}>
+                  <select
+                    value={yearFilter}
+                    onChange={e=>setYearFilter(e.target.value)}
+                    style={{padding:'7px 12px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',color:'#333',cursor:'pointer',fontFamily:'inherit'}}>
+                    <option value="all">All years</option>
+                    {allYears.map(y => <option key={y} value={y}>{y}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              {/* Search row */}
+              <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14,flexWrap:'wrap'}}>
+                <div style={{position:'relative',flex:1,minWidth:220}}>
+                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none">
                     <circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/>
                     <path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/>
                   </svg>
-                  <input className="search-inp" placeholder="Search by name, email, country…"
+                  <input
+                    style={{width:'100%',padding:'8px 12px 8px 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}}
+                    placeholder="Search by name…"
+                    value={search} onChange={e=>setSearch(e.target.value)}/>
+                </div>
+                <div style={{position:'relative',flex:1,minWidth:220}}>
+                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.08 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/>
+                  </svg>
+                  <input
+                    style={{width:'100%',padding:'8px 12px 8px 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}}
+                    placeholder="Search by WhatsApp or email…"
                     value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
               </div>
@@ -467,7 +615,7 @@ export default function DashboardClient() {
                         <th className="th">Country</th>
                         <th className="th">WhatsApp</th>
                         <th className="th">Email</th>
-                        <th className="th">Returns</th>
+                        <th className="th">Date of birth</th>
                         <th className="th"></th>
                       </tr>
                     </thead>
@@ -563,27 +711,59 @@ export default function DashboardClient() {
                 ) : (
                   <>
                     {[...activeClient.taxReturns].sort((a,b)=>b.year.localeCompare(a.year)).map(r => (
-                      <div key={r.year} className="return-row">
-                        <div>
-                          <div className="return-year">{r.year}</div>
-                          <div className="return-date">{fmtDate(r.completedAt)}</div>
+                      <div key={r.year} className="return-row" style={{background: r.type==='owed'?'#fff8f7':'#f7fbf9', borderColor: r.type==='owed'?'#fca5a5':'#e4ede8'}}>
+                        <div style={{display:'flex',alignItems:'center',gap:10}}>
+                          <div>
+                            <div className="return-year" style={{color: r.type==='owed'?'#c0392b':'#0E5C42'}}>{r.year}</div>
+                            <div className="return-date">{fmtDate(r.completedAt)}</div>
+                          </div>
+                          {r.type==='owed'
+                            ? <span style={{background:'#fef0f0',color:'#c0392b',border:'1px solid #fca5a5',borderRadius:5,padding:'1px 7px',fontSize:10,fontWeight:700}}>Tax owed</span>
+                            : <span style={{background:'#e8f5f0',color:'#0E5C42',border:'1px solid #b0d8c8',borderRadius:5,padding:'1px 7px',fontSize:10,fontWeight:700}}>Refund</span>
+                          }
                         </div>
                         <div style={{display:'flex',alignItems:'center',gap:12}}>
-                          <div className="return-amount">{fmtCurrency(r.refundAmount)}</div>
+                          <div className="return-amount" style={{color: r.type==='owed'?'#c0392b':'#0a1410'}}>{r.type==='owed'?'-':''}{fmtCurrency(r.refundAmount)}</div>
                           <button className="return-del" onClick={()=>removeTaxReturn(r.year)} title="Remove">×</button>
                         </div>
                       </div>
                     ))}
                     <div className="total-row">
                       <span className="total-lbl">Total refunds</span>
-                      <span className="total-val">{fmtCurrency(activeClient.taxReturns.reduce((s,r)=>s+r.refundAmount,0))}</span>
+                      <span className="total-val">{fmtCurrency(activeClient.taxReturns.reduce((s,r)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</span>
                     </div>
                   </>
                 )}
               </div>
 
               {/* Danger */}
-              <div className="danger-section">
+              <div className="ret-section" style={{marginBottom:12}}>
+          <div className="ret-title" style={{marginBottom:10}}>
+            <span style={{display:'flex',alignItems:'center',gap:7}}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#0E5C42" strokeWidth="1.8"/><path d="M8 13h8M8 17h5" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              Internal notes
+            </span>
+          </div>
+          <textarea
+            style={{width:'100%',border:'1.5px solid #e4ede8',borderRadius:10,padding:'11px 13px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:90,lineHeight:1.6,boxSizing:'border-box'}}
+            placeholder="Add private notes about this client — follow-ups, ATO status, anything relevant..."
+            value={clientNotes}
+            onChange={e=>{setClientNotes(e.target.value);setClientNotesSaved(false)}}
+          />
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:8}}>
+            {clientNotesSaved
+              ? <span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span>
+              : <span style={{fontSize:11,color:'#aabab2'}}>Only visible to you</span>
+            }
+            <button
+              style={{padding:'6px 14px',border:'none',borderRadius:8,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:clientNotes===(activeClient?.notes??'')?0.4:1}}
+              disabled={clientNotes===(activeClient?.notes??'')}
+              onClick={saveClientNotes}
+            >Save notes</button>
+          </div>
+        </div>
+
+      <div className="danger-section">
                 <div className="danger-title">⚠️ Delete client</div>
                 <div className="danger-text">Permanently removes this client and all their tax return history.</div>
                 <button className="danger-btn" onClick={()=>setConfirmDeleteClient(activeClient.id)}>Delete client</button>
@@ -598,15 +778,14 @@ export default function DashboardClient() {
       {confirmComplete && (
         <div className="overlay" onClick={e=>{ if(e.target===e.currentTarget) setConfirmComplete(null) }}>
           <div className="modal">
-            <div className="modal-icon">📦</div>
-            <div className="modal-title">Complete &amp; archive?</div>
+            <div className="modal-icon">🗑️</div>
+            <div className="modal-title">Delete task?</div>
             <div className="modal-text">
-              All sensitive details (TFN, bank, address) will be deleted.<br/>
-              The client will move to the Clients tab with their basic info only.
+              This will permanently delete this task and all its details from the system.
             </div>
             <div className="modal-btns">
               <button className="modal-cancel" onClick={()=>setConfirmComplete(null)}>Cancel</button>
-              <button className="modal-confirm-green" onClick={()=>completeTask(confirmComplete)}>Yes, archive</button>
+              <button className="modal-confirm-red" onClick={()=>completeTask(confirmComplete)}>Yes, delete</button>
             </div>
           </div>
         </div>
