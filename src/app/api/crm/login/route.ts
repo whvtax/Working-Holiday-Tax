@@ -5,10 +5,17 @@ import {
   recordFailedAttempt, resetFailedAttempts, isLockedOut,
   generateOtp,
 } from '@/lib/crm-store'
-import { kv } from '@vercel/kv'
+import { createClient } from 'redis'
 import crypto from 'crypto'
 
+async function getRedis() {
+  const client = createClient({ url: process.env.REDIS_URL })
+  await client.connect()
+  return client
+}
+
 export async function POST(req: NextRequest) {
+  let redis
   try {
     const { password } = await req.json()
 
@@ -29,10 +36,11 @@ export async function POST(req: NextRequest) {
 
     resetFailedAttempts()
 
-    // Generate OTP and store in KV (shared across all serverless instances)
+    // Generate OTP and store in Redis (shared across all serverless instances)
     const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
-    await kv.set('crm_otp', otpHash, { ex: 600 }) // expires in 10 minutes
+    redis = await getRedis()
+    await redis.set('crm_otp', otpHash, { EX: 600 }) // expires in 10 minutes
 
     await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
 
@@ -41,6 +49,8 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error('[CRM login]', err)
     return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
+  } finally {
+    if (redis) await redis.disconnect()
   }
 }
 

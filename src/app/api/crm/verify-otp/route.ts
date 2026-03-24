@@ -1,18 +1,26 @@
 // src/app/api/crm/verify-otp/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { createSession } from '@/lib/crm-store'
-import { kv } from '@vercel/kv'
+import { createClient } from 'redis'
 import crypto from 'crypto'
 
+async function getRedis() {
+  const client = createClient({ url: process.env.REDIS_URL })
+  await client.connect()
+  return client
+}
+
 export async function POST(req: NextRequest) {
+  let redis
   try {
     const { code } = await req.json()
     if (!code || typeof code !== 'string') {
       return NextResponse.json({ ok: false, error: 'missing_code' }, { status: 400 })
     }
 
-    // Read OTP hash from KV (shared across all serverless instances)
-    const storedHash = await kv.get<string>('crm_otp')
+    redis = await getRedis()
+    const storedHash = await redis.get('crm_otp')
+
     if (!storedHash) {
       return NextResponse.json(
         { ok: false, error: 'invalid_otp', message: 'Code expired or not found. Please login again.' },
@@ -36,8 +44,8 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // One-time use — delete from KV immediately
-    await kv.del('crm_otp')
+    // One-time use — delete from Redis immediately
+    await redis.del('crm_otp')
 
     const token = createSession()
     const res = NextResponse.json({ ok: true })
@@ -53,5 +61,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error('[CRM /api/crm/verify-otp]', err)
     return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 })
+  } finally {
+    if (redis) await redis.disconnect()
   }
 }
