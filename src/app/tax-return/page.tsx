@@ -135,7 +135,7 @@ export default function TaxReturnPage() {
                 marginBottom:'0',
               }}>
               <span className="hidden lg:inline">Most refunds are lodged within 24 hours. No confusion, no delays.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px', whiteSpace:'nowrap' }}>Most refunds are lodged within 24 hours. No confusion, no delays.</span>
+              <span className="lg:hidden" style={{ fontSize:'12.5px', whiteSpace:'nowrap' }}>Most refunds are lodged within 24 hours.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -173,8 +173,7 @@ export default function TaxReturnPage() {
               Most WHV travellers overpay tax.<br />We help you get it back.
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              <span className="hidden lg:inline">we handle your tax the right way.</span>
-              <span className="lg:hidden">No matter your situation, we handle your tax the right way.</span>
+              No matter your situation, we handle your tax the right way.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold transition-all"
@@ -214,7 +213,7 @@ export default function TaxReturnPage() {
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
                 title: 'We maximise your refund',
-                body: "We claim every deduction you're entitled to - so you get the most back.",
+                body: <>  <span className="hidden lg:inline">We claim every deduction you're entitled to - so you get the most back.</span><span className="lg:hidden">We claim every deduction you're entitled to, so you get the most back.</span></>,
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
@@ -523,7 +522,7 @@ export default function TaxReturnPage() {
               <div className="space-y-0">
                 {[
                   { label: 'Our preparation',  body: <><span className="hidden lg:inline">We prepare your return within 24 hours of receiving your details.</span><span className="lg:hidden">We prepare your return within 24 hours<br />of receiving your details.</span></> },
-                  { label: 'ATO processing',   body: <><span className="hidden lg:inline">The ATO usually processes returns within 7–14 business days. This can be longer during busy periods.</span><span className="lg:hidden">The ATO usually processes returns within 7–14 business days.<br />This can be longer during busy periods.</span></> },
+                  { label: 'ATO processing',   body: <><span className="hidden lg:inline">The ATO usually processes returns within 7–14 business days. This can be longer during busy periods.</span><span className="lg:hidden" style={{display:"block", textAlign:"center"}}>The ATO usually processes returns within<br />7–14 business days.<br />This can be longer during busy periods.</span></> },
                   { label: 'Final outcome',    body: <><span className="hidden lg:inline">Once your return is processed, your refund is paid directly to your Australian bank account.</span><span className="lg:hidden">Once your return is processed, your refund is paid directly<br />to your Australian bank account.</span></> },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>

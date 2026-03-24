@@ -88,6 +88,38 @@ export function Nav() {
           </a>
         </div>
 
+        {/* Trust badges */}
+        <div className="flex items-center justify-center gap-3 mt-5 pb-2">
+          {/* Xero */}
+          <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
+            aria-label="Xero"
+            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70"
+            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
+            </svg>
+          </a>
+
+          {/* Security / SSL */}
+          <div className="flex items-center justify-center rounded-full"
+            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}
+            title="Secure & encrypted">
+            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
+              <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+
+          {/* TPB */}
+          <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
+            aria-label="Registered Tax Practitioners Board"
+            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
+            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={24} height={24} style={{ objectFit: 'contain' }} />
+          </a>
+        </div>
+
       </div>
     </>
   )

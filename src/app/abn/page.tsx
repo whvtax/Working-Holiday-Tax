@@ -84,8 +84,8 @@ export default function ABNPage() {
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              <span className="hidden lg:inline">We make sure your ABN is set up correctly for the work you do.</span>
-              <span className="lg:hidden" style={{ fontSize:'13px', whiteSpace:'nowrap' }}>We make sure your ABN is set up correctly for the work you do.</span>
+              <span className="hidden lg:inline">We set up your ABN correctly from the start.</span>
+              <span className="lg:hidden" style={{ fontSize:'13px', whiteSpace:'nowrap' }}>We set up your ABN correctly from the start.</span>
             </p>
 
             <p className="font-light"
@@ -137,9 +137,9 @@ export default function ABNPage() {
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'8px' }}>
               Not sure if you need an ABN or TFN?
             </p>
-            <p className="font-light"
+            <p className="font-light text-center lg:text-left"
               style={{ fontSize:'clamp(13px,1.3vw,14.5px)', color:'rgba(255,255,255,0.68)', marginBottom:'0', lineHeight:1.7, maxWidth:'36ch', margin:'0 auto' }}>
-              We&apos;ll tell you exactly what you need based on your situation
+              We&apos;ll tell you exactly what you need<br />based on your situation
             </p>
             <div style={{ marginTop:'16px' }} className="lg:mt-7">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
@@ -177,7 +177,7 @@ export default function ABNPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { n:'01', title:'We help you choose the right setup', body:'Not sure if you need an ABN? We check your situation and give you a clear answer.' },
-              { n:'02', title:'We set up your ABN correctly', body:'We handle the registration so your ABN matches your work - no delays or issues.' },
+              { n:'02', title:'We set up your ABN correctly', body:'We handle the registration so your ABN matches your work, no delays or issues.' },
               { n:'03', title:'Set up correctly from day one', body:'Everything is done properly so you can start working without issues.' },
             ].map((item,i) => (
               <div key={i} className="rounded-2xl flex flex-col"

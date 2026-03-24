@@ -48,26 +48,18 @@ export default function HomePage() {
             <span className="font-medium uppercase" style={{ fontSize:'10px', letterSpacing:'0.18em', color:'rgba(11,82,64,0.65)' }}>Working Holiday Visa Specialist</span>
           </div>
 
-          {/* Mobile: natural wrap · Desktop: explicit 2-line break */}
+          {/* Unified heading — clamp handles mobile→desktop sizing */}
           <h1 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(20px, 3.06vw, 42px)', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px' }}>
-              {/* Desktop: locked 2 lines - nowrap per line */}
-              <span className="hidden lg:block">
-                <span style={{ display:'block', whiteSpace:'nowrap' }}>Confused about tax in Australia?</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>We’ve got you covered.</span>
-              </span>
-
-              <span className="lg:hidden" style={{ display:'block' }}>
-                <span style={{ display:'block', whiteSpace:'nowrap', fontSize:'22px' }}>Confused about tax in Australia?</span>
-                <span style={{ display:'block', color:'#0B5240', whiteSpace:'nowrap', fontSize:'22px' }}>We’ve got you covered.</span>
-              </span>
+            style={{ fontSize:'clamp(28px, 3.06vw, 42px)', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px' }}>
+              <span style={{ display:'block', whiteSpace:'nowrap' }}>Confused about tax in Australia?</span>
+              <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>We’ve got you covered.</span>
             </h1>
 
           {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
             style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
             <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
-            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super -<br />we handle everything for you</span>
+            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
           </p>
 
           {/* Mobile: tighter top margin · Desktop: more breathing room */}

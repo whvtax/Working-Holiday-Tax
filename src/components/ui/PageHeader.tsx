@@ -1,3 +1,4 @@
+import React from 'react'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 
@@ -6,7 +7,7 @@ interface Props {
   kicker?: string
   title: string
   titleEm?: string
-  sub: string
+  sub: React.ReactNode
   breadcrumbs?: BC[]
   cta?: { label: string; href?: string }
 }

@@ -268,8 +268,8 @@ export default function MedicarePage() {
       <section className="py-9 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-10 items-start">
-            <div className="reveal text-center lg:text-left">
-              <span className="section-label center">What is Medicare?</span>
+            <div className="reveal text-left">
+              <span className="section-label">What is Medicare?</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
                 Medicare is Australia&apos;s public health system
               </h2>

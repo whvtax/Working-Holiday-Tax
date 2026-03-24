@@ -61,7 +61,7 @@ export default function PrivacyPage() {
         kicker="Legal"
         title="Privacy Policy"
         titleEm=""
-        sub="Last updated: 1 July 2027. We take your privacy seriously."
+        sub={<><span className="hidden lg:inline">Last updated: 1 July 2027. We take your privacy seriously.</span><span className="lg:hidden">Last updated: 1 July 2027.<br />We take your privacy seriously.</span></>}
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }]}
       />
 

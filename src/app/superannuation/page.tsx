@@ -218,7 +218,7 @@ export default function SuperannuationPage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-5 reveal delay-2">
             {[
               { title: 'Contribution rate',  body: '12% of your wages is paid into your super fund.' },
-              { title: 'Who can claim',      body: 'Working Holiday visa holders who have left Australia and their visa has expired.' },
+              { title: 'Who can claim',      body: <><span className="hidden lg:inline">Working Holiday visa holders who have left Australia and their visa has expired.</span><span className="lg:hidden">WHV holders who have left Australia and their visa has expired.</span></> },
               { title: 'Processing time',    body: 'Usually paid within a few weeks after approval.' },
               { title: 'Payment method',     body: 'Paid directly to your bank account.' },
             ].map((c, i) => (
@@ -359,8 +359,8 @@ export default function SuperannuationPage() {
                 {[
                   'Your passport details',
                   'Your Tax File Number (TFN)',
-                  'Your super fund name and member number (if known)',
-                  'Your super fund start date (if known)',
+                  'Your super fund name and member number',
+                  'Your super fund start date',
                   'Your bank account details for payment',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">

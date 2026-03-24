@@ -30,7 +30,8 @@ export default function ContactPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              Get clear answers about your situation
+              <span className="hidden lg:inline">Get clear answers about your situation</span>
+              <span className="lg:hidden">Get clear answers about<br />your situation</span>
             </h1>
 
             <p className="font-light mx-auto"
@@ -105,7 +106,7 @@ export default function ContactPage() {
             </a>
 
             {/* Social row */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-between rounded-2xl p-5 transition-all hover:shadow-md group"
                 style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
@@ -168,7 +169,7 @@ export default function ContactPage() {
                   </div>
                 </div>
               ))}
-              <div style={{ borderTop: '1px solid #E2EFE9', marginTop: '18px', width:'100%' }} />
+
             </div>
           </div>
         </div>
