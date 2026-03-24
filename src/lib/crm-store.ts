@@ -29,6 +29,7 @@ export type ClientRecord = {
   taxYear: TaxYear
   submittedAt: string
   handled: boolean
+  notes: string
   files: { bankStatement: string | null; selfiePassport: string | null; invoices: string | null }
 }
 
@@ -140,7 +141,7 @@ export function getClient(id: string): ClientRecord | undefined {
 export function upsertClient(data: Omit<ClientRecord, 'id' | 'handled'> & { id?: string; waNumber?: string }): ClientRecord {
   const id       = data.id ?? `CLT-${Date.now()}`
   const existing = store.clients.get(id)
-  const record: ClientRecord = { ...data, id, handled: existing?.handled ?? false }
+  const record: ClientRecord = { ...data, id, handled: existing?.handled ?? false, notes: data.notes ?? existing?.notes ?? '' }
   store.clients.set(id, record)
   return record
 }
@@ -157,7 +158,8 @@ export function clearClientDetails(id: string): boolean {
   if (!c) return false
   store.clients.set(id, {
     ...c,
-    email: '', country: c.country, address: '', tfn: '', bankDetails: '',
+    // email kept for long-term contact
+    address: '', tfn: '', bankDetails: '',
     primaryJob: '', marital: '', taxStatus: '', howHeard: '', auPhone: '',
     files: { bankStatement: null, selfiePassport: null, invoices: null },
   })
@@ -175,7 +177,7 @@ if (store.clients.size === 0) {
   demo.forEach((d, i) => {
     const id = `CLT-DEMO-${i + 1}`
     store.clients.set(id, {
-      ...d, id, handled: false,
+      ...d, id, handled: false, notes: '',
       address: 'Sydney NSW', tfn: '123 456 789', bankDetails: 'BSB 062-000',
       marital: 'Single', taxStatus: 'Working Holiday Maker', howHeard: 'Instagram',
       auPhone: '+614' + (10000000 + i),

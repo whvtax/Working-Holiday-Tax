@@ -8,7 +8,7 @@ type Client = {
   id:string; fullName:string; dob:string; whatsapp:string; email:string; country:string
   address:string; tfn:string; bankDetails:string; primaryJob:string; marital:string
   taxStatus:string; howHeard:string; auPhone:string; taxYear:TaxYear
-  submittedAt:string; handled:boolean
+  submittedAt:string; handled:boolean; notes:string
   files:{bankStatement:string|null;selfiePassport:string|null;invoices:string|null}
 }
 const TAX_YEARS:TaxYear[] = ['2024-25','2023-24','2022-23','2021-22','2020-21','2019-20']
@@ -23,18 +23,29 @@ export default function ClientPageClient({ id }: { id: string }) {
   const [showClear, setShowClear]         = useState(false)
   const [showHandle, setShowHandle]       = useState(false)
   const [toast, setToast]                 = useState('')
+  const [notes, setNotes]                 = useState('')
+  const [notesSaving, setNotesSaving]     = useState(false)
+  const [notesSaved, setNotesSaved]       = useState(false)
 
   async function load() {
     setLoading(true)
     const res  = await fetch(`/api/crm/clients/${id}`)
     const data = await res.json()
-    if (data.ok) { setClient(data.client); setForm(data.client) }
+    if (data.ok) { setClient(data.client); setForm(data.client); setNotes(data.client.notes ?? '') }
     else router.push('/crm/dashboard')
     setLoading(false)
   }
   useEffect(() => { load() }, [id])
 
   function showMsg(msg:string) { setToast(msg); setTimeout(()=>setToast(''),3000) }
+
+  async function saveNotes() {
+    setNotesSaving(true)
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:{...client,notes}})})
+    setNotesSaving(false)
+    setNotesSaved(true)
+    setTimeout(()=>setNotesSaved(false), 2500)
+  }
 
   async function save() {
     setSaving(true)
@@ -96,6 +107,16 @@ export default function ClientPageClient({ id }: { id: string }) {
         .cp-danger-title{font-size:13px;font-weight:600;color:#c0392b;margin-bottom:5px;}
         .cp-danger-text{font-size:12px;color:#7a8a82;margin-bottom:12px;line-height:1.6;}
         .cp-danger-btn{padding:8px 16px;border:1px solid #fca5a5;border-radius:8px;background:#fff;color:#c0392b;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+        .cp-notes{background:#fff;border-radius:13px;padding:18px 22px;border:1px solid #e8eeeb;margin-bottom:12px;}
+        .cp-notes-title{font-size:12px;font-weight:600;color:#0E5C42;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+        .cp-notes-textarea{width:100%;border:1.5px solid #e4ede8;border-radius:10px;padding:12px 14px;font-size:13px;font-family:'DM Sans',system-ui,sans-serif;background:#f7fbf9;color:#0a1410;outline:none;resize:vertical;min-height:100px;line-height:1.6;transition:border-color 0.18s;}
+        .cp-notes-textarea:focus{border-color:#0E5C42;background:#edf7f2;}
+        .cp-notes-textarea::placeholder{color:#b0c2b8;font-weight:300;}
+        .cp-notes-footer{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+        .cp-notes-hint{font-size:11px;color:#aabab2;}
+        .cp-notes-save{padding:6px 14px;border:none;border-radius:8px;background:#0E5C42;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity 0.15s;}
+        .cp-notes-save:disabled{opacity:0.45;cursor:not-allowed;}
+        .cp-notes-saved{font-size:11px;color:#059669;font-weight:500;}
         .cp-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:999;}
         .cp-modal{background:#fff;border-radius:20px;padding:30px 28px;max-width:360px;width:90%;text-align:center;}
         .cp-modal-icon{font-size:36px;margin-bottom:10px;}
@@ -196,6 +217,35 @@ export default function ClientPageClient({ id }: { id: string }) {
             )}
             <Row label="How they heard" value={client.howHeard} field="howHeard" editing={editing} form={form} setForm={setForm}/>
           </Section>
+        </div>
+
+        <div className="cp-notes">
+          <div className="cp-notes-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#0E5C42" strokeWidth="1.8"/>
+              <path d="M8 13h8M8 17h5" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+            Internal notes
+          </div>
+          <textarea
+            className="cp-notes-textarea"
+            placeholder="Add private notes about this client — follow-ups, reminders, anything relevant..."
+            value={notes}
+            onChange={e => { setNotes(e.target.value); setNotesSaved(false) }}
+          />
+          <div className="cp-notes-footer">
+            {notesSaved
+              ? <span className="cp-notes-saved">✓ Saved</span>
+              : <span className="cp-notes-hint">Only visible to you</span>
+            }
+            <button
+              className="cp-notes-save"
+              onClick={saveNotes}
+              disabled={notesSaving || notes === (client?.notes ?? '')}
+            >
+              {notesSaving ? 'Saving…' : 'Save notes'}
+            </button>
+          </div>
         </div>
 
         <div className="cp-danger">
