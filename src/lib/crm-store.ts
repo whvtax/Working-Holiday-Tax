@@ -87,7 +87,10 @@ export function validateSession(token: string | undefined): boolean {
     const payload = token.slice(0, dot)
     const sig     = token.slice(dot + 1)
     const expected = crypto.createHmac('sha256', jwtSecret()).update(payload).digest('base64url')
-    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return false
+    const sigBuf = Buffer.from(sig)
+    const expBuf = Buffer.from(expected)
+    if (sigBuf.length !== expBuf.length) return false
+    if (!crypto.timingSafeEqual(sigBuf, expBuf)) return false
     const { exp } = JSON.parse(Buffer.from(payload, 'base64url').toString())
     return Date.now() < exp
   } catch { return false }
