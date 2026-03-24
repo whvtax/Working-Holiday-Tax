@@ -192,6 +192,7 @@ export default function TaxFormPage() {
     <>
       <style>{styles}</style>
       <div className="form-page">
+        <div className="form-inner">
 
         {/* Header */}
         <div className="form-header">
@@ -400,6 +401,13 @@ const styles = `
     min-height: 100dvh;
     background: #F5F9F7;
     padding-bottom: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .form-inner {
+    width: 100%;
+    max-width: 480px;
   }
 
   .form-header {
@@ -411,7 +419,7 @@ const styles = `
   .form-header-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: #E9A020;
+    background: #0B5240;
     margin-bottom: 10px;
     animation: pulse-dot 2.4s ease-in-out infinite;
   }
@@ -427,7 +435,7 @@ const styles = `
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
+    color: #0B5240;
     margin-bottom: 10px;
   }
 

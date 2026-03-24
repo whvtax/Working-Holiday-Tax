@@ -127,7 +127,7 @@ export default function TFNFormPage() {
     <div className="form-page-wrap">
       <div className="form-card">
         <div className="form-header">
-          <div className="form-brand">Simple | tax services</div>
+          <div className="form-brand">Working Holiday Tax</div>
           <h1 className="form-title">TFN Application</h1>
           <p className="form-intro">Dear client, please fill in the form accurately as it appears in your passport, in English only. Our expert team is available for any questions.</p>
         </div>
@@ -206,7 +206,7 @@ export default function TFNFormPage() {
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">I have read and accept the <a href="/client-agreement" target="_blank" className="decl-link">Terms of Service</a> &amp; <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a></span>
+              <span className="check-label">I have read and accept the <a href="/client-agreement" target="_blank" className="decl-link">Client Agreement</a> &amp; <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a></span>
             </label>
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>
@@ -215,7 +215,7 @@ export default function TFNFormPage() {
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? <span className="btn-loading"><svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2.5" strokeDasharray="40" strokeDashoffset="10"/></svg>Submitting…</span> : 'Submit TFN Application →'}
           </button>
-          <p className="form-footer-note">Simple | tax services · Your information is kept secure and private</p>
+          <p className="form-footer-note">Working Holiday Tax · Your information is kept secure and private</p>
         </form>
       </div>
     </div></>

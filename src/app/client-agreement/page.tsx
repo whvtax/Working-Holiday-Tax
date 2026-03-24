@@ -93,15 +93,19 @@ const sections = [
     body: 'By using the Service, you declare that all information is true and correct, the Provider is authorized to lodge your tax return, and you agree to comply with all terms, understanding that false information may lead to termination or legal consequences.',
   },
   {
-    title: '22. Governing Law',
+    title: '22. Accuracy of Information and Statutory Declaration',
+    body: 'You declare that all information provided to the Provider in connection with the Service — including but not limited to personal details, income, employment, bank account information, passport details, and tax file number — is true, complete, and accurate to the best of your knowledge. You acknowledge that knowingly providing false, misleading, or incomplete information to the Provider or to the Australian Taxation Office (ATO) may constitute a criminal offence and may result in significant financial penalties, prosecution, and repayment obligations under Australian tax law, including the Taxation Administration Act 1953 (Cth). You agree to promptly notify the Provider of any error or change in the information you have provided. The Provider bears no responsibility for outcomes arising from inaccurate or incomplete information supplied by the Client.',
+  },
+  {
+    title: '26. Governing Law',
     body: 'This Agreement is governed by the laws of Victoria, Australia. Invalid provisions will be severed without affecting the rest. Disputes shall first be attempted to resolve via mediation before court proceedings.',
   },
   {
-    title: '23. Confidentiality',
+    title: '26. Confidentiality',
     body: 'Your information is kept confidential. Disclosure only occurs as required by law or for purposes of fulfilling this Agreement.',
   },
   {
-    title: '24. Service Provider Information',
+    title: '26. Service Provider Information',
     body: 'All services on workingholidaytax.com.au are provided by Working Holiday Tax, operating under supervision of a registered tax agent, The Accounting Academy Pty Limited (ABN: 26 669 927 959), Tax Agent Number 26233096.',
   },
 ]
