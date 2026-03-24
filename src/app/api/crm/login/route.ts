@@ -12,7 +12,9 @@ export async function POST(req: NextRequest) {
     // Read env vars inside the function — NOT at module level
     // This ensures Vercel has loaded them before we use them
     const ADMIN_EMAIL   = process.env.CRM_ADMIN_EMAIL   ?? 'admin@workingholidaytax.com.au'
-    const PASSWORD_HASH = process.env.CRM_PASSWORD_HASH ?? hashPassword('12345')
+    // ⚠️  IMPORTANT: Set CRM_PASSWORD_HASH env var in Vercel before going live!
+    // Generate with: node -e "const crypto=require('crypto');console.log(crypto.pbkdf2Sync('YOUR_PASSWORD','whvtax-salt-2024',100000,64,'sha512').toString('hex'))"
+    const PASSWORD_HASH = process.env.CRM_PASSWORD_HASH ?? hashPassword('WHVtax2024!#')
 
     if (isLockedOut()) {
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
@@ -31,6 +33,7 @@ export async function POST(req: NextRequest) {
       httpOnly: true,
       secure:   true,
       sameSite: 'lax',
+      path:     '/',
       path:     '/',
       maxAge:   8 * 60 * 60,
     })

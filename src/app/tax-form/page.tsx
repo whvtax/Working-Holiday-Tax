@@ -98,6 +98,7 @@ export default function TaxFormPage() {
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
   const [declared, setDeclared]       = useState<'yes'|'no'|''>('')
+  const [taxYear, setTaxYear]         = useState('2024-25')
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -149,6 +150,7 @@ export default function TaxFormPage() {
     fd.append('primaryJob',  primaryJob)
     fd.append('bankDetails', bankDetails)
     fd.append('taxStatus',   taxStatus)
+    fd.append('taxYear',     taxYear)
     fd.append('howHeard',    howHeard)
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
@@ -335,7 +337,13 @@ export default function TaxFormPage() {
               {err('taxStatus')}
             </Field>
 
-            <Field label={`I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the client agreement & privacy policy.`} required>
+            <Field label="" required>
+              <p style={{fontSize:'12px',color:'#587066',lineHeight:'1.7',marginBottom:'10px'}}>
+                I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
+                <a href="/client-agreement" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Client Agreement</a>
+                {' '}&amp;{' '}
+                <a href="/privacy" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Privacy Policy</a>.
+              </p>
               <div className="radio-group radio-group-col">
                 {([
                   { val: 'yes', label: 'Yes, I agree' },

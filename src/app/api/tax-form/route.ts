@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
     await createTask({
       clientId,
       clientName:  fullName,
+      taskType:    'tax-return',
       whatsapp:    formData.get('waNumber')    as string ?? '',
       auPhone:     formData.get('auPhone')     as string ?? '',
       email:       formData.get('email')       as string ?? '',

@@ -373,7 +373,7 @@ export default function DashboardClient() {
                 </div>
                 <button style={{...S.addBtn,padding:'8px 14px',fontSize:13}} onClick={()=>setShowAddModal(true)}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
-                  + Add Client
+                  Add Client
                 </button>
               </div>
 
@@ -415,7 +415,7 @@ export default function DashboardClient() {
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Client','Country','Date of birth','WhatsApp','Email',''].map(h=>(
+                        {['Name','Country','Date of birth','WhatsApp','Email',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>

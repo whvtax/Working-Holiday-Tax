@@ -124,13 +124,13 @@ export default function HomePage() {
           {/* Mobile: 1-col · Desktop: 4-col with bigger padding and gap */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom:'36px' }}>
             {[
-              { title:'Backpacker tax refund experts',   body:<>We focus only on working holiday tax,<br />so we know how to get you the most back.</> },
-              { title:'ATO Compliant Service',             body:<>Fully compliant with ATO rules,<br />under a registered tax agent&apos;s supervision.</> },
-              { title:'Real support, no tax jargon',     body:<>We guide you step by step and explain<br />everything clearly in simple English.</> },
-              { title:'We handle everything for you',    body:<>No paperwork or stress, we handle<br />everything for you from start to finish.</> },
+              { title:'Backpacker tax refund experts',   body:'We focus only on working holiday tax, so we know how to get you the most back.' },
+              { title:'ATO Compliant Service',           body:"Fully compliant with ATO rules, under a registered tax agent's supervision." },
+              { title:'Real support, no tax jargon',     body:'We guide you step by step and explain everything clearly in simple English.' },
+              { title:'We handle everything for you',    body:'No paperwork or stress, we handle everything for you from start to finish.' },
             ].map((item,i) => (
-              <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
-                <h3 className="font-semibold text-ink lg:whitespace-nowrap lg:overflow-hidden lg:text-ellipsis" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
+              <div key={i} className="pt-4 lg:pt-6 text-center lg:text-left" style={{ borderTop:'1px solid #E2EFE9' }}>
+                <h3 className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
                 <p className="font-light text-muted leading-[1.7]" style={{ fontSize:'clamp(12px, 1.1vw, 13px)' }}>{item.body}</p>
               </div>
             ))}
