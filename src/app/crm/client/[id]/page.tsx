@@ -213,7 +213,7 @@ export default function ClientPage() {
         <div className="cp-danger">
           <div className="cp-danger-title">⚠️ Danger zone</div>
           <p className="cp-danger-text">
-            Once you've processed this return, you can clear all sensitive details from the record.<br/>
+            Once you&apos; processed this return, you can clear all sensitive details from the record.<br/>
             Kept after clearing: full name, date of birth, and WhatsApp only.
           </p>
           <button className="cp-danger-btn" onClick={()=>setShowClear(true)}>Clear sensitive details</button>
