@@ -103,8 +103,11 @@ export default function SuperannuationPage() {
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Claim your super back</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>when you leave Australia</span>
               </span>
-              {/* Mobile: natural wrap */}
-              <span className="lg:hidden">Claim your super back when you leave Australia</span>
+              {/* Mobile: 2 lines with green second line */}
+              <span className="lg:hidden">
+                <span style={{ display:'block' }}>Claim your super back</span>
+                <span style={{ display:'block', color:'#0B5240' }}>when you leave Australia</span>
+              </span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -127,16 +130,16 @@ export default function SuperannuationPage() {
             
             </p>
 
-            <div className="flex flex-col gap-3 lg:flex-row lg:gap-4"
+            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
                 Claim your super →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'54px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
                 See how it works →
               </a>
             </div>
@@ -158,7 +161,7 @@ export default function SuperannuationPage() {
       <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto text-center">
-            <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(17px, 2.21vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
+            <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
               Don&apos;t leave your super behind.
             </p>
             <p className="font-light mx-auto text-center" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
@@ -178,7 +181,7 @@ export default function SuperannuationPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">This is your money</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
               Your super is already yours<br /><em className="not-italic font-normal text-forest-400">you just need to claim it.</em>
             </h2>
           </div>
@@ -241,7 +244,7 @@ export default function SuperannuationPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Real results</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(17px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               See how travellers like you got their super back
             </h2>
           </div>
@@ -275,7 +278,7 @@ export default function SuperannuationPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(17px, 2.04vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
@@ -328,7 +331,7 @@ export default function SuperannuationPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             <div className="reveal text-center lg:text-left">
               <span className="section-label center lg:text-left">Who can claim?</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
                 You can claim your super<br />
                 <em className="not-italic font-normal text-forest-400">when you leave Australia</em>
               </h2>
@@ -349,7 +352,7 @@ export default function SuperannuationPage() {
 
             <div className="reveal delay-1 text-center lg:text-left">
               <span className="section-label center lg:text-left">What you will need</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 1.87vw, 22px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
                 What you need to claim your super
               </h2>
               <div className="space-y-3.5 mb-5">
@@ -383,7 +386,7 @@ export default function SuperannuationPage() {
             <div className="text-center">
               <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
+                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
                 Super questions, answered.
               </h2>
               <p className="font-light text-muted"

@@ -56,15 +56,15 @@ export default function HomePage() {
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Confused about tax in Australia?</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>We’ve got you covered.</span>
               </span>
-              {/* Mobile: natural wrap */}
-              <span className="lg:hidden">Confused about tax in Australia? We’ve got you covered.</span>
+
+              <span className="lg:hidden"><span style={{ display:'block' }}>Confused about tax in Australia?</span><span style={{ display:'block', color:'#0B5240' }}>We’ve got you covered.</span></span>
             </h1>
 
           {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
             style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
             <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
-            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super — we handle everything for you</span>
+            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super —<br />we handle everything for you</span>
           </p>
 
           {/* Mobile: tighter top margin · Desktop: more breathing room */}
@@ -93,7 +93,7 @@ export default function HomePage() {
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14 text-center">
           {/* Desktop: tighter maxWidth for 2-line break */}
           <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize:'clamp(17px, 2.38vw, 30px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'10px', maxWidth:'22ch' }}>
+            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'10px', maxWidth:'22ch' }}>
             Without a TFN, you lose 47% of your income.
           </p>
           <p className="font-light mx-auto"
@@ -117,7 +117,7 @@ export default function HomePage() {
           <span className="section-label center">Why us</span>
 
           <h2 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(17px, 2.17vw, 30px)', lineHeight:1.12, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'10px', marginBottom:'10px' }}>
+            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.12, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'10px', marginBottom:'10px' }}>
             Built for backpackers on a Working Holiday visa.
           </h2>
 
@@ -156,7 +156,7 @@ export default function HomePage() {
           <div className="text-center" style={{ marginBottom:'28px' }}>
             <span className="section-label center">Client stories</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.38vw, 32px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'26ch' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'26ch' }}>
               See how much backpackers like you are getting back.
             </h2>
           </div>
@@ -222,7 +222,7 @@ export default function HomePage() {
           <div className="text-center" style={{ marginBottom:'36px' }}>
             <span className="section-label center">How it works</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(20px, 2.55vw, 34px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'24ch' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'24ch' }}>
               How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted mx-auto"
@@ -299,7 +299,7 @@ export default function HomePage() {
           <div className="text-center" style={{ marginBottom:'28px' }}>
             <span className="section-label center">What we help with</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(20px, 2.55vw, 34px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'22ch' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'22ch' }}>
               Everything you need<br />
               <em className="not-italic font-normal text-forest-400">to manage your tax in Australia.</em>
             </h2>

@@ -64,8 +64,11 @@ export default function TFNPage() {
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Get your TFN sorted quickly &amp;</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>start working sooner</span>
               </span>
-              {/* Mobile: natural wrap */}
-              <span className="lg:hidden">Get your TFN sorted quickly and start working sooner</span>
+              {/* Mobile: 2 lines with green second line */}
+              <span className="lg:hidden">
+                <span style={{ display:'block' }}>Get your TFN sorted quickly &amp;</span>
+                <span style={{ display:'block', color:'#0B5240' }}>start working sooner</span>
+              </span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -78,16 +81,16 @@ export default function TFNPage() {
               Without a TFN, you may be taxed at a higher rate.
             </p>
 
-            <div className="flex flex-col gap-3 lg:flex-row lg:gap-4"
+            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
                 Apply for a TFN →
               </a>
               <a href="#how-to-apply"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'54px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
                 See how it works →
               </a>
             </div>
@@ -109,7 +112,7 @@ export default function TFNPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-10 lg:py-16 text-center">
           <div className="mx-auto" style={{ maxWidth:'460px' }}>
             <p className="font-serif font-black text-white"
-              style={{ fontSize:'clamp(18px, 2.21vw, 28px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'12px' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'12px' }}>
               Without a TFN, you could be taxed<br className="hidden lg:block" /> at a much higher rate
             </p>
             <p className="font-light"
@@ -133,7 +136,7 @@ export default function TFNPage() {
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Why use our service</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.21vw, 30px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
               We handle your TFN from start to finish
             </h2>
             <p className="font-light text-muted"
@@ -178,7 +181,7 @@ export default function TFNPage() {
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">What travellers say</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(17px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'30ch' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'30ch' }}>
               See how backpackers like you got their TFN sorted quickly
             </h2>
           </div>
@@ -221,7 +224,7 @@ export default function TFNPage() {
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">Why not do it yourself</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(17px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
               There&apos;s a simpler way to get your TFN sorted
             </h2>
           </div>
@@ -266,7 +269,7 @@ export default function TFNPage() {
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
             <span className="section-label center">How to apply</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.21vw, 30px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
               How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted" style={{ fontSize:'clamp(13px, 1.3vw, 15px)', lineHeight:1.7 }}>
@@ -333,7 +336,7 @@ export default function TFNPage() {
             <div className="text-center">
               <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
+                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
                 TFN questions, answered.
               </h2>
               <p className="font-light text-muted"

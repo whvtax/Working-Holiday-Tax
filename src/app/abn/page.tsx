@@ -75,8 +75,11 @@ export default function ABNPage() {
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Set up your ABN and</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>start working as a contractor</span>
               </span>
-              {/* Mobile: natural wrap */}
-              <span className="lg:hidden">Set up your ABN and start working as a contractor</span>
+              {/* Mobile: 2 lines with green second line */}
+              <span className="lg:hidden">
+                <span style={{ display:'block' }}>Set up your ABN and</span>
+                <span style={{ display:'block', color:'#0B5240' }}>start working as a contractor</span>
+              </span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -99,16 +102,16 @@ export default function ABNPage() {
             
             </p>
 
-            <div className="flex flex-col gap-3 lg:flex-row lg:gap-4"
+            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
                 Register your ABN →
               </a>
               <a href="#how-to-register"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'54px', padding:'0 24px', fontSize:'15px', flex:'1' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
                 See how it works →
               </a>
             </div>
@@ -132,7 +135,7 @@ export default function ABNPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-8 lg:py-12 text-center">
           <div className="mx-auto" style={{ maxWidth:'480px' }}>
             <p className="font-serif font-black text-white"
-              style={{ fontSize:'clamp(17px,2.2vw,26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'8px' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'8px' }}>
               Not sure if you need an ABN or TFN?
             </p>
             <p className="font-light"
@@ -158,7 +161,7 @@ export default function ABNPage() {
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">How we help</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px,2.2vw,30px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
               We help you choose the right setup
             </h2>
             <p className="font-semibold mx-auto"
@@ -213,7 +216,7 @@ export default function ABNPage() {
           <div className="max-w-xl mx-auto text-center mb-7 lg:mb-10">
             <span className="section-label center">Common mistakes</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
               Setting up your ABN incorrectly<br /><em className="not-italic font-normal text-forest-400">can cause problems later</em>
             </h2>
             <p className="font-light text-muted mx-auto"
@@ -248,7 +251,7 @@ export default function ABNPage() {
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
               How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted"
@@ -312,7 +315,7 @@ export default function ABNPage() {
             <div className="text-center lg:text-left">
               <span className="section-label center">What is an ABN?</span>
               <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(15px,1.87vw,22px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'16px', textWrap:'balance' }}>
+                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'16px', textWrap:'balance' }}>
                 An Australian Business Number (ABN) lets you work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
               </h2>
               {/* Mobile: tighter maxWidth; desktop: 36ch */}
@@ -363,7 +366,7 @@ export default function ABNPage() {
             <div className="text-center">
               <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
+                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
                 ABN questions, answered.
               </h2>
               <p className="font-light text-muted"

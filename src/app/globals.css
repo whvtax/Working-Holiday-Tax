@@ -178,8 +178,31 @@
       border-radius: 999px !important;
     }
 
+    /* Hero dual-CTA (flex-col container): each button full width, no max-width cap */
+    .hero-cta-pair .btn-primary,
+    .hero-cta-pair .btn-ghost-dark {
+      max-width: 100% !important;
+    }
+
+    /* Uniform hero H1 size on mobile */
+    section h1.font-serif {
+      font-size: 26px !important;
+      line-height: 1.08 !important;
+      letter-spacing: -0.03em !important;
+    }
+
+    /* ── UNIFORM SECTION TYPOGRAPHY (mobile) ──────────────────────────
+       כותרת ראשית H2: 20px אחיד
+       inline style עוקף CSS — לכן משתמשים ב-!important
+    ─────────────────────────────────────────────────────────────────── */
+    section h2.font-serif.font-black {
+      font-size: 20px !important;
+      line-height: 1.12 !important;
+      letter-spacing: -0.025em !important;
+    }
+
     /* Typography */
-    h1 { text-wrap: balance; }
+    h1 { text-wrap: unset; }
     h2 { text-wrap: balance; }
 
     /* Accordion */
