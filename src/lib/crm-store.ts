@@ -66,6 +66,23 @@ export function generateOtp(): string {
   return crypto.randomInt(10000000, 99999999).toString()
 }
 
+// ── OTP store (in-memory, expires in 10 min) ──────────────────────────────
+let _otpHash    = ''
+let _otpExpiry  = 0
+
+export function storeOtp(code: string): void {
+  _otpHash   = crypto.createHash('sha256').update(code).digest('hex')
+  _otpExpiry = Date.now() + 10 * 60 * 1000 // 10 minutes
+}
+
+export function verifyOtp(code: string): boolean {
+  if (Date.now() > _otpExpiry) return false
+  const hash = crypto.createHash('sha256').update(code.trim()).digest('hex')
+  const valid = crypto.timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(_otpHash, 'hex'))
+  if (valid) { _otpHash = ''; _otpExpiry = 0 } // one-time use
+  return valid
+}
+
 // ── Session — HMAC signed token (stateless, works on Vercel) ──────────────
 
 const SESSION_TTL = 8 * 60 * 60 * 1000 // 8 hours

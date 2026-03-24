@@ -2,61 +2,81 @@ import { NextRequest, NextResponse } from 'next/server'
 import {
   hashPassword, verifyPassword,
   recordFailedAttempt, resetFailedAttempts, isLockedOut,
-  createSession,
+  generateOtp, storeOtp,
 } from '@/lib/crm-store'
 
 export async function POST(req: NextRequest) {
   try {
     const { password } = await req.json()
 
-    // Read env vars inside the function — NOT at module level
-    // This ensures Vercel has loaded them before we use them
-    const ADMIN_EMAIL   = process.env.CRM_ADMIN_EMAIL   ?? 'admin@workingholidaytax.com.au'
-    // ⚠️  IMPORTANT: Set CRM_PASSWORD_HASH env var in Vercel before going live!
-    // Generate with: node -e "const crypto=require('crypto');console.log(crypto.pbkdf2Sync('YOUR_PASSWORD','whvtax-salt-2024',100000,64,'sha512').toString('hex'))"
-    const PASSWORD_HASH = process.env.CRM_PASSWORD_HASH ?? hashPassword('WHVtax2024!#')
+    const ADMIN_EMAIL   = process.env.CRM_ADMIN_EMAIL   ?? 'info@workingholidaytax.com.au'
+    const RESEND_KEY    = process.env.RESEND_API_KEY     ?? ''
+    // Set CRM_PASSWORD in Vercel environment variables
+    const rawPassword   = process.env.CRM_PASSWORD      ?? 'WHVtax2024!#'
+    const PASSWORD_HASH = hashPassword(rawPassword)
 
     if (isLockedOut()) {
-      return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
+      return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
       const fa = recordFailedAttempt()
-      if (fa.locked) await sendSecurityAlert(ADMIN_EMAIL, fa.count)
+      if (fa.locked) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
     resetFailedAttempts()
-    const token = createSession()
-    const res   = NextResponse.json({ ok: true })
-    res.cookies.set('crm_session', token, {
-      httpOnly: true,
-      secure:   true,
-      sameSite: 'lax',
-      path:     '/',
-      path:     '/',
-      maxAge:   8 * 60 * 60,
-    })
-    return res
+
+    // Generate and send OTP
+    const otp = generateOtp()
+    storeOtp(otp)
+    await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
+
+    return NextResponse.json({ ok: true, otpSent: true })
 
   } catch (err) {
     console.error('[CRM login]', err)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
   }
 }
 
-async function sendSecurityAlert(to: string, attempts: number) {
-  const key = process.env.RESEND_API_KEY
-  if (!key) { console.warn('[CRM] Security alert — attempts:', attempts); return }
-  const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney', dateStyle: 'medium', timeStyle: 'short' })
+async function sendOtpEmail(to: string, apiKey: string, otp: string) {
+  if (!apiKey) { console.log('[DEV] OTP code:', otp); return }
+  const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
   await fetch('https://api.resend.com/emails', {
-    method:  'POST',
-    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from:    'WHV Tax CRM <security@workingholidaytax.com.au>',
-      to,
-      subject: 'Security alert — failed login attempts on your CRM',
-      html:    `<div style="font-family:system-ui,sans-serif;max-width:460px;margin:0 auto;"><div style="background:#b91c1c;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;"><h1 style="color:#fff;font-size:20px;margin:0;font-weight:600;">Login attempt blocked</h1></div><div style="background:#f9fafb;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 16px 16px;padding:32px;"><p style="font-size:14px;color:#333;margin:0 0 16px;"><strong>${attempts} failed login attempts</strong> on your CRM.</p><p style="font-size:13px;color:#888;">Time: ${time} (Sydney)</p><div style="background:#fff5f5;border-left:3px solid #b91c1c;padding:12px 16px;margin-top:16px;font-size:13px;color:#555;">Change your CRM password if you did not do this.</div></div></div>`,
+      from:    'Working Holiday Tax <noreply@workingholidaytax.com.au>',
+      to:      [to],
+      subject: 'Your CRM login code',
+      html: `
+        <div style="font-family:system-ui,sans-serif;max-width:400px;margin:0 auto;">
+          <div style="background:#0E5C42;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
+            <h1 style="color:#fff;font-size:18px;margin:0;font-weight:600;">CRM Login Code</h1>
+          </div>
+          <div style="background:#f9fafb;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 16px 16px;padding:32px;text-align:center;">
+            <p style="font-size:14px;color:#555;margin:0 0 20px;">Your one-time login code:</p>
+            <div style="background:#fff;border:2px solid #0E5C42;border-radius:12px;padding:20px;letter-spacing:0.3em;font-size:32px;font-weight:700;color:#0E5C42;">${otp}</div>
+            <p style="font-size:12px;color:#999;margin:16px 0 0;">Valid for 10 minutes · ${time} (Sydney)</p>
+          </div>
+        </div>
+      `,
+    }),
+  })
+}
+
+async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
+  if (!apiKey) return
+  const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from:    'Working Holiday Tax <noreply@workingholidaytax.com.au>',
+      to:      [to],
+      subject: '⚠️ CRM login blocked',
+      html: `<div style="font-family:system-ui,sans-serif;max-width:460px;margin:0 auto;"><div style="background:#b91c1c;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;"><h1 style="color:#fff;font-size:20px;margin:0;font-weight:600;">Login attempt blocked</h1></div><div style="background:#f9fafb;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 16px 16px;padding:32px;"><p style="font-size:14px;color:#333;margin:0 0 16px;"><strong>${attempts} failed login attempts</strong> on your CRM.</p><p style="font-size:13px;color:#888;">Time: ${time} (Sydney)</p><div style="background:#fff5f5;border-left:3px solid #b91c1c;padding:12px 16px;margin-top:16px;font-size:13px;color:#555;">Change your CRM password if you did not do this.</div></div></div>`,
     }),
   })
 }

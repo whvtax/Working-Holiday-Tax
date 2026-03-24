@@ -58,7 +58,6 @@ export default function SuperFormPage() {
   const [tfn, setTfn]               = useState('')
   const [superFunds, setSuperFunds] = useState('')
   const [bankDetails, setBankDetails] = useState('')
-  const [declared, setDeclared]     = useState(false)
   const [terms, setTerms]           = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
   const [submitted, setSubmitted]   = useState(false)
@@ -80,7 +79,6 @@ export default function SuperFormPage() {
     if (!superFunds.trim())     e.superFunds     = 'Required'
     if (!bankDetails.trim())    e.bankDetails    = 'Required'
     if (!selfie.file)           e.selfie         = 'Required'
-    if (!declared)              e.declared       = 'You must confirm this declaration'
     if (!terms)                 e.terms          = 'You must accept the terms'
     return e
   }
@@ -123,7 +121,7 @@ export default function SuperFormPage() {
         <div className="form-header">
           <div className="form-brand">Working Holiday Tax</div>
           <h1 className="form-title">Superannuation Refund</h1>
-          <p className="form-intro">Dear client, please fill in the form accurately as it appears in your passport, in English only. Our expert team is available on WhatsApp for any questions.</p>
+          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.<br />We&apos;re here to help if you have any questions.</p>
         </div>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-section-title">Personal details</div>
@@ -174,15 +172,7 @@ export default function SuperFormPage() {
           </Field>
 
           <div className="form-section-title">Declaration</div>
-          <div className={`declaration-box${errors.declared?' decl-error':''}`}>
-            <p className="decl-text">I declare that all details in this application are true, complete and accurate. I understand that if any detail is found to be false, I will be subject to penalties under Australian tax law.</p>
-            <label className="check-row">
-              <input type="checkbox" checked={declared} onChange={e=>setDeclared(e.target.checked)} className="hidden"/>
-              <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">I confirm this declaration</span>
-            </label>
-            {errors.declared && <span className="field-error">{errors.declared}</span>}
-          </div>
+
           <div className={`declaration-box${errors.terms?' decl-error':''}`} style={{marginTop:10}}>
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} className="hidden"/>

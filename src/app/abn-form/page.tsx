@@ -118,7 +118,7 @@ export default function ABNFormPage() {
         <div className="form-header">
           <div className="form-brand">Working Holiday Tax</div>
           <h1 className="form-title">ABN Application</h1>
-          <p className="form-intro">Dear client, please fill in the form accurately as it appears in your passport, in English only. Our expert team is available for any questions.</p>
+          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.<br />We&apos;re here to help if you have any questions.</p>
         </div>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-section-title">Personal details</div>
@@ -166,7 +166,7 @@ export default function ABNFormPage() {
 
           <div className="form-section-title">Declaration</div>
           <div className={`declaration-box${errors.declared?' decl-error':''}`}>
-            <p className="decl-text">I declare that I do not own any assets in Australia, I do not have an ABN and have never been issued one. I intend to establish a business (sole trader) in which I will be the sole owner and the centre of activity will be based in Australia. All details in this application are true, complete and accurate. I understand that if any detail is found to be false, I will be subject to penalties under Australian tax law.</p>
+            <p className="decl-text">I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.</p>
             <label className="check-row">
               <input type="checkbox" checked={declared} onChange={e=>setDeclared(e.target.checked)} className="hidden"/>
               <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>

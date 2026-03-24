@@ -129,7 +129,7 @@ export default function TFNFormPage() {
         <div className="form-header">
           <div className="form-brand">Working Holiday Tax</div>
           <h1 className="form-title">TFN Application</h1>
-          <p className="form-intro">Dear client, please fill in the form accurately as it appears in your passport, in English only. Our expert team is available for any questions.</p>
+          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.<br />We&apos;re here to help if you have any questions.</p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
@@ -193,7 +193,7 @@ export default function TFNFormPage() {
 
           <div className="form-section-title">Declaration</div>
           <div className={`declaration-box${errors.declared?' decl-error':''}`}>
-            <p className="decl-text">I declare that this is my first visit to Australia and I am currently residing here. I have never been married, changed my first name, last name, and/or gender. I do not own any assets in Australia and have never been issued a TFN. All details in this application are true, complete and accurate. I understand that if any detail is found to be false, I will be subject to penalties under Australian tax law.</p>
+            <p className="decl-text">I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</p>
             <label className="check-row">
               <input type="checkbox" checked={declared} onChange={e=>setDeclared(e.target.checked)} className="hidden"/>
               <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>

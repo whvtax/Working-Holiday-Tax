@@ -8,10 +8,10 @@ type UploadState = { file: File | null; preview: string | null }
 /* ── Field wrapper ── */
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
-    <div className="field-group">
-      <label className="field-label">
+    <div style={{marginBottom:'14px'}}>
+      <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
         {label}
-        {required && <span className="req-dot">*</span>}
+        {required && <span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>}
       </label>
       {children}
     </div>
@@ -99,6 +99,7 @@ export default function TaxFormPage() {
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
   const [declared, setDeclared]       = useState<'yes'|'no'|''>('')
   const [taxYear, setTaxYear]         = useState('2024-25')
+  const [terms, setTerms]             = useState(false)
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -120,8 +121,13 @@ export default function TaxFormPage() {
     if (!tfn.trim())         e.tfn         = 'Required'
     if (!primaryJob.trim())  e.primaryJob  = 'Required'
     if (!bankDetails.trim()) e.bankDetails = 'Required'
-    if (!bankStatement.file) e.bankStatement  = 'Required'
+    if (!bankStatement.file)  e.bankStatement  = 'Required'
     if (!selfiePassport.file) e.selfiePassport = 'Required'
+    if (!taxStatus)           e.taxStatus      = 'Required'
+    if (!declared)            e.declared       = 'Required'
+    if (declared === 'no')    e.declared       = 'You must agree to submit'
+    if (!terms)               e.terms          = 'You must accept the terms'
+    if (!howHeard.trim())     e.howHeard       = 'Required'
     if (!taxStatus)          e.taxStatus   = 'Required'
     if (!declared)           e.declared    = 'Required'
     if (declared === 'no')   e.declared    = 'You must agree to submit'
@@ -191,24 +197,18 @@ export default function TaxFormPage() {
   return (
     <>
       <style>{styles}</style>
-      <div className="form-page">
-        <div className="form-inner">
+      <div className="form-page-wrap">
+        <div className="form-card">
+          <div className="form-header">
+            <div className="form-brand">Working Holiday Tax</div>
+            <h1 className="form-title">Tax Return Form</h1>
+            <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.<br />We&apos;re here to help if you have any questions.</p>
+          </div>
 
-        {/* Header */}
-        <div className="form-header">
-          <div className="form-header-dot" />
-          <span className="form-header-label">Working Holiday Tax</span>
-          <h1 className="form-title">Tax Return Form</h1>
-          <p className="form-subtitle">
-            Please complete all required fields (<span className="req-dot">*</span>). This helps us process your return quickly and accurately.
-          </p>
-        </div>
+        <form onSubmit={handleSubmit} noValidate>
 
-        <form onSubmit={handleSubmit} noValidate className="form-body">
-
-          {/* ── Section: Contact ── */}
-          <div className="form-section">
-            <div className="section-chip">Contact Details</div>
+          <div className="form-section-title">Contact details</div>
+          <div>
 
             <Field label="Phone Number" required>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX"
@@ -241,9 +241,8 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
-          {/* ── Section: Personal ── */}
-          <div className="form-section">
-            <div className="section-chip">Personal Information</div>
+          <div className="form-section-title">Personal information</div>
+          <div>
 
             <Field label="Home Country" required>
               <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. France"
@@ -272,9 +271,8 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
-          {/* ── Section: Tax ── */}
-          <div className="form-section">
-            <div className="section-chip">Tax Information</div>
+          <div className="form-section-title">Tax information</div>
+          <div>
 
             <Field label="Tax File Number (TFN)" required>
               <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
@@ -295,9 +293,8 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
-          {/* ── Section: Documents ── */}
-          <div className="form-section">
-            <div className="section-chip">Documents</div>
+          <div className="form-section-title">Documents</div>
+          <div>
 
             <Field label="Bank statements (to verify name)" required>
               <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png"
@@ -317,9 +314,8 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
-          {/* ── Section: Declaration ── */}
-          <div className="form-section">
-            <div className="section-chip">Declaration</div>
+          <div className="form-section-title">Declaration</div>
+          <div>
 
             <Field label="I confirm I have reviewed all relevant ATO information and declare that I am:" required>
               <div className="radio-group radio-group-col">
@@ -362,8 +358,8 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
-          {/* ── Section: How heard ── */}
-          <div className="form-section">
+          <div className="form-section-title">How did you hear about us?</div>
+          <div>
             <Field label="How did you hear about us?" required>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
                 value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
@@ -371,7 +367,6 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
-          {/* Submit */}
           {Object.keys(errors).length > 0 && (
             <div className="errors-banner">Please fill in all required fields above.</div>
           )}
@@ -387,381 +382,70 @@ export default function TaxFormPage() {
             ) : 'Submit Tax Return Form →'}
           </button>
 
-          <p className="form-footer-note">Your information is encrypted and securely stored. We will never share your data with third parties.</p>
+          <p className="form-footer-note">Working Holiday Tax · Your information is kept secure and private</p>
 
         </form>
-        </div>{/* form-inner */}
-      </div>{/* form-page */}
+        </div>
+      </div>
     </>
   )
 }
 
 /* ── Styles ── */
 const styles = `
-  .form-page {
-    min-height: 100dvh;
-    background: #F5F9F7;
-    padding-bottom: 48px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .form-inner {
-    width: 100%;
-    max-width: 480px;
-  }
-
-  .form-header {
-    background: #0B5240;
-    padding: 52px 24px 36px;
-    text-align: left;
-  }
-
-  .form-header-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #0B5240;
-    margin-bottom: 10px;
-    animation: pulse-dot 2.4s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%,100% { opacity:1; transform:scale(1); }
-    50% { opacity:.5; transform:scale(.7); }
-  }
-
-  .form-header-label {
-    display: block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #0B5240;
-    margin-bottom: 10px;
-  }
-
-  .form-title {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: 28px;
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-  }
-
-  .form-subtitle {
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.6;
-    margin: 0;
-    max-width: 36ch;
-  }
-
-  .req-dot {
-    color: #E9A020;
-    margin-left: 2px;
-    font-weight: 700;
-  }
-
-  .form-body {
-    padding: 0 16px;
-    margin-top: -1px;
-  }
-
-  .form-section {
-    background: #fff;
-    border-radius: 20px;
-    border: 1px solid #E2EFE9;
-    padding: 20px 16px;
-    margin-top: 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.03), 0 2px 12px rgba(11,82,64,.04);
-  }
-
-  .section-chip {
-    display: inline-flex;
-    align-items: center;
-    background: #EAF6F1;
-    color: #0B5240;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 100px;
-    margin-bottom: 18px;
-  }
-
-  .field-group {
-    margin-bottom: 16px;
-  }
-  .field-group:last-child { margin-bottom: 0; }
-
-  .field-label {
-    display: block;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #1A2822;
-    letter-spacing: -0.01em;
-    margin-bottom: 7px;
-    line-height: 1.4;
-  }
-
-  .inp {
-    width: 100%;
-    height: 48px;
-    padding: 0 14px;
-    font-size: 14px;
-    font-family: var(--font-sans), sans-serif;
-    color: #080F0D;
-    background: #F5F9F7;
-    border: 1.5px solid #C8EAE0;
-    border-radius: 12px;
-    outline: none;
-    transition: border-color .15s, box-shadow .15s;
-    -webkit-appearance: none;
-  }
-  .inp::placeholder { color: #8AADA3; }
-  .inp:focus {
-    border-color: #0B5240;
-    box-shadow: 0 0 0 3px rgba(11,82,64,.08);
-    background: #fff;
-  }
-  .inp-err {
-    border-color: #ef4444 !important;
-    background: #fff5f5 !important;
-  }
-
-  .err-msg {
-    display: block;
-    font-size: 11px;
-    color: #ef4444;
-    margin-top: 4px;
-    font-weight: 500;
-  }
-
-  /* Radio cards */
-  .radio-group {
-    display: flex;
-    gap: 10px;
-  }
-  .radio-group-col {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .radio-card {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 14px;
-    border: 1.5px solid #C8EAE0;
-    border-radius: 12px;
-    font-size: 13.5px;
-    font-weight: 500;
-    color: #2A3C34;
-    cursor: pointer;
-    background: #F5F9F7;
-    transition: border-color .15s, background .15s;
-  }
-  .radio-card-active {
-    border-color: #0B5240;
-    background: #EAF6F1;
-    color: #0B5240;
-  }
-  .radio-card-no { color: #587066; }
-
-  .radio-dot {
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    border: 2px solid #C8EAE0;
-    flex-shrink: 0;
-    transition: border-color .15s, background .15s;
-    position: relative;
-  }
-  .radio-dot-active {
-    border-color: #0B5240;
-    background: #0B5240;
-  }
-  .radio-dot-active::after {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    border-radius: 50%;
-    background: #fff;
-  }
-
-  /* File upload */
-  .file-zone {
-    border: 1.5px dashed #C8EAE0;
-    border-radius: 14px;
-    background: #F5F9F7;
-    overflow: hidden;
-    cursor: pointer;
-    transition: border-color .15s;
-  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .hidden { display: none !important; }
+  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 32px 16px 60px; }
+  .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
+  .form-header { background: #fff; padding: 32px 24px 24px; text-align: center; border-bottom: 1px solid #EAF6F1; }
+  .form-brand { font-size: 11px; font-weight: 600; color: #0B5240; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
+  .form-title { font-size: 24px; font-weight: 800; color: #080F0D; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .form-intro { font-size: 13px; color: #587066; line-height: 1.65; }
+  form { padding: 20px 24px 32px; }
+  .form-section-title { font-size: 11px; font-weight: 700; color: #0B5240; text-transform: uppercase; letter-spacing: 0.06em; margin: 20px 0 12px; border-bottom: 1px solid #EAF6F1; padding-bottom: 8px; }
+  .field-group { margin-bottom: 14px; }
+  .field-label { display: block; font-size: 13px; font-weight: 600; color: #1A2822; margin-bottom: 6px; }
+  .req-dot { color: #0B5240; margin-left: 3px; }
+  .field-error { display: block; font-size: 11px; color: #DC2626; margin-top: 4px; }
+  .inp { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+  .inp:focus { border-color: #0B5240; background: #fff; }
+  .inp-err { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
+  .form-textarea { min-height: 80px; resize: vertical; }
+  .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .radio-group-col { flex-direction: column; }
+  .radio-card { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 500; color: #587066; cursor: pointer; transition: all .15s; background: #F5F9F7; width: 100%; }
+  .radio-card-active { background: #EAF6F1; border-color: #0B5240; color: #0B5240; font-weight: 600; }
+  .radio-card-no { border-color: #FCA5A5; }
+  .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #C8EAE0; flex-shrink: 0; transition: all .15s; background: #fff; }
+  .radio-dot-active { border-color: #0B5240; background: #0B5240; }
+  .declaration-box { background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 14px; padding: 16px; }
+  .decl-text { font-size: 12px; color: #587066; line-height: 1.7; margin-bottom: 12px; }
+  .decl-link { color: #0B5240; text-decoration: underline; }
+  .err-msg { display: block; font-size: 11px; color: #DC2626; margin-top: 4px; }
+  .section-chip { display: inline-flex; align-items: center; background: #EAF6F1; color: #0B5240; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }
+  .file-zone { border: 1.5px dashed #C8EAE0; border-radius: 14px; background: #F5F9F7; overflow: hidden; cursor: pointer; transition: border-color .15s; }
   .file-zone:hover { border-color: #0B5240; }
-
-  .file-empty {
-    padding: 20px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
-  .file-upload-icon {
-    width: 44px; height: 44px;
-    border-radius: 12px;
-    background: #EAF6F1;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 2px;
-  }
-  .file-upload-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #1A2822;
-  }
-  .file-upload-sub {
-    font-size: 11px;
-    color: #8AADA3;
-  }
-
-  .file-selected {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-  }
-  .file-img-preview {
-    width: 48px; height: 48px;
-    object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
-  }
-  .file-icon-box {
-    width: 48px; height: 48px;
-    border-radius: 8px;
-    background: #EAF6F1;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-  .file-meta {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-  .file-name {
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #080F0D;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  .file-size {
-    font-size: 11px;
-    color: #8AADA3;
-  }
-  .file-remove {
-    width: 30px; height: 30px;
-    border-radius: 8px;
-    background: #FEE2E2;
-    color: #ef4444;
-    display: flex; align-items: center; justify-content: center;
-    border: none;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  /* Errors banner */
-  .errors-banner {
-    background: #FFF5F5;
-    border: 1px solid #FCA5A5;
-    border-radius: 12px;
-    padding: 12px 16px;
-    font-size: 13px;
-    color: #DC2626;
-    font-weight: 500;
-    margin-top: 16px;
-  }
-
-  /* Submit button */
-  .submit-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 56px;
-    background: #0B5240;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 600;
-    font-family: var(--font-sans), sans-serif;
-    border: none;
-    border-radius: 100px;
-    cursor: pointer;
-    margin-top: 24px;
-    letter-spacing: -0.01em;
-    transition: opacity .15s, transform .1s;
-    -webkit-tap-highlight-color: transparent;
-  }
+  .file-empty { padding: 20px 16px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .file-upload-icon { width: 44px; height: 44px; border-radius: 12px; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 2px; }
+  .file-upload-label { font-size: 13px; font-weight: 600; color: #1A2822; }
+  .file-upload-sub { font-size: 11px; color: #8AADA3; }
+  .file-selected { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+  .file-img-preview { width: 48px; height: 48px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+  .file-icon-box { width: 48px; height: 48px; border-radius: 8px; background: #EAF6F1; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .file-meta { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .file-name { font-size: 12.5px; font-weight: 600; color: #080F0D; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-size { font-size: 11px; color: #8AADA3; }
+  .file-remove { width: 30px; height: 30px; border-radius: 8px; background: #FEE2E2; color: #ef4444; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; flex-shrink: 0; }
+  .errors-banner { background: #FFF5F5; border: 1px solid #FCA5A5; border-radius: 12px; padding: 12px 16px; font-size: 13px; color: #DC2626; font-weight: 500; margin-top: 16px; }
+  .submit-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: #0B5240; color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; margin-top: 24px; transition: opacity .15s, transform .1s; }
   .submit-btn:active { transform: scale(.98); opacity: .9; }
   .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
-
-  .btn-loading {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .spin {
-    animation: spin .8s linear infinite;
-  }
+  .btn-loading { display: flex; align-items: center; gap: 8px; }
+  .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-
-  .form-footer-note {
-    text-align: center;
-    font-size: 11px;
-    color: #8AADA3;
-    margin-top: 14px;
-    padding: 0 8px;
-    line-height: 1.6;
-  }
-
-  /* Success */
-  .form-success-wrap {
-    min-height: 100dvh;
-    background: #F5F9F7;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 28px;
-    text-align: center;
-  }
-  .success-icon {
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: #EAF6F1;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 24px;
-  }
-  .success-title {
-    font-family: var(--font-serif), Georgia, serif;
-    font-size: 26px;
-    font-weight: 900;
-    color: #080F0D;
-    letter-spacing: -0.02em;
-    margin: 0 0 12px;
-  }
-  .success-body {
-    font-size: 14px;
-    color: #587066;
-    line-height: 1.65;
-    max-width: 30ch;
-    margin: 0;
-  }
+  .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
+  .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
+  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+  .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 12px; }
+  .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 30ch; margin: 0; }
 `
