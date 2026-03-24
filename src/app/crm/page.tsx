@@ -23,7 +23,7 @@ export default function CrmLoginPage() {
       if (!data.ok) {
         setError(data.message ?? 'Incorrect password.')
       } else {
-        router.push('/crm/dashboard')
+        window.location.href = '/crm/dashboard'
       }
     } catch {
       setError('Network error. Please try again.')
