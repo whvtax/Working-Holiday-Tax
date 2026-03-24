@@ -16,6 +16,12 @@ type Client = {
 }
 type View = 'dashboard'|'clients'|'client-detail'
 
+const CY = new Date().getFullYear()
+const TAX_YEARS_FIXED = Array.from({length: 7}, (_,i) => {
+  const y = CY - 1 + i
+  return `${y}-${String(y+1).slice(2)}`
+})
+
 export default function DashboardClient() {
   const router = useRouter()
   const [view, setView]                 = useState<View>('dashboard')
@@ -176,8 +182,6 @@ export default function DashboardClient() {
     return matchSearch && matchYear
   })
 
-  // All unique tax years across clients
-  const allYears = [...new Set(clients.flatMap(c => c.taxReturns.map(r => r.year)))].sort().reverse()
 
   const totalRefunds = clients.reduce((sum, c) =>
     sum + c.taxReturns.reduce((s, r) => s + r.refundAmount, 0), 0)
@@ -379,12 +383,10 @@ export default function DashboardClient() {
                 Back to Tasks
               </button>
 
-              {/* Client header */}
+              {/* Profile header */}
               <div className="c-card" style={{marginBottom:14}}>
-                <div className="c-hdr">
-                  <div className="c-av">
-                    {activeTask.clientName.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()}
-                  </div>
+                <div className="c-hdr" style={{marginBottom:0}}>
+                  <div className="c-av">{activeTask.clientName.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()}</div>
                   <div>
                     <div className="c-name">{activeTask.clientName}</div>
                     <div className="c-sub">{activeTask.country} · Tax year {activeTask.taxYear} · Submitted {fmtDate(activeTask.submittedAt)}</div>
@@ -394,58 +396,102 @@ export default function DashboardClient() {
                     : <span style={{marginLeft:'auto',background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
                   }
                 </div>
-                {/* Details grid */}
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
+              </div>
+
+              {/* Details in sections */}
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+
+                {/* Personal */}
+                <div style={{background:'#fff',borderRadius:13,border:'1px solid #e4ede8',overflow:'hidden'}}>
+                  <div style={{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef'}}>Personal details</div>
+                  {[['Full name',activeTask.clientName],['Date of birth',activeTask.dob],['Country',activeTask.country],['Marital status',activeTask.marital]].map(([l,v])=>(
+                    <div key={l} style={{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10}}>
+                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0}}>{l}</span>
+                      <span style={{fontSize:12,color:'#0a1410'}}>{v||'—'}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Contact */}
+                <div style={{background:'#fff',borderRadius:13,border:'1px solid #e4ede8',overflow:'hidden'}}>
+                  <div style={{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef'}}>Contact details</div>
+                  {[['WhatsApp',activeTask.whatsapp],['AU Phone',activeTask.auPhone],['Email',activeTask.email],['Address',activeTask.address]].map(([l,v])=>(
+                    <div key={l} style={{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10}}>
+                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0}}>{l}</span>
+                      <span style={{fontSize:12,color:'#0a1410',direction:'ltr',textAlign:'right',flex:1}}>{v||'—'}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Tax & Employment */}
+                <div style={{background:'#fff',borderRadius:13,border:'1px solid #e4ede8',overflow:'hidden'}}>
+                  <div style={{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef'}}>Tax & employment</div>
+                  {[['TFN 🔒',activeTask.tfn],['Bank details 🔒',activeTask.bankDetails],['Primary employer',activeTask.primaryJob],['Tax status',activeTask.taxStatus]].map(([l,v])=>(
+                    <div key={l} style={{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10}}>
+                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0}}>{l}</span>
+                      <span style={{fontSize:12,color:'#0a1410',direction:'ltr',textAlign:'right',flex:1}}>{v||'—'}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Other */}
+                <div style={{background:'#fff',borderRadius:13,border:'1px solid #e4ede8',overflow:'hidden'}}>
+                  <div style={{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef'}}>Other info</div>
+                  {[['Tax year',activeTask.taxYear],['How they heard',activeTask.howHeard]].map(([l,v])=>(
+                    <div key={l} style={{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10}}>
+                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0}}>{l}</span>
+                      <span style={{fontSize:12,color:'#0a1410'}}>{v||'—'}</span>
+                    </div>
+                  ))}
+                </div>
+
+              </div>
+
+              {/* Documents */}
+              <div style={{background:'#fff',borderRadius:13,border:'1px solid #e4ede8',overflow:'hidden',marginBottom:12}}>
+                <div style={{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef'}}>Documents uploaded</div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:0}}>
                   {[
-                    ['Date of birth', activeTask.dob],
-                    ['WhatsApp', activeTask.whatsapp],
-                    ['Email', activeTask.email],
-                    ['AU Phone', activeTask.auPhone],
-                    ['Address', activeTask.address],
-                    ['TFN 🔒', activeTask.tfn],
-                    ['Bank details 🔒', activeTask.bankDetails],
-                    ['Employer', activeTask.primaryJob],
-                    ['Marital status', activeTask.marital],
-                    ['Tax status', activeTask.taxStatus],
-                    ['How they heard', activeTask.howHeard],
-                  ].map(([label, value]) => (
-                    <div key={label} style={{display:'flex',padding:'9px 0',borderBottom:'1px solid #f5f5f5',gap:12}}>
-                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:120,flexShrink:0}}>{label}</span>
-                      <span style={{fontSize:13,color:'#0a1410'}}>{value||'—'}</span>
+                    ['Bank statement', '📄'],
+                    ['Selfie + Passport', '🪪'],
+                    ['Group certificates / Invoices', '📋'],
+                  ].map(([label, icon]) => (
+                    <div key={label} style={{padding:'16px',borderRight:'1px solid #f0f0f0',textAlign:'center'}}>
+                      <div style={{fontSize:24,marginBottom:8}}>{icon}</div>
+                      <div style={{fontSize:11,color:'#aabab2',marginBottom:6}}>{label}</div>
+                      <span style={{fontSize:10,fontWeight:600,color:'#aabab2',background:'#f5f5f5',border:'1px solid #eee',borderRadius:6,padding:'2px 8px'}}>Not uploaded</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Notes */}
-              <div className="ret-section" style={{marginBottom:14}}>
-                <div style={{fontSize:13,fontWeight:600,color:'#0a1410',marginBottom:10,display:'flex',alignItems:'center',gap:7}}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#0E5C42" strokeWidth="1.8"/><path d="M8 13h8M8 17h5" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  Notes
+              <div style={{background:'#fff',borderRadius:13,border:'1px solid #e4ede8',padding:'16px',marginBottom:12}}>
+                <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8,display:'flex',alignItems:'center',gap:7}}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#0E5C42" strokeWidth="1.8"/><path d="M8 13h8M8 17h5" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  Internal notes
                 </div>
                 <textarea
-                  style={{width:'100%',border:'1.5px solid #e4ede8',borderRadius:10,padding:'11px 13px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:100,lineHeight:1.6,boxSizing:'border-box'}}
-                  placeholder="Add notes..."
+                  style={{width:'100%',border:'1.5px solid #e4ede8',borderRadius:9,padding:'10px 12px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:80,lineHeight:1.55,boxSizing:'border-box'}}
+                  placeholder="Add notes about this return..."
                   value={taskNotes}
                   onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}
                 />
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:8}}>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:7}}>
                   {notesSaved ? <span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span> : <span/>}
-                  <button style={{padding:'6px 14px',border:'none',borderRadius:8,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===activeTask.notes?0.4:1}} disabled={taskNotes===activeTask.notes} onClick={saveNotes}>Save notes</button>
+                  <button style={{padding:'6px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===activeTask.notes?0.4:1}} disabled={taskNotes===activeTask.notes} onClick={saveNotes}>Save notes</button>
                 </div>
               </div>
 
               {/* Actions */}
               <div style={{display:'flex',gap:10}}>
                 {!activeTask.done && (
-                  <button
-                    style={{flex:1,padding:'12px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}}
+                  <button style={{flex:1,padding:'12px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}}
                     onClick={async()=>{ await markDone(activeTask.id); setActiveTask({...activeTask,done:true}) }}>
                     ✓ Mark as done
                   </button>
                 )}
-                <button
-                  style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}
+                <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}
                   onClick={()=>setConfirmComplete(activeTask.id)}>
                   🗑️ Delete task
                 </button>
@@ -560,46 +606,39 @@ export default function DashboardClient() {
           {/* ── CLIENTS LIST ── */}
           {view === 'clients' && (
             <div className="page">
-              {/* Top row: title + count + year filter */}
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
-                <div style={{display:'flex',alignItems:'center',gap:12}}>
+              {/* Header row */}
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12,flexWrap:'wrap'}}>
+                <div style={{display:'flex',alignItems:'center',gap:10}}>
                   <div className="cl-title-text">Clients</div>
                   <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
                     {visibleClients.length} {yearFilter !== 'all' ? `in ${yearFilter}` : 'total'}
                   </span>
                 </div>
-                <div style={{display:'flex',alignItems:'center',gap:8}}>
-                  <select
-                    value={yearFilter}
-                    onChange={e=>setYearFilter(e.target.value)}
-                    style={{padding:'7px 12px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',color:'#333',cursor:'pointer',fontFamily:'inherit'}}>
-                    <option value="all">All years</option>
-                    {allYears.map(y => <option key={y} value={y}>{y}</option>)}
-                  </select>
-                </div>
+                <button className="cl-add-btn" onClick={()=>setShowAddModal(true)}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
+                  + Add Client
+                </button>
               </div>
 
-              {/* Search row */}
+              {/* Filters row */}
               <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14,flexWrap:'wrap'}}>
-                <div style={{position:'relative',flex:1,minWidth:220}}>
+                <div style={{position:'relative',flex:2,minWidth:220}}>
                   <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none">
                     <circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/>
                     <path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/>
                   </svg>
                   <input
                     style={{width:'100%',padding:'8px 12px 8px 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}}
-                    placeholder="Search by name…"
+                    placeholder="Search by name, WhatsApp or email…"
                     value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
-                <div style={{position:'relative',flex:1,minWidth:220}}>
-                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none">
-                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.1 1.18 2 2 0 012.08 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/>
-                  </svg>
-                  <input
-                    style={{width:'100%',padding:'8px 12px 8px 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}}
-                    placeholder="Search by WhatsApp or email…"
-                    value={search} onChange={e=>setSearch(e.target.value)}/>
-                </div>
+                <select
+                  value={yearFilter}
+                  onChange={e=>setYearFilter(e.target.value)}
+                  style={{padding:'8px 14px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',color:'#333',cursor:'pointer',fontFamily:'inherit',flexShrink:0}}>
+                  <option value="all">All tax years</option>
+                  {TAX_YEARS_FIXED.map(y => <option key={y} value={y}>{y}</option>)}
+                </select>
               </div>
 
               {clients.length === 0 ? (
