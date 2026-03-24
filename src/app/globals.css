@@ -178,10 +178,26 @@
       border-radius: 999px !important;
     }
 
-    /* Hero dual-CTA (flex-col container): each button full width, no max-width cap */
+    /* Hero dual-CTA — שניהם מלאי רוחב אחד מתחת לשני */
+    .hero-cta-pair {
+      max-width: 100% !important;
+      width: 100% !important;
+      flex-direction: column !important;
+    }
+
     .hero-cta-pair .btn-primary,
     .hero-cta-pair .btn-ghost-dark {
       max-width: 100% !important;
+      width: 100% !important;
+      height: 54px !important;
+      font-size: 15px !important;
+      flex: unset !important;
+    }
+
+    /* Ghost button — same visual weight as primary */
+    .hero-cta-pair .btn-ghost-dark {
+      border: 1.5px solid #C8EAE0 !important;
+      color: #0B5240 !important;
     }
 
     /* Uniform hero H1 size on mobile */
