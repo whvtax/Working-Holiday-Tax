@@ -63,8 +63,8 @@ export default function HomePage() {
           {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
             style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
-            <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super - we handle everything for you<br />so you don&apos;t have to stress about paperwork.</span>
-            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super - we handle everything for you, so you don&apos;t have to stress about paperwork.</span>
+            <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
+            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super — we handle everything for you</span>
           </p>
 
           {/* Mobile: tighter top margin · Desktop: more breathing room */}
@@ -77,7 +77,7 @@ export default function HomePage() {
           </div>
 
           {/* Mobile: 2×2 grid · Desktop: single row */}
-          <div className="flex flex-col items-center gap-y-2 lg:flex-row lg:flex-nowrap lg:gap-y-0 lg:gap-x-7 mx-auto">
+          <div className="flex flex-col items-center gap-y-2 lg:flex-row lg:flex-nowrap lg:justify-center lg:gap-y-0 lg:gap-x-7 mx-auto">
             {['1,200+ backpackers helped','4.9★ from 300+ reviews','Registered Australian tax agent','Most replies within 1 hour'].map((label,i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
@@ -118,8 +118,7 @@ export default function HomePage() {
 
           <h2 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize:'clamp(17px, 2.17vw, 30px)', lineHeight:1.12, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'10px', marginBottom:'10px' }}>
-            <span className="hidden lg:block">Built for backpackers who don&apos;t want<br />to lose money on tax.</span>
-            <span className="lg:hidden">Built for backpackers who don&apos;t want to lose money on tax.</span>
+            Built for backpackers on a Working Holiday visa.
           </h2>
 
           <p className="font-light text-muted mx-auto"
@@ -131,7 +130,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom:'36px' }}>
             {[
               { title:'Backpacker tax refund experts',   body:'We focus only on working holiday tax, so we know how to get you the most back.' },
-              { title:'Registered Australian tax agent', body:'Your tax is handled properly, safely, and fully compliant with all ATO rules.' },
+              { title:'ATO Compliant Service',             body:'Fully compliant with ATO rules, under a registered tax agent\'s supervision.' },
               { title:'Real support, no tax jargon',     body:'We guide you step by step and explain everything clearly in simple English.' },
               { title:'We handle everything for you',    body:'No paperwork or stress, we handle everything for you from start to finish.' },
             ].map((item,i) => (

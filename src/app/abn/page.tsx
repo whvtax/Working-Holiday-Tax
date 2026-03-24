@@ -356,25 +356,24 @@ export default function ABNPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background:'#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          {/* Desktop: tighter gap between left col and accordion */}
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
-            <div className="text-center lg:text-left">
+            <div className="text-center">
               <span className="section-label center">Questions</span>
               <h2 className="font-serif font-black text-ink"
-                style={{ fontSize:'clamp(17px,2.04vw,24px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'10px' }}>
+                style={{ fontSize:'clamp(17px,2.04vw,26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
                 ABN questions, answered.
               </h2>
               <p className="font-light text-muted"
-                style={{ fontSize:'13px', lineHeight:1.65, marginBottom:'20px' }}>
+                style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Have a question? Message us on WhatsApp.
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 24px', fontSize:'14px', width:'100%', maxWidth:'200px', marginTop:'4px' }}>
-                Ask us now →
+                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
+                Get help now →
               </a>
             </div>
 
@@ -384,6 +383,7 @@ export default function ABNPage() {
           </div>
         </div>
       </section>
+
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
