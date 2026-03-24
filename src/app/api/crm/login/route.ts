@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     res.cookies.set('crm_session', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       path: '/',
       maxAge: 8 * 60 * 60,
     })
