@@ -18,11 +18,6 @@ function FileUpload({ id, label, accept, value, onChange }: { id: string; label:
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
     if (!file) return
-    if (file.size > 10 * 1024 * 1024) {
-      alert(`File is too large. Maximum size is 10 MB.`)
-      e.target.value = ''
-      return
-    }
     onChange({ file, preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : null })
   }
   const handleRemove = () => {
@@ -68,7 +63,6 @@ export default function SuperFormPage() {
   const [submitted, setSubmitted]   = useState(false)
   const [loading, setLoading]       = useState(false)
   const [errors, setErrors]         = useState<Record<string, string>>({})
-  const [_honeypot, _setHoneypot]   = useState('')  // bot trap
 
   const validate = () => {
     const e: Record<string, string> = {}
@@ -79,7 +73,6 @@ export default function SuperFormPage() {
     if (!passportCountry.trim()) e.passportCountry = 'Required'
     if (!smsPhone.trim())       e.smsPhone       = 'Required'
     if (!email.trim())          e.email          = 'Required'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) e.email = 'Invalid email address'
     if (!auAddress.trim())      e.auAddress      = 'Required'
     if (!homeAddress.trim())    e.homeAddress    = 'Required'
     if (!tfn.trim())            e.tfn            = 'Required'
@@ -104,7 +97,6 @@ export default function SuperFormPage() {
     fd.append('homeAddress', homeAddress); fd.append('tfn', tfn)
     fd.append('superFunds', superFunds); fd.append('bankDetails', bankDetails)
     if (selfie.file) fd.append('selfiePassport', selfie.file)
-    fd.append('website', _honeypot)  // honeypot
     try {
       const res = await fetch('/api/super-form', { method: 'POST', body: fd })
       if (res.ok) setSubmitted(true)
@@ -132,11 +124,6 @@ export default function SuperFormPage() {
           <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.<br />We&apos;re here to help if you have any questions.</p>
         </div>
         <form onSubmit={handleSubmit} noValidate>
-          <div aria-hidden="true" style={{position:'absolute',left:'-9999px',width:'1px',height:'1px',overflow:'hidden'}}>
-            <label htmlFor="hp-website-super">Website</label>
-            <input id="hp-website-super" type="text" name="website" tabIndex={-1} autoComplete="off"
-              value={_honeypot} onChange={e => _setHoneypot(e.target.value)} />
-          </div>
           <div className="form-section-title">Personal details</div>
           <Field label="First name (including middle name)" required error={errors.firstName}>
             <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" value={firstName} onChange={e=>setFirstName(e.target.value)}/>
@@ -181,7 +168,7 @@ export default function SuperFormPage() {
 
           <div className="form-section-title">Documents</div>
           <Field label="Selfie with passport" required error={errors.selfie}>
-            <FileUpload id="selfie" label="Upload selfie with passport" accept="image/jpeg,image/png,image/webp,image/heic,application/pdf" value={selfie} onChange={setSelfie}/>
+            <FileUpload id="selfie" label="Upload selfie with passport" accept="image/*,.pdf" value={selfie} onChange={setSelfie}/>
           </Field>
 
           <div className="form-section-title">Declaration</div>
@@ -190,7 +177,7 @@ export default function SuperFormPage() {
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">I have read and accept the <a href="/client-agreement" rel="noopener noreferrer" target="_blank" className="decl-link">Client Agreement</a> &amp; <a href="/privacy" rel="noopener noreferrer" target="_blank" className="decl-link">Privacy Policy</a></span>
+              <span className="check-label">I have read and accept the <a href="/client-agreement" target="_blank" className="decl-link">Client Agreement</a> &amp; <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a></span>
             </label>
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>
@@ -209,7 +196,7 @@ export default function SuperFormPage() {
 const css = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .hidden { display: none !important; }
-  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
+  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 32px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; padding: 28px 24px 32px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); }
   .form-header { margin-bottom: 24px; text-align: center; }
   .form-brand { font-size: 11px; font-weight: 600; color: #0B5240; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }

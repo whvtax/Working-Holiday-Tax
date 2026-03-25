@@ -21,7 +21,7 @@ type Client = {
 type View = 'tasks'|'clients'|'client-detail'
 
 const CY = new Date().getFullYear()
-const TAX_YEARS = Array.from({length:7},(_,i)=>`${CY-2-i}-${String(CY-1-i).slice(2)}`)
+const TAX_YEARS = Array.from({length:8},(_,i)=>`${CY-1+i}-${String(CY+i).slice(2)}`)
 const TASK_LABELS: Record<TaskType,string> = {
   'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application'
 }
@@ -57,20 +57,8 @@ export default function DashboardClient() {
   const [newSuperAmt, setNewSuperAmt]   = useState('')
   const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25' as string})
 
-  const loadTasks   = useCallback(async()=>{
-    try {
-      const r = await fetch('/api/crm/tasks')
-      if (r.status === 401) { window.location.replace('/crm'); return }
-      const d = await r.json(); if(d.ok) setTasks(d.tasks)
-    } catch { /* network error — keep existing state */ }
-  },[])
-  const loadClients = useCallback(async()=>{
-    try {
-      const r = await fetch('/api/crm/clients')
-      if (r.status === 401) { window.location.replace('/crm'); return }
-      const d = await r.json(); if(d.ok) setClients(d.clients)
-    } catch { /* network error — keep existing state */ }
-  },[])
+  const loadTasks   = useCallback(async()=>{ const r=await fetch('/api/crm/tasks'); const d=await r.json(); if(d.ok) setTasks(d.tasks) },[])
+  const loadClients = useCallback(async()=>{ const r=await fetch('/api/crm/clients'); const d=await r.json(); if(d.ok) setClients(d.clients) },[])
 
   useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
 
