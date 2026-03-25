@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
+import { isRateLimited } from '@/lib/rate-limit'
+import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'unknown'
+    if (await isRateLimited(ip, 'tax-form')) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+    }
+
     const formData  = await req.formData()
-    const clientId  = `CLT-${Date.now()}`
+    const clientId  = `CLT-${crypto.randomUUID()}`
     const fullName  = formData.get('fullName')  as string ?? ''
 
     await createTask({
@@ -32,6 +39,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[tax-form]', err)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
   }
 }

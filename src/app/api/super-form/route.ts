@@ -1,18 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
+import { isRateLimited } from '@/lib/rate-limit'
+import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'unknown'
+    if (await isRateLimited(ip, 'super-form')) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+    }
+
     const formData = await req.formData()
     const firstName = formData.get('firstName') as string ?? ''
     const lastName  = formData.get('lastName')  as string ?? ''
     const fullName  = [firstName, lastName].filter(Boolean).join(' ')
-    const taskType  = 'super' === 'super' ? 'super' : 'super' === 'tfn' ? 'tfn' : 'abn'
 
     await createTask({
-      clientId:    `CLT-${Date.now()}`,
+      clientId:    `CLT-${crypto.randomUUID()}`,
       clientName:  fullName,
-      taskType:    taskType as any,
+      taskType:    'super',
       whatsapp:    (formData.get('whatsapp') ?? formData.get('smsPhone') ?? '') as string,
       email:       formData.get('email') as string ?? '',
       country:     (formData.get('country') ?? formData.get('passportCountry') ?? '') as string,
@@ -30,10 +36,10 @@ export async function POST(req: NextRequest) {
       notes:       formData.get('superFunds') as string ?? '',
     })
 
-    console.log(`New ${taskType} form submitted: ${fullName}`)
+    console.log('New super form submitted:', fullName)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error(`[super-form]`, err)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    console.error('[super-form]', err)
+    return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
   }
 }

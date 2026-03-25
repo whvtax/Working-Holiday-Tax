@@ -3,6 +3,7 @@
  * Tables: crm_clients (permanent) + crm_tasks (active submissions)
  */
 import { sql } from '@vercel/postgres'
+import crypto from 'crypto'
 
 export type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
 export type SuperReturn   = { year:string; amount:number; completedAt:string }
@@ -82,8 +83,8 @@ function toClient(r: Record<string,unknown>): ClientRecord {
     whatsapp:     r.whatsapp as string,
     email:        r.email as string,
     country:      r.country as string,
-    howHeard:     r.how_heard as string ?? '',
-    notes:        r.notes as string ?? '',
+    howHeard:     (r.how_heard as string) ?? '',
+    notes:        (r.notes as string) ?? '',
     createdAt:    r.created_at as string,
     taxReturns:   parse(r.tax_returns, []),
     superReturns: parse(r.super_returns, []),
@@ -123,7 +124,8 @@ export async function getTask(id: string): Promise<Task | null> {
 
 export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   await initDb()
-  const id = `TASK-${Date.now()}`
+  // Use UUID for collision-safe unique IDs
+  const id = `TASK-${crypto.randomUUID()}`
   await sql`
     INSERT INTO crm_tasks
       (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
@@ -148,7 +150,8 @@ export async function updateTaskNotes(id: string, notes: string): Promise<void> 
 }
 
 /**
- * Delete task + upsert client (keep existing if already there)
+ * Delete task + upsert client atomically.
+ * Uses BEGIN/COMMIT so that a partial failure leaves the DB consistent.
  */
 export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   await initDb()
@@ -156,21 +159,28 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   if (!task) return
 
   const existing = await getClientById(task.clientId)
-  if (!existing) {
-    // New client — create
-    await sql`
-      INSERT INTO crm_clients
-        (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
-      VALUES
-        (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
-         ${task.country},${task.howHeard},'','[]','[]',
-         '{"done":false,"completedAt":"","notes":""}',
-         '{"done":false,"completedAt":"","notes":""}',
-         ${new Date().toISOString()})
-    `
+
+  // Run both operations inside a transaction to avoid partial state
+  await sql`BEGIN`
+  try {
+    if (!existing) {
+      await sql`
+        INSERT INTO crm_clients
+          (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
+        VALUES
+          (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
+           ${task.country},${task.howHeard},'','[]','[]',
+           '{"done":false,"completedAt":"","notes":""}',
+           '{"done":false,"completedAt":"","notes":""}',
+           ${new Date().toISOString()})
+      `
+    }
+    await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
+    await sql`COMMIT`
+  } catch (err) {
+    await sql`ROLLBACK`
+    throw err
   }
-  // If client exists, keep everything — just delete task
-  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
 }
 
 // ── Clients ────────────────────────────────────────────────────────────────

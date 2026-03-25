@@ -1,8 +1,8 @@
 /**
- * CRM Store — stateless session (HMAC JWT cookie) + in-memory clients
- * 
+ * CRM Store — stateless session (HMAC JWT cookie)
+ *
  * Session: signed cookie — works across Vercel serverless instances
- * Clients: in-memory (persists within same instance; upgrade to KV/DB for full persistence)
+ * Brute-force: tracked in Redis so it survives across instances
  */
 
 import crypto from 'crypto'
@@ -35,24 +35,12 @@ export type ClientRecord = {
 
 export type FailedAttempt = { count: number; lastAttempt: number; locked: boolean }
 
-// ── In-memory store (clients + brute force) ───────────────────────────────
-
-const store: {
-  clients: Map<string, ClientRecord>
-  failedAttempts: FailedAttempt
-} = {
-  clients: new Map(),
-  failedAttempts: { count: 0, lastAttempt: 0, locked: false },
-}
-
 // ── Security helpers ───────────────────────────────────────────────────────
 
 export function hashPassword(password: string): string {
-  return crypto.pbkdf2Sync(
-    password,
-    process.env.PASSWORD_SALT ?? 'whvtax-salt-2024',
-    100_000, 64, 'sha512'
-  ).toString('hex')
+  const salt = process.env.PASSWORD_SALT
+  if (!salt) throw new Error('Missing env var: PASSWORD_SALT')
+  return crypto.pbkdf2Sync(password, salt, 100_000, 64, 'sha512').toString('hex')
 }
 
 export function verifyPassword(password: string, hash: string): boolean {
@@ -66,29 +54,14 @@ export function generateOtp(): string {
   return crypto.randomInt(10000000, 99999999).toString()
 }
 
-// ── OTP store (in-memory, expires in 10 min) ──────────────────────────────
-let _otpHash    = ''
-let _otpExpiry  = 0
-
-export function storeOtp(code: string): void {
-  _otpHash   = crypto.createHash('sha256').update(code).digest('hex')
-  _otpExpiry = Date.now() + 10 * 60 * 1000 // 10 minutes
-}
-
-export function verifyOtp(code: string): boolean {
-  if (Date.now() > _otpExpiry) return false
-  const hash = crypto.createHash('sha256').update(code.trim()).digest('hex')
-  const valid = crypto.timingSafeEqual(Buffer.from(hash, 'hex'), Buffer.from(_otpHash, 'hex'))
-  if (valid) { _otpHash = ''; _otpExpiry = 0 } // one-time use
-  return valid
-}
-
 // ── Session — HMAC signed token (stateless, works on Vercel) ──────────────
 
 const SESSION_TTL = 8 * 60 * 60 * 1000 // 8 hours
 
 function jwtSecret(): Buffer {
-  return Buffer.from(process.env.JWT_SECRET ?? 'whvtax-crm-secret-2024-changeme')
+  const secret = process.env.JWT_SECRET
+  if (!secret) throw new Error('Missing env var: JWT_SECRET')
+  return Buffer.from(secret)
 }
 
 export function createSession(): string {
@@ -116,90 +89,82 @@ export function validateSession(token: string | undefined): boolean {
 
 export function destroySession() { /* stateless — cookie cleared client-side */ }
 
-// ── Brute-force protection ─────────────────────────────────────────────────
+// ── Brute-force protection (Redis-backed) ──────────────────────────────────
+// Keys:  crm_fail_count  (integer, string)
+//        crm_fail_ts     (last attempt unix ms, string)
+//        crm_locked      ('1' | absent)
+// All keys get a 35-minute TTL so they self-clean after lockout expires.
 
-const MAX_ATTEMPTS    = 3
-const LOCKOUT_MS      = 30 * 60 * 1000
+const MAX_ATTEMPTS = 3
+const LOCKOUT_MS   = 30 * 60 * 1000
+const KEY_COUNT    = 'crm_fail_count'
+const KEY_TS       = 'crm_fail_ts'
+const KEY_LOCKED   = 'crm_locked'
+const TTL_SECS     = 35 * 60 // slightly longer than lockout
 
-export function recordFailedAttempt(): FailedAttempt {
-  const fa = store.failedAttempts
-  fa.count++
-  fa.lastAttempt = Date.now()
-  if (fa.count >= MAX_ATTEMPTS) fa.locked = true
-  return { ...fa }
+export async function recordFailedAttemptRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
+  const now   = Date.now()
+  const count = await redis.incr(KEY_COUNT)
+  await redis.set(KEY_TS, String(now), { EX: TTL_SECS })
+  await redis.expire(KEY_COUNT, TTL_SECS)
+  const locked = count >= MAX_ATTEMPTS
+  if (locked) await redis.set(KEY_LOCKED, '1', { EX: TTL_SECS })
+  return { count, lastAttempt: now, locked }
 }
 
-export function resetFailedAttempts() {
-  store.failedAttempts = { count: 0, lastAttempt: 0, locked: false }
+export async function resetFailedAttemptsRedis(redis: import('redis').RedisClientType): Promise<void> {
+  await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
 }
 
-export function isLockedOut(): boolean {
-  const fa = store.failedAttempts
-  if (!fa.locked) return false
-  if (Date.now() - fa.lastAttempt > LOCKOUT_MS) {
-    store.failedAttempts = { count: 0, lastAttempt: 0, locked: false }
+export async function isLockedOutRedis(redis: import('redis').RedisClientType): Promise<boolean> {
+  const locked = await redis.get(KEY_LOCKED)
+  if (!locked) return false
+  const ts = await redis.get(KEY_TS)
+  if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
+    // Lockout expired — clear manually (TTL will also clean it, this is just faster)
+    await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
     return false
   }
   return true
 }
 
-// ── Clients CRUD ───────────────────────────────────────────────────────────
+// ── Clients CRUD (kept for legacy/demo compatibility) ─────────────────────
+
+const _store: { clients: Map<string, ClientRecord> } = { clients: new Map() }
 
 export function getAllClients(): ClientRecord[] {
-  return Array.from(store.clients.values()).sort(
+  return Array.from(_store.clients.values()).sort(
     (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
   )
 }
 
 export function getClient(id: string): ClientRecord | undefined {
-  return store.clients.get(id)
+  return _store.clients.get(id)
 }
 
 export function upsertClient(data: Omit<ClientRecord, 'id' | 'handled'> & { id?: string; waNumber?: string }): ClientRecord {
   const id       = data.id ?? `CLT-${Date.now()}`
-  const existing = store.clients.get(id)
+  const existing = _store.clients.get(id)
   const record: ClientRecord = { ...data, id, handled: existing?.handled ?? false, notes: data.notes ?? existing?.notes ?? '' }
-  store.clients.set(id, record)
+  _store.clients.set(id, record)
   return record
 }
 
 export function markHandled(id: string): boolean {
-  const c = store.clients.get(id)
+  const c = _store.clients.get(id)
   if (!c) return false
   c.handled = true
   return true
 }
 
 export function clearClientDetails(id: string): boolean {
-  const c = store.clients.get(id)
+  const c = _store.clients.get(id)
   if (!c) return false
-  store.clients.set(id, {
+  _store.clients.set(id, {
     ...c,
-    // email kept for long-term contact
     address: '', tfn: '', bankDetails: '',
     primaryJob: '', marital: '', taxStatus: '', howHeard: '', auPhone: '',
     files: { bankStatement: null, selfiePassport: null, invoices: null },
   })
   return true
-}
-
-// ── Seed demo data ─────────────────────────────────────────────────────────
-
-if (store.clients.size === 0) {
-  const demo = [
-    { fullName:'Sophie Lambert',  dob:'1998-04-12', whatsapp:'+33612345678', email:'sophie@email.com',  country:'France',  taxYear:'2023-24' as TaxYear, primaryJob:'Barista – The Grounds' },
-    { fullName:'Marco Bianchi',   dob:'1996-09-22', whatsapp:'+39333987654', email:'marco@gmail.com',   country:'Italy',   taxYear:'2022-23' as TaxYear, primaryJob:'Farm Worker – QLD' },
-    { fullName:'Lena Müller',     dob:'2000-01-30', whatsapp:'+49160112233', email:'lena@web.de',       country:'Germany', taxYear:'2021-22' as TaxYear, primaryJob:'Waitress – Noosa' },
-  ]
-  demo.forEach((d, i) => {
-    const id = `CLT-DEMO-${i + 1}`
-    store.clients.set(id, {
-      ...d, id, handled: false, notes: '',
-      address: 'Sydney NSW', tfn: '123 456 789', bankDetails: 'BSB 062-000',
-      marital: 'Single', taxStatus: 'Working Holiday Maker', howHeard: 'Instagram',
-      auPhone: '+614' + (10000000 + i),
-      submittedAt: new Date(Date.now() - (i + 1) * 3 * 24 * 60 * 60 * 1000).toISOString(),
-      files: { bankStatement: null, selfiePassport: null, invoices: null },
-    })
-  })
 }

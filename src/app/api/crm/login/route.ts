@@ -2,14 +2,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import {
   hashPassword, verifyPassword,
-  recordFailedAttempt, resetFailedAttempts, isLockedOut,
+  recordFailedAttemptRedis, resetFailedAttemptsRedis, isLockedOutRedis,
   generateOtp,
 } from '@/lib/crm-store'
 import { createClient } from 'redis'
 import crypto from 'crypto'
 
 async function getRedis() {
-  const client = createClient({ url: process.env.REDIS_URL })
+  const url = process.env.REDIS_URL
+  if (!url) throw new Error('Missing env var: REDIS_URL')
+  const client = createClient({ url })
   await client.connect()
   return client
 }
@@ -19,30 +21,33 @@ export async function POST(req: NextRequest) {
   try {
     const { password } = await req.json()
 
-    const ADMIN_EMAIL   = process.env.CRM_ADMIN_EMAIL   ?? 'info@workingholidaytax.com.au'
-    const RESEND_KEY    = process.env.RESEND_API_KEY     ?? ''
-    const rawPassword   = process.env.CRM_PASSWORD      ?? 'WHVtax2024!#'
+    const ADMIN_EMAIL = process.env.CRM_ADMIN_EMAIL
+    const RESEND_KEY  = process.env.RESEND_API_KEY ?? ''
+    const rawPassword = process.env.CRM_PASSWORD
+    if (!rawPassword) return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
+
     const PASSWORD_HASH = hashPassword(rawPassword)
 
-    if (isLockedOut()) {
+    redis = await getRedis()
+
+    if (await isLockedOutRedis(redis as any)) {
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
-      const fa = recordFailedAttempt()
-      if (fa.locked) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
+      const fa = await recordFailedAttemptRedis(redis as any)
+      if (fa.locked && ADMIN_EMAIL) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
-    resetFailedAttempts()
+    await resetFailedAttemptsRedis(redis as any)
 
     // Generate OTP and store in Redis (shared across all serverless instances)
     const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
-    redis = await getRedis()
     await redis.set('crm_otp', otpHash, { EX: 600 }) // expires in 10 minutes
 
-    await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
+    if (ADMIN_EMAIL) await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
 
     return NextResponse.json({ ok: true, otpSent: true })
 
@@ -50,7 +55,7 @@ export async function POST(req: NextRequest) {
     console.error('[CRM login]', err)
     return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
   } finally {
-    if (redis) await redis.disconnect()
+    if (redis) await (redis as any).disconnect()
   }
 }
 
