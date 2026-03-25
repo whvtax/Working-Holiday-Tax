@@ -129,7 +129,7 @@ export default function HomePage() {
               { title:'Real support, no tax jargon',     body:'We guide you step by step and explain everything clearly in simple English.' },
               { title:'We handle everything for you',    body:'No paperwork or stress, we handle everything for you from start to finish.' },
             ].map((item,i) => (
-              <div key={i} className="pt-4 lg:pt-6 text-center lg:text-left" style={{ borderTop:'1px solid #E2EFE9' }}>
+              <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
                 <p className="font-light text-muted leading-[1.7]" style={{ fontSize:'clamp(12px, 1.1vw, 13px)' }}>{item.body}</p>
               </div>

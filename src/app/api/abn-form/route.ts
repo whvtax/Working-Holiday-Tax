@@ -1,39 +1,76 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
+import {
+  isRateLimited, isHoneypotFilled, isValidEmail, isValidDate,
+  isValidPhone, isValidTfn, getField, validateUploadedFile,
+} from '@/lib/form-protection'
+import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
+  if (await isRateLimited(req)) {
+    return NextResponse.json({ ok: false, message: 'Too many requests. Please try again later.' }, { status: 429 })
+  }
+
+  const ct = req.headers.get('content-type') ?? ''
+  if (!ct.includes('multipart/form-data') && !ct.includes('application/x-www-form-urlencoded')) {
+    return NextResponse.json({ ok: false, message: 'Invalid request format.' }, { status: 400 })
+  }
+
   try {
     const formData = await req.formData()
-    const firstName = formData.get('firstName') as string ?? ''
-    const lastName  = formData.get('lastName')  as string ?? ''
+    if (isHoneypotFilled(formData)) return NextResponse.json({ ok: true })
+
+    const firstName = getField(formData, 'firstName',   80)
+    const lastName  = getField(formData, 'lastName',    80)
     const fullName  = [firstName, lastName].filter(Boolean).join(' ')
-    const taskType  = 'abn' === 'super' ? 'super' : 'abn' === 'tfn' ? 'tfn' : 'abn'
+    const whatsapp  = getField(formData, 'whatsapp',    30) || getField(formData, 'smsPhone', 30)
+    const auPhone   = getField(formData, 'auPhone',      30)
+    const email     = getField(formData, 'email',       254)
+    const country   = getField(formData, 'country',     100) || getField(formData, 'passportCountry', 100)
+    const dob       = getField(formData, 'dob',          10)
+    const address   = getField(formData, 'address',     300) || getField(formData, 'auAddress', 300)
+    const tfn       = getField(formData, 'tfn',          15)
+    const business  = getField(formData, 'business',   200)
+    const marital   = getField(formData, 'marital',      20)
+
+    const missing: string[] = []
+    if (!firstName) missing.push('firstName')
+    if (!lastName)  missing.push('lastName')
+    if (!email)     missing.push('email')
+    if (!country)   missing.push('country')
+    if (!dob)       missing.push('dob')
+    if (!business)  missing.push('business')
+    if (missing.length) {
+      return NextResponse.json({ ok: false, message: 'Missing required fields.', fields: missing }, { status: 400 })
+    }
+
+    if (!isValidEmail(email)) return NextResponse.json({ ok: false, message: 'Invalid email address.' }, { status: 400 })
+    if (!isValidDate(dob))    return NextResponse.json({ ok: false, message: 'Invalid date of birth.' }, { status: 400 })
+    if (whatsapp && !isValidPhone(whatsapp)) return NextResponse.json({ ok: false, message: 'Invalid phone number.' }, { status: 400 })
+    if (auPhone  && !isValidPhone(auPhone))  return NextResponse.json({ ok: false, message: 'Invalid Australian phone number.' }, { status: 400 })
+    if (tfn && !isValidTfn(tfn))             return NextResponse.json({ ok: false, message: 'Invalid TFN format.' }, { status: 400 })
+
+    const selfie = formData.get('selfiePassport')
+    if (selfie instanceof File && selfie.size > 0) {
+      const result = await validateUploadedFile(selfie)
+      if (!result.ok) return NextResponse.json({ ok: false, message: `selfiePassport: ${result.reason}` }, { status: 400 })
+    } else {
+      return NextResponse.json({ ok: false, message: 'Missing required file: selfiePassport' }, { status: 400 })
+    }
 
     await createTask({
-      clientId:    `CLT-${Date.now()}`,
-      clientName:  fullName,
-      taskType:    taskType as any,
-      whatsapp:    (formData.get('whatsapp') ?? formData.get('smsPhone') ?? '') as string,
-      email:       formData.get('email') as string ?? '',
-      country:     (formData.get('country') ?? formData.get('passportCountry') ?? '') as string,
-      dob:         formData.get('dob') as string ?? '',
-      taxYear:     '',
-      address:     (formData.get('address') ?? formData.get('auAddress') ?? '') as string,
-      tfn:         formData.get('tfn') as string ?? '',
-      bankDetails: formData.get('bankDetails') as string ?? '',
-      primaryJob:  formData.get('business') as string ?? '',
-      marital:     formData.get('marital') as string ?? '',
-      taxStatus:   'Working Holiday Maker',
-      howHeard:    '',
-      auPhone:     formData.get('auPhone') as string ?? '',
+      clientId: `CLT-${crypto.randomUUID()}`,
+      clientName: fullName, taskType: 'abn',
+      whatsapp, auPhone, email, country, dob,
+      taxYear: '', address, tfn, bankDetails: '',
+      primaryJob: business, marital, taxStatus: 'Working Holiday Maker', howHeard: '',
       submittedAt: new Date().toISOString(),
-      notes:       formData.get('superFunds') as string ?? '',
+      notes: getField(formData, 'superFunds', 500),
     })
 
-    console.log(`New ${taskType} form submitted: ${fullName}`)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error(`[abn-form]`, err)
-    return NextResponse.json({ ok: false }, { status: 500 })
+    console.error('[abn-form]', err)
+    return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
   }
 }
