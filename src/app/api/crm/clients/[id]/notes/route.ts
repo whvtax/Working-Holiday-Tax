@@ -1,19 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { requireAuthAndCsrf } from '@/lib/auth'
 
-function auth(req: NextRequest) {
-  return validateSession(req.cookies.get('crm_session')?.value)
-}
+const MAX_NOTES_LENGTH = 5000
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
+  const auth = await requireAuthAndCsrf(req)
+  if (auth instanceof NextResponse) return auth
   try {
     const { notes } = await req.json()
+    if (typeof notes !== 'string') {
+      return NextResponse.json({ ok: false, error: 'invalid_notes' }, { status: 400 })
+    }
+    const sanitized = notes.slice(0, MAX_NOTES_LENGTH)
     const { sql } = await import('@vercel/postgres')
-    await sql`UPDATE crm_clients SET notes = ${notes} WHERE id = ${params.id}`
+    await sql`UPDATE crm_clients SET notes = ${sanitized} WHERE id = ${params.id}`
     return NextResponse.json({ ok: true })
-  } catch {
-    // No DB — just return ok
-    return NextResponse.json({ ok: true })
+  } catch (err) {
+    console.error('[PATCH /api/crm/clients/[id]/notes]', err)
+    return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   }
 }

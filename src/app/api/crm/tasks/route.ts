@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
-
-function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
+import { requireAuth, requireAuthAndCsrf } from '@/lib/auth'
+import crypto from 'crypto'
 
 async function getTasks() {
   try { const { getAllTasks } = await import('@/lib/db'); return await getAllTasks() }
@@ -9,38 +8,65 @@ async function getTasks() {
 }
 
 export async function GET(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  const auth = await requireAuth(req)
+  if (auth instanceof NextResponse) return auth
   const tasks = await getTasks()
   return NextResponse.json({ ok:true, tasks })
 }
 
+export async function POST(req: NextRequest) {
+  const auth = await requireAuthAndCsrf(req)
+  if (auth instanceof NextResponse) return auth
+  const ct = req.headers.get('content-type') ?? ''
+  if (!ct.includes('application/json')) {
+    return NextResponse.json({ ok: false, error: 'invalid_content_type' }, { status: 400 })
+  }
+  try {
+    const body = await req.json()
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ ok: false, error: 'invalid_body' }, { status: 400 })
+    }
+    const { createTask } = await import('@/lib/db')
+    const s = (v: unknown, max = 500) => (typeof v === 'string' ? v.slice(0, max) : '')
+    const task = await createTask({
+      clientId:    s(body.clientId,   50) || `CLT-${crypto.randomUUID()}`,
+      clientName:  s(body.clientName, 150),
+      taskType:    (['tax-return','super','tfn','abn'] as const).includes(body.taskType) ? body.taskType : 'tax-return',
+      whatsapp:    s(body.whatsapp,    30),
+      email:       s(body.email,      254),
+      country:     s(body.country,    100),
+      dob:         s(body.dob,         10),
+      taxYear:     s(body.taxYear,     10),
+      submittedAt: typeof body.submittedAt === 'string' ? body.submittedAt.slice(0, 30) : new Date().toISOString(),
+      address:     s(body.address,     300),
+      tfn:         s(body.tfn,          15),
+      bankDetails: s(body.bankDetails, 200),
+      primaryJob:  s(body.primaryJob,  200),
+      marital:     s(body.marital,      20),
+      taxStatus:   s(body.taxStatus,    50),
+      howHeard:    s(body.howHeard,    100),
+      auPhone:     s(body.auPhone,      30),
+      notes:       s(body.notes,       500),
+    })
+    return NextResponse.json({ ok:true, task })
+  } catch (err) {
+    console.error('[POST /api/crm/tasks]', err)
+    return NextResponse.json({ ok:false }, { status:500 })
+  }
+}
+
 const now = Date.now()
 const DEMO_TASKS = [
-  { id:'TASK-DEMO-1', clientId:'CLT-DEMO-1', clientName:'Sophie Lambert', taskType:'tax-return',
-    whatsapp:'+33612345678', email:'sophie.lambert@gmail.com', country:'France', dob:'1998-04-12',
+  { id:'TASK-DEMO-1', clientId:'CLT-DEMO-1', clientName:'Demo User 1', taskType:'tax-return',
+    whatsapp:'+610000000001', email:'demo1@example.invalid', country:'France', dob:'1998-01-01',
     taxYear:'2023-24', submittedAt:new Date(now-2*86400000).toISOString(), done:false,
-    address:'42 Bondi Rd, Sydney NSW 2026', tfn:'123 456 789', bankDetails:'BSB 062-000 · ACC 12345678 · CBA',
-    primaryJob:'Barista – The Grounds of Alexandria', marital:'Single',
-    taxStatus:'Working Holiday Maker', howHeard:'Instagram', auPhone:'+61412345678',
-    notes:'Has two employers — needs group certs from both.' },
-  { id:'TASK-DEMO-2', clientId:'CLT-DEMO-2', clientName:'Marco Bianchi', taskType:'tax-return',
-    whatsapp:'+39333987654', email:'marco.bianchi@hotmail.com', country:'Italy', dob:'1996-09-22',
+    address:'Demo Address, Sydney NSW', tfn:'000 000 000', bankDetails:'BSB 000-000 · ACC 00000000',
+    primaryJob:'Demo Job', marital:'Single', taxStatus:'Working Holiday Maker',
+    howHeard:'Demo', auPhone:'+61400000001', notes:'Demo task — not a real client.' },
+  { id:'TASK-DEMO-2', clientId:'CLT-DEMO-2', clientName:'Demo User 2', taskType:'super',
+    whatsapp:'+610000000002', email:'demo2@example.invalid', country:'Italy', dob:'1996-01-01',
     taxYear:'2022-23', submittedAt:new Date(now-5*86400000).toISOString(), done:false,
-    address:'7 Collins St, Melbourne VIC 3000', tfn:'987 654 321', bankDetails:'BSB 013-000 · ACC 87654321 · ANZ',
-    primaryJob:'Farm Worker – Mildura QLD', marital:'Single',
-    taxStatus:'Working Holiday Maker', howHeard:'Friend referral', auPhone:'+61498765432', notes:'' },
-  { id:'TASK-DEMO-3', clientId:'CLT-DEMO-3', clientName:'Lena Müller', taskType:'super',
-    whatsapp:'+49160112233', email:'lena.mueller@web.de', country:'Germany', dob:'2000-01-30',
-    taxYear:'2024-25', submittedAt:new Date(now-86400000).toISOString(), done:false,
-    address:'15 Queen St, Brisbane QLD 4000', tfn:'456 789 012', bankDetails:'BSB 034-000 · ACC 45678901 · Westpac',
-    primaryJob:'Waitress – Noosa Waterfront', marital:'Single',
-    taxStatus:'Working Holiday Maker', howHeard:'TikTok', auPhone:'+61467112233',
-    notes:'Urgent — leaving Australia next week.' },
-  { id:'TASK-DEMO-4', clientId:'CLT-DEMO-4', clientName:'Jonas Dupont', taskType:'tax-return',
-    whatsapp:'+32477123456', email:'jonas.dupont@gmail.com', country:'Belgium', dob:'1997-06-15',
-    taxYear:'2023-24', submittedAt:new Date(now-8*86400000).toISOString(), done:true,
-    address:'3 George St, Sydney NSW 2000', tfn:'321 654 987', bankDetails:'BSB 055-000 · ACC 32165498 · NAB',
-    primaryJob:'Chef – Crown Melbourne', marital:'Single',
-    taxStatus:'Working Holiday Maker', howHeard:'Google', auPhone:'+61433445566',
-    notes:'Submitted to ATO on 20 Mar.' },
+    address:'Demo Address, Melbourne VIC', tfn:'000 000 000', bankDetails:'BSB 000-000 · ACC 00000000',
+    primaryJob:'Demo Job', marital:'Single', taxStatus:'Working Holiday Maker',
+    howHeard:'Demo', auPhone:'+61400000002', notes:'' },
 ]

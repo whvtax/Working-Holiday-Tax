@@ -1,35 +1,41 @@
+// SECURITY FIX: uses requireAuth (async, Redis revocation check)
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { requireAuth } from '@/lib/auth'
 
-function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
-
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
-  try {
-    const { getClientById } = await import('@/lib/db')
-    const client = await getClientById(params.id)
-    if (!client) return NextResponse.json({ ok:false }, { status:404 })
-    return NextResponse.json({ ok:true, client })
-  } catch { return NextResponse.json({ ok:false }, { status:500 }) }
+async function getClients() {
+  try { const { getAllClients } = await import('@/lib/db'); return await getAllClients() }
+  catch { return DEMO_CLIENTS }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
-  try {
-    const body = await req.json()
-    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } = await import('@/lib/db')
-    if (body.action === 'notes')          { await updateClientNotes(params.id, body.notes);                                    return NextResponse.json({ ok:true }) }
-    if (body.action === 'service')        { await updateService(params.id, body.service, body.data);                           return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-tax')        { await addTaxReturn(params.id, body.data);                                          return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-tax')     { await removeTaxReturn(params.id, body.year);                                       return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-super')      { await addSuperReturn(params.id, body.data);                                        return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-super')   { await removeSuperReturn(params.id, body.year);                                     return NextResponse.json({ ok:true }) }
-    return NextResponse.json({ ok:false }, { status:400 })
-  } catch { return NextResponse.json({ ok:true }) }
+export async function GET(req: NextRequest) {
+  const auth = await requireAuth(req)
+  if (auth instanceof NextResponse) return auth
+  const clients = await getClients()
+  return NextResponse.json({ ok: true, clients })
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
-  try { const { deleteClient } = await import('@/lib/db'); await deleteClient(params.id) } catch {}
-  return NextResponse.json({ ok:true })
-}
+const now = Date.now()
+const DEMO_CLIENTS = [
+  { id:'CLT-DEMO-5', fullName:'Demo User 5', dob:'1997-01-01', whatsapp:'+610000000005',
+    email:'demo5@example.invalid', country:'Belgium', howHeard:'Demo', notes:'',
+    createdAt:new Date(now-30*86400000).toISOString(),
+    taxReturns:[
+      { year:'2022-23', refundAmount:3120, type:'refund', completedAt:new Date(now-200*86400000).toISOString() },
+      { year:'2023-24', refundAmount:2840, type:'refund', completedAt:new Date(now-30*86400000).toISOString() },
+    ],
+    superReturns:[{ year:'2022-23', amount:4200, completedAt:new Date(now-30*86400000).toISOString() }],
+    tfnService:{ done:true, completedAt:new Date(now-400*86400000).toISOString(), notes:'' },
+    abnService:{ done:false, completedAt:'', notes:'' },
+  },
+  { id:'CLT-DEMO-6', fullName:'Demo User 6', dob:'1999-01-01', whatsapp:'+610000000006',
+    email:'demo6@example.invalid', country:'Poland', howHeard:'Demo', notes:'Demo long-term client.',
+    createdAt:new Date(now-60*86400000).toISOString(),
+    taxReturns:[
+      { year:'2021-22', refundAmount:1850, type:'refund', completedAt:new Date(now-400*86400000).toISOString() },
+      { year:'2022-23', refundAmount:2200, type:'refund', completedAt:new Date(now-200*86400000).toISOString() },
+    ],
+    superReturns:[],
+    tfnService:{ done:true, completedAt:new Date(now-500*86400000).toISOString(), notes:'' },
+    abnService:{ done:true, completedAt:new Date(now-300*86400000).toISOString(), notes:'' },
+  },
+]
