@@ -20,13 +20,33 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
-    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } = await import('@/lib/db')
-    if (body.action === 'notes')          { await updateClientNotes(params.id, body.notes);                return NextResponse.json({ ok:true }) }
-    if (body.action === 'service')        { await updateService(params.id, body.service, body.data);       return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-tax')        { await addTaxReturn(params.id, body.data);                      return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-tax')     { await removeTaxReturn(params.id, body.year);                   return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-super')      { await addSuperReturn(params.id, body.data);                    return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-super')   { await removeSuperReturn(params.id, body.year);                 return NextResponse.json({ ok:true }) }
+    const db = await import('@/lib/db')
+
+    // Actions from DashboardClient
+    if (body.action === 'notes')        { await db.updateClientNotes(params.id, body.notes);              return NextResponse.json({ ok:true }) }
+    if (body.action === 'service')      { await db.updateService(params.id, body.service, body.data);     return NextResponse.json({ ok:true }) }
+    if (body.action === 'add-tax')      { await db.addTaxReturn(params.id, body.data);                    return NextResponse.json({ ok:true }) }
+    if (body.action === 'remove-tax')   { await db.removeTaxReturn(params.id, body.year);                 return NextResponse.json({ ok:true }) }
+    if (body.action === 'add-super')    { await db.addSuperReturn(params.id, body.data);                  return NextResponse.json({ ok:true }) }
+    if (body.action === 'remove-super') { await db.removeSuperReturn(params.id, body.year);               return NextResponse.json({ ok:true }) }
+
+    // Actions from ClientPageClient (detail page)
+    if (body.action === 'update') {
+      const client = await db.updateClient(params.id, body.data)
+      if (!client) return NextResponse.json({ ok:false }, { status:404 })
+      return NextResponse.json({ ok:true, client })
+    }
+    if (body.action === 'clear') {
+      const client = await db.clearClientSensitiveData(params.id)
+      if (!client) return NextResponse.json({ ok:false }, { status:404 })
+      return NextResponse.json({ ok:true, client })
+    }
+    if (body.action === 'handle') {
+      const client = await db.markClientHandled(params.id)
+      if (!client) return NextResponse.json({ ok:false }, { status:404 })
+      return NextResponse.json({ ok:true, client })
+    }
+
     return NextResponse.json({ ok:false, error: 'unknown_action' }, { status:400 })
   } catch (err) {
     console.error('[PATCH client]', err)

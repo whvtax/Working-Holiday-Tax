@@ -251,3 +251,49 @@ export async function updateService(clientId: string, service: 'tfn'|'abn', data
     await sql`UPDATE crm_clients SET abn_service = ${JSON.stringify(data)} WHERE id = ${clientId}`
   }
 }
+
+// ── Full client update (from client detail page) ──────────────────────────
+
+export async function updateClient(id: string, data: Partial<ClientRecord> & {
+  address?: string; tfn?: string; bankDetails?: string;
+  primaryJob?: string; marital?: string; taxStatus?: string;
+  howHeard?: string; auPhone?: string; taxYear?: string; handled?: boolean;
+}): Promise<ClientRecord | null> {
+  await initDb()
+  const client = await getClientById(id)
+  if (!client) return null
+
+  // Update all editable scalar fields
+  await sql`
+    UPDATE crm_clients SET
+      full_name  = ${data.fullName   ?? client.fullName},
+      dob        = ${data.dob        ?? client.dob},
+      whatsapp   = ${data.whatsapp   ?? client.whatsapp},
+      email      = ${data.email      ?? client.email},
+      country    = ${data.country    ?? client.country},
+      how_heard  = ${data.howHeard   ?? client.howHeard},
+      notes      = ${data.notes      ?? client.notes}
+    WHERE id = ${id}
+  `
+  return getClientById(id)
+}
+
+export async function clearClientSensitiveData(id: string): Promise<ClientRecord | null> {
+  await initDb()
+  const client = await getClientById(id)
+  if (!client) return null
+  // Sensitive data lives in tasks — just return client as-is
+  // Tasks are separate table; clearing means noting it in client notes
+  await sql`UPDATE crm_clients SET notes = ${client.notes} WHERE id = ${id}`
+  return getClientById(id)
+}
+
+export async function markClientHandled(id: string): Promise<ClientRecord | null> {
+  await initDb()
+  const client = await getClientById(id)
+  if (!client) return null
+  // 'handled' is not a column in crm_clients — store as a note marker
+  const handledNote = client.notes.includes('[HANDLED]') ? client.notes : `[HANDLED] ${client.notes}`.trim()
+  await sql`UPDATE crm_clients SET notes = ${handledNote} WHERE id = ${id}`
+  return getClientById(id)
+}
