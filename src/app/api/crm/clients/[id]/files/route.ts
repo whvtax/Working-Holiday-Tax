@@ -84,7 +84,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     const blobPath = `crm/${params.id}/${randomUUID()}_${safeName}`
 
     const blob = await put(blobPath, file, {
-      access: process.env.BLOB_PRIVATE === 'true' ? 'private' : 'public',
+      access: 'public' as const,
       contentType: file.type,
     })
 
