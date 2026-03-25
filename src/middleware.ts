@@ -1,18 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { randomBytes } from 'crypto'
-import { parseSession } from '@/lib/crm-store'
+import { parseSessionEdge } from '@/lib/session-edge'
 
 /**
  * Nonce-based CSP middleware.
  * SECURITY FIX: style-src now also uses nonce (removes unsafe-inline for styles).
  * SECURITY FIX 2: Server-side auth guard for /crm/* routes.
- *   Previously /crm/dashboard relied entirely on client-side redirect after logout.
- *   Now the middleware redirects unauthenticated requests server-side.
- *   Note: this is a lightweight sync check (HMAC + expiry only). The full Redis
- *   revocation check still happens inside each API route via validateSessionAsync().
  * SECURITY FIX 3: CVE-2025-29927 mitigation — block x-middleware-subrequest header.
- *   This header was used to bypass middleware auth checks in Next.js <14.2.25.
- *   Blocking it here provides defence-in-depth even on patched versions.
+ * EDGE FIX: Removed Node.js `crypto` import — middleware runs in the Vercel Edge
+ *   Runtime which does not support Node crypto. Now uses Web Crypto API via
+ *   session-edge.ts for session parsing and crypto.getRandomValues() for nonces.
  */
 
 const CRM_PUBLIC_PATHS = [
@@ -23,23 +19,19 @@ const CRM_PUBLIC_PATHS = [
   '/api/crm/logout',
 ]
 
-export function middleware(req: NextRequest) {
-  // SECURITY: CVE-2025-29927 mitigation — reject requests carrying the internal
-  // Next.js subrequest header. Attackers used this to skip middleware entirely.
-  // Defence-in-depth: also fixed by upgrading to next@14.2.29.
+export async function middleware(req: NextRequest) {
   if (req.headers.get('x-middleware-subrequest')) {
     return NextResponse.json({ ok: false }, { status: 403 })
   }
 
   const { pathname } = req.nextUrl
 
-  // ── Server-side CRM auth guard ─────────────────────────────────────────
   const isCrmRoute = pathname.startsWith('/crm/') || pathname.startsWith('/api/crm/')
   const isPublicCrmPath = CRM_PUBLIC_PATHS.some(p => pathname === p)
 
   if (isCrmRoute && !isPublicCrmPath) {
     const token = req.cookies.get('crm_session')?.value
-    const session = parseSession(token)
+    const session = await parseSessionEdge(token)
     if (!session) {
       if (pathname.startsWith('/api/')) {
         return NextResponse.json({ ok: false }, { status: 401 })
@@ -50,8 +42,10 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  // ── Nonce-based CSP (all routes) ───────────────────────────────────────
-  const nonce = randomBytes(16).toString('base64')
+  // Use Web Crypto (Edge-compatible) instead of Node's randomBytes
+  const nonceBytes = new Uint8Array(16)
+  crypto.getRandomValues(nonceBytes)
+  const nonce = btoa(String.fromCharCode(...nonceBytes))
 
   const csp = [
     "default-src 'self'",
