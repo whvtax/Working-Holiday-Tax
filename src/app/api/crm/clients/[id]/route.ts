@@ -1,10 +1,10 @@
+// SECURITY FIX: requireAuthAndCsrf for state-changing operations (PATCH, DELETE)
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
-
-function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
+import { requireAuth, requireAuthAndCsrf } from '@/lib/auth'
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  const auth = await requireAuth(req)
+  if (auth instanceof NextResponse) return auth
   try {
     const { getClientById } = await import('@/lib/db')
     const client = await getClientById(params.id)
@@ -14,29 +14,52 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  const auth = await requireAuthAndCsrf(req)
+  if (auth instanceof NextResponse) return auth
   try {
     const body = await req.json()
-    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn, sql } = await import('@/lib/db')
-    if (body.action === 'notes')          { await updateClientNotes(params.id, body.notes);                                    return NextResponse.json({ ok:true }) }
-    if (body.action === 'service')        { await updateService(params.id, body.service, body.data);                           return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-tax')        { await addTaxReturn(params.id, body.data);                                          return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-tax')     { await removeTaxReturn(params.id, body.year);                                       return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-super')      { await addSuperReturn(params.id, body.data);                                        return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-super')   { await removeSuperReturn(params.id, body.year);                                     return NextResponse.json({ ok:true }) }
-    // Actions used by ClientPageClient (/crm/client/[id])
+    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } = await import('@/lib/db')
+    if (body.action === 'notes')        {
+      const sanitized = typeof body.notes === 'string' ? body.notes.slice(0, 5000) : ''
+      await updateClientNotes(params.id, sanitized)
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'service')      {
+      if (body.service !== 'tfn' && body.service !== 'abn') {
+        return NextResponse.json({ ok:false, error:'invalid_service' }, { status:400 })
+      }
+      const d = body.data ?? {}
+      const serviceData = {
+        done:        typeof d.done === 'boolean' ? d.done : false,
+        completedAt: typeof d.completedAt === 'string' ? d.completedAt.slice(0, 30) : '',
+        notes:       typeof d.notes === 'string' ? d.notes.slice(0, 1000) : '',
+      }
+      await updateService(params.id, body.service, serviceData)
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'add-tax')      {
+      const amt = Number(body.data?.refundAmount)
+      if (!isFinite(amt) || amt < 0) return NextResponse.json({ ok:false, error:'invalid_amount' }, { status:400 })
+      await addTaxReturn(params.id, { ...body.data, refundAmount: amt, type: body.data?.type === 'owed' ? 'owed' : 'refund' })
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'remove-tax')   { await removeTaxReturn(params.id, body.year);                  return NextResponse.json({ ok:true }) }
+    if (body.action === 'add-super')    {
+      const amt = Number(body.data?.amount)
+      if (!isFinite(amt) || amt < 0) return NextResponse.json({ ok:false, error:'invalid_amount' }, { status:400 })
+      await addSuperReturn(params.id, { ...body.data, amount: amt })
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'remove-super') { await removeSuperReturn(params.id, body.year);                return NextResponse.json({ ok:true }) }
     if (body.action === 'update') {
       const d = body.data ?? {}
       try {
         const { sql: dbSql } = await import('@vercel/postgres')
         await dbSql`
           UPDATE crm_clients SET
-            full_name = ${d.fullName ?? ''},
-            dob       = ${d.dob      ?? ''},
-            whatsapp  = ${d.whatsapp ?? ''},
-            email     = ${d.email    ?? ''},
-            country   = ${d.country  ?? ''},
-            how_heard = ${d.howHeard ?? ''},
+            full_name = ${d.fullName ?? ''}, dob = ${d.dob ?? ''},
+            whatsapp  = ${d.whatsapp ?? ''}, email = ${d.email ?? ''},
+            country   = ${d.country  ?? ''}, how_heard = ${d.howHeard ?? ''},
             notes     = ${d.notes    ?? ''}
           WHERE id = ${params.id}
         `
@@ -44,25 +67,24 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         const client = await getClientById(params.id)
         return NextResponse.json({ ok:true, client })
       } catch {
-        // No DB — return ok with the submitted data so the UI stays consistent
         return NextResponse.json({ ok:true, client: { ...d, id: params.id } })
       }
     }
     if (body.action === 'clear') {
       try {
         const { sql: dbSql } = await import('@vercel/postgres')
-        await dbSql`
-          UPDATE crm_clients SET
-            address='', tfn='', bank_details='', primary_job='',
-            marital='', tax_status='', how_heard='', au_phone=''
-          WHERE id = ${params.id}
-        `
-      } catch { /* No DB — graceful */ }
+        await dbSql`UPDATE crm_clients SET address='', tfn='', bank_details='', primary_job='', marital='', tax_status='', how_heard='', au_phone='' WHERE id = ${params.id}`
+      } catch { /* No DB */ }
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'handle') {
-      // 'handled' flag is not in crm_clients schema; store as a note marker for now
-      return NextResponse.json({ ok:true })
+      try {
+        const { sql: dbSql } = await import('@vercel/postgres')
+        const ts = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
+        const marker = `\n[Marked handled: ${ts}]`
+        await dbSql`UPDATE crm_clients SET notes = CONCAT(COALESCE(notes,''), ${marker}) WHERE id = ${params.id}`
+      } catch { /* No DB */ }
+      return NextResponse.json({ ok: true })
     }
     return NextResponse.json({ ok:false }, { status:400 })
   } catch (err) {
@@ -72,7 +94,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  const auth = await requireAuthAndCsrf(req)
+  if (auth instanceof NextResponse) return auth
   try { const { deleteClient } = await import('@/lib/db'); await deleteClient(params.id) } catch {}
   return NextResponse.json({ ok:true })
 }

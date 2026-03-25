@@ -73,10 +73,10 @@ export async function seedDemoData() {
   for (const t of tasks) {
     await sql`
       INSERT INTO crm_tasks
-        (id,client_id,client_name,whatsapp,email,country,dob,tax_year,submitted_at,
+        (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
          done,address,tfn,bank_details,primary_job,marital,tax_status,how_heard,au_phone,notes)
       VALUES
-        (${t.id},${t.clientId},${t.clientName},${t.whatsapp},${t.email},
+        (${t.id},${t.clientId},${t.clientName},'tax-return',${t.whatsapp},${t.email},
          ${t.country},${t.dob},${t.taxYear},${t.submittedAt},
          false,${t.address},${t.tfn},${t.bankDetails},${t.primaryJob},
          ${t.marital},${t.taxStatus},${t.howHeard},${t.auPhone},${t.notes})
@@ -117,8 +117,15 @@ export async function seedDemoData() {
 
   for (const c of clients) {
     await sql`
-      INSERT INTO crm_clients (id, full_name, dob, whatsapp, email, country, tax_returns, created_at)
-      VALUES (${c.id}, ${c.fullName}, ${c.dob}, ${c.whatsapp}, ${c.email}, ${c.country}, ${c.taxReturns}, ${c.createdAt})
+      INSERT INTO crm_clients
+        (id, full_name, dob, whatsapp, email, country, how_heard, notes,
+         tax_returns, super_returns, tfn_service, abn_service, created_at)
+      VALUES
+        (${c.id}, ${c.fullName}, ${c.dob}, ${c.whatsapp}, ${c.email}, ${c.country},
+         '', '', ${c.taxReturns}, '[]',
+         '{"done":false,"completedAt":"","notes":""}',
+         '{"done":false,"completedAt":"","notes":""}',
+         ${c.createdAt})
       ON CONFLICT (id) DO NOTHING
     `
   }

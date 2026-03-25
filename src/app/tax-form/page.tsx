@@ -30,6 +30,12 @@ function FileUpload({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
     if (!file) return
+    // Client-side size guard (10 MB) — server enforces this too
+    if (file.size > 10 * 1024 * 1024) {
+      alert(`File is too large. Maximum size is 10 MB.`)
+      e.target.value = ''
+      return
+    }
     const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null
     onChange({ file, preview })
   }
@@ -101,6 +107,7 @@ export default function TaxFormPage() {
   const [taxYear, setTaxYear]         = useState('2024-25')
   const [terms, setTerms]             = useState(false)
   const [howHeard, setHowHeard]       = useState('')
+  const [_honeypot, _setHoneypot]     = useState('')  // bot trap — never filled by real users
 
   // UI
   const [submitted, setSubmitted]     = useState(false)
@@ -114,6 +121,7 @@ export default function TaxFormPage() {
     if (!auPhone.trim())     e.auPhone     = 'Required'
     if (!fullName.trim())    e.fullName    = 'Required'
     if (!email.trim())       e.email       = 'Required'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) e.email = 'Invalid email address'
     if (!address.trim())     e.address     = 'Required'
     if (!country.trim())     e.country     = 'Required'
     if (!dob.trim())         e.dob         = 'Required'
@@ -154,6 +162,7 @@ export default function TaxFormPage() {
     fd.append('taxStatus',   taxStatus)
     fd.append('taxYear',     taxYear)
     fd.append('howHeard',    howHeard)
+    fd.append('website',     _honeypot)  // honeypot — bots fill this, humans don't
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
     if (invoices.file)       fd.append('invoices',       invoices.file)
@@ -202,6 +211,12 @@ export default function TaxFormPage() {
           </div>
 
         <form onSubmit={handleSubmit} noValidate>
+          {/* Honeypot — hidden from real users via CSS; bots fill it and get silently rejected */}
+          <div aria-hidden="true" style={{position:'absolute',left:'-9999px',width:'1px',height:'1px',overflow:'hidden'}}>
+            <label htmlFor="hp-website">Website</label>
+            <input id="hp-website" type="text" name="website" tabIndex={-1} autoComplete="off"
+              value={_honeypot} onChange={e => _setHoneypot(e.target.value)} />
+          </div>
 
           <div className="form-section-title">Contact details</div>
           <div>
@@ -293,19 +308,19 @@ export default function TaxFormPage() {
           <div>
 
             <Field label="Bank statements (to verify name)" required>
-              <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png"
+              <FileUpload id="bankStatement" label="Upload bank statement" accept="image/jpeg,image/png,image/webp,image/heic,application/pdf"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} />
               {err('bankStatement')}
             </Field>
 
             <Field label="Selfie holding your passport" required>
-              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png"
+              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept="image/jpeg,image/png,image/webp,image/heic"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
               {err('selfiePassport')}
             </Field>
 
             <Field label="Work-related expense invoices">
-              <FileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
+              <FileUpload id="invoices" label="Upload invoices" accept="image/jpeg,image/png,image/webp,image/heic,application/pdf"
                 value={invoices} onChange={setInvoices} />
             </Field>
           </div>
@@ -316,7 +331,7 @@ export default function TaxFormPage() {
             <Field label="" required>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
                 I confirm that I have reviewed the{' '}
-                <a href="/tax-residency" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>
+                <a href="/tax-residency" rel="noopener noreferrer" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>
                 {' '}section and all relevant ATO information, and I declare that I am:<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
               </label>
               <div className="radio-group radio-group-col">
@@ -338,9 +353,9 @@ export default function TaxFormPage() {
             <Field label="" required>
               <p style={{fontSize:'12px',color:'#587066',lineHeight:'1.7',marginBottom:'10px'}}>
                 I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
-                <a href="/client-agreement" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Client Agreement</a>
+                <a href="/client-agreement" rel="noopener noreferrer" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Client Agreement</a>
                 {' '}&amp;{' '}
-                <a href="/privacy" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Privacy Policy</a>.
+                <a href="/privacy" rel="noopener noreferrer" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Privacy Policy</a>.
               </p>
               <div className="radio-group radio-group-col">
                 {([

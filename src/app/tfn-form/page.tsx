@@ -18,6 +18,12 @@ function FileUpload({ id, label, accept, value, onChange }: { id: string; label:
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
     if (!file) return
+    // Client-side size guard (10 MB) — server enforces this too
+    if (file.size > 10 * 1024 * 1024) {
+      alert(`File is too large. Maximum size is 10 MB.`)
+      e.target.value = ''
+      return
+    }
     const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null
     onChange({ file, preview })
   }
@@ -66,6 +72,7 @@ export default function TFNFormPage() {
   const [submitted, setSubmitted]   = useState(false)
   const [loading, setLoading]       = useState(false)
   const [errors, setErrors]         = useState<Record<string, string>>({})
+  const [_honeypot, _setHoneypot]   = useState('')  // bot trap
 
   const validate = () => {
     const e: Record<string, string> = {}
@@ -74,6 +81,7 @@ export default function TFNFormPage() {
     if (!country.trim())   e.country   = 'Required'
     if (!passport.trim())  e.passport  = 'Required'
     if (!email.trim())     e.email     = 'Required'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) e.email = 'Invalid email address'
     if (!dob.trim())       e.dob       = 'Required'
     if (!whatsapp.trim())  e.whatsapp  = 'Required'
     if (!auPhone.trim())   e.auPhone   = 'Required'
@@ -105,6 +113,7 @@ export default function TFNFormPage() {
     fd.append('marital',   marital)
     fd.append('address',   address)
     if (selfie.file) fd.append('selfiePassport', selfie.file)
+    fd.append('website', _honeypot)  // honeypot
     try {
       const res = await fetch('/api/tfn-form', { method: 'POST', body: fd })
       if (res.ok) setSubmitted(true)
@@ -133,6 +142,11 @@ export default function TFNFormPage() {
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
+          <div aria-hidden="true" style={{position:'absolute',left:'-9999px',width:'1px',height:'1px',overflow:'hidden'}}>
+            <label htmlFor="hp-website-tfn">Website</label>
+            <input id="hp-website-tfn" type="text" name="website" tabIndex={-1} autoComplete="off"
+              value={_honeypot} onChange={e => _setHoneypot(e.target.value)} />
+          </div>
           <div className="form-section-title">Personal details</div>
 
           <Field label="First name (including middle name)" required error={errors.firstName}>
@@ -188,7 +202,7 @@ export default function TFNFormPage() {
 
           <div className="form-section-title">Documents</div>
           <Field label="Selfie with passport" required error={errors.selfie}>
-            <FileUpload id="selfie" label="Upload selfie with passport" accept="image/*,.pdf" value={selfie} onChange={setSelfie}/>
+            <FileUpload id="selfie" label="Upload selfie with passport" accept="image/jpeg,image/png,image/webp,image/heic,application/pdf" value={selfie} onChange={setSelfie}/>
           </Field>
 
           <div className="form-section-title">Declaration</div>
@@ -206,7 +220,7 @@ export default function TFNFormPage() {
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">I have read and accept the <a href="/client-agreement" target="_blank" className="decl-link">Client Agreement</a> &amp; <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a></span>
+              <span className="check-label">I have read and accept the <a href="/client-agreement" rel="noopener noreferrer" target="_blank" className="decl-link">Client Agreement</a> &amp; <a href="/privacy" rel="noopener noreferrer" target="_blank" className="decl-link">Privacy Policy</a></span>
             </label>
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>

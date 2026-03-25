@@ -57,40 +57,58 @@ export default function DashboardClient() {
   const [newSuperAmt, setNewSuperAmt]   = useState('')
   const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25' as string})
 
-  const loadTasks   = useCallback(async()=>{ const r=await fetch('/api/crm/tasks'); const d=await r.json(); if(d.ok) setTasks(d.tasks) },[])
-  const loadClients = useCallback(async()=>{ const r=await fetch('/api/crm/clients'); const d=await r.json(); if(d.ok) setClients(d.clients) },[])
+  const loadTasks   = useCallback(async()=>{
+    try {
+      const r = await fetch('/api/crm/tasks')
+      if (r.status === 401) { window.location.replace('/crm'); return }
+      const d = await r.json(); if(d.ok) setTasks(d.tasks)
+    } catch { /* network error — keep existing state */ }
+  },[])
+  const loadClients = useCallback(async()=>{
+    try {
+      const r = await fetch('/api/crm/clients')
+      if (r.status === 401) { window.location.replace('/crm'); return }
+      const d = await r.json(); if(d.ok) setClients(d.clients)
+    } catch { /* network error — keep existing state */ }
+  },[])
 
   useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
 
-  async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
+  // SECURITY: CSRF header required by requireAuthAndCsrf() on all state-changing requests
+  const CSRF_HEADERS = { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } as const
+
+  async function lockAndExit() {
+    await fetch('/api/crm/logout', { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+    window.location.replace('/crm')
+  }
 
   async function markDone(id:string) {
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'done'})})
     await loadTasks()
     if(activeTask?.id===id) setActiveTask(prev=>prev?{...prev,done:true}:null)
   }
 
   async function saveTaskNotes() {
     if(!activeTask) return
-    await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:taskNotes})})
+    await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'notes',notes:taskNotes})})
     setNotesSaved(true); setTimeout(()=>setNotesSaved(false),2500)
   }
 
   async function deleteTask(id:string) {
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'delete'})})
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null)
     await Promise.all([loadTasks(),loadClients()])
   }
 
   async function saveClientNotes() {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:clientNotes})})
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'notes',notes:clientNotes})})
     setClientNotesSaved(true); setTimeout(()=>setClientNotesSaved(false),2500)
   }
 
   async function addTaxReturn() {
     if(!activeClient||!newTaxYear||!newTaxAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:CSRF_HEADERS,
       body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:parseFloat(newTaxAmt),type:newTaxType,completedAt:new Date().toISOString()}})})
     setNewTaxYear(''); setNewTaxAmt(''); setNewTaxType('refund'); setShowAddTax(false)
     refreshClient()
@@ -98,13 +116,13 @@ export default function DashboardClient() {
 
   async function removeTaxReturn(year:string) {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove-tax',year})})
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'remove-tax',year})})
     refreshClient()
   }
 
   async function addSuperReturn() {
     if(!activeClient||!newSuperYear||!newSuperAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:CSRF_HEADERS,
       body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:parseFloat(newSuperAmt),completedAt:new Date().toISOString()}})})
     setNewSuperYear(''); setNewSuperAmt(''); setShowAddSuper(false)
     refreshClient()
@@ -112,14 +130,14 @@ export default function DashboardClient() {
 
   async function removeSuperReturn(year:string) {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove-super',year})})
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'remove-super',year})})
     refreshClient()
   }
 
   async function toggleService(service:'tfn'|'abn', current:ServiceRecord) {
     if(!activeClient) return
     const updated = { ...current, done:!current.done, completedAt:!current.done?new Date().toISOString():'' }
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:CSRF_HEADERS,
       body:JSON.stringify({action:'service',service,data:updated})})
     refreshClient()
   }
@@ -132,17 +150,17 @@ export default function DashboardClient() {
   }
 
   async function deleteClient(id:string) {
-    await fetch(`/api/crm/clients/${id}`,{method:'DELETE'})
+    await fetch(`/api/crm/clients/${id}`,{method:'DELETE',headers:{'X-Requested-With':'XMLHttpRequest'}})
     setActiveClient(null); setView('clients'); setConfirmDeleteClient(null)
     await loadClients()
   }
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    // Add as a task for now
-    await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
+    // Add as a task for now — uses crypto.randomUUID() via server, not Date.now()
+    await fetch('/api/crm/tasks',{method:'POST',headers:CSRF_HEADERS,
       body:JSON.stringify({
-        clientId:`CLT-${Date.now()}`, clientName:newClient.fullName, taskType:'tax-return',
+        clientName:newClient.fullName, taskType:'tax-return',
         whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
         dob:newClient.dob, taxYear:newClient.taxYear, submittedAt:new Date().toISOString(),
         address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',

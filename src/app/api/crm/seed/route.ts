@@ -1,12 +1,17 @@
+// SECURITY FIX: requires both NODE_ENV !== 'production' AND explicit ENABLE_SEED=true
+// Prevents accidental seeding even if NODE_ENV is misconfigured
 import { NextRequest, NextResponse } from 'next/server'
 import { seedDemoData } from '@/lib/seed'
-import { validateSession } from '@/lib/crm-store'
+import { requireAuth } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
-  const token = req.cookies.get('crm_session')?.value
-  if (!validateSession(token)) {
-    return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
+  if (process.env.NODE_ENV === 'production' || process.env.ENABLE_SEED !== 'true') {
+    return NextResponse.json({ ok: false, error: 'not_available' }, { status: 404 })
   }
+
+  const auth = await requireAuth(req)
+  if (auth instanceof NextResponse) return auth
+
   try {
     const result = await seedDemoData()
     return NextResponse.json({ ok: true, ...result })

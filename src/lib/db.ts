@@ -1,8 +1,12 @@
 /**
  * Vercel Postgres DB layer
  * Tables: crm_clients (permanent) + crm_tasks (active submissions)
+ * SECURITY FIX: createTask now uses crypto.randomUUID() instead of Date.now()
+ *   - Prevents ID collision in concurrent serverless invocations
+ *   - Prevents predictable/enumerable task IDs
  */
 import { sql } from '@vercel/postgres'
+import crypto from 'crypto'
 
 export type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
 export type SuperReturn   = { year:string; amount:number; completedAt:string }
@@ -123,7 +127,7 @@ export async function getTask(id: string): Promise<Task | null> {
 
 export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   await initDb()
-  const id = `TASK-${Date.now()}`
+  const id = `TASK-${crypto.randomUUID()}`
   await sql`
     INSERT INTO crm_tasks
       (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
