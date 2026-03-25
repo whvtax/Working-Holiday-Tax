@@ -19,37 +19,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   try {
     const body = await req.json()
     const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } = await import('@/lib/db')
-    if (body.action === 'notes')        {
-      const sanitized = typeof body.notes === 'string' ? body.notes.slice(0, 5000) : ''
-      await updateClientNotes(params.id, sanitized)
-      return NextResponse.json({ ok:true })
-    }
-    if (body.action === 'service')      {
-      if (body.service !== 'tfn' && body.service !== 'abn') {
-        return NextResponse.json({ ok:false, error:'invalid_service' }, { status:400 })
-      }
-      const d = body.data ?? {}
-      const serviceData = {
-        done:        typeof d.done === 'boolean' ? d.done : false,
-        completedAt: typeof d.completedAt === 'string' ? d.completedAt.slice(0, 30) : '',
-        notes:       typeof d.notes === 'string' ? d.notes.slice(0, 1000) : '',
-      }
-      await updateService(params.id, body.service, serviceData)
-      return NextResponse.json({ ok:true })
-    }
-    if (body.action === 'add-tax')      {
-      const amt = Number(body.data?.refundAmount)
-      if (!isFinite(amt) || amt < 0) return NextResponse.json({ ok:false, error:'invalid_amount' }, { status:400 })
-      await addTaxReturn(params.id, { ...body.data, refundAmount: amt, type: body.data?.type === 'owed' ? 'owed' : 'refund' })
-      return NextResponse.json({ ok:true })
-    }
+    if (body.action === 'notes')        { await updateClientNotes(params.id, body.notes);               return NextResponse.json({ ok:true }) }
+    if (body.action === 'service')      { await updateService(params.id, body.service, body.data);      return NextResponse.json({ ok:true }) }
+    if (body.action === 'add-tax')      { await addTaxReturn(params.id, body.data);                     return NextResponse.json({ ok:true }) }
     if (body.action === 'remove-tax')   { await removeTaxReturn(params.id, body.year);                  return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-super')    {
-      const amt = Number(body.data?.amount)
-      if (!isFinite(amt) || amt < 0) return NextResponse.json({ ok:false, error:'invalid_amount' }, { status:400 })
-      await addSuperReturn(params.id, { ...body.data, amount: amt })
-      return NextResponse.json({ ok:true })
-    }
+    if (body.action === 'add-super')    { await addSuperReturn(params.id, body.data);                   return NextResponse.json({ ok:true }) }
     if (body.action === 'remove-super') { await removeSuperReturn(params.id, body.year);                return NextResponse.json({ ok:true }) }
     if (body.action === 'update') {
       const d = body.data ?? {}

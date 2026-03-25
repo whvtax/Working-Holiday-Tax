@@ -42,12 +42,9 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   function showMsg(msg:string) { setToast(msg); setTimeout(()=>setToast(''),3000) }
 
-  // SECURITY: CSRF header required by requireAuthAndCsrf() on all state-changing requests
-  const CSRF_HEADERS = { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } as const
-
   async function saveNotes() {
     setNotesSaving(true)
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'update',data:{...client,notes}})})
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:{...client,notes}})})
     setNotesSaving(false)
     setNotesSaved(true)
     setTimeout(()=>setNotesSaved(false), 2500)
@@ -55,19 +52,19 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   async function save() {
     setSaving(true)
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'update',data:form})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:form})})
     const data = await res.json()
     if (data.ok) { setClient(data.client); setEditing(false); showMsg('Changes saved') }
     setSaving(false)
   }
   async function doClear() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'clear'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'clear'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Sensitive details cleared') }
     setShowClear(false)
   }
   async function doHandle() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'handle'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'handle'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Marked as handled') }
     setShowHandle(false)
