@@ -211,11 +211,11 @@ export default function TFNFormPage() {
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>
 
-          {Object.keys(errors).length > 0 && (
+          {Object.values(errors).some(v => v) && (
             <div className="errors-banner">
               <strong>Please fix the following before submitting:</strong>
               <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
-                {(Object.entries(errors) as [string, string][]).map(([k, v]) => (
+                {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
                   <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === 'Required' ? `${({
                     firstName:'First Name',lastName:'Last Name',country:'Country',
                     passport:'Passport Number',email:'Email Address',dob:'Date of Birth',

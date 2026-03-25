@@ -47,7 +47,8 @@ export async function POST(req: NextRequest) {
     console.log('New super form submitted:', fullName, '| files:', fileUrls.length)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error('[super-form]', err)
-    return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
+    const msg = err instanceof Error ? err.message : String(err)
+    console.error('[super-form] FAILED:', msg, err)
+    return NextResponse.json({ ok: false, error: 'submission_failed', detail: msg }, { status: 500 })
   }
 }
