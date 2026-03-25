@@ -197,7 +197,7 @@ export default function ABNFormPage() {
 const css = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .hidden { display: none !important; }
-  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 32px 16px 60px; }
+  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; padding: 28px 24px 32px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); }
   .form-header { margin-bottom: 24px; text-align: center; }
   .form-brand { font-size: 11px; font-weight: 600; color: #0B5240; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }

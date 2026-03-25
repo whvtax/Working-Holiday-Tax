@@ -317,7 +317,12 @@ export default function TaxFormPage() {
           <div className="form-section-title">Declaration</div>
           <div>
 
-            <Field label="I confirm I have reviewed all relevant ATO information and declare that I am:" required>
+            <Field label="" required>
+              <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
+                I confirm that I have reviewed the{' '}
+                <a href="/tax-residency" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>
+                {' '}section and all relevant ATO information, and I declare that I am:<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
+              </label>
               <div className="radio-group radio-group-col">
                 {([
                   { val: 'resident', label: 'Australian resident for tax purposes' },
@@ -395,7 +400,7 @@ export default function TaxFormPage() {
 const styles = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .hidden { display: none !important; }
-  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 32px 16px 60px; }
+  .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
   .form-header { background: #fff; padding: 32px 24px 24px; text-align: center; border-bottom: 1px solid #EAF6F1; }
   .form-brand { font-size: 11px; font-weight: 600; color: #0B5240; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }

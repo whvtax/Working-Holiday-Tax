@@ -73,26 +73,8 @@ export default function TaxResidencyPage() {
   return (
     <main className="min-h-screen bg-canvas">
 
-      {/* ── HERO ── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white">
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 pt-10 pb-10 text-center">
-          <div className="inline-flex items-center gap-2 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>
-              Tax in Australia
-            </span>
-          </div>
-          <h1 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(26px, 3vw, 40px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '12px' }}>
-            Tax Residency Explained
-          </h1>
-          <p className="font-light mx-auto" style={{ fontSize: '15px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '42ch' }}>
-            Tax rates vary depending on your visa and situation, with taxpayers generally divided into Working Holiday visa holders or Australian residents for tax purposes.
-          </p>
-        </div>
-      </section>
-
       {/* ── TAX TABLES ── */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="pt-[68px] py-10 lg:py-14 bg-white">
         <div className="max-w-[900px] mx-auto px-5 md:px-8">
 
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '28px' }}>
