@@ -182,7 +182,22 @@ export default function SuperFormPage() {
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>
 
-          {Object.keys(errors).length>0 && <div className="errors-banner">Please fill in all required fields above.</div>}
+          {Object.keys(errors).length > 0 && (
+            <div className="errors-banner">
+              <strong>Please fix the following before submitting:</strong>
+              <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
+                {(Object.entries(errors) as [string, string][]).map(([k, v]) => (
+                  <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === 'Required' ? `${({
+                    firstName:'First Name',lastName:'Last Name',dob:'Date of Birth',
+                    passport:'Passport Number',passportCountry:'Passport Country',
+                    smsPhone:'Phone Number',email:'Email Address',auAddress:'Australian Address',
+                    homeAddress:'Home Country Address',tfn:'TFN',superFunds:'Super Fund Details',
+                    bankDetails:'Bank Details',selfie:'Selfie with Passport'
+                  } as Record<string,string>)[k] || k} is required` : v}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? <span className="btn-loading"><svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2.5" strokeDasharray="40" strokeDashoffset="10"/></svg>Submitting…</span> : 'Submit Super Application →'}
           </button>

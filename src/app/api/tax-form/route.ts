@@ -15,12 +15,18 @@ export async function POST(req: NextRequest) {
     const clientId  = `CLT-${crypto.randomUUID()}`
     const fullName  = formData.get('fullName')  as string ?? ''
 
-    // Upload files to Vercel Blob (bank statement + selfie + invoices)
+    // Upload files to Vercel Blob (bank statement + selfie + invoices x15)
     const bankStatementFile  = formData.get('bankStatement')  as File | null
     const selfiePassportFile = formData.get('selfiePassport') as File | null
-    const invoicesFile       = formData.get('invoices')       as File | null
+    // Collect all invoice files (invoices_0, invoices_1, ...)
+    const invoiceFiles: (File | null)[] = []
+    for (let i = 0; i < 15; i++) {
+      const f = formData.get(`invoices_${i}`) as File | null
+      if (f && f.size > 0) invoiceFiles.push(f)
+      else break
+    }
     const fileUrls = await uploadFiles(
-      [bankStatementFile, selfiePassportFile, invoicesFile],
+      [bankStatementFile, selfiePassportFile, ...invoiceFiles],
       `tax-form/${clientId}`
     )
 

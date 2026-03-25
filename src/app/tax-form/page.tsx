@@ -4,9 +4,10 @@ import { useState, useRef } from 'react'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
+type MultiUploadState = { files: File[]; previews: (string | null)[] }
 
 /* ── Field wrapper ── */
-function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
+function Field({ label, required, children, error }: { label: string; required?: boolean; children: React.ReactNode; error?: string }) {
   return (
     <div style={{marginBottom:'14px'}}>
       <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
@@ -14,6 +15,7 @@ function Field({ label, required, children }: { label: string; required?: boolea
         {required && <span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>}
       </label>
       {children}
+      {error && <span className="err-msg">{error}</span>}
     </div>
   )
 }
@@ -75,6 +77,84 @@ function FileUpload({
   )
 }
 
+/* ── Multi File Upload (up to 15 files) ── */
+function MultiFileUpload({
+  id, label, accept, value, onChange, maxFiles = 15
+}: {
+  id: string; label: string; accept: string
+  value: MultiUploadState; onChange: (v: MultiUploadState) => void
+  maxFiles?: number
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? [])
+    if (!selected.length) return
+    const remaining = maxFiles - value.files.length
+    const toAdd = selected.slice(0, remaining)
+    const newPreviews = toAdd.map(f => f.type.startsWith('image/') ? URL.createObjectURL(f) : null)
+    onChange({
+      files: [...value.files, ...toAdd],
+      previews: [...value.previews, ...newPreviews],
+    })
+    if (inputRef.current) inputRef.current.value = ''
+  }
+
+  const handleRemove = (i: number) => {
+    const p = value.previews[i]
+    if (p) URL.revokeObjectURL(p)
+    onChange({
+      files: value.files.filter((_, idx) => idx !== i),
+      previews: value.previews.filter((_, idx) => idx !== i),
+    })
+  }
+
+  const canAdd = value.files.length < maxFiles
+
+  return (
+    <div>
+      {value.files.map((f, i) => (
+        <div key={i} className="file-zone" style={{marginBottom: 8, cursor:'default'}}>
+          <div className="file-selected">
+            {value.previews[i]
+              ? <img src={value.previews[i]!} alt="preview" className="file-img-preview" />
+              : <div className="file-icon-box">📄</div>
+            }
+            <div className="file-meta">
+              <span className="file-name">{f.name}</span>
+              <span className="file-size">{(f.size / 1024).toFixed(0)} KB</span>
+            </div>
+            <button type="button" className="file-remove" onClick={() => handleRemove(i)}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      ))}
+      {canAdd && (
+        <div className="file-zone" onClick={() => inputRef.current?.click()} style={{cursor:'pointer'}}>
+          <input ref={inputRef} id={id} type="file" accept={accept} multiple className="hidden" onChange={handleChange} />
+          <div className="file-empty">
+            <div className="file-upload-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 16V8M8 12l4-4 4 4" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <rect x="3" y="3" width="18" height="18" rx="4" stroke="#C8EAE0" strokeWidth="1.2"/>
+              </svg>
+            </div>
+            <span className="file-upload-label">{label}</span>
+            <span className="file-upload-sub">
+              {value.files.length === 0
+                ? `Tap to add files (max ${maxFiles})`
+                : `Add more (${value.files.length}/${maxFiles})`}
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 /* ── Main Form ── */
 export default function TaxFormPage() {
   // Personal
@@ -93,7 +173,7 @@ export default function TaxFormPage() {
   // Files
   const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
-  const [invoices, setInvoices]         = useState<UploadState>({ file: null, preview: null })
+  const [invoices, setInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
 
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
@@ -126,12 +206,7 @@ export default function TaxFormPage() {
     if (!taxStatus)           e.taxStatus      = 'Required'
     if (!declared)            e.declared       = 'Required'
     if (declared === 'no')    e.declared       = 'You must agree to submit'
-    if (!terms)               e.terms          = 'You must accept the terms'
     if (!howHeard.trim())     e.howHeard       = 'Required'
-    if (!taxStatus)          e.taxStatus   = 'Required'
-    if (!declared)           e.declared    = 'Required'
-    if (declared === 'no')   e.declared    = 'You must agree to submit'
-    if (!howHeard.trim())    e.howHeard    = 'Required'
     return e
   }
 
@@ -160,7 +235,7 @@ export default function TaxFormPage() {
     fd.append('howHeard',    howHeard)
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
-    if (invoices.file)       fd.append('invoices',       invoices.file)
+    invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
@@ -210,31 +285,31 @@ export default function TaxFormPage() {
           <div className="form-section-title">Contact details</div>
           <div>
 
-            <Field label="Phone Number" required>
+            <Field label="Phone Number" required error={errors.waNumber}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX"
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }} />
               {err('waNumber')}
             </Field>
 
-            <Field label="Australian Phone Number" required>
+            <Field label="Australian Phone Number" required error={errors.auPhone}>
               <input className={`inp ${errors.auPhone ? 'inp-err' : ''}`} type="tel" placeholder="04XX XXX XXX"
                 value={auPhone} onChange={e => { setAuPhone(e.target.value); setErrors(p => ({...p, auPhone: ''})) }} />
               {err('auPhone')}
             </Field>
 
-            <Field label="Full Name (including middle name)" required>
+            <Field label="Full Name (including middle name)" required error={errors.fullName}>
               <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport"
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
               {err('fullName')}
             </Field>
 
-            <Field label="Email Address" required>
+            <Field label="Email Address" required error={errors.email}>
               <input className={`inp ${errors.email ? 'inp-err' : ''}`} type="email" placeholder="your@email.com"
                 value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ''})) }} />
               {err('email')}
             </Field>
 
-            <Field label="Full Address in Australia" required>
+            <Field label="Full Address in Australia" required error={errors.address}>
               <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="Street, suburb, state, postcode"
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
               {err('address')}
@@ -244,19 +319,19 @@ export default function TaxFormPage() {
           <div className="form-section-title">Personal information</div>
           <div>
 
-            <Field label="Home Country" required>
+            <Field label="Home Country" required error={errors.country}>
               <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. France"
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
               {err('country')}
             </Field>
 
-            <Field label="Date of Birth" required>
+            <Field label="Date of Birth" required error={errors.dob}>
               <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date"
                 value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
               {err('dob')}
             </Field>
 
-            <Field label="Marital Status" required>
+            <Field label="Marital Status" required error={errors.marital}>
               <div className="radio-group">
                 {(['Single', 'Married'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${marital === opt ? 'radio-card-active' : ''}`}>
@@ -274,19 +349,19 @@ export default function TaxFormPage() {
           <div className="form-section-title">Tax information</div>
           <div>
 
-            <Field label="Tax File Number (TFN)" required>
+            <Field label="Tax File Number (TFN)" required error={errors.tfn}>
               <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
                 value={tfn} onChange={e => { setTfn(e.target.value); setErrors(p => ({...p, tfn: ''})) }} />
               {err('tfn')}
             </Field>
 
-            <Field label="Primary job in the past year" required>
+            <Field label="Primary job in the past year" required error={errors.primaryJob}>
               <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
               {err('primaryJob')}
             </Field>
 
-            <Field label="Bank account details for tax refund" required>
+            <Field label="Bank account details for tax refund" required error={errors.bankDetails}>
               <input className={`inp ${errors.bankDetails ? 'inp-err' : ''}`} type="text" placeholder="Name, account number & BSB"
                 value={bankDetails} onChange={e => { setBankDetails(e.target.value); setErrors(p => ({...p, bankDetails: ''})) }} />
               {err('bankDetails')}
@@ -296,28 +371,28 @@ export default function TaxFormPage() {
           <div className="form-section-title">Documents</div>
           <div>
 
-            <Field label="Bank statements (to verify name)" required>
+            <Field label="Bank statements (to verify name)" required error={errors.bankStatement}>
               <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} />
               {err('bankStatement')}
             </Field>
 
-            <Field label="Selfie holding your passport" required>
+            <Field label="Selfie holding your passport" required error={errors.selfiePassport}>
               <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
               {err('selfiePassport')}
             </Field>
 
             <Field label="Work-related expense invoices">
-              <FileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
-                value={invoices} onChange={setInvoices} />
+              <MultiFileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
+                value={invoices} onChange={setInvoices} maxFiles={15} />
             </Field>
           </div>
 
           <div className="form-section-title">Declaration</div>
           <div>
 
-            <Field label="" required>
+            <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
                 I confirm that I have reviewed the{' '}
                 <a href="/tax-residency" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>
@@ -336,10 +411,9 @@ export default function TaxFormPage() {
                   </label>
                 ))}
               </div>
-              {err('taxStatus')}
             </Field>
 
-            <Field label="" required>
+            <Field label="" required error={errors.declared}>
               <p style={{fontSize:'12px',color:'#587066',lineHeight:'1.7',marginBottom:'10px'}}>
                 I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
                 <a href="/client-agreement" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Client Agreement</a>
@@ -359,21 +433,33 @@ export default function TaxFormPage() {
                   </label>
                 ))}
               </div>
-              {err('declared')}
             </Field>
           </div>
 
           <div className="form-section-title">How did you hear about us?</div>
           <div>
-            <Field label="How did you hear about us?" required>
+            <Field label="How did you hear about us?" required error={errors.howHeard}>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
                 value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
-              {err('howHeard')}
             </Field>
           </div>
 
           {Object.keys(errors).length > 0 && (
-            <div className="errors-banner">Please fill in all required fields above.</div>
+            <div className="errors-banner">
+              <strong>Please fix the following before submitting:</strong>
+              <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
+                {(Object.entries(errors) as [string, string][]).map(([k, v]) => (
+                  <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === 'Required' ? `${({
+                    waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
+                    email:'Email Address',address:'Australian Address',country:'Home Country',
+                    dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
+                    primaryJob:'Primary Job',bankDetails:'Bank Details',
+                    bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
+                    taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
+                  } as Record<string,string>)[k] || k} is required` : v}</li>
+                ))}
+              </ul>
+            </div>
           )}
 
           <button type="submit" className="submit-btn" disabled={loading}>
