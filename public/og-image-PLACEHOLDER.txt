@@ -1,0 +1,10 @@
+IMPORTANT: A real og-image.png (1200x630px) is missing from /public/.
+The layout.tsx references /og-image.png for Open Graph social previews.
+
+To fix:
+1. Create a 1200x630 PNG image with your brand design
+2. Name it og-image.png
+3. Place it in the /public/ directory
+
+Until then, social media link previews (Facebook, Twitter/X, LinkedIn, WhatsApp)
+will show a broken/missing image when your site URL is shared.

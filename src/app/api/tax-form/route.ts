@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
-import {
-  isRateLimited, isHoneypotFilled, isValidEmail, isValidDate,
-  getField, validateUploadedFile,
-} from '@/lib/form-protection'
+import { isRateLimited, isHoneypotFilled, isValidEmail, isValidDate, getField } from '@/lib/form-protection'
 
 export async function POST(req: NextRequest) {
+  // Rate limiting
   if (isRateLimited(req)) {
     return NextResponse.json({ ok: false, message: 'Too many requests. Please try again later.' }, { status: 429 })
   }
 
+  // Content-Type guard
   const ct = req.headers.get('content-type') ?? ''
   if (!ct.includes('multipart/form-data') && !ct.includes('application/x-www-form-urlencoded')) {
     return NextResponse.json({ ok: false, message: 'Invalid request format.' }, { status: 400 })
@@ -18,6 +17,7 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
 
+    // Honeypot check
     if (isHoneypotFilled(formData)) {
       return NextResponse.json({ ok: true })
     }
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     const taxYear     = getField(formData, 'taxYear',      10)
     const howHeard    = getField(formData, 'howHeard',    100)
 
-    // Required field validation
+    // Server-side required field validation
     const missing: string[] = []
     if (!fullName)    missing.push('fullName')
     if (!waNumber)    missing.push('waNumber')
@@ -60,24 +60,6 @@ export async function POST(req: NextRequest) {
     }
     if (!isValidDate(dob)) {
       return NextResponse.json({ ok: false, message: 'Invalid date of birth.' }, { status: 400 })
-    }
-
-    // File validation
-    const fileFields: Array<[string, boolean]> = [
-      ['bankStatement',  true],
-      ['selfiePassport', true],
-      ['invoices',       false],
-    ]
-    for (const [fieldName, required] of fileFields) {
-      const file = formData.get(fieldName)
-      if (file instanceof File && file.size > 0) {
-        const result = await validateUploadedFile(file)
-        if (!result.ok) {
-          return NextResponse.json({ ok: false, message: `${fieldName}: ${result.reason}` }, { status: 400 })
-        }
-      } else if (required) {
-        return NextResponse.json({ ok: false, message: `Missing required file: ${fieldName}` }, { status: 400 })
-      }
     }
 
     await createTask({

@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
-import {
-  isRateLimited, isHoneypotFilled, isValidEmail, isValidDate,
-  getField, validateUploadedFile,
-} from '@/lib/form-protection'
+import { isRateLimited, isHoneypotFilled, isValidEmail, isValidDate, getField } from '@/lib/form-protection'
 
 export async function POST(req: NextRequest) {
   if (isRateLimited(req)) {
@@ -51,17 +48,6 @@ export async function POST(req: NextRequest) {
     }
     if (!isValidDate(dob)) {
       return NextResponse.json({ ok: false, message: 'Invalid date of birth.' }, { status: 400 })
-    }
-
-    // File validation — selfie with passport is required
-    const selfie = formData.get('selfiePassport')
-    if (selfie instanceof File && selfie.size > 0) {
-      const result = await validateUploadedFile(selfie)
-      if (!result.ok) {
-        return NextResponse.json({ ok: false, message: `selfiePassport: ${result.reason}` }, { status: 400 })
-      }
-    } else {
-      return NextResponse.json({ ok: false, message: 'Missing required file: selfiePassport' }, { status: 400 })
     }
 
     await createTask({

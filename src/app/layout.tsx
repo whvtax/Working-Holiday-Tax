@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Playfair_Display, DM_Sans } from 'next/font/google'
-import { headers } from 'next/headers'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
@@ -46,6 +45,7 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 }
 
+// M3: explicit viewport export (Next.js 14 App Router recommendation)
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -53,15 +53,8 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Read the nonce injected by middleware — used by any inline scripts that need CSP clearance
-  const nonce = headers().get('x-nonce') ?? ''
-
   return (
     <html lang="en-AU" className={`${playfair.variable} ${dmSans.variable}`}>
-      <head>
-        {/* Expose nonce as a meta tag so client-side scripts can read it if needed */}
-        {nonce && <meta name="csp-nonce" content={nonce} />}
-      </head>
       <body>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:text-forest-500 focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium" style={{ fontSize: '14px' }}>Skip to content</a>
         <div className="grain" aria-hidden="true" />

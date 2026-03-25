@@ -18,12 +18,6 @@ function FileUpload({ id, label, accept, value, onChange }: { id: string; label:
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
     if (!file) return
-    // Client-side size guard (10 MB) — server enforces this too
-    if (file.size > 10 * 1024 * 1024) {
-      alert(`File is too large. Maximum size is 10 MB.`)
-      e.target.value = ''
-      return
-    }
     const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null
     onChange({ file, preview })
   }
@@ -202,7 +196,7 @@ export default function TFNFormPage() {
 
           <div className="form-section-title">Documents</div>
           <Field label="Selfie with passport" required error={errors.selfie}>
-            <FileUpload id="selfie" label="Upload selfie with passport" accept="image/jpeg,image/png,image/webp,image/heic,application/pdf" value={selfie} onChange={setSelfie}/>
+            <FileUpload id="selfie" label="Upload selfie with passport" accept="image/*,.pdf" value={selfie} onChange={setSelfie}/>
           </Field>
 
           <div className="form-section-title">Declaration</div>
