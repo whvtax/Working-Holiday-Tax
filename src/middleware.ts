@@ -45,7 +45,7 @@ export async function middleware(req: NextRequest) {
   // Use Web Crypto (Edge-compatible) instead of Node's randomBytes
   const nonceBytes = new Uint8Array(16)
   crypto.getRandomValues(nonceBytes)
-  const nonce = btoa(String.fromCharCode(...nonceBytes))
+  const nonce = btoa(Array.from(nonceBytes, b => String.fromCharCode(b)).join(""))
 
   const csp = [
     "default-src 'self'",
