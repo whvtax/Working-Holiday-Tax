@@ -1,6 +1,6 @@
 /**
  * Seed demo data into Vercel Postgres
- * Run once via: POST /api/crm/seed (requires auth + X-Requested-With: XMLHttpRequest)
+ * Run once via: GET /api/crm/seed (protected)
  */
 
 import { sql } from '@vercel/postgres'

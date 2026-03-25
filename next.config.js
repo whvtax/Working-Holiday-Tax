@@ -6,9 +6,6 @@
  * static asset caching which middleware intentionally skips.
  */
 const nextConfig = {
-  // SECURITY FIX: suppress X-Powered-By: Next.js header — reduces fingerprinting surface
-  poweredByHeader: false,
-
   async headers() {
     return [
       {

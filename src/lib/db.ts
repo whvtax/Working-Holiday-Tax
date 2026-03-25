@@ -1,12 +1,8 @@
 /**
  * Vercel Postgres DB layer
  * Tables: crm_clients (permanent) + crm_tasks (active submissions)
- * SECURITY FIX: createTask now uses crypto.randomUUID() instead of Date.now()
- *   - Prevents ID collision in concurrent serverless invocations
- *   - Prevents predictable/enumerable task IDs
  */
 import { sql } from '@vercel/postgres'
-import crypto from 'crypto'
 
 export type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
 export type SuperReturn   = { year:string; amount:number; completedAt:string }
@@ -86,8 +82,8 @@ function toClient(r: Record<string,unknown>): ClientRecord {
     whatsapp:     r.whatsapp as string,
     email:        r.email as string,
     country:      r.country as string,
-    howHeard:     (r.how_heard as string | null) ?? '',
-    notes:        (r.notes as string | null) ?? '',
+    howHeard:     r.how_heard as string ?? '',
+    notes:        r.notes as string ?? '',
     createdAt:    r.created_at as string,
     taxReturns:   parse(r.tax_returns, []),
     superReturns: parse(r.super_returns, []),
@@ -106,8 +102,8 @@ function toTask(r: Record<string,unknown>): Task {
     done: r.done as boolean, address: r.address as string,
     tfn: r.tfn as string, bankDetails: r.bank_details as string,
     primaryJob: r.primary_job as string, marital: r.marital as string,
-    taxStatus: r.tax_status as string, howHeard: (r.how_heard as string | null) ?? '',
-    auPhone: (r.au_phone as string | null) ?? '', notes: (r.notes as string | null) ?? '',
+    taxStatus: r.tax_status as string, howHeard: r.how_heard as string,
+    auPhone: r.au_phone as string, notes: r.notes as string,
   }
 }
 
@@ -127,7 +123,7 @@ export async function getTask(id: string): Promise<Task | null> {
 
 export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   await initDb()
-  const id = `TASK-${crypto.randomUUID()}`
+  const id = `TASK-${Date.now()}`
   await sql`
     INSERT INTO crm_tasks
       (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,

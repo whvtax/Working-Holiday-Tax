@@ -1,15 +1,12 @@
-// src/app/api/tax-form/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import {
   isRateLimited, isHoneypotFilled, isValidEmail, isValidDate,
-  isValidPhone, isValidTfn, getField, validateUploadedFile,
+  getField, validateUploadedFile,
 } from '@/lib/form-protection'
-import { uploadTaskFiles } from '@/lib/blob-upload'
-import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
-  if (await isRateLimited(req)) {
+  if (isRateLimited(req)) {
     return NextResponse.json({ ok: false, message: 'Too many requests. Please try again later.' }, { status: 429 })
   }
 
@@ -20,8 +17,12 @@ export async function POST(req: NextRequest) {
 
   try {
     const formData = await req.formData()
-    if (isHoneypotFilled(formData)) return NextResponse.json({ ok: true })
 
+    if (isHoneypotFilled(formData)) {
+      return NextResponse.json({ ok: true })
+    }
+
+    // Extract and sanitize fields
     const fullName    = getField(formData, 'fullName',    150)
     const waNumber    = getField(formData, 'waNumber',     30)
     const auPhone     = getField(formData, 'auPhone',      30)
@@ -37,6 +38,7 @@ export async function POST(req: NextRequest) {
     const taxYear     = getField(formData, 'taxYear',      10)
     const howHeard    = getField(formData, 'howHeard',    100)
 
+    // Required field validation
     const missing: string[] = []
     if (!fullName)    missing.push('fullName')
     if (!waNumber)    missing.push('waNumber')
@@ -48,43 +50,56 @@ export async function POST(req: NextRequest) {
     if (!primaryJob)  missing.push('primaryJob')
     if (!bankDetails) missing.push('bankDetails')
     if (!taxStatus)   missing.push('taxStatus')
-    if (missing.length) return NextResponse.json({ ok: false, message: 'Missing required fields.', fields: missing }, { status: 400 })
 
-    if (!isValidEmail(email))         return NextResponse.json({ ok: false, message: 'Invalid email address.' }, { status: 400 })
-    if (!isValidDate(dob))            return NextResponse.json({ ok: false, message: 'Invalid date of birth.' }, { status: 400 })
-    if (!isValidPhone(waNumber))      return NextResponse.json({ ok: false, message: 'Invalid WhatsApp number.' }, { status: 400 })
-    if (auPhone && !isValidPhone(auPhone)) return NextResponse.json({ ok: false, message: 'Invalid Australian phone number.' }, { status: 400 })
-    if (!isValidTfn(tfn))             return NextResponse.json({ ok: false, message: 'Invalid TFN format. Use NNN NNN NNN.' }, { status: 400 })
+    if (missing.length) {
+      return NextResponse.json({ ok: false, message: 'Missing required fields.', fields: missing }, { status: 400 })
+    }
 
-    // Validate files
-    const fileFields: Array<[string, string, boolean]> = [
-      ['bankStatement',  'Bank Statement',   true],
-      ['selfiePassport', 'Passport / Selfie', true],
-      ['invoices',       'Payment Summaries', false],
+    if (!isValidEmail(email)) {
+      return NextResponse.json({ ok: false, message: 'Invalid email address.' }, { status: 400 })
+    }
+    if (!isValidDate(dob)) {
+      return NextResponse.json({ ok: false, message: 'Invalid date of birth.' }, { status: 400 })
+    }
+
+    // File validation
+    const fileFields: Array<[string, boolean]> = [
+      ['bankStatement',  true],
+      ['selfiePassport', true],
+      ['invoices',       false],
     ]
-    const filesToUpload: Array<{ file: File; label: string }> = []
-    for (const [fieldName, label, required] of fileFields) {
+    for (const [fieldName, required] of fileFields) {
       const file = formData.get(fieldName)
       if (file instanceof File && file.size > 0) {
         const result = await validateUploadedFile(file)
-        if (!result.ok) return NextResponse.json({ ok: false, message: `${fieldName}: ${result.reason}` }, { status: 400 })
-        filesToUpload.push({ file, label })
+        if (!result.ok) {
+          return NextResponse.json({ ok: false, message: `${fieldName}: ${result.reason}` }, { status: 400 })
+        }
       } else if (required) {
         return NextResponse.json({ ok: false, message: `Missing required file: ${fieldName}` }, { status: 400 })
       }
     }
 
-    const clientId = `CLT-${crypto.randomUUID()}`
     await createTask({
-      clientId, clientName: fullName, taskType: 'tax-return',
-      whatsapp: waNumber, auPhone, email, country, dob,
-      taxYear: taxYear || '2024-25', address, tfn, bankDetails,
-      primaryJob, marital, taxStatus, howHeard,
-      submittedAt: new Date().toISOString(), notes: '',
+      clientId:    `CLT-${Date.now()}`,
+      clientName:  fullName,
+      taskType:    'tax-return',
+      whatsapp:    waNumber,
+      auPhone,
+      email,
+      country,
+      dob,
+      taxYear:     taxYear || '2024-25',
+      address,
+      tfn,
+      bankDetails,
+      primaryJob,
+      marital,
+      taxStatus,
+      howHeard,
+      submittedAt: new Date().toISOString(),
+      notes: '',
     })
-
-    // Upload files to Vercel Blob and record in DB (non-blocking on failure)
-    await uploadTaskFiles(clientId, filesToUpload)
 
     return NextResponse.json({ ok: true })
   } catch (err) {

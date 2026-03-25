@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 type TaxYear = '2019-20'|'2020-21'|'2021-22'|'2022-23'|'2023-24'|'2024-25'
@@ -11,49 +11,23 @@ type Client = {
   submittedAt:string; handled:boolean; notes:string
   files:{bankStatement:string|null;selfiePassport:string|null;invoices:string|null}
 }
-type ClientFile = {
-  id: string; client_id: string; blob_url: string; label: string
-  file_name: string; file_size: number; mime_type: string; uploaded_at: string
-}
 const TAX_YEARS:TaxYear[] = ['2024-25','2023-24','2022-23','2021-22','2020-21','2019-20']
-const CSRF_HEADERS_BASE = { 'X-Requested-With': 'XMLHttpRequest' } as const
-const CSRF_HEADERS = { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } as const
 
 export default function ClientPageClient({ id }: { id: string }) {
   const router  = useRouter()
-  const [client, setClient]             = useState<Client|null>(null)
-  const [loading, setLoading]           = useState(true)
-  const [editing, setEditing]           = useState(false)
-  const [form, setForm]                 = useState<Partial<Client>>({})
-  const [saving, setSaving]             = useState(false)
-  const [showClear, setShowClear]       = useState(false)
-  const [showHandle, setShowHandle]     = useState(false)
-  const [toast, setToast]               = useState('')
-  const [notes, setNotes]               = useState('')
-  const [notesSaving, setNotesSaving]   = useState(false)
-  const [notesSaved, setNotesSaved]     = useState(false)
+  const [client, setClient]               = useState<Client|null>(null)
+  const [loading, setLoading]             = useState(true)
+  const [editing, setEditing]             = useState(false)
+  const [form, setForm]                   = useState<Partial<Client>>({})
+  const [saving, setSaving]               = useState(false)
+  const [showClear, setShowClear]         = useState(false)
+  const [showHandle, setShowHandle]       = useState(false)
+  const [toast, setToast]                 = useState('')
+  const [notes, setNotes]                 = useState('')
+  const [notesSaving, setNotesSaving]     = useState(false)
+  const [notesSaved, setNotesSaved]       = useState(false)
 
-  // Files state
-  const [files, setFiles]               = useState<ClientFile[]>([])
-  const [filesLoading, setFilesLoading] = useState(false)
-  const [uploading, setUploading]       = useState(false)
-  const [uploadLabel, setUploadLabel]   = useState('')
-  const [confirmDelFile, setConfirmDelFile] = useState<ClientFile|null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-
-  // Secure viewer state
-  const [viewerFile, setViewerFile]         = useState<ClientFile|null>(null)
-  const [viewerUrl, setViewerUrl]           = useState<string>('')
-
-  function openViewer(file: ClientFile) {
-    // Use secure proxy — never exposes the real blob URL to the browser
-    setViewerFile(file)
-    setViewerUrl(`/api/crm/clients/${id}/files/view?fileId=${encodeURIComponent(file.id)}`)
-  }
-
-  function closeViewer() { setViewerFile(null); setViewerUrl('') }
-
-  const load = useCallback(async function () {
+  async function load() {
     setLoading(true)
     try {
       const res  = await fetch(`/api/crm/clients/${id}`)
@@ -63,94 +37,37 @@ export default function ClientPageClient({ id }: { id: string }) {
       else router.push('/crm/dashboard')
     } catch { router.push('/crm/dashboard') }
     setLoading(false)
-  }, [id, router])
-
-  const loadFiles = useCallback(async function () {
-    setFilesLoading(true)
-    try {
-      const res  = await fetch(`/api/crm/clients/${id}/files`)
-      if (res.ok) { const d = await res.json(); if (d.ok) setFiles(d.files) }
-    } catch {}
-    setFilesLoading(false)
-  }, [id])
-
-  useEffect(() => { load(); loadFiles() }, [load, loadFiles])
+  }
+  useEffect(() => { load() }, [id])
 
   function showMsg(msg:string) { setToast(msg); setTimeout(()=>setToast(''),3000) }
 
   async function saveNotes() {
     setNotesSaving(true)
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'update',data:{...client,notes}})})
-    setNotesSaving(false); setNotesSaved(true); setTimeout(()=>setNotesSaved(false), 2500)
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:{...client,notes}})})
+    setNotesSaving(false)
+    setNotesSaved(true)
+    setTimeout(()=>setNotesSaved(false), 2500)
   }
 
   async function save() {
     setSaving(true)
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'update',data:form})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:form})})
     const data = await res.json()
     if (data.ok) { setClient(data.client); setEditing(false); showMsg('Changes saved') }
     setSaving(false)
   }
-
   async function doClear() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'clear'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'clear'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Sensitive details cleared') }
     setShowClear(false)
   }
-
   async function doHandle() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'handle'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'handle'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Marked as handled') }
     setShowHandle(false)
-  }
-
-  async function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setUploading(true)
-    try {
-      const fd = new FormData()
-      fd.append('file', file)
-      fd.append('label', uploadLabel.trim() || file.name)
-      const res = await fetch(`/api/crm/clients/${id}/files`, {
-        method: 'POST',
-        headers: CSRF_HEADERS_BASE,
-        body: fd,
-      })
-      const data = await res.json()
-      if (data.ok) { setFiles(prev => [data.file, ...prev]); setUploadLabel(''); showMsg('File uploaded') }
-      else showMsg(data.error || 'Upload failed')
-    } catch { showMsg('Upload failed') }
-    setUploading(false)
-    if (fileInputRef.current) fileInputRef.current.value = ''
-  }
-
-  async function deleteFile(file: ClientFile) {
-    try {
-      const res = await fetch(`/api/crm/clients/${id}/files`, {
-        method: 'DELETE',
-        headers: CSRF_HEADERS,
-        body: JSON.stringify({ fileId: file.id }),
-      })
-      const data = await res.json()
-      if (data.ok) { setFiles(prev => prev.filter(f => f.id !== file.id)); showMsg('File deleted') }
-      else showMsg('Delete failed')
-    } catch { showMsg('Delete failed') }
-    setConfirmDelFile(null)
-  }
-
-  function fmtSize(bytes: number) {
-    if (bytes < 1024) return `${bytes} B`
-    if (bytes < 1024*1024) return `${(bytes/1024).toFixed(0)} KB`
-    return `${(bytes/(1024*1024)).toFixed(1)} MB`
-  }
-
-  function fileIcon(mime: string) {
-    if (mime.startsWith('image/')) return '🖼️'
-    if (mime === 'application/pdf') return '📄'
-    return '📎'
   }
 
   if (loading) return <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'100vh',fontFamily:'system-ui',color:'#7a8a82'}}>Loading…</div>
@@ -212,39 +129,6 @@ export default function ClientPageClient({ id }: { id: string }) {
         .cp-modal-del{padding:9px 18px;border-radius:9px;border:none;background:#c0392b;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
         .cp-modal-ok{padding:9px 18px;border-radius:9px;border:none;background:#0E5C42;color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
         .cp-toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#0a1410;color:#fff;border-radius:10px;padding:11px 22px;font-size:13px;font-weight:500;z-index:1000;white-space:nowrap;font-family:'DM Sans',system-ui,sans-serif;}
-
-        /* Files section */
-        .cp-files{background:#fff;border-radius:13px;border:1px solid #e8eeeb;overflow:hidden;margin-bottom:12px;}
-        .cp-files-head{font-size:12px;font-weight:600;color:#0E5C42;padding:11px 18px;background:#f7fbf9;border-bottom:1px solid #edf3ef;display:flex;align-items:center;justify-content:space-between;}
-        .cp-files-body{padding:14px 18px;}
-        .cp-upload-row{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap;}
-        .cp-upload-label-input{flex:1;min-width:140px;padding:7px 10px;border:1.5px solid #e4ede8;border-radius:8px;font-size:12px;font-family:inherit;outline:none;color:#0a1410;background:#f7fbf9;}
-        .cp-upload-label-input:focus{border-color:#0E5C42;background:#edf7f2;}
-        .cp-upload-btn{padding:7px 14px;border:1.5px dashed #0E5C42;border-radius:8px;background:#edf7f2;color:#0E5C42;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;}
-        .cp-upload-btn:disabled{opacity:0.5;cursor:not-allowed;}
-        .cp-file-list{display:flex;flex-direction:column;gap:8px;}
-        .cp-file-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f7fbf9;border-radius:9px;border:1px solid #edf3ef;}
-        .cp-file-icon{font-size:20px;flex-shrink:0;line-height:1;}
-        .cp-file-info{flex:1;min-width:0;}
-        .cp-file-name{font-size:13px;font-weight:500;color:#0a1410;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-        .cp-file-meta{font-size:11px;color:#aabab2;margin-top:2px;}
-        .cp-file-actions{display:flex;gap:6px;flex-shrink:0;}
-        .cp-file-view{padding:5px 11px;border:1px solid #0E5C42;border-radius:7px;background:#edf7f2;color:#0E5C42;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;}
-        .cp-file-dl{padding:5px 11px;border:1px solid #0E5C42;border-radius:7px;background:#fff;color:#0E5C42;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
-        .cp-file-del{padding:5px 10px;border:1px solid #fca5a5;border-radius:7px;background:#fff;color:#c0392b;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
-        .cp-files-empty{font-size:13px;color:#aabab2;text-align:center;padding:20px 0;}
-
-        /* Secure Viewer */
-        .cp-viewer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;z-index:1100;padding:20px;}
-        .cp-viewer-bar{width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-        .cp-viewer-title{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 120px);}
-        .cp-viewer-actions{display:flex;gap:8px;flex-shrink:0;}
-        .cp-viewer-dl{padding:7px 14px;border:1px solid rgba(255,255,255,0.3);border-radius:8px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
-        .cp-viewer-close{padding:7px 14px;border:none;border-radius:8px;background:rgba(255,255,255,0.15);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
-        .cp-viewer-frame{width:100%;max-width:900px;flex:1;border-radius:12px;overflow:hidden;background:#fff;max-height:calc(100vh - 100px);}
-        .cp-viewer-img{max-width:100%;max-height:calc(100vh - 100px);border-radius:12px;object-fit:contain;display:block;margin:0 auto;}
-        .cp-viewer-pdf{width:100%;height:calc(100vh - 100px);border:none;border-radius:12px;}
-        .cp-viewer-unsupported{color:#fff;text-align:center;padding:40px;font-size:14px;}
       `}</style>
 
       {toast && <div className="cp-toast">{toast}</div>}
@@ -274,58 +158,6 @@ export default function ClientPageClient({ id }: { id: string }) {
               <button className="cp-modal-ok" onClick={doHandle}>Yes, mark handled</button>
             </div>
           </div>
-        </div>
-      )}
-
-      {confirmDelFile && (
-        <div className="cp-overlay">
-          <div className="cp-modal">
-            <div className="cp-modal-icon">🗂️</div>
-            <h2 className="cp-modal-title">Delete file?</h2>
-            <p className="cp-modal-text">"{confirmDelFile.label}" will be permanently deleted from the server and cannot be recovered.</p>
-            <div className="cp-modal-btns">
-              <button className="cp-modal-cancel" onClick={()=>setConfirmDelFile(null)}>Cancel</button>
-              <button className="cp-modal-del" onClick={()=>deleteFile(confirmDelFile)}>Yes, delete</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Secure File Viewer — uses /api proxy, never exposes blob URL */}
-      {viewerFile && viewerUrl && (
-        <div className="cp-viewer-overlay" onClick={e=>{if(e.target===e.currentTarget)closeViewer()}}>
-          <div className="cp-viewer-bar">
-            <span className="cp-viewer-title">👁 {viewerFile.label}</span>
-            <div className="cp-viewer-actions">
-              <a
-                className="cp-viewer-dl"
-                href={viewerUrl}
-                download={viewerFile.file_name}
-              >
-                ↓ Download
-              </a>
-              <button className="cp-viewer-close" onClick={closeViewer}>✕ Close</button>
-            </div>
-          </div>
-          {viewerFile.mime_type.startsWith('image/') ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className="cp-viewer-img"
-              src={viewerUrl}
-              alt={viewerFile.label}
-            />
-          ) : viewerFile.mime_type === 'application/pdf' ? (
-            <iframe
-              className="cp-viewer-pdf"
-              src={viewerUrl}
-              title={viewerFile.label}
-            />
-          ) : (
-            <div className="cp-viewer-unsupported">
-              Preview not available for this file type.<br/>
-              <a className="cp-viewer-dl" style={{marginTop:16,display:'inline-flex'}} href={viewerUrl} download={viewerFile.file_name}>↓ Download file</a>
-            </div>
-          )}
         </div>
       )}
 
@@ -387,77 +219,6 @@ export default function ClientPageClient({ id }: { id: string }) {
             )}
             <Row label="How they heard" value={client.howHeard} field="howHeard" editing={editing} form={form} setForm={setForm}/>
           </Section>
-        </div>
-
-        {/* ── Files section ── */}
-        <div className="cp-files">
-          <div className="cp-files-head">
-            <span>📁 Documents & files</span>
-            <span style={{fontSize:'11px',color:'#aabab2',fontWeight:400}}>{files.length} file{files.length!==1?'s':''}</span>
-          </div>
-          <div className="cp-files-body">
-            {/* Upload row */}
-            <div className="cp-upload-row">
-              <input
-                className="cp-upload-label-input"
-                placeholder="Label (optional, e.g. Passport, Bank Statement…)"
-                value={uploadLabel}
-                onChange={e=>setUploadLabel(e.target.value)}
-                disabled={uploading}
-              />
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp,image/heic,image/heif,application/pdf"
-                style={{display:'none'}}
-                onChange={uploadFile}
-              />
-              <button
-                className="cp-upload-btn"
-                disabled={uploading}
-                onClick={()=>fileInputRef.current?.click()}
-              >
-                {uploading ? 'Uploading…' : '+ Upload file'}
-              </button>
-            </div>
-
-            {/* File list */}
-            {filesLoading ? (
-              <div className="cp-files-empty">Loading files…</div>
-            ) : files.length === 0 ? (
-              <div className="cp-files-empty">No documents uploaded yet</div>
-            ) : (
-              <div className="cp-file-list">
-                {files.map(f => (
-                  <div key={f.id} className="cp-file-item">
-                    <span className="cp-file-icon">{fileIcon(f.mime_type)}</span>
-                    <div className="cp-file-info">
-                      <div className="cp-file-name">{f.label}</div>
-                      <div className="cp-file-meta">{f.file_name} · {fmtSize(f.file_size)} · {new Date(f.uploaded_at).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}</div>
-                    </div>
-                    <div className="cp-file-actions">
-                      <button
-                        className="cp-file-view"
-                        onClick={()=>openViewer(f)}
-                        title="View file"
-                      >
-                        👁 View
-                      </button>
-                      <a
-                        className="cp-file-dl"
-                        href={`/api/crm/clients/${id}/files/view?fileId=${encodeURIComponent(f.id)}`}
-                        download={f.file_name}
-                        title="Download file"
-                      >
-                        ↓ Download
-                      </a>
-                      <button className="cp-file-del" onClick={()=>setConfirmDelFile(f)}>Delete</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
 
         <div className="cp-notes">

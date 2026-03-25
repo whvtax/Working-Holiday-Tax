@@ -1,21 +1,15 @@
 // src/app/api/crm/verify-otp/route.ts
-// SECURITY FIX: uses validateSessionAsync for full Redis revocation check
-// SECURITY FIX 2: OTP attempt counter uses INCR *before* checking the OTP hash,
-//   preventing a race condition where two concurrent requests could both read
-//   count=0, pass the guard, and each consume an attempt slot simultaneously.
-// SECURITY FIX 3: OTP is stored under a unique pending-login key (crm_otp:{token})
-//   that is bound to the password-verified session. This prevents an attacker on
-//   a different IP from consuming the OTP that was sent to the legitimate user.
 import { NextRequest, NextResponse } from 'next/server'
-import { createSession, compareOtp } from '@/lib/crm-store'
+import { createSession } from '@/lib/crm-store'
 import { createClient } from 'redis'
+import crypto from 'crypto'
 
 const MAX_OTP_ATTEMPTS = 5
 
 async function getRedis() {
   const client = createClient({ url: process.env.REDIS_URL })
   await client.connect()
-  return client as import('redis').RedisClientType
+  return client
 }
 
 export async function POST(req: NextRequest) {
@@ -28,33 +22,20 @@ export async function POST(req: NextRequest) {
 
     redis = await getRedis()
 
-    // SECURITY FIX 3: require the pending-login cookie that was set at password-verify time.
-    // The OTP is stored under a key scoped to this random token — an attacker on a different
-    // IP or browser cannot replay the OTP even if they intercept it.
-    const pendingToken = req.cookies.get('crm_pending_login')?.value
-    if (!pendingToken || !/^[A-Za-z0-9_-]{43,44}$/.test(pendingToken)) {
-      return NextResponse.json({ ok: false, error: 'invalid_session', message: 'No pending login session. Please start again.' }, { status: 401 })
-    }
+    // Check attempt counter before anything else
+    const attemptsKey = 'crm_otp_attempts'
+    const attemptsRaw = await redis.get(attemptsKey)
+    const attempts = attemptsRaw ? parseInt(attemptsRaw, 10) : 0
 
-    const otpKey      = `crm_otp:${pendingToken}`
-    const attemptsKey = `crm_otp_attempts:${pendingToken}`
-
-    // SECURITY FIX 2: Increment FIRST (atomic Redis INCR), then check the result.
-    const newAttemptCount = await redis.incr(attemptsKey)
-    if (newAttemptCount === 1) {
-      await redis.expire(attemptsKey, 600)
-    }
-
-    if (newAttemptCount > MAX_OTP_ATTEMPTS) {
-      // Invalidate the OTP and pending token on lockout
-      await redis.del(otpKey)
+    if (attempts >= MAX_OTP_ATTEMPTS) {
       return NextResponse.json(
         { ok: false, error: 'too_many_attempts', message: 'Too many incorrect attempts. Please request a new code.' },
         { status: 429 }
       )
     }
 
-    const storedHash = await redis.get(otpKey)
+    const storedHash = await redis.get('crm_otp')
+
     if (!storedHash) {
       return NextResponse.json(
         { ok: false, error: 'invalid_otp', message: 'Code expired or not found. Please login again.' },
@@ -62,17 +43,26 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const valid = compareOtp(code, storedHash)
+    const attemptHash = crypto.createHash('sha256').update(code.trim()).digest('hex')
+    const storedBuf   = Buffer.from(storedHash, 'hex')
+    const attemptBuf  = Buffer.from(attemptHash, 'hex')
+
+    let valid = false
+    if (storedBuf.length === attemptBuf.length) {
+      valid = crypto.timingSafeEqual(storedBuf, attemptBuf)
+    }
 
     if (!valid) {
+      // Increment attempt counter, expire alongside the OTP (10 min)
+      await redis.set(attemptsKey, attempts + 1, { EX: 600 })
       return NextResponse.json(
         { ok: false, error: 'invalid_otp', message: 'Invalid or expired code. Please try again.' },
         { status: 401 }
       )
     }
 
-    // One-time use — delete OTP and attempt counter immediately
-    await redis.del(otpKey)
+    // One-time use — delete OTP and attempt counter from Redis immediately
+    await redis.del('crm_otp')
     await redis.del(attemptsKey)
 
     const token = createSession()
@@ -83,12 +73,6 @@ export async function POST(req: NextRequest) {
       sameSite: 'strict',
       path: '/',
       maxAge: 8 * 60 * 60,
-    })
-    // Clear the pending-login cookie
-    res.cookies.set('crm_pending_login', '', {
-      maxAge: 0, path: '/', httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
     })
     return res
 

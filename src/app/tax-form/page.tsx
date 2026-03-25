@@ -52,7 +52,6 @@ function FileUpload({
       {value.file ? (
         <div className="file-selected">
           {value.preview
-            // eslint-disable-next-line @next/next/no-img-element
             ? <img src={value.preview} alt="preview" className="file-img-preview" />
             : <div className="file-icon-box">📄</div>
           }
@@ -223,31 +222,31 @@ export default function TaxFormPage() {
           <div>
 
             <Field label="Phone Number" required>
-              <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX" maxLength={30}
+              <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX"
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }} />
               {err('waNumber')}
             </Field>
 
             <Field label="Australian Phone Number" required>
-              <input className={`inp ${errors.auPhone ? 'inp-err' : ''}`} type="tel" placeholder="04XX XXX XXX" maxLength={30}
+              <input className={`inp ${errors.auPhone ? 'inp-err' : ''}`} type="tel" placeholder="04XX XXX XXX"
                 value={auPhone} onChange={e => { setAuPhone(e.target.value); setErrors(p => ({...p, auPhone: ''})) }} />
               {err('auPhone')}
             </Field>
 
             <Field label="Full Name (including middle name)" required>
-              <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport" maxLength={150}
+              <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport"
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
               {err('fullName')}
             </Field>
 
             <Field label="Email Address" required>
-              <input className={`inp ${errors.email ? 'inp-err' : ''}`} type="email" placeholder="your@email.com" maxLength={254}
+              <input className={`inp ${errors.email ? 'inp-err' : ''}`} type="email" placeholder="your@email.com"
                 value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ''})) }} />
               {err('email')}
             </Field>
 
             <Field label="Full Address in Australia" required>
-              <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="Street, suburb, state, postcode" maxLength={300}
+              <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="Street, suburb, state, postcode"
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
               {err('address')}
             </Field>
@@ -257,7 +256,7 @@ export default function TaxFormPage() {
           <div>
 
             <Field label="Home Country" required>
-              <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. France" maxLength={100}
+              <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. France"
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
               {err('country')}
             </Field>
@@ -287,19 +286,19 @@ export default function TaxFormPage() {
           <div>
 
             <Field label="Tax File Number (TFN)" required>
-              <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric" maxLength={15}
+              <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
                 value={tfn} onChange={e => { setTfn(e.target.value); setErrors(p => ({...p, tfn: ''})) }} />
               {err('tfn')}
             </Field>
 
             <Field label="Primary job in the past year" required>
-              <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista" maxLength={200}
+              <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
               {err('primaryJob')}
             </Field>
 
             <Field label="Bank account details for tax refund" required>
-              <input className={`inp ${errors.bankDetails ? 'inp-err' : ''}`} type="text" placeholder="Name, account number & BSB" maxLength={200}
+              <input className={`inp ${errors.bankDetails ? 'inp-err' : ''}`} type="text" placeholder="Name, account number & BSB"
                 value={bankDetails} onChange={e => { setBankDetails(e.target.value); setErrors(p => ({...p, bankDetails: ''})) }} />
               {err('bankDetails')}
             </Field>
@@ -378,7 +377,7 @@ export default function TaxFormPage() {
           <div className="form-section-title">How did you hear about us?</div>
           <div>
             <Field label="How did you hear about us?" required>
-              <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..." maxLength={100}
+              <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
                 value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
               {err('howHeard')}
             </Field>
