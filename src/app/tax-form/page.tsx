@@ -30,6 +30,12 @@ function FileUpload({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
     if (!file) return
+    // Client-side size guard (10 MB) — server enforces this too
+    if (file.size > 10 * 1024 * 1024) {
+      alert(`File is too large. Maximum size is 10 MB.`)
+      e.target.value = ''
+      return
+    }
     const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null
     onChange({ file, preview })
   }
@@ -302,19 +308,19 @@ export default function TaxFormPage() {
           <div>
 
             <Field label="Bank statements (to verify name)" required>
-              <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png"
+              <FileUpload id="bankStatement" label="Upload bank statement" accept="image/jpeg,image/png,image/webp,image/heic,application/pdf"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} />
               {err('bankStatement')}
             </Field>
 
             <Field label="Selfie holding your passport" required>
-              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png"
+              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept="image/jpeg,image/png,image/webp,image/heic"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
               {err('selfiePassport')}
             </Field>
 
             <Field label="Work-related expense invoices">
-              <FileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
+              <FileUpload id="invoices" label="Upload invoices" accept="image/jpeg,image/png,image/webp,image/heic,application/pdf"
                 value={invoices} onChange={setInvoices} />
             </Field>
           </div>

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
-import { isRateLimited, isHoneypotFilled, isValidEmail, isValidDate, getField } from '@/lib/form-protection'
+import {
+  isRateLimited, isHoneypotFilled, isValidEmail, isValidDate,
+  getField, validateUploadedFile,
+} from '@/lib/form-protection'
 
 export async function POST(req: NextRequest) {
   if (isRateLimited(req)) {
@@ -19,18 +22,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: true })
     }
 
-    const firstName  = getField(formData, 'firstName',   80)
-    const lastName   = getField(formData, 'lastName',    80)
-    const fullName   = [firstName, lastName].filter(Boolean).join(' ')
-    const whatsapp   = getField(formData, 'whatsapp',    30) || getField(formData, 'smsPhone', 30)
-    const auPhone    = getField(formData, 'auPhone',      30)
-    const email      = getField(formData, 'email',       254)
-    const country    = getField(formData, 'country',     100) || getField(formData, 'passportCountry', 100)
-    const dob        = getField(formData, 'dob',          10)
-    const address    = getField(formData, 'address',     300) || getField(formData, 'auAddress', 300)
-    const tfn        = getField(formData, 'tfn',          15)
-    const business   = getField(formData, 'business',   200)
-    const marital    = getField(formData, 'marital',      20)
+    const firstName = getField(formData, 'firstName',   80)
+    const lastName  = getField(formData, 'lastName',    80)
+    const fullName  = [firstName, lastName].filter(Boolean).join(' ')
+    const whatsapp  = getField(formData, 'whatsapp',    30) || getField(formData, 'smsPhone', 30)
+    const auPhone   = getField(formData, 'auPhone',      30)
+    const email     = getField(formData, 'email',       254)
+    const country   = getField(formData, 'country',     100) || getField(formData, 'passportCountry', 100)
+    const dob       = getField(formData, 'dob',          10)
+    const address   = getField(formData, 'address',     300) || getField(formData, 'auAddress', 300)
+    const tfn       = getField(formData, 'tfn',          15)
+    const business  = getField(formData, 'business',   200)
+    const marital   = getField(formData, 'marital',      20)
 
     const missing: string[] = []
     if (!firstName) missing.push('firstName')
@@ -49,6 +52,17 @@ export async function POST(req: NextRequest) {
     }
     if (!isValidDate(dob)) {
       return NextResponse.json({ ok: false, message: 'Invalid date of birth.' }, { status: 400 })
+    }
+
+    // File validation — selfie with passport is required
+    const selfie = formData.get('selfiePassport')
+    if (selfie instanceof File && selfie.size > 0) {
+      const result = await validateUploadedFile(selfie)
+      if (!result.ok) {
+        return NextResponse.json({ ok: false, message: `selfiePassport: ${result.reason}` }, { status: 400 })
+      }
+    } else {
+      return NextResponse.json({ ok: false, message: 'Missing required file: selfiePassport' }, { status: 400 })
     }
 
     await createTask({

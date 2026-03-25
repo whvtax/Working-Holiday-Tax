@@ -17,7 +17,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
-    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn, sql } = await import('@/lib/db')
+    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } = await import('@/lib/db')
     if (body.action === 'notes')          { await updateClientNotes(params.id, body.notes);                                    return NextResponse.json({ ok:true }) }
     if (body.action === 'service')        { await updateService(params.id, body.service, body.data);                           return NextResponse.json({ ok:true }) }
     if (body.action === 'add-tax')        { await addTaxReturn(params.id, body.data);                                          return NextResponse.json({ ok:true }) }

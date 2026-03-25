@@ -69,6 +69,10 @@ export function generateOtp(): string {
 }
 
 // ── OTP store (in-memory, expires in 10 min) ──────────────────────────────
+// IMPORTANT: OTP is stored in module memory on the same serverless instance
+// that generated it. The login flow immediately calls verify-otp after login,
+// which typically hits the same warm instance on Vercel.
+// For multi-region deployments, upgrade to Redis (see login route for reference).
 let _otpHash    = ''
 let _otpExpiry  = 0
 

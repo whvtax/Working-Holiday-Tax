@@ -12,8 +12,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const { sql } = await import('@vercel/postgres')
     await sql`UPDATE crm_clients SET notes = ${notes} WHERE id = ${params.id}`
     return NextResponse.json({ ok: true })
-  } catch {
-    // No DB — just return ok
-    return NextResponse.json({ ok: true })
+  } catch (err) {
+    console.error('[PATCH /api/crm/clients/[id]/notes]', err)
+    return NextResponse.json({ ok: false, error: 'db_error' }, { status: 500 })
   }
 }

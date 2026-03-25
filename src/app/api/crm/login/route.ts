@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function sendOtpEmail(to: string, apiKey: string, otp: string) {
-  if (!apiKey) { console.log('[DEV] OTP code:', otp); return }
+  if (!apiKey) { return }
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
