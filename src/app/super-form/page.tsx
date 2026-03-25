@@ -139,27 +139,27 @@ export default function SuperFormPage() {
           </div>
           <div className="form-section-title">Personal details</div>
           <Field label="First name (including middle name)" required error={errors.firstName}>
-            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" value={firstName} onChange={e=>setFirstName(e.target.value)}/>
+            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" maxLength={80} value={firstName} onChange={e=>setFirstName(e.target.value)}/>
           </Field>
           <Field label="Last name" required error={errors.lastName}>
-            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" value={lastName} onChange={e=>setLastName(e.target.value)}/>
+            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" maxLength={80} value={lastName} onChange={e=>setLastName(e.target.value)}/>
           </Field>
           <Field label="Date of birth" required error={errors.dob}>
             <input type="date" className={`form-input${errors.dob?' input-error':''}`} value={dob} onChange={e=>setDob(e.target.value)}/>
           </Field>
           <Field label="Passport number" required error={errors.passport}>
-            <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" value={passport} onChange={e=>setPassport(e.target.value)}/>
+            <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" maxLength={20} value={passport} onChange={e=>setPassport(e.target.value)}/>
           </Field>
           <Field label="Country that issued the passport (with visa attached)" required error={errors.passportCountry}>
-            <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. France" value={passportCountry} onChange={e=>setPassportCountry(e.target.value)}/>
+            <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. France" maxLength={100} value={passportCountry} onChange={e=>setPassportCountry(e.target.value)}/>
           </Field>
 
           <div className="form-section-title">Contact details</div>
           <Field label="Phone number for SMS" required error={errors.smsPhone}>
-            <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" value={smsPhone} onChange={e=>setSmsPhone(e.target.value)}/>
+            <input type="tel" maxLength={30} className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" value={smsPhone} onChange={e=>setSmsPhone(e.target.value)}/>
           </Field>
           <Field label="Email address" required error={errors.email}>
-            <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>setEmail(e.target.value)}/>
+            <input type="email" maxLength={254} className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>setEmail(e.target.value)}/>
           </Field>
           <Field label="Full Australian address (state, city, street, number, postcode)" required error={errors.auAddress}>
             <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. NSW, Sydney, 42 Bondi Rd, 2026" value={auAddress} onChange={e=>setAuAddress(e.target.value)}/>
@@ -170,7 +170,7 @@ export default function SuperFormPage() {
 
           <div className="form-section-title">Tax & super fund details</div>
           <Field label="TFN (Tax File Number)" required error={errors.tfn}>
-            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" value={tfn} onChange={e=>setTfn(e.target.value)}/>
+            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" maxLength={15} value={tfn} onChange={e=>setTfn(e.target.value)}/>
           </Field>
           <Field label="Super fund details (fund name, member number, account opening date)" required error={errors.superFunds}>
             <textarea className={`form-input form-textarea${errors.superFunds?' input-error':''}`} style={{minHeight:100}} placeholder={"e.g. AustralianSuper — Member No: 123456789 — Opened: 01/03/2023\nHostPlus — Member No: 987654321 — Opened: 15/06/2022"} value={superFunds} onChange={e=>setSuperFunds(e.target.value)}/>

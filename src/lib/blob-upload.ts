@@ -50,10 +50,14 @@ export async function uploadTaskFiles(
       if (!file || file.size === 0) continue
 
       const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 100)
-      const blobPath = `crm/${clientId}/${Date.now()}_${safeName}`
+      const blobPath = `crm/${clientId}/${randomUUID()}_${safeName}`
 
       const blob = await put(blobPath, file, {
-        access: 'public',
+        // NOTE: Vercel Blob free/pro plan only supports 'public' access.
+        // All client file URLs are stored in DB and served only via the /files/view proxy
+        // (which requires CRM auth), so direct URL guessing is the residual risk.
+        // Set BLOB_PRIVATE=true in env and upgrade to an Advanced Blob plan to enable private blobs.
+        access: process.env.BLOB_PRIVATE === 'true' ? 'private' : 'public',
         contentType: file.type,
       })
 

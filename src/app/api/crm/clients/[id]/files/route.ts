@@ -81,10 +81,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
 
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 100)
-    const blobPath = `crm/${params.id}/${Date.now()}_${safeName}`
+    const blobPath = `crm/${params.id}/${randomUUID()}_${safeName}`
 
     const blob = await put(blobPath, file, {
-      access: 'public',
+      access: process.env.BLOB_PRIVATE === 'true' ? 'private' : 'public',
       contentType: file.type,
     })
 

@@ -136,10 +136,10 @@ export default function ABNFormPage() {
           </div>
           <div className="form-section-title">Personal details</div>
           <Field label="First name (including middle name)" required error={errors.firstName}>
-            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" value={firstName} onChange={e=>setFirstName(e.target.value)}/>
+            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" maxLength={80} value={firstName} onChange={e=>setFirstName(e.target.value)}/>
           </Field>
           <Field label="Last name" required error={errors.lastName}>
-            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" value={lastName} onChange={e=>setLastName(e.target.value)}/>
+            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" maxLength={80} value={lastName} onChange={e=>setLastName(e.target.value)}/>
           </Field>
           <Field label="Date of birth" required error={errors.dob}>
             <input type="date" className={`form-input${errors.dob?' input-error':''}`} value={dob} onChange={e=>setDob(e.target.value)}/>
@@ -154,19 +154,19 @@ export default function ABNFormPage() {
             </div>
           </Field>
           <Field label="WhatsApp number" required error={errors.whatsapp}>
-            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+33 6 12 34 56 78" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)}/>
+            <input type="tel" maxLength={30} className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+33 6 12 34 56 78" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)}/>
           </Field>
           <Field label="Australian phone number" required error={errors.auPhone}>
-            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" value={auPhone} onChange={e=>setAuPhone(e.target.value)}/>
+            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" maxLength={30} value={auPhone} onChange={e=>setAuPhone(e.target.value)}/>
           </Field>
           <Field label="Email address" required error={errors.email}>
-            <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>setEmail(e.target.value)}/>
+            <input type="email" maxLength={254} className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>setEmail(e.target.value)}/>
           </Field>
           <Field label="Full Australian address (state, city, street, number, postcode)" required error={errors.address}>
             <textarea className={`form-input form-textarea${errors.address?' input-error':''}`} placeholder="e.g. NSW, Sydney, 42 Bondi Rd, 2026" value={address} onChange={e=>setAddress(e.target.value)}/>
           </Field>
           <Field label="TFN (Tax File Number)" required error={errors.tfn}>
-            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" value={tfn} onChange={e=>setTfn(e.target.value)}/>
+            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" maxLength={15} value={tfn} onChange={e=>setTfn(e.target.value)}/>
           </Field>
           <Field label="Brief description of business activity" required error={errors.business}>
             <textarea className={`form-input form-textarea${errors.business?' input-error':''}`} placeholder="e.g. Freelance photographer, providing photography services to clients" value={business} onChange={e=>setBusiness(e.target.value)}/>

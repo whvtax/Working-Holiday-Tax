@@ -41,6 +41,18 @@ export default function ClientPageClient({ id }: { id: string }) {
   const [confirmDelFile, setConfirmDelFile] = useState<ClientFile|null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  // Secure viewer state
+  const [viewerFile, setViewerFile]         = useState<ClientFile|null>(null)
+  const [viewerUrl, setViewerUrl]           = useState<string>('')
+
+  function openViewer(file: ClientFile) {
+    // Use secure proxy — never exposes the real blob URL to the browser
+    setViewerFile(file)
+    setViewerUrl(`/api/crm/clients/${id}/files/view?fileId=${encodeURIComponent(file.id)}`)
+  }
+
+  function closeViewer() { setViewerFile(null); setViewerUrl('') }
+
   async function load() {
     setLoading(true)
     try {
@@ -217,9 +229,22 @@ export default function ClientPageClient({ id }: { id: string }) {
         .cp-file-name{font-size:13px;font-weight:500;color:#0a1410;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
         .cp-file-meta{font-size:11px;color:#aabab2;margin-top:2px;}
         .cp-file-actions{display:flex;gap:6px;flex-shrink:0;}
+        .cp-file-view{padding:5px 11px;border:1px solid #0E5C42;border-radius:7px;background:#edf7f2;color:#0E5C42;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px;}
         .cp-file-dl{padding:5px 11px;border:1px solid #0E5C42;border-radius:7px;background:#fff;color:#0E5C42;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:4px;}
         .cp-file-del{padding:5px 10px;border:1px solid #fca5a5;border-radius:7px;background:#fff;color:#c0392b;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;}
         .cp-files-empty{font-size:13px;color:#aabab2;text-align:center;padding:20px 0;}
+
+        /* Secure Viewer */
+        .cp-viewer-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;z-index:1100;padding:20px;}
+        .cp-viewer-bar{width:100%;max-width:900px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+        .cp-viewer-title{font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 120px);}
+        .cp-viewer-actions{display:flex;gap:8px;flex-shrink:0;}
+        .cp-viewer-dl{padding:7px 14px;border:1px solid rgba(255,255,255,0.3);border-radius:8px;background:rgba(255,255,255,0.1);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:5px;}
+        .cp-viewer-close{padding:7px 14px;border:none;border-radius:8px;background:rgba(255,255,255,0.15);color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;}
+        .cp-viewer-frame{width:100%;max-width:900px;flex:1;border-radius:12px;overflow:hidden;background:#fff;max-height:calc(100vh - 100px);}
+        .cp-viewer-img{max-width:100%;max-height:calc(100vh - 100px);border-radius:12px;object-fit:contain;display:block;margin:0 auto;}
+        .cp-viewer-pdf{width:100%;height:calc(100vh - 100px);border:none;border-radius:12px;}
+        .cp-viewer-unsupported{color:#fff;text-align:center;padding:40px;font-size:14px;}
       `}</style>
 
       {toast && <div className="cp-toast">{toast}</div>}
@@ -257,12 +282,50 @@ export default function ClientPageClient({ id }: { id: string }) {
           <div className="cp-modal">
             <div className="cp-modal-icon">🗂️</div>
             <h2 className="cp-modal-title">Delete file?</h2>
-            <p className="cp-modal-text">"{confirmDelFile.label}" will be permanently deleted and cannot be recovered.</p>
+            <p className="cp-modal-text">"{confirmDelFile.label}" will be permanently deleted from the server and cannot be recovered.</p>
             <div className="cp-modal-btns">
               <button className="cp-modal-cancel" onClick={()=>setConfirmDelFile(null)}>Cancel</button>
               <button className="cp-modal-del" onClick={()=>deleteFile(confirmDelFile)}>Yes, delete</button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Secure File Viewer — uses /api proxy, never exposes blob URL */}
+      {viewerFile && viewerUrl && (
+        <div className="cp-viewer-overlay" onClick={e=>{if(e.target===e.currentTarget)closeViewer()}}>
+          <div className="cp-viewer-bar">
+            <span className="cp-viewer-title">👁 {viewerFile.label}</span>
+            <div className="cp-viewer-actions">
+              <a
+                className="cp-viewer-dl"
+                href={viewerUrl}
+                download={viewerFile.file_name}
+              >
+                ↓ Download
+              </a>
+              <button className="cp-viewer-close" onClick={closeViewer}>✕ Close</button>
+            </div>
+          </div>
+          {viewerFile.mime_type.startsWith('image/') ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="cp-viewer-img"
+              src={viewerUrl}
+              alt={viewerFile.label}
+            />
+          ) : viewerFile.mime_type === 'application/pdf' ? (
+            <iframe
+              className="cp-viewer-pdf"
+              src={viewerUrl}
+              title={viewerFile.label}
+            />
+          ) : (
+            <div className="cp-viewer-unsupported">
+              Preview not available for this file type.<br/>
+              <a className="cp-viewer-dl" style={{marginTop:16,display:'inline-flex'}} href={viewerUrl} download={viewerFile.file_name}>↓ Download file</a>
+            </div>
+          )}
         </div>
       )}
 
@@ -373,12 +436,18 @@ export default function ClientPageClient({ id }: { id: string }) {
                       <div className="cp-file-meta">{f.file_name} · {fmtSize(f.file_size)} · {new Date(f.uploaded_at).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})}</div>
                     </div>
                     <div className="cp-file-actions">
+                      <button
+                        className="cp-file-view"
+                        onClick={()=>openViewer(f)}
+                        title="View file"
+                      >
+                        👁 View
+                      </button>
                       <a
                         className="cp-file-dl"
-                        href={f.blob_url}
+                        href={`/api/crm/clients/${id}/files/view?fileId=${encodeURIComponent(f.id)}`}
                         download={f.file_name}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        title="Download file"
                       >
                         ↓ Download
                       </a>

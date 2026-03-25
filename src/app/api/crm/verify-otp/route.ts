@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     // The OTP is stored under a key scoped to this random token — an attacker on a different
     // IP or browser cannot replay the OTP even if they intercept it.
     const pendingToken = req.cookies.get('crm_pending_login')?.value
-    if (!pendingToken || !/^[A-Za-z0-9_-]{32,}$/.test(pendingToken)) {
+    if (!pendingToken || !/^[A-Za-z0-9_-]{43,44}$/.test(pendingToken)) {
       return NextResponse.json({ ok: false, error: 'invalid_session', message: 'No pending login session. Please start again.' }, { status: 401 })
     }
 

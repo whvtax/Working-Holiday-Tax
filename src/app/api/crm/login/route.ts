@@ -6,6 +6,7 @@
 //   - Global lockout key also set to prevent DoS via IP cycling
 import { NextRequest, NextResponse } from 'next/server'
 import { getCachedPasswordHash, verifyPassword, generateOtp, hashOtp } from '@/lib/crm-store'
+import { auditLog } from '@/lib/audit'
 import { createClient } from 'redis'
 import crypto from 'crypto'
 
@@ -69,6 +70,7 @@ export async function POST(req: NextRequest) {
         await redis.set(pwLockKey,     '1', { EX: LOCKOUT_SECS })
         await redis.set(globalLockKey, '1', { EX: LOCKOUT_SECS })
         await redis.del(pwAttemptsKey)
+        await auditLog('login.locked', ip, `${newCount} failed attempts`)
         await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, newCount, ip)
         return NextResponse.json(
           { ok: false, message: 'Too many attempts. Account locked for 30 minutes.' },
@@ -77,6 +79,7 @@ export async function POST(req: NextRequest) {
       }
 
       await redis.set(pwAttemptsKey, newCount, { EX: LOCKOUT_SECS })
+      await auditLog('login.failed', ip, `attempt ${newCount}/${MAX_PW_ATTEMPTS}`)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
@@ -92,6 +95,7 @@ export async function POST(req: NextRequest) {
     await redis.set(`crm_otp:${pendingToken}`, otpHash, { EX: 600 })
 
     await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
+    await auditLog('login.success', ip, 'password verified — OTP sent')
 
     const res = NextResponse.json({ ok: true, otpSent: true })
     res.cookies.set('crm_pending_login', pendingToken, {

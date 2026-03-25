@@ -2,7 +2,8 @@
 // SECURITY FIX: destroySession() now adds the token jti to Redis revocation set
 // so stolen cookies cannot be reused after logout.
 import { NextRequest, NextResponse } from 'next/server'
-import { destroySession } from '@/lib/crm-store'
+import { destroySession, parseSession } from '@/lib/crm-store'
+import { auditLog } from '@/lib/audit'
 import { createClient } from 'redis'
 
 async function getRedis() {
@@ -16,7 +17,9 @@ export async function POST(req: NextRequest) {
   try {
     redis = await getRedis()
     const token = req.cookies.get('crm_session')?.value
+    const session = parseSession(token)
     await destroySession(token, redis)
+    await auditLog('logout', session?.jti ?? 'unknown')
   } catch (err) {
     console.error('[CRM logout] Redis error — cookie cleared anyway', err)
   } finally {

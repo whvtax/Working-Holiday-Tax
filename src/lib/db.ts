@@ -86,8 +86,8 @@ function toClient(r: Record<string,unknown>): ClientRecord {
     whatsapp:     r.whatsapp as string,
     email:        r.email as string,
     country:      r.country as string,
-    howHeard:     r.how_heard as string ?? '',
-    notes:        r.notes as string ?? '',
+    howHeard:     (r.how_heard as string | null) ?? '',
+    notes:        (r.notes as string | null) ?? '',
     createdAt:    r.created_at as string,
     taxReturns:   parse(r.tax_returns, []),
     superReturns: parse(r.super_returns, []),
@@ -106,8 +106,8 @@ function toTask(r: Record<string,unknown>): Task {
     done: r.done as boolean, address: r.address as string,
     tfn: r.tfn as string, bankDetails: r.bank_details as string,
     primaryJob: r.primary_job as string, marital: r.marital as string,
-    taxStatus: r.tax_status as string, howHeard: r.how_heard as string,
-    auPhone: r.au_phone as string, notes: r.notes as string,
+    taxStatus: r.tax_status as string, howHeard: (r.how_heard as string | null) ?? '',
+    auPhone: (r.au_phone as string | null) ?? '', notes: (r.notes as string | null) ?? '',
   }
 }
 
