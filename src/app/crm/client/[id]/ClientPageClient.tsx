@@ -29,25 +29,19 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   async function load() {
     setLoading(true)
-    try {
-      const res  = await fetch(`/api/crm/clients/${id}`)
-      if (res.status === 401) { router.replace('/crm'); return }
-      const data = await res.json()
-      if (data.ok) { setClient(data.client); setForm(data.client); setNotes(data.client.notes ?? '') }
-      else router.push('/crm/dashboard')
-    } catch { router.push('/crm/dashboard') }
+    const res  = await fetch(`/api/crm/clients/${id}`)
+    const data = await res.json()
+    if (data.ok) { setClient(data.client); setForm(data.client); setNotes(data.client.notes ?? '') }
+    else router.push('/crm/dashboard')
     setLoading(false)
   }
   useEffect(() => { load() }, [id])
 
   function showMsg(msg:string) { setToast(msg); setTimeout(()=>setToast(''),3000) }
 
-  // SECURITY: CSRF header required by requireAuthAndCsrf() on all state-changing requests
-  const CSRF_HEADERS = { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' } as const
-
   async function saveNotes() {
     setNotesSaving(true)
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'update',data:{...client,notes}})})
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:{...client,notes}})})
     setNotesSaving(false)
     setNotesSaved(true)
     setTimeout(()=>setNotesSaved(false), 2500)
@@ -55,19 +49,19 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   async function save() {
     setSaving(true)
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'update',data:form})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:form})})
     const data = await res.json()
     if (data.ok) { setClient(data.client); setEditing(false); showMsg('Changes saved') }
     setSaving(false)
   }
   async function doClear() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'clear'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'clear'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Sensitive details cleared') }
     setShowClear(false)
   }
   async function doHandle() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:CSRF_HEADERS,body:JSON.stringify({action:'handle'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'handle'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Marked as handled') }
     setShowHandle(false)
@@ -82,6 +76,7 @@ export default function ClientPageClient({ id }: { id: string }) {
   return (
     <>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
         .cp{min-height:100vh;background:#f4f6f5;font-family:'DM Sans',system-ui,sans-serif;padding:24px 28px;max-width:880px;margin:0 auto;}
         .cp-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}

@@ -1,18 +1,13 @@
 // src/app/api/crm/verify-otp/route.ts
-// SECURITY FIX: uses validateSessionAsync for full Redis revocation check
-// SECURITY FIX 2: OTP attempt counter uses INCR *before* checking the OTP hash,
-//   preventing a race condition where two concurrent requests could both read
-//   count=0, pass the guard, and each consume an attempt slot simultaneously.
 import { NextRequest, NextResponse } from 'next/server'
-import { createSession, compareOtp } from '@/lib/crm-store'
+import { createSession } from '@/lib/crm-store'
 import { createClient } from 'redis'
-
-const MAX_OTP_ATTEMPTS = 5
+import crypto from 'crypto'
 
 async function getRedis() {
   const client = createClient({ url: process.env.REDIS_URL })
   await client.connect()
-  return client as import('redis').RedisClientType
+  return client
 }
 
 export async function POST(req: NextRequest) {
@@ -24,26 +19,8 @@ export async function POST(req: NextRequest) {
     }
 
     redis = await getRedis()
-
-    const attemptsKey = 'crm_otp_attempts'
-
-    // SECURITY FIX: Increment FIRST (atomic Redis INCR), then check the result.
-    // This eliminates the GET→check→INCR race condition where two concurrent
-    // requests could both read count=0 and both pass the MAX_OTP_ATTEMPTS guard.
-    const newAttemptCount = await redis.incr(attemptsKey)
-    // Set/refresh TTL on first increment so the key auto-expires with the OTP
-    if (newAttemptCount === 1) {
-      await redis.expire(attemptsKey, 600)
-    }
-
-    if (newAttemptCount > MAX_OTP_ATTEMPTS) {
-      return NextResponse.json(
-        { ok: false, error: 'too_many_attempts', message: 'Too many incorrect attempts. Please request a new code.' },
-        { status: 429 }
-      )
-    }
-
     const storedHash = await redis.get('crm_otp')
+
     if (!storedHash) {
       return NextResponse.json(
         { ok: false, error: 'invalid_otp', message: 'Code expired or not found. Please login again.' },
@@ -51,7 +28,14 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const valid = compareOtp(code, storedHash)
+    const attemptHash = crypto.createHash('sha256').update(code.trim()).digest('hex')
+    const storedBuf   = Buffer.from(storedHash, 'hex')
+    const attemptBuf  = Buffer.from(attemptHash, 'hex')
+
+    let valid = false
+    if (storedBuf.length === attemptBuf.length) {
+      valid = crypto.timingSafeEqual(storedBuf, attemptBuf)
+    }
 
     if (!valid) {
       return NextResponse.json(
@@ -60,9 +44,8 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // One-time use — delete OTP and attempt counter immediately
+    // One-time use — delete from Redis immediately
     await redis.del('crm_otp')
-    await redis.del(attemptsKey)
 
     const token = createSession()
     const res = NextResponse.json({ ok: true })

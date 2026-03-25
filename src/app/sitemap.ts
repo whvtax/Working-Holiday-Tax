@@ -8,7 +8,6 @@ const routes = [
   { url: '/superannuation',    priority: 0.9,  changeFrequency: 'monthly' },
   { url: '/abn',               priority: 0.8,  changeFrequency: 'monthly' },
   { url: '/calculator',        priority: 0.8,  changeFrequency: 'monthly' },
-  { url: '/tax-residency',     priority: 0.8,  changeFrequency: 'monthly' },
   { url: '/medicare',          priority: 0.7,  changeFrequency: 'monthly' },
   { url: '/contact',           priority: 0.7,  changeFrequency: 'monthly' },
   { url: '/client-agreement',  priority: 0.4,  changeFrequency: 'yearly'  },
@@ -16,12 +15,9 @@ const routes = [
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Use a fixed date so crawlers don't see every page as "just modified" on each request.
-  // Update this when content changes significantly.
-  const lastModified = new Date('2025-07-01')
   return routes.map(r => ({
     url: `${SITE_URL}${r.url}`,
-    lastModified,
+    lastModified: new Date(),
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }))
