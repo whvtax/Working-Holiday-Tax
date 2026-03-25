@@ -26,6 +26,7 @@ export type Task = {
   taxYear:string; submittedAt:string; done:boolean
   address:string; tfn:string; bankDetails:string; primaryJob:string
   marital:string; taxStatus:string; howHeard:string; auPhone:string; notes:string
+  fileUrls:string[]
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
@@ -69,9 +70,12 @@ export async function initDb() {
       tax_status   TEXT NOT NULL DEFAULT '',
       how_heard    TEXT NOT NULL DEFAULT '',
       au_phone     TEXT NOT NULL DEFAULT '',
-      notes        TEXT NOT NULL DEFAULT ''
+      notes        TEXT NOT NULL DEFAULT '',
+      file_urls    TEXT NOT NULL DEFAULT '[]'
     )
   `
+  // Add file_urls column to existing tables (migration safety)
+  await sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`
 }
 
 function toClient(r: Record<string,unknown>): ClientRecord {
@@ -105,6 +109,7 @@ function toTask(r: Record<string,unknown>): Task {
     primaryJob: r.primary_job as string, marital: r.marital as string,
     taxStatus: r.tax_status as string, howHeard: r.how_heard as string,
     auPhone: r.au_phone as string, notes: r.notes as string,
+    fileUrls: (() => { try { return JSON.parse(r.file_urls as string ?? '[]') } catch { return [] } })(),
   }
 }
 
@@ -129,12 +134,13 @@ export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   await sql`
     INSERT INTO crm_tasks
       (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
-       done,address,tfn,bank_details,primary_job,marital,tax_status,how_heard,au_phone,notes)
+       done,address,tfn,bank_details,primary_job,marital,tax_status,how_heard,au_phone,notes,file_urls)
     VALUES
       (${id},${data.clientId},${data.clientName},${data.taskType??'tax-return'},
        ${data.whatsapp},${data.email},${data.country},${data.dob},${data.taxYear},
        ${data.submittedAt},false,${data.address},${data.tfn},${data.bankDetails},
-       ${data.primaryJob},${data.marital},${data.taxStatus},${data.howHeard},${data.auPhone},${data.notes})
+       ${data.primaryJob},${data.marital},${data.taxStatus},${data.howHeard},${data.auPhone},${data.notes},
+       ${JSON.stringify(data.fileUrls ?? [])})
   `
   return { ...data, id, done:false }
 }

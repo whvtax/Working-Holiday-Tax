@@ -143,7 +143,7 @@ export function getClient(id: string): ClientRecord | undefined {
 }
 
 export function upsertClient(data: Omit<ClientRecord, 'id' | 'handled'> & { id?: string; waNumber?: string }): ClientRecord {
-  const id       = data.id ?? `CLT-${Date.now()}`
+  const id       = data.id ?? `CLT-${crypto.randomUUID()}`
   const existing = _store.clients.get(id)
   const record: ClientRecord = { ...data, id, handled: existing?.handled ?? false, notes: data.notes ?? existing?.notes ?? '' }
   _store.clients.set(id, record)

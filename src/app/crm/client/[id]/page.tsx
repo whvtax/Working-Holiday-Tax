@@ -10,7 +10,7 @@ function validateToken(token: string | undefined): boolean {
     if (dot < 0) return false
     const payload  = token.slice(0, dot)
     const sig      = token.slice(dot + 1)
-    const secret   = process.env.JWT_SECRET ?? 'whvtax-crm-secret-2024-changeme'
+    const secret   = process.env.JWT_SECRET ?? ''
     const expected = crypto.createHmac('sha256', secret).update(payload).digest('base64url')
     if (sig.length !== expected.length) return false
     if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return false

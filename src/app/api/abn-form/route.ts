@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
+import { uploadFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
@@ -15,8 +16,14 @@ export async function POST(req: NextRequest) {
     const lastName  = formData.get('lastName')  as string ?? ''
     const fullName  = [firstName, lastName].filter(Boolean).join(' ')
 
+    const clientId = `CLT-${crypto.randomUUID()}`
+
+    // Upload files to Vercel Blob
+    const selfieFile = formData.get('selfiePassport') as File | null
+    const fileUrls = await uploadFiles([selfieFile], `abn-form/${clientId}`)
+
     await createTask({
-      clientId:    `CLT-${crypto.randomUUID()}`,
+      clientId,
       clientName:  fullName,
       taskType:    'abn',
       whatsapp:    (formData.get('whatsapp') ?? formData.get('smsPhone') ?? '') as string,
@@ -34,9 +41,10 @@ export async function POST(req: NextRequest) {
       auPhone:     formData.get('auPhone') as string ?? '',
       submittedAt: new Date().toISOString(),
       notes:       formData.get('superFunds') as string ?? '',
+      fileUrls,
     })
 
-    console.log('New abn form submitted:', fullName)
+    console.log('New abn form submitted:', fullName, '| files:', fileUrls.length)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[abn-form]', err)

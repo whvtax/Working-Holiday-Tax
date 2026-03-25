@@ -303,7 +303,7 @@ export default function TaxFormPage() {
             </Field>
 
             <Field label="Selfie holding your passport" required>
-              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png"
+              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
               {err('selfiePassport')}
             </Field>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
+import { uploadFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
@@ -13,6 +14,15 @@ export async function POST(req: NextRequest) {
     const formData  = await req.formData()
     const clientId  = `CLT-${crypto.randomUUID()}`
     const fullName  = formData.get('fullName')  as string ?? ''
+
+    // Upload files to Vercel Blob (bank statement + selfie + invoices)
+    const bankStatementFile  = formData.get('bankStatement')  as File | null
+    const selfiePassportFile = formData.get('selfiePassport') as File | null
+    const invoicesFile       = formData.get('invoices')       as File | null
+    const fileUrls = await uploadFiles(
+      [bankStatementFile, selfiePassportFile, invoicesFile],
+      `tax-form/${clientId}`
+    )
 
     await createTask({
       clientId,
@@ -33,9 +43,10 @@ export async function POST(req: NextRequest) {
       howHeard:    formData.get('howHeard')    as string ?? '',
       submittedAt: new Date().toISOString(),
       notes: '',
+      fileUrls,
     })
 
-    console.log('New task created for:', fullName)
+    console.log('New task created for:', fullName, '| files:', fileUrls.length)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[tax-form]', err)

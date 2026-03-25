@@ -11,6 +11,7 @@ type Task = {
   whatsapp:string; email:string; country:string; dob:string; taxYear:string
   submittedAt:string; done:boolean; address:string; tfn:string; bankDetails:string
   primaryJob:string; marital:string; taxStatus:string; howHeard:string; auPhone:string; notes:string
+  fileUrls:string[]
 }
 type Client = {
   id:string; fullName:string; dob:string; whatsapp:string; email:string
@@ -142,11 +143,11 @@ export default function DashboardClient() {
     // Add as a task for now
     await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        clientId:`CLT-${Date.now()}`, clientName:newClient.fullName, taskType:'tax-return',
+        clientName:newClient.fullName, taskType:'tax-return',
         whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
         dob:newClient.dob, taxYear:newClient.taxYear, submittedAt:new Date().toISOString(),
         address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',
-        howHeard:'',auPhone:'',notes:'',
+        howHeard:'',auPhone:'',notes:'',fileUrls:[],
       })})
     setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25'})
     setShowAddModal(false); await loadTasks()
@@ -334,15 +335,20 @@ export default function DashboardClient() {
                 </div>
                 <div style={S.card}>
                   <div style={S.secHead}><span>Documents uploaded</span></div>
-                  {[['Bank statement','📄'],['Selfie + Passport','🪪'],['Group certs / Invoices','📋']].map(([l,ic])=>(
-                    <div key={l} style={{...S.row,justifyContent:'space-between'}}>
-                      <span style={{fontSize:12,color:'#0a1410'}}>{ic} {l}</span>
-                      <span style={{fontSize:10,color:'#aabab2',background:'#f5f5f5',border:'1px solid #eee',borderRadius:5,padding:'2px 7px'}}>Not uploaded</span>
-                    </div>
-                  ))}
+                  {(activeTask.fileUrls ?? []).length === 0 ? (
+                    <div style={{fontSize:12,color:'#aabab2',padding:'8px 0'}}>No files uploaded</div>
+                  ) : (activeTask.fileUrls ?? []).map((url, i) => {
+                    const name = decodeURIComponent(url.split('/').pop() ?? `file-${i+1}`).replace(/^\d+_/, '')
+                    const isPdf = url.toLowerCase().endsWith('.pdf')
+                    return (
+                      <div key={url} style={{...S.row,justifyContent:'space-between',alignItems:'center'}}>
+                        <span style={{fontSize:12,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{isPdf ? '📄' : '🖼️'} {name}</span>
+                        <a href={url} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',textDecoration:'none',fontWeight:600,whiteSpace:'nowrap'}}>View ↗</a>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
-
               {/* Notes */}
               <div style={{...S.card,padding:'14px 16px',marginBottom:12}}>
                 <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>Internal notes</div>
