@@ -13,7 +13,6 @@ export default function robots(): MetadataRoute.Robots {
           '/tfn-form/',
           '/abn-form/',
           '/super-form/',
-          '/api/',
         ],
       },
     ],

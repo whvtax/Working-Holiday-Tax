@@ -1,11 +1,12 @@
 // src/app/api/crm/login/route.ts
 import { NextRequest, NextResponse } from 'next/server'
-import { hashPassword, verifyPassword, generateOtp } from '@/lib/crm-store'
+import {
+  hashPassword, verifyPassword,
+  recordFailedAttempt, resetFailedAttempts, isLockedOut,
+  generateOtp,
+} from '@/lib/crm-store'
 import { createClient } from 'redis'
 import crypto from 'crypto'
-
-const MAX_PW_ATTEMPTS = 5
-const LOCKOUT_SECS    = 30 * 60  // 30 minutes
 
 async function getRedis() {
   const client = createClient({ url: process.env.REDIS_URL })
@@ -16,63 +17,34 @@ async function getRedis() {
 export async function POST(req: NextRequest) {
   let redis
   try {
-    const body = await req.json()
-    if (!body || typeof body.password !== 'string') {
-      return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 })
-    }
-    const { password } = body
+    const { password } = await req.json()
 
-    const ADMIN_EMAIL = process.env.CRM_ADMIN_EMAIL ?? 'info@workingholidaytax.com.au'
-    const RESEND_KEY  = process.env.RESEND_API_KEY  ?? ''
-    const rawPassword = process.env.CRM_PASSWORD
+    const ADMIN_EMAIL   = process.env.CRM_ADMIN_EMAIL   ?? 'info@workingholidaytax.com.au'
+    const RESEND_KEY    = process.env.RESEND_API_KEY     ?? ''
+    const rawPassword   = process.env.CRM_PASSWORD
     if (!rawPassword) {
       console.error('[CRM login] CRM_PASSWORD environment variable is not set')
       return NextResponse.json({ ok: false, message: 'Server configuration error.' }, { status: 500 })
     }
     const PASSWORD_HASH = hashPassword(rawPassword)
 
-    redis = await getRedis()
-
-    // ── Redis-backed brute-force protection (works across serverless instances) ──
-    const pwAttemptsKey = 'crm_pw_attempts'
-    const pwLockKey     = 'crm_pw_locked'
-
-    const isLocked = await redis.get(pwLockKey)
-    if (isLocked) {
-      const ttl = await redis.ttl(pwLockKey)
-      return NextResponse.json(
-        { ok: false, message: `Too many attempts. Try again in ${Math.ceil(ttl / 60)} minutes.` },
-        { status: 429 }
-      )
+    if (isLockedOut()) {
+      return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
-      const attemptsRaw = await redis.get(pwAttemptsKey)
-      const attempts    = attemptsRaw ? parseInt(attemptsRaw, 10) : 0
-      const newCount    = attempts + 1
-
-      if (newCount >= MAX_PW_ATTEMPTS) {
-        // Lock out and reset counter
-        await redis.set(pwLockKey, '1', { EX: LOCKOUT_SECS })
-        await redis.del(pwAttemptsKey)
-        await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, newCount)
-        return NextResponse.json(
-          { ok: false, message: 'Too many attempts. Account locked for 30 minutes.' },
-          { status: 429 }
-        )
-      }
-
-      await redis.set(pwAttemptsKey, newCount, { EX: LOCKOUT_SECS })
+      const fa = recordFailedAttempt()
+      if (fa.locked) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
-    // Password correct — clear attempt counter
-    await redis.del(pwAttemptsKey)
+    resetFailedAttempts()
 
-    // Generate OTP and store in Redis
-    const otp     = generateOtp()
+    // Generate OTP and store in Redis (shared across all serverless instances)
+    const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
-    await redis.set('crm_otp', otpHash, { EX: 600 })
+    redis = await getRedis()
+    await redis.set('crm_otp', otpHash, { EX: 600 }) // expires in 10 minutes
 
     await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
 
@@ -87,7 +59,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function sendOtpEmail(to: string, apiKey: string, otp: string) {
-  if (!apiKey) { return }
+  if (!apiKey) { console.log('[DEV] OTP code:', otp); return }
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -126,7 +98,7 @@ async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
       from:    'Working Holiday Tax <noreply@workingholidaytax.com.au>',
       to:      [to],
       subject: '⚠️ CRM login blocked',
-      html:    `<p>${attempts} failed login attempts at ${time}. Account locked for 30 minutes.</p>`,
+      html: `<p>${attempts} failed login attempts at ${time}</p>`,
     }),
   })
 }

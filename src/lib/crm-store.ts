@@ -69,10 +69,6 @@ export function generateOtp(): string {
 }
 
 // ── OTP store (in-memory, expires in 10 min) ──────────────────────────────
-// IMPORTANT: OTP is stored in module memory on the same serverless instance
-// that generated it. The login flow immediately calls verify-otp after login,
-// which typically hits the same warm instance on Vercel.
-// For multi-region deployments, upgrade to Redis (see login route for reference).
 let _otpHash    = ''
 let _otpExpiry  = 0
 
@@ -122,13 +118,7 @@ export function validateSession(token: string | undefined): boolean {
   } catch { return false }
 }
 
-/**
- * destroySession — intentional no-op.
- * Session validity is encoded in the HMAC-signed cookie itself (stateless).
- * Logout is achieved by clearing the cookie on the client (see /api/crm/logout/route.ts).
- * No server-side token revocation is needed unless you add a Redis denylist.
- */
-export function destroySession() { /* stateless — cookie is cleared via Set-Cookie in logout route */ }
+export function destroySession() { /* stateless — cookie cleared client-side */ }
 
 // ── Brute-force protection ─────────────────────────────────────────────────
 
@@ -197,11 +187,9 @@ export function clearClientDetails(id: string): boolean {
   return true
 }
 
-// ── Seed demo data (development / staging only) ────────────────────────────
-// This data lives only in the in-memory store (used as fallback when DB is unavailable).
-// It is intentionally suppressed in production to prevent confusion with real clients.
+// ── Seed demo data ─────────────────────────────────────────────────────────
 
-if (store.clients.size === 0 && process.env.NODE_ENV !== 'production') {
+if (store.clients.size === 0) {
   const demo = [
     { fullName:'Sophie Lambert',  dob:'1998-04-12', whatsapp:'+33612345678', email:'sophie@email.com',  country:'France',  taxYear:'2023-24' as TaxYear, primaryJob:'Barista – The Grounds' },
     { fullName:'Marco Bianchi',   dob:'1996-09-22', whatsapp:'+39333987654', email:'marco@gmail.com',   country:'Italy',   taxYear:'2022-23' as TaxYear, primaryJob:'Farm Worker – QLD' },
@@ -210,7 +198,7 @@ if (store.clients.size === 0 && process.env.NODE_ENV !== 'production') {
   demo.forEach((d, i) => {
     const id = `CLT-DEMO-${i + 1}`
     store.clients.set(id, {
-      ...d, id, handled: false, notes: '[DEMO DATA]',
+      ...d, id, handled: false, notes: '',
       address: 'Sydney NSW', tfn: '123 456 789', bankDetails: 'BSB 062-000',
       marital: 'Single', taxStatus: 'Working Holiday Maker', howHeard: 'Instagram',
       auPhone: '+614' + (10000000 + i),

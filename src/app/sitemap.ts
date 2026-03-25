@@ -16,12 +16,9 @@ const routes = [
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Use a fixed date so crawlers don't see every page as "just modified" on each request.
-  // Update this when content changes significantly.
-  const lastModified = new Date('2025-07-01')
   return routes.map(r => ({
     url: `${SITE_URL}${r.url}`,
-    lastModified,
+    lastModified: new Date(),
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }))

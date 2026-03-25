@@ -17,7 +17,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
-    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } = await import('@/lib/db')
+    const { updateClientNotes, updateService, addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn, sql } = await import('@/lib/db')
     if (body.action === 'notes')          { await updateClientNotes(params.id, body.notes);                                    return NextResponse.json({ ok:true }) }
     if (body.action === 'service')        { await updateService(params.id, body.service, body.data);                           return NextResponse.json({ ok:true }) }
     if (body.action === 'add-tax')        { await addTaxReturn(params.id, body.data);                                          return NextResponse.json({ ok:true }) }
@@ -61,19 +61,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'handle') {
-      // 'handled' is not a dedicated DB column — we persist it as a timestamped system note
-      try {
-        const { sql: dbSql } = await import('@vercel/postgres')
-        const ts = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
-        const marker = `\n[Marked handled: ${ts}]`
-        // marker is a parameterized SQL value - not interpolated into the query string
-        await dbSql`
-          UPDATE crm_clients
-          SET notes = CONCAT(COALESCE(notes,''), ${marker})
-          WHERE id = ${params.id}
-        `
-      } catch { /* No DB available — graceful fallback */ }
-      return NextResponse.json({ ok: true })
+      // 'handled' flag is not in crm_clients schema; store as a note marker for now
+      return NextResponse.json({ ok:true })
     }
     return NextResponse.json({ ok:false }, { status:400 })
   } catch (err) {

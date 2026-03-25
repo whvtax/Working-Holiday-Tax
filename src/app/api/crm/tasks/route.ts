@@ -16,36 +16,28 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
-  const ct = req.headers.get('content-type') ?? ''
-  if (!ct.includes('application/json')) {
-    return NextResponse.json({ ok: false, error: 'invalid_content_type' }, { status: 400 })
-  }
   try {
     const body = await req.json()
-    if (!body || typeof body !== 'object') {
-      return NextResponse.json({ ok: false, error: 'invalid_body' }, { status: 400 })
-    }
     const { createTask } = await import('@/lib/db')
-    const s = (v: unknown, max = 500) => (typeof v === 'string' ? v.slice(0, max) : '')
     const task = await createTask({
-      clientId:    s(body.clientId,   50) || `CLT-${Date.now()}`,
-      clientName:  s(body.clientName, 150),
-      taskType:    (['tax-return','super','tfn','abn'] as const).includes(body.taskType) ? body.taskType : 'tax-return',
-      whatsapp:    s(body.whatsapp,    30),
-      email:       s(body.email,      254),
-      country:     s(body.country,    100),
-      dob:         s(body.dob,         10),
-      taxYear:     s(body.taxYear,     10),
-      submittedAt: typeof body.submittedAt === 'string' ? body.submittedAt.slice(0, 30) : new Date().toISOString(),
-      address:     s(body.address,     300),
-      tfn:         s(body.tfn,          15),
-      bankDetails: s(body.bankDetails, 200),
-      primaryJob:  s(body.primaryJob,  200),
-      marital:     s(body.marital,      20),
-      taxStatus:   s(body.taxStatus,    50),
-      howHeard:    s(body.howHeard,    100),
-      auPhone:     s(body.auPhone,      30),
-      notes:       s(body.notes,       500),
+      clientId:    body.clientId    ?? `CLT-${Date.now()}`,
+      clientName:  body.clientName  ?? '',
+      taskType:    body.taskType    ?? 'tax-return',
+      whatsapp:    body.whatsapp    ?? '',
+      email:       body.email       ?? '',
+      country:     body.country     ?? '',
+      dob:         body.dob         ?? '',
+      taxYear:     body.taxYear     ?? '',
+      submittedAt: body.submittedAt ?? new Date().toISOString(),
+      address:     body.address     ?? '',
+      tfn:         body.tfn         ?? '',
+      bankDetails: body.bankDetails ?? '',
+      primaryJob:  body.primaryJob  ?? '',
+      marital:     body.marital     ?? '',
+      taxStatus:   body.taxStatus   ?? '',
+      howHeard:    body.howHeard    ?? '',
+      auPhone:     body.auPhone     ?? '',
+      notes:       body.notes       ?? '',
     })
     return NextResponse.json({ ok:true, task })
   } catch (err) {
