@@ -48,10 +48,11 @@ export async function parseSessionEdge(token: string | undefined): Promise<Sessi
     const key = await getHmacKey()
     const enc = new TextEncoder()
 
+    const sigBytes = b64urlDecode(sig)
     const valid = await crypto.subtle.verify(
       'HMAC',
       key,
-      b64urlDecode(sig),
+      sigBytes.buffer as ArrayBuffer,
       enc.encode(payload)
     )
     if (!valid) return null
