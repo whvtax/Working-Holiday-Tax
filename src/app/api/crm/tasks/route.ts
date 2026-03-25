@@ -29,7 +29,10 @@ export async function POST(req: NextRequest) {
     const { createTask } = await import('@/lib/db')
     const s = (v: unknown, max = 500) => (typeof v === 'string' ? v.slice(0, max) : '')
     const task = await createTask({
-      clientId:    s(body.clientId,   50) || `CLT-${crypto.randomUUID()}`,
+      // SECURITY FIX: clientId ALWAYS generated server-side — never trusted from body.
+      // Accepting clientId from the request body allowed an attacker to associate a
+      // new task with any arbitrary existing client ID, potentially hijacking client records.
+      clientId:    `CLT-${crypto.randomUUID()}`,
       clientName:  s(body.clientName, 150),
       taskType:    (['tax-return','super','tfn','abn'] as const).includes(body.taskType) ? body.taskType : 'tax-return',
       whatsapp:    s(body.whatsapp,    30),

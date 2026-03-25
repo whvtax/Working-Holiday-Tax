@@ -1,4 +1,17 @@
-# Security Overview — Working Holiday Tax CRM (v6 — Full Audit Clean)
+# Security Overview — Working Holiday Tax CRM (v7 — Three-Agent Audit)
+
+## Patch Log (v6 → v7) — Three-Agent Security Sweep
+
+| # | Severity | File | Finding | Fix |
+|---|----------|------|---------|-----|
+| 1 | **Critical** | `src/app/api/crm/clients/[id]/notes/route.ts` | Route was missing `requireAuth` entirely — any unauthenticated caller could overwrite any client's notes by hitting this endpoint directly. | Added `requireAuthAndCsrf` guard. Also added `sanitizeString()` (control-char strip) on incoming notes, and validates `params.id` against a safe-chars regex before DB call. |
+| 2 | **High** | `src/app/api/crm/verify-otp/route.ts` + `src/app/api/crm/login/route.ts` | OTP was stored globally (`crm_otp`) with no binding to the authenticated login session. An attacker on a different IP could guess the OTP using their own attempt counter while the real user was locked out. | OTP is now stored under a scoped key `crm_otp:{pendingToken}` and attempt counter under `crm_otp_attempts:{pendingToken}`. A short-lived `crm_pending_login` httpOnly cookie (10-min TTL) is issued at password-verify time and required at OTP-verify time. Without the cookie the OTP cannot be consumed. |
+| 3 | **High** | `src/app/api/crm/clients/[id]/tax-returns/route.ts` | `params.id` was never validated — attacker with a valid session could target arbitrary client IDs. `year` had only a truthy check, not format validation. `refundAmount` had no upper-bound check. | Added safe-ID regex guard on `params.id`. Added `TAX_YEAR_RE` format check (`YYYY-YY`). Added upper-bound (`1_000_000`) on amounts. |
+| 4 | **High** | `src/app/api/crm/tasks/route.ts` | POST accepted `clientId` from the request body. An authenticated user could create a task linked to any existing client ID, silently associating new sensitive data with existing records. | `clientId` is now always generated server-side (`crypto.randomUUID()`). The field is never read from the request body. |
+| 5 | **High** | `src/app/api/crm/clients/[id]/route.ts` | `action=update` wrote `email`, `dob`, and `whatsapp` to the DB without any format validation. A session holder could store malformed or excessively long values. | Added `isValidEmail`, `isValidDate`, `isValidPhone` checks before DB write. All fields now run through `sanitizeString()` with per-field length caps. |
+| 6 | **High** | `src/app/api/crm/session/route.ts` | Redis unavailability caused the endpoint to return `ok:true` (fail-open), allowing potentially revoked session tokens to appear valid during any Redis outage. | Changed fallback to return `ok:false`. Fail-closed posture: a Redis outage forces re-authentication rather than silently accepting revoked tokens. |
+| 7 | **Medium** | `src/app/api/abn-form/route.ts` | `superFunds` field was stored directly to `notes` without the `sanitizeString()` control-character strip applied to all other fields. | Added `sanitizeString()` import and applied it to `superFunds` before `createTask()`. |
+| 8 | **Medium** | `next.config.js` | `X-Powered-By: Next.js` header was emitted on every response, advertising the framework version and aiding fingerprinting. | Added `poweredByHeader: false` to `nextConfig`. |
 
 ## Patch Log (v5 → v6) — Dependency CVE Upgrade
 

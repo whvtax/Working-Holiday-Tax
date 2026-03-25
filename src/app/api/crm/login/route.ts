@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCachedPasswordHash, verifyPassword, generateOtp, hashOtp } from '@/lib/crm-store'
 import { createClient } from 'redis'
+import crypto from 'crypto'
 
 const MAX_PW_ATTEMPTS  = 5
 const LOCKOUT_SECS     = 30 * 60  // 30 minutes
@@ -82,14 +83,25 @@ export async function POST(req: NextRequest) {
     // Password correct — clear per-IP attempt counter
     await redis.del(pwAttemptsKey)
 
-    // Generate OTP and store hash in Redis (10-min expiry)
+    // Generate a random pending-login token that scopes the OTP to this login attempt.
+    // The token is set as an httpOnly cookie; the OTP is stored in Redis under this token.
+    // This prevents an attacker on a different IP from consuming the OTP.
+    const pendingToken = crypto.randomBytes(32).toString('base64url')
     const otp     = generateOtp()
     const otpHash = hashOtp(otp)
-    await redis.set('crm_otp', otpHash, { EX: 600 })
+    await redis.set(`crm_otp:${pendingToken}`, otpHash, { EX: 600 })
 
     await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
 
-    return NextResponse.json({ ok: true, otpSent: true })
+    const res = NextResponse.json({ ok: true, otpSent: true })
+    res.cookies.set('crm_pending_login', pendingToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 600,  // 10 minutes — matches OTP TTL
+    })
+    return res
 
   } catch (err) {
     console.error('[CRM login]', err)

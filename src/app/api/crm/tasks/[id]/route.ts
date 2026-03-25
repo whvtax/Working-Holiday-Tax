@@ -3,10 +3,17 @@ import { requireAuthAndCsrf } from '@/lib/auth'
 
 const MAX_NOTES_LENGTH = 5000
 const VALID_ACTIONS = new Set(['done', 'notes', 'delete'])
+const SAFE_ID_RE    = /^[A-Za-z0-9_-]+$/
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   const auth = await requireAuthAndCsrf(req)
   if (auth instanceof NextResponse) return auth
+
+  // SECURITY FIX: validate params.id before any DB call
+  if (!params.id || !SAFE_ID_RE.test(params.id)) {
+    return NextResponse.json({ ok: false, error: 'invalid_id' }, { status: 400 })
+  }
+
   try {
     const body = await req.json()
     if (!body || typeof body.action !== 'string' || !VALID_ACTIONS.has(body.action)) {
