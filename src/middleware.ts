@@ -39,7 +39,8 @@ export function middleware(req: NextRequest) {
 
   if (isCrmRoute && !isPublicCrmPath) {
     const token = req.cookies.get('crm_session')?.value
-    const session = parseSession(token)
+    let session = null
+    try { session = parseSession(token) } catch { session = null }
     if (!session) {
       if (pathname.startsWith('/api/')) {
         return NextResponse.json({ ok: false }, { status: 401 })
