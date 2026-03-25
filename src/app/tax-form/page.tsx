@@ -52,6 +52,7 @@ function FileUpload({
       {value.file ? (
         <div className="file-selected">
           {value.preview
+            // eslint-disable-next-line @next/next/no-img-element
             ? <img src={value.preview} alt="preview" className="file-img-preview" />
             : <div className="file-icon-box">📄</div>
           }

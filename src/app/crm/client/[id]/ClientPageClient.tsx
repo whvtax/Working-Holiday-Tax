@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 
 type TaxYear = '2019-20'|'2020-21'|'2021-22'|'2022-23'|'2023-24'|'2024-25'
@@ -53,7 +53,7 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   function closeViewer() { setViewerFile(null); setViewerUrl('') }
 
-  async function load() {
+  const load = useCallback(async function () {
     setLoading(true)
     try {
       const res  = await fetch(`/api/crm/clients/${id}`)
@@ -63,18 +63,18 @@ export default function ClientPageClient({ id }: { id: string }) {
       else router.push('/crm/dashboard')
     } catch { router.push('/crm/dashboard') }
     setLoading(false)
-  }
+  }, [id, router])
 
-  async function loadFiles() {
+  const loadFiles = useCallback(async function () {
     setFilesLoading(true)
     try {
       const res  = await fetch(`/api/crm/clients/${id}/files`)
       if (res.ok) { const d = await res.json(); if (d.ok) setFiles(d.files) }
     } catch {}
     setFilesLoading(false)
-  }
+  }, [id])
 
-  useEffect(() => { load(); loadFiles() }, [id])
+  useEffect(() => { load(); loadFiles() }, [load, loadFiles])
 
   function showMsg(msg:string) { setToast(msg); setTimeout(()=>setToast(''),3000) }
 

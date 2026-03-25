@@ -35,6 +35,7 @@ function FileUpload({ id, label, accept, value, onChange }: { id: string; label:
       <input ref={inputRef} id={id} type="file" accept={accept} className="hidden" onChange={handleChange} />
       {value.file ? (
         <div className="file-selected">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           {value.preview ? <img src={value.preview} alt="preview" className="file-img-preview" /> : <div className="file-icon-box">📄</div>}
           <div className="file-meta"><span className="file-name">{value.file.name}</span><span className="file-size">{(value.file.size/1024).toFixed(0)} KB</span></div>
           <button type="button" className="file-remove" onClick={e=>{e.stopPropagation();handleRemove()}}><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg></button>
