@@ -44,7 +44,11 @@ export async function POST(req: NextRequest) {
       howHeard:    '',
       auPhone:     sanitiseShort(formData.get('auPhone')),
       submittedAt: new Date().toISOString(),
-      notes:       sanitiseField(formData.get('superFunds')),
+      notes:       [
+        formData.get('passport') ? `Passport No: ${sanitiseShort(formData.get('passport'))}` : '',
+        formData.get('superFunds') ? `Super Funds: ${sanitiseField(formData.get('superFunds'))}` : '',
+        formData.get('homeAddress') ? `Home Country Address: ${sanitiseField(formData.get('homeAddress'))}` : '',
+      ].filter(Boolean).join(' | '),
       fileUrls,
     })
 
