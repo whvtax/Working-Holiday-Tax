@@ -48,6 +48,7 @@ export default function DashboardClient() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
+  const [confirmComplete, setConfirmComplete] = useState<string|null>(null)
   // Add forms
   const [showAddTax, setShowAddTax]     = useState(false)
   const [showAddSuper, setShowAddSuper] = useState(false)
@@ -79,8 +80,12 @@ export default function DashboardClient() {
 
   async function markDone(id:string) {
     await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
-    await loadTasks()
-    if(activeTask?.id===id) setActiveTask(prev=>prev?{...prev,done:true}:null)
+    // Remove task from view immediately — all PII has been wiped server-side
+    setTasks(prev => prev.filter(t => t.id !== id))
+    setActiveTask(null)
+    setTaskView('list')
+    setConfirmComplete(null)
+    await loadClients()
   }
 
   async function saveTaskNotes() {
@@ -377,7 +382,7 @@ export default function DashboardClient() {
 
               {/* Actions */}
               <div style={{display:'flex',gap:10}}>
-                {!activeTask.done && <button style={{flex:1,padding:'12px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>}
+                {!activeTask.done && <button style={{flex:1,padding:'12px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>}
                 <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmDelete(activeTask.id)}>🗑️ Delete &amp; archive client</button>
               </div>
               <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:8}}>Deleting removes all sensitive data and creates/updates the client card</div>
@@ -683,6 +688,31 @@ export default function DashboardClient() {
       )}
 
       {/* Confirm delete task */}
+      {/* ── Complete task confirmation modal ──────────────────────────── */}
+      {confirmComplete && (
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000}}>
+          <div style={{background:'#fff',borderRadius:20,padding:'32px 28px',maxWidth:380,width:'90%',textAlign:'center',fontFamily:'inherit'}}>
+            <div style={{fontSize:40,marginBottom:12}}>✅</div>
+            <div style={{fontSize:18,fontWeight:700,color:'#0a1410',marginBottom:8}}>Mark task as complete?</div>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.65,marginBottom:22}}>
+              This will permanently delete all sensitive data:<br/>
+              <strong>TFN, bank details, address, AU phone and documents.</strong><br/><br/>
+              Kept: <strong>name, date of birth, email, WhatsApp and country.</strong>
+            </div>
+            <div style={{display:'flex',gap:10,justifyContent:'center'}}>
+              <button
+                onClick={()=>setConfirmComplete(null)}
+                style={{padding:'10px 20px',borderRadius:10,border:'1px solid #e4eae7',background:'#fff',fontSize:13,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}
+              >Cancel</button>
+              <button
+                onClick={()=>markDone(confirmComplete)}
+                style={{padding:'10px 20px',borderRadius:10,border:'none',background:'#0E5C42',color:'#fff',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}
+              >✓ Yes, complete & wipe data</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {confirmDelete && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>

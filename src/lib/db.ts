@@ -3,6 +3,7 @@
  * Tables: crm_clients (permanent) + crm_tasks (active submissions)
  */
 import { sql } from '@vercel/postgres'
+import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
 export type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -145,9 +146,55 @@ export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   return { ...data, id, done:false }
 }
 
+/**
+ * Complete a task:
+ *  1. Archive the client record (name + whatsapp + country only)
+ *  2. Delete all uploaded files from Vercel Blob
+ *  3. Wipe all sensitive fields from the task row
+ *  4. Mark the task as done
+ *
+ * This is triggered when the admin clicks "✓ Mark as done".
+ * After this call, no PII remains on the server except name + whatsapp + country.
+ */
 export async function markTaskDone(id: string): Promise<void> {
   await initDb()
-  await sql`UPDATE crm_tasks SET done = TRUE WHERE id = ${id}`
+  const task = await getTask(id)
+  if (!task) return
+
+  // 1. Archive client record — keep: full name, DOB, email, whatsapp, country
+  await sql`
+    INSERT INTO crm_clients
+      (id, full_name, dob, whatsapp, email, country, how_heard, notes,
+       tax_returns, super_returns, tfn_service, abn_service, created_at)
+    VALUES
+      (${task.clientId}, ${task.clientName}, ${task.dob}, ${task.whatsapp}, ${task.email},
+       ${task.country}, ${task.howHeard}, '',
+       '[]', '[]',
+       '{"done":false,"completedAt":"","notes":""}',
+       '{"done":false,"completedAt":"","notes":""}',
+       ${new Date().toISOString()})
+    ON CONFLICT (id) DO NOTHING
+  `
+
+  // 2. Delete all uploaded files from Vercel Blob permanently
+  if (task.fileUrls && task.fileUrls.length > 0) {
+    await deleteFiles(task.fileUrls)
+  }
+
+  // 3. Wipe all sensitive fields — keep: name, dob, email, whatsapp, country
+  await sql`
+    UPDATE crm_tasks SET
+      done         = TRUE,
+      address      = '',
+      tfn          = '',
+      bank_details = '',
+      primary_job  = '',
+      marital      = '',
+      au_phone     = '',
+      file_urls    = '[]',
+      notes        = ''
+    WHERE id = ${id}
+  `
 }
 
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
