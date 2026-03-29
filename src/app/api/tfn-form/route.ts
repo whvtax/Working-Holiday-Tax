@@ -2,53 +2,56 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { uploadFiles } from '@/lib/upload'
+import { getClientIp } from '@/lib/get-ip'
+import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
   try {
-    const ip = req.headers.get('x-forwarded-for') ?? req.headers.get('x-real-ip') ?? 'unknown'
+    const ip = getClientIp(req)
     if (await isRateLimited(ip, 'tfn-form')) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 
-    const formData = await req.formData()
-    const firstName = formData.get('firstName') as string ?? ''
-    const lastName  = formData.get('lastName')  as string ?? ''
-    const fullName  = [firstName, lastName].filter(Boolean).join(' ')
+    const formData  = await req.formData()
+    const clientId  = `CLT-${crypto.randomUUID()}`
+    const fullName  = [sanitiseShort(formData.get('firstName')), sanitiseShort(formData.get('lastName'))].filter(Boolean).join(' ')
 
-    const clientId = `CLT-${crypto.randomUUID()}`
-
-    // Upload files to Vercel Blob
     const selfieFile = formData.get('selfiePassport') as File | null
-    const fileUrls = await uploadFiles([selfieFile], `tfn-form/${clientId}`)
+    let fileUrls: string[]
+    try {
+      fileUrls = await uploadFiles([selfieFile], `tfn-form/${clientId}`)
+    } catch (uploadErr) {
+      const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
+      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+    }
 
     await createTask({
       clientId,
       clientName:  fullName,
       taskType:    'tfn',
-      whatsapp:    (formData.get('whatsapp') ?? formData.get('smsPhone') ?? '') as string,
-      email:       formData.get('email') as string ?? '',
-      country:     (formData.get('country') ?? formData.get('passportCountry') ?? '') as string,
-      dob:         formData.get('dob') as string ?? '',
+      whatsapp:    sanitiseShort(formData.get('whatsapp') ?? formData.get('smsPhone')),
+      email:       sanitiseShort(formData.get('email')),
+      country:     sanitiseShort(formData.get('country') ?? formData.get('passportCountry')),
+      dob:         sanitiseShort(formData.get('dob')),
       taxYear:     '',
-      address:     (formData.get('address') ?? formData.get('auAddress') ?? '') as string,
-      tfn:         formData.get('tfn') as string ?? '',
-      bankDetails: formData.get('bankDetails') as string ?? '',
-      primaryJob:  formData.get('business') as string ?? '',
-      marital:     formData.get('marital') as string ?? '',
+      address:     sanitiseField(formData.get('address') ?? formData.get('auAddress')),
+      tfn:         sanitiseShort(formData.get('tfn')),
+      bankDetails: sanitiseField(formData.get('bankDetails')),
+      primaryJob:  sanitiseField(formData.get('business')),
+      marital:     sanitiseShort(formData.get('marital')),
       taxStatus:   'Working Holiday Maker',
       howHeard:    '',
-      auPhone:     formData.get('auPhone') as string ?? '',
+      auPhone:     sanitiseShort(formData.get('auPhone')),
       submittedAt: new Date().toISOString(),
-      notes:       formData.get('superFunds') as string ?? '',
+      notes:       sanitiseField(formData.get('superFunds')),
       fileUrls,
     })
 
-    console.log('New tfn form submitted:', fullName, '| files:', fileUrls.length)
+    console.log('New tfn-form task created | files:', fileUrls.length)
     return NextResponse.json({ ok: true })
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err)
-    console.error('[tfn-form] FAILED:', msg, err)
-    return NextResponse.json({ ok: false, error: 'submission_failed', detail: msg }, { status: 500 })
+    console.error('[tfn-form] FAILED:', err)
+    return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
   }
 }

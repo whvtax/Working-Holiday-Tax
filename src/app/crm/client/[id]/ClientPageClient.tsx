@@ -29,10 +29,13 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   async function load() {
     setLoading(true)
-    const res  = await fetch(`/api/crm/clients/${id}`)
-    const data = await res.json()
-    if (data.ok) { setClient(data.client); setForm(data.client); setNotes(data.client.notes ?? '') }
-    else router.push('/crm/dashboard')
+    try {
+      const res  = await fetch(`/api/crm/clients/${id}`)
+      if (res.status === 401) { router.replace('/crm'); return }
+      const data = await res.json()
+      if (data.ok) { setClient(data.client); setForm(data.client); setNotes(data.client.notes ?? '') }
+      else router.push('/crm/dashboard')
+    } catch { router.push('/crm/dashboard') }
     setLoading(false)
   }
   useEffect(() => { load() }, [id])

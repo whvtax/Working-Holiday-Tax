@@ -65,8 +65,12 @@ function jwtSecret(): Buffer {
 }
 
 export function createSession(): string {
-  const payload = Buffer.from(JSON.stringify({ exp: Date.now() + SESSION_TTL })).toString('base64url')
-  const sig     = crypto.createHmac('sha256', jwtSecret()).update(payload).digest('base64url')
+  const now = Date.now()
+  const payload = Buffer.from(JSON.stringify({
+    iat: now,
+    exp: now + SESSION_TTL,
+  })).toString('base64url')
+  const sig = crypto.createHmac('sha256', jwtSecret()).update(payload).digest('base64url')
   return `${payload}.${sig}`
 }
 
@@ -82,8 +86,12 @@ export function validateSession(token: string | undefined): boolean {
     const expBuf = Buffer.from(expected)
     if (sigBuf.length !== expBuf.length) return false
     if (!crypto.timingSafeEqual(sigBuf, expBuf)) return false
-    const { exp } = JSON.parse(Buffer.from(payload, 'base64url').toString())
-    return Date.now() < exp
+    const { iat, exp } = JSON.parse(Buffer.from(payload, 'base64url').toString())
+    const now = Date.now()
+    // Must not be expired AND must not be older than max session TTL from issuance
+    if (now >= exp) return false
+    if (iat && now - iat > SESSION_TTL + 60_000) return false // 1-min grace for clock skew
+    return true
   } catch { return false }
 }
 

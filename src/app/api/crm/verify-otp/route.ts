@@ -4,6 +4,10 @@ import { createSession } from '@/lib/crm-store'
 import { createClient } from 'redis'
 import crypto from 'crypto'
 
+const OTP_MAX_ATTEMPTS = 5
+const OTP_ATTEMPT_KEY  = 'crm_otp_attempts'
+const OTP_ATTEMPT_TTL  = 600 // 10 min — matches OTP TTL
+
 async function getRedis() {
   const client = createClient({ url: process.env.REDIS_URL })
   await client.connect()
@@ -19,6 +23,19 @@ export async function POST(req: NextRequest) {
     }
 
     redis = await getRedis()
+
+    // Brute-force guard: limit OTP guesses per OTP lifecycle
+    const attempts = await redis.incr(OTP_ATTEMPT_KEY)
+    if (attempts === 1) await redis.expire(OTP_ATTEMPT_KEY, OTP_ATTEMPT_TTL)
+    if (attempts > OTP_MAX_ATTEMPTS) {
+      // Invalidate the OTP so the attacker can't keep trying after a new login
+      await redis.del('crm_otp')
+      return NextResponse.json(
+        { ok: false, error: 'too_many_attempts', message: 'Too many attempts. Please log in again.' },
+        { status: 429 }
+      )
+    }
+
     const storedHash = await redis.get('crm_otp')
 
     if (!storedHash) {
@@ -44,8 +61,8 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // One-time use — delete from Redis immediately
-    await redis.del('crm_otp')
+    // One-time use — delete OTP and attempt counter from Redis immediately
+    await redis.del('crm_otp', OTP_ATTEMPT_KEY)
 
     const token = createSession()
     const res = NextResponse.json({ ok: true })

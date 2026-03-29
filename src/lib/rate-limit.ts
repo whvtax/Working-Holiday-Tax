@@ -1,11 +1,15 @@
 /**
  * Redis-backed rate limiter for public form submissions.
  * Allows up to MAX_REQUESTS per IP per WINDOW_SECS.
+ *
+ * Uses an atomic pipeline (MULTI/EXEC) to ensure INCR and EXPIRE
+ * are applied together — prevents a race where EXPIRE never fires
+ * after a successful INCR, creating a permanent block.
  */
 import { createClient } from 'redis'
 
-const MAX_REQUESTS  = 5
-const WINDOW_SECS   = 15 * 60 // 15 minutes
+const MAX_REQUESTS = 5
+const WINDOW_SECS  = 15 * 60 // 15 minutes
 
 async function getRedis() {
   const url = process.env.REDIS_URL
@@ -25,9 +29,17 @@ export async function isRateLimited(ip: string, formName: string): Promise<boole
     redis = await getRedis()
     if (!redis) return false
 
-    const key   = `rl:${formName}:${ip}`
-    const count = await redis.incr(key)
-    if (count === 1) await redis.expire(key, WINDOW_SECS) // set TTL on first hit
+    const key = `rl:${formName}:${ip}`
+
+    // Atomic pipeline: INCR + conditional EXPIRE in one round-trip
+    // If INCR returns 1, this is the first request — set the TTL.
+    // Subsequent INCRs leave the existing TTL untouched (KEEPTTL implied).
+    const [count] = await redis
+      .multi()
+      .incr(key)
+      .expire(key, WINDOW_SECS, 'NX') // NX = only set if key has no TTL yet
+      .exec() as [number, number]
+
     return count > MAX_REQUESTS
   } catch (err) {
     console.error('[rate-limit]', err)

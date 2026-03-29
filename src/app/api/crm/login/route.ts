@@ -16,17 +16,40 @@ async function getRedis() {
   return client
 }
 
+// Cache the password hash at module init — PBKDF2 is intentionally slow
+// (100k iterations ≈ 100ms). Computing it once per cold-start prevents
+// the login endpoint from being an easy CPU-exhaustion target.
+let _cachedPasswordHash: string | null = null
+function getPasswordHash(): string {
+  if (_cachedPasswordHash) return _cachedPasswordHash
+  const raw = process.env.CRM_PASSWORD
+  if (!raw) throw new Error('Missing env var: CRM_PASSWORD')
+  _cachedPasswordHash = hashPassword(raw)
+  return _cachedPasswordHash
+}
+
 export async function POST(req: NextRequest) {
   let redis
   try {
-    const { password } = await req.json()
+    let body: unknown
+    try {
+      body = await req.json()
+    } catch {
+      return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 })
+    }
+    const password = (body as Record<string, unknown>)?.password
+    if (typeof password !== 'string' || password.length === 0) {
+      return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 })
+    }
 
     const ADMIN_EMAIL = process.env.CRM_ADMIN_EMAIL
     const RESEND_KEY  = process.env.RESEND_API_KEY ?? ''
-    const rawPassword = process.env.CRM_PASSWORD
-    if (!rawPassword) return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
-
-    const PASSWORD_HASH = hashPassword(rawPassword)
+    let PASSWORD_HASH: string
+    try {
+      PASSWORD_HASH = getPasswordHash()
+    } catch {
+      return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
+    }
 
     redis = await getRedis()
 
@@ -45,6 +68,8 @@ export async function POST(req: NextRequest) {
     // Generate OTP and store in Redis (shared across all serverless instances)
     const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
+    // Reset attempt counter so a fresh login always gets a clean slate
+    await redis.del('crm_otp_attempts')
     await redis.set('crm_otp', otpHash, { EX: 600 }) // expires in 10 minutes
 
     if (ADMIN_EMAIL) await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
@@ -60,7 +85,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function sendOtpEmail(to: string, apiKey: string, otp: string) {
-  if (!apiKey) { console.log('[DEV] OTP code:', otp); return }
+  if (!apiKey) { console.log('[DEV] OTP email skipped — no RESEND_API_KEY'); return }
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',

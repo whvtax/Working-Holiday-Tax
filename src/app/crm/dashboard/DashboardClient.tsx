@@ -58,8 +58,20 @@ export default function DashboardClient() {
   const [newSuperAmt, setNewSuperAmt]   = useState('')
   const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25' as string})
 
-  const loadTasks   = useCallback(async()=>{ const r=await fetch('/api/crm/tasks'); const d=await r.json(); if(d.ok) setTasks(d.tasks) },[])
-  const loadClients = useCallback(async()=>{ const r=await fetch('/api/crm/clients'); const d=await r.json(); if(d.ok) setClients(d.clients) },[])
+  const loadTasks   = useCallback(async()=>{
+    try {
+      const r=await fetch('/api/crm/tasks')
+      if(r.status===401){ window.location.replace('/crm'); return }
+      const d=await r.json(); if(d.ok) setTasks(d.tasks)
+    } catch(e){ console.error('[loadTasks]',e) }
+  },[])
+  const loadClients = useCallback(async()=>{
+    try {
+      const r=await fetch('/api/crm/clients')
+      if(r.status===401){ window.location.replace('/crm'); return }
+      const d=await r.json(); if(d.ok) setClients(d.clients)
+    } catch(e){ console.error('[loadClients]',e) }
+  },[])
 
   useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
 
@@ -338,7 +350,10 @@ export default function DashboardClient() {
                   {(activeTask.fileUrls ?? []).length === 0 ? (
                     <div style={{fontSize:12,color:'#aabab2',padding:'8px 0'}}>No files uploaded</div>
                   ) : (activeTask.fileUrls ?? []).map((url, i) => {
-                    const name = decodeURIComponent(url.split('/').pop() ?? `file-${i+1}`).replace(/^\d+_/, '')
+                    const rawName = url.split('/').pop() ?? `file-${i+1}`
+                    let name = rawName
+                    try { name = decodeURIComponent(rawName) } catch { name = rawName }
+                    name = name.replace(/^\d+_/, '').replace(/[/\\<>:"'|?*]/g, '_').slice(0, 100)
                     const isPdf = url.toLowerCase().endsWith('.pdf')
                     return (
                       <div key={url} style={{...S.row,justifyContent:'space-between',alignItems:'center'}}>

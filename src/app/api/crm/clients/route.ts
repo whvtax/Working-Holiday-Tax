@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
 const now = Date.now()
 const DEMO_CLIENTS = [
   { id:'CLT-DEMO-5', fullName:'Jonas Dupont', dob:'1997-06-15', whatsapp:'+32477123456',
-    email:'jonas.dupont@gmail.com', country:'Belgium', howHeard:'Friend referral', notes:'',
+    email:'demo-jonas@example.com', country:'Belgium', howHeard:'Friend referral', notes:'',
     createdAt:new Date(now-30*86400000).toISOString(),
     taxReturns:[
       { year:'2022-23', refundAmount:3120, type:'refund', completedAt:new Date(now-200*86400000).toISOString() },
@@ -28,7 +28,7 @@ const DEMO_CLIENTS = [
     abnService:{ done:false, completedAt:'', notes:'' },
   },
   { id:'CLT-DEMO-6', fullName:'Anna Kowalski', dob:'1999-03-08', whatsapp:'+48601234567',
-    email:'anna.kowalski@wp.pl', country:'Poland', howHeard:'Google', notes:'Long-term client.',
+    email:'demo-anna@example.com', country:'Poland', howHeard:'Google', notes:'Long-term client.',
     createdAt:new Date(now-60*86400000).toISOString(),
     taxReturns:[
       { year:'2021-22', refundAmount:1850, type:'refund', completedAt:new Date(now-400*86400000).toISOString() },
@@ -40,7 +40,7 @@ const DEMO_CLIENTS = [
     abnService:{ done:true, completedAt:new Date(now-300*86400000).toISOString(), notes:'' },
   },
   { id:'CLT-DEMO-7', fullName:'Emma Dubois', dob:'2001-11-22', whatsapp:'+33698765432',
-    email:'emma.dubois@orange.fr', country:'France', howHeard:'Instagram', notes:'',
+    email:'demo-emma@example.com', country:'France', howHeard:'Instagram', notes:'',
     createdAt:new Date(now-90*86400000).toISOString(),
     taxReturns:[{ year:'2023-24', refundAmount:1980, type:'refund', completedAt:new Date(now-90*86400000).toISOString() }],
     superReturns:[],

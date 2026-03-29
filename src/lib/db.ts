@@ -156,37 +156,32 @@ export async function updateTaskNotes(id: string, notes: string): Promise<void> 
 }
 
 /**
- * Delete task + upsert client atomically.
- * Uses BEGIN/COMMIT so that a partial failure leaves the DB consistent.
+ * Delete task + upsert client.
+ * Uses INSERT ... ON CONFLICT DO NOTHING so the client row is created
+ * idempotently before the task is deleted — avoids relying on manual
+ * BEGIN/COMMIT which is unreliable with @vercel/postgres connection pooling
+ * (each sql`` call may use a different pool connection).
  */
 export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   await initDb()
   const task = await getTask(taskId)
   if (!task) return
 
-  const existing = await getClientById(task.clientId)
+  // Idempotent client upsert — safe to re-run if delete fails
+  await sql`
+    INSERT INTO crm_clients
+      (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
+    VALUES
+      (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
+       ${task.country},${task.howHeard},'','[]','[]',
+       '{"done":false,"completedAt":"","notes":""}',
+       '{"done":false,"completedAt":"","notes":""}',
+       ${new Date().toISOString()})
+    ON CONFLICT (id) DO NOTHING
+  `
 
-  // Run both operations inside a transaction to avoid partial state
-  await sql`BEGIN`
-  try {
-    if (!existing) {
-      await sql`
-        INSERT INTO crm_clients
-          (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
-        VALUES
-          (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
-           ${task.country},${task.howHeard},'','[]','[]',
-           '{"done":false,"completedAt":"","notes":""}',
-           '{"done":false,"completedAt":"","notes":""}',
-           ${new Date().toISOString()})
-      `
-    }
-    await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
-    await sql`COMMIT`
-  } catch (err) {
-    await sql`ROLLBACK`
-    throw err
-  }
+  // Delete task only after client is safely archived
+  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
 }
 
 // ── Clients ────────────────────────────────────────────────────────────────
@@ -270,15 +265,24 @@ export async function updateClient(id: string, data: Partial<ClientRecord> & {
   if (!client) return null
 
   // Update all editable scalar fields
+  // Use || for critical identity fields to prevent accidental overwrite with empty string
+  const fullName = (data.fullName  || client.fullName).slice(0, 100)
+  const dob      = (data.dob       || client.dob).slice(0, 20)
+  const whatsapp = (data.whatsapp  || client.whatsapp).slice(0, 30)
+  const email    = (data.email     || client.email).slice(0, 200)
+  const country  = (data.country   || client.country).slice(0, 60)
+  const howHeard = (data.howHeard  ?? client.howHeard ?? '').slice(0, 100)
+  const notes    = (data.notes     ?? client.notes    ?? '').slice(0, 10_000)
+
   await sql`
     UPDATE crm_clients SET
-      full_name  = ${data.fullName   ?? client.fullName},
-      dob        = ${data.dob        ?? client.dob},
-      whatsapp   = ${data.whatsapp   ?? client.whatsapp},
-      email      = ${data.email      ?? client.email},
-      country    = ${data.country    ?? client.country},
-      how_heard  = ${data.howHeard   ?? client.howHeard},
-      notes      = ${data.notes      ?? client.notes}
+      full_name  = ${fullName},
+      dob        = ${dob},
+      whatsapp   = ${whatsapp},
+      email      = ${email},
+      country    = ${country},
+      how_heard  = ${howHeard},
+      notes      = ${notes}
     WHERE id = ${id}
   `
   return getClientById(id)
@@ -288,9 +292,26 @@ export async function clearClientSensitiveData(id: string): Promise<ClientRecord
   await initDb()
   const client = await getClientById(id)
   if (!client) return null
-  // Sensitive data lives in tasks — just return client as-is
-  // Tasks are separate table; clearing means noting it in client notes
-  await sql`UPDATE crm_clients SET notes = ${client.notes} WHERE id = ${id}`
+
+  // Wipe PII from all tasks belonging to this client (TFN, bank, address, etc.)
+  await sql`
+    UPDATE crm_tasks SET
+      address      = '',
+      tfn          = '',
+      bank_details = '',
+      primary_job  = '',
+      marital      = '',
+      au_phone     = '',
+      file_urls    = '[]'
+    WHERE client_id = ${id}
+  `
+
+  // Mark cleared in notes so admin can see it happened
+  const clearedNote = client.notes.includes('[PII CLEARED]')
+    ? client.notes
+    : `[PII CLEARED ${new Date().toISOString().slice(0,10)}] ${client.notes}`.trim()
+  await sql`UPDATE crm_clients SET notes = ${clearedNote} WHERE id = ${id}`
+
   return getClientById(id)
 }
 

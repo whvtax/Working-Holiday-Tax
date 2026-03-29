@@ -23,7 +23,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const db = await import('@/lib/db')
 
     // Actions from DashboardClient
-    if (body.action === 'notes')        { await db.updateClientNotes(params.id, body.notes);              return NextResponse.json({ ok:true }) }
+    if (body.action === 'notes')        { const notes = typeof body.notes === 'string' ? body.notes.slice(0, 10_000) : ''; await db.updateClientNotes(params.id, notes); return NextResponse.json({ ok:true }) }
     if (body.action === 'service')      { await db.updateService(params.id, body.service, body.data);     return NextResponse.json({ ok:true }) }
     if (body.action === 'add-tax')      { await db.addTaxReturn(params.id, body.data);                    return NextResponse.json({ ok:true }) }
     if (body.action === 'remove-tax')   { await db.removeTaxReturn(params.id, body.year);                 return NextResponse.json({ ok:true }) }
