@@ -18,6 +18,3 @@ next-env.d.ts
 *.env
 
 # Note: package-lock.json should be committed for reproducible builds
-
-.vercel
-.env*.local

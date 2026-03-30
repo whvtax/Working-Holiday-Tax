@@ -239,8 +239,14 @@ export default function TaxFormPage() {
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
-      if (res.ok) setSubmitted(true)
-      else throw new Error('Server error')
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        const data = await res.json().catch(() => ({}))
+        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
+        else alert('Something went wrong. Please try again or contact us directly.')
+      }
     } catch {
       alert('Something went wrong. Please try again or contact us directly.')
     } finally {

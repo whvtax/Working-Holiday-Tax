@@ -96,14 +96,20 @@ export default function ABNFormPage() {
     if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/abn-form', { method: 'POST', body: fd })
-      if (res.ok) setSubmitted(true)
-      else throw new Error()
+      if (res.ok) {
+        setSubmitted(true)
+      } else {
+        const data = await res.json().catch(() => ({}))
+        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
+        else alert('Something went wrong. Please try again.')
+      }
     } catch { alert('Something went wrong. Please try again.') }
     finally { setLoading(false) }
   }
 
   if (submitted) {
-    const firstName = firstName || 'there'
+    const displayName = firstName || 'there'
     return (
       <>
         <style>{styles}</style>
@@ -114,7 +120,7 @@ export default function ABNFormPage() {
               <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="success-title">Thank you, {firstName}! 🎉</h1>
+          <h1 className="success-title">Thank you, {displayName}! 🎉</h1>
           <p className="success-body">We&apos;ve received your details and will be in touch shortly via WhatsApp.</p>
           <a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
