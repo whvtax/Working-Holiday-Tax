@@ -102,14 +102,43 @@ export default function ABNFormPage() {
     finally { setLoading(false) }
   }
 
-  if (submitted) return (
-    <><style>{css}</style>
-    <div className="form-success-wrap">
-      <div className="success-icon"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/><path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
-      <h1 className="success-title">Application submitted!</h1>
-      <p className="success-body">Thank you. Our team will process your ABN application and contact you shortly.</p>
-    </div></>
-  )
+  if (submitted) {
+    const firstName = firstName || 'there'
+    return (
+      <>
+        <style>{styles}</style>
+        <div className="form-success-wrap">
+          <div className="success-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
+              <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <h1 className="success-title">Thank you, {firstName}! 🎉</h1>
+          <p className="success-body">We&apos;ve received your details and will be in touch shortly via WhatsApp.</p>
+          <a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer" className="success-wa-btn">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.25)"/>
+              <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3l.46 1.35c.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
+            </svg>
+            Message us on WhatsApp
+          </a>
+          <div className="success-divider" />
+          <p className="success-follow-label">Learn something new about Australian tax for WHV holders — one tip a day 🇦🇺</p>
+          <div className="success-socials">
+            <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.95a8.16 8.16 0 004.77 1.52V7.03a4.85 4.85 0 01-1-.34z"/></svg>
+              TikTok
+            </a>
+            <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              Instagram
+            </a>
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <><style>{css}</style>
@@ -117,8 +146,9 @@ export default function ABNFormPage() {
       <div className="form-card">
         <div className="form-header">
           <div className="form-brand">Working Holiday Tax</div>
+          <p className="form-eyebrow">WORKING HOLIDAY TAX</p>
           <h1 className="form-title">ABN Application</h1>
-          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.<br />We&apos;re here to help if you have any questions.</p>
+          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport. We&apos;re here to help if you have any questions.</p>
         </div>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-section-title">Personal details</div>
@@ -215,6 +245,7 @@ const css = `
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; padding: 28px 24px 32px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); }
   .form-header { margin-bottom: 24px; text-align: center; }
   .form-brand { font-size: 11px; font-weight: 600; color: #0B5240; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
+  .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(11,82,64,0.65); text-transform: uppercase; margin-bottom: 8px; }
   .form-title { font-size: 24px; font-weight: 800; color: #080F0D; letter-spacing: -0.02em; margin-bottom: 10px; }
   .form-intro { font-size: 13px; color: #587066; line-height: 1.65; }
   .form-section-title { font-size: 11px; font-weight: 700; color: #0B5240; text-transform: uppercase; letter-spacing: 0.06em; margin: 22px 0 14px; border-bottom: 1px solid #EAF6F1; padding-bottom: 8px; }
@@ -259,7 +290,12 @@ const css = `
   @keyframes spin { to { transform: rotate(360deg); } }
   .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
-  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
-  .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 12px; }
-  .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 30ch; margin: 0; }
+  .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+  .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 28ch; margin: 0 0 24px; }
+  .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #22C55E; color: #fff; font-size: 14px; font-weight: 600; padding: 13px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; }
+  .success-divider { width: 40px; height: 1px; background: #D4EAE2; margin: 28px auto; }
+  .success-follow-label { font-size: 13px; color: #587066; line-height: 1.6; max-width: 26ch; margin: 0 0 16px; }
+  .success-socials { display: flex; gap: 10px; justify-content: center; }
+  .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 600; color: #0B5240; text-decoration: none; background: #fff; font-family: inherit; }
 `

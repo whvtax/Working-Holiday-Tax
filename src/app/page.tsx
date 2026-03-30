@@ -50,7 +50,7 @@ export default function HomePage() {
 
           {/* Unified heading — clamp handles mobile→desktop sizing */}
           <h1 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(28px, 3.06vw, 42px)', lineHeight:1.1, letterSpacing:'-0.03em', marginBottom:'14px' }}>
+            style={{ fontSize:'clamp(24px, 3.06vw, 42px)', lineHeight:1.15, letterSpacing:'-0.025em', marginBottom:'14px' }}>
               <span className="lg:whitespace-nowrap" style={{ display:'block' }}>Confused about tax in Australia?</span>
               <span className="lg:whitespace-nowrap" style={{ display:'block', color:'#0B5240' }}>We’ve got you covered.</span>
             </h1>

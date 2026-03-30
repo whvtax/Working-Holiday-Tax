@@ -9,8 +9,10 @@ const Logo = () => (
     <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
       <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" strokeWidth="2"/>
       <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>
-      <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.8" strokeLinecap="round"/>
-      <circle cx="2" cy="2" r="2.2" fill="#E9A020"/>
+      <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.2" strokeLinecap="round" opacity="0.7"/>
+      <circle cx="2" cy="2" r="1.6" fill="#E9A020" opacity="0.7"/>
+      <path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1.2" strokeLinejoin="round"/>
+      <path d="M20.4 23 L22.2 25 L25 21" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
     <span className="font-serif text-[15px] font-bold text-ink" style={{ letterSpacing: '-0.02em' }}>Working Holiday Tax</span>
   </Link>
