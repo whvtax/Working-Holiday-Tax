@@ -8,7 +8,6 @@ const routes = [
   { url: '/superannuation',    priority: 0.9,  changeFrequency: 'monthly' },
   { url: '/abn',               priority: 0.8,  changeFrequency: 'monthly' },
   { url: '/calculator',        priority: 0.8,  changeFrequency: 'monthly' },
-  { url: '/tax-residency',     priority: 0.8,  changeFrequency: 'monthly' },
   { url: '/medicare',          priority: 0.7,  changeFrequency: 'monthly' },
   { url: '/contact',           priority: 0.7,  changeFrequency: 'monthly' },
   { url: '/client-agreement',  priority: 0.4,  changeFrequency: 'yearly'  },
