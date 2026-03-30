@@ -4,6 +4,7 @@ import { WA_URL, EMAIL } from '@/lib/constants'
 export const metadata: Metadata = {
   title: 'Contact Working Holiday Tax',
   description: 'Get in touch with Working Holiday Tax. Ask anything about TFN, tax returns, super, or ABN. We reply fast.',
+  alternates: { canonical: '/contact' },
 }
 
 export default function ContactPage() {

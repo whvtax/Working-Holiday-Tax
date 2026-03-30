@@ -7,6 +7,7 @@ import { NextStep } from '@/components/ui/NextStep'
 export const metadata: Metadata = {
   title: 'Medicare in Australia for Working Holiday Visa Holders',
   description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder in Australia.',
+  alternates: { canonical: '/medicare' },
 }
 
 const rhca = [

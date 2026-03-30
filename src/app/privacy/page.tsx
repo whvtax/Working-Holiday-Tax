@@ -5,6 +5,7 @@ import { EMAIL } from '@/lib/constants'
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Working Holiday Tax privacy policy - how we collect, use and protect your personal information.',
+  alternates: { canonical: '/privacy' },
 }
 
 const sections = [

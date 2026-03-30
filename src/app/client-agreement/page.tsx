@@ -5,6 +5,7 @@ import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 export const metadata: Metadata = {
   title: 'Client Agreement',
   description: 'Working Holiday Tax client agreement and terms of service.',
+  alternates: { canonical: '/client-agreement' },
 }
 
 const sections = [

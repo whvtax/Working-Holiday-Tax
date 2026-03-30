@@ -8,6 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   title: 'Tax Return in Australia for WHV Holders',
   description: 'Get your Australian tax refund. We prepare and lodge your tax return for WHV holders - online, fast, and handled for you.',
+  alternates: { canonical: '/tax-return' },
 }
 
 const faqs = [

@@ -8,6 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   title: 'TFN Application for Working Holiday Visa Holders',
   description: 'Get your Tax File Number sorted fast. Apply correctly the first time with step-by-step guidance from a registered tax agent.',
+  alternates: { canonical: '/tfn' },
 }
 
 const faqs = [

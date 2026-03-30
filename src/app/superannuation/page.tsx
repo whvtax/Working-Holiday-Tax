@@ -8,6 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
   description: 'Claim your Australian superannuation after leaving. Your employer paid 12% of your wages into super - we help you get it back via DASP.',
+  alternates: { canonical: '/superannuation' },
 }
 
 const faqs = [

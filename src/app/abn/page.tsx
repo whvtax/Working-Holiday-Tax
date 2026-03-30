@@ -8,6 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   title: 'ABN Registration for Working Holiday Visa Holders',
   description: 'Set up your ABN correctly as a Working Holiday contractor. We handle registration and tax obligations - simple, fast, online.',
+  alternates: { canonical: '/abn' },
 }
 
 const faqs = [
