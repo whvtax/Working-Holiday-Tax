@@ -24,6 +24,11 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
   metadataBase: new URL(SITE_URL),
   title: {
     default: 'Working Holiday Tax  -  Australian Tax for WHV Holders',

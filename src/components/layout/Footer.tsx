@@ -22,7 +22,7 @@ export function Footer() {
                 <line x1="2" y1="2" x2="12" y2="12" stroke="#E9A020" strokeWidth="1.0" strokeLinecap="round" opacity="0.7"/>
                 <circle cx="2" cy="2" r="1.4" fill="#E9A020" opacity="0.7"/>
                 <path d="M20 14.5 L24 16 L24 19.5 Q24 23 20 24.5 Q16 23 16 19.5 L16 16 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1.0" strokeLinejoin="round"/>
-                <path d="M18 19.5 L19.8 21.3 L22.2 17.8" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                <polyline points="18,19.5 19.8,21.5 22.5,18" fill="none" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               <span className="font-serif font-bold text-ink" style={{ fontSize: '13.5px' }}>Working Holiday Tax</span>
             </div>
