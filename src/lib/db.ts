@@ -31,9 +31,25 @@ export type Task = {
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
+// Cached flag — only run CREATE TABLE once per serverless instance lifetime.
+// This avoids issuing 3 DDL statements on every single form submission.
+let _dbInitialised = false
+
+const DB_TIMEOUT_MS = 8000 // 8 s — Vercel Postgres cold-start can be slow
+
+/** Run a sql statement with a hard timeout so a stalled DB never hangs forever */
+async function sqlWithTimeout<T>(query: Promise<T>, label: string): Promise<T> {
+  return Promise.race([
+    query,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`DB timeout: ${label}`)), DB_TIMEOUT_MS)
+    ),
+  ])
+}
 
 export async function initDb() {
-  await sql`
+  if (_dbInitialised) return // already ran this instance — skip
+  await sqlWithTimeout(sql`
     CREATE TABLE IF NOT EXISTS crm_clients (
       id            TEXT PRIMARY KEY,
       full_name     TEXT NOT NULL DEFAULT '',
@@ -49,8 +65,8 @@ export async function initDb() {
       abn_service   TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
       created_at    TEXT NOT NULL DEFAULT ''
     )
-  `
-  await sql`
+  `, 'CREATE crm_clients')
+  await sqlWithTimeout(sql`
     CREATE TABLE IF NOT EXISTS crm_tasks (
       id           TEXT PRIMARY KEY,
       client_id    TEXT NOT NULL DEFAULT '',
@@ -74,9 +90,13 @@ export async function initDb() {
       notes        TEXT NOT NULL DEFAULT '',
       file_urls    TEXT NOT NULL DEFAULT '[]'
     )
-  `
-  // Add file_urls column to existing tables (migration safety)
-  await sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`
+  `, 'CREATE crm_tasks')
+  // Migration safety: add column if missing in older deploys
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`,
+    'ALTER crm_tasks'
+  )
+  _dbInitialised = true
 }
 
 function toClient(r: Record<string,unknown>): ClientRecord {
@@ -132,7 +152,7 @@ export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   await initDb()
   // Use UUID for collision-safe unique IDs
   const id = `TASK-${crypto.randomUUID()}`
-  await sql`
+  await sqlWithTimeout(sql`
     INSERT INTO crm_tasks
       (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
        done,address,tfn,bank_details,primary_job,marital,tax_status,how_heard,au_phone,notes,file_urls)
@@ -142,7 +162,7 @@ export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
        ${data.submittedAt},false,${data.address},${data.tfn},${data.bankDetails},
        ${data.primaryJob},${data.marital},${data.taxStatus},${data.howHeard},${data.auPhone},${data.notes},
        ${JSON.stringify(data.fileUrls ?? [])})
-  `
+  `, 'INSERT crm_tasks')
   return { ...data, id, done:false }
 }
 

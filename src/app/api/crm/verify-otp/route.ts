@@ -9,8 +9,16 @@ const OTP_ATTEMPT_KEY  = 'crm_otp_attempts'
 const OTP_ATTEMPT_TTL  = 600 // 10 min — matches OTP TTL
 
 async function getRedis() {
-  const client = createClient({ url: process.env.REDIS_URL })
-  await client.connect()
+  const client = createClient({
+    url: process.env.REDIS_URL,
+    socket: { connectTimeout: 3000, reconnectStrategy: false },
+  })
+  await Promise.race([
+    client.connect(),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Redis connect timeout')), 3500)
+    ),
+  ])
   return client
 }
 

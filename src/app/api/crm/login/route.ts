@@ -11,8 +11,16 @@ import crypto from 'crypto'
 async function getRedis() {
   const url = process.env.REDIS_URL
   if (!url) throw new Error('Missing env var: REDIS_URL')
-  const client = createClient({ url })
-  await client.connect()
+  const client = createClient({
+    url,
+    socket: { connectTimeout: 3000, reconnectStrategy: false },
+  })
+  await Promise.race([
+    client.connect(),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Redis connect timeout')), 3500)
+    ),
+  ])
   return client
 }
 
