@@ -19,6 +19,8 @@ type Client = {
   country:string; howHeard:string; notes:string; createdAt:string
   taxReturns:TaxReturn[]; superReturns:SuperReturn[]
   tfnService:ServiceRecord; abnService:ServiceRecord
+  archived?: boolean
+  yearlyCheckins?: Record<string, boolean>
 }
 type View = 'tasks'|'clients'|'client-detail'|'archive'
 
@@ -61,7 +63,7 @@ function CopyBtn({ text }: { text: string }) {
 export default function DashboardClient() {
   const router = useRouter()
   const [view, setView]           = useState<View>('tasks')
-  const [archivedClients, setArchivedClients] = useState<ClientRecord[]>([])
+  const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [checkinYear, setCheckinYear] = useState('2024-25')
   const [checkinFilter, setCheckinFilter] = useState<'all'|'done'|'pending'>('all')
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
@@ -231,129 +233,101 @@ export default function DashboardClient() {
     const LIGHT = '#EEF7F2'
     const MUTED = '#6b7f76'
 
-    const field = (label: string, value: string) => value && value !== '—' ? `
-      <tr>
-        <td style="padding:7px 12px;font-size:12px;color:${MUTED};font-weight:500;width:38%;border-bottom:1px solid #f0f5f2;vertical-align:top">${label}</td>
-        <td style="padding:7px 12px;font-size:12px;color:#0a1410;border-bottom:1px solid #f0f5f2;vertical-align:top;word-break:break-word">${value.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td>
-      </tr>` : ''
+    const esc = (s: string) => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 
-    const section = (title: string, rows: string) => `
-      <div style="margin-bottom:18px">
-        <div style="background:${LIGHT};padding:7px 12px;font-size:11px;font-weight:700;color:${BRAND};text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">${title}</div>
-        <table style="width:100%;border-collapse:collapse;border:1px solid #e8f0eb;border-top:none;border-radius:0 0 6px 6px;background:#fff">${rows}</table>
-      </div>`
+    const row = (label: string, value: string) => {
+      if (!value || value === '—') return ''
+      return '<tr>'
+        + '<td style="padding:7px 12px;font-size:12px;color:' + MUTED + ';font-weight:500;width:38%;border-bottom:1px solid #f0f5f2;vertical-align:top">' + label + '</td>'
+        + '<td style="padding:7px 12px;font-size:12px;color:#0a1410;border-bottom:1px solid #f0f5f2;vertical-align:top;word-break:break-word">' + esc(value) + '</td>'
+        + '</tr>'
+    }
 
-    const fileList = (task.fileUrls ?? []).map((url,i) => {
-      let name = url.split('/').pop() ?? \`file-\${i+1}\`
+    const section = (title: string, rows: string) =>
+      '<div style="margin-bottom:18px">'
+      + '<div style="background:' + LIGHT + ';padding:7px 12px;font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">' + title + '</div>'
+      + '<table style="width:100%;border-collapse:collapse;border:1px solid #e8f0eb;border-top:none;background:#fff">' + rows + '</table>'
+      + '</div>'
+
+    const fileListHtml = (task.fileUrls ?? []).map((url, i) => {
+      let name = url.split('/').pop() ?? ('file-' + (i+1))
       try { name = decodeURIComponent(name) } catch {}
-      name = name.replace(/^\d+_/,'').slice(0,80)
-      return \`<li style="font-size:12px;color:#0a1410;padding:3px 0">\${url.toLowerCase().endsWith('.pdf')?'📄':'🖼️'} \${name.replace(/</g,'&lt;')}</li>\`
+      name = name.replace(/^\d+_/, '').slice(0, 80)
+      const icon = url.toLowerCase().endsWith('.pdf') ? '📄' : '🖼️'
+      return '<li style="font-size:12px;color:#0a1410;padding:3px 0">' + icon + ' ' + esc(name) + '</li>'
     }).join('')
 
-    const taskLabel: Record<string,string> = {
-      'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application'
+    const taskLabels: Record<string,string> = {
+      'tax-return': 'Tax Return', 'super': 'Super Refund',
+      'tfn': 'TFN Application', 'abn': 'ABN Application'
     }
 
-    const html = \`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <title>WHV Tax — \${task.clientName}</title>
-  <style>
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; background:#fff; color:#0a1410; }
-    @media print {
-      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .no-print { display:none !important; }
-    }
-  </style>
-</head>
-<body style="padding:32px 36px;max-width:780px;margin:0 auto">
+    const initials2 = task.clientName.split(' ').map((n: string) => n[0] || '').join('').slice(0, 2).toUpperCase()
 
-  <!-- Header -->
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid ${BRAND}">
-    <div style="display:flex;align-items:center;gap:12px">
-      <div style="width:42px;height:42px;background:${BRAND};border-radius:10px;display:flex;align-items:center;justify-content:center">
-        <svg width="22" height="22" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/>
-          <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
-          <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="${BRAND}" stroke-width="1.3" stroke-linejoin="round"/>
-          <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="${BRAND}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div>
-        <div style="font-size:16px;font-weight:700;color:${BRAND}">Working Holiday Tax</div>
-        <div style="font-size:11px;color:${MUTED}">workingholidaytax.com.au</div>
-      </div>
-    </div>
-    <div style="text-align:right">
-      <div style="font-size:13px;font-weight:600;color:#0a1410">\${taskLabel[task.taskType] ?? task.taskType}</div>
-      <div style="font-size:11px;color:${MUTED};margin-top:2px">Submitted \${fmtDateTime(task.submittedAt)}</div>
-      <div style="font-size:11px;color:${MUTED}">Status: \${task.done ? '✓ Done' : '⏳ Pending'}</div>
-    </div>
-  </div>
+    const html = '<!DOCTYPE html>'
+      + '<html lang="en"><head><meta charset="UTF-8"/>'
+      + '<title>WHV Tax — ' + esc(task.clientName) + '</title>'
+      + '<style>*{box-sizing:border-box;margin:0;padding:0}'
+      + 'body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#fff;color:#0a1410}'
+      + '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}}'
+      + '</style></head>'
+      + '<body style="padding:32px 36px;max-width:780px;margin:0 auto">'
 
-  <!-- Client name banner -->
-  <div style="background:${LIGHT};border:1px solid #c8eadf;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px">
-    <div style="width:44px;height:44px;background:${BRAND};border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0">
-      \${task.clientName.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()}
-    </div>
-    <div>
-      <div style="font-size:18px;font-weight:700;color:#0a1410">\${task.clientName.replace(/</g,'&lt;')}</div>
-      <div style="font-size:12px;color:${MUTED};margin-top:2px">\${task.country} · \${task.taxYear || '—'}</div>
-    </div>
-  </div>
+      // Header
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid ' + BRAND + '">'
+      + '<div style="display:flex;align-items:center;gap:12px">'
+      + '<div style="width:42px;height:42px;background:' + BRAND + ';border-radius:10px;display:flex;align-items:center;justify-content:center">'
+      + '<svg width="22" height="22" viewBox="0 0 34 34" fill="none"><rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/><rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/><path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="' + BRAND + '" stroke-width="1.3" stroke-linejoin="round"/><polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="' + BRAND + '" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      + '</div>'
+      + '<div><div style="font-size:16px;font-weight:700;color:' + BRAND + '">Working Holiday Tax</div>'
+      + '<div style="font-size:11px;color:' + MUTED + '">workingholidaytax.com.au</div></div>'
+      + '</div>'
+      + '<div style="text-align:right">'
+      + '<div style="font-size:13px;font-weight:600;color:#0a1410">' + (taskLabels[task.taskType] ?? task.taskType) + '</div>'
+      + '<div style="font-size:11px;color:' + MUTED + ';margin-top:2px">Submitted ' + fmtDateTime(task.submittedAt) + '</div>'
+      + '<div style="font-size:11px;color:' + MUTED + '">Status: ' + (task.done ? '✓ Done' : '⏳ Pending') + '</div>'
+      + '</div></div>'
 
-  \${section('Personal Details',
-    field('Full name', task.clientName) +
-    field('Date of birth', task.dob) +
-    field('Country', task.country) +
-    field('Marital status', task.marital)
-  )}
+      // Client banner
+      + '<div style="background:' + LIGHT + ';border:1px solid #c8eadf;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px">'
+      + '<div style="width:44px;height:44px;background:' + BRAND + ';border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0">' + initials2 + '</div>'
+      + '<div><div style="font-size:18px;font-weight:700;color:#0a1410">' + esc(task.clientName) + '</div>'
+      + '<div style="font-size:12px;color:' + MUTED + ';margin-top:2px">' + esc(task.country) + ' · ' + (task.taxYear || '—') + '</div>'
+      + '</div></div>'
 
-  \${section('Contact Details',
-    field('WhatsApp', task.whatsapp) +
-    field('AU Phone', task.auPhone) +
-    field('Email', task.email) +
-    field('Address', task.address)
-  )}
+      + section('Personal Details',
+          row('Full name', task.clientName) + row('Date of birth', task.dob)
+          + row('Country', task.country) + row('Marital status', task.marital))
 
-  \${section('Tax & Employment',
-    field('TFN', task.tfn) +
-    field('Bank details', task.bankDetails) +
-    field('Employer / Business', task.primaryJob) +
-    field('Tax status', task.taxStatus) +
-    field('Tax year', task.taxYear) +
-    field('How heard', task.howHeard)
-  )}
+      + section('Contact Details',
+          row('WhatsApp', task.whatsapp) + row('AU Phone', task.auPhone)
+          + row('Email', task.email) + row('Address', task.address))
 
-  \${task.notes ? section('Notes', field('Internal notes', task.notes)) : ''}
+      + section('Tax & Employment',
+          row('TFN', task.tfn) + row('Bank details', task.bankDetails)
+          + row('Employer / Business', task.primaryJob) + row('Tax status', task.taxStatus)
+          + row('Tax year', task.taxYear) + row('How heard', task.howHeard))
 
-  \${(task.fileUrls ?? []).length > 0 ? \`
-  <div style="margin-bottom:18px">
-    <div style="background:\${LIGHT};padding:7px 12px;font-size:11px;font-weight:700;color:\${BRAND};text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">Documents Uploaded</div>
-    <div style="border:1px solid #e8f0eb;border-top:none;border-radius:0 0 6px 6px;background:#fff;padding:10px 14px">
-      <ul style="list-style:none;padding:0">\${fileList}</ul>
-    </div>
-  </div>\` : ''}
+      + (task.notes ? section('Notes', row('Internal notes', task.notes)) : '')
 
-  <!-- Footer -->
-  <div style="margin-top:32px;padding-top:12px;border-top:1px solid #e8f0eb;display:flex;justify-content:space-between;align-items:center">
-    <div style="font-size:10px;color:#aabab2">Generated \${new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'})} AEST</div>
-    <div style="font-size:10px;color:#aabab2">Working Holiday Tax · workingholidaytax.com.au</div>
-  </div>
+      + ((task.fileUrls ?? []).length > 0
+        ? '<div style="margin-bottom:18px">'
+          + '<div style="background:' + LIGHT + ';padding:7px 12px;font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">Documents Uploaded</div>'
+          + '<div style="border:1px solid #e8f0eb;border-top:none;background:#fff;padding:10px 14px"><ul style="list-style:none;padding:0">' + fileListHtml + '</ul></div>'
+          + '</div>'
+        : '')
 
-  <script class="no-print">
-    window.onload = function() { window.print() }
-  </script>
-</body>
-</html>\`
+      // Footer
+      + '<div style="margin-top:32px;padding-top:12px;border-top:1px solid #e8f0eb;display:flex;justify-content:space-between">'
+      + '<div style="font-size:10px;color:#aabab2">Generated ' + new Date().toLocaleString('en-AU', {timeZone:'Australia/Sydney'}) + ' AEST</div>'
+      + '<div style="font-size:10px;color:#aabab2">Working Holiday Tax · workingholidaytax.com.au</div>'
+      + '</div>'
+
+      + '<script class="no-print">window.onload=function(){window.print()}<\/script>'
+      + '</body></html>'
 
     const win = window.open('', '_blank')
-    if (win) {
-      win.document.write(html)
-      win.document.close()
-    }
+    if (win) { win.document.write(html); win.document.close() }
   }
 
   const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
