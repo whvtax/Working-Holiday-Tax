@@ -110,7 +110,18 @@ function req(path, method, body, cookieHeader) {
 }
 
 function fakeFile(type = 'image/jpeg', name = 'file.jpg') {
-  return new File([`fake-${type}`], name, { type })
+  // Use real magic bytes so magic-byte validation passes
+  let bytes
+  if (type === 'image/jpeg')       bytes = new Uint8Array([0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46, 0x49, 0x46, 0x00, 0x01])
+  else if (type === 'image/png')   bytes = new Uint8Array([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D])
+  else if (type === 'image/webp')  bytes = new Uint8Array([0x52, 0x49, 0x46, 0x46, 0x24, 0x00, 0x00, 0x00, 0x57, 0x45, 0x42, 0x50])
+  else if (type === 'image/gif')   bytes = new Uint8Array([0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01, 0x00, 0x00, 0xFF])
+  else if (type === 'application/pdf') bytes = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2D, 0x31, 0x2E, 0x34, 0x0A])
+  else bytes = new Uint8Array([0xFF, 0xD8, 0xFF, 0xE0]) // fallback JPEG
+  // Pad to 20 bytes
+  const padded = new Uint8Array(20)
+  padded.set(bytes)
+  return new File([padded], name, { type })
 }
 
 function authedReq(path, method = 'GET', body = null) {
@@ -910,5 +921,167 @@ describe('🗄️ Archive, Checkins & New Features', () => {
     redis.state.execResult = [6, 1]
     const [blockedCount] = await redis.createClient().multi().incr('x').expire('x',900,'NX').exec()
     expect(blockedCount > MAX_REQUESTS).toBe(true)
+  })
+})
+
+// ══════════════════════════════════════════════════════════════════════════
+// 9. MAGIC-BYTE FILE VALIDATION
+// ══════════════════════════════════════════════════════════════════════════
+describe('🔍 Magic-byte file validation', () => {
+  beforeEach(() => {
+    resetDb()
+    // Reset ENTIRE redis mock state to ensure clean slate
+    const redisMock = require('redis')
+    redisMock.state.execResult = [1, 1]
+    redisMock.state.otpHash = null
+    redisMock.state.otpAttempts = 0
+    // Re-configure createClient mock to return fresh instance with correct state
+    redisMock.createClient.mockImplementation(() => ({
+      connect: jest.fn(async () => {}),
+      disconnect: jest.fn(async () => {}),
+      multi: jest.fn(() => ({
+        incr: jest.fn().mockReturnThis(),
+        expire: jest.fn().mockReturnThis(),
+        exec: jest.fn(() => Promise.resolve(redisMock.state.execResult)),
+      })),
+      get: jest.fn(async (key) => key === 'crm_otp' ? redisMock.state.otpHash : null),
+      set: jest.fn(async () => 'OK'),
+      del: jest.fn(async () => 1),
+      incr: jest.fn(async () => 1),
+      expire: jest.fn(async () => 1),
+    }))
+    require('@vercel/blob').put.mockClear()
+  })
+
+  // Helper: create a File with specific raw bytes
+  function fileWithBytes(bytes, type = 'image/jpeg', name = 'test.jpg') {
+    return new File([new Uint8Array(bytes)], name, { type })
+  }
+
+  test('✅ valid JPEG (FF D8 FF) is accepted', async () => {
+    const { POST } = await import('../src/app/api/super-form/route.ts')
+    require('@vercel/blob').put.mockClear()
+    // Provide a real JPEG magic bytes
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    const fd = new FormData()
+    const defaults = { firstName:'A', lastName:'B', dob:'1998-01-01', passport:'X1',
+      passportCountry:'France', smsPhone:'+33612345678', email:'a@b.com',
+      auAddress:'1 St', homeAddress:'2 St', tfn:'123456789',
+      superFunds:'Super', bankDetails:'Bank' }
+    Object.entries(defaults).forEach(([k,v]) => fd.append(k, v))
+    fd.append('selfiePassport', fileWithBytes(jpegBytes, 'image/jpeg', 'photo.jpg'))
+    const res = await POST(req('/api/super-form', 'POST', fd))
+    // Should NOT return 400 invalid_file (may return 200 or other error)
+    expect(res.status).not.toBe(400)
+    const body = await res.json()
+    expect(body.error).not.toBe('invalid_file')
+  })
+
+  test('✅ PHP file disguised as JPEG is rejected', async () => {
+    const { POST } = await import('../src/app/api/super-form/route.ts')
+    // PHP tag at start — dangerous pattern
+    const phpBytes = [...'<?php system($_GET["cmd"]); ?>'].map(c => c.charCodeAt(0))
+    const fd = new FormData()
+    const defaults = { firstName:'A', lastName:'B', dob:'1998-01-01', passport:'X1',
+      passportCountry:'France', smsPhone:'+33612345678', email:'a@b.com',
+      auAddress:'1 St', homeAddress:'2 St', tfn:'123456789',
+      superFunds:'Super', bankDetails:'Bank' }
+    Object.entries(defaults).forEach(([k,v]) => fd.append(k, v))
+    fd.append('selfiePassport', fileWithBytes(phpBytes, 'image/jpeg', 'shell.jpg'))
+    const res = await POST(req('/api/super-form', 'POST', fd))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
+  })
+
+  test('✅ EXE disguised as JPEG (MZ header) is rejected', async () => {
+    const { POST } = await import('../src/app/api/super-form/route.ts')
+    // MZ header = Windows PE executable
+    const exeBytes = [0x4D, 0x5A, 0x90, 0x00, ...Array(100).fill(0x00)]
+    const fd = new FormData()
+    const defaults = { firstName:'A', lastName:'B', dob:'1998-01-01', passport:'X1',
+      passportCountry:'France', smsPhone:'+33612345678', email:'a@b.com',
+      auAddress:'1 St', homeAddress:'2 St', tfn:'123456789',
+      superFunds:'Super', bankDetails:'Bank' }
+    Object.entries(defaults).forEach(([k,v]) => fd.append(k, v))
+    fd.append('selfiePassport', fileWithBytes(exeBytes, 'image/jpeg', 'virus.jpg'))
+    const res = await POST(req('/api/super-form', 'POST', fd))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
+  })
+
+  test('✅ ELF executable disguised as PDF is rejected', async () => {
+    const { POST } = await import('../src/app/api/tax-form/route.ts')
+    // ELF magic bytes = Linux executable
+    const elfBytes = [0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, ...Array(100).fill(0x00)]
+    const fd = taxFd()
+    fd.append('bankStatement', fileWithBytes(elfBytes, 'application/pdf', 'malware.pdf'))
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
+  })
+
+  test('✅ HTML/JS file disguised as image is rejected', async () => {
+    const { POST } = await import('../src/app/api/tfn-form/route.ts')
+    const htmlBytes = [...'<script>alert(document.cookie)</script>'].map(c => c.charCodeAt(0))
+    const fd = tfnFd()
+    // Replace the selfie with the dangerous file
+    const badFile = fileWithBytes(htmlBytes, 'image/jpeg', 'xss.jpg')
+    // Build fresh fd with the bad file
+    const fd2 = new FormData()
+    const d = { firstName:'Emma', lastName:'Dubois', dob:'2001-11-22', passport:'FR999',
+      passportCountry:'France', whatsapp:'+33698765', auPhone:'+61467112',
+      email:'emma@test.com', auAddress:'1 Pitt St Sydney', gender:'Female', marital:'Single' }
+    Object.entries(d).forEach(([k,v]) => fd2.append(k, v))
+    fd2.append('selfiePassport', badFile)
+    const res = await POST(req('/api/tfn-form', 'POST', fd2))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
+  })
+
+  test('✅ valid PDF (%PDF header) is accepted', async () => {
+    const { POST } = await import('../src/app/api/tax-form/route.ts')
+    require('@vercel/blob').put.mockClear()
+    // Real PDF magic bytes
+    const pdfBytes = [0x25, 0x50, 0x44, 0x46, 0x2D, 0x31, 0x2E, 0x34, ...Array(100).fill(0x20)]
+    const fd = taxFd()
+    fd.append('bankStatement', fileWithBytes(pdfBytes, 'application/pdf', 'bank.pdf'))
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).not.toBe(400)
+    const body = await res.json()
+    expect(body.error).not.toBe('invalid_file')
+  })
+
+  test('✅ valid PNG (89 50 4E 47) is accepted', async () => {
+    const { POST } = await import('../src/app/api/abn-form/route.ts')
+    require('@vercel/blob').put.mockClear()
+    const pngBytes = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, ...Array(100).fill(0x00)]
+    const fd = abnFd()
+    // Replace selfie with valid PNG
+    const fd2 = new FormData()
+    const d = { firstName:'Lena', lastName:'Mueller', dob:'2000-01-30', gender:'Female',
+      whatsapp:'+49160111', auPhone:'+61412222', email:'lena@test.com',
+      address:'15 Queen St Brisbane', tfn:'444555666', business:'Design', marital:'Single' }
+    Object.entries(d).forEach(([k,v]) => fd2.append(k, v))
+    fd2.append('selfiePassport', fileWithBytes(pngBytes, 'image/png', 'photo.png'))
+    const res = await POST(req('/api/abn-form', 'POST', fd2))
+    expect(res.status).not.toBe(400)
+    const body = await res.json()
+    expect(body.error).not.toBe('invalid_file')
+  })
+
+  test('✅ wrong magic bytes (PNG bytes but declared as JPEG) is rejected', async () => {
+    const { POST } = await import('../src/app/api/tfn-form/route.ts')
+    // PNG bytes but declared as JPEG — mismatch
+    const pngBytes = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, ...Array(100).fill(0x00)]
+    const fd2 = new FormData()
+    const d = { firstName:'Emma', lastName:'Dubois', dob:'2001-11-22', passport:'FR999',
+      passportCountry:'France', whatsapp:'+33698765', auPhone:'+61467112',
+      email:'emma@test.com', auAddress:'1 Pitt St Sydney', gender:'Female', marital:'Single' }
+    Object.entries(d).forEach(([k,v]) => fd2.append(k, v))
+    // Declare as JPEG but give PNG bytes
+    fd2.append('selfiePassport', fileWithBytes(pngBytes, 'image/jpeg', 'photo.jpg'))
+    const res = await POST(req('/api/tfn-form', 'POST', fd2))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
   })
 })

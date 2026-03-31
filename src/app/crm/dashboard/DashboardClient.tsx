@@ -77,7 +77,10 @@ export default function DashboardClient() {
   const [clientNotesSaved, setClientNotesSaved] = useState(false)
   const [search, setSearch]       = useState('')
   const [yearFilter, setYearFilter] = useState('all')
+  const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
+  const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
   const [loading, setLoading]     = useState(true)
+  const [previewUrl, setPreviewUrl] = useState<string|null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
@@ -229,95 +232,144 @@ export default function DashboardClient() {
   }) + ' AEST' : '—'
 
   const downloadTaskPdf = (task: Task) => {
-    const BRAND = '#0B5240'
-    const LIGHT = '#EEF7F2'
-    const MUTED = '#6b7f76'
+    const GREEN = '#0B5240'
+    const LIGHT_GREEN = '#EAF6F1'
+    const esc = (s: string) => (s || '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 
-    const esc = (s: string) => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    // Build form fields matching exact form layout
+    const formField = (label: string, value: string, required = true) =>
+      '<div style="margin-bottom:16px">'
+      + '<label style="display:block;font-size:13px;font-weight:600;color:#1A2822;margin-bottom:6px">'
+      + esc(label) + (required ? '<span style="color:' + GREEN + ';margin-left:3px">*</span>' : '')
+      + '</label>'
+      + '<div style="width:100%;padding:12px 14px;font-size:14px;color:#0a1410;background:#f7fbf9;border:1.5px solid #d0e8de;border-radius:10px;min-height:44px;word-break:break-word">'
+      + esc(value) + '</div></div>'
 
-    const row = (label: string, value: string) => {
-      if (!value || value === '—') return ''
-      return '<tr>'
-        + '<td style="padding:7px 12px;font-size:12px;color:' + MUTED + ';font-weight:500;width:38%;border-bottom:1px solid #f0f5f2;vertical-align:top">' + label + '</td>'
-        + '<td style="padding:7px 12px;font-size:12px;color:#0a1410;border-bottom:1px solid #f0f5f2;vertical-align:top;word-break:break-word">' + esc(value) + '</td>'
-        + '</tr>'
-    }
-
-    const section = (title: string, rows: string) =>
-      '<div style="margin-bottom:18px">'
-      + '<div style="background:' + LIGHT + ';padding:7px 12px;font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">' + title + '</div>'
-      + '<table style="width:100%;border-collapse:collapse;border:1px solid #e8f0eb;border-top:none;background:#fff">' + rows + '</table>'
-      + '</div>'
+    const sectionTitle = (title: string) =>
+      '<div style="font-size:11px;font-weight:700;color:' + GREEN + ';text-transform:uppercase;letter-spacing:0.06em;margin:20px 0 12px;border-bottom:1.5px solid ' + LIGHT_GREEN + ';padding-bottom:8px">'
+      + title + '</div>'
 
     const fileListHtml = (task.fileUrls ?? []).map((url, i) => {
-      let name = url.split('/').pop() ?? ('file-' + (i+1))
+      let name = url.split('/').pop() ?? ('file-' + (i + 1))
       try { name = decodeURIComponent(name) } catch {}
       name = name.replace(/^\d+_/, '').slice(0, 80)
       const icon = url.toLowerCase().endsWith('.pdf') ? '📄' : '🖼️'
-      return '<li style="font-size:12px;color:#0a1410;padding:3px 0">' + icon + ' ' + esc(name) + '</li>'
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f7fbf9;border:1px solid #d0e8de;border-radius:8px;margin-bottom:8px">'
+        + '<span style="font-size:13px;color:#0a1410">' + icon + ' ' + esc(name) + '</span>'
+        + '<a href="' + url + '" style="font-size:11px;color:' + GREEN + ';background:' + LIGHT_GREEN + ';border:1px solid #c8eadf;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600">View ↗</a>'
+        + '</div>'
     }).join('')
 
-    const taskLabels: Record<string,string> = {
-      'tax-return': 'Tax Return', 'super': 'Super Refund',
-      'tfn': 'TFN Application', 'abn': 'ABN Application'
+    // Form-specific fields based on taskType
+    const taskTitles: Record<string,string> = {
+      'tax-return': 'Tax Return Form',
+      'super': 'Superannuation Refund',
+      'tfn': 'TFN Application',
+      'abn': 'ABN Application',
     }
 
-    const initials2 = task.clientName.split(' ').map((n: string) => n[0] || '').join('').slice(0, 2).toUpperCase()
+    let formBody = ''
 
-    const html = '<!DOCTYPE html>'
-      + '<html lang="en"><head><meta charset="UTF-8"/>'
-      + '<title>WHV Tax — ' + esc(task.clientName) + '</title>'
-      + '<style>*{box-sizing:border-box;margin:0;padding:0}'
-      + 'body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#fff;color:#0a1410}'
+    if (task.taskType === 'tax-return') {
+      formBody = sectionTitle('Contact details')
+        + formField('WhatsApp / Phone Number', task.whatsapp)
+        + formField('Australian Phone Number', task.auPhone)
+        + formField('Full Name (including middle name)', task.clientName)
+        + formField('Email Address', task.email)
+        + formField('Full Address in Australia', task.address)
+        + sectionTitle('Personal information')
+        + formField('Home Country', task.country)
+        + formField('Date of Birth', task.dob)
+        + formField('Marital Status', task.marital)
+        + sectionTitle('Tax information')
+        + formField('Tax File Number (TFN)', task.tfn)
+        + formField('Tax Year', task.taxYear)
+        + formField('Tax Status', task.taxStatus)
+        + formField('Primary job in the past year', task.primaryJob)
+        + formField('Bank details', task.bankDetails)
+        + sectionTitle('How did you hear about us?')
+        + formField('How did you hear about us?', task.howHeard)
+    } else if (task.taskType === 'super') {
+      const notes = task.notes || ''
+      const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
+      const superFunds = notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
+      const homeAddress = notes.match(/Home Country Address: (.+)/)?.[1]?.trim() || '—'
+      formBody = sectionTitle('Personal details')
+        + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
+        + formField('Last name', task.clientName.split(' ').pop() || '')
+        + formField('Date of birth', task.dob)
+        + formField('Passport number', passport)
+        + formField('Country that issued the passport', task.country)
+        + sectionTitle('Contact details')
+        + formField('Phone number for SMS', task.whatsapp)
+        + formField('Email address', task.email)
+        + formField('Full Australian address', task.address)
+        + formField('Full home country address', homeAddress)
+        + sectionTitle('Tax & super fund details')
+        + formField('TFN (Tax File Number)', task.tfn)
+        + formField('Super fund details', superFunds)
+        + formField('Bank details', task.bankDetails)
+    } else if (task.taskType === 'tfn') {
+      const notes = task.notes || ''
+      const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
+      const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
+      formBody = sectionTitle('Personal details')
+        + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
+        + formField('Last name', task.clientName.split(' ').pop() || '')
+        + formField('Country of passport', task.country)
+        + formField('Passport number', passport)
+        + formField('Email address', task.email)
+        + formField('Date of birth', task.dob)
+        + formField('WhatsApp number', task.whatsapp)
+        + formField('Australian phone number', task.auPhone)
+        + formField('Gender as shown in passport', gender)
+        + formField('Marital status', task.marital)
+        + formField('Full Australian address', task.address)
+    } else if (task.taskType === 'abn') {
+      const notes = task.notes || ''
+      const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
+      formBody = sectionTitle('Personal details')
+        + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
+        + formField('Last name', task.clientName.split(' ').pop() || '')
+        + formField('Date of birth', task.dob)
+        + formField('Gender as shown in passport', gender)
+        + formField('WhatsApp number', task.whatsapp)
+        + formField('Australian phone number', task.auPhone)
+        + formField('Email address', task.email)
+        + formField('Full Australian address', task.address)
+        + formField('TFN (Tax File Number)', task.tfn)
+        + formField('Brief description of business activity', task.primaryJob)
+    }
+
+    const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>'
+      + '<title>' + (taskTitles[task.taskType] ?? task.taskType) + ' — ' + esc(task.clientName) + '</title>'
+      + '<style>'
+      + '*{box-sizing:border-box;margin:0;padding:0}'
+      + 'body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#fff;color:#0a1410;padding:32px 36px;max-width:680px;margin:0 auto}'
       + '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}}'
-      + '</style></head>'
-      + '<body style="padding:32px 36px;max-width:780px;margin:0 auto">'
+      + '</style></head><body>'
 
-      // Header
-      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid ' + BRAND + '">'
-      + '<div style="display:flex;align-items:center;gap:12px">'
-      + '<div style="width:42px;height:42px;background:' + BRAND + ';border-radius:10px;display:flex;align-items:center;justify-content:center">'
-      + '<svg width="22" height="22" viewBox="0 0 34 34" fill="none"><rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/><rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/><path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="' + BRAND + '" stroke-width="1.3" stroke-linejoin="round"/><polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="' + BRAND + '" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      // Header — exactly like the form
+      + '<div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid ' + LIGHT_GREEN + '">'
+      + '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:8px">'
+      + '<svg width="28" height="28" viewBox="0 0 34 34" fill="none"><rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/><rect x="13" y="13" width="19" height="19" rx="4.5" fill="' + GREEN + '"/><path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.3" stroke-linejoin="round"/><polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      + '<span style="font-size:14px;font-weight:700;color:' + GREEN + '">Working Holiday Tax</span>'
       + '</div>'
-      + '<div><div style="font-size:16px;font-weight:700;color:' + BRAND + '">Working Holiday Tax</div>'
-      + '<div style="font-size:11px;color:' + MUTED + '">workingholidaytax.com.au</div></div>'
+      + '<h1 style="font-size:26px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;margin-bottom:6px">' + (taskTitles[task.taskType] ?? task.taskType) + '</h1>'
+      + '<p style="font-size:12px;color:#6b7f76">Submitted: ' + fmtDateTime(task.submittedAt) + ' &nbsp;·&nbsp; Status: ' + (task.done ? '✓ Done' : '⏳ Pending') + '</p>'
       + '</div>'
-      + '<div style="text-align:right">'
-      + '<div style="font-size:13px;font-weight:600;color:#0a1410">' + (taskLabels[task.taskType] ?? task.taskType) + '</div>'
-      + '<div style="font-size:11px;color:' + MUTED + ';margin-top:2px">Submitted ' + fmtDateTime(task.submittedAt) + '</div>'
-      + '<div style="font-size:11px;color:' + MUTED + '">Status: ' + (task.done ? '✓ Done' : '⏳ Pending') + '</div>'
-      + '</div></div>'
 
-      // Client banner
-      + '<div style="background:' + LIGHT + ';border:1px solid #c8eadf;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px">'
-      + '<div style="width:44px;height:44px;background:' + BRAND + ';border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0">' + initials2 + '</div>'
-      + '<div><div style="font-size:18px;font-weight:700;color:#0a1410">' + esc(task.clientName) + '</div>'
-      + '<div style="font-size:12px;color:' + MUTED + ';margin-top:2px">' + esc(task.country) + ' · ' + (task.taxYear || '—') + '</div>'
-      + '</div></div>'
-
-      + section('Personal Details',
-          row('Full name', task.clientName) + row('Date of birth', task.dob)
-          + row('Country', task.country) + row('Marital status', task.marital))
-
-      + section('Contact Details',
-          row('WhatsApp', task.whatsapp) + row('AU Phone', task.auPhone)
-          + row('Email', task.email) + row('Address', task.address))
-
-      + section('Tax & Employment',
-          row('TFN', task.tfn) + row('Bank details', task.bankDetails)
-          + row('Employer / Business', task.primaryJob) + row('Tax status', task.taxStatus)
-          + row('Tax year', task.taxYear) + row('How heard', task.howHeard))
-
-      + (task.notes ? section('Notes', row('Internal notes', task.notes)) : '')
+      + formBody
 
       + ((task.fileUrls ?? []).length > 0
-        ? '<div style="margin-bottom:18px">'
-          + '<div style="background:' + LIGHT + ';padding:7px 12px;font-size:11px;font-weight:700;color:' + BRAND + ';text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">Documents Uploaded</div>'
-          + '<div style="border:1px solid #e8f0eb;border-top:none;background:#fff;padding:10px 14px"><ul style="list-style:none;padding:0">' + fileListHtml + '</ul></div>'
-          + '</div>'
+        ? sectionTitle('Documents uploaded') + fileListHtml
         : '')
 
-      // Footer
+      + (task.notes
+        ? sectionTitle('Internal notes')
+          + '<div style="padding:12px 14px;background:#fffbeb;border:1px solid #fde68a;border-radius:8px;font-size:13px;color:#0a1410">' + esc(task.notes) + '</div>'
+        : '')
+
       + '<div style="margin-top:32px;padding-top:12px;border-top:1px solid #e8f0eb;display:flex;justify-content:space-between">'
       + '<div style="font-size:10px;color:#aabab2">Generated ' + new Date().toLocaleString('en-AU', {timeZone:'Australia/Sydney'}) + ' AEST</div>'
       + '<div style="font-size:10px;color:#aabab2">Working Holiday Tax · workingholidaytax.com.au</div>'
@@ -329,7 +381,6 @@ export default function DashboardClient() {
     const win = window.open('', '_blank')
     if (win) { win.document.write(html); win.document.close() }
   }
-
   const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
   const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
@@ -342,7 +393,9 @@ export default function DashboardClient() {
     const my = yearFilter==='all' || c.taxReturns.some(r=>r.year===yearFilter) || c.superReturns.some(r=>r.year===yearFilter)
     const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
     const mc = checkinFilter==='all' || (checkinFilter==='done' && checkinDone) || (checkinFilter==='pending' && !checkinDone)
-    return ms && my && mc
+    const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
+    const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
+    return ms && my && mc && mh && mcountry
   })
   const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
 
@@ -527,8 +580,18 @@ export default function DashboardClient() {
                       <div key={url} style={{...S.row,justifyContent:'space-between',alignItems:'center'}}>
                         <span style={{fontSize:12,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{isPdf ? '📄' : '🖼️'} {name}</span>
                         <div style={{display:'flex',gap:6}}>
-                          <a href={url} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',textDecoration:'none',fontWeight:600,whiteSpace:'nowrap'}}>View ↗</a>
-                          <a href={url} download={name} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',textDecoration:'none',fontWeight:600,whiteSpace:'nowrap'}}>Download ↓</a>
+                          <button onClick={()=>setPreviewUrl(url)} style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>View</button>
+                          <button onClick={async()=>{
+                            try {
+                              const res = await fetch(url)
+                              const blob = await res.blob()
+                              const a = document.createElement('a')
+                              a.href = URL.createObjectURL(blob)
+                              a.download = name
+                              a.click()
+                              URL.revokeObjectURL(a.href)
+                            } catch { window.open(url,'_blank') }
+                          }} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>Download ↓</button>
                         </div>
                       </div>
                     )
@@ -548,11 +611,11 @@ export default function DashboardClient() {
 
               {/* Actions */}
               <div style={{display:'flex',gap:10,marginBottom:8}}>
-                <button style={{flex:'0 0 auto',padding:'12px 18px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
+                <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
                 </button>
-                {!activeTask.done && <button style={{flex:1,padding:'12px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>}
+                {!activeTask.done && <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>}
                 <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmDelete(activeTask.id)}>🗑️ Delete &amp; archive client</button>
               </div>
               <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:8}}>Deleting removes all sensitive data and creates/updates the client card</div>
@@ -586,38 +649,84 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Filters + How heard in one row */}
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
-                <div style={{position:'relative',flex:2,minWidth:220}}>
+              {/* Filters row */}
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'stretch'}}>
+                {/* Search */}
+                <div style={{position:'relative',flex:3,minWidth:200}}>
                   <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  <input style={{width:'100%',padding:'8px 12px 8px 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
+                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
-                <select value={yearFilter} onChange={e=>setYearFilter(e.target.value)} style={{padding:'8px 14px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',color:'#333',cursor:'pointer',fontFamily:'inherit',flexShrink:0}}>
+                {/* Tax year filter */}
+                <select value={yearFilter} onChange={e=>setYearFilter(e.target.value)} style={{height:'38px',padding:'0 12px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',color:'#333',cursor:'pointer',fontFamily:'inherit',flexShrink:0}}>
                   <option value="all">All tax years</option>
                   {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                 </select>
-                {clients.length>0 && (
-                  <details style={{flexShrink:0,position:'relative'}}>
-                    <summary style={{padding:'8px 14px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',color:'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none'}}>
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                      How heard
-                      <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 7px',fontSize:11,fontWeight:700}}>{clients.length}</span>
-                    </summary>
-                    <div style={{position:'absolute',top:'110%',right:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 16px',minWidth:220,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
-                      <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',marginBottom:8,textTransform:'uppercase',letterSpacing:'0.08em'}}>How clients heard about us</div>
-                      <div style={{display:'flex',flexDirection:'column',gap:6}}>
-                        {Object.entries(howHeardStats).sort((a,b)=>b[1]-a[1]).map(([src,cnt])=>(
-                          <div key={src} style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
-                            <span style={{fontSize:13,color:'#0a1410'}}>{src}</span>
-                            <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 9px',fontSize:12,fontWeight:700}}>{cnt}</span>
-                          </div>
-                        ))}
+                {/* How heard multi-select */}
+                {(()=>{
+                  const sources = Object.keys(howHeardStats).sort()
+                  if (sources.length === 0) return null
+                  return (
+                    <details style={{flexShrink:0,position:'relative'}}>
+                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${howHeardFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:howHeardFilter.size>0?'#e8f5f0':'#fff',color:howHeardFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        How heard {howHeardFilter.size>0 && <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{howHeardFilter.size}</span>}
+                      </summary>
+                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:200,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
+                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>How heard</span>
+                          {howHeardFilter.size>0 && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setHowHeardFilter(new Set())}>Clear</button>}
+                        </div>
+                        {sources.map(src=>{
+                          const checked = howHeardFilter.has(src)
+                          return (
+                            <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
+                              <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter); checked?s.delete(src):s.add(src); setHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                              <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
+                              <span style={{fontSize:11,color:'#7a8a82'}}>{howHeardStats[src]}</span>
+                            </label>
+                          )
+                        })}
                       </div>
-                    </div>
-                  </details>
+                    </details>
+                  )
+                })()}
+                {/* Country multi-select */}
+                {(()=>{
+                  const countries = [...new Set(clients.map(c=>c.country||'').filter(Boolean))].sort()
+                  if (countries.length === 0) return null
+                  return (
+                    <details style={{flexShrink:0,position:'relative'}}>
+                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${countryFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:countryFilter.size>0?'#e8f5f0':'#fff',color:countryFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        Country {countryFilter.size>0 && <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{countryFilter.size}</span>}
+                      </summary>
+                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:180,maxHeight:280,overflowY:'auto' as const,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
+                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>Country</span>
+                          {countryFilter.size>0 && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setCountryFilter(new Set())}>Clear</button>}
+                        </div>
+                        {countries.map(c=>{
+                          const checked = countryFilter.has(c)
+                          const cnt = clients.filter(cl=>cl.country===c).length
+                          return (
+                            <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
+                              <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter); checked?s.delete(c):s.add(c); setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                              <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
+                              <span style={{fontSize:11,color:'#7a8a82'}}>{cnt}</span>
+                            </label>
+                          )
+                        })}
+                      </div>
+                    </details>
+                  )
+                })()}
+                {/* Clear all filters */}
+                {(howHeardFilter.size>0 || countryFilter.size>0 || yearFilter!=='all' || search) && (
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set()); setCountryFilter(new Set()); setYearFilter('all'); setSearch('')}}>
+                    ✕ Clear
+                  </button>
                 )}
               </div>
-
               {/* Table */}
               {visibleClients.length===0 ? (
                 <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>No clients yet.</div>
@@ -1000,6 +1109,33 @@ export default function DashboardClient() {
             <div style={S.mFooter}>
               <button style={S.mCancel} onClick={()=>setConfirmDeleteClient(null)}>Cancel</button>
               <button style={S.mDel} onClick={()=>deleteClient(confirmDeleteClient)}>Yes, delete</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── File preview modal ── */}
+      {previewUrl && (
+        <div onClick={()=>setPreviewUrl(null)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000,padding:24}}>
+          <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:16,overflow:'hidden',width:'50vw',maxWidth:700,maxHeight:'70vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,0.3)'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px',borderBottom:'1px solid #e4ede8',background:'#f7fbf9'}}>
+              <span style={{fontSize:12,fontWeight:600,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'80%'}}>{previewUrl.split('/').pop()?.replace(/^\d+_/,'') ?? 'File'}</span>
+              <div style={{display:'flex',gap:8,flexShrink:0}}>
+                <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'3px 10px',textDecoration:'none',fontWeight:600}}>Open ↗</a>
+                <button onClick={()=>setPreviewUrl(null)} style={{background:'none',border:'none',fontSize:18,cursor:'pointer',color:'#7a8a82',padding:'0 4px',lineHeight:1}}>✕</button>
+              </div>
+            </div>
+            <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200}}>
+              {previewUrl.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)
+                ? <img src={previewUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}}/>
+                : previewUrl.toLowerCase().endsWith('.pdf')
+                  ? <iframe src={previewUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
+                  : <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
+                      <div style={{fontSize:32,marginBottom:12}}>📄</div>
+                      <div style={{fontSize:13}}>Cannot preview this file type</div>
+                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
+                    </div>
+              }
             </div>
           </div>
         </div>
