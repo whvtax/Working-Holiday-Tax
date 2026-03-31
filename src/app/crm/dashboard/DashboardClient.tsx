@@ -398,22 +398,17 @@ export default function DashboardClient() {
       + '<script class="no-print">window.onload=function(){window.print()}<\/script>'
       + '</body></html>'
 
-    // Use Blob URL to avoid popup blockers
-    try {
-      const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.target = '_blank'
-      a.rel = 'noopener noreferrer'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      setTimeout(() => URL.revokeObjectURL(url), 10000)
-    } catch {
-      const win = window.open('', '_blank')
-      if (win) { win.document.write(html); win.document.close() }
-    }
+    // Download as HTML file — works everywhere, no popup blocker issues
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = ((task.clientName || 'form').replace(/[^a-z0-9]/gi, '_') + '_' + task.taskType + '.html').toLowerCase()
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
   }
   const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
   const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
