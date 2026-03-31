@@ -57,7 +57,10 @@ export default function SuperFormPage() {
   const [homeAddress, setHomeAddress] = useState('')
   const [tfn, setTfn]               = useState('')
   const [superFunds, setSuperFunds] = useState('')
-  const [bankDetails, setBankDetails] = useState('')
+  const [bankName, setBankName]       = useState('')
+  const [bankHolder, setBankHolder]   = useState('')
+  const [bankAccount, setBankAccount] = useState('')
+  const [bankBsb, setBankBsb]         = useState('')
   const [terms, setTerms]           = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
   const [submitted, setSubmitted]   = useState(false)
@@ -77,7 +80,10 @@ export default function SuperFormPage() {
     if (!homeAddress.trim())    e.homeAddress    = 'Required'
     if (!tfn.trim())            e.tfn            = 'Required'
     if (!superFunds.trim())     e.superFunds     = 'Required'
-    if (!bankDetails.trim())    e.bankDetails    = 'Required'
+    if (!bankName.trim())    e.bankName    = 'Required'
+    if (!bankHolder.trim())  e.bankHolder  = 'Required'
+    if (!bankAccount.trim()) e.bankAccount = 'Required'
+    if (!bankBsb.trim())     e.bankBsb     = 'Required'
     if (!selfie.file)           e.selfie         = 'Required'
     if (!terms)                 e.terms          = 'You must accept the terms'
     return e
@@ -95,7 +101,8 @@ export default function SuperFormPage() {
     fd.append('passportCountry', passportCountry); fd.append('smsPhone', smsPhone)
     fd.append('email', email); fd.append('auAddress', auAddress)
     fd.append('homeAddress', homeAddress); fd.append('tfn', tfn)
-    fd.append('superFunds', superFunds); fd.append('bankDetails', bankDetails)
+    fd.append('superFunds', superFunds)
+    fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/super-form', { method: 'POST', body: fd })
@@ -155,7 +162,7 @@ export default function SuperFormPage() {
       <div className="form-card">
         <div className="form-header">
           <div className="form-brand">Working Holiday Tax</div>
-          <p className="form-eyebrow">WORKING HOLIDAY TAX</p>
+          
           <h1 className="form-title">Superannuation Refund</h1>
           <p className="form-intro">Please fill out the form in English exactly as it appears on your passport. We&apos;re here to help if you have any questions.</p>
         </div>
@@ -198,8 +205,17 @@ export default function SuperFormPage() {
           <Field label="Super fund details (fund name, member number, account opening date)" required error={errors.superFunds}>
             <textarea className={`form-input form-textarea${errors.superFunds?' input-error':''}`} style={{minHeight:100}} placeholder={"e.g. AustralianSuper — Member No: 123456789 — Opened: 01/03/2023\nHostPlus — Member No: 987654321 — Opened: 15/06/2022"} value={superFunds} onChange={e=>setSuperFunds(e.target.value)}/>
           </Field>
-          <Field label="Bank account details for refund (full name, account number, BSB)" required error={errors.bankDetails}>
-            <textarea className={`form-input form-textarea${errors.bankDetails?' input-error':''}`} placeholder="e.g. John Smith — Account: 12345678 — BSB: 062-000" value={bankDetails} onChange={e=>setBankDetails(e.target.value)}/>
+          <Field label="Bank name" required error={errors.bankName}>
+            <input className={`form-input${errors.bankName?' input-error':''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ" value={bankName} onChange={e=>setBankName(e.target.value)}/>
+          </Field>
+          <Field label="Account holder full name" required error={errors.bankHolder}>
+            <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder="As it appears on the bank account" value={bankHolder} onChange={e=>setBankHolder(e.target.value)}/>
+          </Field>
+          <Field label="Account number" required error={errors.bankAccount}>
+            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" value={bankAccount} onChange={e=>setBankAccount(e.target.value)}/>
+          </Field>
+          <Field label="BSB" required error={errors.bankBsb}>
+            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>setBankBsb(e.target.value)}/>
           </Field>
 
           <div className="form-section-title">Documents</div>
@@ -237,7 +253,7 @@ export default function SuperFormPage() {
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? <span className="btn-loading"><svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2.5" strokeDasharray="40" strokeDashoffset="10"/></svg>Submitting…</span> : 'Submit Super Application →'}
           </button>
-          <p className="form-footer-note">Working Holiday Tax · Your information is kept secure and private</p>
+          <p className="form-footer-note">Your information is kept secure and private.</p>
         </form>
       </div>
     </div></>

@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -19,10 +20,10 @@ type Client = {
   taxReturns:TaxReturn[]; superReturns:SuperReturn[]
   tfnService:ServiceRecord; abnService:ServiceRecord
 }
-type View = 'tasks'|'clients'|'client-detail'
+type View = 'tasks'|'clients'|'client-detail'|'archive'
 
 const CY = new Date().getFullYear()
-const TAX_YEARS = Array.from({length:8},(_,i)=>`${CY-1+i}-${String(CY+i).slice(2)}`)
+const TAX_YEARS = Array.from({length:9},(_,i)=>`${CY-2+i}-${String(CY-1+i).slice(2)}`)
 const TASK_LABELS: Record<TaskType,string> = {
   'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application'
 }
@@ -30,9 +31,39 @@ const TASK_COLORS: Record<TaskType,string> = {
   'tax-return':'#0E5C42','super':'#2563eb','tfn':'#7c3aed','abn':'#c2410c'
 }
 
+
+function CopyBtn({ text }: { text: string }) {
+  const [copied, setCopied] = React.useState(false)
+  return (
+    <button
+      onClick={() => {
+        navigator.clipboard.writeText(text).then(() => {
+          setCopied(true)
+          setTimeout(() => setCopied(false), 1500)
+        })
+      }}
+      style={{
+        background: 'none', border: 'none', cursor: 'pointer',
+        color: copied ? '#059669' : '#c8d8d0', padding: '2px 3px',
+        borderRadius: 4, display: 'flex', alignItems: 'center',
+        flexShrink: 0, lineHeight: 1, transition: 'color 0.2s',
+      }}
+      title="Copy"
+    >
+      {copied
+        ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      }
+    </button>
+  )
+}
+
 export default function DashboardClient() {
   const router = useRouter()
   const [view, setView]           = useState<View>('tasks')
+  const [archivedClients, setArchivedClients] = useState<ClientRecord[]>([])
+  const [checkinYear, setCheckinYear] = useState('2024-25')
+  const [checkinFilter, setCheckinFilter] = useState<'all'|'done'|'pending'>('all')
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
   const [tasks, setTasks]         = useState<Task[]>([])
   const [clients, setClients]     = useState<Client[]>([])
@@ -74,9 +105,29 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadClients]',e) }
   },[])
 
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
+  const loadArchived = useCallback(async()=>{
+    try {
+      const r=await fetch('/api/crm/clients?archived=true')
+      const d=await r.json(); if(d.ok) setArchivedClients(d.clients)
+    } catch(e){ console.error('[loadArchived]',e) }
+  },[])
+
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadArchived()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
+
+  async function archiveClient(id: string) {
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
+    await loadClients(); await loadArchived()
+  }
+  async function unarchiveClient(id: string) {
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
+    await loadClients(); await loadArchived()
+  }
+  async function toggleCheckin(clientId: string, year: string, current: boolean) {
+    await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkin',year,done:!current})})
+    await loadClients()
+  }
 
   async function markDone(id:string) {
     await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
@@ -97,7 +148,7 @@ export default function DashboardClient() {
   async function deleteTask(id:string) {
     await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null)
-    await Promise.all([loadTasks(),loadClients()])
+    await Promise.all([loadTasks(),loadClients(),loadArchived()])
   }
 
   async function saveClientNotes() {
@@ -171,6 +222,140 @@ export default function DashboardClient() {
   }
 
   const fmtDate   = (iso:string) => iso ? new Date(iso).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '—'
+  const fmtDateTime = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{
+    day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'
+  }) + ' AEST' : '—'
+
+  const downloadTaskPdf = (task: Task) => {
+    const BRAND = '#0B5240'
+    const LIGHT = '#EEF7F2'
+    const MUTED = '#6b7f76'
+
+    const field = (label: string, value: string) => value && value !== '—' ? `
+      <tr>
+        <td style="padding:7px 12px;font-size:12px;color:${MUTED};font-weight:500;width:38%;border-bottom:1px solid #f0f5f2;vertical-align:top">${label}</td>
+        <td style="padding:7px 12px;font-size:12px;color:#0a1410;border-bottom:1px solid #f0f5f2;vertical-align:top;word-break:break-word">${value.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td>
+      </tr>` : ''
+
+    const section = (title: string, rows: string) => `
+      <div style="margin-bottom:18px">
+        <div style="background:${LIGHT};padding:7px 12px;font-size:11px;font-weight:700;color:${BRAND};text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">${title}</div>
+        <table style="width:100%;border-collapse:collapse;border:1px solid #e8f0eb;border-top:none;border-radius:0 0 6px 6px;background:#fff">${rows}</table>
+      </div>`
+
+    const fileList = (task.fileUrls ?? []).map((url,i) => {
+      let name = url.split('/').pop() ?? \`file-\${i+1}\`
+      try { name = decodeURIComponent(name) } catch {}
+      name = name.replace(/^\d+_/,'').slice(0,80)
+      return \`<li style="font-size:12px;color:#0a1410;padding:3px 0">\${url.toLowerCase().endsWith('.pdf')?'📄':'🖼️'} \${name.replace(/</g,'&lt;')}</li>\`
+    }).join('')
+
+    const taskLabel: Record<string,string> = {
+      'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application'
+    }
+
+    const html = \`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>WHV Tax — \${task.clientName}</title>
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif; background:#fff; color:#0a1410; }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display:none !important; }
+    }
+  </style>
+</head>
+<body style="padding:32px 36px;max-width:780px;margin:0 auto">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid ${BRAND}">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:42px;height:42px;background:${BRAND};border-radius:10px;display:flex;align-items:center;justify-content:center">
+        <svg width="22" height="22" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/>
+          <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
+          <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="${BRAND}" stroke-width="1.3" stroke-linejoin="round"/>
+          <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="${BRAND}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:${BRAND}">Working Holiday Tax</div>
+        <div style="font-size:11px;color:${MUTED}">workingholidaytax.com.au</div>
+      </div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:13px;font-weight:600;color:#0a1410">\${taskLabel[task.taskType] ?? task.taskType}</div>
+      <div style="font-size:11px;color:${MUTED};margin-top:2px">Submitted \${fmtDateTime(task.submittedAt)}</div>
+      <div style="font-size:11px;color:${MUTED}">Status: \${task.done ? '✓ Done' : '⏳ Pending'}</div>
+    </div>
+  </div>
+
+  <!-- Client name banner -->
+  <div style="background:${LIGHT};border:1px solid #c8eadf;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:14px">
+    <div style="width:44px;height:44px;background:${BRAND};border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0">
+      \${task.clientName.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()}
+    </div>
+    <div>
+      <div style="font-size:18px;font-weight:700;color:#0a1410">\${task.clientName.replace(/</g,'&lt;')}</div>
+      <div style="font-size:12px;color:${MUTED};margin-top:2px">\${task.country} · \${task.taxYear || '—'}</div>
+    </div>
+  </div>
+
+  \${section('Personal Details',
+    field('Full name', task.clientName) +
+    field('Date of birth', task.dob) +
+    field('Country', task.country) +
+    field('Marital status', task.marital)
+  )}
+
+  \${section('Contact Details',
+    field('WhatsApp', task.whatsapp) +
+    field('AU Phone', task.auPhone) +
+    field('Email', task.email) +
+    field('Address', task.address)
+  )}
+
+  \${section('Tax & Employment',
+    field('TFN', task.tfn) +
+    field('Bank details', task.bankDetails) +
+    field('Employer / Business', task.primaryJob) +
+    field('Tax status', task.taxStatus) +
+    field('Tax year', task.taxYear) +
+    field('How heard', task.howHeard)
+  )}
+
+  \${task.notes ? section('Notes', field('Internal notes', task.notes)) : ''}
+
+  \${(task.fileUrls ?? []).length > 0 ? \`
+  <div style="margin-bottom:18px">
+    <div style="background:\${LIGHT};padding:7px 12px;font-size:11px;font-weight:700;color:\${BRAND};text-transform:uppercase;letter-spacing:0.08em;border-radius:6px 6px 0 0">Documents Uploaded</div>
+    <div style="border:1px solid #e8f0eb;border-top:none;border-radius:0 0 6px 6px;background:#fff;padding:10px 14px">
+      <ul style="list-style:none;padding:0">\${fileList}</ul>
+    </div>
+  </div>\` : ''}
+
+  <!-- Footer -->
+  <div style="margin-top:32px;padding-top:12px;border-top:1px solid #e8f0eb;display:flex;justify-content:space-between;align-items:center">
+    <div style="font-size:10px;color:#aabab2">Generated \${new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'})} AEST</div>
+    <div style="font-size:10px;color:#aabab2">Working Holiday Tax · workingholidaytax.com.au</div>
+  </div>
+
+  <script class="no-print">
+    window.onload = function() { window.print() }
+  </script>
+</body>
+</html>\`
+
+    const win = window.open('', '_blank')
+    if (win) {
+      win.document.write(html)
+      win.document.close()
+    }
+  }
+
   const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
   const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
@@ -181,7 +366,9 @@ export default function DashboardClient() {
   const visibleClients = clients.filter(c=>{
     const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
     const my = yearFilter==='all' || c.taxReturns.some(r=>r.year===yearFilter) || c.superReturns.some(r=>r.year===yearFilter)
-    return ms && my
+    const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
+    const mc = checkinFilter==='all' || (checkinFilter==='done' && checkinDone) || (checkinFilter==='pending' && !checkinDone)
+    return ms && my && mc
   })
   const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
 
@@ -251,6 +438,8 @@ export default function DashboardClient() {
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
               <SbButton v="clients" label="Clients"
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
+              <SbButton v="archive" label="Archive" badge={archivedClients.length||undefined}
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
           <button style={S.sbLock} onClick={lockAndExit}>
@@ -335,19 +524,19 @@ export default function DashboardClient() {
                 <div style={S.card}>
                   <div style={S.secHead}><span>Personal details</span></div>
                   {[['Full name',activeTask.clientName],['Date of birth',activeTask.dob],['Country',activeTask.country],['Marital',activeTask.marital]].map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={S.val}>{v||'—'}</span></div>
+                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={S.val}>{v||'—'}</span>{v&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
                 <div style={S.card}>
                   <div style={S.secHead}><span>Contact details</span></div>
                   {[['WhatsApp',activeTask.whatsapp],['AU Phone',activeTask.auPhone],['Email',activeTask.email],['Address',activeTask.address]].map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span></div>
+                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
                 <div style={S.card}>
                   <div style={S.secHead}><span>Tax & employment</span></div>
                   {[['TFN 🔒',activeTask.tfn],['Bank 🔒',activeTask.bankDetails],['Employer',activeTask.primaryJob],['Tax status',activeTask.taxStatus]].map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span></div>
+                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
                 <div style={S.card}>
@@ -363,7 +552,10 @@ export default function DashboardClient() {
                     return (
                       <div key={url} style={{...S.row,justifyContent:'space-between',alignItems:'center'}}>
                         <span style={{fontSize:12,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{isPdf ? '📄' : '🖼️'} {name}</span>
-                        <a href={url} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',textDecoration:'none',fontWeight:600,whiteSpace:'nowrap'}}>View ↗</a>
+                        <div style={{display:'flex',gap:6}}>
+                          <a href={url} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',textDecoration:'none',fontWeight:600,whiteSpace:'nowrap'}}>View ↗</a>
+                          <a href={url} download={name} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',textDecoration:'none',fontWeight:600,whiteSpace:'nowrap'}}>Download ↓</a>
+                        </div>
                       </div>
                     )
                   })}
@@ -381,7 +573,11 @@ export default function DashboardClient() {
               </div>
 
               {/* Actions */}
-              <div style={{display:'flex',gap:10}}>
+              <div style={{display:'flex',gap:10,marginBottom:8}}>
+                <button style={{flex:'0 0 auto',padding:'12px 18px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                  Download PDF
+                </button>
                 {!activeTask.done && <button style={{flex:1,padding:'12px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>}
                 <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmDelete(activeTask.id)}>🗑️ Delete &amp; archive client</button>
               </div>
@@ -397,14 +593,27 @@ export default function DashboardClient() {
                   <div style={S.pgTitle}>Clients</div>
                   <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{visibleClients.length} {yearFilter!=='all'?`in ${yearFilter}`:'total'}</span>
                 </div>
-                <button style={{...S.addBtn,padding:'8px 14px',fontSize:13}} onClick={()=>setShowAddModal(true)}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
-                  Add Client
-                </button>
+                <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:9,padding:'5px 10px'}}>
+                    <span style={{fontSize:11,color:'#7a8a82',fontWeight:500}}>✓ Year:</span>
+                    <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={{border:'none',background:'none',fontSize:12,fontWeight:600,color:'#0E5C42',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
+                      {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
+                    </select>
+                    <select value={checkinFilter} onChange={e=>setCheckinFilter(e.target.value as any)} style={{border:'none',background:'none',fontSize:11,color:'#555',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
+                      <option value="all">All</option>
+                      <option value="done">✓ Done</option>
+                      <option value="pending">⏳ Pending</option>
+                    </select>
+                  </div>
+                  <button style={{...S.addBtn,padding:'8px 14px',fontSize:13}} onClick={()=>setShowAddModal(true)}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
+                    Add Client
+                  </button>
+                </div>
               </div>
 
-              {/* Filters */}
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap'}}>
+              {/* Filters + How heard in one row */}
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
                 <div style={{position:'relative',flex:2,minWidth:220}}>
                   <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
                   <input style={{width:'100%',padding:'8px 12px 8px 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
@@ -413,25 +622,27 @@ export default function DashboardClient() {
                   <option value="all">All tax years</option>
                   {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                 </select>
-              </div>
-
-              {/* How they heard */}
-              {clients.length>0 && (
-                <div style={{...S.card,padding:'14px 18px',marginBottom:14}}>
-                  <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:10,display:'flex',alignItems:'center',gap:7}}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                    How clients heard about us
-                  </div>
-                  <div style={{display:'flex',flexWrap:'wrap',gap:7}}>
-                    {Object.entries(howHeardStats).sort((a,b)=>b[1]-a[1]).map(([src,cnt])=>(
-                      <div key={src} style={{display:'flex',alignItems:'center',gap:7,background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:8,padding:'6px 12px'}}>
-                        <span style={{fontSize:12,fontWeight:500,color:'#0a1410'}}>{src}</span>
-                        <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 7px',fontSize:11,fontWeight:700}}>{cnt}</span>
+                {clients.length>0 && (
+                  <details style={{flexShrink:0,position:'relative'}}>
+                    <summary style={{padding:'8px 14px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',color:'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none'}}>
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                      How heard
+                      <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 7px',fontSize:11,fontWeight:700}}>{clients.length}</span>
+                    </summary>
+                    <div style={{position:'absolute',top:'110%',right:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 16px',minWidth:220,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
+                      <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',marginBottom:8,textTransform:'uppercase',letterSpacing:'0.08em'}}>How clients heard about us</div>
+                      <div style={{display:'flex',flexDirection:'column',gap:6}}>
+                        {Object.entries(howHeardStats).sort((a,b)=>b[1]-a[1]).map(([src,cnt])=>(
+                          <div key={src} style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+                            <span style={{fontSize:13,color:'#0a1410'}}>{src}</span>
+                            <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 9px',fontSize:12,fontWeight:700}}>{cnt}</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                    </div>
+                  </details>
+                )}
+              </div>
 
               {/* Table */}
               {visibleClients.length===0 ? (
@@ -441,7 +652,7 @@ export default function DashboardClient() {
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','Country','Date of birth','WhatsApp','Email',''].map(h=>(
+                        {['Name','Country','Tax Year','WhatsApp','Email','✓',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -455,14 +666,92 @@ export default function DashboardClient() {
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
                                 <div style={{fontSize:12,fontWeight:500,color:'#0a1410'}}>{cl.fullName}</div>
+                                {cl.whatsapp && (
+                                  <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer"
+                                    onClick={e=>e.stopPropagation()}
+                                    style={{flexShrink:0,color:'#25D366',display:'flex',alignItems:'center'}} title="Open WhatsApp">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
+                                  </a>
+                                )}
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'}}>{cl.country||'—'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.dob||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.createdAt ? cl.createdAt.slice(0,4) : '—'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>{cl.whatsapp||'—'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
+                            <td style={{padding:'6px 10px',borderBottom:'1px solid #f0f4f1',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
+                              {(()=>{const done=cl.yearlyCheckins?.[checkinYear]??false; return (
+                                <button onClick={()=>toggleCheckin(cl.id,checkinYear,done)}
+                                  style={{width:22,height:22,borderRadius:5,border:`2px solid ${done?'#0E5C42':'#d8e4dc'}`,background:done?'#0E5C42':'#fff',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',transition:'all 0.15s'}}>
+                                  {done && <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                                </button>
+                              )})()}
+                            </td>
+                            <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
+                              <div style={{display:'flex',gap:4}}>
+                                <button style={{padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'}} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
+                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}} title="Archive" onClick={()=>archiveClient(cl.id)}>
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── ARCHIVE ── */}
+          {view==='archive' && (
+            <div style={S.page}>
+              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
+                <div style={S.pgTitle}>Archive</div>
+                <span style={{background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{archivedClients.length} clients</span>
+              </div>
+              <div style={{fontSize:12,color:'#aabab2',marginBottom:16}}>Clients who have left Australia or are no longer active.</div>
+              {archivedClients.length===0 ? (
+                <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>No archived clients yet.</div>
+              ) : (
+                <div style={S.card}>
+                  <table style={{width:'100%',borderCollapse:'collapse'}}>
+                    <thead>
+                      <tr>
+                        {['Name','Country','Client since','WhatsApp',''].map(h=>(
+                          <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px'}}>{h}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {archivedClients.map(cl=>{
+                        const [bg,fg]=avColor(cl.fullName)
+                        return (
+                          <tr key={cl.id}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
+                              <div style={{display:'flex',alignItems:'center',gap:9}}>
+                                <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
+                                <div style={{fontSize:12,fontWeight:500,color:'#7a8a82'}}>{cl.fullName}</div>
+                              </div>
+                            </td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{fmtDate(cl.createdAt)}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
+                              <div style={{display:'flex',alignItems:'center',gap:6}}>
+                                {cl.whatsapp||'—'}
+                                {cl.whatsapp && (
+                                  <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#25D366',display:'flex',alignItems:'center'}}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
+                                  </a>
+                                )}
+                              </div>
+                            </td>
                             <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}}>
-                              <button style={{padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'}} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
+                              <button style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #c8eadf',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>unarchiveClient(cl.id)}>
+                                ↩ Restore
+                              </button>
                             </td>
                           </tr>
                         )

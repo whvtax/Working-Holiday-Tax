@@ -17,6 +17,8 @@ export type ClientRecord = {
   superReturns:  SuperReturn[]
   tfnService:    ServiceRecord
   abnService:    ServiceRecord
+  archived:      boolean
+  yearlyCheckins: Record<string, boolean>
 }
 
 export type TaskType = 'tax-return' | 'super' | 'tfn' | 'abn'
@@ -63,7 +65,9 @@ export async function initDb() {
       super_returns TEXT NOT NULL DEFAULT '[]',
       tfn_service   TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
       abn_service   TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
-      created_at    TEXT NOT NULL DEFAULT ''
+      created_at    TEXT NOT NULL DEFAULT '',
+      archived      BOOLEAN NOT NULL DEFAULT FALSE,
+      yearly_checkins TEXT NOT NULL DEFAULT '{}'
     )
   `, 'CREATE crm_clients')
   await sqlWithTimeout(sql`
@@ -96,6 +100,15 @@ export async function initDb() {
     sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`,
     'ALTER crm_tasks'
   )
+  // Migrations for new columns
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
+    'ALTER crm_clients archived'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`,
+    'ALTER crm_clients yearly_checkins'
+  )
   _dbInitialised = true
 }
 
@@ -115,6 +128,8 @@ function toClient(r: Record<string,unknown>): ClientRecord {
     superReturns: parse(r.super_returns, []),
     tfnService:   parse(r.tfn_service,  { done:false, completedAt:'', notes:'' }),
     abnService:   parse(r.abn_service,  { done:false, completedAt:'', notes:'' }),
+    archived:     (r.archived as boolean) ?? false,
+    yearlyCheckins: parse(r.yearly_checkins, {}),
   }
 }
 
@@ -390,4 +405,39 @@ export async function markClientHandled(id: string): Promise<ClientRecord | null
   const handledNote = client.notes.includes('[HANDLED]') ? client.notes : `[HANDLED] ${client.notes}`.trim()
   await sql`UPDATE crm_clients SET notes = ${handledNote} WHERE id = ${id}`
   return getClientById(id)
+}
+
+// ── Archive ────────────────────────────────────────────────────────────────
+
+export async function archiveClient(id: string): Promise<void> {
+  await initDb()
+  await sql`UPDATE crm_clients SET archived = TRUE WHERE id = ${id}`
+}
+
+export async function unarchiveClient(id: string): Promise<void> {
+  await initDb()
+  await sql`UPDATE crm_clients SET archived = FALSE WHERE id = ${id}`
+}
+
+export async function getAllArchivedClients(): Promise<ClientRecord[]> {
+  await initDb()
+  const { rows } = await sql`SELECT * FROM crm_clients WHERE archived = TRUE ORDER BY created_at DESC`
+  return rows.map(toClient)
+}
+
+// Override getAllClients to exclude archived
+export async function getAllActiveClients(): Promise<ClientRecord[]> {
+  await initDb()
+  const { rows } = await sql`SELECT * FROM crm_clients WHERE archived = FALSE OR archived IS NULL ORDER BY created_at DESC`
+  return rows.map(toClient)
+}
+
+// ── Yearly checkins ────────────────────────────────────────────────────────
+
+export async function setYearlyCheckin(clientId: string, year: string, done: boolean): Promise<void> {
+  await initDb()
+  const client = await getClientById(clientId)
+  if (!client) return
+  const updated = { ...client.yearlyCheckins, [year]: done }
+  await sql`UPDATE crm_clients SET yearly_checkins = ${JSON.stringify(updated)} WHERE id = ${clientId}`
 }

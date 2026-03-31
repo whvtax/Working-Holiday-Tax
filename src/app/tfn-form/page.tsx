@@ -163,7 +163,7 @@ export default function TFNFormPage() {
       <div className="form-card">
         <div className="form-header">
           <div className="form-brand">Working Holiday Tax</div>
-          <p className="form-eyebrow">WORKING HOLIDAY TAX</p>
+          
           <h1 className="form-title">TFN Application</h1>
           <p className="form-intro">Please fill out the form in English exactly as it appears on your passport. We&apos;re here to help if you have any questions.</p>
         </div>
@@ -265,7 +265,7 @@ export default function TFNFormPage() {
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? <span className="btn-loading"><svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2.5" strokeDasharray="40" strokeDashoffset="10"/></svg>Submitting…</span> : 'Submit TFN Application →'}
           </button>
-          <p className="form-footer-note">Working Holiday Tax · Your information is kept secure and private</p>
+          <p className="form-footer-note">Your information is kept secure and private.</p>
         </form>
       </div>
     </div></>

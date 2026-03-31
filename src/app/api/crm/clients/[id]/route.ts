@@ -46,6 +46,18 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       if (!client) return NextResponse.json({ ok:false }, { status:404 })
       return NextResponse.json({ ok:true, client })
     }
+    if (body.action === 'archive') {
+      await db.archiveClient(params.id)
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'unarchive') {
+      await db.unarchiveClient(params.id)
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'checkin') {
+      await db.setYearlyCheckin(params.id, body.year, body.done)
+      return NextResponse.json({ ok:true })
+    }
 
     return NextResponse.json({ ok:false, error: 'unknown_action' }, { status:400 })
   } catch (err) {

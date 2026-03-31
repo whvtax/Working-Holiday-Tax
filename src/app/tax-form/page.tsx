@@ -168,7 +168,10 @@ export default function TaxFormPage() {
   const [marital, setMarital]         = useState<'Single'|'Married'|''>('')
   const [tfn, setTfn]                 = useState('')
   const [primaryJob, setPrimaryJob]   = useState('')
-  const [bankDetails, setBankDetails] = useState('')
+  const [bankName, setBankName]           = useState('')
+  const [bankHolder, setBankHolder]       = useState('')
+  const [bankAccount, setBankAccount]     = useState('')
+  const [bankBsb, setBankBsb]             = useState('')
 
   // Files
   const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
@@ -200,7 +203,10 @@ export default function TaxFormPage() {
     if (!marital)            e.marital     = 'Required'
     if (!tfn.trim())         e.tfn         = 'Required'
     if (!primaryJob.trim())  e.primaryJob  = 'Required'
-    if (!bankDetails.trim()) e.bankDetails = 'Required'
+    if (!bankName.trim())    e.bankName    = 'Required'
+    if (!bankHolder.trim())  e.bankHolder  = 'Required'
+    if (!bankAccount.trim()) e.bankAccount = 'Required'
+    if (!bankBsb.trim())     e.bankBsb     = 'Required'
     if (!bankStatement.file)  e.bankStatement  = 'Required'
     if (!selfiePassport.file) e.selfiePassport = 'Required'
     if (!taxStatus)           e.taxStatus      = 'Required'
@@ -229,7 +235,7 @@ export default function TaxFormPage() {
     fd.append('marital',     marital)
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
-    fd.append('bankDetails', bankDetails)
+    fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus)
     fd.append('taxYear',     taxYear)
     fd.append('howHeard',    howHeard)
@@ -309,7 +315,7 @@ export default function TaxFormPage() {
         <div className="form-card">
           <div className="form-header">
             <div className="form-brand">Working Holiday Tax</div>
-            <p className="form-eyebrow">WORKING HOLIDAY TAX</p>
+            
           <h1 className="form-title">Tax Return Form</h1>
             <p className="form-intro">Please fill out the form in English exactly as it appears on your passport. We&apos;re here to help if you have any questions.</p>
           </div>
@@ -395,10 +401,25 @@ export default function TaxFormPage() {
               {err('primaryJob')}
             </Field>
 
-            <Field label="Bank account details for tax refund" required error={errors.bankDetails}>
-              <input className={`inp ${errors.bankDetails ? 'inp-err' : ''}`} type="text" placeholder="Name, account number & BSB"
-                value={bankDetails} onChange={e => { setBankDetails(e.target.value); setErrors(p => ({...p, bankDetails: ''})) }} />
-              {err('bankDetails')}
+            <Field label="Bank name" required error={errors.bankName}>
+              <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
+                value={bankName} onChange={e => { setBankName(e.target.value); setErrors(p => ({...p, bankName: ''})) }} />
+              {err('bankName')}
+            </Field>
+            <Field label="Account holder full name" required error={errors.bankHolder}>
+              <input className={`inp ${errors.bankHolder ? 'inp-err' : ''}`} type="text" placeholder="As it appears on the bank account"
+                value={bankHolder} onChange={e => { setBankHolder(e.target.value); setErrors(p => ({...p, bankHolder: ''})) }} />
+              {err('bankHolder')}
+            </Field>
+            <Field label="Account number" required error={errors.bankAccount}>
+              <input className={`inp ${errors.bankAccount ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12345678"
+                value={bankAccount} onChange={e => { setBankAccount(e.target.value); setErrors(p => ({...p, bankAccount: ''})) }} />
+              {err('bankAccount')}
+            </Field>
+            <Field label="BSB" required error={errors.bankBsb}>
+              <input className={`inp ${errors.bankBsb ? 'inp-err' : ''}`} type="text" placeholder="e.g. 062-000"
+                value={bankBsb} onChange={e => { setBankBsb(e.target.value); setErrors(p => ({...p, bankBsb: ''})) }} />
+              {err('bankBsb')}
             </Field>
           </div>
 
@@ -507,7 +528,7 @@ export default function TaxFormPage() {
             ) : 'Submit Tax Return Form →'}
           </button>
 
-          <p className="form-footer-note">Working Holiday Tax · Your information is kept secure and private</p>
+          <p className="form-footer-note">Your information is kept secure and private.</p>
 
         </form>
         </div>
