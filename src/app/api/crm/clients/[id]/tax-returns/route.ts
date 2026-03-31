@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { addTaxReturn, removeTaxReturn } from '@/lib/db'
+import { addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } from '@/lib/db'
 import { validateSession } from '@/lib/crm-store'
 
 function auth(req: NextRequest) {
@@ -12,12 +12,22 @@ const YEAR_RE = /^\d{4}-\d{2}$/  // e.g. 2023-24
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
   try {
-    const { year, refundAmount, type } = await req.json()
+    const { year, refundAmount, type, isSuper, superAmount } = await req.json()
 
     // Strict field validation
     if (typeof year !== 'string' || !YEAR_RE.test(year)) {
       return NextResponse.json({ ok: false, error: 'invalid_year' }, { status: 400 })
     }
+
+    if (isSuper) {
+      const amt = Number(superAmount)
+      if (!isFinite(amt) || amt < 0 || amt > 1_000_000) {
+        return NextResponse.json({ ok: false, error: 'invalid_amount' }, { status: 400 })
+      }
+      await addSuperReturn(params.id, { year, amount: amt, completedAt: new Date().toISOString() })
+      return NextResponse.json({ ok: true })
+    }
+
     const amount = Number(refundAmount)
     if (!isFinite(amount) || amount < 0 || amount > 1_000_000) {
       return NextResponse.json({ ok: false, error: 'invalid_amount' }, { status: 400 })

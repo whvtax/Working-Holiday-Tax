@@ -92,6 +92,10 @@ export default function DashboardClient() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
+  const [captureRefund, setCaptureRefund] = useState<{taskId:string;taskType:string;taxYear:string;clientId:string}|null>(null)
+  const [captureRefundAmt, setCaptureRefundAmt] = useState('')
+  const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
+  const [captureSuperAmt, setCaptureSuperAmt] = useState('')
   const [confirmComplete, setConfirmComplete] = useState<string|null>(null)
   // Add forms
   const [showAddTax, setShowAddTax]     = useState(false)
@@ -158,9 +162,27 @@ export default function DashboardClient() {
     setNotesSaved(true); setTimeout(()=>setNotesSaved(false),2500)
   }
 
-  async function deleteTask(id:string) {
+  async function deleteTask(id:string, refundData?:{amount:number;type:'refund'|'owed';superAmount:number;year:string;clientId:string}) {
+    // If refund data provided, save to client timeline first
+    if (refundData && refundData.clientId && refundData.year) {
+      if (refundData.amount > 0) {
+        await fetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({year: refundData.year, refundAmount: refundData.amount, type: refundData.type})
+        })
+      }
+      if (refundData.superAmount > 0) {
+        await fetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({year: refundData.year, superAmount: refundData.superAmount, isSuper: true, refundAmount: 0, type: 'refund'})
+        })
+      }
+    }
     await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
-    setActiveTask(null); setTaskView('list'); setConfirmDelete(null)
+    setActiveTask(null); setTaskView('list'); setConfirmDelete(null); setCaptureRefund(null)
+    setCaptureRefundAmt(''); setCaptureSuperAmt(''); setCaptureRefundType('refund')
     await Promise.all([loadTasks(),loadClients(),loadArchived()])
   }
 
@@ -663,12 +685,10 @@ export default function DashboardClient() {
                 const doneCount = doneTasks.length
                 if (pendingCount===0 && doneCount===0) return null
                 return (
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:20}}>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:20}}>
                     {[
                       {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a'},
-                      {label:'Processed',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0'},
-                      {label:`${thisYear} clients`,value:seasonClients.length,color:'#2563eb',bg:'#eff6ff',border:'#bfdbfe'},
-                      {label:'Total refunded',value:totalRefunds>0?fmtCur(totalRefunds):'—',color:'#0E5C42',bg:'#e8f5f0',border:'#b0d8c8',isAmount:true},
+                      {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0'},
                     ].map(stat=>(
                       <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:10,padding:'12px 14px'}}>
                         <div style={{fontSize:10,fontWeight:600,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:4}}>{stat.label}</div>
@@ -830,7 +850,7 @@ export default function DashboardClient() {
                   Download PDF
                 </button>
                 {!activeTask.done && <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>}
-                <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmDelete(activeTask.id)}>🗑️ Delete &amp; archive client</button>
+                <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>{setCaptureRefund({taskId:activeTask.id,taskType:activeTask.taskType,taxYear:activeTask.taxYear,clientId:activeTask.clientId||''});setCaptureRefundAmt('');setCaptureSuperAmt('');setCaptureRefundType('refund')}}>🗑️ Delete &amp; archive client</button>
               </div>
               <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:8}}>Deleting removes all sensitive data and creates/updates the client card</div>
             </div>
@@ -1151,8 +1171,7 @@ export default function DashboardClient() {
                     const relevantYears = allYears.filter((y:string)=>{
                       const hasTax = activeClient.taxReturns.some((r:TaxReturn)=>r.year===y)
                       const hasSuper = activeClient.superReturns.some((r:SuperReturn)=>r.year===y)
-                      const isRecent = TAX_YEARS.slice(-3).includes(y)
-                      return hasTax || hasSuper || isRecent
+                      return hasTax || hasSuper
                     })
                     if (relevantYears.length===0) return <div style={{fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'}}>No history yet.</div>
                     return relevantYears.map((year:string)=>{
@@ -1347,6 +1366,57 @@ export default function DashboardClient() {
         </div>
       )}
 
+      {captureRefund && (
+        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>
+          <div style={{...S.modal,maxWidth:420}}>
+            <div style={{fontSize:28,marginBottom:8,textAlign:'center'}}>💰</div>
+            <div style={{...S.mTitle,textAlign:'center'}}>Record refund before archiving</div>
+            <div style={{fontSize:12,color:'#7a8a82',textAlign:'center',marginBottom:20,lineHeight:1.5}}>
+              Add the amounts to this client's history.<br/>You can skip fields if not applicable.
+            </div>
+            {(captureRefund.taskType==='tax-return' || captureRefund.taskType==='super' || true) && (
+              <div style={{marginBottom:14}}>
+                <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>
+                  💰 Tax Return {captureRefund.taxYear && `(${captureRefund.taxYear})`}
+                </div>
+                <div style={{display:'flex',gap:8,marginBottom:6}}>
+                  <button onClick={()=>setCaptureRefundType('refund')} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='refund'?'#0E5C42':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='refund'?'#e8f5f0':'#fff',color:captureRefundType==='refund'?'#0E5C42':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Refund</button>
+                  <button onClick={()=>setCaptureRefundType('owed')} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='owed'?'#c0392b':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='owed'?'#fff8f7':'#fff',color:captureRefundType==='owed'?'#c0392b':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Tax owed</button>
+                </div>
+                <input
+                  type="number" placeholder="Amount in AUD (leave blank if none)"
+                  value={captureRefundAmt} onChange={e=>setCaptureRefundAmt(e.target.value)}
+                  style={{width:'100%',padding:'9px 12px',border:'1.5px solid #d8e4dc',borderRadius:9,fontSize:13,outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
+                />
+              </div>
+            )}
+            <div style={{marginBottom:20}}>
+              <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>🏦 Super refund (if applicable)</div>
+              <input
+                type="number" placeholder="Super amount in AUD (leave blank if none)"
+                value={captureSuperAmt} onChange={e=>setCaptureSuperAmt(e.target.value)}
+                style={{width:'100%',padding:'9px 12px',border:'1.5px solid #d8e4dc',borderRadius:9,fontSize:13,outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
+              />
+            </div>
+            <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginBottom:16}}>
+              After saving, all sensitive data (TFN, bank, address) will be deleted.
+            </div>
+            <div style={S.mFooter}>
+              <button style={S.mCancel} onClick={()=>setCaptureRefund(null)}>Cancel</button>
+              <button style={{...S.mDel,background:'#0E5C42',borderColor:'#0E5C42',color:'#fff'}}
+                onClick={()=>deleteTask(captureRefund.taskId,{
+                  amount: parseFloat(captureRefundAmt)||0,
+                  type: captureRefundType,
+                  superAmount: parseFloat(captureSuperAmt)||0,
+                  year: captureRefund.taxYear,
+                  clientId: captureRefund.clientId,
+                })}>
+                ✓ Save &amp; archive
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {confirmDelete && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
