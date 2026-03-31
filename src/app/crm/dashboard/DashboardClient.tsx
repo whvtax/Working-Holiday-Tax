@@ -237,6 +237,7 @@ export default function DashboardClient() {
   }) + ' AEST' : '—'
 
   const downloadTaskPdf = (task: Task) => {
+    console.log('[PDF] downloadTaskPdf called with task:', task?.id, task?.clientName)
     const GREEN = '#0B5240'
     const LIGHT_GREEN = '#EAF6F1'
     const esc = (s: string) => (s || '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -276,6 +277,7 @@ export default function DashboardClient() {
     let formBody = ''
 
     if (task.taskType === 'tax-return') {
+      const taxDecl = (task.notes || '').match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
       formBody = sectionTitle('Contact details')
         + formField('WhatsApp / Phone Number', task.whatsapp)
         + formField('Australian Phone Number', task.auPhone)
@@ -399,6 +401,7 @@ export default function DashboardClient() {
       + '</body></html>'
 
     // Download as HTML file — works everywhere, no popup blocker issues
+    console.log('[PDF] HTML generated, length:', html.length, 'creating blob...')
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -735,10 +738,10 @@ export default function DashboardClient() {
                     )})}
                   </DropBtn>
                 )}
-                {[...new Set(clients.map(c=>c.country||'').filter(Boolean))].length>0 && (
+                {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length>0 && (
                   <DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {[...new Set(clients.map(c=>c.country||'').filter(Boolean))].sort().map(c=>{const checked=countryFilter.has(c);const cnt=clients.filter(cl=>cl.country===c).length;return(
+                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).sort().map(c=>{const checked=countryFilter.has(c);const cnt=clients.filter(cl=>cl.country===c).length;return(
                       <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
                         <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(c):s.add(c);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
                         <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
@@ -848,10 +851,10 @@ export default function DashboardClient() {
                     )})}
                   </DropBtn>
                 )}
-                {[...new Set(archivedClients.map(c=>c.country||'').filter(Boolean))].length>0 && (
+                {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length>0 && (
                   <DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {[...new Set(archivedClients.map(c=>c.country||'').filter(Boolean))].sort().map(c=>{const checked=archiveCountryFilter.has(c);const cnt=archivedClients.filter(cl=>cl.country===c).length;return(
+                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).sort().map(c=>{const checked=archiveCountryFilter.has(c);const cnt=archivedClients.filter(cl=>cl.country===c).length;return(
                       <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
                         <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(c):s.add(c);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
                         <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
