@@ -56,7 +56,10 @@ export async function POST(req: NextRequest) {
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
       notes:       [
-        formData.get('declared') ? `Declaration: ${sanitiseField(formData.get('declared'))}` : '',
+        formData.get('taxStatusText') ? sanitiseField(formData.get('taxStatusText')) : '',
+        formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
+        formData.get('declaredText')  ? sanitiseField(formData.get('declaredText')) : '',
+        formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
     })

@@ -104,6 +104,7 @@ export default function SuperFormPage() {
     fd.append('superFunds', superFunds)
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('declared',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
+    fd.append('declaredText', 'I have read and accept the Client Agreement & Privacy Policy.')
     if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/super-form', { method: 'POST', body: fd })

@@ -76,11 +76,14 @@ export default function DashboardClient() {
   const [clientNotes, setClientNotes] = useState('')
   const [clientNotesSaved, setClientNotesSaved] = useState(false)
   const [search, setSearch]       = useState('')
+  const [globalSearch, setGlobalSearch] = useState('')
   const [yearFilter, setYearFilter] = useState('all')
   const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
+  const [yearNotes, setYearNotes] = useState<Record<string,string>>({})
+  const [editingYearNote, setEditingYearNote] = useState<string|null>(null)
   const [archiveYearFilter, setArchiveYearFilter] = useState('all')
   const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
   const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
@@ -277,7 +280,13 @@ export default function DashboardClient() {
     let formBody = ''
 
     if (task.taskType === 'tax-return') {
-      const taxDecl = (task.notes || '').match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
+      const notes = task.notes || ''
+      // Parse all stored declaration fields
+      const parts = notes.split(' | ')
+      const taxStatusLabel = parts[0] || ''
+      const taxStatusValue = parts[1]?.replace('→ ','') || task.taxStatus || ''
+      const declaredLabel  = parts[2] || ''
+      const declaredValue  = parts[3]?.replace('→ ','') || ''
       formBody = sectionTitle('Contact details')
         + formField('WhatsApp / Phone Number', task.whatsapp)
         + formField('Australian Phone Number', task.auPhone)
@@ -291,18 +300,23 @@ export default function DashboardClient() {
         + sectionTitle('Tax information')
         + formField('Tax File Number (TFN)', task.tfn)
         + formField('Tax Year', task.taxYear)
-        + formField('Tax Status', task.taxStatus)
         + formField('Primary job in the past year', task.primaryJob)
         + formField('Bank details', task.bankDetails)
         + sectionTitle('How did you hear about us?')
         + formField('How did you hear about us?', task.howHeard)
-        + (taxDecl ? sectionTitle('Declaration') + formField('Tax residency declaration', taxDecl) : '')
+        + sectionTitle('Declaration')
+        + (taxStatusLabel ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px;font-weight:500">' + esc(taxStatusLabel) + '</div>' : '')
+        + formField('I declare that I am', taxStatusValue, false)
+        + (declaredLabel ? '<div style="font-size:13px;color:#0a1410;margin:14px 0 10px;font-weight:500">' + esc(declaredLabel) + '</div>' : '')
+        + formField('Client response', declaredValue || task.taxStatus, false)
     } else if (task.taskType === 'super') {
       const notes = task.notes || ''
       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
       const superFunds = notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
       const homeAddress = notes.match(/Home Country Address: ([^|]+)/)?.[1]?.trim() || '—'
-      const superDecl = notes.match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
+      const parts = notes.split(' | ')
+      const superDeclText = parts.find(p => p.startsWith('I have read')) || ''
+      const superDeclVal  = parts.find(p => p.startsWith('→')) || ''
       formBody = sectionTitle('Personal details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
@@ -318,13 +332,17 @@ export default function DashboardClient() {
         + formField('TFN (Tax File Number)', task.tfn)
         + formField('Super fund details', superFunds)
         + formField('Bank details', task.bankDetails)
-        + (superDecl ? sectionTitle('Declaration') + formField('Client agreement', superDecl) : '')
+        + sectionTitle('Declaration')
+        + (superDeclText ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px">' + esc(superDeclText) + '</div>' : '')
+        + formField('Client agreement', superDeclVal.replace('→ ','') || '✓ Accepted', false)
     } else if (task.taskType === 'tfn') {
       const notes = task.notes || ''
       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
       const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
-      const tfnDecl = notes.match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
-      const tfnTerms = notes.match(/Terms: ([^|]+)/)?.[1]?.trim() || ''
+      const parts = notes.split(' | ')
+      const tfnDeclText  = parts.find(p => p.startsWith('I confirm I am')) || ''
+      const tfnDeclVal   = parts.find(p => p.startsWith('→ ✓') || p === '→ ✓ I confirm this declaration') || ''
+      const tfnTermsVal  = parts.find(p => p.includes('Client Agreement') && p.startsWith('→')) || ''
       formBody = sectionTitle('Personal details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
@@ -337,14 +355,17 @@ export default function DashboardClient() {
         + formField('Gender as shown in passport', gender)
         + formField('Marital status', task.marital)
         + formField('Full Australian address', task.address)
-        + (tfnDecl || tfnTerms ? sectionTitle('Declaration')
-          + (tfnDecl ? formField('Personal declaration', tfnDecl) : '')
-          + (tfnTerms ? formField('Client agreement', tfnTerms) : '') : '')
+        + sectionTitle('Declaration')
+        + (tfnDeclText ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px">' + esc(tfnDeclText) + '</div>' : '')
+        + formField('Personal declaration', tfnDeclVal.replace('→ ','') || '✓ I confirm this declaration', false)
+        + formField('Client agreement', tfnTermsVal.replace('→ ','') || '✓ I have read and accept the Client Agreement & Privacy Policy', false)
     } else if (task.taskType === 'abn') {
       const notes = task.notes || ''
       const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
-      const abnDecl = notes.match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
-      const abnTerms = notes.match(/Terms: ([^|]+)/)?.[1]?.trim() || ''
+      const parts = notes.split(' | ')
+      const abnDeclText  = parts.find(p => p.startsWith('I declare that')) || ''
+      const abnDeclVal   = parts.find(p => p.startsWith('→ ✓ I confirm')) || ''
+      const abnTermsVal  = parts.find(p => p.includes('Client Agreement') && p.startsWith('→')) || ''
       formBody = sectionTitle('Personal details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
@@ -356,9 +377,10 @@ export default function DashboardClient() {
         + formField('Full Australian address', task.address)
         + formField('TFN (Tax File Number)', task.tfn)
         + formField('Brief description of business activity', task.primaryJob)
-        + (abnDecl || abnTerms ? sectionTitle('Declaration')
-          + (abnDecl ? formField('Business declaration', abnDecl) : '')
-          + (abnTerms ? formField('Client agreement', abnTerms) : '') : '')
+        + sectionTitle('Declaration')
+        + (abnDeclText ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px">' + esc(abnDeclText) + '</div>' : '')
+        + formField('Business declaration', abnDeclVal.replace('→ ','') || '✓ I confirm this declaration', false)
+        + formField('Client agreement', abnTermsVal.replace('→ ','') || '✓ I have read and accept the Client Agreement & Privacy Policy', false)
     }
 
     const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>'
@@ -456,6 +478,20 @@ export default function DashboardClient() {
     )
   }
 
+  // Global search across tasks + clients
+  const globalResults = globalSearch.trim().length > 1 ? {
+    tasks: tasks.filter(t=>
+      t.clientName.toLowerCase().includes(globalSearch.toLowerCase()) ||
+      t.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
+      t.whatsapp?.includes(globalSearch)
+    ).slice(0,5),
+    clients: clients.filter(c=>
+      c.fullName.toLowerCase().includes(globalSearch.toLowerCase()) ||
+      c.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
+      c.whatsapp?.includes(globalSearch)
+    ).slice(0,5),
+  } : null
+
   const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
   const archiveHowHeardStats = archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
   const visibleArchived = archivedClients.filter(c=>{
@@ -523,10 +559,74 @@ export default function DashboardClient() {
         <aside style={S.sb}>
           <div>
             <div style={S.sbLogo}>
-              <div style={S.sbIcon}><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="#fff" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 12L2 7M12 12l10-5M12 12v10" stroke="#fff" strokeWidth="1.8" strokeLinecap="round"/></svg></div>
+              <div style={S.sbIcon}><svg width="22" height="22" viewBox="0 0 34 34" fill="none">
+                <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
+                <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
+                <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.8" strokeLinecap="round"/>
+                <circle cx="2" cy="2" r="2" fill="#E9A020"/>
+                <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.15)" stroke="white" strokeWidth="1.4" strokeLinejoin="round"/>
+                <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg></div>
               <div><div style={S.sbTitle}>WHV Tax CRM</div><div style={S.sbSub}>Admin Portal</div></div>
             </div>
             <div style={S.sbDiv}/>
+
+            {/* Global search */}
+            <div style={{padding:'0 10px 10px',position:'relative'}}>
+              <div style={{position:'relative'}}>
+                <svg style={{position:'absolute',left:8,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                <input
+                  style={{width:'100%',padding:'7px 10px 7px 28px',background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:8,fontSize:12,color:'#fff',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
+                  placeholder="Search clients & tasks…"
+                  value={globalSearch}
+                  onChange={e=>setGlobalSearch(e.target.value)}
+                  onFocus={()=>setGlobalSearch(globalSearch)}
+                />
+              </div>
+              {globalResults && (globalResults.tasks.length>0 || globalResults.clients.length>0) && (
+                <div style={{position:'absolute',top:'100%',left:10,right:10,zIndex:200,background:'#fff',border:'1px solid #e4ede8',borderRadius:10,boxShadow:'0 8px 24px rgba(0,0,0,0.15)',overflow:'hidden',marginTop:4}}>
+                  {globalResults.tasks.length>0 && (
+                    <>
+                      <div style={{padding:'6px 12px',fontSize:10,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',background:'#f7fbf9'}}>Tasks</div>
+                      {globalResults.tasks.map(t=>(
+                        <div key={t.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
+                          onClick={()=>{setActiveTask(t);setTaskNotes(t.notes);setTaskView('detail');setView('tasks');setGlobalSearch('')}}>
+                          <div>
+                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{t.clientName}</div>
+                            <div style={{fontSize:10,color:'#7a8a82'}}>{t.taskType} · {t.taxYear}</div>
+                          </div>
+                          {t.done ? <span style={{fontSize:10,color:'#059669',fontWeight:600}}>✓ Done</span>
+                                  : <span style={{fontSize:10,color:'#d97706',fontWeight:600}}>⏳ Pending</span>}
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  {globalResults.clients.length>0 && (
+                    <>
+                      <div style={{padding:'6px 12px',fontSize:10,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',background:'#f7fbf9'}}>Clients</div>
+                      {globalResults.clients.map(c=>(
+                        <div key={c.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
+                          onClick={()=>{setActiveClient(c);setClientNotes(c.notes||'');setView('clients');setGlobalSearch('')}}>
+                          <div>
+                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{c.fullName}</div>
+                            <div style={{fontSize:10,color:'#7a8a82'}}>{c.country} · {c.taxReturns.length} returns</div>
+                          </div>
+                          {c.taxReturns.length>0 && (
+                            <span style={{fontSize:10,color:'#0E5C42',fontWeight:600}}>
+                              {[...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0].year}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </>
+                  )}
+                  {globalResults.tasks.length===0 && globalResults.clients.length===0 && (
+                    <div style={{padding:'12px',fontSize:12,color:'#aabab2',textAlign:'center' as const}}>No results found</div>
+                  )}
+                </div>
+              )}
+            </div>
+
             <nav style={S.sbNav}>
               <SbButton v="tasks" label="Tasks" badge={pendingTasks.length}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
@@ -549,6 +649,35 @@ export default function DashboardClient() {
             <div style={S.page}>
               <div style={S.pgTitle}>Tasks</div>
               <div style={S.pgSub}>Tax return submissions awaiting processing</div>
+
+              {/* Season stats */}
+              {(()=>{
+                const thisYear = TAX_YEARS[TAX_YEARS.length-1]
+                const seasonTasks = tasks
+                const allClients = clients
+                const seasonClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
+                const totalRefunds = allClients.reduce((s,c)=>
+                  s + c.taxReturns.filter(r=>r.year===thisYear && r.type==='refund')
+                    .reduce((x,r)=>x+r.refundAmount,0), 0)
+                const pendingCount = pendingTasks.length
+                const doneCount = doneTasks.length
+                if (pendingCount===0 && doneCount===0) return null
+                return (
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:20}}>
+                    {[
+                      {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a'},
+                      {label:'Processed',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0'},
+                      {label:`${thisYear} clients`,value:seasonClients.length,color:'#2563eb',bg:'#eff6ff',border:'#bfdbfe'},
+                      {label:'Total refunded',value:totalRefunds>0?fmtCur(totalRefunds):'—',color:'#0E5C42',bg:'#e8f5f0',border:'#b0d8c8',isAmount:true},
+                    ].map(stat=>(
+                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:10,padding:'12px 14px'}}>
+                        <div style={{fontSize:10,fontWeight:600,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:4}}>{stat.label}</div>
+                        <div style={{fontSize:20,fontWeight:700,color:stat.color}}>{stat.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                )
+              })()}
 
               {pendingTasks.length>0 && <>
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
@@ -600,6 +729,24 @@ export default function DashboardClient() {
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{activeTask.clientName}</div>
+                  {(()=>{
+                    const existing = clients.find(c=>c.id===activeTask.clientId)
+                    if (!existing || existing.taxReturns.length===0) return null
+                    const lastTax = [...existing.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
+                    const lastSuper = existing.superReturns.length>0
+                      ? [...existing.superReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
+                      : null
+                    return (
+                      <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'#fef3e8',border:'1px solid #fed7aa',borderRadius:8,padding:'4px 10px',marginTop:4}}>
+                        <span style={{fontSize:11}}>⚠️</span>
+                        <span style={{fontSize:11,fontWeight:600,color:'#c2410c'}}>
+                          Returning client — last: {lastTax.year}
+                          {lastTax.refundAmount>0 ? ` · ${fmtCur(lastTax.refundAmount)} refund` : ''}
+                          {lastSuper ? ` · Super ${lastSuper.year}` : ''}
+                        </span>
+                      </div>
+                    )
+                  })()}
                   <div style={{fontSize:12,color:'#7a8a82',marginTop:3,display:'flex',alignItems:'center',gap:8}}>
                     <span>{activeTask.country}</span>
                     <span style={{background:TASK_COLORS[activeTask.taskType]+'22',color:TASK_COLORS[activeTask.taskType],borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>{TASK_LABELS[activeTask.taskType]}</span>
@@ -764,7 +911,7 @@ export default function DashboardClient() {
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','Country','Tax Year','WhatsApp','Email','✓',''].map(h=>(
+                        {['Name','Country','Last refund','WhatsApp','Email','✓',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -773,7 +920,7 @@ export default function DashboardClient() {
                       {visibleClients.map(cl=>{
                         const [bg,fg]=avColor(cl.fullName)
                         return (
-                          <tr key={cl.id} style={{cursor:'pointer'}} onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients')}}>
+                          <tr key={cl.id} style={{cursor:'pointer'}} onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients');setYearNotes({});setEditingYearNote(null)}}>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
@@ -788,7 +935,21 @@ export default function DashboardClient() {
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'}}>{cl.country||'—'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.createdAt ? cl.createdAt.slice(0,4) : '—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
+                              {(()=>{
+                                // Find the most recent tax return
+                                const lastTax = cl.taxReturns?.length
+                                  ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
+                                  : null
+                                if (!lastTax) return <span style={{color:'#aabab2'}}>—</span>
+                                return (
+                                  <div>
+                                    <div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div>
+                                    <div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div>
+                                  </div>
+                                )
+                              })()}
+                            </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>{cl.whatsapp||'—'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
                             <td style={{padding:'6px 10px',borderBottom:'1px solid #f0f4f1',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
@@ -936,15 +1097,18 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* 1. Tax Returns */}
+              {/* 1+2. Unified Year Timeline */}
               <div style={{...S.card,marginBottom:12}}>
                 <div style={S.secHead}>
-                  <span>💰 Tax Returns</span>
-                  <button style={S.addBtn} onClick={()=>setShowAddTax(v=>!v)}>+ Add year</button>
+                  <span>📅 History by Year</span>
+                  <div style={{display:'flex',gap:6}}>
+                    <button style={S.addBtn} onClick={()=>setShowAddTax(v=>!v)}>+ Tax Return</button>
+                    <button style={{...S.addBtn,background:'#2563eb'}} onClick={()=>setShowAddSuper(v=>!v)}>+ Super</button>
+                  </div>
                 </div>
                 <div style={{padding:'12px 14px'}}>
                   {showAddTax && (
-                    <div style={S.addForm}>
+                    <div style={{...S.addForm,marginBottom:10}}>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} placeholder="e.g. 2023-24" value={newTaxYear} onChange={e=>setNewTaxYear(e.target.value)}/>
@@ -964,40 +1128,8 @@ export default function DashboardClient() {
                       <button style={{padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setShowAddTax(false)}>✕</button>
                     </div>
                   )}
-                  {activeClient.taxReturns.length===0 && !showAddTax && <div style={{fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'}}>No tax returns recorded yet.</div>}
-                  {[...activeClient.taxReturns].sort((a,b)=>b.year.localeCompare(a.year)).map(r=>(
-                    <div key={r.year} style={{...S.returnRow,background:r.type==='owed'?'#fff8f7':'#f7fbf9',borderColor:r.type==='owed'?'#fca5a5':'#e4ede8',marginTop:showAddTax?8:0}}>
-                      <div style={{display:'flex',alignItems:'center',gap:9}}>
-                        <div>
-                          <div style={{fontSize:12,fontWeight:600,color:r.type==='owed'?'#c0392b':'#0E5C42'}}>{r.year}</div>
-                          <div style={{fontSize:10,color:'#aabab2'}}>{fmtDate(r.completedAt)}</div>
-                        </div>
-                        <span style={{background:r.type==='owed'?'#fef0f0':'#e8f5f0',color:r.type==='owed'?'#c0392b':'#0E5C42',border:`1px solid ${r.type==='owed'?'#fca5a5':'#b0d8c8'}`,borderRadius:5,padding:'1px 7px',fontSize:10,fontWeight:700}}>{r.type==='owed'?'Tax owed':'Refund'}</span>
-                      </div>
-                      <div style={{display:'flex',alignItems:'center',gap:10}}>
-                        <span style={{fontSize:13,fontWeight:600,color:r.type==='owed'?'#c0392b':'#0a1410'}}>{r.type==='owed'?'-':''}{fmtCur(r.refundAmount)}</span>
-                        <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:16,padding:'0 2px',lineHeight:1}} onClick={()=>removeTaxReturn(r.year)}>×</button>
-                      </div>
-                    </div>
-                  ))}
-                  {activeClient.taxReturns.length>0 && (
-                    <div style={{...S.totalRow,marginTop:8}}>
-                      <span style={{fontSize:12,fontWeight:600,color:'#0E5C42'}}>Total refunds</span>
-                      <span style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{fmtCur(activeClient.taxReturns.reduce((s,r)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* 2. Super Returns */}
-              <div style={{...S.card,marginBottom:12}}>
-                <div style={S.secHead}>
-                  <span>🏦 Superannuation Refund</span>
-                  <button style={S.addBtn} onClick={()=>setShowAddSuper(v=>!v)}>+ Add year</button>
-                </div>
-                <div style={{padding:'12px 14px'}}>
                   {showAddSuper && (
-                    <div style={S.addForm}>
+                    <div style={{...S.addForm,marginBottom:10}}>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} placeholder="e.g. 2023-24" value={newSuperYear} onChange={e=>setNewSuperYear(e.target.value)}/>
@@ -1006,30 +1138,97 @@ export default function DashboardClient() {
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Amount received (AUD)</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} type="number" placeholder="e.g. 4200" value={newSuperAmt} onChange={e=>setNewSuperAmt(e.target.value)}/>
                       </div>
-                      <button style={{...S.addBtn,padding:'7px 13px'}} onClick={addSuperReturn}>Save</button>
+                      <button style={{...S.addBtn,padding:'7px 13px',background:'#2563eb'}} onClick={addSuperReturn}>Save</button>
                       <button style={{padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setShowAddSuper(false)}>✕</button>
                     </div>
                   )}
-                  {activeClient.superReturns.length===0 && !showAddSuper && <div style={{fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'}}>No superannuation refunds recorded yet.</div>}
-                  {[...activeClient.superReturns].sort((a,b)=>b.year.localeCompare(a.year)).map(r=>(
-                    <div key={r.year} style={{...S.returnRow,marginTop:showAddSuper?8:0}}>
-                      <div><div style={{fontSize:12,fontWeight:600,color:'#2563eb'}}>{r.year}</div><div style={{fontSize:10,color:'#aabab2'}}>{fmtDate(r.completedAt)}</div></div>
-                      <div style={{display:'flex',alignItems:'center',gap:10}}>
-                        <span style={{fontSize:13,fontWeight:600,color:'#0a1410'}}>{fmtCur(r.amount)}</span>
-                        <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:16,padding:'0 2px',lineHeight:1}} onClick={()=>removeSuperReturn(r.year)}>×</button>
-                      </div>
-                    </div>
-                  ))}
-                  {activeClient.superReturns.length>0 && (
-                    <div style={{...S.totalRow,marginTop:8,background:'#eff6ff',borderColor:'#bfdbfe'}}>
-                      <span style={{fontSize:12,fontWeight:600,color:'#2563eb'}}>Total super refunded</span>
-                      <span style={{fontSize:14,fontWeight:700,color:'#2563eb'}}>{fmtCur(activeClient.superReturns.reduce((s,r)=>s+r.amount,0))}</span>
+                  {(()=>{
+                    const allYears = Array.from(new Set([
+                      ...activeClient.taxReturns.map((r:TaxReturn)=>r.year),
+                      ...activeClient.superReturns.map((r:SuperReturn)=>r.year),
+                      ...TAX_YEARS,
+                    ])).sort((a:string,b:string)=>b.localeCompare(a))
+                    const relevantYears = allYears.filter((y:string)=>{
+                      const hasTax = activeClient.taxReturns.some((r:TaxReturn)=>r.year===y)
+                      const hasSuper = activeClient.superReturns.some((r:SuperReturn)=>r.year===y)
+                      const isRecent = TAX_YEARS.slice(-3).includes(y)
+                      return hasTax || hasSuper || isRecent
+                    })
+                    if (relevantYears.length===0) return <div style={{fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'}}>No history yet.</div>
+                    return relevantYears.map((year:string)=>{
+                      const tax = activeClient.taxReturns.find((r:TaxReturn)=>r.year===year)
+                      const sup = activeClient.superReturns.find((r:SuperReturn)=>r.year===year)
+                      const hasAny = tax || sup
+                      return (
+                        <div key={year} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'10px 0',borderBottom:'1px solid #f0f4f1'}}>
+                          <div style={{minWidth:64,paddingTop:2}}>
+                            <div style={{fontSize:12,fontWeight:700,color:hasAny?'#0a1410':'#aabab2'}}>{year}</div>
+                          </div>
+                          <div style={{flex:1,display:'flex',flexWrap:'wrap' as const,gap:6}}>
+                            {tax ? (
+                              <div style={{display:'flex',alignItems:'center',gap:6,background:tax.type==='owed'?'#fff8f7':'#e8f5f0',border:`1px solid ${tax.type==='owed'?'#fca5a5':'#b0d8c8'}`,borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,fontWeight:700,color:tax.type==='owed'?'#c0392b':'#0E5C42'}}>💰 Tax {tax.type==='owed'?'owed':'refund'}</span>
+                                <span style={{fontSize:12,fontWeight:600,color:tax.type==='owed'?'#c0392b':'#0a1410'}}>{tax.type==='owed'?'-':''}{fmtCur(tax.refundAmount)}</span>
+                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeTaxReturn(year)}>×</button>
+                              </div>
+                            ) : (
+                              <div style={{display:'flex',alignItems:'center',gap:4,background:'#f7fbf9',border:'1px dashed #d8e4dc',borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,color:'#aabab2'}}>💰 No tax return</span>
+                              </div>
+                            )}
+                            {sup && (
+                              <div style={{display:'flex',alignItems:'center',gap:6,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,fontWeight:700,color:'#2563eb'}}>🏦 Super</span>
+                                <span style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{fmtCur(sup.amount)}</span>
+                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeSuperReturn(year)}>×</button>
+                              </div>
+                            )}
+                          </div>
+                          {/* Year note */}
+                          {editingYearNote===year ? (
+                            <div style={{display:'flex',gap:6,marginTop:6,alignItems:'center'}}>
+                              <input
+                                autoFocus
+                                style={{flex:1,padding:'4px 8px',border:'1px solid #d8e4dc',borderRadius:6,fontSize:11,fontFamily:'inherit',outline:'none',color:'#0a1410'}}
+                                value={yearNotes[year]||''}
+                                onChange={e=>setYearNotes(n=>({...n,[year]:e.target.value}))}
+                                placeholder="Add note for this year…"
+                                onKeyDown={e=>{if(e.key==='Enter'||e.key==='Escape')setEditingYearNote(null)}}
+                              />
+                              <button style={{padding:'4px 8px',background:'#0E5C42',color:'#fff',border:'none',borderRadius:6,fontSize:11,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setEditingYearNote(null)}>Save</button>
+                            </div>
+                          ) : yearNotes[year] ? (
+                            <div style={{display:'flex',alignItems:'center',gap:6,marginTop:6}}>
+                              <span style={{fontSize:11,color:'#555',flex:1,fontStyle:'italic'}}>📝 {yearNotes[year]}</span>
+                              <button style={{background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0}} onClick={()=>setEditingYearNote(year)}>edit</button>
+                            </div>
+                          ) : (
+                            <button style={{marginTop:4,background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0,textAlign:'left' as const}} onClick={()=>setEditingYearNote(year)}>+ note</button>
+                          )}
+                        </div>
+                      )
+                    })
+                  })()}
+                  {(activeClient.taxReturns.length>0||activeClient.superReturns.length>0) && (
+                    <div style={{display:'flex',gap:12,marginTop:10,paddingTop:8,borderTop:'1.5px solid #e8f0eb'}}>
+                      {activeClient.taxReturns.length>0 && (
+                        <div style={{flex:1,background:'#e8f5f0',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
+                          <div style={{fontSize:10,color:'#0E5C42',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total tax refunds</div>
+                          <div style={{fontSize:15,fontWeight:700,color:'#0E5C42'}}>{fmtCur(activeClient.taxReturns.reduce((s:number,r:TaxReturn)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</div>
+                        </div>
+                      )}
+                      {activeClient.superReturns.length>0 && (
+                        <div style={{flex:1,background:'#eff6ff',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
+                          <div style={{fontSize:10,color:'#2563eb',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total super refunded</div>
+                          <div style={{fontSize:15,fontWeight:700,color:'#2563eb'}}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* 3. TFN + 4. ABN side by side */}
+                            {/* 3. TFN + 4. ABN side by side */}
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
                 {/* TFN */}
                 <div style={S.card}>

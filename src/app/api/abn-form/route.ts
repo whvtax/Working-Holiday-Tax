@@ -46,8 +46,9 @@ export async function POST(req: NextRequest) {
       submittedAt: new Date().toISOString(),
       notes:       [
         formData.get('gender') ? `Gender: ${sanitiseShort(formData.get('gender'))}` : '',
-        formData.get('declared') ? `Declaration: ${sanitiseField(formData.get('declared'))}` : '',
-        formData.get('terms') ? `Terms: ${sanitiseField(formData.get('terms'))}` : '',
+        formData.get('declaredText') ? sanitiseField(formData.get('declaredText')) : '',
+        formData.get('declared')     ? `→ ${sanitiseField(formData.get('declared'))}` : '',
+        formData.get('terms')        ? `→ ${sanitiseField(formData.get('terms'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
     })

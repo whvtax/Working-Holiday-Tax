@@ -104,8 +104,9 @@ export default function TFNFormPage() {
     fd.append('gender',    gender)
     fd.append('marital',   marital)
     fd.append('address',   address)
-    fd.append('declared', declared ? '✓ I confirm: first visit to Australia, never married/changed name/gender, no Australian assets, no TFN issued' : '')
-    fd.append('terms',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
+    fd.append('declared',     declared ? '✓ I confirm this declaration' : '')
+    fd.append('declaredText', 'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.')
+    fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/tfn-form', { method: 'POST', body: fd })

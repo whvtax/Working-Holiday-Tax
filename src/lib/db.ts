@@ -196,7 +196,9 @@ export async function markTaskDone(id: string): Promise<void> {
   const task = await getTask(id)
   if (!task) return
 
-  // 1. Archive client record — keep: full name, DOB, email, whatsapp, country
+  const now = new Date().toISOString()
+
+  // 1. Upsert client record — keep: full name, DOB, email, whatsapp, country
   await sql`
     INSERT INTO crm_clients
       (id, full_name, dob, whatsapp, email, country, how_heard, notes,
@@ -207,16 +209,37 @@ export async function markTaskDone(id: string): Promise<void> {
        '[]', '[]',
        '{"done":false,"completedAt":"","notes":""}',
        '{"done":false,"completedAt":"","notes":""}',
-       ${new Date().toISOString()})
+       ${now})
     ON CONFLICT (id) DO NOTHING
   `
 
-  // 2. Delete all uploaded files from Vercel Blob permanently
+  // 2. Auto-sync to client timeline based on task type
+  if (task.taskType === 'tax-return' && task.taxYear) {
+    await addTaxReturn(task.clientId, {
+      year: task.taxYear,
+      refundAmount: 0,   // amount filled in manually once ATO processes
+      type: 'refund',
+      completedAt: now,
+    })
+  } else if (task.taskType === 'super') {
+    const year = task.taxYear || new Date().getFullYear().toString()
+    await addSuperReturn(task.clientId, {
+      year,
+      amount: 0,         // amount filled in manually once processed
+      completedAt: now,
+    })
+  } else if (task.taskType === 'tfn') {
+    await updateService(task.clientId, 'tfn', { done: true, completedAt: now, notes: '' })
+  } else if (task.taskType === 'abn') {
+    await updateService(task.clientId, 'abn', { done: true, completedAt: now, notes: '' })
+  }
+
+  // 3. Delete all uploaded files from Vercel Blob permanently
   if (task.fileUrls && task.fileUrls.length > 0) {
     await deleteFiles(task.fileUrls)
   }
 
-  // 3. Wipe all sensitive fields — keep: name, dob, email, whatsapp, country
+  // 4. Wipe all sensitive fields — keep: name, dob, email, whatsapp, country
   await sql`
     UPDATE crm_tasks SET
       done         = TRUE,

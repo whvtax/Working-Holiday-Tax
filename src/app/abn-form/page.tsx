@@ -93,8 +93,9 @@ export default function ABNFormPage() {
     fd.append('whatsapp', whatsapp); fd.append('auPhone', auPhone)
     fd.append('email', email); fd.append('address', address)
     fd.append('tfn', tfn); fd.append('business', business)
-    fd.append('declared', declared ? '✓ I declare: no Australian assets, no ABN issued, intend to operate as sole trader in Australia' : '')
-    fd.append('terms',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
+    fd.append('declared',     declared ? '✓ I confirm this declaration' : '')
+    fd.append('declaredText', 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.')
+    fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/abn-form', { method: 'POST', body: fd })
