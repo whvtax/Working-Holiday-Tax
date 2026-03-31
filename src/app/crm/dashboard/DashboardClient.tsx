@@ -79,6 +79,10 @@ export default function DashboardClient() {
   const [yearFilter, setYearFilter] = useState('all')
   const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
+  const [archiveSearch, setArchiveSearch] = useState('')
+  const [archiveYearFilter, setArchiveYearFilter] = useState('all')
+  const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
+  const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
   const [loading, setLoading]     = useState(true)
   const [previewUrl, setPreviewUrl] = useState<string|null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
@@ -289,11 +293,13 @@ export default function DashboardClient() {
         + formField('Bank details', task.bankDetails)
         + sectionTitle('How did you hear about us?')
         + formField('How did you hear about us?', task.howHeard)
+        + (taxDecl ? sectionTitle('Declaration') + formField('Tax residency declaration', taxDecl) : '')
     } else if (task.taskType === 'super') {
       const notes = task.notes || ''
       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
       const superFunds = notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
-      const homeAddress = notes.match(/Home Country Address: (.+)/)?.[1]?.trim() || '—'
+      const homeAddress = notes.match(/Home Country Address: ([^|]+)/)?.[1]?.trim() || '—'
+      const superDecl = notes.match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
       formBody = sectionTitle('Personal details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
@@ -309,10 +315,13 @@ export default function DashboardClient() {
         + formField('TFN (Tax File Number)', task.tfn)
         + formField('Super fund details', superFunds)
         + formField('Bank details', task.bankDetails)
+        + (superDecl ? sectionTitle('Declaration') + formField('Client agreement', superDecl) : '')
     } else if (task.taskType === 'tfn') {
       const notes = task.notes || ''
       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
       const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
+      const tfnDecl = notes.match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
+      const tfnTerms = notes.match(/Terms: ([^|]+)/)?.[1]?.trim() || ''
       formBody = sectionTitle('Personal details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
@@ -325,9 +334,14 @@ export default function DashboardClient() {
         + formField('Gender as shown in passport', gender)
         + formField('Marital status', task.marital)
         + formField('Full Australian address', task.address)
+        + (tfnDecl || tfnTerms ? sectionTitle('Declaration')
+          + (tfnDecl ? formField('Personal declaration', tfnDecl) : '')
+          + (tfnTerms ? formField('Client agreement', tfnTerms) : '') : '')
     } else if (task.taskType === 'abn') {
       const notes = task.notes || ''
       const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
+      const abnDecl = notes.match(/Declaration: ([^|]+)/)?.[1]?.trim() || ''
+      const abnTerms = notes.match(/Terms: ([^|]+)/)?.[1]?.trim() || ''
       formBody = sectionTitle('Personal details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
@@ -339,6 +353,9 @@ export default function DashboardClient() {
         + formField('Full Australian address', task.address)
         + formField('TFN (Tax File Number)', task.tfn)
         + formField('Brief description of business activity', task.primaryJob)
+        + (abnDecl || abnTerms ? sectionTitle('Declaration')
+          + (abnDecl ? formField('Business declaration', abnDecl) : '')
+          + (abnTerms ? formField('Client agreement', abnTerms) : '') : '')
     }
 
     const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>'
@@ -352,11 +369,13 @@ export default function DashboardClient() {
       // Header — exactly like the form
       + '<div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid ' + LIGHT_GREEN + '">'
       + '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:8px">'
-      + '<svg width="28" height="28" viewBox="0 0 34 34" fill="none"><rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/><rect x="13" y="13" width="19" height="19" rx="4.5" fill="' + GREEN + '"/><path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.3" stroke-linejoin="round"/><polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      + '<div style="width:40px;height:40px;background:' + GREEN + ';border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+      + '<svg width="22" height="22" viewBox="0 0 34 34" fill="none"><rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/><rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/><path d="M2 21L13 13" stroke="#5BB88A" stroke-width="2" stroke-linecap="round"/><path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="' + GREEN + '" stroke-width="1.3" stroke-linejoin="round"/><polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="' + GREEN + '" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      + '</div>'
       + '<span style="font-size:14px;font-weight:700;color:' + GREEN + '">Working Holiday Tax</span>'
       + '</div>'
       + '<h1 style="font-size:26px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;margin-bottom:6px">' + (taskTitles[task.taskType] ?? task.taskType) + '</h1>'
-      + '<p style="font-size:12px;color:#6b7f76">Submitted: ' + fmtDateTime(task.submittedAt) + ' &nbsp;·&nbsp; Status: ' + (task.done ? '✓ Done' : '⏳ Pending') + '</p>'
+      + '<p style="font-size:12px;color:#6b7f76">Submitted: ' + fmtDateTime(task.submittedAt) + '</p>'
       + '</div>'
 
       + formBody
@@ -398,6 +417,14 @@ export default function DashboardClient() {
     return ms && my && mc && mh && mcountry
   })
   const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
+  const archiveHowHeardStats = archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
+  const visibleArchived = archivedClients.filter(c=>{
+    const ms = !archiveSearch || c.fullName.toLowerCase().includes(archiveSearch.toLowerCase()) || c.whatsapp?.includes(archiveSearch) || c.email?.includes(archiveSearch)
+    const my = archiveYearFilter==='all' || c.taxReturns?.some(r=>r.year===archiveYearFilter) || c.superReturns?.some(r=>r.year===archiveYearFilter)
+    const mh = archiveHowHeardFilter.size===0 || archiveHowHeardFilter.has(c.howHeard||'Unknown')
+    const mc = archiveCountryFilter.size===0 || archiveCountryFilter.has(c.country||'')
+    return ms && my && mh && mc
+  })
 
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
@@ -628,7 +655,7 @@ export default function DashboardClient() {
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>
                   <div style={S.pgTitle}>Clients</div>
-                  <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{visibleClients.length} {yearFilter!=='all'?`in ${yearFilter}`:'total'}</span>
+                  <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{visibleClients.length}{clients.length!==visibleClients.length?` of ${clients.length}`:''} total</span>
                 </div>
                 <div style={{display:'flex',gap:8,alignItems:'center'}}>
                   <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:9,padding:'5px 10px'}}>
@@ -791,50 +818,110 @@ export default function DashboardClient() {
           {/* ── ARCHIVE ── */}
           {view==='archive' && (
             <div style={S.page}>
-              <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:16}}>
-                <div style={S.pgTitle}>Archive</div>
-                <span style={{background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{archivedClients.length} clients</span>
+              {/* Header */}
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
+                <div style={{display:'flex',alignItems:'center',gap:10}}>
+                  <div style={S.pgTitle}>Archive</div>
+                  <span style={{background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
+                    {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
+                  </span>
+                </div>
               </div>
-              <div style={{fontSize:12,color:'#aabab2',marginBottom:16}}>Clients who have left Australia or are no longer active.</div>
-              {archivedClients.length===0 ? (
-                <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>No archived clients yet.</div>
-              ) : (
+              {/* Filters — same as Clients */}
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'stretch'}}>
+                <div style={{position:'relative',flex:3,minWidth:200}}>
+                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={archiveSearch} onChange={e=>setArchiveSearch(e.target.value)}/>
+                </div>
+                <select value={archiveYearFilter} onChange={e=>setArchiveYearFilter(e.target.value)} style={{height:'38px',padding:'0 12px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',color:'#333',cursor:'pointer',fontFamily:'inherit',flexShrink:0}}>
+                  <option value="all">All tax years</option>
+                  {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
+                </select>
+                {(()=>{
+                  const sources = Object.keys(archiveHowHeardStats).sort()
+                  if (!sources.length) return null
+                  return (
+                    <details style={{flexShrink:0,position:'relative'}}>
+                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${archiveHowHeardFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:archiveHowHeardFilter.size>0?'#e8f5f0':'#fff',color:archiveHowHeardFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        How heard {archiveHowHeardFilter.size>0&&<span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{archiveHowHeardFilter.size}</span>}
+                      </summary>
+                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:200,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
+                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>How heard</span>
+                          {archiveHowHeardFilter.size>0&&<button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setArchiveHowHeardFilter(new Set())}>Clear</button>}
+                        </div>
+                        {sources.map(src=>{const checked=archiveHowHeardFilter.has(src);return(
+                          <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
+                            <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                            <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
+                            <span style={{fontSize:11,color:'#7a8a82'}}>{archiveHowHeardStats[src]}</span>
+                          </label>
+                        )})}
+                      </div>
+                    </details>
+                  )
+                })()}
+                {(()=>{
+                  const countries=[...new Set(archivedClients.map(c=>c.country||'').filter(Boolean))].sort()
+                  if(!countries.length) return null
+                  return(
+                    <details style={{flexShrink:0,position:'relative'}}>
+                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${archiveCountryFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:archiveCountryFilter.size>0?'#e8f5f0':'#fff',color:archiveCountryFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                        Country {archiveCountryFilter.size>0&&<span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{archiveCountryFilter.size}</span>}
+                      </summary>
+                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:180,maxHeight:280,overflowY:'auto' as const,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
+                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
+                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>Country</span>
+                          {archiveCountryFilter.size>0&&<button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setArchiveCountryFilter(new Set())}>Clear</button>}
+                        </div>
+                        {countries.map(c=>{const checked=archiveCountryFilter.has(c);const cnt=archivedClients.filter(cl=>cl.country===c).length;return(
+                          <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
+                            <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(c):s.add(c);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                            <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
+                            <span style={{fontSize:11,color:'#7a8a82'}}>{cnt}</span>
+                          </label>
+                        )})}
+                      </div>
+                    </details>
+                  )
+                })()}
+                {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter!=='all'||archiveSearch)&&(
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter('all');setArchiveSearch('')}}>
+                    ✕ Clear
+                  </button>
+                )}
+              </div>
+              {/* Table */}
+              {visibleArchived.length===0?(
+                <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div>
+              ):(
                 <div style={S.card}>
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
-                    <thead>
-                      <tr>
-                        {['Name','Country','Client since','WhatsApp',''].map(h=>(
-                          <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px'}}>{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
+                    <thead><tr>
+                      {['Name','Country','Tax Year','WhatsApp','Email',''].map(h=>(
+                        <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px'}}>{h}</th>
+                      ))}
+                    </tr></thead>
                     <tbody>
-                      {archivedClients.map(cl=>{
+                      {visibleArchived.map(cl=>{
                         const [bg,fg]=avColor(cl.fullName)
-                        return (
+                        return(
                           <tr key={cl.id}>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
                                 <div style={{fontSize:12,fontWeight:500,color:'#7a8a82'}}>{cl.fullName}</div>
+                                {cl.whatsapp&&<a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{flexShrink:0,color:'#25D366',display:'flex',alignItems:'center'}}><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg></a>}
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'—'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{fmtDate(cl.createdAt)}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
-                              <div style={{display:'flex',alignItems:'center',gap:6}}>
-                                {cl.whatsapp||'—'}
-                                {cl.whatsapp && (
-                                  <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" style={{color:'#25D366',display:'flex',alignItems:'center'}}>
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
-                                  </a>
-                                )}
-                              </div>
-                            </td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.createdAt?cl.createdAt.slice(0,4):'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>{cl.whatsapp||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
                             <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}}>
-                              <button style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #c8eadf',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>unarchiveClient(cl.id)}>
-                                ↩ Restore
-                              </button>
+                              <button style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #c8eadf',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>unarchiveClient(cl.id)}>↩ Restore</button>
                             </td>
                           </tr>
                         )

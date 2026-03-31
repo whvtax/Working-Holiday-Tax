@@ -93,7 +93,9 @@ export default function ABNFormPage() {
     fd.append('whatsapp', whatsapp); fd.append('auPhone', auPhone)
     fd.append('email', email); fd.append('address', address)
     fd.append('tfn', tfn); fd.append('business', business)
-    if (selfie.file) fd.append('selfiePassport', selfie.file)
+    fd.append('declared', declared ? '✓ I declare: no Australian assets, no ABN issued, intend to operate as sole trader in Australia' : '')
+    fd.append('terms',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
+        if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/abn-form', { method: 'POST', body: fd })
       if (res.ok) {
@@ -176,7 +178,7 @@ export default function ABNFormPage() {
               ))}
             </div>
           </Field>
-          <Field label="WhatsApp number" required error={errors.whatsapp}>
+          <Field label="WhatsApp Number" required error={errors.whatsapp}>
             <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+33 6 12 34 56 78" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)}/>
           </Field>
           <Field label="Australian phone number" required error={errors.auPhone}>

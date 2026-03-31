@@ -103,6 +103,7 @@ export default function SuperFormPage() {
     fd.append('homeAddress', homeAddress); fd.append('tfn', tfn)
     fd.append('superFunds', superFunds)
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
+    fd.append('declared',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
     if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/super-form', { method: 'POST', body: fd })
@@ -185,7 +186,7 @@ export default function SuperFormPage() {
           </Field>
 
           <div className="form-section-title">Contact details</div>
-          <Field label="Phone number for SMS" required error={errors.smsPhone}>
+          <Field label="WhatsApp Number" required error={errors.smsPhone}>
             <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" value={smsPhone} onChange={e=>setSmsPhone(e.target.value)}/>
           </Field>
           <Field label="Email address" required error={errors.email}>
@@ -205,6 +206,7 @@ export default function SuperFormPage() {
           <Field label="Super fund details (fund name, member number, account opening date)" required error={errors.superFunds}>
             <textarea className={`form-input form-textarea${errors.superFunds?' input-error':''}`} style={{minHeight:100}} placeholder={"e.g. AustralianSuper — Member No: 123456789 — Opened: 01/03/2023\nHostPlus — Member No: 987654321 — Opened: 15/06/2022"} value={superFunds} onChange={e=>setSuperFunds(e.target.value)}/>
           </Field>
+          <div className="form-section-title">Bank account details</div>
           <Field label="Bank name" required error={errors.bankName}>
             <input className={`form-input${errors.bankName?' input-error':''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ" value={bankName} onChange={e=>setBankName(e.target.value)}/>
           </Field>

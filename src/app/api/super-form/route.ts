@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
         formData.get('passport') ? `Passport No: ${sanitiseShort(formData.get('passport'))}` : '',
         formData.get('superFunds') ? `Super Funds: ${sanitiseField(formData.get('superFunds'))}` : '',
         formData.get('homeAddress') ? `Home Country Address: ${sanitiseField(formData.get('homeAddress'))}` : '',
+        formData.get('declared') ? `Declaration: ${sanitiseField(formData.get('declared'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
     })

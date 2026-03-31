@@ -236,9 +236,10 @@ export default function TaxFormPage() {
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
-    fd.append('taxStatus',   taxStatus)
+    fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
     fd.append('howHeard',    howHeard)
+    fd.append('declared',    declared === 'yes' ? '✓ I declare all information is true and accept the Client Agreement & Privacy Policy' : declared)
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
     invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
@@ -325,7 +326,7 @@ export default function TaxFormPage() {
           <div className="form-section-title">Contact details</div>
           <div>
 
-            <Field label="Phone Number" required error={errors.waNumber}>
+            <Field label="WhatsApp Number" required error={errors.waNumber}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX"
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }} />
               {err('waNumber')}
@@ -401,6 +402,7 @@ export default function TaxFormPage() {
               {err('primaryJob')}
             </Field>
 
+          <div className="form-section-title">Bank account details</div>
             <Field label="Bank name" required error={errors.bankName}>
               <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
                 value={bankName} onChange={e => { setBankName(e.target.value); setErrors(p => ({...p, bankName: ''})) }} />

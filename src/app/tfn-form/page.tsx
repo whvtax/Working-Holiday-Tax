@@ -104,7 +104,9 @@ export default function TFNFormPage() {
     fd.append('gender',    gender)
     fd.append('marital',   marital)
     fd.append('address',   address)
-    if (selfie.file) fd.append('selfiePassport', selfie.file)
+    fd.append('declared', declared ? '✓ I confirm: first visit to Australia, never married/changed name/gender, no Australian assets, no TFN issued' : '')
+    fd.append('terms',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
+        if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/tfn-form', { method: 'POST', body: fd })
       if (res.ok) {
@@ -189,7 +191,7 @@ export default function TFNFormPage() {
           <Field label="Date of birth" required error={errors.dob}>
             <input type="date" className={`form-input${errors.dob?' input-error':''}`} value={dob} onChange={e=>setDob(e.target.value)}/>
           </Field>
-          <Field label="WhatsApp number" required error={errors.whatsapp}>
+          <Field label="WhatsApp Number" required error={errors.whatsapp}>
             <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+33 6 12 34 56 78" value={whatsapp} onChange={e=>setWhatsapp(e.target.value)}/>
           </Field>
           <Field label="Australian phone number" required error={errors.auPhone}>
