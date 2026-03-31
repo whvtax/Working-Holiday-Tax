@@ -80,6 +80,7 @@ export default function DashboardClient() {
   const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
+  const [openDropdown, setOpenDropdown] = useState<string|null>(null)
   const [archiveYearFilter, setArchiveYearFilter] = useState('all')
   const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
   const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
@@ -397,8 +398,22 @@ export default function DashboardClient() {
       + '<script class="no-print">window.onload=function(){window.print()}<\/script>'
       + '</body></html>'
 
-    const win = window.open('', '_blank')
-    if (win) { win.document.write(html); win.document.close() }
+    // Use Blob URL to avoid popup blockers
+    try {
+      const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.target = '_blank'
+      a.rel = 'noopener noreferrer'
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      setTimeout(() => URL.revokeObjectURL(url), 10000)
+    } catch {
+      const win = window.open('', '_blank')
+      if (win) { win.document.write(html); win.document.close() }
+    }
   }
   const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
   const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
@@ -416,6 +431,33 @@ export default function DashboardClient() {
     const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
     return ms && my && mc && mh && mcountry
   })
+  // Generic dropdown button component (avoids <details> which has cross-browser issues)
+  const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
+    const isOpen = openDropdown === id
+    return (
+      <div style={{flexShrink:0,position:'relative'}}>
+        <button
+          onClick={()=>setOpenDropdown(isOpen?null:id)}
+          style={{height:'38px',padding:'0 12px',border:`1.5px solid ${active?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:active?'#e8f5f0':'#fff',color:active?'#0E5C42':'#4a5568',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap' as const,fontWeight:active?600:400}}>
+          {icon}
+          {label}
+
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" style={{marginLeft:2,opacity:.5,transform:isOpen?'rotate(180deg)':'rotate(0deg)',transition:'transform 0.15s'}}><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+        </button>
+        {isOpen && <>
+          <div style={{position:'fixed',inset:0,zIndex:98}} onClick={()=>setOpenDropdown(null)}/>
+          <div style={{position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,background:'#fff',border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',minWidth:200,boxShadow:'0 8px 24px rgba(0,0,0,0.1)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f4f1'}}>
+              <span style={{fontSize:11,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{label}</span>
+              {active && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={e=>{e.stopPropagation();onClear()}}>Clear</button>}
+            </div>
+            {children}
+          </div>
+        </>}
+      </div>
+    )
+  }
+
   const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
   const archiveHowHeardStats = archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
   const visibleArchived = archivedClients.filter(c=>{
@@ -677,79 +719,41 @@ export default function DashboardClient() {
               </div>
 
               {/* Filters row */}
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'stretch'}}>
-                {/* Search */}
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
                 <div style={{position:'relative',flex:3,minWidth:200}}>
                   <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
                   <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
-                {/* Tax year filter */}
                 <select value={yearFilter} onChange={e=>setYearFilter(e.target.value)} style={{height:'38px',padding:'0 12px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',color:'#333',cursor:'pointer',fontFamily:'inherit',flexShrink:0}}>
                   <option value="all">All tax years</option>
                   {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                 </select>
-                {/* How heard multi-select */}
-                {(()=>{
-                  const sources = Object.keys(howHeardStats).sort()
-                  if (sources.length === 0) return null
-                  return (
-                    <details style={{flexShrink:0,position:'relative'}}>
-                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${howHeardFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:howHeardFilter.size>0?'#e8f5f0':'#fff',color:howHeardFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        How heard {howHeardFilter.size>0 && <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{howHeardFilter.size}</span>}
-                      </summary>
-                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:200,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
-                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>How heard</span>
-                          {howHeardFilter.size>0 && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setHowHeardFilter(new Set())}>Clear</button>}
-                        </div>
-                        {sources.map(src=>{
-                          const checked = howHeardFilter.has(src)
-                          return (
-                            <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
-                              <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter); checked?s.delete(src):s.add(src); setHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                              <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
-                              <span style={{fontSize:11,color:'#7a8a82'}}>{howHeardStats[src]}</span>
-                            </label>
-                          )
-                        })}
-                      </div>
-                    </details>
-                  )
-                })()}
-                {/* Country multi-select */}
-                {(()=>{
-                  const countries = [...new Set(clients.map(c=>c.country||'').filter(Boolean))].sort()
-                  if (countries.length === 0) return null
-                  return (
-                    <details style={{flexShrink:0,position:'relative'}}>
-                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${countryFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:countryFilter.size>0?'#e8f5f0':'#fff',color:countryFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        Country {countryFilter.size>0 && <span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{countryFilter.size}</span>}
-                      </summary>
-                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:180,maxHeight:280,overflowY:'auto' as const,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
-                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>Country</span>
-                          {countryFilter.size>0 && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setCountryFilter(new Set())}>Clear</button>}
-                        </div>
-                        {countries.map(c=>{
-                          const checked = countryFilter.has(c)
-                          const cnt = clients.filter(cl=>cl.country===c).length
-                          return (
-                            <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
-                              <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter); checked?s.delete(c):s.add(c); setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                              <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
-                              <span style={{fontSize:11,color:'#7a8a82'}}>{cnt}</span>
-                            </label>
-                          )
-                        })}
-                      </div>
-                    </details>
-                  )
-                })()}
-                {/* Clear all filters */}
-                {(howHeardFilter.size>0 || countryFilter.size>0 || yearFilter!=='all' || search) && (
-                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set()); setCountryFilter(new Set()); setYearFilter('all'); setSearch('')}}>
+                {Object.keys(howHeardStats).length>0 && (
+                  <DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
+                    icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
+                    {Object.keys(howHeardStats).sort().map(src=>{const checked=howHeardFilter.has(src);return(
+                      <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter);checked?s.delete(src):s.add(src);setHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{howHeardStats[src]}</span>
+                      </label>
+                    )})}
+                  </DropBtn>
+                )}
+                {[...new Set(clients.map(c=>c.country||'').filter(Boolean))].length>0 && (
+                  <DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
+                    icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
+                    {[...new Set(clients.map(c=>c.country||'').filter(Boolean))].sort().map(c=>{const checked=countryFilter.has(c);const cnt=clients.filter(cl=>cl.country===c).length;return(
+                      <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(c):s.add(c);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
+                      </label>
+                    )})}
+                  </DropBtn>
+                )}
+                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter!=='all'||search) && (
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter('all');setSearch('')}}>
                     ✕ Clear
                   </button>
                 )}
@@ -827,8 +831,8 @@ export default function DashboardClient() {
                   </span>
                 </div>
               </div>
-              {/* Filters — same as Clients */}
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'stretch'}}>
+              {/* Filters row */}
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
                 <div style={{position:'relative',flex:3,minWidth:200}}>
                   <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
                   <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={archiveSearch} onChange={e=>setArchiveSearch(e.target.value)}/>
@@ -837,57 +841,31 @@ export default function DashboardClient() {
                   <option value="all">All tax years</option>
                   {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                 </select>
-                {(()=>{
-                  const sources = Object.keys(archiveHowHeardStats).sort()
-                  if (!sources.length) return null
-                  return (
-                    <details style={{flexShrink:0,position:'relative'}}>
-                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${archiveHowHeardFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:archiveHowHeardFilter.size>0?'#e8f5f0':'#fff',color:archiveHowHeardFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        How heard {archiveHowHeardFilter.size>0&&<span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{archiveHowHeardFilter.size}</span>}
-                      </summary>
-                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:200,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
-                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>How heard</span>
-                          {archiveHowHeardFilter.size>0&&<button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setArchiveHowHeardFilter(new Set())}>Clear</button>}
-                        </div>
-                        {sources.map(src=>{const checked=archiveHowHeardFilter.has(src);return(
-                          <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
-                            <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                            <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
-                            <span style={{fontSize:11,color:'#7a8a82'}}>{archiveHowHeardStats[src]}</span>
-                          </label>
-                        )})}
-                      </div>
-                    </details>
-                  )
-                })()}
-                {(()=>{
-                  const countries=[...new Set(archivedClients.map(c=>c.country||'').filter(Boolean))].sort()
-                  if(!countries.length) return null
-                  return(
-                    <details style={{flexShrink:0,position:'relative'}}>
-                      <summary style={{height:'38px',padding:'0 12px',border:`1px solid ${archiveCountryFilter.size>0?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:archiveCountryFilter.size>0?'#e8f5f0':'#fff',color:archiveCountryFilter.size>0?'#0E5C42':'#333',cursor:'pointer',fontFamily:'inherit',listStyle:'none',display:'flex',alignItems:'center',gap:6,userSelect:'none' as const,whiteSpace:'nowrap' as const}}>
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                        Country {archiveCountryFilter.size>0&&<span style={{background:'#0E5C42',color:'#fff',borderRadius:20,padding:'1px 6px',fontSize:11,fontWeight:700}}>{archiveCountryFilter.size}</span>}
-                      </summary>
-                      <div style={{position:'absolute',top:'110%',left:0,zIndex:99,background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,padding:'12px 14px',minWidth:180,maxHeight:280,overflowY:'auto' as const,boxShadow:'0 4px 16px rgba(0,0,0,0.08)'}}>
-                        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-                          <span style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>Country</span>
-                          {archiveCountryFilter.size>0&&<button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={()=>setArchiveCountryFilter(new Set())}>Clear</button>}
-                        </div>
-                        {countries.map(c=>{const checked=archiveCountryFilter.has(c);const cnt=archivedClients.filter(cl=>cl.country===c).length;return(
-                          <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',cursor:'pointer'}}>
-                            <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(c):s.add(c);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                            <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
-                            <span style={{fontSize:11,color:'#7a8a82'}}>{cnt}</span>
-                          </label>
-                        )})}
-                      </div>
-                    </details>
-                  )
-                })()}
-                {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter!=='all'||archiveSearch)&&(
+                {Object.keys(archiveHowHeardStats).length>0 && (
+                  <DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
+                    icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
+                    {Object.keys(archiveHowHeardStats).sort().map(src=>{const checked=archiveHowHeardFilter.has(src);return(
+                      <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{archiveHowHeardStats[src]}</span>
+                      </label>
+                    )})}
+                  </DropBtn>
+                )}
+                {[...new Set(archivedClients.map(c=>c.country||'').filter(Boolean))].length>0 && (
+                  <DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
+                    icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
+                    {[...new Set(archivedClients.map(c=>c.country||'').filter(Boolean))].sort().map(c=>{const checked=archiveCountryFilter.has(c);const cnt=archivedClients.filter(cl=>cl.country===c).length;return(
+                      <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(c):s.add(c);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
+                      </label>
+                    )})}
+                  </DropBtn>
+                )}
+                {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter!=='all'||archiveSearch) && (
                   <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter('all');setArchiveSearch('')}}>
                     ✕ Clear
                   </button>
