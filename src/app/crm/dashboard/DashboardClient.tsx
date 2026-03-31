@@ -301,71 +301,79 @@ export default function DashboardClient() {
 
     let formBody = ''
 
+    // ─── TAX RETURN ──────────────────────────────────────────────────
     if (task.taskType === 'tax-return') {
       const notes = task.notes || ''
-      // Parse all stored declaration fields
       const parts = notes.split(' | ')
-      const taxStatusLabel = parts[0] || ''
-      const taxStatusValue = parts[1]?.replace('→ ','') || task.taxStatus || ''
-      const declaredLabel  = parts[2] || ''
-      const declaredValue  = parts[3]?.replace('→ ','') || ''
-      formBody = sectionTitle('Contact details')
-        + formField('WhatsApp / Phone Number', task.whatsapp)
+      const taxStatusLabel = parts[0] || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
+      const taxStatusValue = parts[1]?.replace('→ ','') || task.taxStatus || '—'
+      const declaredLabel  = parts[2] || 'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.'
+      const declaredValue  = parts[3]?.replace('→ ','') || '—'
+
+      formBody = sectionTitle('Contact Details')
+        + formField('WhatsApp Number', task.whatsapp)
         + formField('Australian Phone Number', task.auPhone)
         + formField('Full Name (including middle name)', task.clientName)
         + formField('Email Address', task.email)
         + formField('Full Address in Australia', task.address)
-        + sectionTitle('Personal information')
+        + sectionTitle('Personal Information')
         + formField('Home Country', task.country)
         + formField('Date of Birth', task.dob)
         + formField('Marital Status', task.marital)
-        + sectionTitle('Tax information')
+        + sectionTitle('Tax Information')
         + formField('Tax File Number (TFN)', task.tfn)
         + formField('Tax Year', task.taxYear)
         + formField('Primary job in the past year', task.primaryJob)
-        + formField('Bank details', task.bankDetails)
+        + formField('Bank Account Details', task.bankDetails)
         + sectionTitle('How did you hear about us?')
         + formField('How did you hear about us?', task.howHeard)
-        + sectionTitle('Declaration')
-        + (taxStatusLabel ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px;font-weight:500">' + esc(taxStatusLabel) + '</div>' : '')
+        + sectionTitle('Declaration 1 — Tax Residency')
+        + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">' + esc(taxStatusLabel) + '</div>'
         + formField('I declare that I am', taxStatusValue, false)
-        + (declaredLabel ? '<div style="font-size:13px;color:#0a1410;margin:14px 0 10px;font-weight:500">' + esc(declaredLabel) + '</div>' : '')
-        + formField('Client response', declaredValue || task.taxStatus, false)
+        + sectionTitle('Declaration 2 — General Declaration')
+        + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">' + esc(declaredLabel) + '</div>'
+        + formField('Response', declaredValue, false)
+
+    // ─── SUPER ────────────────────────────────────────────────────────
     } else if (task.taskType === 'super') {
       const notes = task.notes || ''
-      const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
-      const superFunds = notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
+      const passport    = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
+      const superFunds  = notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
       const homeAddress = notes.match(/Home Country Address: ([^|]+)/)?.[1]?.trim() || '—'
       const parts = notes.split(' | ')
-      const superDeclText = parts.find(p => p.startsWith('I have read')) || ''
-      const superDeclVal  = parts.find(p => p.startsWith('→')) || ''
-      formBody = sectionTitle('Personal details')
+      const declText = parts.find((p:string) => p.startsWith('I have read')) || 'I have read and accept the Client Agreement & Privacy Policy.'
+      const declVal  = parts.find((p:string) => p.startsWith('→')) || '—'
+
+      formBody = sectionTitle('Personal Details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
         + formField('Date of birth', task.dob)
         + formField('Passport number', passport)
         + formField('Country that issued the passport', task.country)
-        + sectionTitle('Contact details')
-        + formField('Phone number for SMS', task.whatsapp)
+        + sectionTitle('Contact Details')
+        + formField('Phone number for SMS (WhatsApp)', task.whatsapp)
         + formField('Email address', task.email)
         + formField('Full Australian address', task.address)
         + formField('Full home country address', homeAddress)
-        + sectionTitle('Tax & super fund details')
-        + formField('TFN (Tax File Number)', task.tfn)
-        + formField('Super fund details', superFunds)
-        + formField('Bank details', task.bankDetails)
-        + sectionTitle('Declaration')
-        + (superDeclText ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px">' + esc(superDeclText) + '</div>' : '')
-        + formField('Client agreement', superDeclVal.replace('→ ','') || '✓ Accepted', false)
+        + sectionTitle('Tax & Super Fund Details')
+        + formField('Tax File Number (TFN)', task.tfn)
+        + formField('Super fund name(s) and member number(s)', superFunds)
+        + formField('Bank account details', task.bankDetails)
+        + sectionTitle('Declaration — Client Agreement')
+        + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">' + esc(declText) + '</div>'
+        + formField('I agree', declVal.replace('→ ',''), false)
+
+    // ─── TFN ─────────────────────────────────────────────────────────
     } else if (task.taskType === 'tfn') {
       const notes = task.notes || ''
       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
-      const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
+      const gender   = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
       const parts = notes.split(' | ')
-      const tfnDeclText  = parts.find(p => p.startsWith('I confirm I am')) || ''
-      const tfnDeclVal   = parts.find(p => p.startsWith('→ ✓') || p === '→ ✓ I confirm this declaration') || ''
-      const tfnTermsVal  = parts.find(p => p.includes('Client Agreement') && p.startsWith('→')) || ''
-      formBody = sectionTitle('Personal details')
+      const decl1Text = parts.find((p:string) => p.startsWith('I confirm I am')) || 'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.'
+      const decl1Val  = parts.find((p:string) => p.startsWith('→ ✓ I confirm') || p === '→ ✓ I confirm this declaration')?.replace('→ ','') || '—'
+      const decl2Val  = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
+
+      formBody = sectionTitle('Personal Details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
         + formField('Country of passport', task.country)
@@ -377,18 +385,23 @@ export default function DashboardClient() {
         + formField('Gender as shown in passport', gender)
         + formField('Marital status', task.marital)
         + formField('Full Australian address', task.address)
-        + sectionTitle('Declaration')
-        + (tfnDeclText ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px">' + esc(tfnDeclText) + '</div>' : '')
-        + formField('Personal declaration', tfnDeclVal.replace('→ ','') || '✓ I confirm this declaration', false)
-        + formField('Client agreement', tfnTermsVal.replace('→ ','') || '✓ I have read and accept the Client Agreement & Privacy Policy', false)
+        + sectionTitle('Declaration 1 — Personal Declaration')
+        + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">' + esc(decl1Text) + '</div>'
+        + formField('I confirm this declaration', decl1Val, false)
+        + sectionTitle('Declaration 2 — Client Agreement')
+        + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">I have read and accept the Client Agreement &amp; Privacy Policy.</div>'
+        + formField('I agree', decl2Val, false)
+
+    // ─── ABN ─────────────────────────────────────────────────────────
     } else if (task.taskType === 'abn') {
       const notes = task.notes || ''
       const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
       const parts = notes.split(' | ')
-      const abnDeclText  = parts.find(p => p.startsWith('I declare that')) || ''
-      const abnDeclVal   = parts.find(p => p.startsWith('→ ✓ I confirm')) || ''
-      const abnTermsVal  = parts.find(p => p.includes('Client Agreement') && p.startsWith('→')) || ''
-      formBody = sectionTitle('Personal details')
+      const decl1Text = parts.find((p:string) => p.startsWith('I declare that')) || 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.'
+      const decl1Val  = parts.find((p:string) => p.startsWith('→ ✓ I confirm') || p.startsWith('→ ✓'))?.replace('→ ','') || '—'
+      const decl2Val  = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
+
+      formBody = sectionTitle('Personal Details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + formField('Last name', task.clientName.split(' ').pop() || '')
         + formField('Date of birth', task.dob)
@@ -397,15 +410,17 @@ export default function DashboardClient() {
         + formField('Australian phone number', task.auPhone)
         + formField('Email address', task.email)
         + formField('Full Australian address', task.address)
-        + formField('TFN (Tax File Number)', task.tfn)
+        + formField('Tax File Number (TFN)', task.tfn)
         + formField('Brief description of business activity', task.primaryJob)
-        + sectionTitle('Declaration')
-        + (abnDeclText ? '<div style="font-size:13px;color:#0a1410;margin-bottom:10px">' + esc(abnDeclText) + '</div>' : '')
-        + formField('Business declaration', abnDeclVal.replace('→ ','') || '✓ I confirm this declaration', false)
-        + formField('Client agreement', abnTermsVal.replace('→ ','') || '✓ I have read and accept the Client Agreement & Privacy Policy', false)
+        + sectionTitle('Declaration 1 — Business Declaration')
+        + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">' + esc(decl1Text) + '</div>'
+        + formField('I confirm this declaration', decl1Val, false)
+        + sectionTitle('Declaration 2 — Client Agreement')
+        + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">I have read and accept the Client Agreement &amp; Privacy Policy.</div>'
+        + formField('I agree', decl2Val, false)
     }
 
-    const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>'
+        const html = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>'
       + '<title>' + (taskTitles[task.taskType] ?? task.taskType) + ' — ' + esc(task.clientName) + '</title>'
       + '<style>'
       + '*{box-sizing:border-box;margin:0;padding:0}'
@@ -581,13 +596,16 @@ export default function DashboardClient() {
         <aside style={S.sb}>
           <div>
             <div style={S.sbLogo}>
-              <div style={S.sbIcon}><svg width="22" height="22" viewBox="0 0 34 34" fill="none">
-                <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
-                <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
-                <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.8" strokeLinecap="round"/>
-                <circle cx="2" cy="2" r="2" fill="#E9A020"/>
-                <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.15)" stroke="white" strokeWidth="1.4" strokeLinejoin="round"/>
-                <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <div style={{width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'}}><svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="100" fill="#0B5240"/>
+                <g transform="translate(100,100) scale(3.57) translate(-17,-17)">
+                  <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
+                  <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
+                  <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.4" strokeLinecap="round"/>
+                  <circle cx="2" cy="2" r="1.8" fill="#E9A020"/>
+                  <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.3" strokeLinejoin="round"/>
+                  <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                </g>
               </svg></div>
               <div><div style={S.sbTitle}>WHV Tax CRM</div><div style={S.sbSub}>Admin Portal</div></div>
             </div>
@@ -832,18 +850,87 @@ export default function DashboardClient() {
                   })}
                 </div>
               </div>
-              {/* Notes */}
-              <div style={{...S.card,padding:'14px 16px',marginBottom:12}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>Internal notes</div>
-                <textarea style={{width:'100%',border:'1.5px solid #e4ede8',borderRadius:9,padding:'9px 11px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:72,lineHeight:1.55,boxSizing:'border-box'}}
-                  placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6}}>
-                  {notesSaved?<span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span>:<span/>}
-                  <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===activeTask.notes?0.4:1}} disabled={taskNotes===activeTask.notes} onClick={saveTaskNotes}>Save notes</button>
+              {/* Declaration + Notes side by side */}
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+                {/* Declaration card — per form type */}
+                <div style={S.card}>
+                  {(()=>{
+                    const parts = (activeTask.notes||'').split(' | ')
+
+                    // TAX RETURN: Tax Residency + Agreement
+                    if (activeTask.taskType === 'tax-return') {
+                      const taxStatusLabel = parts[0] || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
+                      const taxStatusValue = parts[1]?.replace('→ ','') || activeTask.taxStatus || '—'
+                      const declLabel      = parts[2] || 'I declare that all information provided is true, complete, and accurate. I confirm that I have read and accept the Client Agreement & Privacy Policy.'
+                      const declValue      = parts[3]?.replace('→ ','') || '—'
+                      return <>
+                        <div style={S.secHead}><span>Tax Residency Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{taxStatusLabel}</div>
+                        <div style={S.row}><span style={S.lbl}>Selected</span><span style={{...S.val,color:'#0E5C42',fontWeight:600}}>{taxStatusValue}</span></div>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
+                        <div style={S.secHead}><span>General Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{declLabel}</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:declValue.includes('agree')||declValue.includes('✓')?'#059669':'#c0392b',fontWeight:600}}>{declValue}</span></div>
+                      </>
+                    }
+
+                    // SUPER: Client Agreement only
+                    if (activeTask.taskType === 'super') {
+                      const declVal = parts.find((p:string)=>p.startsWith('→')) || '—'
+                      return <>
+                        <div style={S.secHead}><span>Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                      </>
+                    }
+
+                    // TFN: Personal declaration + Client Agreement
+                    if (activeTask.taskType === 'tfn') {
+                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
+                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
+                      return <>
+                        <div style={S.secHead}><span>Personal Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
+                        <div style={S.secHead}><span>Client Agreement</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
+                      </>
+                    }
+
+                    // ABN: Business declaration + Client Agreement
+                    if (activeTask.taskType === 'abn') {
+                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
+                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
+                      return <>
+                        <div style={S.secHead}><span>Business Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
+                        <div style={S.secHead}><span>Client Agreement</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
+                      </>
+                    }
+
+                    return <div style={{padding:'14px',fontSize:12,color:'#aabab2'}}>No declaration data</div>
+                  })()}
+                </div>
+
+                {/* Notes */}
+                <div style={{...S.card,display:'flex',flexDirection:'column' as const}}>
+                  <div style={S.secHead}><span>Internal notes</span></div>
+                  <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
+                    placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
+                    {notesSaved?<span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span>:<span/>}
+                    <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===activeTask.notes?0.4:1}} disabled={taskNotes===activeTask.notes} onClick={saveTaskNotes}>Save notes</button>
+                  </div>
                 </div>
               </div>
 
-              {/* Actions */}
+                            {/* Actions */}
               <div style={{display:'flex',gap:10,marginBottom:8}}>
                 <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
