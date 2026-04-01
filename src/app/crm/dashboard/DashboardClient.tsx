@@ -305,10 +305,20 @@ export default function DashboardClient() {
     if (task.taskType === 'tax-return') {
       const notes = task.notes || ''
       const parts = notes.split(' | ')
-      const taxStatusLabel = parts[0] || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
-      const taxStatusValue = parts[1]?.replace('→ ','') || task.taxStatus || '—'
-      const declaredLabel  = parts[2] || 'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.'
-      const declaredValue  = parts[3]?.replace('→ ','') || '—'
+
+      // Normalise raw radio values saved by older submissions
+      const normaliseTaxStatus = (v: string) => {
+        if (!v || v === '—') return v
+        if (v === 'resident') return 'Australian resident for tax purposes'
+        if (v === 'whm') return 'Working holiday maker for tax purposes'
+        return v
+      }
+
+      const taxStatusLabel = parts.find((p:string) => !p.startsWith('→') && (p.startsWith('I confirm that I have reviewed') || (p.length > 40 && !p.startsWith('I declare')))) || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
+      const rawTaxVal      = parts.find((p:string) => p.startsWith('→') && !p.includes('agree') && !p.includes('Yes') && !p.includes('No'))?.replace('→ ','') || task.taxStatus || '—'
+      const taxStatusValue = normaliseTaxStatus(rawTaxVal)
+      const declaredLabel  = parts.find((p:string) => !p.startsWith('→') && p.startsWith('I declare')) || 'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.'
+      const declaredValue  = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
 
       formBody = sectionTitle('Contact Details')
         + formField('WhatsApp Number', task.whatsapp)
@@ -428,19 +438,29 @@ export default function DashboardClient() {
       + '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}}'
       + '</style></head><body>'
 
-      // Header — exactly like the form
+      // Header — exact favicon logo + site branding
       + '<div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid ' + LIGHT_GREEN + '">'
-      + '<div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:8px">'
-      + '<div style="width:40px;height:40px;background:' + GREEN + ';border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
-      + '<svg width="22" height="22" viewBox="0 0 34 34" fill="none"><rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/><rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/><path d="M2 21L13 13" stroke="#5BB88A" stroke-width="2" stroke-linecap="round"/><path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="' + GREEN + '" stroke-width="1.3" stroke-linejoin="round"/><polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="' + GREEN + '" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+      + '<div style="display:inline-flex;align-items:center;gap:12px;margin-bottom:14px">'
+      + '<svg width="52" height="52" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'
+      + '<circle cx="100" cy="100" r="100" fill="#0B5240"/>'
+      + '<g transform="translate(100,100) scale(3.57) translate(-17,-17)">'
+      + '<rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/>'
+      + '<rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>'
+      + '<line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" stroke-width="1.4" stroke-linecap="round"/>'
+      + '<circle cx="2" cy="2" r="1.8" fill="#E9A020"/>'
+      + '<path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" stroke-width="1.3" stroke-linejoin="round"/>'
+      + '<polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>'
+      + '</g></svg>'
+      + '<div style="text-align:left">'
+      + '<div style="font-size:20px;font-weight:800;color:' + GREEN + ';letter-spacing:-0.02em">Working Holiday Tax</div>'
+      + '<div style="font-size:11px;color:#7a8a82;margin-top:2px">workingholidaytax.com.au</div>'
       + '</div>'
-      + '<span style="font-size:14px;font-weight:700;color:' + GREEN + '">Working Holiday Tax</span>'
       + '</div>'
       + '<h1 style="font-size:26px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;margin-bottom:6px">' + (taskTitles[task.taskType] ?? task.taskType) + '</h1>'
       + '<p style="font-size:12px;color:#6b7f76">Submitted: ' + fmtDateTime(task.submittedAt) + '</p>'
       + '</div>'
 
-      + formBody
+            + formBody
 
       + ((task.fileUrls ?? []).length > 0
         ? sectionTitle('Documents uploaded') + fileListHtml
@@ -859,10 +879,21 @@ export default function DashboardClient() {
 
                     // TAX RETURN: Tax Residency + Agreement
                     if (activeTask.taskType === 'tax-return') {
-                      const taxStatusLabel = parts[0] || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
-                      const taxStatusValue = parts[1]?.replace('→ ','') || activeTask.taxStatus || '—'
-                      const declLabel      = parts[2] || 'I declare that all information provided is true, complete, and accurate. I confirm that I have read and accept the Client Agreement & Privacy Policy.'
-                      const declValue      = parts[3]?.replace('→ ','') || '—'
+                      // Normalise raw radio values saved by older submissions
+                      const normaliseTaxStatus = (v: string) => {
+                        if (!v || v === '—') return v
+                        if (v === 'resident') return 'Australian resident for tax purposes'
+                        if (v === 'whm') return 'Working holiday maker for tax purposes'
+                        return v
+                      }
+                      // notes format: "taxStatusText | → taxStatusValue | declaredText | → declaredValue"
+                      // Find parts by prefix so order doesn't matter and long texts with natural " | " don't break parsing
+                      const taxStatusLabel = parts.find((p:string) => !p.startsWith('→') && (p.startsWith('I confirm that I have reviewed') || p.length > 40 && !p.startsWith('I declare'))) || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
+                      const rawTaxVal      = parts.find((p:string) => p.startsWith('→') && !p.includes('agree') && !p.includes('Yes') && !p.includes('No'))?.replace('→ ','') || activeTask.taxStatus || '—'
+                      const taxStatusValue = normaliseTaxStatus(rawTaxVal)
+                      const declLabel      = parts.find((p:string) => !p.startsWith('→') && p.startsWith('I declare')) || 'I declare that all information provided is true, complete, and accurate. I confirm that I have read and accept the Client Agreement & Privacy Policy.'
+                      const rawDeclVal     = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
+                      const declValue      = rawDeclVal
                       return <>
                         <div style={S.secHead}><span>Tax Residency Declaration</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{taxStatusLabel}</div>

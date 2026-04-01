@@ -98,7 +98,11 @@ export async function initDb() {
   // Migration safety: add column if missing in older deploys
   await sqlWithTimeout(
     sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`,
-    'ALTER crm_tasks'
+    'ALTER crm_tasks file_urls'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`,
+    'ALTER crm_tasks au_phone'
   )
   // Migrations for new columns
   await sqlWithTimeout(

@@ -168,7 +168,7 @@ export default function TFNFormPage() {
           <div className="form-brand">Working Holiday Tax</div>
           
           <h1 className="form-title">TFN Application</h1>
-          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport. We&apos;re here to help if you have any questions.</p>
+          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.</p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
