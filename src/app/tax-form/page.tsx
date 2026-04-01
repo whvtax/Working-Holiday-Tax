@@ -496,7 +496,7 @@ export default function TaxFormPage() {
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
-                    primaryJob:'Primary Job',bankDetails:'Bank Details',
+                    primaryJob:'Primary Job',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
                     bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>

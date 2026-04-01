@@ -115,7 +115,7 @@ export default function ABNFormPage() {
     const displayName = firstName || 'there'
     return (
       <>
-        <style>{styles}</style>
+        <style>{css}</style>
         <div className="form-success-wrap">
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -207,7 +207,7 @@ export default function ABNFormPage() {
           <div className={`declaration-box${errors.declared?' decl-error':''}`}>
             <p className="decl-text">I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.</p>
             <label className="check-row">
-              <input type="checkbox" checked={declared} onChange={e=>setDeclared(e.target.checked)} className="hidden"/>
+              <input type="checkbox" checked={declared} onChange={e=>{ setDeclared(e.target.checked); setErrors(p=>({...p,declared:''})) }} className="hidden"/>
               <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
               <span className="check-label">I confirm this declaration</span>
             </label>
@@ -215,7 +215,7 @@ export default function ABNFormPage() {
           </div>
           <div className={`declaration-box${errors.terms?' decl-error':''}`} style={{marginTop:10}}>
             <label className="check-row">
-              <input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} className="hidden"/>
+              <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
               <span className="check-label">I have read and accept the <a href="/client-agreement" target="_blank" className="decl-link">Client Agreement</a> &amp; <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a></span>
             </label>

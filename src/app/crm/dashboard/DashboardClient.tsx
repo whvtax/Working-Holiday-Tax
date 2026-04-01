@@ -1054,6 +1054,73 @@ export default function DashboardClient() {
                   </button>
                 )}
               </div>
+              {/* ── Refund summary bar (reactive to all filters) ── */}
+              {visibleClients.length>0 && (()=>{
+                const totalTaxRefund = visibleClients.reduce((sum,c)=>{
+                  const filtered = yearFilter==='all'
+                    ? c.taxReturns
+                    : c.taxReturns.filter(r=>r.year===yearFilter)
+                  return sum + filtered.filter(r=>r.type==='refund').reduce((s,r)=>s+r.refundAmount,0)
+                    - filtered.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
+                },0)
+                const totalSuper = visibleClients.reduce((sum,c)=>{
+                  const filtered = yearFilter==='all'
+                    ? c.superReturns
+                    : c.superReturns.filter(r=>r.year===yearFilter)
+                  return sum + filtered.reduce((s,r)=>s+r.amount,0)
+                },0)
+                const clientsWithRefund = visibleClients.filter(c=>{
+                  const f = yearFilter==='all' ? c.taxReturns : c.taxReturns.filter(r=>r.year===yearFilter)
+                  return f.length>0
+                }).length
+                const clientsWithSuper = visibleClients.filter(c=>{
+                  const f = yearFilter==='all' ? c.superReturns : c.superReturns.filter(r=>r.year===yearFilter)
+                  return f.length>0
+                }).length
+                if (totalTaxRefund===0 && totalSuper===0) return null
+                const yearLabel = yearFilter==='all' ? '' : ` · ${yearFilter}`
+                return (
+                  <div style={{display:'flex',gap:10,marginBottom:12,flexWrap:'wrap' as const}}>
+                    {totalTaxRefund!==0 && (
+                      <div style={{flex:1,minWidth:160,background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+                        <div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>💰 Tax Refunds{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund)}</div>
+                        </div>
+                        <div style={{textAlign:'right' as const}}>
+                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{clientsWithRefund}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
+                        </div>
+                      </div>
+                    )}
+                    {totalSuper>0 && (
+                      <div style={{flex:1,minWidth:160,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+                        <div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#2563eb',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>🏦 Super Refunded{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#2563eb'}}>{fmtCur(totalSuper)}</div>
+                        </div>
+                        <div style={{textAlign:'right' as const}}>
+                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#2563eb'}}>{clientsWithSuper}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
+                        </div>
+                      </div>
+                    )}
+                    {totalTaxRefund!==0 && totalSuper>0 && (
+                      <div style={{flex:1,minWidth:160,background:'#f3eefe',border:'1px solid #ddd6fe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+                        <div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#7c3aed',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>✨ Combined{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#7c3aed'}}>{fmtCur(totalTaxRefund+totalSuper)}</div>
+                        </div>
+                        <div style={{textAlign:'right' as const}}>
+                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>showing</div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#7c3aed'}}>{visibleClients.length}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })()}
+
               {/* Table */}
               {visibleClients.length===0 ? (
                 <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>No clients yet.</div>

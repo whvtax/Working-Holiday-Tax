@@ -8,19 +8,11 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Allow file uploads up to 15MB (images + PDFs)
+  // Allow file uploads up to 15MB for Server Actions
   experimental: {
     serverActions: {
       bodySizeLimit: '15mb',
     },
-  },
-  // Increase body size limit for API routes (file uploads: bank statement + selfie + invoices)
-  // Without this, Vercel/Next.js uses 4.5MB default which breaks multi-file uploads
-  api: {
-    bodyParser: {
-      sizeLimit: '15mb',
-    },
-    responseLimit: '15mb',
   },
 }
 
