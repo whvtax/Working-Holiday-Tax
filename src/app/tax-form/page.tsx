@@ -277,7 +277,7 @@ export default function TaxFormPage() {
             </svg>
           </div>
           <h1 className="success-title">Thank you, {firstName}! 🎉</h1>
-          <p className="success-body">We've received your details and will be in touch shortly via WhatsApp.</p>
+          <p className="success-body">We've received your details and will be in touch shortly.</p>
 
           <a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
@@ -289,7 +289,7 @@ export default function TaxFormPage() {
 
           <div className="success-divider" />
 
-          <p className="success-follow-label">Learn something new about Australian tax for WHV holders — one tip a day 🇦🇺</p>
+          <p className="success-follow-label">Tax, Super &amp; Workers' rights<br />Learn one thing every day 🙋<br />Free guides below ⬇️</p>
           <div className="success-socials">
             <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -601,7 +601,7 @@ const styles = `
   .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 28ch; margin: 0 0 24px; }
   .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #22C55E; color: #fff; font-size: 14px; font-weight: 600; padding: 13px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; }
   .success-divider { width: 40px; height: 1px; background: #D4EAE2; margin: 28px auto; }
-  .success-follow-label { font-size: 13px; color: #587066; line-height: 1.6; max-width: 26ch; margin: 0 0 16px; }
+  .success-follow-label { font-size: 13px; color: #587066; line-height: 1.8; margin: 0 0 16px; font-weight: 600; }
   .success-socials { display: flex; gap: 10px; justify-content: center; }
   .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 600; color: #0B5240; text-decoration: none; background: #fff; font-family: inherit; }
 `

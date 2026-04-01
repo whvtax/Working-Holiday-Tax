@@ -124,7 +124,7 @@ export default function ABNFormPage() {
             </svg>
           </div>
           <h1 className="success-title">Thank you, {displayName}! 🎉</h1>
-          <p className="success-body">We&apos;ve received your details and will be in touch shortly via WhatsApp.</p>
+          <p className="success-body">We&apos;ve received your details and will be in touch shortly.</p>
           <a href="https://wa.me/61424513998" target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.25)"/>
@@ -133,7 +133,7 @@ export default function ABNFormPage() {
             Message us on WhatsApp
           </a>
           <div className="success-divider" />
-          <p className="success-follow-label">Learn something new about Australian tax for WHV holders — one tip a day 🇦🇺</p>
+          <p className="success-follow-label">Tax, Super &amp; Workers' rights<br />Learn one thing every day 🙋<br />Free guides below ⬇️</p>
           <div className="success-socials">
             <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.95a8.16 8.16 0 004.77 1.52V7.03a4.85 4.85 0 01-1-.34z"/></svg>
@@ -304,7 +304,7 @@ const css = `
   .success-body { font-size: 14px; color: #587066; line-height: 1.65; max-width: 28ch; margin: 0 0 24px; }
   .success-wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #22C55E; color: #fff; font-size: 14px; font-weight: 600; padding: 13px 26px; border-radius: 100px; text-decoration: none; font-family: inherit; }
   .success-divider { width: 40px; height: 1px; background: #D4EAE2; margin: 28px auto; }
-  .success-follow-label { font-size: 13px; color: #587066; line-height: 1.6; max-width: 26ch; margin: 0 0 16px; }
+  .success-follow-label { font-size: 13px; color: #587066; line-height: 1.8; margin: 0 0 16px; font-weight: 600; }
   .success-socials { display: flex; gap: 10px; justify-content: center; }
   .success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 600; color: #0B5240; text-decoration: none; background: #fff; font-family: inherit; }
 `

@@ -301,24 +301,36 @@ export default function DashboardClient() {
 
     let formBody = ''
 
+    // ─── helpers ──────────────────────────────────────────────────────
+    // Normalise raw radio values that older submissions saved before translation fix
+    const normaliseTaxStatus = (v: string) => {
+      if (!v || v === '—') return v
+      if (v === 'resident') return 'Australian resident for tax purposes'
+      if (v === 'whm') return 'Working holiday maker for tax purposes'
+      return v
+    }
+    // Pull the ticked value for a specific declaration out of notes parts.
+    const findDecl = (parts: string[], prefixes: string[], fallback = '—') => {
+      const hit = parts.find(p => prefixes.some(px => p.startsWith(px)))
+      return hit ? hit.replace('→ ', '') : fallback
+    }
+
     // ─── TAX RETURN ──────────────────────────────────────────────────
     if (task.taskType === 'tax-return') {
+      // notes = "taxStatusText | → taxStatusValue | declaredText | → ✓ Yes, I agree"
       const notes = task.notes || ''
       const parts = notes.split(' | ')
 
-      // Normalise raw radio values saved by older submissions
-      const normaliseTaxStatus = (v: string) => {
-        if (!v || v === '—') return v
-        if (v === 'resident') return 'Australian resident for tax purposes'
-        if (v === 'whm') return 'Working holiday maker for tax purposes'
-        return v
-      }
-
-      const taxStatusLabel = parts.find((p:string) => !p.startsWith('→') && (p.startsWith('I confirm that I have reviewed') || (p.length > 40 && !p.startsWith('I declare')))) || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
-      const rawTaxVal      = parts.find((p:string) => p.startsWith('→') && !p.includes('agree') && !p.includes('Yes') && !p.includes('No'))?.replace('→ ','') || task.taxStatus || '—'
+      const taxStatusLabel = parts.find((p:string) => p.startsWith('I confirm that I have reviewed'))
+        || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
+      const rawTaxVal = parts.find((p:string) =>
+        p.startsWith('→ Australian') || p.startsWith('→ Working') ||
+        p.startsWith('→ resident') || p.startsWith('→ whm')
+      )?.replace('→ ', '') || task.taxStatus || '—'
       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
-      const declaredLabel  = parts.find((p:string) => !p.startsWith('→') && p.startsWith('I declare')) || 'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.'
-      const declaredValue  = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
+      const declaredLabel = parts.find((p:string) => p.startsWith('I declare that all information'))
+        || 'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.'
+      const declaredValue = findDecl(parts, ['→ ✓ Yes', '→ ✗ No', '→ ✓ I agree'])
 
       formBody = sectionTitle('Contact Details')
         + formField('WhatsApp Number', task.whatsapp)
@@ -346,13 +358,15 @@ export default function DashboardClient() {
 
     // ─── SUPER ────────────────────────────────────────────────────────
     } else if (task.taskType === 'super') {
+      // notes = "Passport No: X | Super Funds: X | Home Country Address: X | declaredText | → ✓ I have read..."
       const notes = task.notes || ''
       const passport    = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
       const superFunds  = notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
       const homeAddress = notes.match(/Home Country Address: ([^|]+)/)?.[1]?.trim() || '—'
       const parts = notes.split(' | ')
-      const declText = parts.find((p:string) => p.startsWith('I have read')) || 'I have read and accept the Client Agreement & Privacy Policy.'
-      const declVal  = parts.find((p:string) => p.startsWith('→')) || '—'
+      const declText = parts.find((p:string) => p.startsWith('I have read'))
+        || 'I have read and accept the Client Agreement & Privacy Policy.'
+      const declVal = findDecl(parts, ['→ ✓ I have read', '→ ✓ I agree', '→ ✓'])
 
       formBody = sectionTitle('Personal Details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
@@ -371,17 +385,19 @@ export default function DashboardClient() {
         + formField('Bank account details', task.bankDetails)
         + sectionTitle('Declaration — Client Agreement')
         + '<div style="font-size:13px;color:#587066;line-height:1.7;margin-bottom:12px;padding:12px 14px;background:#f5f9f7;border-radius:10px;border:1px solid #d4eae2">' + esc(declText) + '</div>'
-        + formField('I agree', declVal.replace('→ ',''), false)
+        + formField('I agree', declVal, false)
 
     // ─── TFN ─────────────────────────────────────────────────────────
     } else if (task.taskType === 'tfn') {
+      // notes = "Passport No: X | Gender: X | declaredText | → ✓ I confirm this declaration | → ✓ I have read..."
       const notes = task.notes || ''
       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || '—'
       const gender   = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
       const parts = notes.split(' | ')
-      const decl1Text = parts.find((p:string) => p.startsWith('I confirm I am')) || 'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.'
-      const decl1Val  = parts.find((p:string) => p.startsWith('→ ✓ I confirm') || p === '→ ✓ I confirm this declaration')?.replace('→ ','') || '—'
-      const decl2Val  = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
+      const decl1Text = parts.find((p:string) => p.startsWith('I confirm I am'))
+        || 'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.'
+      const decl1Val = findDecl(parts, ['→ ✓ I confirm this', '→ ✓ I confirm'])
+      const decl2Val = findDecl(parts, ['→ ✓ I have read', '→ ✓ I agree'])
 
       formBody = sectionTitle('Personal Details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
@@ -404,12 +420,14 @@ export default function DashboardClient() {
 
     // ─── ABN ─────────────────────────────────────────────────────────
     } else if (task.taskType === 'abn') {
+      // notes = "Gender: X | declaredText | → ✓ I confirm this declaration | → ✓ I have read..."
       const notes = task.notes || ''
       const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || '—'
       const parts = notes.split(' | ')
-      const decl1Text = parts.find((p:string) => p.startsWith('I declare that')) || 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.'
-      const decl1Val  = parts.find((p:string) => p.startsWith('→ ✓ I confirm') || p.startsWith('→ ✓'))?.replace('→ ','') || '—'
-      const decl2Val  = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
+      const decl1Text = parts.find((p:string) => p.startsWith('I declare that I do not own'))
+        || 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.'
+      const decl1Val = findDecl(parts, ['→ ✓ I confirm this', '→ ✓ I confirm'])
+      const decl2Val = findDecl(parts, ['→ ✓ I have read', '→ ✓ I agree'])
 
       formBody = sectionTitle('Personal Details')
         + formField('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
@@ -438,23 +456,18 @@ export default function DashboardClient() {
       + '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}}'
       + '</style></head><body>'
 
-      // Header — exact favicon logo + site branding
+      // Header — exact site logo (matches Nav component)
       + '<div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid ' + LIGHT_GREEN + '">'
-      + '<div style="display:inline-flex;align-items:center;gap:12px;margin-bottom:14px">'
-      + '<svg width="52" height="52" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">'
-      + '<circle cx="100" cy="100" r="100" fill="#0B5240"/>'
-      + '<g transform="translate(100,100) scale(3.57) translate(-17,-17)">'
-      + '<rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" stroke-width="2" fill="none"/>'
-      + '<rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>'
-      + '<line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" stroke-width="1.4" stroke-linecap="round"/>'
-      + '<circle cx="2" cy="2" r="1.8" fill="#E9A020"/>'
-      + '<path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" stroke-width="1.3" stroke-linejoin="round"/>'
-      + '<polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>'
-      + '</g></svg>'
-      + '<div style="text-align:left">'
-      + '<div style="font-size:20px;font-weight:800;color:' + GREEN + ';letter-spacing:-0.02em">Working Holiday Tax</div>'
-      + '<div style="font-size:11px;color:#7a8a82;margin-top:2px">workingholidaytax.com.au</div>'
-      + '</div>'
+      + '<div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:14px">'
+      + '<svg width="40" height="40" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">'
+      + '<rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" stroke-width="2"/>'
+      + '<rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>'
+      + '<line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>'
+      + '<circle cx="2" cy="2" r="1.6" fill="#E9A020" opacity="0.7"/>'
+      + '<path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(255,255,255,0.1)" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>'
+      + '<polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>'
+      + '</svg>'
+      + '<div style="font-size:22px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;font-family:Georgia,serif">Working Holiday Tax</div>'
       + '</div>'
       + '<h1 style="font-size:26px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;margin-bottom:6px">' + (taskTitles[task.taskType] ?? task.taskType) + '</h1>'
       + '<p style="font-size:12px;color:#6b7f76">Submitted: ' + fmtDateTime(task.submittedAt) + '</p>'
