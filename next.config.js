@@ -14,6 +14,14 @@ const nextConfig = {
       bodySizeLimit: '15mb',
     },
   },
+  // Increase body size limit for API routes (file uploads: bank statement + selfie + invoices)
+  // Without this, Vercel/Next.js uses 4.5MB default which breaks multi-file uploads
+  api: {
+    bodyParser: {
+      sizeLimit: '15mb',
+    },
+    responseLimit: '15mb',
+  },
 }
 
 module.exports = nextConfig

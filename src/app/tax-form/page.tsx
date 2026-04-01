@@ -331,31 +331,26 @@ export default function TaxFormPage() {
             <Field label="WhatsApp Number" required error={errors.waNumber}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX"
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }} />
-              {err('waNumber')}
             </Field>
 
             <Field label="Australian Phone Number" required error={errors.auPhone}>
               <input className={`inp ${errors.auPhone ? 'inp-err' : ''}`} type="tel" placeholder="04XX XXX XXX"
                 value={auPhone} onChange={e => { setAuPhone(e.target.value); setErrors(p => ({...p, auPhone: ''})) }} />
-              {err('auPhone')}
             </Field>
 
             <Field label="Full Name (including middle name)" required error={errors.fullName}>
               <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport"
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
-              {err('fullName')}
             </Field>
 
             <Field label="Email Address" required error={errors.email}>
               <input className={`inp ${errors.email ? 'inp-err' : ''}`} type="email" placeholder="your@email.com"
                 value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ''})) }} />
-              {err('email')}
             </Field>
 
             <Field label="Full Address in Australia" required error={errors.address}>
               <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="Street, suburb, state, postcode"
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
-              {err('address')}
             </Field>
           </div>
 
@@ -365,13 +360,11 @@ export default function TaxFormPage() {
             <Field label="Home Country" required error={errors.country}>
               <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. France"
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
-              {err('country')}
             </Field>
 
             <Field label="Date of Birth" required error={errors.dob}>
               <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date"
                 value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
-              {err('dob')}
             </Field>
 
             <Field label="Marital Status" required error={errors.marital}>
@@ -385,7 +378,6 @@ export default function TaxFormPage() {
                   </label>
                 ))}
               </div>
-              {err('marital')}
             </Field>
           </div>
 
@@ -395,35 +387,29 @@ export default function TaxFormPage() {
             <Field label="Tax File Number (TFN)" required error={errors.tfn}>
               <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
                 value={tfn} onChange={e => { setTfn(e.target.value); setErrors(p => ({...p, tfn: ''})) }} />
-              {err('tfn')}
             </Field>
 
             <Field label="Primary job in the past year" required error={errors.primaryJob}>
               <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
-              {err('primaryJob')}
             </Field>
 
           <div className="form-section-title">Bank account details</div>
             <Field label="Bank name" required error={errors.bankName}>
               <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
                 value={bankName} onChange={e => { setBankName(e.target.value); setErrors(p => ({...p, bankName: ''})) }} />
-              {err('bankName')}
             </Field>
             <Field label="Account holder full name" required error={errors.bankHolder}>
               <input className={`inp ${errors.bankHolder ? 'inp-err' : ''}`} type="text" placeholder="As it appears on the bank account"
                 value={bankHolder} onChange={e => { setBankHolder(e.target.value); setErrors(p => ({...p, bankHolder: ''})) }} />
-              {err('bankHolder')}
             </Field>
             <Field label="Account number" required error={errors.bankAccount}>
               <input className={`inp ${errors.bankAccount ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12345678"
                 value={bankAccount} onChange={e => { setBankAccount(e.target.value); setErrors(p => ({...p, bankAccount: ''})) }} />
-              {err('bankAccount')}
             </Field>
             <Field label="BSB" required error={errors.bankBsb}>
               <input className={`inp ${errors.bankBsb ? 'inp-err' : ''}`} type="text" placeholder="e.g. 062-000"
                 value={bankBsb} onChange={e => { setBankBsb(e.target.value); setErrors(p => ({...p, bankBsb: ''})) }} />
-              {err('bankBsb')}
             </Field>
           </div>
 
@@ -433,13 +419,11 @@ export default function TaxFormPage() {
             <Field label="Bank statements (to verify name)" required error={errors.bankStatement}>
               <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} />
-              {err('bankStatement')}
             </Field>
 
             <Field label="Selfie holding your passport" required error={errors.selfiePassport}>
               <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
-              {err('selfiePassport')}
             </Field>
 
             <Field label="Work-related expense invoices">

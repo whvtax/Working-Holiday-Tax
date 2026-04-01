@@ -171,59 +171,59 @@ export default function SuperFormPage() {
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-section-title">Personal details</div>
           <Field label="First name (including middle name)" required error={errors.firstName}>
-            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" value={firstName} onChange={e=>setFirstName(e.target.value)}/>
+            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" value={firstName} onChange={e=>{ setFirstName(e.target.value); setErrors(p=>({...p,firstName:''})) }}/>
           </Field>
           <Field label="Last name" required error={errors.lastName}>
-            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" value={lastName} onChange={e=>setLastName(e.target.value)}/>
+            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" value={lastName} onChange={e=>{ setLastName(e.target.value); setErrors(p=>({...p,lastName:''})) }}/>
           </Field>
           <Field label="Date of birth" required error={errors.dob}>
-            <input type="date" className={`form-input${errors.dob?' input-error':''}`} value={dob} onChange={e=>setDob(e.target.value)}/>
+            <input type="date" className={`form-input${errors.dob?' input-error':''}`} value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
           </Field>
           <Field label="Passport number" required error={errors.passport}>
-            <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" value={passport} onChange={e=>setPassport(e.target.value)}/>
+            <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>
           </Field>
           <Field label="Country that issued the passport (with visa attached)" required error={errors.passportCountry}>
-            <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. France" value={passportCountry} onChange={e=>setPassportCountry(e.target.value)}/>
+            <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. France" value={passportCountry} onChange={e=>{ setPassportCountry(e.target.value); setErrors(p=>({...p,passportCountry:''})) }}/>
           </Field>
 
           <div className="form-section-title">Contact details</div>
           <Field label="WhatsApp Number" required error={errors.smsPhone}>
-            <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" value={smsPhone} onChange={e=>setSmsPhone(e.target.value)}/>
+            <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" value={smsPhone} onChange={e=>{ setSmsPhone(e.target.value); setErrors(p=>({...p,smsPhone:''})) }}/>
           </Field>
           <Field label="Email address" required error={errors.email}>
-            <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>setEmail(e.target.value)}/>
+            <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
           </Field>
           <Field label="Full Australian address (state, city, street, number, postcode)" required error={errors.auAddress}>
-            <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. NSW, Sydney, 42 Bondi Rd, 2026" value={auAddress} onChange={e=>setAuAddress(e.target.value)}/>
+            <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. NSW, Sydney, 42 Bondi Rd, 2026" value={auAddress} onChange={e=>{ setAuAddress(e.target.value); setErrors(p=>({...p,auAddress:''})) }}/>
           </Field>
           <Field label="Full home country address" required error={errors.homeAddress}>
-            <textarea className={`form-input form-textarea${errors.homeAddress?' input-error':''}`} placeholder="e.g. 12 Rue de Paris, 75001 Paris, France" value={homeAddress} onChange={e=>setHomeAddress(e.target.value)}/>
+            <textarea className={`form-input form-textarea${errors.homeAddress?' input-error':''}`} placeholder="e.g. 12 Rue de Paris, 75001 Paris, France" value={homeAddress} onChange={e=>{ setHomeAddress(e.target.value); setErrors(p=>({...p,homeAddress:''})) }}/>
           </Field>
 
           <div className="form-section-title">Tax & super fund details</div>
           <Field label="TFN (Tax File Number)" required error={errors.tfn}>
-            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" value={tfn} onChange={e=>setTfn(e.target.value)}/>
+            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" value={tfn} onChange={e=>{ setTfn(e.target.value); setErrors(p=>({...p,tfn:''})) }}/>
           </Field>
           <Field label="Super fund details (fund name, member number, account opening date)" required error={errors.superFunds}>
-            <textarea className={`form-input form-textarea${errors.superFunds?' input-error':''}`} style={{minHeight:100}} placeholder={"e.g. AustralianSuper — Member No: 123456789 — Opened: 01/03/2023\nHostPlus — Member No: 987654321 — Opened: 15/06/2022"} value={superFunds} onChange={e=>setSuperFunds(e.target.value)}/>
+            <textarea className={`form-input form-textarea${errors.superFunds?' input-error':''}`} style={{minHeight:100}} placeholder={"e.g. AustralianSuper — Member No: 123456789 — Opened: 01/03/2023\nHostPlus — Member No: 987654321 — Opened: 15/06/2022"} value={superFunds} onChange={e=>{ setSuperFunds(e.target.value); setErrors(p=>({...p,superFunds:''})) }}/>
           </Field>
           <div className="form-section-title">Bank account details</div>
           <Field label="Bank name" required error={errors.bankName}>
-            <input className={`form-input${errors.bankName?' input-error':''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ" value={bankName} onChange={e=>setBankName(e.target.value)}/>
+            <input className={`form-input${errors.bankName?' input-error':''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ" value={bankName} onChange={e=>{ setBankName(e.target.value); setErrors(p=>({...p,bankName:''})) }}/>
           </Field>
           <Field label="Account holder full name" required error={errors.bankHolder}>
-            <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder="As it appears on the bank account" value={bankHolder} onChange={e=>setBankHolder(e.target.value)}/>
+            <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder="As it appears on the bank account" value={bankHolder} onChange={e=>{ setBankHolder(e.target.value); setErrors(p=>({...p,bankHolder:''})) }}/>
           </Field>
           <Field label="Account number" required error={errors.bankAccount}>
-            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" value={bankAccount} onChange={e=>setBankAccount(e.target.value)}/>
+            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value); setErrors(p=>({...p,bankAccount:''})) }}/>
           </Field>
           <Field label="BSB" required error={errors.bankBsb}>
-            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>setBankBsb(e.target.value)}/>
+            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value); setErrors(p=>({...p,bankBsb:''})) }}/>
           </Field>
 
           <div className="form-section-title">Documents</div>
           <Field label="Selfie with passport" required error={errors.selfie}>
-            <FileUpload id="selfie" label="Upload selfie with passport" accept="image/*,.pdf" value={selfie} onChange={setSelfie}/>
+            <FileUpload id="selfie" label="Upload selfie with passport" accept=".jpg,.jpeg,.png,.webp,.pdf" value={selfie} onChange={v=>{ setSelfie(v); setErrors(p=>({...p,selfie:''})) }}/>
           </Field>
 
           <div className="form-section-title">Declaration</div>
@@ -247,7 +247,7 @@ export default function SuperFormPage() {
                     passport:'Passport Number',passportCountry:'Passport Country',
                     smsPhone:'Phone Number',email:'Email Address',auAddress:'Australian Address',
                     homeAddress:'Home Country Address',tfn:'TFN',superFunds:'Super Fund Details',
-                    bankDetails:'Bank Details',selfie:'Selfie with Passport'
+                    bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',selfie:'Selfie with Passport'
                   } as Record<string,string>)[k] || k} is required` : v}</li>
                 ))}
               </ul>
