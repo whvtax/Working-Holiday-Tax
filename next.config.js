@@ -1,18 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Ensure URLs never have trailing slashes (canonical consistency for SEO)
   trailingSlash: false,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  // Allow file uploads up to 15MB for Server Actions
+  compress: true,
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
   experimental: {
-    serverActions: {
-      bodySizeLimit: '15mb',
-    },
+    serverActions: { bodySizeLimit: '15mb' },
+  },
+  images: {
+    remotePatterns: [{ protocol: 'https', hostname: '**.vercel-storage.com' }],
+    formats: ['image/avif', 'image/webp'],
   },
 }
 

@@ -293,6 +293,12 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
 }
 
+// Delete task permanently — no client card created, all data gone
+export async function deleteTaskPermanent(taskId: string): Promise<void> {
+  await initDb()
+  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
+}
+
 // ── Clients ────────────────────────────────────────────────────────────────
 
 export async function getAllClients(): Promise<ClientRecord[]> {

@@ -92,6 +92,8 @@ export default function DashboardClient() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
+  const [confirmTransfer, setConfirmTransfer] = useState<Task|null>(null)
+  const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
   const [captureRefund, setCaptureRefund] = useState<{taskId:string;taskType:string;taxYear:string;clientId:string}|null>(null)
   const [captureRefundAmt, setCaptureRefundAmt] = useState('')
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
@@ -109,14 +111,14 @@ export default function DashboardClient() {
 
   const loadTasks   = useCallback(async()=>{
     try {
-      const r=await fetch('/api/crm/tasks')
+      const r=await fetch('/api/crm/tasks',{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
       const d=await r.json(); if(d.ok) setTasks(d.tasks)
     } catch(e){ console.error('[loadTasks]',e) }
   },[])
   const loadClients = useCallback(async()=>{
     try {
-      const r=await fetch('/api/crm/clients')
+      const r=await fetch('/api/crm/clients',{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
       const d=await r.json(); if(d.ok) setClients(d.clients)
     } catch(e){ console.error('[loadClients]',e) }
@@ -124,7 +126,7 @@ export default function DashboardClient() {
 
   const loadArchived = useCallback(async()=>{
     try {
-      const r=await fetch('/api/crm/clients?archived=true')
+      const r=await fetch('/api/crm/clients?archived=true',{cache:'no-store'})
       const d=await r.json(); if(d.ok) setArchivedClients(d.clients)
     } catch(e){ console.error('[loadArchived]',e) }
   },[])
@@ -134,26 +136,46 @@ export default function DashboardClient() {
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
   async function archiveClient(id: string) {
+    // Optimistic: remove from clients immediately
+    setClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
-    await loadClients(); await loadArchived()
+    await Promise.all([loadClients(), loadArchived()])
   }
   async function unarchiveClient(id: string) {
+    // Optimistic: remove from archive immediately
+    setArchivedClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
-    await loadClients(); await loadArchived()
+    await Promise.all([loadClients(), loadArchived()])
   }
   async function toggleCheckin(clientId: string, year: string, current: boolean) {
+    // Optimistic update
+    setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
     await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkin',year,done:!current})})
-    await loadClients()
   }
 
   async function markDone(id:string) {
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
-    // Remove task from view immediately — all PII has been wiped server-side
-    setTasks(prev => prev.filter(t => t.id !== id))
-    setActiveTask(null)
-    setTaskView('list')
+    // Optimistic: move task to done visually right away
+    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], notes:''} : t))
     setConfirmComplete(null)
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
     await loadClients()
+  }
+
+  // Transfer done task → creates/updates client card, then removes task
+  async function transferToClients(task: Task) {
+    setConfirmTransfer(null)
+    setTasks(prev => prev.filter(t => t.id !== task.id))
+    setActiveTask(null); setTaskView('list')
+    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
+    await Promise.all([loadClients(), loadArchived()])
+  }
+
+  // Delete task permanently — no client card created
+  async function deleteTaskPermanently(id: string) {
+    setConfirmPermDelete(null)
+    setTasks(prev => prev.filter(t => t.id !== id))
+    setActiveTask(null); setTaskView('list')
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})})
   }
 
   async function saveTaskNotes() {
@@ -243,9 +265,10 @@ export default function DashboardClient() {
   }
 
   async function deleteClient(id:string) {
-    await fetch(`/api/crm/clients/${id}`,{method:'DELETE'})
+    setArchivedClients(prev => prev.filter(c => c.id !== id))
     setActiveClient(null); setView('archive'); setConfirmDeleteClient(null)
-    await Promise.all([loadClients(), loadArchived()])
+    await fetch(`/api/crm/clients/${id}`,{method:'DELETE'})
+    await loadClients()
   }
 
   async function addClient(e:React.FormEvent) {
@@ -1094,10 +1117,21 @@ export default function DashboardClient() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
                 </button>
-                {!activeTask.done && <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>}
-                <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>{setCaptureRefund({taskId:activeTask.id,taskType:activeTask.taskType,taxYear:activeTask.taxYear,clientId:activeTask.clientId||''});setCaptureRefundAmt('');setCaptureSuperAmt('');setCaptureRefundType('refund')}}>🗑️ Delete &amp; archive client</button>
+                {!activeTask.done
+                  ? <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>
+                  : <>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmTransfer(activeTask)}>
+                        👤 Move to clients
+                      </button>
+                      <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
+                        🗑️ Delete permanently
+                      </button>
+                    </>
+                }
               </div>
-              <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:8}}>Deleting removes all sensitive data and creates/updates the client card</div>
+              {activeTask.done && (
+                <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:4}}>Move to clients creates a client card. Delete permanently removes all data.</div>
+              )}
             </div>
           )}
 
@@ -1140,11 +1174,11 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Filters row */}
-              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
+              {/* Filters row — same layout as Archive */}
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap' as const,alignItems:'center'}}>
                 <div style={{position:'relative',flex:3,minWidth:200}}>
                   <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
+                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box' as const}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
                 <DropBtn id="cl-year" label={yearFilter.size===0?'All tax years':`${yearFilter.size} year${yearFilter.size>1?'s':''}`} active={yearFilter.size>0} onClear={()=>setYearFilter(new Set())}
                   icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
@@ -1767,6 +1801,40 @@ export default function DashboardClient() {
             <div style={S.mFooter}>
               <button style={S.mCancel} onClick={()=>setConfirmDelete(null)}>Cancel</button>
               <button style={S.mDel} onClick={()=>deleteTask(confirmDelete)}>Yes, delete &amp; archive</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm transfer to clients */}
+      {confirmTransfer && (
+        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmTransfer(null)}}>
+          <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
+            <div style={{fontSize:34,marginBottom:10}}>👤</div>
+            <div style={S.mTitle}>Move to clients?</div>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>
+              A client card will be created for <strong>{confirmTransfer.clientName}</strong> and the task will be removed.
+            </div>
+            <div style={S.mFooter}>
+              <button style={S.mCancel} onClick={()=>setConfirmTransfer(null)}>Cancel</button>
+              <button style={{...S.mCancel,background:'#e8f5f0',color:'#0E5C42',border:'1.5px solid #0E5C42',fontWeight:600}} onClick={()=>transferToClients(confirmTransfer)}>Yes, move to clients</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm permanent delete */}
+      {confirmPermDelete && (
+        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmPermDelete(null)}}>
+          <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
+            <div style={{fontSize:34,marginBottom:10}}>⚠️</div>
+            <div style={S.mTitle}>Delete permanently?</div>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>
+              All data will be deleted with <strong>no client card created</strong>. This cannot be undone.
+            </div>
+            <div style={S.mFooter}>
+              <button style={S.mCancel} onClick={()=>setConfirmPermDelete(null)}>Cancel</button>
+              <button style={S.mDel} onClick={()=>deleteTaskPermanently(confirmPermDelete)}>Yes, delete permanently</button>
             </div>
           </div>
         </div>
