@@ -709,7 +709,7 @@ export default function DashboardClient() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:"DM Sans",system-ui,sans-serif;}`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
 
       <div style={S.shell}>
         {/* Sidebar */}
@@ -1189,7 +1189,7 @@ export default function DashboardClient() {
                     </label>
                   )})}
                 </DropBtn>
-                <DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
+                {<DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Object.keys(howHeardStats).sort().map(src=>{const checked=howHeardFilter.has(src);return(
                       <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
@@ -1199,18 +1199,18 @@ export default function DashboardClient() {
                       </label>
                     )})}
                     {Object.keys(howHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
-                  </DropBtn>
-                <DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
+                  </DropBtn>}
+                {<DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).sort().map(c=>{const checked=countryFilter.has(c);const cnt=clients.filter(cl=>cl.country===c).length;return(
-                      <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(c):s.add(c);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
+                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).sort().map(ctry=>{const checked=countryFilter.has(ctry);const cnt=clients.filter(cl=>cl.country===ctry).length;return(
+                      <label key={ctry} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(ctry):s.add(ctry);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{ctry}</span>
                         <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                       </label>
-                    ))}
+                    )})}
                     {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
-                  </DropBtn>
+                  </DropBtn>}
                 {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search) && (
                   <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('')}}>
                     ✕ Clear
@@ -1396,7 +1396,7 @@ export default function DashboardClient() {
                     </label>
                   )})}
                 </DropBtn>
-                <DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
+                {<DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Object.keys(archiveHowHeardStats).sort().map(src=>{const checked=archiveHowHeardFilter.has(src);return(
                       <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
@@ -1404,20 +1404,20 @@ export default function DashboardClient() {
                         <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
                         <span style={{fontSize:11,color:'#aabab2'}}>{archiveHowHeardStats[src]}</span>
                       </label>
-                    ))}
+                    )})}
                     {Object.keys(archiveHowHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
-                  </DropBtn>
-                <DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
+                  </DropBtn>}
+                {<DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).sort().map(c=>{const checked=archiveCountryFilter.has(c);const cnt=archivedClients.filter(cl=>cl.country===c).length;return(
-                      <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(c):s.add(c);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
+                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).sort().map(ctry=>{const checked=archiveCountryFilter.has(ctry);const cnt=archivedClients.filter(cl=>cl.country===ctry).length;return(
+                      <label key={ctry} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(ctry):s.add(ctry);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{ctry}</span>
                         <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                       </label>
-                    ))}
+                    )})}
                     {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
-                  </DropBtn>
+                  </DropBtn>}
                 {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter.size>0||archiveSearch) && (
                   <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter(new Set());setArchiveSearch('')}}>
                     ✕ Clear
