@@ -1151,7 +1151,6 @@ export default function DashboardClient() {
                         - tr.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + sr.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    if(tot===0) return null
                     return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>✨ {fmtCur(tot)} returned</span>
                   })()}
                 </div>
@@ -1190,8 +1189,7 @@ export default function DashboardClient() {
                     </label>
                   )})}
                 </DropBtn>
-                {Object.keys(howHeardStats).length>0 && (
-                  <DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
+                <DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Object.keys(howHeardStats).sort().map(src=>{const checked=howHeardFilter.has(src);return(
                       <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
@@ -1200,10 +1198,9 @@ export default function DashboardClient() {
                         <span style={{fontSize:11,color:'#aabab2'}}>{howHeardStats[src]}</span>
                       </label>
                     )})}
+                    {Object.keys(howHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>
-                )}
-                {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length>0 && (
-                  <DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
+                <DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).sort().map(c=>{const checked=countryFilter.has(c);const cnt=clients.filter(cl=>cl.country===c).length;return(
                       <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
@@ -1211,9 +1208,9 @@ export default function DashboardClient() {
                         <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
                         <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                       </label>
-                    )})}
+                    ))}
+                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>
-                )}
                 {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search) && (
                   <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('')}}>
                     ✕ Clear
@@ -1372,6 +1369,15 @@ export default function DashboardClient() {
                   <span style={{background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
                     {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
                   </span>
+                  {(()=>{
+                    const tot = visibleArchived.reduce((sum,c)=>{
+                      return sum
+                        + c.taxReturns.filter(r=>r.type==='refund').reduce((s,r)=>s+r.refundAmount,0)
+                        - c.taxReturns.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
+                        + c.superReturns.reduce((s,r)=>s+r.amount,0)
+                    },0)
+                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>✨ {fmtCur(tot)} returned</span>
+                  })()}
                 </div>
               </div>
               {/* Filters row */}
@@ -1390,8 +1396,7 @@ export default function DashboardClient() {
                     </label>
                   )})}
                 </DropBtn>
-                {Object.keys(archiveHowHeardStats).length>0 && (
-                  <DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
+                <DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Object.keys(archiveHowHeardStats).sort().map(src=>{const checked=archiveHowHeardFilter.has(src);return(
                       <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
@@ -1399,11 +1404,10 @@ export default function DashboardClient() {
                         <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
                         <span style={{fontSize:11,color:'#aabab2'}}>{archiveHowHeardStats[src]}</span>
                       </label>
-                    )})}
+                    ))}
+                    {Object.keys(archiveHowHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>
-                )}
-                {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length>0 && (
-                  <DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
+                <DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).sort().map(c=>{const checked=archiveCountryFilter.has(c);const cnt=archivedClients.filter(cl=>cl.country===c).length;return(
                       <label key={c} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
@@ -1411,9 +1415,9 @@ export default function DashboardClient() {
                         <span style={{fontSize:13,color:'#0a1410',flex:1}}>{c}</span>
                         <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                       </label>
-                    )})}
+                    ))}
+                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>
-                )}
                 {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter.size>0||archiveSearch) && (
                   <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter(new Set());setArchiveSearch('')}}>
                     ✕ Clear
@@ -1427,13 +1431,14 @@ export default function DashboardClient() {
                 <div style={S.card}>
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead><tr>
-                      {['Name','Country','Tax Year','WhatsApp','Email',''].map(h=>(
+                      {['Name','Country','Last refund','WhatsApp','Email',''].map(h=>(
                         <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px'}}>{h}</th>
                       ))}
                     </tr></thead>
                     <tbody>
                       {visibleArchived.map(cl=>{
                         const [bg,fg]=avColor(cl.fullName)
+                        const lastTax = cl.taxReturns?.length ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0] : null
                         return(
                           <tr key={cl.id}>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
@@ -1444,7 +1449,11 @@ export default function DashboardClient() {
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'—'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.createdAt?cl.createdAt.slice(0,4):'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
+                              {lastTax
+                                ? <div><div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div><div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div></div>
+                                : <span style={{color:'#aabab2'}}>—</span>}
+                            </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>{cl.whatsapp||'—'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
                             <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}}>
