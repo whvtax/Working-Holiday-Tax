@@ -565,7 +565,17 @@ export default function DashboardClient() {
 
       // Header
       `<div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid ${GL}">` +
-      `<div style="font-size:11px;font-weight:600;color:${G};letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px">Working Holiday Tax</div>` +
+      `<div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:14px">` +
+      `<svg width="36" height="36" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">` +
+      `<rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" stroke-width="2"/>` +
+      `<rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>` +
+      `<line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>` +
+      `<circle cx="2" cy="2" r="1.6" fill="#E9A020" opacity="0.7"/>` +
+      `<path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(255,255,255,0.1)" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>` +
+      `<polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `</svg>` +
+      `<span style="font-family:Georgia,serif;font-size:20px;font-weight:800;color:#080F0D;letter-spacing:-0.02em">Working Holiday Tax</span>` +
+      `</div>` +
       `<h1 style="font-size:24px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;margin-bottom:6px">${esc(titles[task.taskType]??task.taskType)}</h1>` +
       `<p style="font-size:12px;color:#6b7f76">Submitted: ${task.submittedAt ? new Date(task.submittedAt).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'})+' AEST' : '—'}</p>` +
       `</div>` +
@@ -926,7 +936,14 @@ export default function DashboardClient() {
                   <div style={S.secHead}><span>Personal details</span></div>
                   {(()=>{
                     const notes = activeTask.notes||''
-                    const base:[string,string][] = [['Full name',activeTask.clientName],['Date of birth',activeTask.dob]]
+                    const nameParts = activeTask.clientName.trim().split(' ')
+                    const firstName = nameParts.slice(0,-1).join(' ') || activeTask.clientName
+                    const lastName  = nameParts.length > 1 ? (nameParts[nameParts.length-1]) : ''
+                    const base:[string,string][] = [
+                      ['First name (incl. middle)', firstName],
+                      ['Last name', lastName],
+                      ['Date of birth', activeTask.dob],
+                    ]
                     if (activeTask.taskType==='tfn') {
                       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim()||'—'
                       const gender   = notes.match(/Gender: ([^|]+)/)?.[1]?.trim()||'—'
@@ -1113,12 +1130,14 @@ export default function DashboardClient() {
 
                             {/* Actions */}
               <div style={{display:'flex',gap:10,marginBottom:8}}>
-                <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                  Download PDF
-                </button>
                 {!activeTask.done
-                  ? <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>
+                  ? <>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                        Download PDF
+                      </button>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>
+                    </>
                   : <>
                       <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmTransfer(activeTask)}>
                         👤 Move to clients
@@ -1151,7 +1170,7 @@ export default function DashboardClient() {
                         - tr.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + sr.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>✨ {fmtCur(tot)} returned</span>
+                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
                   })()}
                 </div>
                 <div style={{display:'flex',gap:8,alignItems:'center'}}>
@@ -1376,7 +1395,7 @@ export default function DashboardClient() {
                         - c.taxReturns.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + c.superReturns.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>✨ {fmtCur(tot)} returned</span>
+                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
                   })()}
                 </div>
               </div>
