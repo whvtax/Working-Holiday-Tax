@@ -111,7 +111,7 @@ export default function TFNFormPage() {
     try {
       const res = await fetch('/api/tfn-form', { method: 'POST', body: fd })
       if (res.ok) {
-        setSubmitted(true)
+        window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
