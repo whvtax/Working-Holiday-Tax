@@ -123,7 +123,7 @@ export default function ContactPage() {
                   </div>
                 </div>
               </a>
-              <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer"
+              <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer"
                 className="flex items-center justify-between rounded-2xl p-5 transition-all hover:shadow-md group"
                 style={{ background: '#ffffff', border: '1.5px solid #E2EFE9', boxShadow: '0 1px 4px rgba(0,0,0,.04)' }}>
                 <div className="flex items-center gap-3">

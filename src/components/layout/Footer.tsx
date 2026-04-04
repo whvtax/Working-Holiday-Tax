@@ -85,7 +85,7 @@ export function Footer() {
             <p className="font-semibold tracking-[0.12em] uppercase mb-3" style={{ fontSize: '9.5px', color: '#587066' }}>Contact</p>
             <a href={`mailto:${EMAIL}`} className={linkCls} style={linkStyle}>Email</a>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>Message us</a>
-            <a href="https://tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>TikTok</a>
+            <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>TikTok</a>
             <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className={linkCls} style={linkStyle}>Instagram</a>
           </nav>
 
