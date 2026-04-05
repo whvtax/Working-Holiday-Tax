@@ -77,10 +77,10 @@ export default function TaxResidencyPage() {
       {/* ── PAGE HEADER ── */}
       <section className="pt-[88px] pb-10 bg-white">
         <div className="max-w-[900px] mx-auto px-5 md:px-8 text-center">
-          <h1 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(24px, 3.2vw, 44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '14px' }}>
+          <h1 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(28px, 4vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '16px' }}>
             Tax Residency Explained
           </h1>
-          <p className="font-light text-body mx-auto" style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', lineHeight: 1.7, maxWidth: '52ch', color: 'rgba(10,15,13,0.58)' }}>
+          <p className="font-light text-body mx-auto" style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '680px', color: '#587066' }}>
             The population in Australia is divided into three groups of taxpayers: non-residents, backpackers (417/462 visa holders) and Australian residents. Below are the differences in the tax rates between the groups:
           </p>
         </div>
@@ -111,14 +111,14 @@ export default function TaxResidencyPage() {
           <div className="max-w-2xl mx-auto">
 
             <span className="section-label mb-3 block" style={{ textAlign: "center", display: "block" }}>Residency for backpackers</span>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(15px, 2vw, 22px)', lineHeight: 1.3, letterSpacing: '-0.02em', marginBottom: '18px', textAlign: 'center' }}>
-              Backpackers on a Working Holiday visa (417/462) may be considered Australian residents for tax purposes if they meet all conditions:
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(18px, 2vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginBottom: '18px', textAlign: 'center' }}>
+              Backpackers on a Working Holiday visa (417/462) may be<br />considered Australian residents for tax purposes<br />if they meet all conditions:
             </h2>
 
             <div className="space-y-3">
               {CONDITIONS.map((c, i) => (
                 <div key={i} className="flex gap-2 bg-white rounded-xl items-center" style={{ padding: '10px 14px', border: '1px solid #C8EAE0' }}>
-                  <span className="font-bold flex-shrink-0" style={{ fontSize: '12px', color: '#0B5240' }}>✓</span>
+                  <span className="font-bold flex-shrink-0" style={{ fontSize: '13px', color: '#0B5240' }}>✓</span>
                   <p className="font-light text-body" style={{ fontSize: '11.5px', lineHeight: 1.4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c}</p>
                 </div>
               ))}

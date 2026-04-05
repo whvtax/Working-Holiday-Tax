@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { validateSession } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'

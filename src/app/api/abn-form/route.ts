@@ -23,11 +23,7 @@ export async function POST(req: NextRequest) {
       fileUrls = await uploadFiles([selfieFile], `abn-form/${clientId}`)
     } catch (uploadErr) {
       const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
-      if (msg.includes('not allowed') || msg.includes('dangerous') || msg.includes('does not match') || msg.includes('too large')) {
-        return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
-      }
-      console.warn('[abn-form] File upload failed, continuing without files:', msg)
-      fileUrls = []
+      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
     }
 
     await createTask({

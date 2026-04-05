@@ -6,7 +6,6 @@
  */
 export function sanitiseField(value: unknown, maxLength = 500): string {
   if (value == null) return ''
-  // Strip HTML tags to prevent stored HTML injection
   return String(value).trim().replace(/<[^>]*>/g, '').slice(0, maxLength)
 }
 

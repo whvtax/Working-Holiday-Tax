@@ -37,7 +37,7 @@ export type Task = {
 // This avoids issuing 3 DDL statements on every single form submission.
 let _dbInitialised = false
 
-const DB_TIMEOUT_MS = 6000 // 6 s — gives room to return an error before Vercel's 10s function timeout
+const DB_TIMEOUT_MS = 8000 // 8 s — Vercel Postgres cold-start can be slow
 
 /** Run a sql statement with a hard timeout so a stalled DB never hangs forever */
 async function sqlWithTimeout<T>(query: Promise<T>, label: string): Promise<T> {
@@ -51,65 +51,73 @@ async function sqlWithTimeout<T>(query: Promise<T>, label: string): Promise<T> {
 
 export async function initDb() {
   if (_dbInitialised) return // already ran this instance — skip
-  // Run table creation in parallel — both are independent
   await Promise.all([
     sqlWithTimeout(sql`
-      CREATE TABLE IF NOT EXISTS crm_clients (
-        id            TEXT PRIMARY KEY,
-        full_name     TEXT NOT NULL DEFAULT '',
-        dob           TEXT NOT NULL DEFAULT '',
-        whatsapp      TEXT NOT NULL DEFAULT '',
-        email         TEXT NOT NULL DEFAULT '',
-        country       TEXT NOT NULL DEFAULT '',
-        how_heard     TEXT NOT NULL DEFAULT '',
-        notes         TEXT NOT NULL DEFAULT '',
-        tax_returns   TEXT NOT NULL DEFAULT '[]',
-        super_returns TEXT NOT NULL DEFAULT '[]',
-        tfn_service   TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
-        abn_service   TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
-        created_at    TEXT NOT NULL DEFAULT '',
-        archived      BOOLEAN NOT NULL DEFAULT FALSE,
-        yearly_checkins TEXT NOT NULL DEFAULT '{}'
-      )
-    `, 'CREATE crm_clients'),
-    sqlWithTimeout(sql`
-      CREATE TABLE IF NOT EXISTS crm_tasks (
-        id           TEXT PRIMARY KEY,
-        client_id    TEXT NOT NULL DEFAULT '',
-        client_name  TEXT NOT NULL DEFAULT '',
-        task_type    TEXT NOT NULL DEFAULT 'tax-return',
-        whatsapp     TEXT NOT NULL DEFAULT '',
-        email        TEXT NOT NULL DEFAULT '',
-        country      TEXT NOT NULL DEFAULT '',
-        dob          TEXT NOT NULL DEFAULT '',
-        tax_year     TEXT NOT NULL DEFAULT '',
-        submitted_at TEXT NOT NULL DEFAULT '',
-        done         BOOLEAN NOT NULL DEFAULT FALSE,
-        address      TEXT NOT NULL DEFAULT '',
-        tfn          TEXT NOT NULL DEFAULT '',
-        bank_details TEXT NOT NULL DEFAULT '',
-        primary_job  TEXT NOT NULL DEFAULT '',
-        marital      TEXT NOT NULL DEFAULT '',
-        tax_status   TEXT NOT NULL DEFAULT '',
-        how_heard    TEXT NOT NULL DEFAULT '',
-        au_phone     TEXT NOT NULL DEFAULT '',
-        notes        TEXT NOT NULL DEFAULT '',
-        file_urls    TEXT NOT NULL DEFAULT '[]'
-      )
-    `, 'CREATE crm_tasks'),
-  ])
-  // Migrations — run in parallel (all are independent ALTER TABLE IF NOT EXISTS)
-  await Promise.all([
-    sqlWithTimeout(sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`, 'ALT file_urls'),
-    sqlWithTimeout(sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`, 'ALT au_phone'),
-    sqlWithTimeout(sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`, 'ALT archived'),
-    sqlWithTimeout(sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`, 'ALT checkins'),
-  ])
-  // Indexes — safe to run repeatedly (IF NOT EXISTS)
+    CREATE TABLE IF NOT EXISTS crm_clients (
+      id            TEXT PRIMARY KEY,
+      full_name     TEXT NOT NULL DEFAULT '',
+      dob           TEXT NOT NULL DEFAULT '',
+      whatsapp      TEXT NOT NULL DEFAULT '',
+      email         TEXT NOT NULL DEFAULT '',
+      country       TEXT NOT NULL DEFAULT '',
+      how_heard     TEXT NOT NULL DEFAULT '',
+      notes         TEXT NOT NULL DEFAULT '',
+      tax_returns   TEXT NOT NULL DEFAULT '[]',
+      super_returns TEXT NOT NULL DEFAULT '[]',
+      tfn_service   TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
+      abn_service   TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
+      created_at    TEXT NOT NULL DEFAULT '',
+      archived      BOOLEAN NOT NULL DEFAULT FALSE,
+      yearly_checkins TEXT NOT NULL DEFAULT '{}'
+    )
+  `, 'CREATE crm_clients')
+  await sqlWithTimeout(sql`
+    CREATE TABLE IF NOT EXISTS crm_tasks (
+      id           TEXT PRIMARY KEY,
+      client_id    TEXT NOT NULL DEFAULT '',
+      client_name  TEXT NOT NULL DEFAULT '',
+      task_type    TEXT NOT NULL DEFAULT 'tax-return',
+      whatsapp     TEXT NOT NULL DEFAULT '',
+      email        TEXT NOT NULL DEFAULT '',
+      country      TEXT NOT NULL DEFAULT '',
+      dob          TEXT NOT NULL DEFAULT '',
+      tax_year     TEXT NOT NULL DEFAULT '',
+      submitted_at TEXT NOT NULL DEFAULT '',
+      done         BOOLEAN NOT NULL DEFAULT FALSE,
+      address      TEXT NOT NULL DEFAULT '',
+      tfn          TEXT NOT NULL DEFAULT '',
+      bank_details TEXT NOT NULL DEFAULT '',
+      primary_job  TEXT NOT NULL DEFAULT '',
+      marital      TEXT NOT NULL DEFAULT '',
+      tax_status   TEXT NOT NULL DEFAULT '',
+      how_heard    TEXT NOT NULL DEFAULT '',
+      au_phone     TEXT NOT NULL DEFAULT '',
+      notes        TEXT NOT NULL DEFAULT '',
+      file_urls    TEXT NOT NULL DEFAULT '[]'
+    )
+  `, 'CREATE crm_tasks')
+  // Migration safety: add column if missing in older deploys
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`,
+    'ALTER crm_tasks file_urls'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`,
+    'ALTER crm_tasks au_phone'
+  )
+  // Migrations for new columns
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
+    'ALTER crm_clients archived'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`,
+    'ALTER crm_clients yearly_checkins'
+  )
+  // Indexes for fast queries
   await Promise.all([
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_submitted ON crm_tasks(submitted_at DESC)`, 'IDX tasks submitted'),
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_done ON crm_tasks(done)`, 'IDX tasks done'),
-    sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_client ON crm_tasks(client_id)`, 'IDX tasks client'),
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_created ON crm_clients(created_at DESC)`, 'IDX clients created'),
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_archived ON crm_clients(archived)`, 'IDX clients archived'),
   ])
@@ -200,19 +208,11 @@ export async function markTaskDone(id: string): Promise<void> {
   const task = await getTask(id)
   if (!task) return
 
-  const now = new Date().toISOString()
-
-  // NOTE: No client card is created here intentionally.
-  // Client card is created ONLY when the admin manually transfers
-  // the task from the Done tab to Clients (deleteTaskAndArchive).
-  // This allows the admin to undo/cancel before committing.
-
-  // 1. Delete all uploaded files from Vercel Blob permanently
+  // No client card created here — only when admin manually transfers to Clients tab
   if (task.fileUrls && task.fileUrls.length > 0) {
     await deleteFiles(task.fileUrls)
   }
 
-  // 2. Wipe all sensitive fields + mark done — keep: name, dob, email, whatsapp, country, notes
   await sql`
     UPDATE crm_tasks SET
       done         = TRUE,
@@ -226,6 +226,7 @@ export async function markTaskDone(id: string): Promise<void> {
     WHERE id = ${id}
   `
 }
+
 
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
   await initDb()
@@ -245,20 +246,12 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   if (!task) return
 
   // Idempotent client upsert — safe to re-run if delete fails
-  // Merge task notes into client notes without losing existing ones
-  const existingClientForArchive = await getClientById(task.clientId)
-  const taskNotesForArchive = task.notes ?? ''
-  const clientNotesForArchive = existingClientForArchive?.notes ?? ''
-  const mergedNotesForArchive = (clientNotesForArchive && taskNotesForArchive && !clientNotesForArchive.includes(taskNotesForArchive))
-    ? (clientNotesForArchive + '\n' + taskNotesForArchive).trim()
-    : (clientNotesForArchive || taskNotesForArchive)
-
   await sql`
     INSERT INTO crm_clients
       (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
     VALUES
       (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
-       ${task.country},${task.howHeard},${mergedNotesForArchive},'[]','[]',
+       ${task.country},${task.howHeard},'','[]','[]',
        '{"done":false,"completedAt":"","notes":""}',
        '{"done":false,"completedAt":"","notes":""}',
        ${new Date().toISOString()})
@@ -268,31 +261,15 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
         THEN EXCLUDED.how_heard
         ELSE crm_clients.how_heard
       END,
-      notes = ${mergedNotesForArchive}
+      notes = CASE
+        WHEN EXCLUDED.notes != '' AND crm_clients.notes NOT LIKE '%' || EXCLUDED.notes || '%'
+        THEN TRIM(crm_clients.notes || E'\n' || EXCLUDED.notes)
+        ELSE crm_clients.notes
+      END
   `
 
-  // Auto-sync task type to client timeline + delete task in parallel
-  const now = new Date().toISOString()
-  const timelineSync = (async () => {
-    try {
-      if (task.taskType === 'tax-return' && task.taxYear) {
-        await addTaxReturn(task.clientId, { year: task.taxYear, refundAmount: 0, type: 'refund', completedAt: now })
-      } else if (task.taskType === 'super') {
-        await addSuperReturn(task.clientId, { year: task.taxYear || new Date().getFullYear().toString(), amount: 0, completedAt: now })
-      } else if (task.taskType === 'tfn') {
-        await updateService(task.clientId, 'tfn', { done: true, completedAt: now, notes: '' })
-      } else if (task.taskType === 'abn') {
-        await updateService(task.clientId, 'abn', { done: true, completedAt: now, notes: '' })
-      }
-    } catch (err) {
-      // Timeline sync failure is non-fatal — client card was created, task will still be deleted
-      // Admin can manually add the return/service from the client card
-      console.error('[deleteTaskAndArchive] timeline sync failed:', err)
-    }
-  })()
-
-  // Delete task only after client is safely upserted (above), run in parallel with timeline sync
-  await Promise.all([timelineSync, sql`DELETE FROM crm_tasks WHERE id = ${taskId}`])
+  // Delete task only after client is safely archived
+  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
 }
 
 // Delete task permanently — no client card created, all data gone
@@ -328,59 +305,35 @@ export async function updateClientNotes(id: string, notes: string): Promise<void
 // Tax returns
 export async function addTaxReturn(clientId: string, r: TaxReturn): Promise<void> {
   await initDb()
-  // Atomic: remove any existing entry for this year then append new one — no read needed
-  await sqlWithTimeout(sql`
-    UPDATE crm_clients
-    SET tax_returns = (
-      SELECT jsonb_agg(entry)::text
-      FROM jsonb_array_elements(tax_returns::jsonb) AS entry
-      WHERE entry->>'year' != ${r.year}
-    ) || ${JSON.stringify([r])}
-    WHERE id = ${clientId}
-  `, 'addTaxReturn')
+  const client = await getClientById(clientId)
+  if (!client) return
+  const updated = [...client.taxReturns.filter(x => x.year !== r.year), r]
+  await sql`UPDATE crm_clients SET tax_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
 }
 
 export async function removeTaxReturn(clientId: string, year: string): Promise<void> {
   await initDb()
-  // Atomic: filter out the target year without a read round-trip
-  await sqlWithTimeout(sql`
-    UPDATE crm_clients
-    SET tax_returns = COALESCE((
-      SELECT jsonb_agg(entry)::text
-      FROM jsonb_array_elements(tax_returns::jsonb) AS entry
-      WHERE entry->>'year' != ${year}
-    ), '[]')
-    WHERE id = ${clientId}
-  `, 'removeTaxReturn')
+  const client = await getClientById(clientId)
+  if (!client) return
+  const updated = client.taxReturns.filter(x => x.year !== year)
+  await sql`UPDATE crm_clients SET tax_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
 }
 
 // Super returns
 export async function addSuperReturn(clientId: string, r: SuperReturn): Promise<void> {
   await initDb()
-  // Atomic: remove existing year entry then append new one
-  await sqlWithTimeout(sql`
-    UPDATE crm_clients
-    SET super_returns = (
-      SELECT jsonb_agg(entry)::text
-      FROM jsonb_array_elements(super_returns::jsonb) AS entry
-      WHERE entry->>'year' != ${r.year}
-    ) || ${JSON.stringify([r])}
-    WHERE id = ${clientId}
-  `, 'addSuperReturn')
+  const client = await getClientById(clientId)
+  if (!client) return
+  const updated = [...client.superReturns.filter(x => x.year !== r.year), r]
+  await sql`UPDATE crm_clients SET super_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
 }
 
 export async function removeSuperReturn(clientId: string, year: string): Promise<void> {
   await initDb()
-  // Atomic: filter out the target year without a read round-trip
-  await sqlWithTimeout(sql`
-    UPDATE crm_clients
-    SET super_returns = COALESCE((
-      SELECT jsonb_agg(entry)::text
-      FROM jsonb_array_elements(super_returns::jsonb) AS entry
-      WHERE entry->>'year' != ${year}
-    ), '[]')
-    WHERE id = ${clientId}
-  `, 'removeSuperReturn')
+  const client = await getClientById(clientId)
+  if (!client) return
+  const updated = client.superReturns.filter(x => x.year !== year)
+  await sql`UPDATE crm_clients SET super_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
 }
 
 // TFN / ABN services
@@ -495,12 +448,8 @@ export async function getAllActiveClients(): Promise<ClientRecord[]> {
 
 export async function setYearlyCheckin(clientId: string, year: string, done: boolean): Promise<void> {
   await initDb()
-  // Atomic: merge new key into existing JSON without a read round-trip
-  await sqlWithTimeout(sql`
-    UPDATE crm_clients
-    SET yearly_checkins = (
-      COALESCE(yearly_checkins::jsonb, '{}'::jsonb) || ${JSON.stringify({ [year]: done })}::jsonb
-    )::text
-    WHERE id = ${clientId}
-  `, 'setYearlyCheckin')
+  const client = await getClientById(clientId)
+  if (!client) return
+  const updated = { ...client.yearlyCheckins, [year]: done }
+  await sql`UPDATE crm_clients SET yearly_checkins = ${JSON.stringify(updated)} WHERE id = ${clientId}`
 }

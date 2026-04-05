@@ -247,23 +247,17 @@ export default function TaxFormPage() {
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
 
-    // Upload invoices directly from browser to avoid server payload limits
-    // Each invoice is uploaded independently so one failure doesn't block others
     const invoiceUrls: string[] = []
     try {
-      // Upload all invoices in parallel — significantly faster than sequential
       const results = await Promise.all(
         invoices.files.map(f =>
           fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
-            method: 'POST',
-            body: f,
-            headers: { 'Content-Type': f.type },
+            method: 'POST', body: f, headers: { 'Content-Type': f.type },
           }).then(r => r.ok ? r.json() : null).catch(() => null)
         )
       )
       results.forEach(r => { if (r?.url) invoiceUrls.push(r.url) })
     } catch {
-      // If client-side upload fails, fall back to sending files via formData
       invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
     }
     if (invoiceUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
@@ -288,6 +282,7 @@ export default function TaxFormPage() {
   /* ── Success screen ── */
   if (submitted) {
     const firstName = fullName.split(' ')[0]
+    const _ = lastName
     return (
       <>
         <style>{styles}</style>
@@ -572,7 +567,7 @@ export default function TaxFormPage() {
               <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
                 {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
                   <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === 'Required' ? `${({
-                    waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'First Name',lastName:'Last name',
+                    waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
                     primaryJob:'Primary Job',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',

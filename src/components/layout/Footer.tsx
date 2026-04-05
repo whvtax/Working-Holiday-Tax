@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import Image from 'next/image'
 import { WA_URL, EMAIL } from '@/lib/constants'
 
 const linkCls = "block mb-2.5 transition-colors hover-forest"
@@ -67,7 +66,7 @@ export function Footer() {
                 className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
                 style={{ width: '36px', height: '36px', border: '1.5px solid #C8EAE0' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <Image src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={22} height={22} style={{ objectFit: 'contain' }} />
+                <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={22} height={22} style={{ objectFit: 'contain' }} />
               </a>
             </div>
           </div>

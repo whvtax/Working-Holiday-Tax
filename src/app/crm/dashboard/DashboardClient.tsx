@@ -59,7 +59,6 @@ function CopyBtn({ text }: { text: string }) {
   )
 }
 
-// Generic dropdown button component (avoids <details> which has cross-browser issues)
 export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
@@ -130,51 +129,21 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadArchived]',e) }
   },[])
 
-  // ── Stable onClick handlers (useCallback — no new fn per render) ──
-  const handleClosePreview      = useCallback(()=>setPreviewUrl(null),[])
-  const handleCloseAddModal     = useCallback(()=>setShowAddModal(false),[])
-  const handleOpenAddModal      = useCallback(()=>setShowAddModal(true),[])
-  const handleCloseConfirmDel   = useCallback(()=>setConfirmDelete(null),[])
-  const handleCloseConfirmPerm  = useCallback(()=>setConfirmPermDelete(null),[])
-  const handleCloseConfirmTrans = useCallback(()=>setConfirmTransfer(null),[])
-  const handleCloseConfirmComp  = useCallback(()=>setConfirmComplete(null),[])
-  const handleCloseConfirmDelCl = useCallback(()=>setConfirmDeleteClient(null),[])
-  const handleBackToList        = useCallback(()=>setTaskView('list'),[])
-  const handleBackToClients     = useCallback(()=>setActiveClient(null),[])
-  const handleCloseDropdown     = useCallback(()=>setOpenDropdown(null),[])
-  const handleCloseAddTax       = useCallback(()=>setShowAddTax(false),[])
-  const handleCloseAddSuper     = useCallback(()=>setShowAddSuper(false),[])
-  const handleToggleAddTax      = useCallback(()=>setShowAddTax(v=>!v),[])
-  const handleToggleAddSuper    = useCallback(()=>setShowAddSuper(v=>!v),[])
-  const handleSetRefund         = useCallback(()=>setNewTaxType('refund'),[])
-  const handleSetOwed           = useCallback(()=>setNewTaxType('owed'),[])
-  const handleSetCaptureRefund  = useCallback(()=>setCaptureRefundType('refund'),[])
-  const handleSetCaptureOwed    = useCallback(()=>setCaptureRefundType('owed'),[])
-  const handleCancelCapture     = useCallback(()=>setCaptureRefund(null),[])
-  const handleClearGlobalSearch = useCallback(()=>setGlobalSearch(''),[])
-
-  // Load tasks + clients in parallel on mount. Archived loaded lazily when user navigates to Archive tab.
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadArchived()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
-  // Lazy-load archived clients only when the Archive tab is first opened
-  const [archivedLoaded, setArchivedLoaded] = React.useState(false)
-  function openArchive() {
-    setView('archive')
-    if (!archivedLoaded) { setArchivedLoaded(true); loadArchived() }
-  }
-
   async function archiveClient(id: string) {
-    setClients(prev => prev.filter(c => c.id !== id)) // optimistic
-    // Fire server call + reloads in parallel — don't await server before reloading
-    const req = fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
-    await Promise.all([req, loadClients(), loadArchived()])
+    // Optimistic: remove from clients immediately
+    setClients(prev => prev.filter(c => c.id !== id))
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
+    await Promise.all([loadClients(), loadArchived()])
   }
   async function unarchiveClient(id: string) {
-    setArchivedClients(prev => prev.filter(c => c.id !== id)) // optimistic
-    const req = fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
-    await Promise.all([req, loadClients(), loadArchived()])
+    // Optimistic: remove from archive immediately
+    setArchivedClients(prev => prev.filter(c => c.id !== id))
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
+    await Promise.all([loadClients(), loadArchived()])
   }
   async function toggleCheckin(clientId: string, year: string, current: boolean) {
     // Optimistic update
@@ -183,13 +152,10 @@ export default function DashboardClient() {
   }
 
   async function markDone(id:string) {
-    // Optimistic: move task to done visually right away
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
     setConfirmComplete(null)
-    // Navigate back to task list immediately
     setActiveTask(null)
     setTaskView('list')
-    // Fire and forget — no client card created yet, that happens on manual transfer
     fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
   }
 
@@ -198,11 +164,8 @@ export default function DashboardClient() {
     setConfirmTransfer(null)
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
-    // Fire server call and client reload in parallel — don't wait for server before refreshing UI
-    await Promise.all([
-      fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})}),
-      loadClients(),
-    ])
+    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
+    await Promise.all([loadClients(), loadArchived()])
   }
 
   // Delete task permanently — no client card created
@@ -210,7 +173,7 @@ export default function DashboardClient() {
     setConfirmPermDelete(null)
     setTasks(prev => prev.filter(t => t.id !== id))
     setActiveTask(null); setTaskView('list')
-    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})}) // fire-and-forget
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})})
   }
 
   async function saveTaskNotes() {
@@ -294,25 +257,21 @@ export default function DashboardClient() {
 
   async function refreshClient() {
     if(!activeClient) return
-    // Fetch individual client + full clients list in parallel
-    const [r] = await Promise.all([
-      fetch(`/api/crm/clients/${activeClient.id}`),
-      loadClients(),
-    ])
-    const d = await r.json()
-    if(d.ok) setActiveClient(d.client)
+    const r=await fetch(`/api/crm/clients/${activeClient.id}`)
+    const d=await r.json()
+    if(d.ok){ setActiveClient(d.client); await loadClients() }
   }
 
   async function deleteClient(id:string) {
     setArchivedClients(prev => prev.filter(c => c.id !== id))
-    setClients(prev => prev.filter(c => c.id !== id))
     setActiveClient(null); setView('archive'); setConfirmDeleteClient(null)
-    fetch(`/api/crm/clients/${id}`,{method:'DELETE'}) // fire-and-forget, already removed optimistically
+    await fetch(`/api/crm/clients/${id}`,{method:'DELETE'})
+    await loadClients()
   }
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    setShowAddModal(false)
+    // Add as a task for now
     await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         clientName:newClient.fullName, taskType:'tax-return',
@@ -322,7 +281,7 @@ export default function DashboardClient() {
         howHeard:'',auPhone:'',notes:'',fileUrls:[],
       })})
     setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25'})
-    loadTasks() // no await — modal is already closed, reload in background
+    setShowAddModal(false); await loadTasks()
   }
 
   const fmtDate   = (iso:string) => iso ? new Date(iso).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '—'
@@ -641,11 +600,14 @@ export default function DashboardClient() {
     setTimeout(() => URL.revokeObjectURL(url), 5000)
   }
 
-
+  const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
+  const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
+  const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
+  const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
   const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done), [tasks])
   const doneTasks      = useMemo(()=>tasks.filter(t=>t.done),  [tasks])
-  const visibleClients = useMemo(()=>clients.filter(c=>{
+  const visibleClients = clients.filter(c=>{
     const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
     const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
@@ -653,11 +615,12 @@ export default function DashboardClient() {
     const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
     const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
     return ms && my && mc && mh && mcountry
-  }), [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter])
+  })
+  // Generic dropdown button component (avoids <details> which has cross-browser issues)
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
-      <div style={S.xcb1f7417}>
+      <div style={{flexShrink:0,position:'relative'}}>
         <button
           onClick={()=>setOpenDropdown(isOpen?null:id)}
           style={{height:'38px',padding:'0 12px',border:`1.5px solid ${active?'#0E5C42':'#d8e4dc'}`,borderRadius:9,fontSize:13,background:active?'#e8f5f0':'#fff',color:active?'#0E5C42':'#4a5568',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap' as const,fontWeight:active?600:400}}>
@@ -667,11 +630,11 @@ export default function DashboardClient() {
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" style={{marginLeft:2,opacity:.5,transform:isOpen?'rotate(180deg)':'rotate(0deg)',transition:'transform 0.15s'}}><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
         </button>
         {isOpen && <>
-          <div style={S.xc4ba9f6f} onClick={handleCloseDropdown}/>
-          <div style={S.xe322999e}>
-            <div style={S.x90da69da}>
-              <span style={S.xb7c920e8}>{label}</span>
-              {active && <button style={S.x4f40b610} onClick={e=>{e.stopPropagation();onClear()}}>Clear</button>}
+          <div style={{position:'fixed',inset:0,zIndex:98}} onClick={()=>setOpenDropdown(null)}/>
+          <div style={{position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,background:'#fff',border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',minWidth:200,boxShadow:'0 8px 24px rgba(0,0,0,0.1)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f4f1'}}>
+              <span style={{fontSize:11,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{label}</span>
+              {active && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={e=>{e.stopPropagation();onClear()}}>Clear</button>}
             </div>
             {children}
           </div>
@@ -680,258 +643,8 @@ export default function DashboardClient() {
     )
   }
 
-// ── Static helpers (defined outside component — created once, never re-created on render) ──
-const _fmtCurFormatter = new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0})
-const fmtCur    = (n:number) => _fmtCurFormatter.format(n)
-const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
-const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
-const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
-
-const S: Record<string,React.CSSProperties> = {
-  shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
-  sb:{width:212,background:'#0E5C42',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh'},
-  sbLogo:{display:'flex',alignItems:'center',gap:10,padding:'18px 14px 14px'},
-  sbIcon:{width:34,height:34,borderRadius:9,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0},
-  sbTitle:{fontSize:13,fontWeight:600,color:'#fff'},
-  sbSub:{fontSize:10,color:'rgba(255,255,255,0.38)',marginTop:1},
-  sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'0 12px 8px'},
-  sbNav:{display:'flex',flexDirection:'column',gap:2,padding:'0 7px'},
-  sbBtn:{display:'flex',alignItems:'center',gap:9,padding:'9px 11px',borderRadius:8,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.15s'},
-  sbBtnOn:{background:'rgba(255,255,255,0.16)',color:'#fff',fontWeight:600},
-  sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'1px 6px',fontSize:10,fontWeight:700},
-  sbLock:{display:'flex',alignItems:'center',gap:7,padding:'9px 11px 16px',fontSize:11,color:'rgba(255,255,255,0.4)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
-  main:{flex:1,background:'#f0f4f1',overflowY:'auto'},
-  page:{padding:'26px 26px 32px'},
-  pgTitle:{fontSize:19,fontWeight:600,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
-  pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
-  card:{background:'#fff',borderRadius:13,border:'1px solid #e4ede8'},
-  secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'13px 13px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between'},
-  row:{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10,alignItems:'center'},
-  lbl:{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0},
-  val:{fontSize:12,color:'#0a1410',flex:1},
-  taskCard:{background:'#fff',borderRadius:12,padding:'12px 14px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:11,cursor:'pointer',transition:'border-color 0.15s,box-shadow 0.15s',marginBottom:6},
-  returnRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 13px',background:'#f7fbf9',borderRadius:9,marginBottom:6,border:'1px solid #e4ede8'},
-  totalRow:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 13px',background:'#e8f5f0',borderRadius:9,border:'1px solid #b0d8c8'},
-  addForm:{background:'#f7fbf9',borderRadius:10,padding:'12px',border:'1px solid #e4ede8',marginTop:8,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const},
-  addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 11px',background:'#0E5C42',border:'none',borderRadius:7,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit'},
-  backBtn:{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',fontSize:12,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500,marginBottom:18,padding:0},
-  checkRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px'},
-  checkbox:{width:20,height:20,borderRadius:6,border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0},
-  overlay:{position:'fixed' as const,inset:0,background:'rgba(0,0,0,0.4)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:999},
-  modal:{background:'#fff',borderRadius:20,padding:'28px',width:'100%',maxWidth:400},
-  mTitle:{fontSize:17,fontWeight:600,color:'#0a1410',marginBottom:5},
-  mSub:{fontSize:13,color:'#7a8a82',marginBottom:18},
-  mInput:{border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',width:'100%',boxSizing:'border-box' as const},
-  mFooter:{display:'flex',gap:8,marginTop:12},
-  mCancel:{flex:1,padding:10,border:'1px solid #e4ede8',borderRadius:10,fontSize:13,cursor:'pointer',background:'#fff',fontFamily:'inherit',color:'#333'},
-  mSave:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#0E5C42',color:'#fff',fontFamily:'inherit'},
-  mDel:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#c0392b',color:'#fff',fontFamily:'inherit'},
-
-  // ── Extracted static inline styles ──
-  xcb1f7417: {flexShrink:0,position:'relative'},
-  xc4ba9f6f: {position:'fixed',inset:0,zIndex:98},
-  xe322999e: {position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,background:'#fff',border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',minWidth:200,boxShadow:'0 8px 24px rgba(0,0,0,0.1)'},
-  x90da69da: {display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f4f1'},
-  xb7c920e8: {fontSize:11,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'},
-  x4f40b610: {fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600},
-  xb9fde29c: {width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'},
-  x84f45a3d: {padding:'0 10px 10px',position:'relative'},
-  xd3eef057: {position:'relative'},
-  xc1633a7a: {position:'absolute',left:8,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'},
-  xc8ebaa85: {width:'100%',padding:'7px 10px 7px 28px',background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:8,fontSize:12,color:'#fff',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const},
-  xac2d6456: {position:'absolute',top:'100%',left:10,right:10,zIndex:200,background:'#fff',border:'1px solid #e4ede8',borderRadius:10,boxShadow:'0 8px 24px rgba(0,0,0,0.15)',overflow:'hidden',marginTop:4},
-  xe7c04aeb: {padding:'6px 12px',fontSize:10,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',background:'#f7fbf9'},
-  x2e4aceb2: {padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'},
-  xfafecf86: {fontSize:12,fontWeight:600,color:'#0a1410'},
-  xcd9a81b5: {fontSize:10,color:'#7a8a82'},
-  xbf2e34cc: {fontSize:10,color:'#059669',fontWeight:600},
-  x8b377836: {fontSize:10,color:'#d97706',fontWeight:600},
-  x3743aad1: {fontSize:10,color:'#0E5C42',fontWeight:600},
-  x481ebfc9: {padding:'12px',fontSize:12,color:'#aabab2',textAlign:'center' as const},
-  xa3708f50: {display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:20},
-  x1b10df72: {fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6},
-  xad681513: {color:'#d97706',fontSize:8},
-  xf1e35049: {width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0},
-  xda5cd676: {flex:1},
-  xfb92c106: {fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2},
-  xd5c83826: {fontSize:11,color:'#7a8a82'},
-  x8e1db426: {background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700},
-  x6f18439f: {fontSize:11,color:'#aabab2'},
-  x97ccbbd0: {fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',margin:'14px 0 8px',display:'flex',alignItems:'center',gap:6},
-  x861a51b9: {color:'#059669',fontSize:8},
-  xab3c1fc4: {width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0},
-  x329bb58f: {fontSize:11,color:'#aabab2',marginRight:8},
-  x71f4b4c5: {padding:'4px 10px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'},
-  x33f871d3: {background:'#fff',borderRadius:13,padding:48,textAlign:'center',color:'#aabab2',fontSize:14,border:'1px solid #e4ede8'},
-  xd56d76f0: {fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'},
-  x916001fd: {display:'inline-flex',alignItems:'center',gap:6,background:'#fef3e8',border:'1px solid #fed7aa',borderRadius:8,padding:'4px 10px',marginTop:4},
-  xd1192e20: {fontSize:11},
-  x37420b76: {fontSize:11,fontWeight:600,color:'#c2410c'},
-  x7f89b514: {fontSize:12,color:'#7a8a82',marginTop:3,display:'flex',alignItems:'center',gap:8},
-  x6824a2c3: {background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600},
-  x8ba9531b: {background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600},
-  xff6495fd: {display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12},
-  xbf4a9569: {fontSize:12,color:'#aabab2',padding:'8px 0'},
-  x1bd46cfd: {fontSize:12,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'},
-  x64bca139: {display:'flex',gap:6},
-  x4245b48a: {fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'},
-  x2700bce2: {fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'},
-  xd66ea664: {fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'},
-  x4e8e7be8: {borderTop:'1px solid #f0f4f1',marginTop:4},
-  x70176c97: {padding:'14px',fontSize:12,color:'#aabab2'},
-  xce30f474: {flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const},
-  x0fbdcc7a: {display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'},
-  xebe1505a: {fontSize:11,color:'#059669',fontWeight:500},
-  x77a38a00: {display:'flex',gap:10,marginBottom:8},
-  x9e72cc1f: {flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6},
-  x59e41e9e: {flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'},
-  xe57125e5: {flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'},
-  xc332e2f0: {flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'},
-  xa2daaad8: {fontSize:11,color:'#aabab2',textAlign:'center',marginTop:4},
-  xbe90e595: {display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12},
-  x64b21577: {display:'flex',alignItems:'center',gap:10},
-  xa0d40d14: {background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600},
-  x1653667f: {background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600},
-  x4a20b58f: {display:'flex',gap:8,alignItems:'center'},
-  x675f94bd: {display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:9,padding:'5px 10px'},
-  x899d22ca: {fontSize:11,color:'#7a8a82',fontWeight:500},
-  x23c83da4: {border:'none',background:'none',fontSize:12,fontWeight:600,color:'#0E5C42',cursor:'pointer',outline:'none',fontFamily:'inherit'},
-  x5c2d8576: {border:'none',background:'none',fontSize:11,color:'#555',cursor:'pointer',outline:'none',fontFamily:'inherit'},
-  xd1e5aeda: {display:'flex',gap:8,marginBottom:14,flexWrap:'wrap' as const,alignItems:'center'},
-  x2e34fd75: {position:'relative',flex:3,minWidth:200},
-  x2d0bd33f: {position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'},
-  x61f1ea5d: {width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box' as const},
-  x32ff4c84: {display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'},
-  x5af8d5ac: {width:14,height:14,accentColor:'#0E5C42'},
-  x57804355: {fontSize:13,color:'#0a1410',flex:1},
-  xb17e9ced: {fontSize:12,color:'#aabab2',padding:'4px 2px'},
-  x9b210d2b: {height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0},
-  x3a4e64fb: {display:'flex',gap:10,marginBottom:12,flexWrap:'wrap' as const},
-  xad1a4b74: {flex:1,minWidth:160,background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12},
-  xee96688d: {fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3},
-  x8385da86: {fontSize:20,fontWeight:700,color:'#0E5C42'},
-  xe75ffc02: {textAlign:'right' as const},
-  x006f16d7: {fontSize:10,color:'#587066',marginBottom:2},
-  xc233c16e: {fontSize:14,fontWeight:700,color:'#0E5C42'},
-  x7551ccf0: {fontSize:10,fontWeight:400,color:'#587066',marginLeft:3},
-  xbe8de778: {flex:1,minWidth:160,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12},
-  x6ae954e0: {fontSize:10,fontWeight:700,color:'#2563eb',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3},
-  x1c333575: {fontSize:20,fontWeight:700,color:'#2563eb'},
-  xb701f2e9: {fontSize:14,fontWeight:700,color:'#2563eb'},
-  x3e49aac3: {flex:1,minWidth:160,background:'#f3eefe',border:'1px solid #ddd6fe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12},
-  x2b6e7f81: {fontSize:10,fontWeight:700,color:'#7c3aed',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3},
-  xc0a9c9e3: {fontSize:20,fontWeight:700,color:'#7c3aed'},
-  x277d506f: {fontSize:14,fontWeight:700,color:'#7c3aed'},
-  x0fb9b2d0: {width:'100%',borderCollapse:'collapse'},
-  x92de4243: {cursor:'pointer'},
-  x3e85bc74: {padding:'11px 14px',borderBottom:'1px solid #f0f4f1'},
-  x68546cc6: {display:'flex',alignItems:'center',gap:9},
-  xef6e1c77: {fontSize:12,fontWeight:500,color:'#0a1410'},
-  x49aeafce: {padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'},
-  x400f1c41: {display:'flex',alignItems:'center',gap:6},
-  xf9eb5934: {flexShrink:0,color:'#25D366',display:'flex',alignItems:'center'},
-  xbd72a53e: {padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'},
-  xa905e4d8: {padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'},
-  xe4e078bc: {padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12},
-  x4c381626: {color:'#aabab2'},
-  xdf6e3076: {fontWeight:600,color:'#0E5C42',fontSize:12},
-  x5fe6624e: {fontSize:11,color:'#555'},
-  x8c4cdd0f: {padding:'6px 10px',borderBottom:'1px solid #f0f4f1',textAlign:'center'},
-  xed3ec972: {padding:'11px 10px',borderBottom:'1px solid #f0f4f1'},
-  x06c613b5: {display:'flex',gap:4},
-  xeb6f0c41: {padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'},
-  x65babb95: {padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'},
-  xbc8c8571: {background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600},
-  x5ba5db93: {display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'},
-  xcced33e8: {width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'},
-  xa1bc5b62: {padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px'},
-  xb65aeb1e: {fontSize:12,fontWeight:500,color:'#7a8a82'},
-  x682c5636: {padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'},
-  x4454469b: {display:'flex',gap:6,alignItems:'center'},
-  x923e3281: {padding:'4px 10px',background:'#e8f5f0',border:'1px solid #c8eadf',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'},
-  x85b12ef0: {padding:'4px 8px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'},
-  x3c461697: {display:'flex',alignItems:'center',gap:14,marginBottom:14},
-  xee964844: {width:50,height:50,borderRadius:14,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:700,flexShrink:0},
-  xd7a7fc88: {fontSize:12,color:'#7a8a82',marginTop:3},
-  x18eade14: {display:'grid',gridTemplateColumns:'1fr 1fr',gap:0},
-  xc0df4a72: {display:'flex',padding:'7px 0',borderBottom:'1px solid #f5f5f5',gap:12},
-  x631a084b: {fontSize:11,color:'#aabab2',fontWeight:500,minWidth:120},
-  xd22c8aaa: {fontSize:12,color:'#0a1410'},
-  xd9de7bcd: {padding:'12px 14px'},
-  xb0708679: {display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100},
-  x8ec26ac0: {fontSize:11,fontWeight:500,color:'#555'},
-  x3362bf0e: {display:'flex',flexDirection:'column',gap:4,minWidth:130},
-  xde55ab2f: {display:'flex',border:'1.5px solid #e4ede8',borderRadius:8,overflow:'hidden',background:'#fff'},
-  x9c1f422f: {display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110},
-  x35a88508: {padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'},
-  x8b7d71ba: {fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'},
-  x65f6986f: {display:'flex',alignItems:'flex-start',gap:12,padding:'10px 0',borderBottom:'1px solid #f0f4f1'},
-  x89fc9133: {minWidth:64,paddingTop:2},
-  x13e1ac3c: {flex:1,display:'flex',flexWrap:'wrap' as const,gap:6},
-  x855468c3: {background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1},
-  x04498c34: {display:'flex',alignItems:'center',gap:4,background:'#f7fbf9',border:'1px dashed #d8e4dc',borderRadius:8,padding:'4px 10px'},
-  xf53b6f4a: {display:'flex',alignItems:'center',gap:6,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:8,padding:'4px 10px'},
-  x74ca8792: {fontSize:11,fontWeight:700,color:'#2563eb'},
-  x8d2af14a: {display:'flex',gap:6,marginTop:6,alignItems:'center'},
-  x504681b8: {flex:1,padding:'4px 8px',border:'1px solid #d8e4dc',borderRadius:6,fontSize:11,fontFamily:'inherit',outline:'none',color:'#0a1410'},
-  x7f60962a: {padding:'4px 8px',background:'#0E5C42',color:'#fff',border:'none',borderRadius:6,fontSize:11,cursor:'pointer',fontFamily:'inherit'},
-  x03d4d029: {display:'flex',alignItems:'center',gap:6,marginTop:6},
-  x4c8ea0ca: {fontSize:11,color:'#555',flex:1,fontStyle:'italic'},
-  x807324e8: {background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0},
-  xb5c03f65: {marginTop:4,background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0,textAlign:'left' as const},
-  x1b982972: {display:'flex',gap:12,marginTop:10,paddingTop:8,borderTop:'1.5px solid #e8f0eb'},
-  x43e7ab15: {flex:1,background:'#e8f5f0',borderRadius:8,padding:'8px 12px',textAlign:'center' as const},
-  x061b8dae: {fontSize:10,color:'#0E5C42',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'},
-  x77bd3b3d: {fontSize:15,fontWeight:700,color:'#0E5C42'},
-  x032cd16d: {flex:1,background:'#eff6ff',borderRadius:8,padding:'8px 12px',textAlign:'center' as const},
-  x19d31ce2: {fontSize:10,color:'#2563eb',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'},
-  x718a158b: {fontSize:15,fontWeight:700,color:'#2563eb'},
-  xcfec0d39: {fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8,display:'flex',alignItems:'center',gap:7},
-  xd2441b32: {width:'100%',border:'1.5px solid #e4ede8',borderRadius:9,padding:'9px 11px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:72,lineHeight:1.55,boxSizing:'border-box'},
-  x2dbfec36: {display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6},
-  x8fbd5095: {background:'#fff',borderRadius:13,padding:'14px 18px',border:'1px dashed #fca5a5'},
-  x156be781: {fontSize:12,fontWeight:600,color:'#c0392b',marginBottom:4},
-  xe8b1b788: {fontSize:12,color:'#7a8a82',marginBottom:10},
-  x9a37a49e: {padding:'7px 14px',border:'1px solid #fca5a5',borderRadius:8,background:'#fff',color:'#c0392b',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'},
-  x5236cefd: {marginBottom:10},
-  xb6c37760: {fontSize:12,fontWeight:500,color:'#555',display:'block',marginBottom:4},
-  xe47a667e: {position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000},
-  x87761470: {background:'#fff',borderRadius:20,padding:'32px 28px',maxWidth:380,width:'90%',textAlign:'center',fontFamily:'inherit'},
-  x475931f6: {fontSize:40,marginBottom:12},
-  x478c8d03: {fontSize:18,fontWeight:700,color:'#0a1410',marginBottom:8},
-  x22f0728c: {fontSize:13,color:'#7a8a82',lineHeight:1.65,marginBottom:22},
-  xd542b62b: {display:'flex',gap:10,justifyContent:'center'},
-  x14bfc581: {padding:'10px 20px',borderRadius:10,border:'1px solid #e4eae7',background:'#fff',fontSize:13,fontWeight:500,cursor:'pointer',fontFamily:'inherit'},
-  x66d44692: {padding:'10px 20px',borderRadius:10,border:'none',background:'#0E5C42',color:'#fff',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'},
-  x3a96ebcd: {fontSize:28,marginBottom:8,textAlign:'center'},
-  x4b167b23: {fontSize:12,color:'#7a8a82',textAlign:'center',marginBottom:20,lineHeight:1.5},
-  x35ae7672: {marginBottom:14},
-  x41e667e8: {fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8},
-  x6d59e8a8: {display:'flex',gap:8,marginBottom:6},
-  x4be92f52: {width:'100%',padding:'9px 12px',border:'1.5px solid #d8e4dc',borderRadius:9,fontSize:13,outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const},
-  x768f55c5: {marginBottom:20},
-  xc8080688: {fontSize:11,color:'#aabab2',textAlign:'center',marginBottom:16},
-  x277d9dfc: {fontSize:34,marginBottom:10},
-  x4e97ed3a: {fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18},
-  x4163bc50: {fontSize:13,color:'#7a8a82',marginBottom:18},
-  x805ac350: {position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000,padding:24},
-  x5baf3312: {background:'#fff',borderRadius:16,overflow:'hidden',width:'50vw',maxWidth:700,maxHeight:'70vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,0.3)'},
-  xd8839723: {display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px',borderBottom:'1px solid #e4ede8',background:'#f7fbf9'},
-  x035ffe8d: {fontSize:12,fontWeight:600,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'80%'},
-  x1ae14c3e: {display:'flex',gap:8,flexShrink:0},
-  x7016ec08: {fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'3px 10px',textDecoration:'none',fontWeight:600},
-  x0ac6b2c6: {background:'none',border:'none',fontSize:18,cursor:'pointer',color:'#7a8a82',padding:'0 4px',lineHeight:1},
-  xfea470d4: {flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200},
-  x91a292c1: {maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'},
-  xf49bca32: {width:'100%',height:'60vh',border:'none'},
-  x3aad9412: {padding:32,textAlign:'center',color:'#7a8a82'},
-  x7e2e010c: {fontSize:32,marginBottom:12},
-  x3fd74e07: {fontSize:13},
-  xbb42254d: {color:'#0E5C42',fontSize:13,fontWeight:600},
- }
-
   // Global search across tasks + clients
-  const globalResults = useMemo(()=> globalSearch.trim().length > 1 ? {
+  const globalResults = globalSearch.trim().length > 1 ? {
     tasks: tasks.filter(t=>
       t.clientName.toLowerCase().includes(globalSearch.toLowerCase()) ||
       t.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
@@ -942,25 +655,61 @@ const S: Record<string,React.CSSProperties> = {
       c.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
       c.whatsapp?.includes(globalSearch)
     ).slice(0,5),
-  } : null, [globalSearch, tasks, clients])
+  } : null
 
-  const howHeardStats        = useMemo(()=>clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [clients])
-  const archiveHowHeardStats = useMemo(()=>archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [archivedClients])
-  const visibleArchived      = useMemo(()=>archivedClients.filter(c=>{
+  const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
+  const archiveHowHeardStats = archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
+  const visibleArchived = archivedClients.filter(c=>{
     const ms = !archiveSearch || c.fullName.toLowerCase().includes(archiveSearch.toLowerCase()) || c.whatsapp?.includes(archiveSearch) || c.email?.includes(archiveSearch)
     const my = archiveYearFilter.size===0 || c.taxReturns?.some(r=>archiveYearFilter.has(r.year)) || c.superReturns?.some(r=>archiveYearFilter.has(r.year))
     const mh = archiveHowHeardFilter.size===0 || archiveHowHeardFilter.has(c.howHeard||'Unknown')
     const mc = archiveCountryFilter.size===0 || archiveCountryFilter.has(c.country||'')
     return ms && my && mh && mc
-  }), [archivedClients, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
+  })
 
-  // S, fmtCur, initials, avColor — defined outside component above
+  const S: Record<string,React.CSSProperties> = {
+    shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
+    sb:{width:212,background:'#0E5C42',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh'},
+    sbLogo:{display:'flex',alignItems:'center',gap:10,padding:'18px 14px 14px'},
+    sbIcon:{width:34,height:34,borderRadius:9,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0},
+    sbTitle:{fontSize:13,fontWeight:600,color:'#fff'},
+    sbSub:{fontSize:10,color:'rgba(255,255,255,0.38)',marginTop:1},
+    sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'0 12px 8px'},
+    sbNav:{display:'flex',flexDirection:'column',gap:2,padding:'0 7px'},
+    sbBtn:{display:'flex',alignItems:'center',gap:9,padding:'9px 11px',borderRadius:8,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.15s'},
+    sbBtnOn:{background:'rgba(255,255,255,0.16)',color:'#fff',fontWeight:600},
+    sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'1px 6px',fontSize:10,fontWeight:700},
+    sbLock:{display:'flex',alignItems:'center',gap:7,padding:'9px 11px 16px',fontSize:11,color:'rgba(255,255,255,0.4)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
+    main:{flex:1,background:'#f0f4f1',overflowY:'auto'},
+    page:{padding:'26px 26px 32px'},
+    pgTitle:{fontSize:19,fontWeight:600,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
+    pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
+    card:{background:'#fff',borderRadius:13,border:'1px solid #e4ede8'},
+    secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'13px 13px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between'},
+    row:{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10,alignItems:'center'},
+    lbl:{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0},
+    val:{fontSize:12,color:'#0a1410',flex:1},
+    taskCard:{background:'#fff',borderRadius:12,padding:'12px 14px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:11,cursor:'pointer',transition:'border-color 0.15s,box-shadow 0.15s',marginBottom:6},
+    returnRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 13px',background:'#f7fbf9',borderRadius:9,marginBottom:6,border:'1px solid #e4ede8'},
+    totalRow:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 13px',background:'#e8f5f0',borderRadius:9,border:'1px solid #b0d8c8'},
+    addForm:{background:'#f7fbf9',borderRadius:10,padding:'12px',border:'1px solid #e4ede8',marginTop:8,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const},
+    addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 11px',background:'#0E5C42',border:'none',borderRadius:7,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit'},
+    backBtn:{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',fontSize:12,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500,marginBottom:18,padding:0},
+    checkRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px'},
+    checkbox:{width:20,height:20,borderRadius:6,border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0},
+    overlay:{position:'fixed' as const,inset:0,background:'rgba(0,0,0,0.4)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:999},
+    modal:{background:'#fff',borderRadius:20,padding:'28px',width:'100%',maxWidth:400},
+    mTitle:{fontSize:17,fontWeight:600,color:'#0a1410',marginBottom:5},
+    mSub:{fontSize:13,color:'#7a8a82',marginBottom:18},
+    mInput:{border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',width:'100%',boxSizing:'border-box' as const},
+    mFooter:{display:'flex',gap:8,marginTop:12},
+    mCancel:{flex:1,padding:10,border:'1px solid #e4ede8',borderRadius:10,fontSize:13,cursor:'pointer',background:'#fff',fontFamily:'inherit',color:'#333'},
+    mSave:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#0E5C42',color:'#fff',fontFamily:'inherit'},
+    mDel:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#c0392b',color:'#fff',fontFamily:'inherit'},
+  }
 
   const SbButton = ({v,label,icon,badge}:{v:View,label:string,icon:React.ReactNode,badge?:number})=>(
-    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{
-      if(v==='archive') openArchive()
-      else { setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null) }
-    }}>
+    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null)}}>
       {icon}{label}
       {badge!=null && badge>0 && <span style={S.sbBadge}>{badge}</span>}
     </button>
@@ -968,14 +717,14 @@ const S: Record<string,React.CSSProperties> = {
 
   return (
     <>
-      <style>{`*{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
 
       <div style={S.shell}>
         {/* Sidebar */}
         <aside style={S.sb}>
           <div>
             <div style={S.sbLogo}>
-              <div style={S.xb9fde29c}><svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <div style={{width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'}}><svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="100" cy="100" r="100" fill="#0B5240"/>
                 <g transform="translate(100,100) scale(3.57) translate(-17,-17)">
                   <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
@@ -991,11 +740,11 @@ const S: Record<string,React.CSSProperties> = {
             <div style={S.sbDiv}/>
 
             {/* Global search */}
-            <div style={S.x84f45a3d}>
-              <div style={S.xd3eef057}>
-                <svg style={S.xc1633a7a} width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            <div style={{padding:'0 10px 10px',position:'relative'}}>
+              <div style={{position:'relative'}}>
+                <svg style={{position:'absolute',left:8,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 <input
-                  style={S.xc8ebaa85}
+                  style={{width:'100%',padding:'7px 10px 7px 28px',background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:8,fontSize:12,color:'#fff',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
                   placeholder="Search clients & tasks…"
                   value={globalSearch}
                   onChange={e=>setGlobalSearch(e.target.value)}
@@ -1003,36 +752,36 @@ const S: Record<string,React.CSSProperties> = {
                 />
               </div>
               {globalResults && (globalResults.tasks.length>0 || globalResults.clients.length>0) && (
-                <div style={S.xac2d6456}>
+                <div style={{position:'absolute',top:'100%',left:10,right:10,zIndex:200,background:'#fff',border:'1px solid #e4ede8',borderRadius:10,boxShadow:'0 8px 24px rgba(0,0,0,0.15)',overflow:'hidden',marginTop:4}}>
                   {globalResults.tasks.length>0 && (
                     <>
-                      <div style={S.xe7c04aeb}>Tasks</div>
+                      <div style={{padding:'6px 12px',fontSize:10,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',background:'#f7fbf9'}}>Tasks</div>
                       {globalResults.tasks.map(t=>(
-                        <div key={t.id} style={S.x2e4aceb2}
+                        <div key={t.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
                           onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail');setView('tasks');setGlobalSearch('')}}>
                           <div>
-                            <div style={S.xfafecf86}>{t.clientName}</div>
-                            <div style={S.xcd9a81b5}>{t.taskType} · {t.taxYear}</div>
+                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{t.clientName}</div>
+                            <div style={{fontSize:10,color:'#7a8a82'}}>{t.taskType} · {t.taxYear}</div>
                           </div>
-                          {t.done ? <span style={S.xbf2e34cc}>✓ Done</span>
-                                  : <span style={S.x8b377836}>⏳ Pending</span>}
+                          {t.done ? <span style={{fontSize:10,color:'#059669',fontWeight:600}}>✓ Done</span>
+                                  : <span style={{fontSize:10,color:'#d97706',fontWeight:600}}>⏳ Pending</span>}
                         </div>
                       ))}
                     </>
                   )}
                   {globalResults.clients.length>0 && (
                     <>
-                      <div style={S.xe7c04aeb}>Clients</div>
+                      <div style={{padding:'6px 12px',fontSize:10,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',background:'#f7fbf9'}}>Clients</div>
                       {globalResults.clients.map(c=>(
-                        <div key={c.id} style={S.x2e4aceb2}
+                        <div key={c.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
                           onClick={()=>{setActiveClient(c);setClientNotes(c.notes||'');setView('clients');setGlobalSearch('')}}>
                           <div>
-                            <div style={S.xfafecf86}>{c.fullName}</div>
-                            <div style={S.xcd9a81b5}>{c.country} · {c.taxReturns.length} returns</div>
+                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{c.fullName}</div>
+                            <div style={{fontSize:10,color:'#7a8a82'}}>{c.country} · {c.taxReturns.length} returns</div>
                           </div>
                           {c.taxReturns.length>0 && (
-                            <span style={S.x3743aad1}>
-                              {[...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]?.year}
+                            <span style={{fontSize:10,color:'#0E5C42',fontWeight:600}}>
+                              {[...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0].year}
                             </span>
                           )}
                         </div>
@@ -1040,7 +789,7 @@ const S: Record<string,React.CSSProperties> = {
                     </>
                   )}
                   {globalResults.tasks.length===0 && globalResults.clients.length===0 && (
-                    <div style={S.x481ebfc9}>No results found</div>
+                    <div style={{padding:'12px',fontSize:12,color:'#aabab2',textAlign:'center' as const}}>No results found</div>
                   )}
                 </div>
               )}
@@ -1082,7 +831,7 @@ const S: Record<string,React.CSSProperties> = {
                 const doneCount = doneTasks.length
                 if (pendingCount===0 && doneCount===0) return null
                 return (
-                  <div style={S.xa3708f50}>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:20}}>
                     {[
                       {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a'},
                       {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0'},
@@ -1097,46 +846,46 @@ const S: Record<string,React.CSSProperties> = {
               })()}
 
               {pendingTasks.length>0 && <>
-                <div style={S.x1b10df72}>
-                  <span style={S.xad681513}>●</span> Pending — {pendingTasks.length}
+                <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
+                  <span style={{color:'#d97706',fontSize:8}}>●</span> Pending — {pendingTasks.length}
                 </div>
                 {pendingTasks.map(t=>(
                   <div key={t.id} style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
-                    <div style={S.xf1e35049}/>
-                    <div style={S.xda5cd676}>
-                      <div style={S.xfb92c106}>{t.clientName}</div>
-                      <div style={S.xd5c83826}>{t.country} · <span style={S.x8e1db426}>{TASK_LABELS[t.taskType]}</span></div>
+                    <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
+                      <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
                     </div>
-                    <div style={S.x6f18439f}>{fmtDate(t.submittedAt)}</div>
+                    <div style={{fontSize:11,color:'#aabab2'}}>{fmtDate(t.submittedAt)}</div>
                   </div>
                 ))}
               </>}
 
               {doneTasks.length>0 && <>
-                <div style={S.x97ccbbd0}>
-                  <span style={S.x861a51b9}>●</span> Done — {doneTasks.length}
+                <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',margin:'14px 0 8px',display:'flex',alignItems:'center',gap:6}}>
+                  <span style={{color:'#059669',fontSize:8}}>●</span> Done — {doneTasks.length}
                 </div>
                 {doneTasks.map(t=>(
                   <div key={t.id} style={{...S.taskCard,opacity:0.65}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
-                    <div style={S.xab3c1fc4}/>
-                    <div style={S.xda5cd676}>
-                      <div style={S.xfb92c106}>{t.clientName}</div>
-                      <div style={S.xd5c83826}>{t.country} · <span style={S.x8e1db426}>{TASK_LABELS[t.taskType]}</span></div>
+                    <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0}}/>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
+                      <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
                     </div>
-                    <div style={S.x329bb58f}>{fmtDate(t.submittedAt)}</div>
-                    <button onClick={e=>{e.stopPropagation();setConfirmDelete(t.id)}} style={S.x71f4b4c5}>Delete</button>
+                    <div style={{fontSize:11,color:'#aabab2',marginRight:8}}>{fmtDate(t.submittedAt)}</div>
+                    <button onClick={e=>{e.stopPropagation();setConfirmDelete(t.id)}} style={{padding:'4px 10px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}>Delete</button>
                   </div>
                 ))}
               </>}
 
-              {tasks.length===0 && <div style={S.x33f871d3}>No tasks yet.</div>}
+              {tasks.length===0 && <div style={{background:'#fff',borderRadius:13,padding:48,textAlign:'center',color:'#aabab2',fontSize:14,border:'1px solid #e4ede8'}}>No tasks yet.</div>}
             </div>
           )}
 
           {/* ── TASK DETAIL ── */}
           {view==='tasks' && taskView==='detail' && activeTask && (
             <div style={S.page}>
-              <button style={S.backBtn} onClick={handleBackToList}>
+              <button style={S.backBtn} onClick={()=>setTaskView('list')}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 Back to Tasks
               </button>
@@ -1144,8 +893,8 @@ const S: Record<string,React.CSSProperties> = {
               {/* Header */}
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
-                <div style={S.xda5cd676}>
-                  <div style={S.xd56d76f0}>{activeTask.clientName}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{activeTask.clientName}</div>
                   {(()=>{
                     const existing = clients.find(c=>c.id===activeTask.clientId)
                     if (!existing || existing.taxReturns.length===0) return null
@@ -1154,9 +903,9 @@ const S: Record<string,React.CSSProperties> = {
                       ? [...existing.superReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
                       : null
                     return (
-                      <div style={S.x916001fd}>
-                        <span style={S.xd1192e20}>⚠️</span>
-                        <span style={S.x37420b76}>
+                      <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'#fef3e8',border:'1px solid #fed7aa',borderRadius:8,padding:'4px 10px',marginTop:4}}>
+                        <span style={{fontSize:11}}>⚠️</span>
+                        <span style={{fontSize:11,fontWeight:600,color:'#c2410c'}}>
                           Returning client — last: {lastTax.year}
                           {lastTax.refundAmount>0 ? ` · ${fmtCur(lastTax.refundAmount)} refund` : ''}
                           {lastSuper ? ` · Super ${lastSuper.year}` : ''}
@@ -1164,7 +913,7 @@ const S: Record<string,React.CSSProperties> = {
                       </div>
                     )
                   })()}
-                  <div style={S.x7f89b514}>
+                  <div style={{fontSize:12,color:'#7a8a82',marginTop:3,display:'flex',alignItems:'center',gap:8}}>
                     <span>{activeTask.country}</span>
                     <span style={{background:TASK_COLORS[activeTask.taskType]+'22',color:TASK_COLORS[activeTask.taskType],borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>{TASK_LABELS[activeTask.taskType]}</span>
                     <span>{activeTask.taxYear}</span>
@@ -1172,13 +921,13 @@ const S: Record<string,React.CSSProperties> = {
                   </div>
                 </div>
                 {activeTask.done
-                  ? <span style={S.x6824a2c3}>✓ Done</span>
-                  : <span style={S.x8ba9531b}>⏳ Pending</span>
+                  ? <span style={{background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Done</span>
+                  : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
                 }
               </div>
 
               {/* 4 sections — adapted per taskType */}
-              <div style={S.xff6495fd}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
 
                 {/* ── Panel 1: Personal details ── */}
                 <div style={S.card}>
@@ -1257,7 +1006,7 @@ const S: Record<string,React.CSSProperties> = {
                 <div style={S.card}>
                   <div style={S.secHead}><span>Documents uploaded</span></div>
                   {(activeTask.fileUrls ?? []).length === 0 ? (
-                    <div style={S.xbf4a9569}>No files uploaded</div>
+                    <div style={{fontSize:12,color:'#aabab2',padding:'8px 0'}}>No files uploaded</div>
                   ) : (activeTask.fileUrls ?? []).map((url, i) => {
                     const rawName = url.split('/').pop() ?? `file-${i+1}`
                     let name = rawName
@@ -1266,9 +1015,9 @@ const S: Record<string,React.CSSProperties> = {
                     const isPdf = url.toLowerCase().endsWith('.pdf')
                     return (
                       <div key={url} style={{...S.row,justifyContent:'space-between',alignItems:'center'}}>
-                        <span style={S.x1bd46cfd}>{isPdf ? '📄' : '🖼️'} {name}</span>
-                        <div style={S.x64bca139}>
-                          <button onClick={()=>setPreviewUrl(url)} style={S.x4245b48a}>View</button>
+                        <span style={{fontSize:12,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{isPdf ? '📄' : '🖼️'} {name}</span>
+                        <div style={{display:'flex',gap:6}}>
+                          <button onClick={()=>setPreviewUrl(url)} style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>View</button>
                           <button onClick={async()=>{
                             try {
                               const res = await fetch(url)
@@ -1279,7 +1028,7 @@ const S: Record<string,React.CSSProperties> = {
                               a.click()
                               URL.revokeObjectURL(a.href)
                             } catch { window.open(url,'_blank') }
-                          }} style={S.x2700bce2}>Download ↓</button>
+                          }} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>Download ↓</button>
                         </div>
                       </div>
                     )
@@ -1287,7 +1036,7 @@ const S: Record<string,React.CSSProperties> = {
                 </div>
               </div>
               {/* Declaration + Notes side by side */}
-              <div style={S.xff6495fd}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
                 {/* Declaration card — per form type */}
                 <div style={S.card}>
                   {(()=>{
@@ -1312,11 +1061,11 @@ const S: Record<string,React.CSSProperties> = {
                       const declValue      = rawDeclVal
                       return <>
                         <div style={S.secHead}><span>Tax Residency Declaration</span></div>
-                        <div style={S.xd66ea664}>{taxStatusLabel}</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{taxStatusLabel}</div>
                         <div style={S.row}><span style={S.lbl}>Selected</span><span style={{...S.val,color:'#0E5C42',fontWeight:600}}>{taxStatusValue}</span></div>
-                        <div style={S.x4e8e7be8}/>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>General Declaration</span></div>
-                        <div style={S.xd66ea664}>{declLabel}</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{declLabel}</div>
                         <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:declValue.includes('agree')||declValue.includes('✓')?'#059669':'#c0392b',fontWeight:600}}>{declValue}</span></div>
                       </>
                     }
@@ -1326,7 +1075,7 @@ const S: Record<string,React.CSSProperties> = {
                       const declVal = parts.find((p:string)=>p.startsWith('→')) || '—'
                       return <>
                         <div style={S.secHead}><span>Declaration</span></div>
-                        <div style={S.xd66ea664}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
                         <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
                       </>
                     }
@@ -1337,11 +1086,11 @@ const S: Record<string,React.CSSProperties> = {
                       const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
                       return <>
                         <div style={S.secHead}><span>Personal Declaration</span></div>
-                        <div style={S.xd66ea664}>I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</div>
                         <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
-                        <div style={S.x4e8e7be8}/>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>Client Agreement</span></div>
-                        <div style={S.xd66ea664}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
                         <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
                       </>
                     }
@@ -1352,53 +1101,53 @@ const S: Record<string,React.CSSProperties> = {
                       const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
                       return <>
                         <div style={S.secHead}><span>Business Declaration</span></div>
-                        <div style={S.xd66ea664}>I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader.</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader.</div>
                         <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
-                        <div style={S.x4e8e7be8}/>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>Client Agreement</span></div>
-                        <div style={S.xd66ea664}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
                         <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
                       </>
                     }
 
-                    return <div style={S.x70176c97}>No declaration data</div>
+                    return <div style={{padding:'14px',fontSize:12,color:'#aabab2'}}>No declaration data</div>
                   })()}
                 </div>
 
                 {/* Notes */}
                 <div style={{...S.card,display:'flex',flexDirection:'column' as const}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
-                  <textarea style={S.xce30f474}
+                  <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
                     placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
-                  <div style={S.x0fbdcc7a}>
-                    {notesSaved?<span style={S.xebe1505a}>✓ Saved</span>:<span/>}
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
+                    {notesSaved?<span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span>:<span/>}
                     <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===extractUserNotes(activeTask.notes)?0.4:1}} disabled={taskNotes===extractUserNotes(activeTask.notes)} onClick={saveTaskNotes}>Save notes</button>
                   </div>
                 </div>
               </div>
 
                             {/* Actions */}
-              <div style={S.x77a38a00}>
+              <div style={{display:'flex',gap:10,marginBottom:8}}>
                 {!activeTask.done
                   ? <>
-                      <button style={S.x9e72cc1f} onClick={()=>downloadTaskPdf(activeTask)}>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                         Download PDF
                       </button>
-                      <button style={S.x59e41e9e} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>
                     </>
                   : <>
-                      <button style={S.xe57125e5} onClick={()=>setConfirmTransfer(activeTask)}>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmTransfer(activeTask)}>
                         👤 Move to clients
                       </button>
-                      <button style={S.xc332e2f0} onClick={()=>setConfirmPermDelete(activeTask.id)}>
+                      <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
                         🗑️ Delete permanently
                       </button>
                     </>
                 }
               </div>
               {activeTask.done && (
-                <div style={S.xa2daaad8}>Move to clients creates a client card. Delete permanently removes all data.</div>
+                <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:4}}>Move to clients creates a client card. Delete permanently removes all data.</div>
               )}
             </div>
           )}
@@ -1406,10 +1155,10 @@ const S: Record<string,React.CSSProperties> = {
           {/* ── CLIENTS LIST ── */}
           {view==='clients' && !activeClient && (
             <div style={S.page}>
-              <div style={S.xbe90e595}>
-                <div style={S.x64b21577}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
+                <div style={{display:'flex',alignItems:'center',gap:10}}>
                   <div style={S.pgTitle}>Clients</div>
-                  <span style={S.xa0d40d14}>{visibleClients.length}{clients.length!==visibleClients.length?` of ${clients.length}`:''} total</span>
+                  <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{visibleClients.length}{clients.length!==visibleClients.length?` of ${clients.length}`:''} total</span>
                   {(()=>{
                     const tot = visibleClients.reduce((sum,c)=>{
                       const tr = yearFilter.size===0?c.taxReturns:c.taxReturns.filter(r=>yearFilter.has(r.year))
@@ -1419,22 +1168,22 @@ const S: Record<string,React.CSSProperties> = {
                         - tr.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + sr.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={S.x1653667f}>{fmtCur(tot)} returned</span>
+                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
                   })()}
                 </div>
-                <div style={S.x4a20b58f}>
-                  <div style={S.x675f94bd}>
-                    <span style={S.x899d22ca}>✓ Year:</span>
-                    <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={S.x23c83da4}>
+                <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                  <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:9,padding:'5px 10px'}}>
+                    <span style={{fontSize:11,color:'#7a8a82',fontWeight:500}}>✓ Year:</span>
+                    <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={{border:'none',background:'none',fontSize:12,fontWeight:600,color:'#0E5C42',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
                       {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                     </select>
-                    <select value={checkinFilter} onChange={e=>setCheckinFilter(e.target.value as any)} style={S.x5c2d8576}>
+                    <select value={checkinFilter} onChange={e=>setCheckinFilter(e.target.value as any)} style={{border:'none',background:'none',fontSize:11,color:'#555',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
                       <option value="all">All</option>
                       <option value="done">✓ Done</option>
                       <option value="pending">⏳ Pending</option>
                     </select>
                   </div>
-                  <button style={{...S.addBtn,padding:'8px 14px',fontSize:13}} onClick={handleOpenAddModal}>
+                  <button style={{...S.addBtn,padding:'8px 14px',fontSize:13}} onClick={()=>setShowAddModal(true)}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
                     Add Client
                   </button>
@@ -1442,45 +1191,45 @@ const S: Record<string,React.CSSProperties> = {
               </div>
 
               {/* Filters row — same layout as Archive */}
-              <div style={S.xd1e5aeda}>
-                <div style={S.x2e34fd75}>
-                  <svg style={S.x2d0bd33f} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  <input style={S.x61f1ea5d} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap' as const,alignItems:'center'}}>
+                <div style={{position:'relative',flex:3,minWidth:200}}>
+                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box' as const}} placeholder="Search by name, WhatsApp or email…" value={search} onChange={e=>setSearch(e.target.value)}/>
                 </div>
                 <DropBtn id="cl-year" label={yearFilter.size===0?'All tax years':`${yearFilter.size} year${yearFilter.size>1?'s':''}`} active={yearFilter.size>0} onClear={()=>setYearFilter(new Set())}
                   icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                   {TAX_YEARS.slice().reverse().map(y=>{const checked=yearFilter.has(y);const cnt=clients.filter(c=>c.taxReturns.some(r=>r.year===y)||c.superReturns.some(r=>r.year===y)).length;return(
-                    <label key={y} style={S.x32ff4c84}>
-                      <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(yearFilter);checked?s.delete(y):s.add(y);setYearFilter(s)}} style={S.x5af8d5ac}/>
-                      <span style={S.x57804355}>{y}</span>
-                      <span style={S.x6f18439f}>{cnt}</span>
+                    <label key={y} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                      <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(yearFilter);checked?s.delete(y):s.add(y);setYearFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                      <span style={{fontSize:13,color:'#0a1410',flex:1}}>{y}</span>
+                      <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                     </label>
                   )})}
                 </DropBtn>
                 {<DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Object.keys(howHeardStats).sort().map(src=>{const checked=howHeardFilter.has(src);return(
-                      <label key={src} style={S.x32ff4c84}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter);checked?s.delete(src):s.add(src);setHowHeardFilter(s)}} style={S.x5af8d5ac}/>
-                        <span style={S.x57804355}>{src}</span>
-                        <span style={S.x6f18439f}>{howHeardStats[src]}</span>
+                      <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter);checked?s.delete(src):s.add(src);setHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{howHeardStats[src]}</span>
                       </label>
                     )})}
-                    {Object.keys(howHeardStats).length===0 && <div style={S.xb17e9ced}>No data yet</div>}
+                    {Object.keys(howHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
                 {<DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).sort().map(ctry=>{const checked=countryFilter.has(ctry);const cnt=clients.filter(cl=>cl.country===ctry).length;return(
-                      <label key={ctry} style={S.x32ff4c84}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(ctry):s.add(ctry);setCountryFilter(s)}} style={S.x5af8d5ac}/>
-                        <span style={S.x57804355}>{ctry}</span>
-                        <span style={S.x6f18439f}>{cnt}</span>
+                      <label key={ctry} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(ctry):s.add(ctry);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{ctry}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                       </label>
                     )})}
-                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={S.xb17e9ced}>No data yet</div>}
+                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
                 {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search) && (
-                  <button style={S.x9b210d2b} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('')}}>
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('')}}>
                     ✕ Clear
                   </button>
                 )}
@@ -1511,40 +1260,40 @@ const S: Record<string,React.CSSProperties> = {
                 if (totalTaxRefund===0 && totalSuper===0) return null
                 const yearLabel = yearFilter.size===0 ? '' : ` · ${Array.from(yearFilter).sort().join(', ')}`
                 return (
-                  <div style={S.x3a4e64fb}>
+                  <div style={{display:'flex',gap:10,marginBottom:12,flexWrap:'wrap' as const}}>
                     {totalTaxRefund!==0 && (
-                      <div style={S.xad1a4b74}>
+                      <div style={{flex:1,minWidth:160,background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
-                          <div style={S.xee96688d}>💰 Tax Refunds{yearLabel}</div>
-                          <div style={S.x8385da86}>{fmtCur(totalTaxRefund)}</div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>💰 Tax Refunds{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund)}</div>
                         </div>
-                        <div style={S.xe75ffc02}>
-                          <div style={S.x006f16d7}>across</div>
-                          <div style={S.xc233c16e}>{clientsWithRefund}<span style={S.x7551ccf0}>clients</span></div>
+                        <div style={{textAlign:'right' as const}}>
+                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{clientsWithRefund}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
                         </div>
                       </div>
                     )}
                     {totalSuper>0 && (
-                      <div style={S.xbe8de778}>
+                      <div style={{flex:1,minWidth:160,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
-                          <div style={S.x6ae954e0}>🏦 Super Refunded{yearLabel}</div>
-                          <div style={S.x1c333575}>{fmtCur(totalSuper)}</div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#2563eb',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>🏦 Super Refunded{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#2563eb'}}>{fmtCur(totalSuper)}</div>
                         </div>
-                        <div style={S.xe75ffc02}>
-                          <div style={S.x006f16d7}>across</div>
-                          <div style={S.xb701f2e9}>{clientsWithSuper}<span style={S.x7551ccf0}>clients</span></div>
+                        <div style={{textAlign:'right' as const}}>
+                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#2563eb'}}>{clientsWithSuper}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
                         </div>
                       </div>
                     )}
                     {totalTaxRefund!==0 && totalSuper>0 && (
-                      <div style={S.x3e49aac3}>
+                      <div style={{flex:1,minWidth:160,background:'#f3eefe',border:'1px solid #ddd6fe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
-                          <div style={S.x2b6e7f81}>✨ Combined{yearLabel}</div>
-                          <div style={S.xc0a9c9e3}>{fmtCur(totalTaxRefund+totalSuper)}</div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#7c3aed',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>✨ Combined{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#7c3aed'}}>{fmtCur(totalTaxRefund+totalSuper)}</div>
                         </div>
-                        <div style={S.xe75ffc02}>
-                          <div style={S.x006f16d7}>showing</div>
-                          <div style={S.x277d506f}>{visibleClients.length}<span style={S.x7551ccf0}>clients</span></div>
+                        <div style={{textAlign:'right' as const}}>
+                          <div style={{fontSize:10,color:'#587066',marginBottom:2}}>showing</div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#7c3aed'}}>{visibleClients.length}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
                         </div>
                       </div>
                     )}
@@ -1557,7 +1306,7 @@ const S: Record<string,React.CSSProperties> = {
                 <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>No clients yet.</div>
               ) : (
                 <div style={S.card}>
-                  <table style={S.x0fb9b2d0}>
+                  <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
                         {['Name','WhatsApp','Email','Country','Last refund','✓',''].map(h=>(
@@ -1569,42 +1318,42 @@ const S: Record<string,React.CSSProperties> = {
                       {visibleClients.map(cl=>{
                         const [bg,fg]=avColor(cl.fullName)
                         return (
-                          <tr key={cl.id} style={S.x92de4243} onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients');setYearNotes({});setEditingYearNote(null)}}>
-                            <td style={S.x3e85bc74}>
-                              <div style={S.x68546cc6}>
+                          <tr key={cl.id} style={{cursor:'pointer'}} onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients');setYearNotes({});setEditingYearNote(null)}}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
+                              <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={S.xef6e1c77}>{cl.fullName}</div>
+                                <div style={{fontSize:12,fontWeight:500,color:'#0a1410'}}>{cl.fullName}</div>
                               </div>
                             </td>
-                            <td style={S.x49aeafce}>
-                              <div style={S.x400f1c41}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
+                              <div style={{display:'flex',alignItems:'center',gap:6}}>
                                 {cl.whatsapp && (
                                   <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer"
                                     onClick={e=>e.stopPropagation()}
-                                    style={S.xf9eb5934} title="Open WhatsApp">
+                                    style={{flexShrink:0,color:'#25D366',display:'flex',alignItems:'center'}} title="Open WhatsApp">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
                                   </a>
                                 )}
                                 <span>{cl.whatsapp||'—'}</span>
                               </div>
                             </td>
-                            <td style={S.xbd72a53e}>{cl.email||'—'}</td>
-                            <td style={S.xa905e4d8}>{cl.country||'—'}</td>
-                            <td style={S.xe4e078bc}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'}}>{cl.country||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
                               {(()=>{
                                 const lastTax = cl.taxReturns?.length
                                   ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
                                   : null
-                                if (!lastTax) return <span style={S.x4c381626}>—</span>
+                                if (!lastTax) return <span style={{color:'#aabab2'}}>—</span>
                                 return (
                                   <div>
-                                    <div style={S.xdf6e3076}>{lastTax.year}</div>
-                                    <div style={S.x5fe6624e}>{fmtCur(lastTax.refundAmount)}</div>
+                                    <div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div>
+                                    <div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div>
                                   </div>
                                 )
                               })()}
                             </td>
-                            <td style={S.x8c4cdd0f} onClick={e=>e.stopPropagation()}>
+                            <td style={{padding:'6px 10px',borderBottom:'1px solid #f0f4f1',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
                               {(()=>{const done=cl.yearlyCheckins?.[checkinYear]??false; return (
                                 <button onClick={()=>toggleCheckin(cl.id,checkinYear,done)}
                                   style={{width:22,height:22,borderRadius:5,border:`2px solid ${done?'#0E5C42':'#d8e4dc'}`,background:done?'#0E5C42':'#fff',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',transition:'all 0.15s'}}>
@@ -1612,10 +1361,10 @@ const S: Record<string,React.CSSProperties> = {
                                 </button>
                               )})()}
                             </td>
-                            <td style={S.xed3ec972} onClick={e=>e.stopPropagation()}>
-                              <div style={S.x06c613b5}>
-                                <button style={S.xeb6f0c41} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
-                                <button style={S.x65babb95} title="Archive" onClick={()=>archiveClient(cl.id)}>
+                            <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
+                              <div style={{display:'flex',gap:4}}>
+                                <button style={{padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'}} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
+                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}} title="Archive" onClick={()=>archiveClient(cl.id)}>
                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                                 </button>
                               </div>
@@ -1634,10 +1383,10 @@ const S: Record<string,React.CSSProperties> = {
           {view==='archive' && (
             <div style={S.page}>
               {/* Header */}
-              <div style={S.xbe90e595}>
-                <div style={S.x64b21577}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
+                <div style={{display:'flex',alignItems:'center',gap:10}}>
                   <div style={S.pgTitle}>Archive</div>
-                  <span style={S.xbc8c8571}>
+                  <span style={{background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
                     {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
                   </span>
                   {(()=>{
@@ -1647,50 +1396,50 @@ const S: Record<string,React.CSSProperties> = {
                         - c.taxReturns.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + c.superReturns.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={S.x1653667f}>{fmtCur(tot)} returned</span>
+                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
                   })()}
                 </div>
               </div>
               {/* Filters row */}
-              <div style={S.x5ba5db93}>
-                <div style={S.x2e34fd75}>
-                  <svg style={S.x2d0bd33f} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  <input style={S.xcced33e8} placeholder="Search by name, WhatsApp or email…" value={archiveSearch} onChange={e=>setArchiveSearch(e.target.value)}/>
+              <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap',alignItems:'center'}}>
+                <div style={{position:'relative',flex:3,minWidth:200}}>
+                  <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  <input style={{width:'100%',height:'38px',padding:'0 12px 0 32px',border:'1px solid #d8e4dc',borderRadius:9,fontSize:13,background:'#fff',outline:'none',fontFamily:'inherit',color:'#0a1410',boxSizing:'border-box'}} placeholder="Search by name, WhatsApp or email…" value={archiveSearch} onChange={e=>setArchiveSearch(e.target.value)}/>
                 </div>
                 <DropBtn id="ar-year" label={archiveYearFilter.size===0?'All tax years':`${archiveYearFilter.size} year${archiveYearFilter.size>1?'s':''}`} active={archiveYearFilter.size>0} onClear={()=>setArchiveYearFilter(new Set())}
                   icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="1.8"/><path d="M16 2v4M8 2v4M3 10h18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                   {TAX_YEARS.slice().reverse().map(y=>{const checked=archiveYearFilter.has(y);const cnt=archivedClients.filter(c=>c.taxReturns?.some(r=>r.year===y)||c.superReturns?.some(r=>r.year===y)).length;return(
-                    <label key={y} style={S.x32ff4c84}>
-                      <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveYearFilter);checked?s.delete(y):s.add(y);setArchiveYearFilter(s)}} style={S.x5af8d5ac}/>
-                      <span style={S.x57804355}>{y}</span>
-                      <span style={S.x6f18439f}>{cnt}</span>
+                    <label key={y} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                      <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveYearFilter);checked?s.delete(y):s.add(y);setArchiveYearFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                      <span style={{fontSize:13,color:'#0a1410',flex:1}}>{y}</span>
+                      <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                     </label>
                   )})}
                 </DropBtn>
                 {<DropBtn id="ar-hh" label="How heard" active={archiveHowHeardFilter.size>0} onClear={()=>setArchiveHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Object.keys(archiveHowHeardStats).sort().map(src=>{const checked=archiveHowHeardFilter.has(src);return(
-                      <label key={src} style={S.x32ff4c84}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}} style={S.x5af8d5ac}/>
-                        <span style={S.x57804355}>{src}</span>
-                        <span style={S.x6f18439f}>{archiveHowHeardStats[src]}</span>
+                      <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveHowHeardFilter);checked?s.delete(src):s.add(src);setArchiveHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{archiveHowHeardStats[src]}</span>
                       </label>
                     )})}
-                    {Object.keys(archiveHowHeardStats).length===0 && <div style={S.xb17e9ced}>No data yet</div>}
+                    {Object.keys(archiveHowHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
                 {<DropBtn id="ar-country" label="Country" active={archiveCountryFilter.size>0} onClear={()=>setArchiveCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
                     {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).sort().map(ctry=>{const checked=archiveCountryFilter.has(ctry);const cnt=archivedClients.filter(cl=>cl.country===ctry).length;return(
-                      <label key={ctry} style={S.x32ff4c84}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(ctry):s.add(ctry);setArchiveCountryFilter(s)}} style={S.x5af8d5ac}/>
-                        <span style={S.x57804355}>{ctry}</span>
-                        <span style={S.x6f18439f}>{cnt}</span>
+                      <label key={ctry} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(archiveCountryFilter);checked?s.delete(ctry):s.add(ctry);setArchiveCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{ctry}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
                       </label>
                     )})}
-                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={S.xb17e9ced}>No data yet</div>}
+                    {Array.from(new Set(archivedClients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
                 {(archiveHowHeardFilter.size>0||archiveCountryFilter.size>0||archiveYearFilter.size>0||archiveSearch) && (
-                  <button style={S.x9b210d2b} onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter(new Set());setArchiveSearch('')}}>
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setArchiveHowHeardFilter(new Set());setArchiveCountryFilter(new Set());setArchiveYearFilter(new Set());setArchiveSearch('')}}>
                     ✕ Clear
                   </button>
                 )}
@@ -1700,10 +1449,10 @@ const S: Record<string,React.CSSProperties> = {
                 <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div>
               ):(
                 <div style={S.card}>
-                  <table style={S.x0fb9b2d0}>
+                  <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead><tr>
                       {['Name','WhatsApp','Email','Country','Last refund',''].map(h=>(
-                        <th key={h} style={S.xa1bc5b62}>{h}</th>
+                        <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px'}}>{h}</th>
                       ))}
                     </tr></thead>
                     <tbody>
@@ -1712,29 +1461,29 @@ const S: Record<string,React.CSSProperties> = {
                         const lastTax = cl.taxReturns?.length ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0] : null
                         return(
                           <tr key={cl.id}>
-                            <td style={S.x3e85bc74}>
-                              <div style={S.x68546cc6}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
+                              <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={S.xb65aeb1e}>{cl.fullName}</div>
+                                <div style={{fontSize:12,fontWeight:500,color:'#7a8a82'}}>{cl.fullName}</div>
                               </div>
                             </td>
-                            <td style={S.x49aeafce}>
-                              <div style={S.x400f1c41}>
-                                {cl.whatsapp&&<a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={S.xf9eb5934}><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg></a>}
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
+                              <div style={{display:'flex',alignItems:'center',gap:6}}>
+                                {cl.whatsapp&&<a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{flexShrink:0,color:'#25D366',display:'flex',alignItems:'center'}}><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg></a>}
                                 <span>{cl.whatsapp||'—'}</span>
                               </div>
                             </td>
-                            <td style={S.xbd72a53e}>{cl.email||'—'}</td>
-                            <td style={S.x682c5636}>{cl.country||'—'}</td>
-                            <td style={S.xe4e078bc}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
                               {lastTax
-                                ? <div><div style={S.xdf6e3076}>{lastTax.year}</div><div style={S.x5fe6624e}>{fmtCur(lastTax.refundAmount)}</div></div>
-                                : <span style={S.x4c381626}>—</span>}
+                                ? <div><div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div><div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div></div>
+                                : <span style={{color:'#aabab2'}}>—</span>}
                             </td>
-                            <td style={S.xed3ec972}>
-                              <div style={S.x4454469b}>
-                                <button style={S.x923e3281} onClick={()=>unarchiveClient(cl.id)}>↩ Restore</button>
-                                <button style={S.x85b12ef0} title="Delete permanently" onClick={()=>setConfirmDeleteClient(cl.id)}>
+                            <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}}>
+                              <div style={{display:'flex',gap:6,alignItems:'center'}}>
+                                <button style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #c8eadf',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>unarchiveClient(cl.id)}>↩ Restore</button>
+                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} title="Delete permanently" onClick={()=>setConfirmDeleteClient(cl.id)}>
                                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                                 </button>
                               </div>
@@ -1752,25 +1501,25 @@ const S: Record<string,React.CSSProperties> = {
           {/* ── CLIENT DETAIL ── */}
           {view==='clients' && activeClient && (
             <div style={S.page}>
-              <button style={S.backBtn} onClick={handleBackToClients}>
+              <button style={S.backBtn} onClick={()=>setActiveClient(null)}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 Back to Clients
               </button>
 
               {/* Profile */}
               <div style={{...S.card,padding:'18px 20px',marginBottom:14}}>
-                <div style={S.x3c461697}>
-                  <div style={S.xee964844}>{initials(activeClient.fullName)}</div>
+                <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:14}}>
+                  <div style={{width:50,height:50,borderRadius:14,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:700,flexShrink:0}}>{initials(activeClient.fullName)}</div>
                   <div>
-                    <div style={S.xd56d76f0}>{activeClient.fullName}</div>
-                    <div style={S.xd7a7fc88}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
+                    <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{activeClient.fullName}</div>
+                    <div style={{fontSize:12,color:'#7a8a82',marginTop:3}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>
                 </div>
-                <div style={S.x18eade14}>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
                   {[['Date of birth',activeClient.dob],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
-                    <div key={l} style={S.xc0df4a72}>
-                      <span style={S.x631a084b}>{l}</span>
-                      <span style={S.xd22c8aaa}>{v||'—'}</span>
+                    <div key={l} style={{display:'flex',padding:'7px 0',borderBottom:'1px solid #f5f5f5',gap:12}}>
+                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:120}}>{l}</span>
+                      <span style={{fontSize:12,color:'#0a1410'}}>{v||'—'}</span>
                     </div>
                   ))}
                 </div>
@@ -1780,45 +1529,45 @@ const S: Record<string,React.CSSProperties> = {
               <div style={{...S.card,marginBottom:12}}>
                 <div style={S.secHead}>
                   <span>📅 History by Year</span>
-                  <div style={S.x64bca139}>
-                    <button style={S.addBtn} onClick={handleToggleAddTax}>+ Tax Return</button>
-                    <button style={{...S.addBtn,background:'#2563eb'}} onClick={handleToggleAddSuper}>+ Super</button>
+                  <div style={{display:'flex',gap:6}}>
+                    <button style={S.addBtn} onClick={()=>setShowAddTax(v=>!v)}>+ Tax Return</button>
+                    <button style={{...S.addBtn,background:'#2563eb'}} onClick={()=>setShowAddSuper(v=>!v)}>+ Super</button>
                   </div>
                 </div>
-                <div style={S.xd9de7bcd}>
+                <div style={{padding:'12px 14px'}}>
                   {showAddTax && (
                     <div style={{...S.addForm,marginBottom:10}}>
-                      <div style={S.xb0708679}>
-                        <label style={S.x8ec26ac0}>Tax year</label>
+                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
+                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} placeholder="e.g. 2023-24" value={newTaxYear} onChange={e=>setNewTaxYear(e.target.value)}/>
                       </div>
-                      <div style={S.x3362bf0e}>
-                        <label style={S.x8ec26ac0}>Type</label>
-                        <div style={S.xde55ab2f}>
-                          <button onClick={handleSetRefund} style={{flex:1,padding:'7px 8px',border:'none',background:newTaxType==='refund'?'#0E5C42':'#fff',color:newTaxType==='refund'?'#fff':'#555',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Refund</button>
-                          <button onClick={handleSetOwed} style={{flex:1,padding:'7px 8px',border:'none',background:newTaxType==='owed'?'#c0392b':'#fff',color:newTaxType==='owed'?'#fff':'#555',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Tax owed</button>
+                      <div style={{display:'flex',flexDirection:'column',gap:4,minWidth:130}}>
+                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Type</label>
+                        <div style={{display:'flex',border:'1.5px solid #e4ede8',borderRadius:8,overflow:'hidden',background:'#fff'}}>
+                          <button onClick={()=>setNewTaxType('refund')} style={{flex:1,padding:'7px 8px',border:'none',background:newTaxType==='refund'?'#0E5C42':'#fff',color:newTaxType==='refund'?'#fff':'#555',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Refund</button>
+                          <button onClick={()=>setNewTaxType('owed')} style={{flex:1,padding:'7px 8px',border:'none',background:newTaxType==='owed'?'#c0392b':'#fff',color:newTaxType==='owed'?'#fff':'#555',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Tax owed</button>
                         </div>
                       </div>
-                      <div style={S.x9c1f422f}>
-                        <label style={S.x8ec26ac0}>Amount (AUD)</label>
+                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110}}>
+                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Amount (AUD)</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} type="number" placeholder="e.g. 2500" value={newTaxAmt} onChange={e=>setNewTaxAmt(e.target.value)}/>
                       </div>
                       <button style={{...S.addBtn,padding:'7px 13px'}} onClick={addTaxReturn}>Save</button>
-                      <button style={S.x35a88508} onClick={handleCloseAddTax}>✕</button>
+                      <button style={{padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setShowAddTax(false)}>✕</button>
                     </div>
                   )}
                   {showAddSuper && (
                     <div style={{...S.addForm,marginBottom:10}}>
-                      <div style={S.xb0708679}>
-                        <label style={S.x8ec26ac0}>Tax year</label>
+                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
+                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} placeholder="e.g. 2023-24" value={newSuperYear} onChange={e=>setNewSuperYear(e.target.value)}/>
                       </div>
-                      <div style={S.x9c1f422f}>
-                        <label style={S.x8ec26ac0}>Amount received (AUD)</label>
+                      <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110}}>
+                        <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Amount received (AUD)</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} type="number" placeholder="e.g. 4200" value={newSuperAmt} onChange={e=>setNewSuperAmt(e.target.value)}/>
                       </div>
                       <button style={{...S.addBtn,padding:'7px 13px',background:'#2563eb'}} onClick={addSuperReturn}>Save</button>
-                      <button style={S.x35a88508} onClick={handleCloseAddSuper}>✕</button>
+                      <button style={{padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setShowAddSuper(false)}>✕</button>
                     </div>
                   )}
                   {(()=>{
@@ -1832,73 +1581,73 @@ const S: Record<string,React.CSSProperties> = {
                       const hasSuper = activeClient.superReturns.some((r:SuperReturn)=>r.year===y)
                       return hasTax || hasSuper
                     })
-                    if (relevantYears.length===0) return <div style={S.x8b7d71ba}>No history yet.</div>
+                    if (relevantYears.length===0) return <div style={{fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'}}>No history yet.</div>
                     return relevantYears.map((year:string)=>{
                       const tax = activeClient.taxReturns.find((r:TaxReturn)=>r.year===year)
                       const sup = activeClient.superReturns.find((r:SuperReturn)=>r.year===year)
                       const hasAny = tax || sup
                       return (
-                        <div key={year} style={S.x65f6986f}>
-                          <div style={S.x89fc9133}>
+                        <div key={year} style={{display:'flex',alignItems:'flex-start',gap:12,padding:'10px 0',borderBottom:'1px solid #f0f4f1'}}>
+                          <div style={{minWidth:64,paddingTop:2}}>
                             <div style={{fontSize:12,fontWeight:700,color:hasAny?'#0a1410':'#aabab2'}}>{year}</div>
                           </div>
-                          <div style={S.x13e1ac3c}>
+                          <div style={{flex:1,display:'flex',flexWrap:'wrap' as const,gap:6}}>
                             {tax ? (
                               <div style={{display:'flex',alignItems:'center',gap:6,background:tax.type==='owed'?'#fff8f7':'#e8f5f0',border:`1px solid ${tax.type==='owed'?'#fca5a5':'#b0d8c8'}`,borderRadius:8,padding:'4px 10px'}}>
                                 <span style={{fontSize:11,fontWeight:700,color:tax.type==='owed'?'#c0392b':'#0E5C42'}}>💰 Tax {tax.type==='owed'?'owed':'refund'}</span>
                                 <span style={{fontSize:12,fontWeight:600,color:tax.type==='owed'?'#c0392b':'#0a1410'}}>{tax.type==='owed'?'-':''}{fmtCur(tax.refundAmount)}</span>
-                                <button style={S.x855468c3} onClick={()=>removeTaxReturn(year)}>×</button>
+                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeTaxReturn(year)}>×</button>
                               </div>
                             ) : (
-                              <div style={S.x04498c34}>
-                                <span style={S.x6f18439f}>💰 No tax return</span>
+                              <div style={{display:'flex',alignItems:'center',gap:4,background:'#f7fbf9',border:'1px dashed #d8e4dc',borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,color:'#aabab2'}}>💰 No tax return</span>
                               </div>
                             )}
                             {sup && (
-                              <div style={S.xf53b6f4a}>
-                                <span style={S.x74ca8792}>🏦 Super</span>
-                                <span style={S.xfafecf86}>{fmtCur(sup.amount)}</span>
-                                <button style={S.x855468c3} onClick={()=>removeSuperReturn(year)}>×</button>
+                              <div style={{display:'flex',alignItems:'center',gap:6,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,fontWeight:700,color:'#2563eb'}}>🏦 Super</span>
+                                <span style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{fmtCur(sup.amount)}</span>
+                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeSuperReturn(year)}>×</button>
                               </div>
                             )}
                           </div>
                           {/* Year note */}
                           {editingYearNote===year ? (
-                            <div style={S.x8d2af14a}>
+                            <div style={{display:'flex',gap:6,marginTop:6,alignItems:'center'}}>
                               <input
                                 autoFocus
-                                style={S.x504681b8}
+                                style={{flex:1,padding:'4px 8px',border:'1px solid #d8e4dc',borderRadius:6,fontSize:11,fontFamily:'inherit',outline:'none',color:'#0a1410'}}
                                 value={yearNotes[year]||''}
                                 onChange={e=>setYearNotes(n=>({...n,[year]:e.target.value}))}
                                 placeholder="Add note for this year…"
                                 onKeyDown={e=>{if(e.key==='Enter'||e.key==='Escape')setEditingYearNote(null)}}
                               />
-                              <button style={S.x7f60962a} onClick={()=>setEditingYearNote(null)}>Save</button>
+                              <button style={{padding:'4px 8px',background:'#0E5C42',color:'#fff',border:'none',borderRadius:6,fontSize:11,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setEditingYearNote(null)}>Save</button>
                             </div>
                           ) : yearNotes[year] ? (
-                            <div style={S.x03d4d029}>
-                              <span style={S.x4c8ea0ca}>📝 {yearNotes[year]}</span>
-                              <button style={S.x807324e8} onClick={()=>setEditingYearNote(year)}>edit</button>
+                            <div style={{display:'flex',alignItems:'center',gap:6,marginTop:6}}>
+                              <span style={{fontSize:11,color:'#555',flex:1,fontStyle:'italic'}}>📝 {yearNotes[year]}</span>
+                              <button style={{background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0}} onClick={()=>setEditingYearNote(year)}>edit</button>
                             </div>
                           ) : (
-                            <button style={S.xb5c03f65} onClick={()=>setEditingYearNote(year)}>+ note</button>
+                            <button style={{marginTop:4,background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0,textAlign:'left' as const}} onClick={()=>setEditingYearNote(year)}>+ note</button>
                           )}
                         </div>
                       )
                     })
                   })()}
                   {(activeClient.taxReturns.length>0||activeClient.superReturns.length>0) && (
-                    <div style={S.x1b982972}>
+                    <div style={{display:'flex',gap:12,marginTop:10,paddingTop:8,borderTop:'1.5px solid #e8f0eb'}}>
                       {activeClient.taxReturns.length>0 && (
-                        <div style={S.x43e7ab15}>
-                          <div style={S.x061b8dae}>Total tax refunds</div>
-                          <div style={S.x77bd3b3d}>{fmtCur(activeClient.taxReturns.reduce((s:number,r:TaxReturn)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</div>
+                        <div style={{flex:1,background:'#e8f5f0',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
+                          <div style={{fontSize:10,color:'#0E5C42',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total tax refunds</div>
+                          <div style={{fontSize:15,fontWeight:700,color:'#0E5C42'}}>{fmtCur(activeClient.taxReturns.reduce((s:number,r:TaxReturn)=>s+(r.type==='owed'?-r.refundAmount:r.refundAmount),0))}</div>
                         </div>
                       )}
                       {activeClient.superReturns.length>0 && (
-                        <div style={S.x032cd16d}>
-                          <div style={S.x19d31ce2}>Total super refunded</div>
-                          <div style={S.x718a158b}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
+                        <div style={{flex:1,background:'#eff6ff',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
+                          <div style={{fontSize:10,color:'#2563eb',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total super refunded</div>
+                          <div style={{fontSize:15,fontWeight:700,color:'#2563eb'}}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
                         </div>
                       )}
                     </div>
@@ -1906,25 +1655,26 @@ const S: Record<string,React.CSSProperties> = {
                 </div>
               </div>
 
+
               {/* Notes */}
               <div style={{...S.card,padding:'14px 16px',marginBottom:12}}>
-                <div style={S.xcfec0d39}>
+                <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8,display:'flex',alignItems:'center',gap:7}}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#0E5C42" strokeWidth="1.8"/><path d="M8 13h8M8 17h5" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
                   Internal notes
                 </div>
-                <textarea style={S.xd2441b32}
+                <textarea style={{width:'100%',border:'1.5px solid #e4ede8',borderRadius:9,padding:'9px 11px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:72,lineHeight:1.55,boxSizing:'border-box'}}
                   placeholder="Notes about this client..." value={clientNotes} onChange={e=>{setClientNotes(e.target.value);setClientNotesSaved(false)}}/>
-                <div style={S.x2dbfec36}>
-                  {clientNotesSaved?<span style={S.xebe1505a}>✓ Saved</span>:<span style={S.x6f18439f}>Only visible to you</span>}
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6}}>
+                  {clientNotesSaved?<span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span>:<span style={{fontSize:11,color:'#aabab2'}}>Only visible to you</span>}
                   <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:clientNotes===(activeClient.notes||'')?0.4:1}} disabled={clientNotes===(activeClient.notes||'')} onClick={saveClientNotes}>Save notes</button>
                 </div>
               </div>
 
               {/* Danger */}
-              <div style={S.x8fbd5095}>
-                <div style={S.x156be781}>⚠️ Delete client</div>
-                <div style={S.xe8b1b788}>Permanently removes this client and all their history.</div>
-                <button style={S.x9a37a49e} onClick={()=>setConfirmDeleteClient(activeClient.id)}>Delete client</button>
+              <div style={{background:'#fff',borderRadius:13,padding:'14px 18px',border:'1px dashed #fca5a5'}}>
+                <div style={{fontSize:12,fontWeight:600,color:'#c0392b',marginBottom:4}}>⚠️ Delete client</div>
+                <div style={{fontSize:12,color:'#7a8a82',marginBottom:10}}>Permanently removes this client and all their history.</div>
+                <button style={{padding:'7px 14px',border:'1px solid #fca5a5',borderRadius:8,background:'#fff',color:'#c0392b',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmDeleteClient(activeClient.id)}>Delete client</button>
               </div>
             </div>
           )}
@@ -1940,19 +1690,19 @@ const S: Record<string,React.CSSProperties> = {
             <div style={S.mSub}>Creates a new task in the Tasks tab</div>
             <form onSubmit={addClient}>
               {[['Full name *','text','e.g. Sophie Lambert','fullName'],['WhatsApp','text','+33612345678','whatsapp'],['Email','email','sophie@email.com','email'],['Country','text','e.g. France','country'],['Date of birth','date','','dob']].map(([l,t,p,k])=>(
-                <div key={k} style={S.x5236cefd}>
-                  <label style={S.xb6c37760}>{l}</label>
+                <div key={k} style={{marginBottom:10}}>
+                  <label style={{fontSize:12,fontWeight:500,color:'#555',display:'block',marginBottom:4}}>{l}</label>
                   <input type={t} style={S.mInput} placeholder={p} value={(newClient as Record<string,string>)[k]} onChange={e=>setNewClient({...newClient,[k]:e.target.value})} required={k==='fullName'}/>
                 </div>
               ))}
-              <div style={S.x5236cefd}>
-                <label style={S.xb6c37760}>Tax year</label>
+              <div style={{marginBottom:10}}>
+                <label style={{fontSize:12,fontWeight:500,color:'#555',display:'block',marginBottom:4}}>Tax year</label>
                 <select style={S.mInput} value={newClient.taxYear} onChange={e=>setNewClient({...newClient,taxYear:e.target.value})}>
                   {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                 </select>
               </div>
               <div style={S.mFooter}>
-                <button type="button" style={S.mCancel} onClick={handleCloseAddModal}>Cancel</button>
+                <button type="button" style={S.mCancel} onClick={()=>setShowAddModal(false)}>Cancel</button>
                 <button type="submit" style={S.mSave}>Add client</button>
               </div>
             </form>
@@ -1963,23 +1713,23 @@ const S: Record<string,React.CSSProperties> = {
       {/* Confirm delete task */}
       {/* ── Complete task confirmation modal ──────────────────────────── */}
       {confirmComplete && (
-        <div style={S.xe47a667e}>
-          <div style={S.x87761470}>
-            <div style={S.x475931f6}>✅</div>
-            <div style={S.x478c8d03}>Mark task as complete?</div>
-            <div style={S.x22f0728c}>
+        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000}}>
+          <div style={{background:'#fff',borderRadius:20,padding:'32px 28px',maxWidth:380,width:'90%',textAlign:'center',fontFamily:'inherit'}}>
+            <div style={{fontSize:40,marginBottom:12}}>✅</div>
+            <div style={{fontSize:18,fontWeight:700,color:'#0a1410',marginBottom:8}}>Mark task as complete?</div>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.65,marginBottom:22}}>
               This will permanently delete all sensitive data:<br/>
               <strong>TFN, bank details, address, AU phone and documents.</strong><br/><br/>
               Kept: <strong>name, date of birth, email, WhatsApp and country.</strong>
             </div>
-            <div style={S.xd542b62b}>
+            <div style={{display:'flex',gap:10,justifyContent:'center'}}>
               <button
-                onClick={handleCloseConfirmComp}
-                style={S.x14bfc581}
+                onClick={()=>setConfirmComplete(null)}
+                style={{padding:'10px 20px',borderRadius:10,border:'1px solid #e4eae7',background:'#fff',fontSize:13,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}
               >Cancel</button>
               <button
                 onClick={()=>markDone(confirmComplete)}
-                style={S.x66d44692}
+                style={{padding:'10px 20px',borderRadius:10,border:'none',background:'#0E5C42',color:'#fff',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}
               >✓ Yes, complete & wipe data</button>
             </div>
           </div>
@@ -1989,40 +1739,40 @@ const S: Record<string,React.CSSProperties> = {
       {captureRefund && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>
           <div style={{...S.modal,maxWidth:420}}>
-            <div style={S.x3a96ebcd}>💰</div>
+            <div style={{fontSize:28,marginBottom:8,textAlign:'center'}}>💰</div>
             <div style={{...S.mTitle,textAlign:'center'}}>Record refund before archiving</div>
-            <div style={S.x4b167b23}>
+            <div style={{fontSize:12,color:'#7a8a82',textAlign:'center',marginBottom:20,lineHeight:1.5}}>
               Add the amounts to this client's history.<br/>You can skip fields if not applicable.
             </div>
             {(captureRefund.taskType==='tax-return' || captureRefund.taskType==='super' || true) && (
-              <div style={S.x35ae7672}>
-                <div style={S.x41e667e8}>
+              <div style={{marginBottom:14}}>
+                <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>
                   💰 Tax Return {captureRefund.taxYear && `(${captureRefund.taxYear})`}
                 </div>
-                <div style={S.x6d59e8a8}>
-                  <button onClick={handleSetCaptureRefund} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='refund'?'#0E5C42':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='refund'?'#e8f5f0':'#fff',color:captureRefundType==='refund'?'#0E5C42':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Refund</button>
-                  <button onClick={handleSetCaptureOwed} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='owed'?'#c0392b':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='owed'?'#fff8f7':'#fff',color:captureRefundType==='owed'?'#c0392b':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Tax owed</button>
+                <div style={{display:'flex',gap:8,marginBottom:6}}>
+                  <button onClick={()=>setCaptureRefundType('refund')} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='refund'?'#0E5C42':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='refund'?'#e8f5f0':'#fff',color:captureRefundType==='refund'?'#0E5C42':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Refund</button>
+                  <button onClick={()=>setCaptureRefundType('owed')} style={{flex:1,padding:'7px',border:`1.5px solid ${captureRefundType==='owed'?'#c0392b':'#e4ede8'}`,borderRadius:8,background:captureRefundType==='owed'?'#fff8f7':'#fff',color:captureRefundType==='owed'?'#c0392b':'#555',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>Tax owed</button>
                 </div>
                 <input
                   type="number" placeholder="Amount in AUD (leave blank if none)"
                   value={captureRefundAmt} onChange={e=>setCaptureRefundAmt(e.target.value)}
-                  style={S.x4be92f52}
+                  style={{width:'100%',padding:'9px 12px',border:'1.5px solid #d8e4dc',borderRadius:9,fontSize:13,outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
                 />
               </div>
             )}
-            <div style={S.x768f55c5}>
-              <div style={S.x41e667e8}>🏦 Super refund (if applicable)</div>
+            <div style={{marginBottom:20}}>
+              <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8}}>🏦 Super refund (if applicable)</div>
               <input
                 type="number" placeholder="Super amount in AUD (leave blank if none)"
                 value={captureSuperAmt} onChange={e=>setCaptureSuperAmt(e.target.value)}
-                style={S.x4be92f52}
+                style={{width:'100%',padding:'9px 12px',border:'1.5px solid #d8e4dc',borderRadius:9,fontSize:13,outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
               />
             </div>
-            <div style={S.xc8080688}>
+            <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginBottom:16}}>
               After saving, all sensitive data (TFN, bank, address) will be deleted.
             </div>
             <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={handleCancelCapture}>Cancel</button>
+              <button style={S.mCancel} onClick={()=>setCaptureRefund(null)}>Cancel</button>
               <button style={{...S.mDel,background:'#0E5C42',borderColor:'#0E5C42',color:'#fff'}}
                 onClick={()=>deleteTask(captureRefund.taskId,{
                   amount: parseFloat(captureRefundAmt)||0,
@@ -2040,11 +1790,11 @@ const S: Record<string,React.CSSProperties> = {
       {confirmDelete && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={S.x277d9dfc}>🗑️</div>
+            <div style={{fontSize:34,marginBottom:10}}>🗑️</div>
             <div style={S.mTitle}>Delete &amp; archive?</div>
-            <div style={S.x4e97ed3a}>All sensitive data (TFN, bank, address, documents) will be deleted.<br/>The client will be moved to the Clients tab with basic info only.</div>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>All sensitive data (TFN, bank, address, documents) will be deleted.<br/>The client will be moved to the Clients tab with basic info only.</div>
             <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={handleCloseConfirmDel}>Cancel</button>
+              <button style={S.mCancel} onClick={()=>setConfirmDelete(null)}>Cancel</button>
               <button style={S.mDel} onClick={()=>deleteTask(confirmDelete)}>Yes, delete &amp; archive</button>
             </div>
           </div>
@@ -2055,13 +1805,13 @@ const S: Record<string,React.CSSProperties> = {
       {confirmTransfer && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmTransfer(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={S.x277d9dfc}>👤</div>
+            <div style={{fontSize:34,marginBottom:10}}>👤</div>
             <div style={S.mTitle}>Move to clients?</div>
-            <div style={S.x4e97ed3a}>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>
               A client card will be created for <strong>{confirmTransfer.clientName}</strong> and the task will be removed.
             </div>
             <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={handleCloseConfirmTrans}>Cancel</button>
+              <button style={S.mCancel} onClick={()=>setConfirmTransfer(null)}>Cancel</button>
               <button style={{...S.mCancel,background:'#e8f5f0',color:'#0E5C42',border:'1.5px solid #0E5C42',fontWeight:600}} onClick={()=>transferToClients(confirmTransfer)}>Yes, move to clients</button>
             </div>
           </div>
@@ -2072,13 +1822,13 @@ const S: Record<string,React.CSSProperties> = {
       {confirmPermDelete && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmPermDelete(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={S.x277d9dfc}>⚠️</div>
+            <div style={{fontSize:34,marginBottom:10}}>⚠️</div>
             <div style={S.mTitle}>Delete permanently?</div>
-            <div style={S.x4e97ed3a}>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>
               All data will be deleted with <strong>no client card created</strong>. This cannot be undone.
             </div>
             <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={handleCloseConfirmPerm}>Cancel</button>
+              <button style={S.mCancel} onClick={()=>setConfirmPermDelete(null)}>Cancel</button>
               <button style={S.mDel} onClick={()=>deleteTaskPermanently(confirmPermDelete)}>Yes, delete permanently</button>
             </div>
           </div>
@@ -2089,11 +1839,11 @@ const S: Record<string,React.CSSProperties> = {
       {confirmDeleteClient && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDeleteClient(null)}}>
           <div style={{...S.modal,maxWidth:340,textAlign:'center'}}>
-            <div style={S.x277d9dfc}>🗑️</div>
+            <div style={{fontSize:34,marginBottom:10}}>🗑️</div>
             <div style={S.mTitle}>Delete client?</div>
-            <div style={S.x4163bc50}>This permanently removes the client and all their history.</div>
+            <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>This permanently removes the client and all their history.</div>
             <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={handleCloseConfirmDelCl}>Cancel</button>
+              <button style={S.mCancel} onClick={()=>setConfirmDeleteClient(null)}>Cancel</button>
               <button style={S.mDel} onClick={()=>deleteClient(confirmDeleteClient)}>Yes, delete</button>
             </div>
           </div>
@@ -2102,24 +1852,24 @@ const S: Record<string,React.CSSProperties> = {
 
       {/* ── File preview modal ── */}
       {previewUrl && (
-        <div onClick={handleClosePreview} style={S.x805ac350}>
-          <div onClick={e=>e.stopPropagation()} style={S.x5baf3312}>
-            <div style={S.xd8839723}>
-              <span style={S.x035ffe8d}>{previewUrl.split('/').pop()?.replace(/^\d+_/,'') ?? 'File'}</span>
-              <div style={S.x1ae14c3e}>
-                <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={S.x7016ec08}>Open ↗</a>
-                <button onClick={handleClosePreview} style={S.x0ac6b2c6}>✕</button>
+        <div onClick={()=>setPreviewUrl(null)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.6)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000,padding:24}}>
+          <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:16,overflow:'hidden',width:'50vw',maxWidth:700,maxHeight:'70vh',display:'flex',flexDirection:'column',boxShadow:'0 20px 60px rgba(0,0,0,0.3)'}}>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px',borderBottom:'1px solid #e4ede8',background:'#f7fbf9'}}>
+              <span style={{fontSize:12,fontWeight:600,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'80%'}}>{previewUrl.split('/').pop()?.replace(/^\d+_/,'') ?? 'File'}</span>
+              <div style={{display:'flex',gap:8,flexShrink:0}}>
+                <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'3px 10px',textDecoration:'none',fontWeight:600}}>Open ↗</a>
+                <button onClick={()=>setPreviewUrl(null)} style={{background:'none',border:'none',fontSize:18,cursor:'pointer',color:'#7a8a82',padding:'0 4px',lineHeight:1}}>✕</button>
               </div>
             </div>
-            <div style={S.xfea470d4}>
+            <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200}}>
               {previewUrl.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)
-                ? <img src={previewUrl} alt="preview" style={S.x91a292c1}/>
+                ? <img src={previewUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}}/>
                 : previewUrl.toLowerCase().endsWith('.pdf')
-                  ? <iframe src={previewUrl} style={S.xf49bca32} title="PDF preview"/>
-                  : <div style={S.x3aad9412}>
-                      <div style={S.x7e2e010c}>📄</div>
-                      <div style={S.x3fd74e07}>Cannot preview this file type</div>
-                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={S.xbb42254d}>Open in new tab ↗</a>
+                  ? <iframe src={previewUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
+                  : <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
+                      <div style={{fontSize:32,marginBottom:12}}>📄</div>
+                      <div style={{fontSize:13}}>Cannot preview this file type</div>
+                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
                     </div>
               }
             </div>

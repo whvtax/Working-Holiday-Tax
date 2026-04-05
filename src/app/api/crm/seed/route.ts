@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { seedDemoData } from '@/lib/seed'
 import { validateSession } from '@/lib/crm-store'

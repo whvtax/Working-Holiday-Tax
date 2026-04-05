@@ -136,4 +136,4 @@ export async function isLockedOutRedis(redis: import('redis').RedisClientType): 
   return true
 }
 
-// Legacy in-memory store removed — all data now persisted in Vercel Postgres (db.ts)
+// Legacy in-memory store removed — all data persisted in Vercel Postgres

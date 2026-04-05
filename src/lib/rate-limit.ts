@@ -13,46 +13,24 @@ const WINDOW_SECS        = 15 * 60  // 15 minutes
 const CONNECT_TIMEOUT_MS = 3000     // 3 s connect timeout
 const TOTAL_TIMEOUT_MS   = 5000     // 5 s hard ceiling for entire operation
 
-// Module-level singleton — reuse connection across invocations in the same serverless instance
-let _redis: ReturnType<typeof createClient> | null = null
-let _redisConnecting: Promise<ReturnType<typeof createClient> | null> | null = null
-
 async function getRedis() {
   const url = process.env.REDIS_URL
   if (!url) return null // graceful — if no Redis, skip limiting
-
-  // Return existing connected client if healthy
-  if (_redis && _redis.isReady) return _redis
-
-  // Prevent multiple simultaneous connect attempts
-  if (_redisConnecting) return _redisConnecting
-
-  _redisConnecting = (async () => {
-    try {
-      const client = createClient({
-        url,
-        socket: {
-          connectTimeout: CONNECT_TIMEOUT_MS,
-          reconnectStrategy: false, // no retries in serverless — fail fast
-        },
-      })
-      await Promise.race([
-        client.connect(),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Redis connect timeout')), CONNECT_TIMEOUT_MS + 500)
-        ),
-      ])
-      _redis = client
-      return client
-    } catch {
-      _redis = null
-      return null
-    } finally {
-      _redisConnecting = null
-    }
-  })()
-
-  return _redisConnecting
+  const client = createClient({
+    url,
+    socket: {
+      connectTimeout: CONNECT_TIMEOUT_MS,
+      reconnectStrategy: false, // no retries in serverless — fail fast
+    },
+  })
+  // Race connect against hard timeout so unreachable Redis never blocks the request
+  await Promise.race([
+    client.connect(),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Redis connect timeout')), CONNECT_TIMEOUT_MS + 500)
+    ),
+  ])
+  return client
 }
 
 /**
@@ -91,6 +69,8 @@ export async function isRateLimited(ip: string, formName: string): Promise<boole
     console.error('[rate-limit]', err)
     return false // fail open — never block legit users due to Redis issues
   } finally {
-    // Connection kept alive for reuse — no disconnect in serverless singleton pattern
+    if (redis) {
+      try { await (redis as any).disconnect() } catch { /* ignore disconnect errors */ }
+    }
   }
 }

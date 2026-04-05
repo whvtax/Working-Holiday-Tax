@@ -1,4 +1,3 @@
-export const dynamic = 'force-dynamic'
 // src/app/api/crm/login/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import {
@@ -94,7 +93,7 @@ export async function POST(req: NextRequest) {
 }
 
 async function sendOtpEmail(to: string, apiKey: string, otp: string) {
-  if (!apiKey) { if (process.env.NODE_ENV !== 'production') console.log('[DEV] OTP email skipped — no RESEND_API_KEY'); return }
+  if (!apiKey) { if (process.env.NODE_ENV !== 'production') console.log('[DEV] OTP email skipped'); return }
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',

@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { NAV_LINKS, WA_URL } from '@/lib/constants'
@@ -123,7 +122,7 @@ export function Nav() {
             className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
             style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <Image src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={24} height={24} style={{ objectFit: 'contain' }} />
+            <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={24} height={24} style={{ objectFit: 'contain' }} />
           </a>
         </div>
 

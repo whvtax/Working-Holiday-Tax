@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
-export const maxDuration = 60 // seconds
+export const maxDuration = 60
 export const dynamic = 'force-dynamic'
+import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { uploadFiles } from '@/lib/upload'
@@ -18,38 +18,25 @@ export async function POST(req: NextRequest) {
     const formData  = await req.formData()
     const clientId  = `CLT-${crypto.randomUUID()}`
 
-    // Upload bank statement + selfie via server (small files, fine)
+    // Upload files to Vercel Blob (bank statement + selfie + invoices x15)
     const bankStatementFile  = formData.get('bankStatement')  as File | null
     const selfiePassportFile = formData.get('selfiePassport') as File | null
-
-    // Invoices: accept pre-uploaded URLs (client-side) OR fallback files
-    const preUploadedUrls: string[] = (() => {
-      try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
-    })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
-
-    const fallbackInvoices: (File | null)[] = []
-    if (preUploadedUrls.length === 0) {
-      for (let i = 0; i < 10; i++) {
-        const f = formData.get(`invoices_${i}`) as File | null
-        if (f && f.size > 0) fallbackInvoices.push(f)
-        else break
-      }
+    const invoiceFiles: (File | null)[] = []
+    for (let i = 0; i < 15; i++) {
+      const f = formData.get(`invoices_${i}`) as File | null
+      if (f && f.size > 0) invoiceFiles.push(f)
+      else break
     }
 
     let fileUrls: string[]
     try {
-      const serverUrls = await uploadFiles(
-        [bankStatementFile, selfiePassportFile, ...fallbackInvoices],
+      fileUrls = await uploadFiles(
+        [bankStatementFile, selfiePassportFile, ...invoiceFiles],
         `tax-form/${clientId}`
       )
-      fileUrls = [...serverUrls, ...preUploadedUrls]
     } catch (uploadErr) {
       const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
-      if (msg.includes('not allowed') || msg.includes('dangerous') || msg.includes('does not match') || msg.includes('too large')) {
-        return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
-      }
-      console.warn('[tax-form] File upload failed, continuing without files:', msg)
-      fileUrls = [...preUploadedUrls]
+      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
     }
 
     await createTask({
