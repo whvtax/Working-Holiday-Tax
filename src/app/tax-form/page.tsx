@@ -244,7 +244,27 @@ export default function TaxFormPage() {
     fd.append('taxStatusText', 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:')
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
-    invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
+
+    // Upload invoices directly from browser to avoid server payload limits
+    // Each invoice is uploaded independently so one failure doesn't block others
+    const invoiceUrls: string[] = []
+    try {
+      for (let i = 0; i < invoices.files.length; i++) {
+        const f = invoices.files[i]
+        const uploadRes = await fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
+          method: 'POST',
+          body: f,
+        })
+        if (uploadRes.ok) {
+          const { url } = await uploadRes.json()
+          if (url) invoiceUrls.push(url)
+        }
+      }
+    } catch {
+      // If client-side upload fails, fall back to sending files via formData
+      invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
+    }
+    if (invoiceUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
