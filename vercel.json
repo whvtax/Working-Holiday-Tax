@@ -71,16 +71,16 @@
   ],
   "functions": {
     "src/app/api/tax-form/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 30
     },
     "src/app/api/super-form/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 30
     },
     "src/app/api/abn-form/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 30
     },
     "src/app/api/tfn-form/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 30
     }
   }
 }

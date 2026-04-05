@@ -126,59 +126,6 @@ export default function SuperFormPage() {
       <>
         <style>{css}</style>
         <div className="form-success-wrap">
-
-        <canvas id="fw-canvas" className="fireworks-canvas" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-            var c=document.getElementById('fw-canvas');
-            if(!c)return;
-            var ctx=c.getContext('2d');
-            var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
-            window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
-            var particles=[];
-            var colors=['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#BB8FCE'];
-            function Particle(x,y,color){
-              this.x=x; this.y=y; this.color=color;
-              this.r=Math.random()*3+1;
-              this.vx=(Math.random()-0.5)*8;
-              this.vy=(Math.random()-0.5)*8-3;
-              this.alpha=1;
-              this.gravity=0.15;
-            }
-            Particle.prototype.update=function(){
-              this.x+=this.vx; this.y+=this.vy;
-              this.vy+=this.gravity;
-              this.alpha-=0.015;
-            };
-            Particle.prototype.draw=function(){
-              ctx.save(); ctx.globalAlpha=this.alpha;
-              ctx.fillStyle=this.color;
-              ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-              ctx.fill(); ctx.restore();
-            };
-            function burst(x,y){
-              var count=60;
-              for(var i=0;i<count;i++){
-                particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)]));
-              }
-            }
-            var shots=0; var maxShots=8; var shotInterval=400;
-            function fireRandom(){
-              if(shots>=maxShots)return;
-              burst(Math.random()*W*0.8+W*0.1, Math.random()*H*0.5+H*0.05);
-              shots++;
-              if(shots<maxShots) setTimeout(fireRandom, shotInterval);
-            }
-            setTimeout(fireRandom, 100);
-            function loop(){
-              ctx.clearRect(0,0,W,H);
-              particles=particles.filter(function(p){return p.alpha>0;});
-              particles.forEach(function(p){p.update();p.draw();});
-              if(particles.length>0||shots<maxShots) requestAnimationFrame(loop);
-            }
-            loop();
-          })();
-        ` }} />
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
@@ -246,8 +193,8 @@ export default function SuperFormPage() {
           <Field label="Email address" required error={errors.email}>
             <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
           </Field>
-          <Field label="Full Australian address (street, suburb, state, postcode)" required error={errors.auAddress}>
-            <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" value={auAddress} onChange={e=>{ setAuAddress(e.target.value); setErrors(p=>({...p,auAddress:''})) }}/>
+          <Field label="Full Australian address (state, city, street, number, postcode)" required error={errors.auAddress}>
+            <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. NSW, Sydney, 42 Bondi Rd, 2026" value={auAddress} onChange={e=>{ setAuAddress(e.target.value); setErrors(p=>({...p,auAddress:''})) }}/>
           </Field>
           <Field label="Full home country address" required error={errors.homeAddress}>
             <textarea className={`form-input form-textarea${errors.homeAddress?' input-error':''}`} placeholder="e.g. 12 Rue de Paris, 75001 Paris, France" value={homeAddress} onChange={e=>{ setHomeAddress(e.target.value); setErrors(p=>({...p,homeAddress:''})) }}/>
@@ -367,7 +314,6 @@ const css = `
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
-  .fireworks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
   .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }

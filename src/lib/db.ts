@@ -51,8 +51,7 @@ async function sqlWithTimeout<T>(query: Promise<T>, label: string): Promise<T> {
 
 export async function initDb() {
   if (_dbInitialised) return // already ran this instance — skip
-  await Promise.all([
-    sqlWithTimeout(sql`
+  await sqlWithTimeout(sql`
     CREATE TABLE IF NOT EXISTS crm_clients (
       id            TEXT PRIMARY KEY,
       full_name     TEXT NOT NULL DEFAULT '',

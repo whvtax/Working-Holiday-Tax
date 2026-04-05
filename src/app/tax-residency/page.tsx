@@ -32,14 +32,13 @@ const CONDITIONS = [
 ]
 
 const SOURCES = [
-  { label: 'NDA Countries',                href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/taxation-of-australian-resident-whms-from-nda-countries' },
-  { label: '183 Day Test',                 href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/residency-tests/residency-the-183-day-test' },
-  { label: 'WHV Tax Residency',            href: 'https://www.ato.gov.au/Individuals/Coming-to-Australia-or-going-overseas/Coming-to-Australia/Australian-residency-if-you-re-on-a-working-holiday-or-visit/' },
-  { label: 'High Court of Justice Ruling', href: 'https://www.ato.gov.au/law/view/document?DocID=JUD/2021ATC20-803/00001' },
-  { label: 'Tax Rates',                    href: 'https://www.ato.gov.au/Rates/Individual-income-tax-rates/' },
-  { label: 'Tax Rates – Covid',            href: 'https://www.ato.gov.au/General/COVID-19/Support-for-individuals-and-employees/408-Pandemic-event-visa/' },
-  { label: 'Student',                      href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/studying-in-australia' },
-  { label: 'Residency Test Ruling',        href: 'https://www.ato.gov.au/law/view/document?DocID=TXR/TR20231/NAT/ATO/00001&PiT=99991231235958' },
+  { label: 'NDA Countries',                href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency' },
+  { label: '183 Day Test',                 href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency#Residentstests' },
+  { label: 'WHV Tax Residency',            href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/working-holiday-makers' },
+  { label: 'High Court of Justice Ruling', href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency' },
+  { label: 'Tax Rates – Covid',            href: 'https://www.ato.gov.au/tax-rates-and-codes/tax-table-for-working-holiday-makers' },
+  { label: 'Student',                      href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency' },
+  { label: 'Residency Test Ruling',        href: 'https://www.ato.gov.au/law/view/document?docid=CR/CR202415/NAT/ATO/00001' },
 ]
 
 function TaxTable({ label, rows }: { label: string; rows: string[][] }) {
@@ -74,20 +73,8 @@ export default function TaxResidencyPage() {
   return (
     <main className="min-h-screen bg-canvas">
 
-      {/* ── PAGE HEADER ── */}
-      <section className="pt-[88px] pb-10 bg-white">
-        <div className="max-w-[900px] mx-auto px-5 md:px-8 text-center">
-          <h1 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(28px, 4vw, 42px)', lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: '16px' }}>
-            Tax Residency Explained
-          </h1>
-          <p className="font-light text-body mx-auto" style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '680px', color: '#587066' }}>
-            The population in Australia is divided into three groups of taxpayers: non-residents, backpackers (417/462 visa holders) and Australian residents. Below are the differences in the tax rates between the groups:
-          </p>
-        </div>
-      </section>
-
       {/* ── TAX TABLES ── */}
-      <section className="py-10 lg:py-14 bg-white" style={{ borderTop: '1px solid #EAF6F1' }}>
+      <section className="pt-[68px] py-10 lg:py-14 bg-white">
         <div className="max-w-[900px] mx-auto px-5 md:px-8">
 
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '28px' }}>
@@ -110,16 +97,16 @@ export default function TaxResidencyPage() {
         <div className="max-w-[900px] mx-auto px-5 md:px-8">
           <div className="max-w-2xl mx-auto">
 
-            <span className="section-label mb-3 block" style={{ textAlign: "center", display: "block" }}>Residency for backpackers</span>
+            <span className="section-label mb-3 block">Residency for backpackers</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(18px, 2vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginBottom: '18px', textAlign: 'center' }}>
               Backpackers on a Working Holiday visa (417/462) may be<br />considered Australian residents for tax purposes<br />if they meet all conditions:
             </h2>
 
             <div className="space-y-3">
               {CONDITIONS.map((c, i) => (
-                <div key={i} className="flex gap-2 bg-white rounded-xl items-center" style={{ padding: '10px 14px', border: '1px solid #C8EAE0' }}>
+                <div key={i} className="flex gap-3 bg-white rounded-xl" style={{ padding: '14px 16px', border: '1px solid #C8EAE0' }}>
                   <span className="font-bold flex-shrink-0" style={{ fontSize: '13px', color: '#0B5240' }}>✓</span>
-                  <p className="font-light text-body" style={{ fontSize: '11.5px', lineHeight: 1.4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c}</p>
+                  <p className="font-light text-body" style={{ fontSize: '13px', lineHeight: 1.65 }}>{c}</p>
                 </div>
               ))}
             </div>

@@ -136,4 +136,43 @@ export async function isLockedOutRedis(redis: import('redis').RedisClientType): 
   return true
 }
 
-// Legacy in-memory store removed — all data persisted in Vercel Postgres
+// ── Clients CRUD (kept for legacy/demo compatibility) ─────────────────────
+
+const _store: { clients: Map<string, ClientRecord> } = { clients: new Map() }
+
+export function getAllClients(): ClientRecord[] {
+  return Array.from(_store.clients.values()).sort(
+    (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
+  )
+}
+
+export function getClient(id: string): ClientRecord | undefined {
+  return _store.clients.get(id)
+}
+
+export function upsertClient(data: Omit<ClientRecord, 'id' | 'handled'> & { id?: string; waNumber?: string }): ClientRecord {
+  const id       = data.id ?? `CLT-${crypto.randomUUID()}`
+  const existing = _store.clients.get(id)
+  const record: ClientRecord = { ...data, id, handled: existing?.handled ?? false, notes: data.notes ?? existing?.notes ?? '' }
+  _store.clients.set(id, record)
+  return record
+}
+
+export function markHandled(id: string): boolean {
+  const c = _store.clients.get(id)
+  if (!c) return false
+  c.handled = true
+  return true
+}
+
+export function clearClientDetails(id: string): boolean {
+  const c = _store.clients.get(id)
+  if (!c) return false
+  _store.clients.set(id, {
+    ...c,
+    address: '', tfn: '', bankDetails: '',
+    primaryJob: '', marital: '', taxStatus: '', howHeard: '', auPhone: '',
+    files: { bankStatement: null, selfiePassport: null, invoices: null },
+  })
+  return true
+}

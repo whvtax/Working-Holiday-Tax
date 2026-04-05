@@ -71,7 +71,7 @@ function containsDangerousPattern(bytes: Uint8Array): boolean {
     }
   }
   // Also check for <script (case-insensitive) in first 1KB as text
-  const text = new TextDecoder('utf-8', { fatal: false }).decode(bytes.slice(0, 512)).toLowerCase()
+  const text = String.fromCharCode(...Array.from(bytes.slice(0, 512))).toLowerCase()
   if (text.includes('<script') || text.includes('<?php') || text.includes('javascript:')) return true
   return false
 }

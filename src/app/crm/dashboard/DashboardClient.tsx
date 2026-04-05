@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'
 type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -60,6 +61,7 @@ function CopyBtn({ text }: { text: string }) {
 }
 
 export default function DashboardClient() {
+  const router = useRouter()
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [checkinYear, setCheckinYear] = useState('2024-25')
@@ -152,11 +154,11 @@ export default function DashboardClient() {
   }
 
   async function markDone(id:string) {
-    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
+    // Optimistic: move task to done visually right away
+    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], notes:''} : t))
     setConfirmComplete(null)
-    setActiveTask(null)
-    setTaskView('list')
-    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
+    await loadClients()
   }
 
   // Transfer done task → creates/updates client card, then removes task
@@ -303,7 +305,7 @@ export default function DashboardClient() {
   const downloadTaskPdf = (task: Task) => {
     const G = '#0B5240'
     const GL = '#EAF6F1'
-    const esc = (s: string) => (s||'—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;')
+    const esc = (s: string) => (s||'—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
 
     // ── helpers ──────────────────────────────────────────────────────
     const sec = (title: string) =>
@@ -343,7 +345,7 @@ export default function DashboardClient() {
       return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#F5F9F7;border:1.5px solid #D4EAE2;border-radius:12px;margin-bottom:8px">` +
         `<span style="font-size:20px">${isPdf?'📄':'🖼️'}</span>` +
         `<span style="font-size:13px;color:#080F0D;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span>` +
-        `<a href="${esc(url)}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
+        `<a href="${url}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
         `</div>`
     }
 
@@ -605,8 +607,8 @@ export default function DashboardClient() {
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
-  const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done), [tasks])
-  const doneTasks      = useMemo(()=>tasks.filter(t=>t.done),  [tasks])
+  const pendingTasks = tasks.filter(t=>!t.done)
+  const doneTasks    = tasks.filter(t=>t.done)
   const visibleClients = clients.filter(c=>{
     const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
@@ -1655,6 +1657,44 @@ export default function DashboardClient() {
                 </div>
               </div>
 
+                            {/* 3. TFN + 4. ABN side by side */}
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+                {/* TFN */}
+                <div style={S.card}>
+                  <div style={S.secHead}><span>📋 TFN Application</span></div>
+                  <div style={S.checkRow}>
+                    <div>
+                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410'}}>Applied for TFN</div>
+                      <div style={{fontSize:11,color:'#aabab2',marginTop:2}}>
+                        {activeClient.tfnService.done ? `Done · ${fmtDate(activeClient.tfnService.completedAt)}` : 'Not yet done'}
+                      </div>
+                    </div>
+                    <div
+                      style={{...S.checkbox,borderColor:activeClient.tfnService.done?'#0E5C42':'#d8e4dc',background:activeClient.tfnService.done?'#0E5C42':'#fff'}}
+                      onClick={()=>toggleService('tfn',activeClient.tfnService)}>
+                      {activeClient.tfnService.done && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                    </div>
+                  </div>
+                </div>
+
+                {/* ABN */}
+                <div style={S.card}>
+                  <div style={S.secHead}><span>🏢 ABN Application</span></div>
+                  <div style={S.checkRow}>
+                    <div>
+                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410'}}>Applied for ABN</div>
+                      <div style={{fontSize:11,color:'#aabab2',marginTop:2}}>
+                        {activeClient.abnService.done ? `Done · ${fmtDate(activeClient.abnService.completedAt)}` : 'Not yet done'}
+                      </div>
+                    </div>
+                    <div
+                      style={{...S.checkbox,borderColor:activeClient.abnService.done?'#0E5C42':'#d8e4dc',background:activeClient.abnService.done?'#0E5C42':'#fff'}}
+                      onClick={()=>toggleService('abn',activeClient.abnService)}>
+                      {activeClient.abnService.done && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Notes */}
               <div style={{...S.card,padding:'14px 16px',marginBottom:12}}>

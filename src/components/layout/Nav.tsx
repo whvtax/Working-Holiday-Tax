@@ -24,13 +24,9 @@ export function Nav() {
   const pathname = usePathname()
 
   useEffect(() => {
-    let rafId = 0
-    const fn = () => {
-      cancelAnimationFrame(rafId)
-      rafId = requestAnimationFrame(() => setScrolled(window.scrollY > 12))
-    }
+    const fn = () => setScrolled(window.scrollY > 12)
     window.addEventListener('scroll', fn, { passive: true })
-    return () => { window.removeEventListener('scroll', fn); cancelAnimationFrame(rafId) }
+    return () => window.removeEventListener('scroll', fn)
   }, [])
 
   useEffect(() => { document.body.style.overflow = open ? 'hidden' : '' }, [open])

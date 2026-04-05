@@ -1,5 +1,3 @@
-export const maxDuration = 60
-export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
