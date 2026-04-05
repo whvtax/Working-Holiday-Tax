@@ -71,7 +71,7 @@ function containsDangerousPattern(bytes: Uint8Array): boolean {
     }
   }
   // Also check for <script (case-insensitive) in first 1KB as text
-  const text = String.fromCharCode(...Array.from(bytes.slice(0, 512))).toLowerCase()
+  const text = new TextDecoder('utf-8', { fatal: false }).decode(bytes.slice(0, 512)).toLowerCase()
   if (text.includes('<script') || text.includes('<?php') || text.includes('javascript:')) return true
   return false
 }
@@ -175,9 +175,9 @@ export async function uploadFiles(
     await validateFileContents(f)
   }))
 
-  // Upload in batches of 3 to stay well within Vercel's limits
-  // Small delay between batches prevents rate-limit errors on large submissions
-  const BATCH = 3
+  // Upload in batches of 5 — client-side uploads now handle invoices in parallel
+  // Server-side batches are only bank statement + selfie (2-3 files max)
+  const BATCH = 5
   const urls: string[] = []
   for (let i = 0; i < validFiles.length; i += BATCH) {
     const batch = validFiles.slice(i, i + BATCH)
@@ -188,9 +188,9 @@ export async function uploadFiles(
       return blob.url
     }))
     urls.push(...batchResults)
-    // Small pause between batches to avoid overwhelming Blob API
+    // Minimal pause between batches
     if (i + BATCH < validFiles.length) {
-      await new Promise(r => setTimeout(r, 200))
+      await new Promise(r => setTimeout(r, 50))
     }
   }
   return urls

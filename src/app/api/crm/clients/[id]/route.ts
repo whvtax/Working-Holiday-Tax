@@ -25,11 +25,24 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     // Actions from DashboardClient
     if (body.action === 'notes')        { const notes = typeof body.notes === 'string' ? body.notes.slice(0, 10_000) : ''; await db.updateClientNotes(params.id, notes); return NextResponse.json({ ok:true }) }
-    if (body.action === 'service')      { await db.updateService(params.id, body.service, body.data);     return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-tax')      { await db.addTaxReturn(params.id, body.data);                    return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-tax')   { await db.removeTaxReturn(params.id, body.year);                 return NextResponse.json({ ok:true }) }
-    if (body.action === 'add-super')    { await db.addSuperReturn(params.id, body.data);                  return NextResponse.json({ ok:true }) }
-    if (body.action === 'remove-super') { await db.removeSuperReturn(params.id, body.year);               return NextResponse.json({ ok:true }) }
+    if (body.action === 'service')      { const svc = body.service === 'tfn' || body.service === 'abn' ? body.service : null; if (!svc) return NextResponse.json({ ok:false, error:'invalid_service' }, { status:400 }); await db.updateService(params.id, svc, body.data); return NextResponse.json({ ok:true }) }
+    if (body.action === 'add-tax') {
+      const d = body.data ?? {}
+      const year = typeof d.year === 'string' ? d.year.slice(0,10) : ''
+      const refundAmount = Math.max(0, Math.min(1_000_000, Number(d.refundAmount) || 0))
+      const type = d.type === 'owed' ? 'owed' : 'refund'
+      await db.addTaxReturn(params.id, { year, refundAmount, type, completedAt: new Date().toISOString() })
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'remove-tax')   { const year = typeof body.year === 'string' ? body.year.slice(0,10) : ''; await db.removeTaxReturn(params.id, year); return NextResponse.json({ ok:true }) }
+    if (body.action === 'add-super') {
+      const d = body.data ?? {}
+      const year = typeof d.year === 'string' ? d.year.slice(0,10) : ''
+      const amount = Math.max(0, Math.min(1_000_000, Number(d.amount) || 0))
+      await db.addSuperReturn(params.id, { year, amount, completedAt: new Date().toISOString() })
+      return NextResponse.json({ ok:true })
+    }
+    if (body.action === 'remove-super') { const year = typeof body.year === 'string' ? body.year.slice(0,10) : ''; await db.removeSuperReturn(params.id, year); return NextResponse.json({ ok:true }) }
 
     // Actions from ClientPageClient (detail page)
     if (body.action === 'update') {
@@ -56,7 +69,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'checkin') {
-      await db.setYearlyCheckin(params.id, body.year, body.done)
+      const year = typeof body.year === 'string' ? body.year.slice(0,10) : ''
+      const done = body.done === true
+      await db.setYearlyCheckin(params.id, year, done)
       return NextResponse.json({ ok:true })
     }
 

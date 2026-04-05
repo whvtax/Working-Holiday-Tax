@@ -6,7 +6,8 @@
  */
 export function sanitiseField(value: unknown, maxLength = 500): string {
   if (value == null) return ''
-  return String(value).trim().slice(0, maxLength)
+  // Strip HTML tags to prevent stored HTML injection
+  return String(value).trim().replace(/<[^>]*>/g, '').slice(0, maxLength)
 }
 
 /** Shorthand for fields that should be shorter (names, codes, years) */

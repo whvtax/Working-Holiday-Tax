@@ -161,6 +161,7 @@ export default function TaxFormPage() {
   const [waNumber, setWaNumber]       = useState('')
   const [auPhone, setAuPhone]         = useState('')
   const [fullName, setFullName]       = useState('')
+  const [lastName, setLastName]        = useState('')
   const [address, setAddress]         = useState('')
   const [email, setEmail]             = useState('')
   const [country, setCountry]         = useState('')
@@ -196,6 +197,7 @@ export default function TaxFormPage() {
     if (!waNumber.trim())    e.waNumber    = 'Required'
     if (!auPhone.trim())     e.auPhone     = 'Required'
     if (!fullName.trim())    e.fullName    = 'Required'
+    if (!lastName.trim())     e.lastName     = 'Required'
     if (!email.trim())       e.email       = 'Required'
     if (!address.trim())     e.address     = 'Required'
     if (!country.trim())     e.country     = 'Required'
@@ -227,7 +229,7 @@ export default function TaxFormPage() {
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
-    fd.append('fullName',    fullName)
+    fd.append('fullName',    `${fullName} ${lastName}`.trim())
     fd.append('address',     address)
     fd.append('email',       email)
     fd.append('country',     country)
@@ -249,17 +251,17 @@ export default function TaxFormPage() {
     // Each invoice is uploaded independently so one failure doesn't block others
     const invoiceUrls: string[] = []
     try {
-      for (let i = 0; i < invoices.files.length; i++) {
-        const f = invoices.files[i]
-        const uploadRes = await fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
-          method: 'POST',
-          body: f,
-        })
-        if (uploadRes.ok) {
-          const { url } = await uploadRes.json()
-          if (url) invoiceUrls.push(url)
-        }
-      }
+      // Upload all invoices in parallel — significantly faster than sequential
+      const results = await Promise.all(
+        invoices.files.map(f =>
+          fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
+            method: 'POST',
+            body: f,
+            headers: { 'Content-Type': f.type },
+          }).then(r => r.ok ? r.json() : null).catch(() => null)
+        )
+      )
+      results.forEach(r => { if (r?.url) invoiceUrls.push(r.url) })
     } catch {
       // If client-side upload fails, fall back to sending files via formData
       invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
@@ -411,9 +413,13 @@ export default function TaxFormPage() {
                 value={auPhone} onChange={e => { setAuPhone(e.target.value); setErrors(p => ({...p, auPhone: ''})) }} />
             </Field>
 
-            <Field label="Full Name (including middle name)" required error={errors.fullName}>
+            <Field label="First name (including middle name)" required error={errors.fullName}>
               <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport"
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
+            </Field>
+            <Field label="Last name" required error={errors.lastName}>
+              <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Smith"
+                value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 
             <Field label="Email Address" required error={errors.email}>
@@ -566,7 +572,7 @@ export default function TaxFormPage() {
               <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
                 {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
                   <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === 'Required' ? `${({
-                    waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
+                    waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'First Name',lastName:'Last name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
                     primaryJob:'Primary Job',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',

@@ -157,7 +157,7 @@ function toTask(r: Record<string,unknown>): Task {
 
 export async function getAllTasks(): Promise<Task[]> {
   await initDb()
-  const { rows } = await sql`SELECT * FROM crm_tasks ORDER BY submitted_at DESC`
+  const { rows } = await sql`SELECT * FROM crm_tasks ORDER BY submitted_at DESC LIMIT 500`
   return rows.map(toTask)
 }
 
@@ -271,30 +271,28 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       notes = ${mergedNotesForArchive}
   `
 
-  // Auto-sync task type to client timeline
+  // Auto-sync task type to client timeline + delete task in parallel
   const now = new Date().toISOString()
-  if (task.taskType === 'tax-return' && task.taxYear) {
-    await addTaxReturn(task.clientId, {
-      year: task.taxYear,
-      refundAmount: 0,
-      type: 'refund',
-      completedAt: now,
-    })
-  } else if (task.taskType === 'super') {
-    const year = task.taxYear || new Date().getFullYear().toString()
-    await addSuperReturn(task.clientId, {
-      year,
-      amount: 0,
-      completedAt: now,
-    })
-  } else if (task.taskType === 'tfn') {
-    await updateService(task.clientId, 'tfn', { done: true, completedAt: now, notes: '' })
-  } else if (task.taskType === 'abn') {
-    await updateService(task.clientId, 'abn', { done: true, completedAt: now, notes: '' })
-  }
+  const timelineSync = (async () => {
+    try {
+      if (task.taskType === 'tax-return' && task.taxYear) {
+        await addTaxReturn(task.clientId, { year: task.taxYear, refundAmount: 0, type: 'refund', completedAt: now })
+      } else if (task.taskType === 'super') {
+        await addSuperReturn(task.clientId, { year: task.taxYear || new Date().getFullYear().toString(), amount: 0, completedAt: now })
+      } else if (task.taskType === 'tfn') {
+        await updateService(task.clientId, 'tfn', { done: true, completedAt: now, notes: '' })
+      } else if (task.taskType === 'abn') {
+        await updateService(task.clientId, 'abn', { done: true, completedAt: now, notes: '' })
+      }
+    } catch (err) {
+      // Timeline sync failure is non-fatal — client card was created, task will still be deleted
+      // Admin can manually add the return/service from the client card
+      console.error('[deleteTaskAndArchive] timeline sync failed:', err)
+    }
+  })()
 
-  // Delete task only after client is safely archived
-  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
+  // Delete task only after client is safely upserted (above), run in parallel with timeline sync
+  await Promise.all([timelineSync, sql`DELETE FROM crm_tasks WHERE id = ${taskId}`])
 }
 
 // Delete task permanently — no client card created, all data gone
@@ -330,35 +328,59 @@ export async function updateClientNotes(id: string, notes: string): Promise<void
 // Tax returns
 export async function addTaxReturn(clientId: string, r: TaxReturn): Promise<void> {
   await initDb()
-  const client = await getClientById(clientId)
-  if (!client) return
-  const updated = [...client.taxReturns.filter(x => x.year !== r.year), r]
-  await sql`UPDATE crm_clients SET tax_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  // Atomic: remove any existing entry for this year then append new one — no read needed
+  await sqlWithTimeout(sql`
+    UPDATE crm_clients
+    SET tax_returns = (
+      SELECT jsonb_agg(entry)::text
+      FROM jsonb_array_elements(tax_returns::jsonb) AS entry
+      WHERE entry->>'year' != ${r.year}
+    ) || ${JSON.stringify([r])}
+    WHERE id = ${clientId}
+  `, 'addTaxReturn')
 }
 
 export async function removeTaxReturn(clientId: string, year: string): Promise<void> {
   await initDb()
-  const client = await getClientById(clientId)
-  if (!client) return
-  const updated = client.taxReturns.filter(x => x.year !== year)
-  await sql`UPDATE crm_clients SET tax_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  // Atomic: filter out the target year without a read round-trip
+  await sqlWithTimeout(sql`
+    UPDATE crm_clients
+    SET tax_returns = COALESCE((
+      SELECT jsonb_agg(entry)::text
+      FROM jsonb_array_elements(tax_returns::jsonb) AS entry
+      WHERE entry->>'year' != ${year}
+    ), '[]')
+    WHERE id = ${clientId}
+  `, 'removeTaxReturn')
 }
 
 // Super returns
 export async function addSuperReturn(clientId: string, r: SuperReturn): Promise<void> {
   await initDb()
-  const client = await getClientById(clientId)
-  if (!client) return
-  const updated = [...client.superReturns.filter(x => x.year !== r.year), r]
-  await sql`UPDATE crm_clients SET super_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  // Atomic: remove existing year entry then append new one
+  await sqlWithTimeout(sql`
+    UPDATE crm_clients
+    SET super_returns = (
+      SELECT jsonb_agg(entry)::text
+      FROM jsonb_array_elements(super_returns::jsonb) AS entry
+      WHERE entry->>'year' != ${r.year}
+    ) || ${JSON.stringify([r])}
+    WHERE id = ${clientId}
+  `, 'addSuperReturn')
 }
 
 export async function removeSuperReturn(clientId: string, year: string): Promise<void> {
   await initDb()
-  const client = await getClientById(clientId)
-  if (!client) return
-  const updated = client.superReturns.filter(x => x.year !== year)
-  await sql`UPDATE crm_clients SET super_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  // Atomic: filter out the target year without a read round-trip
+  await sqlWithTimeout(sql`
+    UPDATE crm_clients
+    SET super_returns = COALESCE((
+      SELECT jsonb_agg(entry)::text
+      FROM jsonb_array_elements(super_returns::jsonb) AS entry
+      WHERE entry->>'year' != ${year}
+    ), '[]')
+    WHERE id = ${clientId}
+  `, 'removeSuperReturn')
 }
 
 // TFN / ABN services
@@ -458,14 +480,14 @@ export async function unarchiveClient(id: string): Promise<void> {
 
 export async function getAllArchivedClients(): Promise<ClientRecord[]> {
   await initDb()
-  const { rows } = await sql`SELECT * FROM crm_clients WHERE archived = TRUE ORDER BY created_at DESC`
+  const { rows } = await sql`SELECT * FROM crm_clients WHERE archived = TRUE ORDER BY created_at DESC LIMIT 1000`
   return rows.map(toClient)
 }
 
 // Override getAllClients to exclude archived
 export async function getAllActiveClients(): Promise<ClientRecord[]> {
   await initDb()
-  const { rows } = await sql`SELECT * FROM crm_clients WHERE archived = FALSE OR archived IS NULL ORDER BY created_at DESC`
+  const { rows } = await sql`SELECT * FROM crm_clients WHERE (archived = FALSE OR archived IS NULL) ORDER BY created_at DESC LIMIT 1000`
   return rows.map(toClient)
 }
 
@@ -473,8 +495,12 @@ export async function getAllActiveClients(): Promise<ClientRecord[]> {
 
 export async function setYearlyCheckin(clientId: string, year: string, done: boolean): Promise<void> {
   await initDb()
-  const client = await getClientById(clientId)
-  if (!client) return
-  const updated = { ...client.yearlyCheckins, [year]: done }
-  await sql`UPDATE crm_clients SET yearly_checkins = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  // Atomic: merge new key into existing JSON without a read round-trip
+  await sqlWithTimeout(sql`
+    UPDATE crm_clients
+    SET yearly_checkins = (
+      COALESCE(yearly_checkins::jsonb, '{}'::jsonb) || ${JSON.stringify({ [year]: done })}::jsonb
+    )::text
+    WHERE id = ${clientId}
+  `, 'setYearlyCheckin')
 }
