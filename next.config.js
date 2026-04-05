@@ -8,13 +8,7 @@ const nextConfig = {
     serverActions: { bodySizeLimit: '50mb' },
     optimizePackageImports: ['react', 'react-dom'],
   },
-  // Raise API route body size limit for multi-file form submissions
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
-    },
-    responseLimit: '50mb',
-  },
+  // Note: API route body size is handled per-route via Next.js route config
   images: {
     remotePatterns: [{ protocol: 'https', hostname: '**.vercel-storage.com' }],
     formats: ['image/avif', 'image/webp'],

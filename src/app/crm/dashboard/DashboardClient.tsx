@@ -678,7 +678,8 @@ export default function DashboardClient() {
         </>}
       </div>
     )
- 
+  }
+
 // ── Static helpers (defined outside component — created once, never re-created on render) ──
 const _fmtCurFormatter = new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0})
 const fmtCur    = (n:number) => _fmtCurFormatter.format(n)
