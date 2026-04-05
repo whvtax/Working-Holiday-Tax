@@ -105,6 +105,14 @@ export async function initDb() {
     sqlWithTimeout(sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`, 'ALT archived'),
     sqlWithTimeout(sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`, 'ALT checkins'),
   ])
+  // Indexes — safe to run repeatedly (IF NOT EXISTS)
+  await Promise.all([
+    sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_submitted ON crm_tasks(submitted_at DESC)`, 'IDX tasks submitted'),
+    sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_done ON crm_tasks(done)`, 'IDX tasks done'),
+    sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_client ON crm_tasks(client_id)`, 'IDX tasks client'),
+    sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_created ON crm_clients(created_at DESC)`, 'IDX clients created'),
+    sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_archived ON crm_clients(archived)`, 'IDX clients archived'),
+  ])
   _dbInitialised = true
 }
 
@@ -262,6 +270,28 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       END,
       notes = ${mergedNotesForArchive}
   `
+
+  // Auto-sync task type to client timeline
+  const now = new Date().toISOString()
+  if (task.taskType === 'tax-return' && task.taxYear) {
+    await addTaxReturn(task.clientId, {
+      year: task.taxYear,
+      refundAmount: 0,
+      type: 'refund',
+      completedAt: now,
+    })
+  } else if (task.taskType === 'super') {
+    const year = task.taxYear || new Date().getFullYear().toString()
+    await addSuperReturn(task.clientId, {
+      year,
+      amount: 0,
+      completedAt: now,
+    })
+  } else if (task.taskType === 'tfn') {
+    await updateService(task.clientId, 'tfn', { done: true, completedAt: now, notes: '' })
+  } else if (task.taskType === 'abn') {
+    await updateService(task.clientId, 'abn', { done: true, completedAt: now, notes: '' })
+  }
 
   // Delete task only after client is safely archived
   await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`

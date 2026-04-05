@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+export const maxDuration = 60 // seconds
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { uploadFiles } from '@/lib/upload'

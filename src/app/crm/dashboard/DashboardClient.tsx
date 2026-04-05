@@ -807,7 +807,7 @@ export default function DashboardClient() {
                           </div>
                           {c.taxReturns.length>0 && (
                             <span style={{fontSize:10,color:'#0E5C42',fontWeight:600}}>
-                              {[...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0].year}
+                              {[...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]?.year}
                             </span>
                           )}
                         </div>

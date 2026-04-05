@@ -175,18 +175,23 @@ export async function uploadFiles(
     await validateFileContents(f)
   }))
 
-  // Upload in batches of 5 to avoid rate limits
-  const BATCH = 5
+  // Upload in batches of 3 to stay well within Vercel's limits
+  // Small delay between batches prevents rate-limit errors on large submissions
+  const BATCH = 3
   const urls: string[] = []
   for (let i = 0; i < validFiles.length; i += BATCH) {
     const batch = validFiles.slice(i, i + BATCH)
     const batchResults = await Promise.all(batch.map(async f => {
       const safeName = f.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
-      const pathname = `${folder}/${Date.now()}_${safeName}`
+      const pathname = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2,7)}_${safeName}`
       const blob = await put(pathname, f, { access: 'public', contentType: f.type })
       return blob.url
     }))
     urls.push(...batchResults)
+    // Small pause between batches to avoid overwhelming Blob API
+    if (i + BATCH < validFiles.length) {
+      await new Promise(r => setTimeout(r, 200))
+    }
   }
   return urls
 }

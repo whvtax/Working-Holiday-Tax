@@ -25,9 +25,13 @@ export function Nav() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 12)
+    let rafId = 0
+    const fn = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => setScrolled(window.scrollY > 12))
+    }
     window.addEventListener('scroll', fn, { passive: true })
-    return () => window.removeEventListener('scroll', fn)
+    return () => { window.removeEventListener('scroll', fn); cancelAnimationFrame(rafId) }
   }, [])
 
   useEffect(() => { document.body.style.overflow = open ? 'hidden' : '' }, [open])
