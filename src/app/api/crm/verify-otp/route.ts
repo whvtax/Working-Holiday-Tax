@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 // src/app/api/crm/verify-otp/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { createSession } from '@/lib/crm-store'

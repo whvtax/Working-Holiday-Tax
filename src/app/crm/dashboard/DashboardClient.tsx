@@ -1,7 +1,6 @@
 'use client'
 import React from 'react'
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'
 type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -60,8 +59,55 @@ function CopyBtn({ text }: { text: string }) {
   )
 }
 
+// ── Static helpers (defined outside component — created once, never re-created on render) ──
+const _fmtCurFormatter = new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0})
+const fmtCur    = (n:number) => _fmtCurFormatter.format(n)
+const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
+const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
+const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
+
+const S: Record<string,React.CSSProperties> = {
+  shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
+  sb:{width:212,background:'#0E5C42',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh'},
+  sbLogo:{display:'flex',alignItems:'center',gap:10,padding:'18px 14px 14px'},
+  sbIcon:{width:34,height:34,borderRadius:9,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0},
+  sbTitle:{fontSize:13,fontWeight:600,color:'#fff'},
+  sbSub:{fontSize:10,color:'rgba(255,255,255,0.38)',marginTop:1},
+  sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'0 12px 8px'},
+  sbNav:{display:'flex',flexDirection:'column',gap:2,padding:'0 7px'},
+  sbBtn:{display:'flex',alignItems:'center',gap:9,padding:'9px 11px',borderRadius:8,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.15s'},
+  sbBtnOn:{background:'rgba(255,255,255,0.16)',color:'#fff',fontWeight:600},
+  sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'1px 6px',fontSize:10,fontWeight:700},
+  sbLock:{display:'flex',alignItems:'center',gap:7,padding:'9px 11px 16px',fontSize:11,color:'rgba(255,255,255,0.4)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
+  main:{flex:1,background:'#f0f4f1',overflowY:'auto'},
+  page:{padding:'26px 26px 32px'},
+  pgTitle:{fontSize:19,fontWeight:600,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
+  pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
+  card:{background:'#fff',borderRadius:13,border:'1px solid #e4ede8'},
+  secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'13px 13px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between'},
+  row:{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10,alignItems:'center'},
+  lbl:{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0},
+  val:{fontSize:12,color:'#0a1410',flex:1},
+  taskCard:{background:'#fff',borderRadius:12,padding:'12px 14px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:11,cursor:'pointer',transition:'border-color 0.15s,box-shadow 0.15s',marginBottom:6},
+  returnRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 13px',background:'#f7fbf9',borderRadius:9,marginBottom:6,border:'1px solid #e4ede8'},
+  totalRow:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 13px',background:'#e8f5f0',borderRadius:9,border:'1px solid #b0d8c8'},
+  addForm:{background:'#f7fbf9',borderRadius:10,padding:'12px',border:'1px solid #e4ede8',marginTop:8,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const},
+  addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 11px',background:'#0E5C42',border:'none',borderRadius:7,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit'},
+  backBtn:{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',fontSize:12,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500,marginBottom:18,padding:0},
+  checkRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px'},
+  checkbox:{width:20,height:20,borderRadius:6,border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0},
+  overlay:{position:'fixed' as const,inset:0,background:'rgba(0,0,0,0.4)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:999},
+  modal:{background:'#fff',borderRadius:20,padding:'28px',width:'100%',maxWidth:400},
+  mTitle:{fontSize:17,fontWeight:600,color:'#0a1410',marginBottom:5},
+  mSub:{fontSize:13,color:'#7a8a82',marginBottom:18},
+  mInput:{border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',width:'100%',boxSizing:'border-box' as const},
+  mFooter:{display:'flex',gap:8,marginTop:12},
+  mCancel:{flex:1,padding:10,border:'1px solid #e4ede8',borderRadius:10,fontSize:13,cursor:'pointer',background:'#fff',fontFamily:'inherit',color:'#333'},
+  mSave:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#0E5C42',color:'#fff',fontFamily:'inherit'},
+  mDel:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#c0392b',color:'#fff',fontFamily:'inherit'},
+}
+
 export default function DashboardClient() {
-  const router = useRouter()
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [checkinYear, setCheckinYear] = useState('2024-25')
@@ -131,21 +177,28 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadArchived]',e) }
   },[])
 
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadArchived()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadArchived])
+  // Load tasks + clients in parallel on mount. Archived loaded lazily when user navigates to Archive tab.
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
+  // Lazy-load archived clients only when the Archive tab is first opened
+  const [archivedLoaded, setArchivedLoaded] = React.useState(false)
+  function openArchive() {
+    setView('archive')
+    if (!archivedLoaded) { setArchivedLoaded(true); loadArchived() }
+  }
+
   async function archiveClient(id: string) {
-    // Optimistic: remove from clients immediately
-    setClients(prev => prev.filter(c => c.id !== id))
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
-    await Promise.all([loadClients(), loadArchived()])
+    setClients(prev => prev.filter(c => c.id !== id)) // optimistic
+    // Fire server call + reloads in parallel — don't await server before reloading
+    const req = fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
+    await Promise.all([req, loadClients(), loadArchived()])
   }
   async function unarchiveClient(id: string) {
-    // Optimistic: remove from archive immediately
-    setArchivedClients(prev => prev.filter(c => c.id !== id))
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
-    await Promise.all([loadClients(), loadArchived()])
+    setArchivedClients(prev => prev.filter(c => c.id !== id)) // optimistic
+    const req = fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
+    await Promise.all([req, loadClients(), loadArchived()])
   }
   async function toggleCheckin(clientId: string, year: string, current: boolean) {
     // Optimistic update
@@ -155,10 +208,13 @@ export default function DashboardClient() {
 
   async function markDone(id:string) {
     // Optimistic: move task to done visually right away
-    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], notes:''} : t))
+    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
     setConfirmComplete(null)
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
-    await loadClients()
+    // Navigate back to task list immediately
+    setActiveTask(null)
+    setTaskView('list')
+    // Fire and forget — no client card created yet, that happens on manual transfer
+    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
   }
 
   // Transfer done task → creates/updates client card, then removes task
@@ -166,8 +222,11 @@ export default function DashboardClient() {
     setConfirmTransfer(null)
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
-    await Promise.all([loadClients(), loadArchived()])
+    // Fire server call and client reload in parallel — don't wait for server before refreshing UI
+    await Promise.all([
+      fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})}),
+      loadClients(),
+    ])
   }
 
   // Delete task permanently — no client card created
@@ -175,7 +234,7 @@ export default function DashboardClient() {
     setConfirmPermDelete(null)
     setTasks(prev => prev.filter(t => t.id !== id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})})
+    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})}) // fire-and-forget
   }
 
   async function saveTaskNotes() {
@@ -259,21 +318,25 @@ export default function DashboardClient() {
 
   async function refreshClient() {
     if(!activeClient) return
-    const r=await fetch(`/api/crm/clients/${activeClient.id}`)
-    const d=await r.json()
-    if(d.ok){ setActiveClient(d.client); await loadClients() }
+    // Fetch individual client + full clients list in parallel
+    const [r] = await Promise.all([
+      fetch(`/api/crm/clients/${activeClient.id}`),
+      loadClients(),
+    ])
+    const d = await r.json()
+    if(d.ok) setActiveClient(d.client)
   }
 
   async function deleteClient(id:string) {
     setArchivedClients(prev => prev.filter(c => c.id !== id))
+    setClients(prev => prev.filter(c => c.id !== id))
     setActiveClient(null); setView('archive'); setConfirmDeleteClient(null)
-    await fetch(`/api/crm/clients/${id}`,{method:'DELETE'})
-    await loadClients()
+    fetch(`/api/crm/clients/${id}`,{method:'DELETE'}) // fire-and-forget, already removed optimistically
   }
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    // Add as a task for now
+    setShowAddModal(false)
     await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         clientName:newClient.fullName, taskType:'tax-return',
@@ -283,7 +346,7 @@ export default function DashboardClient() {
         howHeard:'',auPhone:'',notes:'',fileUrls:[],
       })})
     setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25'})
-    setShowAddModal(false); await loadTasks()
+    loadTasks() // no await — modal is already closed, reload in background
   }
 
   const fmtDate   = (iso:string) => iso ? new Date(iso).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '—'
@@ -602,14 +665,11 @@ export default function DashboardClient() {
     setTimeout(() => URL.revokeObjectURL(url), 5000)
   }
 
-  const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
-  const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
-  const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
-  const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
-  const pendingTasks = tasks.filter(t=>!t.done)
-  const doneTasks    = tasks.filter(t=>t.done)
-  const visibleClients = clients.filter(c=>{
+
+  const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done), [tasks])
+  const doneTasks      = useMemo(()=>tasks.filter(t=>t.done),  [tasks])
+  const visibleClients = useMemo(()=>clients.filter(c=>{
     const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
     const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
@@ -617,7 +677,7 @@ export default function DashboardClient() {
     const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
     const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
     return ms && my && mc && mh && mcountry
-  })
+  }), [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter])
   // Generic dropdown button component (avoids <details> which has cross-browser issues)
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
@@ -646,7 +706,7 @@ export default function DashboardClient() {
   }
 
   // Global search across tasks + clients
-  const globalResults = globalSearch.trim().length > 1 ? {
+  const globalResults = useMemo(()=> globalSearch.trim().length > 1 ? {
     tasks: tasks.filter(t=>
       t.clientName.toLowerCase().includes(globalSearch.toLowerCase()) ||
       t.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
@@ -657,61 +717,25 @@ export default function DashboardClient() {
       c.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
       c.whatsapp?.includes(globalSearch)
     ).slice(0,5),
-  } : null
+  } : null, [globalSearch, tasks, clients])
 
-  const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
-  const archiveHowHeardStats = archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
-  const visibleArchived = archivedClients.filter(c=>{
+  const howHeardStats        = useMemo(()=>clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [clients])
+  const archiveHowHeardStats = useMemo(()=>archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [archivedClients])
+  const visibleArchived      = useMemo(()=>archivedClients.filter(c=>{
     const ms = !archiveSearch || c.fullName.toLowerCase().includes(archiveSearch.toLowerCase()) || c.whatsapp?.includes(archiveSearch) || c.email?.includes(archiveSearch)
     const my = archiveYearFilter.size===0 || c.taxReturns?.some(r=>archiveYearFilter.has(r.year)) || c.superReturns?.some(r=>archiveYearFilter.has(r.year))
     const mh = archiveHowHeardFilter.size===0 || archiveHowHeardFilter.has(c.howHeard||'Unknown')
     const mc = archiveCountryFilter.size===0 || archiveCountryFilter.has(c.country||'')
     return ms && my && mh && mc
-  })
+  }), [archivedClients, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
-  const S: Record<string,React.CSSProperties> = {
-    shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
-    sb:{width:212,background:'#0E5C42',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh'},
-    sbLogo:{display:'flex',alignItems:'center',gap:10,padding:'18px 14px 14px'},
-    sbIcon:{width:34,height:34,borderRadius:9,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0},
-    sbTitle:{fontSize:13,fontWeight:600,color:'#fff'},
-    sbSub:{fontSize:10,color:'rgba(255,255,255,0.38)',marginTop:1},
-    sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'0 12px 8px'},
-    sbNav:{display:'flex',flexDirection:'column',gap:2,padding:'0 7px'},
-    sbBtn:{display:'flex',alignItems:'center',gap:9,padding:'9px 11px',borderRadius:8,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.15s'},
-    sbBtnOn:{background:'rgba(255,255,255,0.16)',color:'#fff',fontWeight:600},
-    sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'1px 6px',fontSize:10,fontWeight:700},
-    sbLock:{display:'flex',alignItems:'center',gap:7,padding:'9px 11px 16px',fontSize:11,color:'rgba(255,255,255,0.4)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
-    main:{flex:1,background:'#f0f4f1',overflowY:'auto'},
-    page:{padding:'26px 26px 32px'},
-    pgTitle:{fontSize:19,fontWeight:600,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
-    pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
-    card:{background:'#fff',borderRadius:13,border:'1px solid #e4ede8'},
-    secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'13px 13px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between'},
-    row:{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10,alignItems:'center'},
-    lbl:{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0},
-    val:{fontSize:12,color:'#0a1410',flex:1},
-    taskCard:{background:'#fff',borderRadius:12,padding:'12px 14px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:11,cursor:'pointer',transition:'border-color 0.15s,box-shadow 0.15s',marginBottom:6},
-    returnRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 13px',background:'#f7fbf9',borderRadius:9,marginBottom:6,border:'1px solid #e4ede8'},
-    totalRow:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 13px',background:'#e8f5f0',borderRadius:9,border:'1px solid #b0d8c8'},
-    addForm:{background:'#f7fbf9',borderRadius:10,padding:'12px',border:'1px solid #e4ede8',marginTop:8,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const},
-    addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 11px',background:'#0E5C42',border:'none',borderRadius:7,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit'},
-    backBtn:{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',fontSize:12,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500,marginBottom:18,padding:0},
-    checkRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px'},
-    checkbox:{width:20,height:20,borderRadius:6,border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0},
-    overlay:{position:'fixed' as const,inset:0,background:'rgba(0,0,0,0.4)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:999},
-    modal:{background:'#fff',borderRadius:20,padding:'28px',width:'100%',maxWidth:400},
-    mTitle:{fontSize:17,fontWeight:600,color:'#0a1410',marginBottom:5},
-    mSub:{fontSize:13,color:'#7a8a82',marginBottom:18},
-    mInput:{border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',fontSize:13,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',width:'100%',boxSizing:'border-box' as const},
-    mFooter:{display:'flex',gap:8,marginTop:12},
-    mCancel:{flex:1,padding:10,border:'1px solid #e4ede8',borderRadius:10,fontSize:13,cursor:'pointer',background:'#fff',fontFamily:'inherit',color:'#333'},
-    mSave:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#0E5C42',color:'#fff',fontFamily:'inherit'},
-    mDel:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#c0392b',color:'#fff',fontFamily:'inherit'},
-  }
+  // S, fmtCur, initials, avColor — defined outside component above
 
   const SbButton = ({v,label,icon,badge}:{v:View,label:string,icon:React.ReactNode,badge?:number})=>(
-    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null)}}>
+    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{
+      if(v==='archive') openArchive()
+      else { setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null) }
+    }}>
       {icon}{label}
       {badge!=null && badge>0 && <span style={S.sbBadge}>{badge}</span>}
     </button>
@@ -719,7 +743,7 @@ export default function DashboardClient() {
 
   return (
     <>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
+      <style>{`*{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
 
       <div style={S.shell}>
         {/* Sidebar */}
@@ -1654,45 +1678,6 @@ export default function DashboardClient() {
                       )}
                     </div>
                   )}
-                </div>
-              </div>
-
-                            {/* 3. TFN + 4. ABN side by side */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-                {/* TFN */}
-                <div style={S.card}>
-                  <div style={S.secHead}><span>📋 TFN Application</span></div>
-                  <div style={S.checkRow}>
-                    <div>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410'}}>Applied for TFN</div>
-                      <div style={{fontSize:11,color:'#aabab2',marginTop:2}}>
-                        {activeClient.tfnService.done ? `Done · ${fmtDate(activeClient.tfnService.completedAt)}` : 'Not yet done'}
-                      </div>
-                    </div>
-                    <div
-                      style={{...S.checkbox,borderColor:activeClient.tfnService.done?'#0E5C42':'#d8e4dc',background:activeClient.tfnService.done?'#0E5C42':'#fff'}}
-                      onClick={()=>toggleService('tfn',activeClient.tfnService)}>
-                      {activeClient.tfnService.done && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                    </div>
-                  </div>
-                </div>
-
-                {/* ABN */}
-                <div style={S.card}>
-                  <div style={S.secHead}><span>🏢 ABN Application</span></div>
-                  <div style={S.checkRow}>
-                    <div>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410'}}>Applied for ABN</div>
-                      <div style={{fontSize:11,color:'#aabab2',marginTop:2}}>
-                        {activeClient.abnService.done ? `Done · ${fmtDate(activeClient.abnService.completedAt)}` : 'Not yet done'}
-                      </div>
-                    </div>
-                    <div
-                      style={{...S.checkbox,borderColor:activeClient.abnService.done?'#0E5C42':'#d8e4dc',background:activeClient.abnService.done?'#0E5C42':'#fff'}}
-                      onClick={()=>toggleService('abn',activeClient.abnService)}>
-                      {activeClient.abnService.done && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                    </div>
-                  </div>
                 </div>
               </div>
 

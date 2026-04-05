@@ -16,11 +16,11 @@ export async function POST(req: NextRequest) {
     const formData  = await req.formData()
     const clientId  = `CLT-${crypto.randomUUID()}`
 
-    // Upload files to Vercel Blob (bank statement + selfie + invoices x15)
+    // Upload files to Vercel Blob (bank statement + selfie + invoices x10)
     const bankStatementFile  = formData.get('bankStatement')  as File | null
     const selfiePassportFile = formData.get('selfiePassport') as File | null
     const invoiceFiles: (File | null)[] = []
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 10; i++) {
       const f = formData.get(`invoices_${i}`) as File | null
       if (f && f.size > 0) invoiceFiles.push(f)
       else break
@@ -34,7 +34,14 @@ export async function POST(req: NextRequest) {
       )
     } catch (uploadErr) {
       const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
-      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+      // If the error is a file content/type validation failure — reject the submission
+      if (msg.includes('not allowed') || msg.includes('dangerous') || msg.includes('does not match') || msg.includes('too large')) {
+        return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+      }
+      // If Blob storage isn't configured (missing token, network issue) — continue without files
+      // so the form submission doesn't fail entirely
+      console.warn('[tax-form] File upload failed, continuing without files:', msg)
+      fileUrls = []
     }
 
     await createTask({

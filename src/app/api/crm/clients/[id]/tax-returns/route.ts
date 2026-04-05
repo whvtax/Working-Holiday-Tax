@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { addTaxReturn, removeTaxReturn, addSuperReturn, removeSuperReturn } from '@/lib/db'
 import { validateSession } from '@/lib/crm-store'

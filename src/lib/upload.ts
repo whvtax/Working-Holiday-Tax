@@ -158,13 +158,37 @@ export async function uploadFile(
 
 /**
  * Upload multiple files and return an array of URLs (nulls filtered out).
+ * Files are validated in parallel for speed, then uploaded in batches of 5
+ * to avoid overwhelming the Vercel Blob API.
  */
 export async function uploadFiles(
   files: (File | null)[],
   folder: string,
 ): Promise<string[]> {
-  const results = await Promise.all(files.map(f => uploadFile(f, folder)))
-  return results.filter((u): u is string => u !== null)
+  const validFiles = files.filter((f): f is File => !!f && f.size > 0)
+
+  // Validate all files in parallel first (magic-byte checks are CPU-bound, not network)
+  await Promise.all(validFiles.map(async f => {
+    if (!ALLOWED_MIME_TYPES.has(f.type)) throw new Error(`File type not allowed: ${f.type}`)
+    if (f.size > MAX_FILE_SIZE_BYTES) throw new Error(`File too large (max 10 MB per file)`)
+    if (f.name.length > MAX_FILENAME_LENGTH) throw new Error('File name too long.')
+    await validateFileContents(f)
+  }))
+
+  // Upload in batches of 5 to avoid rate limits
+  const BATCH = 5
+  const urls: string[] = []
+  for (let i = 0; i < validFiles.length; i += BATCH) {
+    const batch = validFiles.slice(i, i + BATCH)
+    const batchResults = await Promise.all(batch.map(async f => {
+      const safeName = f.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
+      const pathname = `${folder}/${Date.now()}_${safeName}`
+      const blob = await put(pathname, f, { access: 'public', contentType: f.type })
+      return blob.url
+    }))
+    urls.push(...batchResults)
+  }
+  return urls
 }
 
 /**
