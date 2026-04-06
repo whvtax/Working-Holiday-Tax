@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       primaryJob:  sanitiseField(formData.get('business')),
       marital:     sanitiseShort(formData.get('marital')),
       taxStatus:   'Working Holiday Maker',
-      howHeard:    '',
+      howHeard:    sanitiseShort(formData.get('howHeard')),
       auPhone:     sanitiseShort(formData.get('auPhone')),
       submittedAt: new Date().toISOString(),
       notes:       [
@@ -54,7 +54,6 @@ export async function POST(req: NextRequest) {
       fileUrls,
     })
 
-    console.log('New super-form task created | files:', fileUrls.length)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[super-form] FAILED:', err)

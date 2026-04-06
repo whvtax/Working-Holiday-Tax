@@ -1,12 +1,4 @@
-/**
- * Extract the real client IP from a Next.js request.
- *
- * On Vercel, the edge appends the true client IP as the LAST entry in
- * x-forwarded-for. Using the FIRST entry is dangerous — it is user-supplied
- * and can be spoofed to bypass rate limiting.
- *
- * Falls back to x-real-ip (set by some proxies), then 'unknown'.
- */
+// Extract real client IP — use LAST x-forwarded-for entry (Vercel appends it)
 export function getClientIp(req: Request): string {
   const forwarded = req.headers.get('x-forwarded-for')
   if (forwarded) {

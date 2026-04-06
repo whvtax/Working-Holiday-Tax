@@ -1,10 +1,11 @@
 // src/app/tax-residency/page.tsx
 import type { Metadata } from 'next'
+import BackButton from './BackButton'
 
 export const metadata: Metadata = {
   title: 'Tax Residency in Australia | Working Holiday Tax',
   description: 'Understand the tax residency categories in Australia and how your visa status affects your tax rate.',
-  robots: { index: false, follow: false },
+  alternates: { canonical: '/tax-residency' },
 }
 
 const WHV_ROWS = [
@@ -32,13 +33,14 @@ const CONDITIONS = [
 ]
 
 const SOURCES = [
-  { label: 'NDA Countries',                href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency' },
-  { label: '183 Day Test',                 href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency#Residentstests' },
-  { label: 'WHV Tax Residency',            href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/working-holiday-makers' },
-  { label: 'High Court of Justice Ruling', href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency' },
-  { label: 'Tax Rates – Covid',            href: 'https://www.ato.gov.au/tax-rates-and-codes/tax-table-for-working-holiday-makers' },
-  { label: 'Student',                      href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/foreign-residents/your-tax-residency' },
-  { label: 'Residency Test Ruling',        href: 'https://www.ato.gov.au/law/view/document?docid=CR/CR202415/NAT/ATO/00001' },
+  { label: 'NDA Countries',                href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/taxation-of-australian-resident-whms-from-nda-countries' },
+  { label: 'WHV Tax Residency',            href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/australian-residency-if-you-re-on-a-working-holiday-or-visit' },
+  { label: 'Working Holiday Makers',       href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/working-holiday-makers' },
+  { label: 'Tax Rates',                    href: 'https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers' },
+  { label: 'Your Tax Residency',           href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/your-tax-residency' },
+  { label: 'High Court Ruling (Addy)',     href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/taxation-of-australian-resident-whms-from-nda-countries' },
+  { label: 'Residency Test Ruling',        href: 'https://www.ato.gov.au/law/view/document?DocID=TXR/TR20231/NAT/ATO/00001&PiT=99991231235958' },
+  { label: 'Student',                      href: 'https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/coming-to-australia/studying-in-australia' },
 ]
 
 function TaxTable({ label, rows }: { label: string; rows: string[][] }) {
@@ -73,20 +75,29 @@ export default function TaxResidencyPage() {
   return (
     <main className="min-h-screen bg-canvas">
 
-      {/* ── TAX TABLES ── */}
-      <section className="pt-[68px] py-10 lg:py-14 bg-white">
+      {/* ── HERO + TAX TABLES ── */}
+      <section className="py-10 lg:py-14 bg-white" style={{ paddingTop: '80px' }}>
         <div className="max-w-[900px] mx-auto px-5 md:px-8">
 
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '28px' }}>
-            <span className="section-label center">Tax rates</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(18px, 2vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px' }}>
-              Tax rate differences between groups.
-            </h2>
+            <span className="section-label center">Tax Residency Explained</span>
+            <h1 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(26px, 3.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginTop: '10px', marginBottom: '12px' }}>
+              Understanding your tax status in Australia
+            </h1>
+            <p className="font-light mx-auto" style={{ fontSize: 'clamp(13px, 1.2vw, 15px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.58)', maxWidth: '58ch' }}>
+              The population in Australia is divided into three groups of taxpayers: non-residents, working holiday maker (417/462), and Australian residents. Below are the differences in the tax rates between the two relevant groups.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-7 items-stretch">
-            <TaxTable label="Working Holiday visa for tax purposes" rows={WHV_ROWS} />
             <TaxTable label="Australian residents for tax purposes" rows={RESIDENT_ROWS} />
+            <TaxTable label="Working Holiday visa for tax purposes" rows={WHV_ROWS} />
+          </div>
+
+          <div className="mt-6 rounded-xl flex gap-3 items-start" style={{ background: '#FEF2F2', border: '1px solid #FECACA', padding: '14px 18px', justifyContent: 'center', textAlign: 'center' }}>
+            <p className="font-light" style={{ fontSize: '13.5px', lineHeight: 1.65, color: '#991B1B' }}>
+              If you are classified as an Australian resident for tax purposes, you may be entitled to receive the difference of <strong style={{ fontWeight: 600 }}>$2,462</strong> back as a tax refund on an income of $45,000.
+            </p>
           </div>
 
         </div>
@@ -97,16 +108,16 @@ export default function TaxResidencyPage() {
         <div className="max-w-[900px] mx-auto px-5 md:px-8">
           <div className="max-w-2xl mx-auto">
 
-            <span className="section-label mb-3 block">Residency for backpackers</span>
+            <span className="section-label mb-3 block" style={{ textAlign: "center", display: "block" }}>Can you be taxed as a resident?</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(18px, 2vw, 24px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginBottom: '18px', textAlign: 'center' }}>
-              Backpackers on a Working Holiday visa (417/462) may be<br />considered Australian residents for tax purposes<br />if they meet all conditions:
+              Working Holiday visa holders (417/462) may be considered<br />Australian residents for tax purposes<br />if they meet all of the following conditions:
             </h2>
 
             <div className="space-y-3">
               {CONDITIONS.map((c, i) => (
-                <div key={i} className="flex gap-3 bg-white rounded-xl" style={{ padding: '14px 16px', border: '1px solid #C8EAE0' }}>
+                <div key={i} className="flex gap-2 bg-white rounded-xl items-center" style={{ padding: '10px 14px', border: '1px solid #C8EAE0' }}>
                   <span className="font-bold flex-shrink-0" style={{ fontSize: '13px', color: '#0B5240' }}>✓</span>
-                  <p className="font-light text-body" style={{ fontSize: '13px', lineHeight: 1.65 }}>{c}</p>
+                  <p className="font-light text-body" style={{ fontSize: '12.5px', lineHeight: 1.5 }}>{c}</p>
                 </div>
               ))}
             </div>
@@ -114,7 +125,7 @@ export default function TaxResidencyPage() {
             {/* NDA Countries */}
             <div className="mt-4 bg-white rounded-xl" style={{ padding: '16px', border: '1px solid #C8EAE0' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '12.5px', marginBottom: '10px' }}>NDA Countries:</p>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex gap-1" style={{ flexWrap: 'wrap' }}>
                 {NDA_COUNTRIES.map((c) => (
                   <span key={c} className="font-medium" style={{ fontSize: '9.5px', background: '#EAF6F1', color: '#065F46', padding: '2px 7px', borderRadius: '999px', whiteSpace: 'nowrap' }}>
                     {c}
@@ -132,6 +143,13 @@ export default function TaxResidencyPage() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── BACK BUTTON ── */}
+      <section className="py-8 bg-white" style={{ borderTop: '1px solid #EAF6F1' }}>
+        <div className="max-w-[900px] mx-auto px-5 md:px-8 text-center">
+<BackButton />
         </div>
       </section>
 

@@ -1,7 +1,3 @@
-/**
- * Vercel Postgres DB layer
- * Tables: crm_clients (permanent) + crm_tasks (active submissions)
- */
 import { sql } from '@vercel/postgres'
 import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
@@ -33,13 +29,10 @@ export type Task = {
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
-// Cached flag — only run CREATE TABLE once per serverless instance lifetime.
-// This avoids issuing 3 DDL statements on every single form submission.
 let _dbInitialised = false
 
 const DB_TIMEOUT_MS = 8000 // 8 s — Vercel Postgres cold-start can be slow
 
-/** Run a sql statement with a hard timeout so a stalled DB never hangs forever */
 async function sqlWithTimeout<T>(query: Promise<T>, label: string): Promise<T> {
   return Promise.race([
     query,
@@ -95,7 +88,6 @@ export async function initDb() {
       file_urls    TEXT NOT NULL DEFAULT '[]'
     )
   `, 'CREATE crm_tasks')
-  // Migration safety: add column if missing in older deploys
   await sqlWithTimeout(
     sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`,
     'ALTER crm_tasks file_urls'
@@ -104,7 +96,6 @@ export async function initDb() {
     sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`,
     'ALTER crm_tasks au_phone'
   )
-  // Migrations for new columns
   await sqlWithTimeout(
     sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
     'ALTER crm_clients archived'
@@ -113,7 +104,6 @@ export async function initDb() {
     sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`,
     'ALTER crm_clients yearly_checkins'
   )
-  // Indexes for fast queries
   await Promise.all([
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_submitted ON crm_tasks(submitted_at DESC)`, 'IDX tasks submitted'),
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_done ON crm_tasks(done)`, 'IDX tasks done'),
@@ -176,7 +166,6 @@ export async function getTask(id: string): Promise<Task | null> {
 
 export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   await initDb()
-  // Use UUID for collision-safe unique IDs
   const id = `TASK-${crypto.randomUUID()}`
   await sqlWithTimeout(sql`
     INSERT INTO crm_tasks
@@ -192,22 +181,11 @@ export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   return { ...data, id, done:false }
 }
 
-/**
- * Complete a task:
- *  1. Archive the client record (name + whatsapp + country only)
- *  2. Delete all uploaded files from Vercel Blob
- *  3. Wipe all sensitive fields from the task row
- *  4. Mark the task as done
- *
- * This is triggered when the admin clicks "✓ Mark as done".
- * After this call, no PII remains on the server except name + whatsapp + country.
- */
 export async function markTaskDone(id: string): Promise<void> {
   await initDb()
   const task = await getTask(id)
   if (!task) return
 
-  // No client card created here — only when admin manually transfers to Clients tab
   if (task.fileUrls && task.fileUrls.length > 0) {
     await deleteFiles(task.fileUrls)
   }
@@ -226,31 +204,24 @@ export async function markTaskDone(id: string): Promise<void> {
   `
 }
 
-
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
   await initDb()
   await sql`UPDATE crm_tasks SET notes = ${notes} WHERE id = ${id}`
 }
 
-/**
- * Delete task + upsert client.
- * Uses INSERT ... ON CONFLICT DO NOTHING so the client row is created
- * idempotently before the task is deleted — avoids relying on manual
- * BEGIN/COMMIT which is unreliable with @vercel/postgres connection pooling
- * (each sql`` call may use a different pool connection).
- */
 export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   await initDb()
   const task = await getTask(taskId)
   if (!task) return
 
-  // Idempotent client upsert — safe to re-run if delete fails
+  const taskNotes = task.notes ?? ''
+
   await sql`
     INSERT INTO crm_clients
       (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
     VALUES
       (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
-       ${task.country},${task.howHeard},'','[]','[]',
+       ${task.country},${task.howHeard},${taskNotes},'[]','[]',
        '{"done":false,"completedAt":"","notes":""}',
        '{"done":false,"completedAt":"","notes":""}',
        ${new Date().toISOString()})
@@ -267,7 +238,6 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       END
   `
 
-  // Delete task only after client is safely archived
   await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
 }
 
@@ -357,8 +327,6 @@ export async function updateClient(id: string, data: Partial<ClientRecord> & {
   const client = await getClientById(id)
   if (!client) return null
 
-  // Update all editable scalar fields
-  // Use || for critical identity fields to prevent accidental overwrite with empty string
   const fullName = (data.fullName  || client.fullName).slice(0, 100)
   const dob      = (data.dob       || client.dob).slice(0, 20)
   const whatsapp = (data.whatsapp  || client.whatsapp).slice(0, 30)
@@ -386,7 +354,6 @@ export async function clearClientSensitiveData(id: string): Promise<ClientRecord
   const client = await getClientById(id)
   if (!client) return null
 
-  // Wipe PII from all tasks belonging to this client (TFN, bank, address, etc.)
   await sql`
     UPDATE crm_tasks SET
       address      = '',
@@ -399,7 +366,6 @@ export async function clearClientSensitiveData(id: string): Promise<ClientRecord
     WHERE client_id = ${id}
   `
 
-  // Mark cleared in notes so admin can see it happened
   const clearedNote = client.notes.includes('[PII CLEARED]')
     ? client.notes
     : `[PII CLEARED ${new Date().toISOString().slice(0,10)}] ${client.notes}`.trim()
@@ -412,7 +378,6 @@ export async function markClientHandled(id: string): Promise<ClientRecord | null
   await initDb()
   const client = await getClientById(id)
   if (!client) return null
-  // 'handled' is not a column in crm_clients — store as a note marker
   const handledNote = client.notes.includes('[HANDLED]') ? client.notes : `[HANDLED] ${client.notes}`.trim()
   await sql`UPDATE crm_clients SET notes = ${handledNote} WHERE id = ${id}`
   return getClientById(id)

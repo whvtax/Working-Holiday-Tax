@@ -1,41 +1,6 @@
-/**
- * CRM Store — stateless session (HMAC JWT cookie)
- *
- * Session: signed cookie — works across Vercel serverless instances
- * Brute-force: tracked in Redis so it survives across instances
- */
-
 import crypto from 'crypto'
 
-// ── Types ──────────────────────────────────────────────────────────────────
-
-export type TaxYear = '2019-20' | '2020-21' | '2021-22' | '2022-23' | '2023-24' | '2024-25'
-
-export type ClientRecord = {
-  id: string
-  fullName: string
-  dob: string
-  whatsapp: string
-  email: string
-  country: string
-  address: string
-  tfn: string
-  bankDetails: string
-  primaryJob: string
-  marital: string
-  taxStatus: string
-  howHeard: string
-  auPhone: string
-  taxYear: TaxYear
-  submittedAt: string
-  handled: boolean
-  notes: string
-  files: { bankStatement: string | null; selfiePassport: string | null; invoices: string | null }
-}
-
 export type FailedAttempt = { count: number; lastAttempt: number; locked: boolean }
-
-// ── Security helpers ───────────────────────────────────────────────────────
 
 export function hashPassword(password: string): string {
   const salt = process.env.PASSWORD_SALT
@@ -53,8 +18,6 @@ export function verifyPassword(password: string, hash: string): boolean {
 export function generateOtp(): string {
   return crypto.randomInt(10000000, 99999999).toString()
 }
-
-// ── Session — HMAC signed token (stateless, works on Vercel) ──────────────
 
 const SESSION_TTL = 8 * 60 * 60 * 1000 // 8 hours
 
@@ -97,12 +60,6 @@ export function validateSession(token: string | undefined): boolean {
 
 export function destroySession() { /* stateless — cookie cleared client-side */ }
 
-// ── Brute-force protection (Redis-backed) ──────────────────────────────────
-// Keys:  crm_fail_count  (integer, string)
-//        crm_fail_ts     (last attempt unix ms, string)
-//        crm_locked      ('1' | absent)
-// All keys get a 35-minute TTL so they self-clean after lockout expires.
-
 const MAX_ATTEMPTS = 3
 const LOCKOUT_MS   = 30 * 60 * 1000
 const KEY_COUNT    = 'crm_fail_count'
@@ -136,43 +93,3 @@ export async function isLockedOutRedis(redis: import('redis').RedisClientType): 
   return true
 }
 
-// ── Clients CRUD (kept for legacy/demo compatibility) ─────────────────────
-
-const _store: { clients: Map<string, ClientRecord> } = { clients: new Map() }
-
-export function getAllClients(): ClientRecord[] {
-  return Array.from(_store.clients.values()).sort(
-    (a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
-  )
-}
-
-export function getClient(id: string): ClientRecord | undefined {
-  return _store.clients.get(id)
-}
-
-export function upsertClient(data: Omit<ClientRecord, 'id' | 'handled'> & { id?: string; waNumber?: string }): ClientRecord {
-  const id       = data.id ?? `CLT-${crypto.randomUUID()}`
-  const existing = _store.clients.get(id)
-  const record: ClientRecord = { ...data, id, handled: existing?.handled ?? false, notes: data.notes ?? existing?.notes ?? '' }
-  _store.clients.set(id, record)
-  return record
-}
-
-export function markHandled(id: string): boolean {
-  const c = _store.clients.get(id)
-  if (!c) return false
-  c.handled = true
-  return true
-}
-
-export function clearClientDetails(id: string): boolean {
-  const c = _store.clients.get(id)
-  if (!c) return false
-  _store.clients.set(id, {
-    ...c,
-    address: '', tfn: '', bankDetails: '',
-    primaryJob: '', marital: '', taxStatus: '', howHeard: '', auPhone: '',
-    files: { bankStatement: null, selfiePassport: null, invoices: null },
-  })
-  return true
-}
