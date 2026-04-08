@@ -7,7 +7,6 @@ import {
 } from '@/lib/crm-store'
 import { createClient } from 'redis'
 type RedisClient = ReturnType<typeof createClient>
-import { createClient } from 'redis'
 import crypto from 'crypto'
 
 async function getRedis() {
