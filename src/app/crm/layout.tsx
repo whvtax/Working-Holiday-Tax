@@ -1,7 +1,13 @@
 export default function CrmLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ minHeight: '100vh' }}>
-      {children}
-    </div>
+    <>
+      <style>{`
+        body > div > nav,
+        body > div > footer { display: none !important; }
+      `}</style>
+      <div style={{ minHeight: '100vh' }}>
+        {children}
+      </div>
+    </>
   )
 }

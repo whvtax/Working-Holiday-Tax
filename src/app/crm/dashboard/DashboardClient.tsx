@@ -1,7 +1,6 @@
 'use client'
 import React from 'react'
-import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'
 type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -33,7 +32,6 @@ const TASK_COLORS: Record<TaskType,string> = {
   'tax-return':'#0E5C42','super':'#2563eb','tfn':'#7c3aed','abn':'#c2410c'
 }
 
-
 function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = React.useState(false)
   return (
@@ -61,7 +59,6 @@ function CopyBtn({ text }: { text: string }) {
 }
 
 export default function DashboardClient() {
-  const router = useRouter()
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [checkinYear, setCheckinYear] = useState('2024-25')
@@ -99,7 +96,6 @@ export default function DashboardClient() {
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
   const [captureSuperAmt, setCaptureSuperAmt] = useState('')
   const [confirmComplete, setConfirmComplete] = useState<string|null>(null)
-  // Add forms
   const [showAddTax, setShowAddTax]     = useState(false)
   const [showAddSuper, setShowAddSuper] = useState(false)
   const [newTaxYear, setNewTaxYear]     = useState('')
@@ -124,6 +120,7 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadClients]',e) }
   },[])
 
+  const [archivedLoaded, setArchivedLoaded] = useState(false)
   const loadArchived = useCallback(async()=>{
     try {
       const r=await fetch('/api/crm/clients?archived=true',{cache:'no-store'})
@@ -131,37 +128,34 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadArchived]',e) }
   },[])
 
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadArchived()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadArchived])
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
+  const openArchive = useCallback(()=>{ setView('archive'); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
   async function archiveClient(id: string) {
-    // Optimistic: remove from clients immediately
-    setClients(prev => prev.filter(c => c.id !== id))
+      setClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
     await Promise.all([loadClients(), loadArchived()])
   }
   async function unarchiveClient(id: string) {
-    // Optimistic: remove from archive immediately
-    setArchivedClients(prev => prev.filter(c => c.id !== id))
+      setArchivedClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
     await Promise.all([loadClients(), loadArchived()])
   }
   async function toggleCheckin(clientId: string, year: string, current: boolean) {
-    // Optimistic update
-    setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
+      setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
     await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkin',year,done:!current})})
   }
 
   async function markDone(id:string) {
-    // Optimistic: move task to done visually right away
-    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], notes:''} : t))
+    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
     setConfirmComplete(null)
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
-    await loadClients()
+    setActiveTask(null)
+    setTaskView('list')
+    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
   }
 
-  // Transfer done task → creates/updates client card, then removes task
   async function transferToClients(task: Task) {
     setConfirmTransfer(null)
     setTasks(prev => prev.filter(t => t.id !== task.id))
@@ -170,7 +164,6 @@ export default function DashboardClient() {
     await Promise.all([loadClients(), loadArchived()])
   }
 
-  // Delete task permanently — no client card created
   async function deleteTaskPermanently(id: string) {
     setConfirmPermDelete(null)
     setTasks(prev => prev.filter(t => t.id !== id))
@@ -249,14 +242,6 @@ export default function DashboardClient() {
     refreshClient()
   }
 
-  async function toggleService(service:'tfn'|'abn', current:ServiceRecord) {
-    if(!activeClient) return
-    const updated = { ...current, done:!current.done, completedAt:!current.done?new Date().toISOString():'' }
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'service',service,data:updated})})
-    refreshClient()
-  }
-
   async function refreshClient() {
     if(!activeClient) return
     const r=await fetch(`/api/crm/clients/${activeClient.id}`)
@@ -273,7 +258,6 @@ export default function DashboardClient() {
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    // Add as a task for now
     await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         clientName:newClient.fullName, taskType:'tax-return',
@@ -305,9 +289,8 @@ export default function DashboardClient() {
   const downloadTaskPdf = (task: Task) => {
     const G = '#0B5240'
     const GL = '#EAF6F1'
-    const esc = (s: string) => (s||'—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    const esc = (s: string) => (s||'—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;')
 
-    // ── helpers ──────────────────────────────────────────────────────
     const sec = (title: string) =>
       `<div style="font-size:11px;font-weight:700;color:${G};text-transform:uppercase;letter-spacing:0.06em;margin:22px 0 12px;border-bottom:1.5px solid ${GL};padding-bottom:8px">${title}</div>`
 
@@ -345,11 +328,10 @@ export default function DashboardClient() {
       return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#F5F9F7;border:1.5px solid #D4EAE2;border-radius:12px;margin-bottom:8px">` +
         `<span style="font-size:20px">${isPdf?'📄':'🖼️'}</span>` +
         `<span style="font-size:13px;color:#080F0D;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span>` +
-        `<a href="${url}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
+        `<a href="${esc(url)}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
         `</div>`
     }
 
-    // ── parse notes ──────────────────────────────────────────────────
     const notes = task.notes || ''
     const parts = notes.split(' | ')
     const getNote = (prefix: string) => notes.match(new RegExp(prefix + ': ([^|]+)'))?.[1]?.trim() || '—'
@@ -358,14 +340,12 @@ export default function DashboardClient() {
       return hit ? hit.replace('→ ','') : '—'
     }
 
-    // ── bank helper ──────────────────────────────────────────────────
     const bkParts = (task.bankDetails||'').split(' | ')
     const bkName    = bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')    || task.bankDetails || '—'
     const bkHolder  = bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')    || '—'
     const bkAccount = bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','') || '—'
     const bkBsb     = bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')      || '—'
 
-    // ── title ────────────────────────────────────────────────────────
     const titles: Record<string,string> = {
       'tfn':'TFN Application','abn':'ABN Application',
       'super':'Superannuation Refund','tax-return':'Tax Return Form'
@@ -373,9 +353,6 @@ export default function DashboardClient() {
 
     let formBody = ''
 
-    // ════════════════════════════════════════════════════════════════
-    // TFN — exact order from /src/app/tfn-form/page.tsx
-    // ════════════════════════════════════════════════════════════════
     if (task.taskType === 'tfn') {
       const passport = getNote('Passport No')
       const gender   = getNote('Gender')
@@ -412,9 +389,6 @@ export default function DashboardClient() {
           )
     }
 
-    // ════════════════════════════════════════════════════════════════
-    // ABN — exact order from /src/app/abn-form/page.tsx
-    // ════════════════════════════════════════════════════════════════
     else if (task.taskType === 'abn') {
       const gender   = getNote('Gender')
       const decl1Val = findDecl(['→ ✓ I confirm this','→ ✓ I confirm'])
@@ -449,9 +423,6 @@ export default function DashboardClient() {
           )
     }
 
-    // ════════════════════════════════════════════════════════════════
-    // SUPER — exact order from /src/app/super-form/page.tsx
-    // ════════════════════════════════════════════════════════════════
     else if (task.taskType === 'super') {
       const passport    = getNote('Passport No')
       const superFunds  = getNote('Super Funds')
@@ -490,9 +461,6 @@ export default function DashboardClient() {
           )
     }
 
-    // ════════════════════════════════════════════════════════════════
-    // TAX RETURN — exact order from /src/app/tax-form/page.tsx
-    // ════════════════════════════════════════════════════════════════
     else if (task.taskType === 'tax-return') {
       const normStatus = (v: string) => {
         if (v === 'resident' || v === '→ resident') return 'Australian resident for tax purposes'
@@ -555,7 +523,6 @@ export default function DashboardClient() {
         + field('How did you hear about us?', task.howHeard)
     }
 
-    // ── HTML shell ───────────────────────────────────────────────────
     const html =
       `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>` +
       `<meta name="viewport" content="width=device-width,initial-scale=1"/>` +
@@ -563,7 +530,6 @@ export default function DashboardClient() {
       `<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#fff;color:#0a1410;padding:32px 28px;max-width:520px;margin:0 auto}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}}</style>` +
       `</head><body>` +
 
-      // Header
       `<div style="text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid ${GL}">` +
       `<div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:14px">` +
       `<svg width="36" height="36" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">` +
@@ -607,9 +573,9 @@ export default function DashboardClient() {
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
-  const pendingTasks = tasks.filter(t=>!t.done)
-  const doneTasks    = tasks.filter(t=>t.done)
-  const visibleClients = clients.filter(c=>{
+  const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done), [tasks])
+  const doneTasks      = useMemo(()=>tasks.filter(t=>t.done),  [tasks])
+  const visibleClients = useMemo(()=>clients.filter(c=>{
     const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
     const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
@@ -617,8 +583,7 @@ export default function DashboardClient() {
     const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
     const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
     return ms && my && mc && mh && mcountry
-  })
-  // Generic dropdown button component (avoids <details> which has cross-browser issues)
+  }, [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter]))
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
@@ -645,8 +610,7 @@ export default function DashboardClient() {
     )
   }
 
-  // Global search across tasks + clients
-  const globalResults = globalSearch.trim().length > 1 ? {
+  const globalResults = useMemo(()=>globalSearch.trim().length > 1 ? {
     tasks: tasks.filter(t=>
       t.clientName.toLowerCase().includes(globalSearch.toLowerCase()) ||
       t.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
@@ -657,17 +621,17 @@ export default function DashboardClient() {
       c.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
       c.whatsapp?.includes(globalSearch)
     ).slice(0,5),
-  } : null
+  } : null, [globalSearch, tasks, clients])
 
-  const howHeardStats = clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
+  const howHeardStats = useMemo(()=>clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [clients])
   const archiveHowHeardStats = archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
-  const visibleArchived = archivedClients.filter(c=>{
+  const visibleArchived = useMemo(()=>archivedClients.filter(c=>{
     const ms = !archiveSearch || c.fullName.toLowerCase().includes(archiveSearch.toLowerCase()) || c.whatsapp?.includes(archiveSearch) || c.email?.includes(archiveSearch)
     const my = archiveYearFilter.size===0 || c.taxReturns?.some(r=>archiveYearFilter.has(r.year)) || c.superReturns?.some(r=>archiveYearFilter.has(r.year))
     const mh = archiveHowHeardFilter.size===0 || archiveHowHeardFilter.has(c.howHeard||'Unknown')
     const mc = archiveCountryFilter.size===0 || archiveCountryFilter.has(c.country||'')
     return ms && my && mh && mc
-  })
+  }), [archivedClients, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
@@ -711,7 +675,7 @@ export default function DashboardClient() {
   }
 
   const SbButton = ({v,label,icon,badge}:{v:View,label:string,icon:React.ReactNode,badge?:number})=>(
-    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null)}}>
+    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null) } }}>
       {icon}{label}
       {badge!=null && badge>0 && <span style={S.sbBadge}>{badge}</span>}
     </button>
@@ -1179,7 +1143,7 @@ export default function DashboardClient() {
                     <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={{border:'none',background:'none',fontSize:12,fontWeight:600,color:'#0E5C42',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
                       {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
                     </select>
-                    <select value={checkinFilter} onChange={e=>setCheckinFilter(e.target.value as any)} style={{border:'none',background:'none',fontSize:11,color:'#555',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
+                    <select value={checkinFilter} onChange={e=>setCheckinFilter(e.target.value as 'all'|'done'|'pending')} style={{border:'none',background:'none',fontSize:11,color:'#555',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
                       <option value="all">All</option>
                       <option value="done">✓ Done</option>
                       <option value="pending">⏳ Pending</option>
@@ -1654,45 +1618,6 @@ export default function DashboardClient() {
                       )}
                     </div>
                   )}
-                </div>
-              </div>
-
-                            {/* 3. TFN + 4. ABN side by side */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-                {/* TFN */}
-                <div style={S.card}>
-                  <div style={S.secHead}><span>📋 TFN Application</span></div>
-                  <div style={S.checkRow}>
-                    <div>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410'}}>Applied for TFN</div>
-                      <div style={{fontSize:11,color:'#aabab2',marginTop:2}}>
-                        {activeClient.tfnService.done ? `Done · ${fmtDate(activeClient.tfnService.completedAt)}` : 'Not yet done'}
-                      </div>
-                    </div>
-                    <div
-                      style={{...S.checkbox,borderColor:activeClient.tfnService.done?'#0E5C42':'#d8e4dc',background:activeClient.tfnService.done?'#0E5C42':'#fff'}}
-                      onClick={()=>toggleService('tfn',activeClient.tfnService)}>
-                      {activeClient.tfnService.done && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                    </div>
-                  </div>
-                </div>
-
-                {/* ABN */}
-                <div style={S.card}>
-                  <div style={S.secHead}><span>🏢 ABN Application</span></div>
-                  <div style={S.checkRow}>
-                    <div>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410'}}>Applied for ABN</div>
-                      <div style={{fontSize:11,color:'#aabab2',marginTop:2}}>
-                        {activeClient.abnService.done ? `Done · ${fmtDate(activeClient.abnService.completedAt)}` : 'Not yet done'}
-                      </div>
-                    </div>
-                    <div
-                      style={{...S.checkbox,borderColor:activeClient.abnService.done?'#0E5C42':'#d8e4dc',background:activeClient.abnService.done?'#0E5C42':'#fff'}}
-                      onClick={()=>toggleService('abn',activeClient.abnService)}>
-                      {activeClient.abnService.done && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                    </div>
-                  </div>
                 </div>
               </div>
 

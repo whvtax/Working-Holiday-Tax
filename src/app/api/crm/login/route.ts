@@ -6,6 +6,8 @@ import {
   generateOtp,
 } from '@/lib/crm-store'
 import { createClient } from 'redis'
+type RedisClient = ReturnType<typeof createClient>
+import { createClient } from 'redis'
 import crypto from 'crypto'
 
 async function getRedis() {
@@ -24,9 +26,6 @@ async function getRedis() {
   return client
 }
 
-// Cache the password hash at module init — PBKDF2 is intentionally slow
-// (100k iterations ≈ 100ms). Computing it once per cold-start prevents
-// the login endpoint from being an easy CPU-exhaustion target.
 let _cachedPasswordHash: string | null = null
 function getPasswordHash(): string {
   if (_cachedPasswordHash) return _cachedPasswordHash
@@ -61,17 +60,17 @@ export async function POST(req: NextRequest) {
 
     redis = await getRedis()
 
-    if (await isLockedOutRedis(redis as any)) {
+    if (await isLockedOutRedis(redis as RedisClient)) {
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
-      const fa = await recordFailedAttemptRedis(redis as any)
+      const fa = await recordFailedAttemptRedis(redis as RedisClient)
       if (fa.locked && ADMIN_EMAIL) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
-    await resetFailedAttemptsRedis(redis as any)
+    await resetFailedAttemptsRedis(redis as RedisClient)
 
     // Generate OTP and store in Redis (shared across all serverless instances)
     const otp = generateOtp()
@@ -88,12 +87,12 @@ export async function POST(req: NextRequest) {
     console.error('[CRM login]', err)
     return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
   } finally {
-    if (redis) await (redis as any).disconnect()
+    if (redis) await (redis as RedisClient).disconnect()
   }
 }
 
 async function sendOtpEmail(to: string, apiKey: string, otp: string) {
-  if (!apiKey) { console.log('[DEV] OTP email skipped — no RESEND_API_KEY'); return }
+  if (!apiKey) { if (process.env.NODE_ENV !== 'production') console.log('[DEV] OTP email skipped'); return }
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',

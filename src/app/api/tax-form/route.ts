@@ -1,3 +1,5 @@
+export const maxDuration = 60
+export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
@@ -16,22 +18,30 @@ export async function POST(req: NextRequest) {
     const formData  = await req.formData()
     const clientId  = `CLT-${crypto.randomUUID()}`
 
-    // Upload files to Vercel Blob (bank statement + selfie + invoices x15)
     const bankStatementFile  = formData.get('bankStatement')  as File | null
     const selfiePassportFile = formData.get('selfiePassport') as File | null
-    const invoiceFiles: (File | null)[] = []
-    for (let i = 0; i < 15; i++) {
-      const f = formData.get(`invoices_${i}`) as File | null
-      if (f && f.size > 0) invoiceFiles.push(f)
-      else break
+
+    // Accept pre-uploaded invoice URLs (client-side upload) OR fallback files
+    const preUploadedUrls: string[] = (() => {
+      try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
+    })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
+
+    const fallbackInvoices: (File | null)[] = []
+    if (preUploadedUrls.length === 0) {
+      for (let i = 0; i < 10; i++) {
+        const f = formData.get(`invoices_${i}`) as File | null
+        if (f && f.size > 0) fallbackInvoices.push(f)
+        else break
+      }
     }
 
     let fileUrls: string[]
     try {
-      fileUrls = await uploadFiles(
-        [bankStatementFile, selfiePassportFile, ...invoiceFiles],
+      const serverUrls = await uploadFiles(
+        [bankStatementFile, selfiePassportFile, ...fallbackInvoices],
         `tax-form/${clientId}`
       )
+      fileUrls = [...serverUrls, ...preUploadedUrls]
     } catch (uploadErr) {
       const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
       return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
@@ -64,7 +74,6 @@ export async function POST(req: NextRequest) {
       fileUrls,
     })
 
-    console.log('New tax-form task created | files:', fileUrls.length)
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[tax-form] FAILED:', err)

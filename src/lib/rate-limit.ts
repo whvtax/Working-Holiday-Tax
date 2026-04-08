@@ -1,11 +1,4 @@
-/**
- * Redis-backed rate limiter for public form submissions.
- * Allows up to MAX_REQUESTS per IP per WINDOW_SECS.
- *
- * IMPORTANT: All Redis operations are wrapped in a hard 5-second timeout.
- * If Redis is unreachable (bad URL, cold start, network issue) the function
- * fails open (returns false = allow) rather than hanging the request for minutes.
- */
+// Redis rate limiter — fails open if Redis unreachable
 import { createClient } from 'redis'
 
 const MAX_REQUESTS       = 5
@@ -33,10 +26,6 @@ async function getRedis() {
   return client
 }
 
-/**
- * Returns true if the request should be blocked (rate limit exceeded).
- * Falls back to false (allow) if Redis is unavailable or times out.
- */
 export async function isRateLimited(ip: string, formName: string): Promise<boolean> {
   let redis: ReturnType<typeof createClient> | null = null
   try {
