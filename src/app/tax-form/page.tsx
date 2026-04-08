@@ -161,7 +161,6 @@ export default function TaxFormPage() {
   const [waNumber, setWaNumber]       = useState('')
   const [auPhone, setAuPhone]         = useState('')
   const [fullName, setFullName]       = useState('')
-  const [lastName, setLastName]        = useState('')
   const [address, setAddress]         = useState('')
   const [email, setEmail]             = useState('')
   const [country, setCountry]         = useState('')
@@ -197,7 +196,6 @@ export default function TaxFormPage() {
     if (!waNumber.trim())    e.waNumber    = 'Required'
     if (!auPhone.trim())     e.auPhone     = 'Required'
     if (!fullName.trim())    e.fullName    = 'Required'
-    if (!lastName.trim())     e.lastName     = 'Required'
     if (!email.trim())       e.email       = 'Required'
     if (!address.trim())     e.address     = 'Required'
     if (!country.trim())     e.country     = 'Required'
@@ -229,7 +227,7 @@ export default function TaxFormPage() {
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
-    fd.append('fullName',    `${fullName} ${lastName}`.trim())
+    fd.append('fullName',    fullName)
     fd.append('address',     address)
     fd.append('email',       email)
     fd.append('country',     country)
@@ -246,21 +244,7 @@ export default function TaxFormPage() {
     fd.append('taxStatusText', 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:')
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
-
-    const invoiceUrls: string[] = []
-    try {
-      const results = await Promise.all(
-        invoices.files.map(f =>
-          fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
-            method: 'POST', body: f, headers: { 'Content-Type': f.type },
-          }).then(r => r.ok ? r.json() : null).catch(() => null)
-        )
-      )
-      results.forEach(r => { if (r?.url) invoiceUrls.push(r.url) })
-    } catch {
-      invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
-    }
-    if (invoiceUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
+    invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
@@ -282,64 +266,10 @@ export default function TaxFormPage() {
   /* ── Success screen ── */
   if (submitted) {
     const firstName = fullName.split(' ')[0]
-    const _ = lastName
     return (
       <>
         <style>{styles}</style>
         <div className="form-success-wrap">
-
-        <canvas id="fw-canvas" className="fireworks-canvas" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-            var c=document.getElementById('fw-canvas');
-            if(!c)return;
-            var ctx=c.getContext('2d');
-            var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
-            window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
-            var particles=[];
-            var colors=['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#BB8FCE'];
-            function Particle(x,y,color){
-              this.x=x; this.y=y; this.color=color;
-              this.r=Math.random()*3+1;
-              this.vx=(Math.random()-0.5)*8;
-              this.vy=(Math.random()-0.5)*8-3;
-              this.alpha=1;
-              this.gravity=0.15;
-            }
-            Particle.prototype.update=function(){
-              this.x+=this.vx; this.y+=this.vy;
-              this.vy+=this.gravity;
-              this.alpha-=0.015;
-            };
-            Particle.prototype.draw=function(){
-              ctx.save(); ctx.globalAlpha=this.alpha;
-              ctx.fillStyle=this.color;
-              ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-              ctx.fill(); ctx.restore();
-            };
-            function burst(x,y){
-              var count=60;
-              for(var i=0;i<count;i++){
-                particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)]));
-              }
-            }
-            var shots=0; var maxShots=8; var shotInterval=400;
-            function fireRandom(){
-              if(shots>=maxShots)return;
-              burst(Math.random()*W*0.8+W*0.1, Math.random()*H*0.5+H*0.05);
-              shots++;
-              if(shots<maxShots) setTimeout(fireRandom, shotInterval);
-            }
-            setTimeout(fireRandom, 100);
-            function loop(){
-              ctx.clearRect(0,0,W,H);
-              particles=particles.filter(function(p){return p.alpha>0;});
-              particles.forEach(function(p){p.update();p.draw();});
-              if(particles.length>0||shots<maxShots) requestAnimationFrame(loop);
-            }
-            loop();
-          })();
-        ` }} />
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
@@ -408,13 +338,9 @@ export default function TaxFormPage() {
                 value={auPhone} onChange={e => { setAuPhone(e.target.value); setErrors(p => ({...p, auPhone: ''})) }} />
             </Field>
 
-            <Field label="First name (including middle name)" required error={errors.fullName}>
+            <Field label="Full Name (including middle name)" required error={errors.fullName}>
               <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport"
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
-            </Field>
-            <Field label="Last name" required error={errors.lastName}>
-              <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Smith"
-                value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 
             <Field label="Email Address" required error={errors.email}>
@@ -422,7 +348,7 @@ export default function TaxFormPage() {
                 value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ''})) }} />
             </Field>
 
-            <Field label="Full Australian address (street, suburb, state, postcode)" required error={errors.address}>
+            <Field label="Full Address in Australia" required error={errors.address}>
               <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="Street, suburb, state, postcode"
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
             </Field>
@@ -502,7 +428,7 @@ export default function TaxFormPage() {
 
             <Field label="Work-related expense invoices">
               <MultiFileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
-                value={invoices} onChange={setInvoices} maxFiles={10} />
+                value={invoices} onChange={setInvoices} maxFiles={15} />
             </Field>
           </div>
 
@@ -653,7 +579,6 @@ const styles = `
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
-  .fireworks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
   .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }

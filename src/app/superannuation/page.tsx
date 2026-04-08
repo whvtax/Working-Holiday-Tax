@@ -157,6 +157,7 @@ export default function SuperannuationPage() {
         </div>
       </section>
 
+
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
@@ -270,6 +271,8 @@ export default function SuperannuationPage() {
           </div>
         </div>
       </section>
+
+
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
@@ -404,6 +407,7 @@ export default function SuperannuationPage() {
           </div>
         </div>
       </section>
+
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep

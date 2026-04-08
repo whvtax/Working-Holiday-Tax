@@ -165,6 +165,7 @@ export default function TaxReturnPage() {
         </div>
       </section>
 
+
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
@@ -337,6 +338,8 @@ export default function TaxReturnPage() {
           </div>
         </div>
       </section>
+
+
 
       {/* ── TAX RATES ────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
@@ -601,6 +604,7 @@ export default function TaxReturnPage() {
           </div>
         </div>
       </section>
+
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep

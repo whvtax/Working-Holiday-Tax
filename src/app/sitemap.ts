@@ -10,7 +10,6 @@ const routes = [
   { url: '/calculator',        priority: 0.8,  changeFrequency: 'monthly' },
   { url: '/medicare',          priority: 0.7,  changeFrequency: 'monthly' },
   { url: '/contact',           priority: 0.7,  changeFrequency: 'monthly' },
-  { url: '/tax-residency',      priority: 0.6,  changeFrequency: 'yearly'  },
   { url: '/client-agreement',  priority: 0.4,  changeFrequency: 'yearly'  },
   { url: '/privacy',           priority: 0.4,  changeFrequency: 'yearly'  },
 ] as const

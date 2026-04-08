@@ -52,6 +52,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },
+  other: { 'facebook-domain-verification': '0omgb6quah0z1m44eiqboc87rsnhu1' },
 }
 
 // M3: explicit viewport export (Next.js 14 App Router recommendation)

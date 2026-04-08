@@ -27,7 +27,7 @@ export function Footer() {
               <span className="font-serif font-bold text-ink" style={{ fontSize: '13.5px' }}>Working Holiday Tax</span>
             </div>
             <p className="font-light leading-[1.65] mb-4" style={{ fontSize: '12px', color: '#587066', maxWidth: '200px' }}>
-              Tax help in Australia for Working Holiday maker.
+              Tax help in Australia for Working Holiday travellers.
             </p>
             {/* Mini CTA */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
