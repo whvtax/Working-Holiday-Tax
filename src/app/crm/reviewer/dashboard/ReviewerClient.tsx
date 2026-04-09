@@ -74,29 +74,7 @@ function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void })
     const t = setTimeout(() => setLeft(l => l - 1), 1000)
     return () => clearTimeout(t)
   }, [left, onDone])
-  const pct = ((seconds - left) / seconds) * 100
-  const r = 14, circ = 2 * Math.PI * r
-  const mins = Math.floor(left / 60)
-  const secs = left % 60
-  const timeStr = mins > 0 ? `${mins}:${String(secs).padStart(2, '0')}` : `${secs}s`
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 18px', background: '#F9FCFA', borderTop: '1px solid #EAF6F1' }}>
-      <svg width={36} height={36} viewBox="0 0 36 36" style={{ flexShrink: 0 }}>
-        <circle cx={18} cy={18} r={r} fill="none" stroke="#E2EDE8" strokeWidth={3} />
-        <circle cx={18} cy={18} r={r} fill="none" stroke={G} strokeWidth={3}
-          strokeDasharray={circ}
-          strokeDashoffset={circ - (circ * pct / 100)}
-          strokeLinecap="round"
-          style={{ transform: 'rotate(-90deg)', transformOrigin: '50% 50%', transition: 'stroke-dashoffset 1s linear' }}
-        />
-        <text x={18} y={22} textAnchor="middle" fontSize={9} fontWeight={700} fill={G}>{timeStr}</text>
-      </svg>
-      <div>
-        <p style={{ margin: 0, fontSize: 12, fontWeight: 600, color: '#1A2822' }}>Task will disappear in {timeStr}</p>
-        <p style={{ margin: '2px 0 0', fontSize: 11, color: '#8DA89A' }}>Details are saved in the admin dashboard</p>
-      </div>
-    </div>
-  )
+  return null
 }
 
 function TaskCard({
@@ -229,25 +207,6 @@ function TaskCard({
             </Section>
           )}
 
-          {/* Note box */}
-          <div style={{ background: '#fff', border: '1px solid #E2EDE8', borderRadius: 12, overflow: 'hidden', marginBottom: 12 }}>
-            <div style={{ padding: '8px 16px', background: '#F0F7F4', borderBottom: '1px solid #E2EDE8' }}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: G, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Note to admin</span>
-            </div>
-            <div style={{ padding: 12, display: 'flex', gap: 8 }}>
-              <textarea
-                value={notes[task.id] || ''}
-                onChange={e => setNotes(p => ({ ...p, [task.id]: e.target.value }))}
-                placeholder="Leave a note for the admin..."
-                rows={2}
-                style={{ flex: 1, border: '1.5px solid #D4EAE2', borderRadius: 10, padding: '8px 12px', fontSize: 13, fontFamily: 'inherit', resize: 'vertical', outline: 'none', color: '#1A2822' }}
-              />
-              <button onClick={() => onSaveNote(task.id)} disabled={savingNote === task.id} style={{ height: 38, padding: '0 14px', background: '#EAF6F1', color: G, border: '1px solid #C8EAE0', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', alignSelf: 'flex-end', opacity: savingNote === task.id ? 0.6 : 1 }}>
-                {savingNote === task.id ? '...' : 'Save'}
-              </button>
-            </div>
-          </div>
-
           {/* Action buttons */}
           {task.reviewStatus === 'pending' && (
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', paddingTop: 2 }}>
@@ -317,13 +276,22 @@ export default function ReviewerClient() {
 
   async function setStatus(taskId: string, status: ReviewStatus) {
     setActing(taskId)
-    await fetch('/api/crm/review', {
+    // Close card immediately
+    setExpanded(null)
+    // Optimistic update — move to bottom of list
+    setTasks(prev => {
+      const updated = prev.map(t => t.id === taskId ? { ...t, reviewStatus: status } : t)
+      const decided = updated.find(t => t.id === taskId)!
+      const rest = updated.filter(t => t.id !== taskId)
+      return [...rest, decided]
+    })
+    setActing(null)
+    // Fire API in background
+    fetch('/api/crm/review', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taskId, status }),
-    })
-    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, reviewStatus: status } : t))
-    setActing(null)
+    }).catch(console.error)
   }
 
   async function saveNote(taskId: string) {
@@ -342,7 +310,10 @@ export default function ReviewerClient() {
   }
 
   const counts = { pending: tasks.filter(t => t.reviewStatus === 'pending').length }
-  const filtered = tasks
+  const filtered = [...tasks].sort((a, b) => {
+    const order = { pending: 0, approved: 1, rejected: 1 }
+    return (order[a.reviewStatus] ?? 0) - (order[b.reviewStatus] ?? 0)
+  })
 
   return (
     <div style={{ minHeight: '100vh', background: '#F4F9F6', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif' }}>
