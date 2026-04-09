@@ -26,7 +26,7 @@ function StatusBadge({ status }: { status: ReviewStatus }) {
     approved: { bg: '#EAF6F1', color: '#065F46', label: '✓ Approved' },
     rejected: { bg: '#FEF2F2', color: '#DC2626', label: '✗ Rejected' },
   }
-  const s = styles[status]
+  const s = styles[status] ?? styles.pending
   return (
     <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 100, background: s.bg, color: s.color, letterSpacing: '0.04em' }}>
       {s.label}
