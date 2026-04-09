@@ -108,11 +108,12 @@ function TaskCard({
 
   const { declarations, extras } = parseNotes(task.notes)
 
-  const statusInfo = {
+  const statusMap: Record<string, { bg: string; color: string; label: string }> = {
     pending:  { bg: '#FFF8EC', color: '#B45309', label: '⏳ Pending' },
     approved: { bg: '#EAF6F1', color: '#059669', label: '✓ Approved' },
     rejected: { bg: '#FEF2F2', color: '#DC2626', label: '✗ Rejected' },
-  }[task.reviewStatus] ?? { bg: '#FFF8EC', color: '#B45309', label: '⏳ Pending' }
+  }
+  const statusInfo = statusMap[task.reviewStatus] || statusMap.pending
 
   return (
     <div style={{
