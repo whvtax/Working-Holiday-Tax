@@ -335,11 +335,13 @@ export default function ReviewerClient() {
     <div style={{ minHeight: '100vh', background: '#F4F9F6', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif' }}>
       <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
       <style>{`
-        .rv-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 56px; }
+        .rv-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 54px; }
         .rv-btns { display: flex; gap: 8px; }
+        .rv-btns button { min-width: 90px; }
         @media (max-width: 600px) {
           .rv-nav { flex-direction: column; height: auto; padding: 12px 16px 0; align-items: stretch; }
           .rv-btns { padding-bottom: 12px; }
+          .rv-btns button { flex: 1; min-width: 0; }
         }
       `}</style>
       <div style={{ background: G }} className="rv-nav">
@@ -375,7 +377,7 @@ export default function ReviewerClient() {
         <div className="rv-btns">
           <button
             onClick={async () => { setRefreshing(true); await loadTasks(); setRefreshing(false) }}
-            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, height: 36, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: refreshing ? 'default' : 'pointer', fontFamily: 'inherit' }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, height: 34, padding: '0 14px', background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: refreshing ? 'default' : 'pointer', fontFamily: 'inherit' }}
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{ animation: refreshing ? 'spin 0.7s linear infinite' : 'none', flexShrink: 0 }}>
               <path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -385,7 +387,7 @@ export default function ReviewerClient() {
           </button>
           <button
             onClick={logout}
-            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 36, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 34, padding: '0 14px', background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
           >
             Sign out
           </button>
