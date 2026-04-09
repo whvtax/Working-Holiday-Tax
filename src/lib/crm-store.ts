@@ -101,13 +101,13 @@ export function hashReviewerPassword(password: string): string {
   const salt = process.env.PASSWORD_SALT
   if (!salt) throw new Error('Missing env var: PASSWORD_SALT')
   const reviewerSalt = process.env.REVIEWER_SALT || (salt + '_reviewer')
-  return require('crypto').pbkdf2Sync(password, reviewerSalt, 100_000, 64, 'sha512').toString('hex')
+  return crypto.pbkdf2Sync(password, reviewerSalt, 100_000, 64, 'sha512').toString('hex')
 }
 
 export function verifyReviewerPassword(password: string, hash: string): boolean {
   try {
     const attempt = hashReviewerPassword(password)
-    return require('crypto').timingSafeEqual(Buffer.from(attempt, 'hex'), Buffer.from(hash, 'hex'))
+    return crypto.timingSafeEqual(Buffer.from(attempt, 'hex'), Buffer.from(hash, 'hex'))
   } catch { return false }
 }
 
@@ -118,7 +118,7 @@ export function createReviewerSession(): string {
     exp: now + REVIEWER_SESSION_TTL,
     role: 'reviewer',
   })).toString('base64url')
-  const sig = require('crypto').createHmac('sha256', jwtSecret()).update(payload).digest('base64url')
+  const sig = crypto.createHmac('sha256', jwtSecret()).update(payload).digest('base64url')
   return `${payload}.${sig}`
 }
 
@@ -129,11 +129,11 @@ export function validateReviewerSession(token: string | undefined): boolean {
     if (dot < 0) return false
     const payload = token.slice(0, dot)
     const sig     = token.slice(dot + 1)
-    const expected = require('crypto').createHmac('sha256', jwtSecret()).update(payload).digest('base64url')
+    const expected = crypto.createHmac('sha256', jwtSecret()).update(payload).digest('base64url')
     const sigBuf = Buffer.from(sig)
     const expBuf = Buffer.from(expected)
     if (sigBuf.length !== expBuf.length) return false
-    if (!require('crypto').timingSafeEqual(sigBuf, expBuf)) return false
+    if (!crypto.timingSafeEqual(sigBuf, expBuf)) return false
     const { iat, exp, role } = JSON.parse(Buffer.from(payload, 'base64url').toString())
     if (role !== 'reviewer') return false
     const now = Date.now()

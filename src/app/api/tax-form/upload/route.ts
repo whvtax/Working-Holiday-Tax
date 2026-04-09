@@ -3,13 +3,14 @@ import { put } from '@vercel/blob'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
-const ALLOWED = new Set(['image/jpeg','image/png','image/webp','application/pdf'])
+const ALLOWED = new Set(['image/jpeg','image/png','image/webp','image/gif','application/pdf'])
 const MAX_SIZE = 10 * 1024 * 1024
 
 const MAGIC: { mime: string; bytes: number[] }[] = [
   { mime: 'image/jpeg',      bytes: [0xFF, 0xD8, 0xFF] },
   { mime: 'image/png',       bytes: [0x89, 0x50, 0x4E, 0x47] },
   { mime: 'image/webp',      bytes: [0x52, 0x49, 0x46, 0x46] },
+  { mime: 'image/gif',       bytes: [0x47, 0x49, 0x46, 0x38] },
   { mime: 'application/pdf', bytes: [0x25, 0x50, 0x44, 0x46] },
 ]
 

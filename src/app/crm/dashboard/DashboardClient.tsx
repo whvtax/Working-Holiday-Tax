@@ -12,6 +12,8 @@ type Task = {
   submittedAt:string; done:boolean; address:string; tfn:string; bankDetails:string
   primaryJob:string; marital:string; taxStatus:string; howHeard:string; auPhone:string; notes:string
   fileUrls:string[]
+  reviewStatus?: 'pending'|'approved'|'rejected'
+  reviewerNote?: string
 }
 type Client = {
   id:string; fullName:string; dob:string; whatsapp:string; email:string
@@ -946,7 +948,7 @@ export default function DashboardClient() {
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
 
                 {/* ── Reviewer note ── */}
-                {(activeTask as any).reviewerNote && (
+                {(activeTask).reviewerNote && (
                   <div style={{background:'#FFF8EC',border:'1px solid #FDE68A',borderRadius:12,padding:'12px 16px',marginBottom:12}}>
                     <p style={{fontSize:11,fontWeight:600,color:'#B45309',marginBottom:6,textTransform:'uppercase',letterSpacing:'0.04em'}}>📝 Reviewer note</p>
                     <p style={{fontSize:13,color:'#1A2822',lineHeight:1.6}}>{(activeTask as any).reviewerNote}</p>

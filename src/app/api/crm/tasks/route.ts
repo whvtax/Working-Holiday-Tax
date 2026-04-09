@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateSession, validateReviewerSession } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 
-function auth(req: NextRequest) {
+// Reviewers can only read tasks — admin session required for mutations
+function authRead(req: NextRequest) {
   return validateSession(req.cookies.get('crm_session')?.value)
     || validateReviewerSession(req.cookies.get('crm_reviewer_session')?.value)
+}
+
+function authWrite(req: NextRequest) {
+  return validateSession(req.cookies.get('crm_session')?.value)
 }
 
 async function getTasks() {
@@ -13,13 +18,13 @@ async function getTasks() {
 }
 
 export async function GET(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  if (!authRead(req)) return NextResponse.json({ ok:false }, { status:401 })
   const tasks = await getTasks()
   return NextResponse.json({ ok:true, tasks })
 }
 
 export async function POST(req: NextRequest) {
-  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
+  if (!authWrite(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
     const { createTask } = await import('@/lib/db')

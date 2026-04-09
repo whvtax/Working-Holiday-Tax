@@ -30,6 +30,7 @@ export type Task = {
   fileUrls:string[]
   reviewStatus: ReviewStatus
   reviewerNote: string
+  reviewedAt: string
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────

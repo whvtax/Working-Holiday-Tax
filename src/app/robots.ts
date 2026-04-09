@@ -10,6 +10,8 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/crm',
           '/crm/',
+          '/crm/reviewer',
+          '/crm/reviewer/',
           '/api/',
           '/tax-form',
           '/tfn-form',
