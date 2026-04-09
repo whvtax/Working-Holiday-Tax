@@ -8,7 +8,7 @@ type Task = {
   whatsapp: string; email: string; country: string; dob: string; taxYear: string
   address: string; tfn: string; bankDetails: string; primaryJob: string
   marital: string; taxStatus: string; notes: string; fileUrls: string[]
-  reviewStatus: ReviewStatus; reviewerNote: string
+  done: boolean; reviewStatus: ReviewStatus; reviewerNote: string
   auPhone?: string
 }
 
@@ -109,11 +109,11 @@ function TaskCard({
   const { declarations, extras } = parseNotes(task.notes)
 
   const statusMap: Record<string, { bg: string; color: string; label: string }> = {
-    pending:  { bg: '#FFF8EC', color: '#B45309', label: '⏳ Pending' },
-    approved: { bg: '#EAF6F1', color: '#059669', label: '✓ Approved' },
-    rejected: { bg: '#FEF2F2', color: '#DC2626', label: '✗ Rejected' },
+    pending:  { bg: '#FFF8EC', color: '#B45309', label: 'Pending' },
+    approved: { bg: '#EAF6F1', color: '#059669', label: 'Approved' },
+    rejected: { bg: '#FEF2F2', color: '#DC2626', label: 'Rejected' },
   }
-  const statusInfo = statusMap[task.reviewStatus] || statusMap.pending
+  const statusInfo = statusMap[task.reviewStatus] || statusMap['pending']
 
   return (
     <div style={{
@@ -278,7 +278,6 @@ function TaskCard({
                 ↩ Reset decision
               </button>
 
-            </div>
             </div>
           )}
         </div>
