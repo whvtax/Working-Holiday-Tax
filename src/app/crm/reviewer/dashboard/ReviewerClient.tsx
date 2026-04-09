@@ -292,6 +292,9 @@ function TaskCard({
 
 export default function ReviewerClient() {
   const [tasks, setTasks]           = useState<Task[]>([])
+  const [dismissed, setDismissed]   = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(sessionStorage.getItem('rv_dismissed') || '[]')) } catch { return new Set() }
+  })
   const [loading, setLoading]       = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [notes, setNotes]           = useState<Record<string, string>>({})
@@ -306,8 +309,10 @@ export default function ReviewerClient() {
       const r = await fetch('/api/crm/tasks', { cache: 'no-store' })
       const d = await r.json()
       if (d.ok) {
-        const active = d.tasks.filter((t: Task) => !t.done)
+        const dismissed = (() => { try { return new Set(JSON.parse(sessionStorage.getItem('rv_dismissed') || '[]')) } catch { return new Set() } })()
+        const active = d.tasks.filter((t: Task) => !t.done && !dismissed.has(t.id))
         setTasks(active)
+        setDismissed(dismissed as Set<string>)
         setNewTaskCount(0)
         prevCountRef.current = active.filter((t: Task) => t.reviewStatus === 'pending').length
       }
@@ -327,7 +332,7 @@ export default function ReviewerClient() {
         const r = await fetch('/api/crm/tasks', { cache: 'no-store' })
         const d = await r.json()
         if (d.ok) {
-          const active = d.tasks.filter((t: Task) => !t.done)
+          const active = d.tasks.filter((t: Task) => !t.done && !dismissed.has(t.id))
           const pendingCount = active.filter((t: Task) => t.reviewStatus === 'pending').length
           if (pendingCount > prevCountRef.current && prevCountRef.current > 0) {
             setNewTaskCount(pendingCount - prevCountRef.current)
@@ -370,6 +375,12 @@ export default function ReviewerClient() {
 
   async function deleteTask(taskId: string) {
     setTasks(prev => prev.filter(t => t.id !== taskId))
+    setDismissed(prev => {
+      const next = new Set(prev)
+      next.add(taskId)
+      try { sessionStorage.setItem('rv_dismissed', JSON.stringify([...next])) } catch {}
+      return next
+    })
     fetch(`/api/crm/tasks/${taskId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
