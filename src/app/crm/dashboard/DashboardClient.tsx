@@ -829,7 +829,19 @@ export default function DashboardClient() {
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
                       <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
                     </div>
-                    <div style={{fontSize:11,color:'#aabab2'}}>{fmtDate(t.submittedAt)}</div>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                      {(t as any).reviewStatus === 'approved' && (
+                        <span title="Approved by reviewer" style={{width:20,height:20,borderRadius:'50%',background:'#EAF6F1',border:'1.5px solid #6EE7B7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                          <svg width={10} height={10} viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#059669" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </span>
+                      )}
+                      {(t as any).reviewStatus === 'rejected' && (
+                        <span title="Rejected by reviewer" style={{width:20,height:20,borderRadius:'50%',background:'#FEF2F2',border:'1.5px solid #FCA5A5',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                          <svg width={10} height={10} viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                        </span>
+                      )}
+                      <div style={{fontSize:11,color:'#aabab2'}}>{fmtDate(t.submittedAt)}</div>
+                    </div>
                   </div>
                 ))}
               </>}

@@ -240,7 +240,7 @@ function TaskCard({
                 onChange={e => setNotes(p => ({ ...p, [task.id]: e.target.value }))}
                 placeholder="Leave a note for the admin..."
                 rows={2}
-                style={{ flex: 1, border: '1.5px solid #D4EAE2', borderRadius: 10, padding: '8px 12px', fontSize: 13, fontFamily: 'inherit', resize: 'vertical', outline: 'none', color: '#1A2822', direction: 'rtl' }}
+                style={{ flex: 1, border: '1.5px solid #D4EAE2', borderRadius: 10, padding: '8px 12px', fontSize: 13, fontFamily: 'inherit', resize: 'vertical', outline: 'none', color: '#1A2822' }}
               />
               <button onClick={() => onSaveNote(task.id)} disabled={savingNote === task.id} style={{ height: 38, padding: '0 14px', background: '#EAF6F1', color: G, border: '1px solid #C8EAE0', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', alignSelf: 'flex-end', opacity: savingNote === task.id ? 0.6 : 1 }}>
                 {savingNote === task.id ? '...' : 'Save'}
@@ -250,30 +250,32 @@ function TaskCard({
 
           {/* Action buttons */}
           {task.reviewStatus === 'pending' && (
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', paddingTop: 2 }}>
               <button
                 onClick={() => onSetStatus(task.id, 'rejected')}
                 disabled={acting === task.id}
-                style={{ flex: 1, height: 54, borderRadius: 14, border: '2px solid #FECACA', background: '#fff', color: '#DC2626', fontSize: 16, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, transition: 'background 0.15s' }}
+                style={{ height: 38, padding: '0 20px', borderRadius: 100, border: '1.5px solid #FECACA', background: '#fff', color: '#DC2626', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6, transition: 'background 0.15s', opacity: acting === task.id ? 0.6 : 1 }}
               >
-                <span style={{ width: 30, height: 30, borderRadius: '50%', background: '#DC2626', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, fontWeight: 900 }}>✗</span>
+                <svg width={14} height={14} viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="#DC2626" strokeWidth="2" strokeLinecap="round"/></svg>
                 Reject
               </button>
               <button
                 onClick={() => onSetStatus(task.id, 'approved')}
                 disabled={acting === task.id}
-                style={{ flex: 1, height: 54, borderRadius: 14, border: 'none', background: G, color: '#fff', fontSize: 16, fontWeight: 700, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, boxShadow: '0 2px 14px rgba(11,82,64,0.28)', transition: 'opacity 0.15s' }}
+                style={{ height: 38, padding: '0 20px', borderRadius: 100, border: 'none', background: G, color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 6, boxShadow: '0 1px 8px rgba(11,82,64,0.20)', transition: 'opacity 0.15s', opacity: acting === task.id ? 0.6 : 1 }}
               >
-                <span style={{ width: 30, height: 30, borderRadius: '50%', background: 'rgba(255,255,255,0.22)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17, fontWeight: 900 }}>✓</span>
+                <svg width={14} height={14} viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 Approve
               </button>
             </div>
           )}
 
           {task.reviewStatus !== 'pending' && !showCountdown && (
-            <button onClick={() => onSetStatus(task.id, 'pending')} style={{ width: '100%', height: 42, borderRadius: 12, border: '1.5px solid #D4EAE2', background: '#fff', color: '#587066', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
-              ↩ Reset decision
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: 2 }}>
+              <button onClick={() => onSetStatus(task.id, 'pending')} style={{ height: 34, padding: '0 16px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: '#8DA89A', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>
+                ↩ Reset decision
+              </button>
+            </div>
           )}
         </div>
       )}
@@ -290,7 +292,7 @@ export default function ReviewerClient() {
   const [tasks, setTasks]           = useState<Task[]>([])
   const [loading, setLoading]       = useState(true)
   const [expanded, setExpanded]     = useState<string | null>(null)
-  const [filter, setFilter]         = useState<ReviewStatus | 'all'>('pending')
+
   const [acting, setActing]         = useState<string | null>(null)
   const [viewUrl, setViewUrl]       = useState<string | null>(null)
   const [notes, setNotes]           = useState<Record<string, string>>({})
@@ -339,12 +341,8 @@ export default function ReviewerClient() {
     window.location.href = '/crm/reviewer'
   }
 
-  const counts = {
-    pending:  tasks.filter(t => t.reviewStatus === 'pending').length,
-    approved: tasks.filter(t => t.reviewStatus === 'approved').length,
-    rejected: tasks.filter(t => t.reviewStatus === 'rejected').length,
-  }
-  const filtered = tasks.filter(t => filter === 'all' || t.reviewStatus === filter)
+  const counts = { pending: tasks.filter(t => t.reviewStatus === 'pending').length }
+  const filtered = tasks
 
   return (
     <div style={{ minHeight: '100vh', background: '#F4F9F6', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif' }}>
@@ -354,12 +352,10 @@ export default function ReviewerClient() {
       </div>
 
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '24px 16px' }}>
-        <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
-          {(['pending', 'approved', 'rejected', 'all'] as const).map(f => (
-            <button key={f} onClick={() => setFilter(f)} style={{ height: 34, padding: '0 14px', border: '1.5px solid', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', borderColor: filter === f ? G : '#D4EAE2', background: filter === f ? G : '#fff', color: filter === f ? '#fff' : '#587066' }}>
-              {f === 'pending' ? `Pending (${counts.pending})` : f === 'approved' ? `Approved (${counts.approved})` : f === 'rejected' ? `Rejected (${counts.rejected})` : 'All'}
-            </button>
-          ))}
+        <div style={{ marginBottom: 20 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', height: 34, padding: '0 16px', borderRadius: 100, background: G, color: '#fff', fontSize: 12, fontWeight: 600 }}>
+            Pending ({counts.pending})
+          </span>
         </div>
 
         {loading
