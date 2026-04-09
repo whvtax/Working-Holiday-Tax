@@ -124,54 +124,74 @@ export default function ABNFormPage() {
         <canvas id="fw-canvas" className="fireworks-canvas" />
         <script dangerouslySetInnerHTML={{ __html: `
           (function(){
-            var c=document.getElementById('fw-canvas');
-            if(!c)return;
-            var ctx=c.getContext('2d');
-            var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
-            window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
-            var particles=[];
-            var colors=['#FFD700','#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD','#98D8C8','#F7DC6F','#BB8FCE'];
-            function Particle(x,y,color){
-              this.x=x; this.y=y; this.color=color;
-              this.r=Math.random()*3+1;
-              this.vx=(Math.random()-0.5)*8;
-              this.vy=(Math.random()-0.5)*8-3;
-              this.alpha=1;
-              this.gravity=0.15;
-            }
-            Particle.prototype.update=function(){
-              this.x+=this.vx; this.y+=this.vy;
-              this.vy+=this.gravity;
-              this.alpha-=0.015;
-            };
-            Particle.prototype.draw=function(){
-              ctx.save(); ctx.globalAlpha=this.alpha;
-              ctx.fillStyle=this.color;
-              ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-              ctx.fill(); ctx.restore();
-            };
-            function burst(x,y){
-              var count=60;
-              for(var i=0;i<count;i++){
-                particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)]));
-              }
-            }
-            var shots=0; var maxShots=8; var shotInterval=400;
-            function fireRandom(){
-              if(shots>=maxShots)return;
-              burst(Math.random()*W*0.8+W*0.1, Math.random()*H*0.5+H*0.05);
-              shots++;
-              if(shots<maxShots) setTimeout(fireRandom, shotInterval);
-            }
-            setTimeout(fireRandom, 100);
-            function loop(){
-              ctx.clearRect(0,0,W,H);
-              particles=particles.filter(function(p){return p.alpha>0;});
-              particles.forEach(function(p){p.update();p.draw();});
-              if(particles.length>0||shots<maxShots) requestAnimationFrame(loop);
-            }
-            loop();
-          })();
+  var c=document.getElementById('fw-canvas');
+  if(!c)return;
+  var ctx=c.getContext('2d');
+  var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
+  window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
+  var particles=[];
+  var colors=['#FFD700','#FF6B35','#FF6B6B','#E91E8C','#4ECDC4','#45B7D1','#7C4DFF','#00E676','#FFEA00','#FF1744','#00BCD4','#76FF03'];
+  function Particle(x,y,color,type){
+    this.x=x; this.y=y; this.color=color; this.type=type||'circle';
+    this.r=Math.random()*4+2;
+    var angle=Math.random()*Math.PI*2;
+    var speed=Math.random()*10+3;
+    this.vx=Math.cos(angle)*speed;
+    this.vy=Math.sin(angle)*speed-4;
+    this.alpha=1;
+    this.gravity=0.18;
+    this.spin=Math.random()*0.3-0.15;
+    this.rot=Math.random()*Math.PI*2;
+  }
+  Particle.prototype.update=function(){
+    this.x+=this.vx; this.y+=this.vy;
+    this.vy+=this.gravity;
+    this.vx*=0.98;
+    this.alpha-=0.013;
+    this.rot+=this.spin;
+  };
+  Particle.prototype.draw=function(){
+    ctx.save(); ctx.globalAlpha=Math.max(0,this.alpha);
+    ctx.fillStyle=this.color;
+    ctx.translate(this.x,this.y); ctx.rotate(this.rot);
+    if(this.type==='star'){
+      ctx.beginPath();
+      for(var i=0;i<5;i++){
+        ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*this.r, -Math.sin((18+i*72)*Math.PI/180)*this.r);
+        ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*this.r*0.4, -Math.sin((54+i*72)*Math.PI/180)*this.r*0.4);
+      }
+      ctx.closePath(); ctx.fill();
+    } else if(this.type==='spark'){
+      ctx.fillRect(-this.r*2,-this.r*0.4,this.r*4,this.r*0.8);
+    } else {
+      ctx.beginPath(); ctx.arc(0,0,this.r,0,Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  };
+  function burst(x,y){
+    var count=90;
+    var types=['circle','circle','star','spark'];
+    for(var i=0;i<count;i++){
+      var type=types[Math.floor(Math.random()*types.length)];
+      particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)],type));
+    }
+  }
+  var shots=0; var maxShots=12; var shotInterval=350;
+  function fireRandom(){
+    if(shots>=maxShots)return;
+    burst(Math.random()*W*0.8+W*0.1, Math.random()*H*0.55+H*0.05);
+    shots++;
+    if(shots<maxShots) setTimeout(fireRandom, shotInterval);
+  }
+  setTimeout(fireRandom, 80);
+  function loop(){
+    ctx.clearRect(0,0,W,H);
+    particles=particles.filter(function(p){return p.alpha>0;});
+    particles.forEach(function(p){p.update();p.draw();});
+    if(particles.length>0||shots<maxShots) requestAnimationFrame(loop);
+  }
+  loop();
+})();
         ` }} />
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">

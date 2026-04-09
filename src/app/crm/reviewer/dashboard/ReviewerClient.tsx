@@ -79,13 +79,11 @@ function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void })
 
 function TaskCard({
   task, expanded, onToggle, onSetStatus, acting,
-  setViewUrl, notes, setNotes, savingNote, onSaveNote,
+  setViewUrl,
 }: {
   task: Task; expanded: boolean; onToggle: () => void
   onSetStatus: (id: string, s: ReviewStatus) => void; acting: string | null
   setViewUrl: (u: string | null) => void
-  notes: Record<string, string>; setNotes: React.Dispatch<React.SetStateAction<Record<string, string>>>
-  savingNote: string | null; onSaveNote: (id: string) => void
 }) {
   const [hiding, setHiding] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -259,8 +257,6 @@ export default function ReviewerClient() {
 
   const [acting, setActing]         = useState<string | null>(null)
   const [viewUrl, setViewUrl]       = useState<string | null>(null)
-  const [notes, setNotes]           = useState<Record<string, string>>({})
-  const [savingNote, setSavingNote] = useState<string | null>(null)
 
   const loadTasks = useCallback(async () => {
     try {
@@ -269,15 +265,36 @@ export default function ReviewerClient() {
       if (d.ok) {
         const active = d.tasks.filter((t: Task) => !t.done)
         setTasks(active)
-        const init: Record<string, string> = {}
-        active.forEach((t: Task) => { init[t.id] = t.reviewerNote || '' })
-        setNotes(init)
+        setNewTaskCount(0)
+        prevCountRef.current = active.filter((t: Task) => t.reviewStatus === 'pending').length
       }
     } catch {}
     setLoading(false)
   }, [])
 
+  const [newTaskCount, setNewTaskCount] = useState(0)
+  const prevCountRef = React.useRef(0)
+
   useEffect(() => { loadTasks() }, [loadTasks])
+
+  // Poll every 30s for new submissions
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const r = await fetch('/api/crm/tasks', { cache: 'no-store' })
+        const d = await r.json()
+        if (d.ok) {
+          const active = d.tasks.filter((t: Task) => !t.done)
+          const pendingCount = active.filter((t: Task) => t.reviewStatus === 'pending').length
+          if (pendingCount > prevCountRef.current && prevCountRef.current > 0) {
+            setNewTaskCount(pendingCount - prevCountRef.current)
+          }
+          prevCountRef.current = pendingCount
+        }
+      } catch {}
+    }, 30000)
+    return () => clearInterval(interval)
+  }, [])
 
   async function setStatus(taskId: string, status: ReviewStatus) {
     setActing(taskId)
@@ -299,16 +316,6 @@ export default function ReviewerClient() {
     }).catch(console.error)
   }
 
-  async function saveNote(taskId: string) {
-    setSavingNote(taskId)
-    await fetch('/api/crm/review', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ taskId, note: notes[taskId] || '' }),
-    })
-    setSavingNote(null)
-  }
-
   async function logout() {
     await fetch('/api/crm/reviewer-logout', { method: 'POST' })
     window.location.href = '/crm/reviewer'
@@ -326,10 +333,20 @@ export default function ReviewerClient() {
   return (
     <div style={{ minHeight: '100vh', background: '#F4F9F6', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif' }}>
       <div style={{ background: G, padding: '0 20px', height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>Working Holiday Tax · Review Portal</span>
+        <button
+          onClick={() => { setExpanded(null); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+          style={{ color: '#fff', fontWeight: 700, fontSize: 14, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0, display: 'flex', alignItems: 'center', gap: 10 }}
+        >
+          Working Holiday Tax · Review Portal
+          {newTaskCount > 0 && (
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 20, height: 20, borderRadius: 100, background: '#F59E0B', color: '#fff', fontSize: 10, fontWeight: 800, padding: '0 5px' }}>
+              +{newTaskCount}
+            </span>
+          )}
+        </button>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <button
-            onClick={loadTasks}
+            onClick={async () => { setLoading(true); await loadTasks() }}
             title="Refresh"
             style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}
           >
@@ -360,10 +377,7 @@ export default function ReviewerClient() {
               onSetStatus={setStatus}
               acting={acting}
               setViewUrl={setViewUrl}
-              notes={notes}
-              setNotes={setNotes}
-              savingNote={savingNote}
-              onSaveNote={saveNote}
+
             />
           ))
         }

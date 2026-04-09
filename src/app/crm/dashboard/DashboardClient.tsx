@@ -772,7 +772,7 @@ export default function DashboardClient() {
           </div>
           <div style={{padding:'9px 11px 16px',display:'flex',alignItems:'center',gap:8}}>
             <button
-              onClick={() => { Promise.all([loadTasks(), loadClients()]) }}
+              onClick={async () => { setLoading(true); await Promise.all([loadTasks(), loadClients()]); setLoading(false) }}
               title="Refresh"
               style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,height:30,padding:'0 10px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8,cursor:'pointer',color:'rgba(255,255,255,0.5)',fontSize:11,fontFamily:'inherit',fontWeight:500,flex:1}}
             >
@@ -833,13 +833,13 @@ export default function DashboardClient() {
                       <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-                      {(t as any).reviewStatus === 'approved' && (
+                      {t.reviewStatus === 'approved' && (
                         <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#EAF6F1',color:'#059669',border:'1px solid #6EE7B7',whiteSpace:'nowrap'}}>
                           <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#059669" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
                           Approved
                         </span>
                       )}
-                      {(t as any).reviewStatus === 'rejected' && (
+                      {t.reviewStatus === 'rejected' && (
                         <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#FEF2F2',color:'#DC2626',border:'1px solid #FCA5A5',whiteSpace:'nowrap'}}>
                           <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round"/></svg>
                           Rejected

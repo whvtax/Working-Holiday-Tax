@@ -28,6 +28,8 @@ export type Task = {
   address:string; tfn:string; bankDetails:string; primaryJob:string
   marital:string; taxStatus:string; howHeard:string; auPhone:string; notes:string
   fileUrls:string[]
+  reviewStatus: ReviewStatus
+  reviewerNote: string
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
@@ -157,6 +159,8 @@ function toTask(r: Record<string,unknown>): Task {
     taxStatus: r.tax_status as string, howHeard: r.how_heard as string,
     auPhone: r.au_phone as string, notes: r.notes as string,
     fileUrls: (() => { try { return JSON.parse(r.file_urls as string ?? '[]') } catch { return [] } })(),
+    reviewStatus: ((r.review_status as string) ?? 'pending') as ReviewStatus,
+    reviewerNote: (r.reviewer_note as string) ?? '',
   }
 }
 
