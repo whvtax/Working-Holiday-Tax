@@ -121,13 +121,16 @@ function TaskCard({
       transform: hiding ? 'translateY(-10px) scale(0.97)' : 'none',
       transition: 'opacity 0.5s ease, transform 0.5s ease',
     }}>
-      {/* Header */}
-      <div onClick={onToggle} style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '14px 18px', cursor: 'pointer',
-        background: expanded ? '#F9FCFA' : '#fff',
-        borderBottom: expanded ? '1.5px solid #E2EDE8' : 'none',
-      }}>
+      {/* Header — not clickable once decided */}
+      <div
+        onClick={isDone ? undefined : onToggle}
+        style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '14px 18px', cursor: isDone ? 'default' : 'pointer',
+          background: '#fff',
+          opacity: isDone ? 0.7 : 1,
+        }}
+      >
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 7, flexWrap: 'wrap', marginBottom: 4 }}>
             <span style={{ fontWeight: 700, fontSize: 15, color: '#0D1B17' }}>{task.clientName || '—'}</span>
@@ -138,13 +141,15 @@ function TaskCard({
             {[task.country, task.taxYear, task.submittedAt ? `Submitted ${new Date(task.submittedAt).toLocaleDateString('en-AU')}` : ''].filter(Boolean).join(' · ')}
           </div>
         </div>
-        <svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: '0.2s', flexShrink: 0, marginLeft: 12 }}>
-          <path d="M6 9l6 6 6-6" stroke="#8DA89A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        {!isDone && (
+          <svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: '0.2s', flexShrink: 0, marginLeft: 12 }}>
+            <path d="M6 9l6 6 6-6" stroke="#8DA89A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
       </div>
 
-      {/* Body */}
-      {expanded && (
+      {/* Body — only show if pending and expanded */}
+      {!isDone && expanded && (
         <div style={{ padding: 14, background: '#F4F9F6' }}>
 
           <Section title="Personal details">
