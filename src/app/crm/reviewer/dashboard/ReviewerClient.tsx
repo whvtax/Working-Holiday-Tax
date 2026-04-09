@@ -47,6 +47,7 @@ export default function ReviewerClient() {
   const [expanded, setExpanded]   = useState<string|null>(null)
   const [filter, setFilter]       = useState<'pending'|'approved'|'rejected'|'all'>('pending')
   const [acting, setActing]       = useState<string|null>(null)
+  const [viewUrl, setViewUrl]     = useState<string|null>(null)
   const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(new Set())
 
   const loadTasks = useCallback(async () => {
@@ -158,9 +159,10 @@ export default function ReviewerClient() {
                         const name = decodeURIComponent(url.split('/').pop()??`file-${i+1}`).replace(/^\d+_[a-z0-9]+_/,'').slice(0,40)
                         const isPdf = url.toLowerCase().endsWith('.pdf')
                         return (
-                          <a key={i} href={url} target="_blank" rel="noopener noreferrer" style={S.fileLink}>
-                            {isPdf?'📄':'🖼️'} {name}
-                          </a>
+                          <button key={i} onClick={()=>setViewUrl(url)}
+                            style={{display:'inline-flex',alignItems:'center',gap:6,height:30,padding:'0 12px',background:'#EAF6F1',color:'#0B5240',border:'1px solid #C8EAE0',borderRadius:100,fontSize:12,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}>
+                            {isPdf?'📄':'🖼️'} {name.slice(0,28)} &nbsp;·&nbsp; View
+                          </button>
                         )
                       })}
                     </div>
@@ -191,5 +193,23 @@ export default function ReviewerClient() {
         ))}
       </div>
     </div>
+
+    {/* File viewer modal */}
+    {viewUrl && (
+      <div onClick={()=>setViewUrl(null)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
+        <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:16,overflow:'hidden',maxWidth:'90vw',maxHeight:'90vh',display:'flex',flexDirection:'column',width:'100%'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px',borderBottom:'1px solid #EAF6F1'}}>
+            <span style={{fontSize:13,fontWeight:600,color:'#0D1B17'}}>Document Preview</span>
+            <button onClick={()=>setViewUrl(null)} style={{background:'none',border:'none',cursor:'pointer',fontSize:20,color:'#587066',lineHeight:1}}>✕</button>
+          </div>
+          <div style={{flex:1,overflow:'auto',minHeight:400}}>
+            {viewUrl.toLowerCase().endsWith('.pdf')
+              ? <iframe src={viewUrl} style={{width:'100%',height:'80vh',border:'none'}} title="Document" />
+              : <img src={viewUrl} alt="Document" style={{width:'100%',height:'auto',display:'block'}} />
+            }
+          </div>
+        </div>
+      </div>
+    )}
   )
 }

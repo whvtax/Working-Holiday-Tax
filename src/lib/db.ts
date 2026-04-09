@@ -428,5 +428,5 @@ export async function setYearlyCheckin(clientId: string, year: string, done: boo
 
 export async function setReviewStatus(taskId: string, status: ReviewStatus): Promise<void> {
   await initDb()
-  await sql\`UPDATE crm_tasks SET review_status = \${status} WHERE id = \${taskId}\`
+  await sql`UPDATE crm_tasks SET review_status = ${status} WHERE id = ${taskId}`
 }
