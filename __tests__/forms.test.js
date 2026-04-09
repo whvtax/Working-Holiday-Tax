@@ -1085,3 +1085,352 @@ describe('🔍 Magic-byte file validation', () => {
     expect((await res.json()).error).toBe('invalid_file')
   })
 })
+
+// ══════════════════════════════════════════════════════════════
+//  MISSING ROUTE TESTS — added by audit agent
+// ══════════════════════════════════════════════════════════════
+
+// ── Helper: reviewer-authed request ──────────────────────────
+function reviewerReq(path, method = 'GET', body = null) {
+  const { createReviewerSession } = require('../src/lib/crm-store.ts')
+  const token = createReviewerSession()
+  return req(path, method, body, `crm_reviewer_session=${token}`)
+}
+
+// ── Helper: compute reviewer password hash for env setup ─────
+function getReviewerHash(password) {
+  const { hashReviewerPassword } = require('../src/lib/crm-store.ts')
+  return hashReviewerPassword(password)
+}
+
+// ══════════════════════════════════════════════════════════════
+describe('🔑 POST /api/crm/reviewer-login', () => {
+  const REVIEWER_PASS = 'ReviewerPass123!@#'
+
+  beforeAll(() => {
+    const { hashReviewerPassword } = require('../src/lib/crm-store.ts')
+    process.env.REVIEWER_PASSWORD_HASH = hashReviewerPassword(REVIEWER_PASS)
+  })
+
+  afterAll(() => {
+    delete process.env.REVIEWER_PASSWORD_HASH
+  })
+
+  test('✅ correct password returns ok + sets cookie', async () => {
+    const { POST } = await import('../src/app/api/crm/reviewer-login/route.ts')
+    const r = req('/api/crm/reviewer-login', 'POST', { password: REVIEWER_PASS })
+    const res = await POST(r)
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.ok).toBe(true)
+    const cookie = res.headers.get('set-cookie') || ''
+    expect(cookie).toMatch(/crm_reviewer_session=/)
+  })
+
+  test('❌ wrong password returns 401', async () => {
+    const { POST } = await import('../src/app/api/crm/reviewer-login/route.ts')
+    const r = req('/api/crm/reviewer-login', 'POST', { password: 'wrongpassword' })
+    const res = await POST(r)
+    expect(res.status).toBe(401)
+    expect((await res.json()).ok).toBe(false)
+  })
+
+  test('❌ missing REVIEWER_PASSWORD_HASH env returns 503', async () => {
+    const saved = process.env.REVIEWER_PASSWORD_HASH
+    delete process.env.REVIEWER_PASSWORD_HASH
+    const { POST } = await import('../src/app/api/crm/reviewer-login/route.ts')
+    const r = req('/api/crm/reviewer-login', 'POST', { password: REVIEWER_PASS })
+    const res = await POST(r)
+    expect(res.status).toBe(503)
+    process.env.REVIEWER_PASSWORD_HASH = saved
+  })
+})
+
+// ══════════════════════════════════════════════════════════════
+describe('🔓 POST /api/crm/reviewer-logout', () => {
+  test('✅ clears reviewer session cookie', async () => {
+    const { POST } = await import('../src/app/api/crm/reviewer-logout/route.ts')
+    const res = await POST()
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+    const cookie = res.headers.get('set-cookie') || ''
+    expect(cookie).toMatch(/crm_reviewer_session=;|crm_reviewer_session=\s*;/)
+  })
+})
+
+// ══════════════════════════════════════════════════════════════
+describe('📝 PATCH /api/crm/review', () => {
+  beforeEach(() => resetDb())
+
+  test('✅ reviewer can set status to approved', async () => {
+    const { PATCH } = await import('../src/app/api/crm/review/route.ts')
+    const r = reviewerReq('/api/crm/review', 'PATCH', { taskId: 'T1', status: 'approved' })
+    const res = await PATCH(r)
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('✅ reviewer can set status to rejected', async () => {
+    const { PATCH } = await import('../src/app/api/crm/review/route.ts')
+    const r = reviewerReq('/api/crm/review', 'PATCH', { taskId: 'T1', status: 'rejected' })
+    const res = await PATCH(r)
+    expect(res.status).toBe(200)
+  })
+
+  test('✅ admin session can also review', async () => {
+    const { PATCH } = await import('../src/app/api/crm/review/route.ts')
+    const r = authedReq('/api/crm/review', 'PATCH', { taskId: 'T1', status: 'approved' })
+    const res = await PATCH(r)
+    expect(res.status).toBe(200)
+  })
+
+  test('✅ can save note without status', async () => {
+    const { PATCH } = await import('../src/app/api/crm/review/route.ts')
+    const r = reviewerReq('/api/crm/review', 'PATCH', { taskId: 'T1', note: 'Looks good' })
+    const res = await PATCH(r)
+    expect(res.status).toBe(200)
+  })
+
+  test('❌ invalid status returns 400', async () => {
+    const { PATCH } = await import('../src/app/api/crm/review/route.ts')
+    const r = reviewerReq('/api/crm/review', 'PATCH', { taskId: 'T1', status: 'hacked' })
+    const res = await PATCH(r)
+    expect(res.status).toBe(400)
+  })
+
+  test('❌ unauthenticated returns 401', async () => {
+    const { PATCH } = await import('../src/app/api/crm/review/route.ts')
+    const r = req('/api/crm/review', 'PATCH', { taskId: 'T1', status: 'approved' })
+    const res = await PATCH(r)
+    expect(res.status).toBe(401)
+  })
+})
+
+// ══════════════════════════════════════════════════════════════
+describe('⚙️  PATCH /api/crm/tasks/[id]', () => {
+  beforeEach(() => resetDb())
+
+  test('✅ action=done marks task and returns archived:true', async () => {
+    const { PATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts')
+    const r = authedReq('/api/crm/tasks/TASK-1', 'PATCH', { action: 'done' })
+    const res = await PATCH(r, { params: { id: 'TASK-1' } })
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.ok).toBe(true)
+    expect(body.archived).toBe(true)
+  })
+
+  test('✅ action=notes saves notes', async () => {
+    const { PATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts')
+    const r = authedReq('/api/crm/tasks/TASK-1', 'PATCH', { action: 'notes', notes: 'Client called.' })
+    const res = await PATCH(r, { params: { id: 'TASK-1' } })
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('✅ action=notes truncates at 10,000 chars', async () => {
+    const { PATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts')
+    const longNotes = 'x'.repeat(15_000)
+    const r = authedReq('/api/crm/tasks/TASK-1', 'PATCH', { action: 'notes', notes: longNotes })
+    const res = await PATCH(r, { params: { id: 'TASK-1' } })
+    expect(res.status).toBe(200)
+    // lastUpdate holds the truncated value
+    expect(lastUpdate[0].length).toBeLessThanOrEqual(10_000)
+  })
+
+  test('✅ action=delete archives task', async () => {
+    const { PATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts')
+    const r = authedReq('/api/crm/tasks/TASK-2', 'PATCH', { action: 'delete' })
+    const res = await PATCH(r, { params: { id: 'TASK-2' } })
+    expect(res.status).toBe(200)
+  })
+
+  test('✅ action=delete_permanent removes task', async () => {
+    const { PATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts')
+    const r = authedReq('/api/crm/tasks/TASK-3', 'PATCH', { action: 'delete_permanent' })
+    const res = await PATCH(r, { params: { id: 'TASK-3' } })
+    expect(res.status).toBe(200)
+  })
+
+  test('❌ unknown action returns 400', async () => {
+    const { PATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts')
+    const r = authedReq('/api/crm/tasks/TASK-1', 'PATCH', { action: 'explode' })
+    const res = await PATCH(r, { params: { id: 'TASK-1' } })
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('unknown_action')
+  })
+
+  test('❌ unauthenticated returns 401', async () => {
+    const { PATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts')
+    const r = req('/api/crm/tasks/TASK-1', 'PATCH', { action: 'done' }, 'crm_session=fakesession.badsig')
+    const res = await PATCH(r, { params: { id: 'TASK-1' } })
+    expect(res.status).toBe(401)
+  })
+})
+
+// ══════════════════════════════════════════════════════════════
+describe('📒 PATCH /api/crm/clients/[id]/notes', () => {
+  beforeEach(() => resetDb())
+
+  test('✅ saves notes for client', async () => {
+    const { PATCH } = await import('../src/app/api/crm/clients/[id]/notes/route.ts')
+    const r = authedReq('/api/crm/clients/CLIENT-1/notes', 'PATCH', { notes: 'Great client.' })
+    const res = await PATCH(r, { params: { id: 'CLIENT-1' } })
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('✅ truncates notes beyond 10,000 chars', async () => {
+    const { PATCH } = await import('../src/app/api/crm/clients/[id]/notes/route.ts')
+    const r = authedReq('/api/crm/clients/CLIENT-1/notes', 'PATCH', { notes: 'a'.repeat(20_000) })
+    const res = await PATCH(r, { params: { id: 'CLIENT-1' } })
+    expect(res.status).toBe(200)
+  })
+
+  test('✅ non-string notes treated as empty string', async () => {
+    const { PATCH } = await import('../src/app/api/crm/clients/[id]/notes/route.ts')
+    const r = authedReq('/api/crm/clients/CLIENT-1/notes', 'PATCH', { notes: 12345 })
+    const res = await PATCH(r, { params: { id: 'CLIENT-1' } })
+    expect(res.status).toBe(200)
+  })
+
+  test('❌ unauthenticated returns 401', async () => {
+    const { PATCH } = await import('../src/app/api/crm/clients/[id]/notes/route.ts')
+    const r = req('/api/crm/clients/CLIENT-1/notes', 'PATCH', { notes: 'hi' })
+    const res = await PATCH(r, { params: { id: 'CLIENT-1' } })
+    expect(res.status).toBe(401)
+  })
+})
+
+// ══════════════════════════════════════════════════════════════
+describe('💰 POST + DELETE /api/crm/clients/[id]/tax-returns', () => {
+  beforeEach(() => resetDb())
+
+  test('✅ adds a refund tax return', async () => {
+    const { POST } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'POST', {
+      year: '2023-24', refundAmount: 1200, type: 'refund'
+    })
+    const res = await POST(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('✅ adds a tax-owed record', async () => {
+    const { POST } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'POST', {
+      year: '2022-23', refundAmount: 500, type: 'owed'
+    })
+    const res = await POST(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(200)
+  })
+
+  test('✅ adds a super return', async () => {
+    const { POST } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'POST', {
+      year: '2023-24', isSuper: true, superAmount: 3500
+    })
+    const res = await POST(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(200)
+  })
+
+  test('❌ invalid year format returns 400', async () => {
+    const { POST } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'POST', {
+      year: '2023', refundAmount: 1000, type: 'refund'
+    })
+    const res = await POST(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_year')
+  })
+
+  test('❌ negative refund amount returns 400', async () => {
+    const { POST } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'POST', {
+      year: '2023-24', refundAmount: -100, type: 'refund'
+    })
+    const res = await POST(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_amount')
+  })
+
+  test('❌ amount above 1,000,000 returns 400', async () => {
+    const { POST } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'POST', {
+      year: '2023-24', refundAmount: 2_000_000, type: 'refund'
+    })
+    const res = await POST(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(400)
+  })
+
+  test('✅ DELETE removes a tax return by year', async () => {
+    const { DELETE } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'DELETE', { year: '2023-24' })
+    const res = await DELETE(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('❌ DELETE with invalid year returns 400', async () => {
+    const { DELETE } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = authedReq('/api/crm/clients/C1/tax-returns', 'DELETE', { year: 'bad-year' })
+    const res = await DELETE(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_year')
+  })
+
+  test('❌ unauthenticated POST returns 401', async () => {
+    const { POST } = await import('../src/app/api/crm/clients/[id]/tax-returns/route.ts')
+    const r = req('/api/crm/clients/C1/tax-returns', 'POST', { year: '2023-24', refundAmount: 1000, type: 'refund' })
+    const res = await POST(r, { params: { id: 'C1' } })
+    expect(res.status).toBe(401)
+  })
+})
+
+// ══════════════════════════════════════════════════════════════
+describe('📤 POST /api/tax-form/upload', () => {
+  beforeEach(() => {
+    resetDb()
+    require('@vercel/blob').put.mockClear()
+  })
+
+  test('✅ valid JPEG invoice uploads successfully', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    fd.append('file', fileWithBytes(jpegBytes, 'image/jpeg', 'invoice.jpg'))
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.url).toBeTruthy()
+  })
+
+  test('✅ valid PDF invoice uploads successfully', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
+    const pdfBytes = [0x25, 0x50, 0x44, 0x46, ...Array(100).fill(0x20)]
+    fd.append('file', fileWithBytes(pdfBytes, 'application/pdf', 'invoice.pdf'))
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
+    expect(res.status).toBe(200)
+  })
+
+  test('❌ executable disguised as JPEG is rejected', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
+    const exeBytes = [0x4D, 0x5A, 0x90, 0x00, ...Array(100).fill(0x00)]
+    fd.append('file', fileWithBytes(exeBytes, 'image/jpeg', 'virus.jpg'))
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
+    expect(res.status).toBe(400)
+  })
+
+  test('❌ missing file returns 400', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
+    expect(res.status).toBe(400)
+  })
+})

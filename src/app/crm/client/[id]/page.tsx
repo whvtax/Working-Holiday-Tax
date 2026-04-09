@@ -1,7 +1,9 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { validateSession } from '@/lib/crm-store'
-import ClientPageClient from './ClientPageClient'
+import dynamic from 'next/dynamic'
+
+const ClientPageClient = dynamic(() => import('./ClientPageClient'), { ssr: false })
 
 export default async function ClientPage({ params }: { params: { id: string } }) {
   const cookieStore = cookies()

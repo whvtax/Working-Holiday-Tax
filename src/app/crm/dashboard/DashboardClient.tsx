@@ -130,6 +130,13 @@ export default function DashboardClient() {
   },[])
 
   useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
+
+  // Auto-poll every 20s — keeps all open sessions in sync
+  useEffect(()=>{
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients()]) }, 20_000)
+    return ()=> clearInterval(id)
+  },[loadTasks, loadClients])
+
   const openArchive = useCallback(()=>{ setView('archive'); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
@@ -1151,10 +1158,10 @@ export default function DashboardClient() {
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                         Download PDF
                       </button>
-                      <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmComplete(activeTask.id)}>✓ Mark as done</button>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
                     </>
                   : <>
-                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmTransfer(activeTask)}>
+                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>transferToClients(activeTask)}>
                         👤 Move to clients
                       </button>
                       <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
@@ -1728,29 +1735,7 @@ export default function DashboardClient() {
 
       {/* Confirm delete task */}
       {/* ── Complete task confirmation modal ──────────────────────────── */}
-      {confirmComplete && (
-        <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:1000}}>
-          <div style={{background:'#fff',borderRadius:20,padding:'32px 28px',maxWidth:380,width:'90%',textAlign:'center',fontFamily:'inherit'}}>
-            <div style={{fontSize:40,marginBottom:12}}>✅</div>
-            <div style={{fontSize:18,fontWeight:700,color:'#0a1410',marginBottom:8}}>Mark task as complete?</div>
-            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.65,marginBottom:22}}>
-              This will permanently delete all sensitive data:<br/>
-              <strong>TFN, bank details, address, AU phone and documents.</strong><br/><br/>
-              Kept: <strong>name, date of birth, email, WhatsApp and country.</strong>
-            </div>
-            <div style={{display:'flex',gap:10,justifyContent:'center'}}>
-              <button
-                onClick={()=>setConfirmComplete(null)}
-                style={{padding:'10px 20px',borderRadius:10,border:'1px solid #e4eae7',background:'#fff',fontSize:13,fontWeight:500,cursor:'pointer',fontFamily:'inherit'}}
-              >Cancel</button>
-              <button
-                onClick={()=>markDone(confirmComplete)}
-                style={{padding:'10px 20px',borderRadius:10,border:'none',background:'#0E5C42',color:'#fff',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}
-              >✓ Yes, complete & wipe data</button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {captureRefund && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setCaptureRefund(null)}}}>
@@ -1818,21 +1803,7 @@ export default function DashboardClient() {
       )}
 
       {/* Confirm transfer to clients */}
-      {confirmTransfer && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmTransfer(null)}}>
-          <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>👤</div>
-            <div style={S.mTitle}>Move to clients?</div>
-            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>
-              A client card will be created for <strong>{confirmTransfer.clientName}</strong> and the task will be removed.
-            </div>
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmTransfer(null)}>Cancel</button>
-              <button style={{...S.mCancel,background:'#e8f5f0',color:'#0E5C42',border:'1.5px solid #0E5C42',fontWeight:600}} onClick={()=>transferToClients(confirmTransfer)}>Yes, move to clients</button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Confirm permanent delete */}
       {confirmPermDelete && (

@@ -79,14 +79,13 @@ function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void })
 
 function TaskCard({
   task, expanded, onToggle, onSetStatus, acting,
-  setViewUrl, notes, setNotes, savingNote, onSaveNote, onDelete,
+  setViewUrl, notes, setNotes, savingNote, onSaveNote,
 }: {
   task: Task; expanded: boolean; onToggle: () => void
   onSetStatus: (id: string, s: ReviewStatus) => void; acting: string | null
   setViewUrl: (u: string | null) => void
   notes: Record<string, string>; setNotes: React.Dispatch<React.SetStateAction<Record<string, string>>>
   savingNote: string | null; onSaveNote: (id: string, note: string) => void
-  onDelete: (id: string) => void
 }) {
   const [hiding, setHiding] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -143,24 +142,11 @@ function TaskCard({
             {[task.country, task.taxYear, task.submittedAt ? `Submitted ${new Date(task.submittedAt).toLocaleDateString('en-AU')}` : ''].filter(Boolean).join(' · ')}
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0, marginLeft: 10 }}>
-          {isDone && (
-            <button
-              onClick={e => { e.stopPropagation(); onDelete(task.id) }}
-              title="Delete"
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '5px', borderRadius: 8, display: 'flex', alignItems: 'center', color: '#c9d5cf' }}
-            >
-              <svg width={15} height={15} viewBox="0 0 24 24" fill="none">
-                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          )}
-          {!isDone && (
-            <svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: '0.2s' }}>
-              <path d="M6 9l6 6 6-6" stroke="#8DA89A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          )}
-        </div>
+        {!isDone && (
+          <svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: '0.2s', flexShrink: 0, marginLeft: 12 }}>
+            <path d="M6 9l6 6 6-6" stroke="#8DA89A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
       </div>
 
       {/* Body — only show if pending and expanded */}
@@ -292,9 +278,6 @@ function TaskCard({
 
 export default function ReviewerClient() {
   const [tasks, setTasks]           = useState<Task[]>([])
-  const [dismissed, setDismissed]   = useState<Set<string>>(() => {
-    try { return new Set(JSON.parse(sessionStorage.getItem('rv_dismissed') || '[]')) } catch { return new Set() }
-  })
   const [loading, setLoading]       = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [notes, setNotes]           = useState<Record<string, string>>({})
@@ -309,10 +292,8 @@ export default function ReviewerClient() {
       const r = await fetch('/api/crm/tasks', { cache: 'no-store' })
       const d = await r.json()
       if (d.ok) {
-        const dismissed = (() => { try { return new Set(JSON.parse(sessionStorage.getItem('rv_dismissed') || '[]')) } catch { return new Set() } })()
-        const active = d.tasks.filter((t: Task) => !t.done && !dismissed.has(t.id))
+        const active = d.tasks.filter((t: Task) => !t.done)
         setTasks(active)
-        setDismissed(dismissed as Set<string>)
         setNewTaskCount(0)
         prevCountRef.current = active.filter((t: Task) => t.reviewStatus === 'pending').length
       }
@@ -325,22 +306,33 @@ export default function ReviewerClient() {
 
   useEffect(() => { loadTasks() }, [loadTasks])
 
-  // Poll every 30s for new submissions
+  // Auto-poll every 20s — full sync, keeps multiple reviewers in sync
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
         const r = await fetch('/api/crm/tasks', { cache: 'no-store' })
         const d = await r.json()
         if (d.ok) {
-          const active = d.tasks.filter((t: Task) => !t.done && !dismissed.has(t.id))
+          const active = d.tasks.filter((t: Task) => !t.done)
           const pendingCount = active.filter((t: Task) => t.reviewStatus === 'pending').length
+          // Show badge if new tasks arrived
           if (pendingCount > prevCountRef.current && prevCountRef.current > 0) {
             setNewTaskCount(pendingCount - prevCountRef.current)
           }
           prevCountRef.current = pendingCount
+          // Merge: keep local status changes, add new tasks from server
+          setTasks(prev => {
+            const localById = new Map(prev.map(t => [t.id, t]))
+            return active.map((t: Task) => {
+              const local = localById.get(t.id)
+              // Prefer local reviewStatus if it's more recent (not pending)
+              if (local && local.reviewStatus !== 'pending') return { ...t, reviewStatus: local.reviewStatus }
+              return t
+            })
+          })
         }
       } catch {}
-    }, 30000)
+    }, 20000)
     return () => clearInterval(interval)
   }, [])
 
@@ -371,21 +363,6 @@ export default function ReviewerClient() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taskId, note }),
     }).catch(console.error).finally(() => setSavingNote(null))
-  }
-
-  async function deleteTask(taskId: string) {
-    setTasks(prev => prev.filter(t => t.id !== taskId))
-    setDismissed(prev => {
-      const next = new Set(prev)
-      next.add(taskId)
-      try { sessionStorage.setItem('rv_dismissed', JSON.stringify([...next])) } catch {}
-      return next
-    })
-    fetch(`/api/crm/tasks/${taskId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'delete_permanent' }),
-    }).catch(console.error)
   }
 
   async function logout() {
@@ -489,7 +466,6 @@ export default function ReviewerClient() {
               setNotes={setNotes}
               savingNote={savingNote}
               onSaveNote={saveNote}
-              onDelete={deleteTask}
               setViewUrl={setViewUrl}
 
             />
