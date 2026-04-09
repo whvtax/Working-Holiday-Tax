@@ -253,6 +253,7 @@ function TaskCard({
 export default function ReviewerClient() {
   const [tasks, setTasks]           = useState<Task[]>([])
   const [loading, setLoading]       = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const [expanded, setExpanded]     = useState<string | null>(null)
 
   const [acting, setActing]         = useState<string | null>(null)
@@ -332,28 +333,62 @@ export default function ReviewerClient() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#F4F9F6', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif' }}>
-      <div style={{ background: G, padding: '0 20px', height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+      <style>{`
+        .rv-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 56px; }
+        .rv-btns { display: flex; gap: 8px; }
+        @media (max-width: 600px) {
+          .rv-nav { flex-direction: column; height: auto; padding: 12px 16px 0; align-items: stretch; }
+          .rv-btns { padding-bottom: 12px; }
+        }
+      `}</style>
+      <div style={{ background: G }} className="rv-nav">
+        {/* Logo + title */}
         <button
           onClick={() => { setExpanded(null); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-          style={{ color: '#fff', fontWeight: 700, fontSize: 14, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: 0, display: 'flex', alignItems: 'center', gap: 10 }}
+          style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', padding: '8px 0' }}
         >
-          Working Holiday Tax · Review Portal
+          <div style={{ width: 34, height: 34, borderRadius: 9, flexShrink: 0, overflow: 'hidden' }}>
+            <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="100" r="100" fill="#0B5240"/>
+              <g transform="translate(100,100) scale(3.57) translate(-17,-17)">
+                <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
+                <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
+                <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.4" strokeLinecap="round"/>
+                <circle cx="2" cy="2" r="1.8" fill="#E9A020"/>
+                <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.3" strokeLinejoin="round"/>
+                <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+              </g>
+            </svg>
+          </div>
+          <div style={{ textAlign: 'left' }}>
+            <div style={{ color: '#fff', fontWeight: 700, fontSize: 14, letterSpacing: '-0.2px', lineHeight: 1.2 }}>Review Portal</div>
+            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11 }}>Working Holiday Tax</div>
+          </div>
           {newTaskCount > 0 && (
-            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 20, height: 20, borderRadius: 100, background: '#F59E0B', color: '#fff', fontSize: 10, fontWeight: 800, padding: '0 5px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: 20, height: 20, borderRadius: 100, background: '#F59E0B', color: '#fff', fontSize: 10, fontWeight: 800, padding: '0 5px', marginLeft: 4 }}>
               +{newTaskCount}
             </span>
           )}
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {/* Buttons */}
+        <div className="rv-btns">
           <button
-            onClick={async () => { setLoading(true); await loadTasks() }}
-            title="Refresh"
-            style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}
+            onClick={async () => { setRefreshing(true); await loadTasks(); setRefreshing(false) }}
+            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, height: 36, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: refreshing ? 'default' : 'pointer', fontFamily: 'inherit' }}
           >
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" style={{ animation: refreshing ? 'spin 0.7s linear infinite' : 'none', flexShrink: 0 }}>
+              <path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             Refresh
           </button>
-          <button onClick={logout} style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>Sign out</button>
+          <button
+            onClick={logout}
+            style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', height: 36, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.85)', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}
+          >
+            Sign out
+          </button>
         </div>
       </div>
 

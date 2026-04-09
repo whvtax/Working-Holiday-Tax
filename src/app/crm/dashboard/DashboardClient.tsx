@@ -85,6 +85,7 @@ export default function DashboardClient() {
   const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
   const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
   const [loading, setLoading]     = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string|null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
@@ -683,6 +684,7 @@ export default function DashboardClient() {
 
   return (
     <>
+      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
 
       <div style={S.shell}>
@@ -772,11 +774,14 @@ export default function DashboardClient() {
           </div>
           <div style={{padding:'9px 11px 16px',display:'flex',alignItems:'center',gap:8}}>
             <button
-              onClick={async () => { setLoading(true); await Promise.all([loadTasks(), loadClients()]); setLoading(false) }}
+              onClick={async () => { setRefreshing(true); await Promise.all([loadTasks(), loadClients()]); setRefreshing(false) }}
               title="Refresh"
-              style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,height:30,padding:'0 10px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8,cursor:'pointer',color:'rgba(255,255,255,0.5)',fontSize:11,fontFamily:'inherit',fontWeight:500,flex:1}}
+              style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,height:30,padding:'0 10px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8,cursor:refreshing?'default':'pointer',color:'rgba(255,255,255,0.5)',fontSize:11,fontFamily:'inherit',fontWeight:500,flex:1}}
             >
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{animation:refreshing?'spin 0.7s linear infinite':'none',display:'block'}}>
+                <path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               Refresh
             </button>
             <button style={{...S.sbLock,padding:0,flex:'none',width:'auto',gap:6,height:30,paddingLeft:10,paddingRight:10,background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8}} onClick={lockAndExit}>
@@ -791,8 +796,22 @@ export default function DashboardClient() {
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={S.page}>
-              <div style={S.pgTitle}>Tasks</div>
-              <div style={S.pgSub}>Tax return submissions awaiting processing</div>
+              <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18}}>
+                <div>
+                  <div style={S.pgTitle}>Tasks</div>
+                  <div style={{...S.pgSub,marginBottom:0}}>Tax return submissions awaiting processing</div>
+                </div>
+                <button
+                  onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients()]);setRefreshing(false)}}
+                  style={{display:'flex',alignItems:'center',gap:6,height:34,padding:'0 14px',background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:100,cursor:refreshing?'default':'pointer',color:'#587066',fontSize:12,fontWeight:600,fontFamily:'inherit',flexShrink:0}}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{animation:refreshing?'spin 0.7s linear infinite':'none',display:'block'}}>
+                    <path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Refresh
+                </button>
+              </div>
 
               {/* Season stats */}
               {(()=>{
