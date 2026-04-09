@@ -81,11 +81,13 @@ function Countdown({ decidedAt, onDone }: { decidedAt: number; onDone: () => voi
 
 function TaskCard({
   task, expanded, onToggle, onSetStatus, acting,
-  setViewUrl, onDelete,
+  setViewUrl, notes, setNotes, savingNote, onSaveNote, onDelete,
 }: {
   task: Task; expanded: boolean; onToggle: () => void
   onSetStatus: (id: string, s: ReviewStatus) => void; acting: string | null
   setViewUrl: (u: string | null) => void
+  notes: Record<string, string>; setNotes: React.Dispatch<React.SetStateAction<Record<string, string>>>
+  savingNote: string | null; onSaveNote: (id: string, note: string) => void
   onDelete: (id: string) => void
 }) {
   const [hiding, setHiding] = useState(false)
@@ -142,23 +144,24 @@ function TaskCard({
             {[task.country, task.taxYear, task.submittedAt ? `Submitted ${new Date(task.submittedAt).toLocaleDateString('en-AU')}` : ''].filter(Boolean).join(' · ')}
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0, marginLeft: 8 }}>
-          <button
-            onClick={e => { e.stopPropagation(); onDelete(task.id) }}
-            title="Delete"
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px 6px', borderRadius: 6, display: 'flex', alignItems: 'center', color: '#c9d5cf', lineHeight: 1 }}
-          >
-            <svg width={14} height={14} viewBox="0 0 24 24" fill="none">
-              <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0, marginLeft: 10 }}>
+          {isDone && (
+            <button
+              onClick={e => { e.stopPropagation(); onDelete(task.id) }}
+              title="Delete"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '5px', borderRadius: 8, display: 'flex', alignItems: 'center', color: '#c9d5cf' }}
+            >
+              <svg width={15} height={15} viewBox="0 0 24 24" fill="none">
+                <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          )}
           {!isDone && (
             <svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: '0.2s' }}>
               <path d="M6 9l6 6 6-6" stroke="#8DA89A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           )}
         </div>
-
       </div>
 
       {/* Body — only show if pending and expanded */}
@@ -225,6 +228,29 @@ function TaskCard({
             </Section>
           )}
 
+          {/* Note to admin */}
+          <div style={{ background: '#fff', border: '1px solid #E2EDE8', borderRadius: 12, overflow: 'hidden', marginBottom: 12 }}>
+            <div style={{ padding: '8px 16px', background: '#F0F7F4', borderBottom: '1px solid #E2EDE8' }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: G, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>Note to admin</span>
+            </div>
+            <div style={{ padding: 12, display: 'flex', gap: 8 }}>
+              <textarea
+                value={notes[task.id] || ''}
+                onChange={e => setNotes(p => ({ ...p, [task.id]: e.target.value }))}
+                placeholder="Leave a note for the admin..."
+                rows={2}
+                style={{ flex: 1, border: '1.5px solid #D4EAE2', borderRadius: 10, padding: '8px 12px', fontSize: 13, fontFamily: 'inherit', resize: 'vertical', outline: 'none', color: '#1A2822' }}
+              />
+              <button
+                onClick={() => onSaveNote(task.id, notes[task.id] || '')}
+                disabled={savingNote === task.id}
+                style={{ height: 38, padding: '0 14px', background: '#EAF6F1', color: G, border: '1px solid #C8EAE0', borderRadius: 100, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', alignSelf: 'flex-end', opacity: savingNote === task.id ? 0.6 : 1 }}
+              >
+                {savingNote === task.id ? '...' : 'Save'}
+              </button>
+            </div>
+          </div>
+
           {/* Action buttons */}
           {task.reviewStatus === 'pending' && (
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', paddingTop: 2 }}>
@@ -260,7 +286,7 @@ function TaskCard({
       )}
 
       {showCountdown && isDone && !hiding && !hidden && (
-        <Countdown seconds={300} onDone={handleDone} />
+        <Countdown seconds={72 * 60 * 60} onDone={handleDone} />
       )}
     </div>
   )
@@ -270,6 +296,8 @@ export default function ReviewerClient() {
   const [tasks, setTasks]           = useState<Task[]>([])
   const [loading, setLoading]       = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [notes, setNotes]           = useState<Record<string, string>>({})
+  const [savingNote, setSavingNote] = useState<string | null>(null)
   const [expanded, setExpanded]     = useState<string | null>(null)
 
   const [acting, setActing]         = useState<string | null>(null)
@@ -333,6 +361,15 @@ export default function ReviewerClient() {
     }).catch(console.error)
   }
 
+  async function saveNote(taskId: string, note: string) {
+    setSavingNote(taskId)
+    fetch('/api/crm/review', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ taskId, note }),
+    }).catch(console.error).finally(() => setSavingNote(null))
+  }
+
   async function deleteTask(taskId: string) {
     setTasks(prev => prev.filter(t => t.id !== taskId))
     fetch(`/api/crm/tasks/${taskId}`, {
@@ -352,8 +389,9 @@ export default function ReviewerClient() {
     const statusOrder = { pending: 0, approved: 1, rejected: 1 }
     const statusDiff = (statusOrder[a.reviewStatus] ?? 0) - (statusOrder[b.reviewStatus] ?? 0)
     if (statusDiff !== 0) return statusDiff
-    // Within same group — newest first
-    return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
+    // Pending: oldest first. Decided: newest first (most recently decided at top of decided section)
+    const dir = a.reviewStatus === 'pending' ? 1 : -1
+    return dir * (new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime())
   })
 
   return (
@@ -438,6 +476,10 @@ export default function ReviewerClient() {
               onToggle={() => setExpanded(expanded === task.id ? null : task.id)}
               onSetStatus={setStatus}
               acting={acting}
+              notes={notes}
+              setNotes={setNotes}
+              savingNote={savingNote}
+              onSaveNote={saveNote}
               onDelete={deleteTask}
               setViewUrl={setViewUrl}
 
