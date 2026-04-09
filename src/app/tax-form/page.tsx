@@ -182,8 +182,14 @@ export default function TaxFormPage() {
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
   const [declared, setDeclared]       = useState<'yes'|'no'|''>('')
+  const [declaredIncome, setDeclaredIncome] = useState(false)
   const [taxYear, setTaxYear]         = useState('2024-25')
   const [terms, setTerms]             = useState(false)
+  // ABN
+  const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
+  const [abnNumber, setAbnNumber]     = useState('')
+  const [abnIncome, setAbnIncome]     = useState('')
+  const [abnInvoices, setAbnInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -205,6 +211,11 @@ export default function TaxFormPage() {
     if (!marital)            e.marital     = 'Required'
     if (!tfn.trim())         e.tfn         = 'Required'
     if (!primaryJob.trim())  e.primaryJob  = 'Required'
+    if (!hasAbn)             e.hasAbn      = 'Required'
+    if (hasAbn === 'yes') {
+      if (!abnNumber.trim()) e.abnNumber   = 'Required'
+      if (!abnIncome.trim()) e.abnIncome   = 'Required'
+    }
     if (!bankName.trim())    e.bankName    = 'Required'
     if (!bankHolder.trim())  e.bankHolder  = 'Required'
     if (!bankAccount.trim()) e.bankAccount = 'Required'
@@ -214,6 +225,7 @@ export default function TaxFormPage() {
     if (!taxStatus)           e.taxStatus      = 'Required'
     if (!declared)            e.declared       = 'Required'
     if (declared === 'no')    e.declared       = 'You must agree to submit'
+    if (!declaredIncome)      e.declaredIncome = 'You must confirm this declaration to proceed'
     if (!howHeard.trim())     e.howHeard       = 'Required'
     return e
   }
@@ -237,20 +249,30 @@ export default function TaxFormPage() {
     fd.append('marital',     marital)
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
+    fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
+    if (hasAbn === 'yes') {
+      fd.append('abnNumber',   abnNumber)
+      fd.append('abnIncome',   abnIncome)
+    }
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ Yes, I agree' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredText', 'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.')
+    fd.append('declaredIncome', declaredIncome ? '✓ ' + NEW_DECL_TEXT : '')
     fd.append('taxStatusText', 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:')
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
 
     const invoiceUrls: string[] = []
     try {
+      const allFiles = [
+        ...invoices.files.map(f => ({ file: f, type: 'invoice' })),
+        ...abnInvoices.files.map(f => ({ file: f, type: 'abn-invoice' })),
+      ]
       const results = await Promise.all(
-        invoices.files.map(f =>
+        allFiles.map(({ file: f }) =>
           fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
             method: 'POST', body: f, headers: { 'Content-Type': f.type },
           }).then(r => r.ok ? r.json() : null).catch(() => null)
@@ -468,6 +490,46 @@ export default function TaxFormPage() {
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
             </Field>
 
+          <div className="form-section-title">ABN (Australian Business Number)</div>
+
+            <Field label="Do you have an ABN?" required error={errors.hasAbn}>
+              <div className="radio-group">
+                {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
+                  <label key={opt.val} className={`radio-card ${hasAbn === opt.val ? 'radio-card-active' : ''}`}>
+                    <input type="radio" name="hasAbn" value={opt.val} checked={hasAbn === opt.val}
+                      onChange={() => { setHasAbn(opt.val); setErrors(p => ({...p, hasAbn: ''})) }} className="hidden" />
+                    <div className={`radio-dot ${hasAbn === opt.val ? 'radio-dot-active' : ''}`} />
+                    {opt.label}
+                  </label>
+                ))}
+              </div>
+            </Field>
+
+            {hasAbn === 'yes' && (<>
+              <Field label="ABN number" required error={errors.abnNumber}>
+                <input className={`inp ${errors.abnNumber ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 345 678 901" inputMode="numeric"
+                  value={abnNumber} onChange={e => { setAbnNumber(e.target.value); setErrors(p => ({...p, abnNumber: ''})) }} />
+              </Field>
+
+              <Field label="Total annual income under ABN (AUD)" required error={errors.abnIncome}>
+                <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
+                  value={abnIncome} onChange={e => { setAbnIncome(e.target.value); setErrors(p => ({...p, abnIncome: ''})) }} />
+              </Field>
+
+              <Field label="Business expense invoices" error={errors.abnInvoices}>
+                <p style={{fontSize:'12px',color:'#587066',marginBottom:'10px',lineHeight:1.6}}>
+                  Please upload invoices for all business-related expenses you would like to claim as deductions.
+                </p>
+                <MultiFileUpload
+                  state={abnInvoices}
+                  onChange={setAbnInvoices}
+                  accept="image/jpeg,image/png,image/webp,application/pdf"
+                  maxFiles={10}
+                  label="Upload expense invoices"
+                />
+              </Field>
+            </>)}
+
           <div className="form-section-title">Bank account details</div>
             <Field label="Bank name" required error={errors.bankName}>
               <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
@@ -512,7 +574,7 @@ export default function TaxFormPage() {
             <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
                 I confirm that I have reviewed the{' '}
-                <a href="/tax-residency" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>
+                <a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>
                 {' '}section and all relevant ATO information, and I declare that I am:<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
               </label>
               <div className="radio-group radio-group-col">
@@ -531,24 +593,29 @@ export default function TaxFormPage() {
             </Field>
 
             <Field label="" required error={errors.declared}>
-              <p style={{fontSize:'12px',color:'#587066',lineHeight:'1.7',marginBottom:'10px'}}>
-                I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
-                <a href="/client-agreement" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Client Agreement</a>
-                {' '}&amp;{' '}
-                <a href="/privacy" target="_blank" style={{color:'#0B5240',textDecoration:'underline'}}>Privacy Policy</a>.
-              </p>
-              <div className="radio-group radio-group-col">
-                {([
-                  { val: 'yes', label: 'Yes, I agree' },
-                  { val: 'no',  label: 'No' },
-                ] as const).map(opt => (
-                  <label key={opt.val} className={`radio-card ${declared === opt.val ? 'radio-card-active' : ''}`}>
-                    <input type="radio" name="declared" value={opt.val} checked={declared === opt.val}
-                      onChange={() => { setDeclared(opt.val); setErrors(p => ({...p, declared: ''})) }} className="hidden" />
-                    <div className={`radio-dot ${declared === opt.val ? 'radio-dot-active' : ''}`} />
-                    {opt.label}
-                  </label>
-                ))}
+              <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
+                <p className="decl-text">
+                  I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
+                  <a href="/client-agreement" target="_blank" className="decl-link">Client Agreement</a>
+                  {' '}&amp;{' '}
+                  <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a>.
+                </p>
+                <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
+                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
+                  <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
+                  <span className="check-label">I confirm this declaration</span>
+                </label>
+              </div>
+            </Field>
+
+            <Field label="" required error={(errors as any).declaredIncome}>
+              <div className={`declaration-box${(errors as any).declaredIncome ? ' decl-error' : ''}`}>
+                <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
+                <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
+                  <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
+                  <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
+                  <span className="check-label">I confirm this declaration</span>
+                </label>
               </div>
             </Field>
           </div>
@@ -570,7 +637,7 @@ export default function TaxFormPage() {
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
-                    primaryJob:'Primary Job',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
+                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
                     bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>

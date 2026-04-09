@@ -817,6 +817,13 @@ export default function DashboardClient() {
                 </div>
                 {pendingTasks.map(t=>(
                   <div key={t.id} style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
+                    {(t as any).reviewStatus && (t as any).reviewStatus !== 'pending' && (
+                      <span style={{fontSize:10,fontWeight:700,padding:'2px 8px',borderRadius:100,marginBottom:4,display:'inline-block',
+                        background:(t as any).reviewStatus==='approved'?'#EAF6F1':'#FEF2F2',
+                        color:(t as any).reviewStatus==='approved'?'#065F46':'#DC2626'}}>
+                        {(t as any).reviewStatus==='approved'?'✓ Approved':'✗ Rejected'}
+                      </span>
+                    )}
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
                     <div style={{flex:1}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>

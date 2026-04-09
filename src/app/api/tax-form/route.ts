@@ -70,6 +70,10 @@ export async function POST(req: NextRequest) {
         formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
         formData.get('declaredText')  ? sanitiseField(formData.get('declaredText')) : '',
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
+        formData.get('declaredIncome') ? sanitiseField(formData.get('declaredIncome')) : '',
+        formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
+        formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
+        formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
     })

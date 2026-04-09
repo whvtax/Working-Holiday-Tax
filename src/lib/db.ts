@@ -19,6 +19,8 @@ export type ClientRecord = {
 
 export type TaskType = 'tax-return' | 'super' | 'tfn' | 'abn'
 
+export type ReviewStatus = 'pending' | 'approved' | 'rejected'
+
 export type Task = {
   id:string; clientId:string; clientName:string; taskType:TaskType
   whatsapp:string; email:string; country:string; dob:string
@@ -95,6 +97,10 @@ export async function initDb() {
   await sqlWithTimeout(
     sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`,
     'ALTER crm_tasks au_phone'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS review_status TEXT NOT NULL DEFAULT 'pending'`,
+    'ALTER crm_tasks review_status'
   )
   await sqlWithTimeout(
     sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
@@ -416,4 +422,11 @@ export async function setYearlyCheckin(clientId: string, year: string, done: boo
   if (!client) return
   const updated = { ...client.yearlyCheckins, [year]: done }
   await sql`UPDATE crm_clients SET yearly_checkins = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+}
+
+// ── Reviewer ──────────────────────────────────────────────────────────────
+
+export async function setReviewStatus(taskId: string, status: ReviewStatus): Promise<void> {
+  await initDb()
+  await sql\`UPDATE crm_tasks SET review_status = \${status} WHERE id = \${taskId}\`
 }

@@ -57,6 +57,7 @@ export default function ABNFormPage() {
   const [tfn, setTfn]               = useState('')
   const [business, setBusiness]     = useState('')
   const [declared, setDeclared]     = useState(false)
+  const [declaredIncome, setDeclaredIncome] = useState(false)
   const [terms, setTerms]           = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
   const [submitted, setSubmitted]   = useState(false)
@@ -76,7 +77,8 @@ export default function ABNFormPage() {
     if (!tfn.trim())       e.tfn       = 'Required'
     if (!business.trim())  e.business  = 'Required'
     if (!selfie.file)      e.selfie    = 'Required'
-    if (!declared)         e.declared  = 'You must confirm this declaration'
+    if (!declared)         e.declared  = 'You must confirm this declaration to proceed'
+    if (!declaredIncome)   e.declaredIncome = 'You must confirm this declaration to proceed'
     if (!terms)            e.terms     = 'You must accept the terms'
     return e
   }
@@ -96,6 +98,7 @@ export default function ABNFormPage() {
     fd.append('declared',     declared ? '✓ I confirm this declaration' : '')
     fd.append('declaredText', 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
+    fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/abn-form', { method: 'POST', body: fd })
@@ -266,6 +269,16 @@ export default function ABNFormPage() {
             </label>
             {errors.declared && <span className="field-error">{errors.declared}</span>}
           </div>
+          <div className={`declaration-box${(errors as any).declaredIncome?' decl-error':''}`} style={{marginTop:10}}>
+            <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
+            <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
+              <input type="checkbox" checked={declaredIncome} onChange={e=>{ setDeclaredIncome(e.target.checked); setErrors(p=>({...p,declaredIncome:''})) }} className="hidden"/>
+              <div className={`check-box${declaredIncome?' checked':''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
+              <span className="check-label">I confirm this declaration</span>
+            </label>
+            {(errors as any).declaredIncome && <span className="field-error">{(errors as any).declaredIncome}</span>}
+          </div>
+
           <div className={`declaration-box${errors.terms?' decl-error':''}`} style={{marginTop:10}}>
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="hidden"/>

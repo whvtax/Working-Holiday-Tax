@@ -62,6 +62,7 @@ export default function SuperFormPage() {
   const [bankAccount, setBankAccount] = useState('')
   const [bankBsb, setBankBsb]         = useState('')
   const [terms, setTerms]           = useState(false)
+  const [declaredIncome, setDeclaredIncome] = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
   const [submitted, setSubmitted]   = useState(false)
   const [loading, setLoading]       = useState(false)
@@ -85,7 +86,8 @@ export default function SuperFormPage() {
     if (!bankAccount.trim()) e.bankAccount = 'Required'
     if (!bankBsb.trim())     e.bankBsb     = 'Required'
     if (!selfie.file)           e.selfie         = 'Required'
-    if (!terms)                 e.terms          = 'You must accept the terms'
+    if (!terms)                 e.terms          = 'You must confirm this declaration to proceed'
+    if (!declaredIncome)        e.declaredIncome = 'You must confirm this declaration to proceed'
     return e
   }
 
@@ -105,6 +107,7 @@ export default function SuperFormPage() {
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('declared',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
     fd.append('declaredText', 'I have read and accept the Client Agreement & Privacy Policy.')
+    fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.' : '')
     if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/super-form', { method: 'POST', body: fd })
@@ -280,6 +283,16 @@ export default function SuperFormPage() {
           </Field>
 
           <div className="form-section-title">Declaration</div>
+
+          <div className={`declaration-box${(errors as any).declaredIncome?' decl-error':''}`} style={{marginTop:10}}>
+            <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
+            <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
+              <input type="checkbox" checked={declaredIncome} onChange={e=>{ setDeclaredIncome(e.target.checked); setErrors(p=>({...p,declaredIncome:''})) }} className="hidden"/>
+              <div className={`check-box${declaredIncome?' checked':''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
+              <span className="check-label">I confirm this declaration</span>
+            </label>
+            {(errors as any).declaredIncome && <span className="field-error">{(errors as any).declaredIncome}</span>}
+          </div>
 
           <div className={`declaration-box${errors.terms?' decl-error':''}`} style={{marginTop:10}}>
             <label className="check-row">
