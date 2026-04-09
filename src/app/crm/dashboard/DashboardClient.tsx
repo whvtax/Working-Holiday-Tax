@@ -573,8 +573,8 @@ export default function DashboardClient() {
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
-  const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done), [tasks])
-  const doneTasks      = useMemo(()=>tasks.filter(t=>t.done),  [tasks])
+  const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()), [tasks])
+  const doneTasks      = useMemo(()=>tasks.filter(t=>t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()),  [tasks])
   const visibleClients = useMemo(()=>clients.filter(c=>{
     const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
@@ -583,7 +583,7 @@ export default function DashboardClient() {
     const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
     const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
     return ms && my && mc && mh && mcountry
-  }, [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter]))
+  }, [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter]).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()))
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
@@ -770,10 +770,20 @@ export default function DashboardClient() {
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <button style={S.sbLock} onClick={lockAndExit}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-            Lock &amp; Exit
-          </button>
+          <div style={{padding:'9px 11px 16px',display:'flex',alignItems:'center',gap:8}}>
+            <button
+              onClick={() => { Promise.all([loadTasks(), loadClients()]) }}
+              title="Refresh"
+              style={{display:'flex',alignItems:'center',justifyContent:'center',gap:6,height:30,padding:'0 10px',background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8,cursor:'pointer',color:'rgba(255,255,255,0.5)',fontSize:11,fontFamily:'inherit',fontWeight:500,flex:1}}
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              Refresh
+            </button>
+            <button style={{...S.sbLock,padding:0,flex:'none',width:'auto',gap:6,height:30,paddingLeft:10,paddingRight:10,background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8}} onClick={lockAndExit}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              Lock
+            </button>
+          </div>
         </aside>
 
         <main style={S.main}>
@@ -817,30 +827,25 @@ export default function DashboardClient() {
                 </div>
                 {pendingTasks.map(t=>(
                   <div key={t.id} style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
-                    {(t as any).reviewStatus && (t as any).reviewStatus !== 'pending' && (
-                      <span style={{fontSize:10,fontWeight:700,padding:'2px 8px',borderRadius:100,marginBottom:4,display:'inline-block',
-                        background:(t as any).reviewStatus==='approved'?'#EAF6F1':'#FEF2F2',
-                        color:(t as any).reviewStatus==='approved'?'#065F46':'#DC2626'}}>
-                        {(t as any).reviewStatus==='approved'?'✓ Approved':'✗ Rejected'}
-                      </span>
-                    )}
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
                     <div style={{flex:1}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
                       <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
                     </div>
-                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
                       {(t as any).reviewStatus === 'approved' && (
-                        <span title="Approved by reviewer" style={{width:20,height:20,borderRadius:'50%',background:'#EAF6F1',border:'1.5px solid #6EE7B7',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                          <svg width={10} height={10} viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#059669" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#EAF6F1',color:'#059669',border:'1px solid #6EE7B7',whiteSpace:'nowrap'}}>
+                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#059669" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          Approved
                         </span>
                       )}
                       {(t as any).reviewStatus === 'rejected' && (
-                        <span title="Rejected by reviewer" style={{width:20,height:20,borderRadius:'50%',background:'#FEF2F2',border:'1.5px solid #FCA5A5',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                          <svg width={10} height={10} viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" strokeWidth="1.6" strokeLinecap="round"/></svg>
+                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#FEF2F2',color:'#DC2626',border:'1px solid #FCA5A5',whiteSpace:'nowrap'}}>
+                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                          Rejected
                         </span>
                       )}
-                      <div style={{fontSize:11,color:'#aabab2'}}>{fmtDate(t.submittedAt)}</div>
+                      <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
                     </div>
                   </div>
                 ))}

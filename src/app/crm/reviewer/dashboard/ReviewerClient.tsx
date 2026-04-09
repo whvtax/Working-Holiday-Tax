@@ -316,15 +316,28 @@ export default function ReviewerClient() {
 
   const counts = { pending: tasks.filter(t => t.reviewStatus === 'pending').length }
   const filtered = [...tasks].sort((a, b) => {
-    const order = { pending: 0, approved: 1, rejected: 1 }
-    return (order[a.reviewStatus] ?? 0) - (order[b.reviewStatus] ?? 0)
+    const statusOrder = { pending: 0, approved: 1, rejected: 1 }
+    const statusDiff = (statusOrder[a.reviewStatus] ?? 0) - (statusOrder[b.reviewStatus] ?? 0)
+    if (statusDiff !== 0) return statusDiff
+    // Within same group — newest first
+    return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()
   })
 
   return (
     <div style={{ minHeight: '100vh', background: '#F4F9F6', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif' }}>
       <div style={{ background: G, padding: '0 20px', height: 54, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>Working Holiday Tax · Review Portal</span>
-        <button onClick={logout} style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: 'none', borderRadius: 100, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>Sign out</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <button
+            onClick={loadTasks}
+            title="Refresh"
+            style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Refresh
+          </button>
+          <button onClick={logout} style={{ background: 'rgba(255,255,255,0.12)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 100, padding: '6px 14px', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit' }}>Sign out</button>
+        </div>
       </div>
 
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '24px 16px' }}>
