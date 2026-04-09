@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession } from '@/lib/crm-store'
+import { validateSession, validateReviewerSession } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 
-function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
+function auth(req: NextRequest) {
+  return validateSession(req.cookies.get('crm_session')?.value)
+    || validateReviewerSession(req.cookies.get('crm_reviewer_session')?.value)
+}
 
 async function getTasks() {
   try { const { getAllTasks } = await import('@/lib/db'); return await getAllTasks() }
