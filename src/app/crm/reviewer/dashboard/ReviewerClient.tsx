@@ -8,7 +8,7 @@ type Task = {
   whatsapp: string; email: string; country: string; dob: string; taxYear: string
   address: string; tfn: string; bankDetails: string; primaryJob: string
   marital: string; taxStatus: string; notes: string; fileUrls: string[]
-  reviewStatus: ReviewStatus; reviewerNote: string
+  reviewStatus: ReviewStatus; reviewerNote: string; reviewedAt?: string
   auPhone?: string
 }
 
@@ -67,13 +67,15 @@ function DeclRow({ text }: { text: string }) {
   )
 }
 
-function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void }) {
-  const [left, setLeft] = useState(seconds)
+function Countdown({ decidedAt, onDone }: { decidedAt: number; onDone: () => void }) {
+  const onDoneRef = React.useRef(onDone)
+  onDoneRef.current = onDone
   useEffect(() => {
-    if (left <= 0) { onDone(); return }
-    const t = setTimeout(() => setLeft(l => l - 1), 1000)
+    const remaining = (decidedAt + 300_000) - Date.now()
+    if (remaining <= 0) { onDoneRef.current(); return }
+    const t = setTimeout(() => onDoneRef.current(), remaining)
     return () => clearTimeout(t)
-  }, [left, onDone])
+  }, [decidedAt])
   return null
 }
 
@@ -98,9 +100,18 @@ function TaskCard({
 
   const handleDone = useCallback(() => {
     setHiding(true)
-    setTimeout(() => setHidden(true), 500)
-  }, [])
+    setTimeout(() => setHidden(true), 600)
+  }, []) // stable ref — never changes
 
+  // Auto-hide if 5 min already passed since review (e.g. after page reload)
+  if (!hidden && isDone) {
+    if (task.reviewedAt) {
+      const elapsed = (Date.now() - new Date(task.reviewedAt).getTime()) / 1000
+      if (elapsed > 300) return null
+    }
+    // No reviewedAt = old submission before this feature — hide after 5 min from page load
+    // handled by Countdown with fallback below
+  }
   if (hidden) return null
 
   const { declarations, extras } = parseNotes(task.notes)
@@ -143,6 +154,15 @@ function TaskCard({
           <svg width={18} height={18} viewBox="0 0 24 24" fill="none" style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: '0.2s', flexShrink: 0, marginLeft: 12 }}>
             <path d="M6 9l6 6 6-6" stroke="#8DA89A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
+        )}
+        {isDone && (
+          <button
+            onClick={e => { e.stopPropagation(); handleDone() }}
+            title="Dismiss"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '4px', marginLeft: 8, display: 'flex', alignItems: 'center', opacity: 0.45, flexShrink: 0 }}
+          >
+            <svg width={16} height={16} viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="#587066" strokeWidth="1.8" strokeLinecap="round"/></svg>
+          </button>
         )}
       </div>
 
@@ -233,19 +253,32 @@ function TaskCard({
           )}
 
           {task.reviewStatus !== 'pending' && !showCountdown && (
-            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingTop: 2 }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, paddingTop: 2 }}>
               <button onClick={() => onSetStatus(task.id, 'pending')} style={{ height: 34, padding: '0 16px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: '#8DA89A', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>
-                ↩ Reset decision
+                ↩ Reset
               </button>
+              <button onClick={handleDone} style={{ height: 34, padding: '0 16px', borderRadius: 100, border: '1.5px solid #E2EDE8', background: '#fff', color: '#8DA89A', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', gap: 5 }}>
+                <svg width={11} height={11} viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="#8DA89A" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                Dismiss
+              </button>
+            </div>
             </div>
           )}
         </div>
       )}
 
-      {/* Countdown bar */}
-      {showCountdown && isDone && (
-        <Countdown seconds={300} onDone={handleDone} />
-      )}
+      {/* Countdown — based on actual reviewed_at timestamp, survives page reloads.
+          Old submissions without reviewedAt get a fresh 5-min window from page load. */}
+      {isDone && !hiding && !hidden && (() => {
+        const WINDOW = 5 * 60
+        const reviewedAt = task.reviewedAt
+          ? new Date(task.reviewedAt).getTime()
+          : Date.now() // fallback: old submissions start counting from now
+        const elapsed = Math.floor((Date.now() - reviewedAt) / 1000)
+        const remaining = WINDOW - elapsed
+        if (remaining <= 0) return null
+        return <Countdown seconds={remaining} onDone={handleDone} />
+      })()}
     </div>
   )
 }

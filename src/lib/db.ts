@@ -109,6 +109,10 @@ export async function initDb() {
     'ALTER crm_tasks reviewer_note'
   )
   await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewed_at TEXT NOT NULL DEFAULT ''`,
+    'ALTER crm_tasks reviewed_at'
+  )
+  await sqlWithTimeout(
     sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
     'ALTER crm_clients archived'
   )
@@ -161,6 +165,7 @@ function toTask(r: Record<string,unknown>): Task {
     fileUrls: (() => { try { return JSON.parse(r.file_urls as string ?? '[]') } catch { return [] } })(),
     reviewStatus: ((r.review_status as string) ?? 'pending') as ReviewStatus,
     reviewerNote: (r.reviewer_note as string) ?? '',
+    reviewedAt: (r.reviewed_at as string) ?? '',
   }
 }
 
@@ -441,5 +446,6 @@ export async function setReviewerNote(taskId: string, note: string): Promise<voi
 
 export async function setReviewStatus(taskId: string, status: ReviewStatus): Promise<void> {
   await initDb()
-  await sql`UPDATE crm_tasks SET review_status = ${status} WHERE id = ${taskId}`
+  const reviewedAt = status === 'pending' ? '' : new Date().toISOString()
+  await sql`UPDATE crm_tasks SET review_status = ${status}, reviewed_at = ${reviewedAt} WHERE id = ${taskId}`
 }
