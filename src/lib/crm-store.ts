@@ -100,7 +100,8 @@ const REVIEWER_SESSION_TTL = 4 * 60 * 60 * 1000 // 4 hours
 export function hashReviewerPassword(password: string): string {
   const salt = process.env.PASSWORD_SALT
   if (!salt) throw new Error('Missing env var: PASSWORD_SALT')
-  return require('crypto').pbkdf2Sync(password, salt + '_reviewer', 100_000, 64, 'sha512').toString('hex')
+  const reviewerSalt = process.env.REVIEWER_SALT || (salt + '_reviewer')
+  return require('crypto').pbkdf2Sync(password, reviewerSalt, 100_000, 64, 'sha512').toString('hex')
 }
 
 export function verifyReviewerPassword(password: string, hash: string): boolean {
