@@ -67,15 +67,13 @@ function DeclRow({ text }: { text: string }) {
   )
 }
 
-function Countdown({ decidedAt, onDone }: { decidedAt: number; onDone: () => void }) {
+function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void }) {
   const onDoneRef = React.useRef(onDone)
   onDoneRef.current = onDone
   useEffect(() => {
-    const remaining = (decidedAt + 300_000) - Date.now()
-    if (remaining <= 0) { onDoneRef.current(); return }
-    const t = setTimeout(() => onDoneRef.current(), remaining)
+    const t = setTimeout(() => onDoneRef.current(), seconds * 1000)
     return () => clearTimeout(t)
-  }, [decidedAt])
+  }, [])
   return null
 }
 
