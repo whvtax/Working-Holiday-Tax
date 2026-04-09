@@ -48,6 +48,8 @@ export default function ReviewerClient() {
   const [filter, setFilter]       = useState<'pending'|'approved'|'rejected'|'all'>('pending')
   const [acting, setActing]       = useState<string|null>(null)
   const [viewUrl, setViewUrl]     = useState<string|null>(null)
+  const [notes, setNotes]         = useState<Record<string,string>>({})
+  const [savingNote, setSavingNote] = useState<string|null>(null)
   const [hiddenTasks, setHiddenTasks] = useState<Set<string>>(new Set())
 
   const loadTasks = useCallback(async () => {
@@ -60,6 +62,12 @@ export default function ReviewerClient() {
   }, [])
 
   useEffect(() => { loadTasks() }, [loadTasks])
+
+  useEffect(() => {
+    const initial: Record<string,string> = {}
+    tasks.forEach(t => { initial[t.id] = (t as any).reviewerNote || '' })
+    setNotes(initial)
+  }, [tasks])
 
   async function setStatus(taskId: string, status: 'approved'|'rejected') {
     setActing(taskId)
@@ -76,6 +84,15 @@ export default function ReviewerClient() {
     }, 5 * 60 * 1000)
   }
 
+  async function saveNote(taskId: string) {
+    setSavingNote(taskId)
+    await fetch('/api/crm/review', {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ taskId, note: notes[taskId] || '' })
+    })
+    setSavingNote(null)
+  }
+
   async function logout() {
     await fetch('/api/crm/reviewer-logout', { method:'POST' })
     window.location.href = '/crm/reviewer'
@@ -86,6 +103,7 @@ export default function ReviewerClient() {
   const counts = { pending: visible.filter(t=>t.reviewStatus==='pending').length, approved: visible.filter(t=>t.reviewStatus==='approved').length, rejected: visible.filter(t=>t.reviewStatus==='rejected').length }
 
   return (
+    <>
     <div style={S.shell}>
       <div style={S.nav}>
         <div style={S.logo}>Working Holiday Tax · Review Portal</div>
@@ -170,6 +188,26 @@ export default function ReviewerClient() {
                 )}
               </div>
 
+              {/* Reviewer note */}
+              <div style={{padding:'12px 16px',borderTop:'1px solid #EAF6F1',background:'#FAFCFB'}}>
+                <p style={{fontSize:11,fontWeight:600,color:'#8DA89A',textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:8}}>Note to admin</p>
+                <div style={{display:'flex',gap:8}}>
+                  <textarea
+                    value={notes[task.id]||''}
+                    onChange={e=>setNotes(p=>({...p,[task.id]:e.target.value}))}
+                    placeholder="Leave a note for the admin..."
+                    rows={2}
+                    style={{flex:1,border:'1.5px solid #D4EAE2',borderRadius:10,padding:'8px 12px',fontSize:12,fontFamily:'inherit',resize:'vertical',outline:'none',color:'#1A2822'}}
+                  />
+                  <button
+                    onClick={()=>saveNote(task.id)}
+                    disabled={savingNote===task.id}
+                    style={{height:36,padding:'0 14px',background:'#EAF6F1',color:'#0B5240',border:'1px solid #C8EAE0',borderRadius:100,fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',alignSelf:'flex-end',opacity:savingNote===task.id?0.6:1}}>
+                    {savingNote===task.id?'Saving...':'Save'}
+                  </button>
+                </div>
+              </div>
+
               {/* Action buttons */}
               {task.reviewStatus === 'pending' && (
                 <div style={S.actions}>
@@ -193,8 +231,7 @@ export default function ReviewerClient() {
         ))}
       </div>
     </div>
-
-    {/* File viewer modal */}
+    </div>
     {viewUrl && (
       <div onClick={()=>setViewUrl(null)} style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
         <div onClick={e=>e.stopPropagation()} style={{background:'#fff',borderRadius:16,overflow:'hidden',maxWidth:'90vw',maxHeight:'90vh',display:'flex',flexDirection:'column',width:'100%'}}>
@@ -211,5 +248,6 @@ export default function ReviewerClient() {
         </div>
       </div>
     )}
+    </>
   )
 }

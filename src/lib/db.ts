@@ -103,6 +103,10 @@ export async function initDb() {
     'ALTER crm_tasks review_status'
   )
   await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewer_note TEXT NOT NULL DEFAULT ''`,
+    'ALTER crm_tasks reviewer_note'
+  )
+  await sqlWithTimeout(
     sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
     'ALTER crm_clients archived'
   )
@@ -425,6 +429,11 @@ export async function setYearlyCheckin(clientId: string, year: string, done: boo
 }
 
 // ── Reviewer ──────────────────────────────────────────────────────────────
+
+export async function setReviewerNote(taskId: string, note: string): Promise<void> {
+  await initDb()
+  await sql`UPDATE crm_tasks SET reviewer_note = ${note} WHERE id = ${taskId}`
+}
 
 export async function setReviewStatus(taskId: string, status: ReviewStatus): Promise<void> {
   await initDb()

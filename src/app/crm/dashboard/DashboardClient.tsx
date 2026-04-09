@@ -902,6 +902,14 @@ export default function DashboardClient() {
               {/* 4 sections — adapted per taskType */}
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
 
+                {/* ── Reviewer note ── */}
+                {(activeTask as any).reviewerNote && (
+                  <div style={{background:'#FFF8EC',border:'1px solid #FDE68A',borderRadius:12,padding:'12px 16px',marginBottom:12}}>
+                    <p style={{fontSize:11,fontWeight:600,color:'#B45309',marginBottom:6,textTransform:'uppercase',letterSpacing:'0.04em'}}>📝 Reviewer note</p>
+                    <p style={{fontSize:13,color:'#1A2822',lineHeight:1.6}}>{(activeTask as any).reviewerNote}</p>
+                  </div>
+                )}
+
                 {/* ── Panel 1: Personal details ── */}
                 <div style={S.card}>
                   <div style={S.secHead}><span>Personal details</span></div>
