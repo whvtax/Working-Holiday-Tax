@@ -205,7 +205,7 @@ export default function DashboardClient() {
 
   // Auto-poll every 20s — keeps all open sessions in sync
   useEffect(()=>{
-    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients()]) }, 10_000)
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived()]) }, 10_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients])
 
@@ -225,6 +225,8 @@ export default function DashboardClient() {
   async function archiveClient(id: string) {
       setClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
+    // Trigger archive badge — client moved to archive
+    setNewArchiveCount(n => n + 1)
     await Promise.all([loadClients(), loadArchived()])
   }
   async function unarchiveClient(id: string) {
@@ -250,6 +252,8 @@ export default function DashboardClient() {
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
     await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
+    // Trigger badge explicitly — user is on Tasks tab, client was added to Clients
+    setNewClientsCount(n => n + 1)
     await Promise.all([loadClients(), loadArchived()])
   }
 
@@ -1169,7 +1173,7 @@ export default function DashboardClient() {
                   </>}
                 </div>
                 <div style={S.card}>
-                  <div style={S.secHead}><span>Documents uploaded</span></div>
+                  <div style={S.secHead}><span>Documents uploaded {(activeTask.fileUrls ?? []).length > 0 ? `(${(activeTask.fileUrls ?? []).length})` : ''}</span></div>
                   {(activeTask.fileUrls ?? []).length === 0 ? (
                     <div style={{fontSize:12,color:'#aabab2',padding:'8px 0'}}>No files uploaded</div>
                   ) : (activeTask.fileUrls ?? []).map((url, i) => {

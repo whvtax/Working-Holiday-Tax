@@ -327,18 +327,31 @@ function TaskCard({
           })()}
 
           {task.fileUrls?.length > 0 && (
-            <Section title="Documents uploaded">
+            <Section title={`Documents uploaded (${task.fileUrls.length})`}>
               {task.fileUrls.map((url, i) => {
                 const raw = url.split('/').pop() ?? `file-${i + 1}`
-                const name = decodeURIComponent(raw).replace(/^\d+_[a-z0-9]+_/i, '').slice(0, 50)
+                const name = decodeURIComponent(raw).replace(/^\d+_[a-z0-9]+_/i, '').slice(0, 60)
                 const isPdf = url.toLowerCase().includes('.pdf')
                 return (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: i < task.fileUrls.length - 1 ? '1px solid #F4FAF7' : 'none' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
                       <span style={{ width: 32, height: 32, borderRadius: 8, background: isPdf ? '#FEF2F2' : '#EAF6F1', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, flexShrink: 0 }}>{isPdf ? '📄' : '🖼️'}</span>
-                      <span style={{ fontSize: 12, color: '#1A2822', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{name}</span>
+                      <span style={{ fontSize: 12, color: '#1A2822', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{i + 1}. {name}</span>
                     </div>
-                    <button onClick={() => setViewUrl(url)} style={{ height: 32, padding: '0 16px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: G, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0, marginLeft: 12 }}>View</button>
+                    <div style={{ display: 'flex', gap: 6, marginLeft: 12, flexShrink: 0 }}>
+                      <button onClick={() => setViewUrl(url)} style={{ height: 30, padding: '0 12px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: G, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>View</button>
+                      <button onClick={async () => {
+                        try {
+                          const res = await fetch(url)
+                          const blob = await res.blob()
+                          const a = document.createElement('a')
+                          a.href = URL.createObjectURL(blob)
+                          a.download = name
+                          a.click()
+                          URL.revokeObjectURL(a.href)
+                        } catch { window.open(url, '_blank') }
+                      }} style={{ height: 30, padding: '0 12px', borderRadius: 100, border: 'none', background: G, color: '#fff', fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>↓</button>
+                    </div>
                   </div>
                 )
               })}
