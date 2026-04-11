@@ -61,9 +61,11 @@ function Row({ label, value, copy }: { label: string; value?: string | null; cop
 function DeclRow({ text }: { text: string }) {
   const clean = text.replace(/^[→✓]\s*/, '')
   return (
-    <div style={{ display: 'flex', gap: 10, padding: '9px 16px', borderBottom: '1px solid #F4FAF7', alignItems: 'flex-start' }}>
-      <span style={{ width: 18, height: 18, borderRadius: '50%', background: '#EAF6F1', color: G, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 800, flexShrink: 0, marginTop: 1 }}>✓</span>
-      <span style={{ fontSize: 13, color: '#1A2822', lineHeight: 1.5 }}>{clean}</span>
+    <div style={{ display: 'flex', gap: 10, padding: '12px 16px', borderBottom: '1px solid #F4FAF7', alignItems: 'flex-start' }}>
+      <div style={{ width: 22, height: 22, borderRadius: 6, background: '#0B5240', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+        <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </div>
+      <span style={{ fontSize: 13, color: '#1A2822', lineHeight: 1.55, fontWeight: 500 }}>{clean}</span>
     </div>
   )
 }

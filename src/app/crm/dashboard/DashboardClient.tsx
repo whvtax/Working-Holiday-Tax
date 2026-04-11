@@ -1173,7 +1173,16 @@ export default function DashboardClient() {
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>General Declaration</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{declLabel}</div>
-                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:declValue.includes('agree')||declValue.includes('✓')?'#059669':'#c0392b',fontWeight:600}}>{declValue}</span></div>
+                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
+                          {declValue.includes('agree')||declValue.includes('✓')
+                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                                <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                              </div><span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span></>
+                            : <><div style={{width:22,height:22,borderRadius:6,background:'#FEF2F2',border:'1.5px solid #FCA5A5',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                                <svg width={11} height={11} viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="#DC2626" strokeWidth="2" strokeLinecap="round"/></svg>
+                              </div><span style={{fontSize:13,color:'#DC2626',lineHeight:1.55,fontWeight:500}}>Not confirmed</span></>
+                          }
+                        </div>
                       </>
                     }
 
@@ -1183,7 +1192,12 @@ export default function DashboardClient() {
                       return <>
                         <div style={S.secHead}><span>Declaration</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
-                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
+                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
+                        </div>
                       </>
                     }
 
@@ -1194,11 +1208,21 @@ export default function DashboardClient() {
                       return <>
                         <div style={S.secHead}><span>Personal Declaration</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</div>
-                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
+                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
+                        </div>
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>Client Agreement</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
-                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
+                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
+                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
+                        </div>
                       </>
                     }
 
@@ -1208,11 +1232,21 @@ export default function DashboardClient() {
                       const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
                       return <>
                         <div style={S.secHead}><span>Business Declaration</span></div>
-                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600,fontSize:11,lineHeight:1.5}}>{declVal.replace('→ ✓ ','').replace('→ ','')}</span></div>
+                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
+                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
+                        </div>
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>Client Agreement</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
-                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
+                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
+                          <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
+                            <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          </div>
+                          <span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span>
+                        </div>
                       </>
                     }
 
