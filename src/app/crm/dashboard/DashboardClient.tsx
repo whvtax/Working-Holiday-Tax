@@ -60,6 +60,56 @@ function CopyBtn({ text }: { text: string }) {
   )
 }
 
+
+function BankCard({ bankDetails }: { bankDetails: string }) {
+  const bkParts = (bankDetails || '').split(' | ')
+  const bkName   = bkParts.find(p => p.startsWith('Bank:'))?.replace('Bank: ', '') || ''
+  const bkHolder = bkParts.find(p => p.startsWith('Name:'))?.replace('Name: ', '') || ''
+  const bkAcct   = bkParts.find(p => p.startsWith('Account:'))?.replace('Account: ', '') || ''
+  const bkBsb    = bkParts.find(p => p.startsWith('BSB:'))?.replace('BSB: ', '') || ''
+  if (!bkName && !bkHolder && !bkAcct && !bkBsb) return null
+  const fields: [string, string, string][] = [
+    ['🏦', 'Bank name', bkName],
+    ['👤', 'Account holder', bkHolder],
+    ['🔢', 'Account number', bkAcct],
+    ['📍', 'BSB / Branch', bkBsb],
+  ]
+  return (
+    <div style={{ background: '#fff', border: '1.5px solid #D4EAE2', borderRadius: 13, overflow: 'hidden', marginBottom: 12 }}>
+      <div style={{ padding: '8px 14px', background: '#EAF6F1', borderBottom: '1px solid #D4EAE2', display: 'flex', alignItems: 'center', gap: 6 }}>
+        <span style={{ fontSize: 11, fontWeight: 700, color: '#0E5C42', textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>🏦 Bank account details</span>
+      </div>
+      {fields.filter(([,, v]) => v && v !== '—').map(([icon, label, value]) => (
+        <div key={label} style={{ display: 'flex', alignItems: 'center', padding: '11px 14px', borderBottom: '1px solid #f0f4f1', gap: 10 }}>
+          <span style={{ fontSize: 16, flexShrink: 0 }}>{icon}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 10, color: '#8DA89A', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: 2 }}>{label}</div>
+            <div style={{ fontSize: 14, color: '#0a1410', fontWeight: 600, direction: 'ltr', letterSpacing: '0.01em' }}>{value}</div>
+          </div>
+          <CopyFieldBtn text={value} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function CopyFieldBtn({ text }: { text: string }) {
+  const [copied, setCopied] = React.useState(false)
+  return (
+    <button
+      onClick={() => navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500) })}
+      style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px', background: copied ? '#EAF6F1' : '#f7fbf9', border: `1.5px solid ${copied ? '#6EE7B7' : '#D4EAE2'}`, borderRadius: 8, cursor: 'pointer', color: copied ? '#059669' : '#587066', fontSize: 11, fontWeight: 600, fontFamily: 'inherit', flexShrink: 0, transition: 'all 0.15s', whiteSpace: 'nowrap' as const }}
+      title={`Copy ${text}`}
+    >
+      {copied
+        ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      }
+      {copied ? 'Copied!' : 'Copy'}
+    </button>
+  )
+}
+
 export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
@@ -513,7 +563,8 @@ export default function DashboardClient() {
       }
       const rawStatus   = parts.find(p => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || task.taxStatus || '—'
       const taxStatus   = normStatus(rawStatus)
-      const declaredVal = findDecl(['→ ✓ Yes','→ ✗ No','→ ✓ I agree','→ Yes'])
+      const declaredVal = findDecl(['→ ✓ I declare that all','→ ✓ Yes','→ ✗ No','→ ✓ I agree','→ Yes'])
+      const incomeDecl   = findDecl(['→ ✓ I declare under my full legal'])
 
       formBody =
         sec('Contact details')
@@ -550,29 +601,13 @@ export default function DashboardClient() {
           ? (task.fileUrls??[]).map(fileItem).join('')
           : `<p style="font-size:12px;color:#aabab2">No files uploaded</p>`)
         + sec('Declaration')
-        + `<div style="margin-bottom:14px">` +
-          `<div style="font-size:13px;font-weight:600;color:#1A2822;margin-bottom:10px">I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:<span style="color:${G};margin-left:3px">*</span></div>` +
-          `<div style="display:flex;flex-direction:column;gap:8px">` +
-          ['Australian resident for tax purposes','Working holiday maker for tax purposes'].map(opt => {
-            const active = opt === taxStatus
-            return `<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1.5px solid ${active?G:'#D4EAE2'};background:${active?'#EAF6F1':'#F5F9F7'}">` +
-              `<div style="width:16px;height:16px;border-radius:50%;border:2px solid ${active?G:'#D4EAE2'};background:${active?G:'#fff'};flex-shrink:0"></div>` +
-              `<span style="font-size:13px;font-weight:${active?'600':'400'};color:${active?G:'#587066'}">${esc(opt)}</span>` +
-              `</div>`
-          }).join('') +
-          `</div></div>`
-        + `<div style="margin-bottom:14px">` +
-          `<p style="font-size:12px;color:#587066;line-height:1.7;margin-bottom:10px">I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement &amp; Privacy Policy.</p>` +
-          `<div style="display:flex;flex-direction:column;gap:8px">` +
-          ['Yes, I agree','No'].map(opt => {
-            const rawOpt = opt === 'Yes, I agree' ? '✓ Yes, I agree' : '✗ No'
-            const active = declaredVal.includes('Yes') && opt === 'Yes, I agree' || declaredVal.includes('No') && opt === 'No'
-            return `<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1.5px solid ${active?G:'#D4EAE2'};background:${active?'#EAF6F1':'#F5F9F7'}">` +
-              `<div style="width:16px;height:16px;border-radius:50%;border:2px solid ${active?G:'#D4EAE2'};background:${active?G:'#fff'};flex-shrink:0"></div>` +
-              `<span style="font-size:13px;font-weight:${active?'600':'400'};color:${active?G:'#587066'}">${esc(opt)}</span>` +
-              `</div>`
-          }).join('') +
-          `</div></div>`
+        + `<div style="font-size:12px;color:#587066;margin-bottom:6px">Tax residency status:</div>`
+        + `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1.5px solid ${G};background:#EAF6F1;margin-bottom:10px">` +
+          `<div style="width:16px;height:16px;border-radius:50%;background:${G};flex-shrink:0"></div>` +
+          `<span style="font-size:13px;font-weight:600;color:${G}">${esc(taxStatus||'—')}</span>` +
+          `</div>`
+        + declBox('', declaredVal !== '—' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I declare that all information provided is true and accurate.') : '—', declaredVal !== '—')
+        + declBox('', incomeDecl !== '—' ? (incomeDecl.replace('✓ ','').replace('→ ','') || 'I declare income truthfully disclosed.') : '—', incomeDecl !== '—')
         + sec('How did you hear about us?')
         + field('How did you hear about us?', task.howHeard)
     }
@@ -1172,38 +1207,38 @@ export default function DashboardClient() {
                   {(()=>{
                     const parts = (activeTask.notes||'').split(' | ')
 
-                    // TAX RETURN: Tax Residency + Agreement
+                    // TAX RETURN: Tax Residency + 2 Declarations
                     if (activeTask.taskType === 'tax-return') {
-                      // Normalise raw radio values saved by older submissions
                       const normaliseTaxStatus = (v: string) => {
                         if (!v || v === '—') return v
                         if (v === 'resident') return 'Australian resident for tax purposes'
                         if (v === 'whm') return 'Working holiday maker for tax purposes'
-                        return v
+                        return v.replace('→ ','')
                       }
-                      // notes format: "taxStatusText | → taxStatusValue | declaredText | → declaredValue"
-                      // Find parts by prefix so order doesn't matter and long texts with natural " | " don't break parsing
-                      const taxStatusLabel = parts.find((p:string) => !p.startsWith('→') && (p.startsWith('I confirm that I have reviewed') || p.length > 40 && !p.startsWith('I declare'))) || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
-                      const rawTaxVal      = parts.find((p:string) => p.startsWith('→') && !p.includes('agree') && !p.includes('Yes') && !p.includes('No'))?.replace('→ ','') || activeTask.taxStatus || '—'
+                      const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '—'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
-                      const declLabel      = parts.find((p:string) => !p.startsWith('→') && p.startsWith('I declare')) || 'I declare that all information provided is true, complete, and accurate. I confirm that I have read and accept the Client Agreement & Privacy Policy.'
-                      const rawDeclVal     = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
-                      const declValue      = rawDeclVal
+                      const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
+                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare under my full legal'))
                       return <>
-                        <div style={S.secHead}><span>Tax Residency Declaration</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{taxStatusLabel}</div>
-                        <div style={S.row}><span style={S.lbl}>Selected</span><span style={{...S.val,color:'#0E5C42',fontWeight:600}}>{taxStatusValue}</span></div>
+                        <div style={S.secHead}><span>Tax Residency</span></div>
+                        <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>
+                          <div style={{width:10,height:10,borderRadius:'50%',background:'#0B5240',flexShrink:0}}/>
+                          <span style={{fontSize:13,color:'#0B5240',fontWeight:600}}>{taxStatusValue||'—'}</span>
+                        </div>
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>General Declaration</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{declLabel}</div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          {declValue.includes('agree')||declValue.includes('✓')
-                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                                <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                              </div><span style={{fontSize:13,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>✓ Confirmed</span></>
-                            : <><div style={{width:22,height:22,borderRadius:6,background:'#FEF2F2',border:'1.5px solid #FCA5A5',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                                <svg width={11} height={11} viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="#DC2626" strokeWidth="2" strokeLinecap="round"/></svg>
-                              </div><span style={{fontSize:13,color:'#DC2626',lineHeight:1.55,fontWeight:500}}>Not confirmed</span></>
+                          {declaredPart
+                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace('→ ✓ ','')}</span></>
+                            : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
+                          }
+                        </div>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
+                        <div style={S.secHead}><span>Income Declaration</span></div>
+                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
+                          {incomePart
+                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{incomePart.replace('→ ✓ ','')}</span></>
+                            : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
                           }
                         </div>
                       </>
@@ -1289,6 +1324,11 @@ export default function DashboardClient() {
                   </div>
                 </div>
               </div>
+
+              {/* Bank details card — shown for tax-return and super */}
+              {(activeTask.taskType === 'tax-return' || activeTask.taskType === 'super') && activeTask.bankDetails && (
+                <BankCard bankDetails={activeTask.bankDetails} />
+              )}
 
                             {/* Actions */}
               <div style={{display:'flex',gap:10,marginBottom:8}}>

@@ -43,11 +43,9 @@ export async function POST(req: NextRequest) {
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
       notes:       [
-        formData.get('taxStatusText') ? sanitiseField(formData.get('taxStatusText')) : '',
         formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
-        formData.get('declaredText')  ? sanitiseField(formData.get('declaredText')) : '',
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
-        formData.get('declaredIncome') ? sanitiseField(formData.get('declaredIncome')) : '',
+        formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',
         formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
         formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
         formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',

@@ -188,8 +188,9 @@ function TaskCard({
           {task.taskType === 'tax-return' && (() => {
             const parts = (task.notes || '').split(' | ')
             const getNote = (prefix: string) => task.notes.match(new RegExp(prefix + ': ([^|]+)'))?.[1]?.trim() || ''
-            const taxStatusVal = parts.find((p: string) => p.startsWith('→') && !p.includes('agree') && !p.includes('Yes') && !p.includes('No'))?.replace('→ ', '') || task.taxStatus || '—'
-            const declaredVal = parts.filter((p: string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ', '') || '—'
+            const taxStatusVal = parts.find((p: string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ', '') || task.taxStatus || '—'
+            const declaredVal = parts.find((p: string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))?.replace('→ ✓ ', '') || '—'
+            const incomeDecl  = parts.find((p: string) => p.startsWith('→ ✓ I declare under my full legal'))?.replace('→ ✓ ', '') || ''
             const abnVal = getNote('ABN') || ''
             const abnNumber = getNote('ABN Number') || ''
             const abnIncome = getNote('ABN Income') || ''
@@ -229,7 +230,8 @@ function TaskCard({
                 <Row label="BSB" value={bankBsb} copy />
               </Section>
               <Section title="Declarations">
-                {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
+                {declaredVal !== '—' && <DeclRow text={declaredVal} />}
+                {incomeDecl && <DeclRow text={incomeDecl} />}
               </Section>
             </>)
           })()}
