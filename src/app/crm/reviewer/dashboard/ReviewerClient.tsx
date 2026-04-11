@@ -9,7 +9,7 @@ type Task = {
   address: string; tfn: string; bankDetails: string; primaryJob: string
   marital: string; taxStatus: string; notes: string; fileUrls: string[]
   done: boolean; reviewStatus: ReviewStatus; reviewerNote: string
-  auPhone?: string
+  auPhone?: string; reviewedAt?: string
 }
 
 const G = '#0B5240'
@@ -47,12 +47,13 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   )
 }
 
-function Row({ label, value }: { label: string; value?: string | null }) {
+function Row({ label, value, copy }: { label: string; value?: string | null; copy?: boolean }) {
   if (!value) return null
   return (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, padding: '9px 16px', borderBottom: '1px solid #F4FAF7' }}>
-      <span style={{ fontSize: 11, color: '#8DA89A', width: 120, flexShrink: 0, paddingTop: 1, fontWeight: 500 }}>{label}</span>
-      <span style={{ fontSize: 13, color: '#1A2822', lineHeight: 1.5, flex: 1, wordBreak: 'break-word' }}>{value}</span>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '9px 16px', borderBottom: '1px solid #F4FAF7' }}>
+      <span style={{ fontSize: 11, color: '#8DA89A', width: 120, flexShrink: 0, fontWeight: 500 }}>{label}</span>
+      <span style={{ fontSize: 13, color: '#1A2822', lineHeight: 1.5, flex: 1, wordBreak: 'break-word', direction: 'ltr' }}>{value}</span>
+      {copy && <CopyBtn text={value} />}
     </div>
   )
 }
@@ -67,6 +68,23 @@ function DeclRow({ text }: { text: string }) {
   )
 }
 
+
+function CopyBtn({ text }: { text: string }) {
+  const [copied, setCopied] = React.useState(false)
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500) }) }}
+      style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied ? '#059669' : '#b0c4bc', padding: '2px 4px', borderRadius: 4, display: 'flex', alignItems: 'center', flexShrink: 0, transition: 'color 0.2s' }}
+      title="Copy"
+    >
+      {copied
+        ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      }
+    </button>
+  )
+}
+
 function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void }) {
   const onDoneRef = React.useRef(onDone)
   onDoneRef.current = onDone
@@ -75,6 +93,15 @@ function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void })
     return () => clearTimeout(t)
   }, [])
   return null
+}
+
+// Returns ms remaining until 48h after reviewedAt (negative = already elapsed)
+function msUntil48h(reviewedAt?: string): number {
+  if (!reviewedAt) return Infinity
+  const reviewed = new Date(reviewedAt).getTime()
+  if (isNaN(reviewed)) return Infinity
+  const expire = reviewed + 48 * 60 * 60 * 1000
+  return expire - Date.now()
 }
 
 function TaskCard({
@@ -89,19 +116,21 @@ function TaskCard({
 }) {
   const [hiding, setHiding] = useState(false)
   const [hidden, setHidden] = useState(false)
-  const [showCountdown, setShowCountdown] = useState(false)
   const isDone = task.reviewStatus === 'approved' || task.reviewStatus === 'rejected'
-
-  useEffect(() => {
-    if (isDone && !hiding && !hidden && !showCountdown) {
-      setShowCountdown(true)
-    }
-  }, [task.reviewStatus])
 
   const handleDone = useCallback(() => {
     setHiding(true)
     setTimeout(() => setHidden(true), 600)
-  }, []) // stable ref — never changes
+  }, [])
+
+  // On mount: if 48h already elapsed hide immediately, else schedule timer
+  useEffect(() => {
+    if (!isDone) return
+    const ms = msUntil48h(task.reviewedAt)
+    if (ms <= 0) { setHidden(true); return }
+    const t = setTimeout(() => handleDone(), ms)
+    return () => clearTimeout(t)
+  }, [isDone, task.reviewedAt, handleDone])
 
   if (hidden) return null
 
@@ -187,15 +216,15 @@ function TaskCard({
                 <Row label="Tax residency" value={taxStatusVal} />
               </Section>
               <Section title="ABN">
-                <Row label="Has ABN" value={abnVal || '—'} />
-                {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || '—'} />}
-                {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || '—'} />}
+                <Row label="Has ABN" value={abnVal === 'Yes' ? 'Yes ✓' : abnVal === 'No' ? 'No' : 'Not specified'} />
+                {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || 'Not provided'} copy />}
+                {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} copy />}
               </Section>
               <Section title="Bank account">
-                <Row label="Bank name" value={bankName} />
-                <Row label="Account holder" value={bankHolder} />
-                <Row label="Account number" value={bankAccount} />
-                <Row label="BSB" value={bankBsb} />
+                <Row label="Bank name" value={bankName} copy />
+                <Row label="Account holder" value={bankHolder} copy />
+                <Row label="Account number" value={bankAccount} copy />
+                <Row label="BSB" value={bankBsb} copy />
               </Section>
               <Section title="Declarations">
                 {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
@@ -281,10 +310,10 @@ function TaskCard({
                 <Row label="Super fund(s)" value={superFunds} />
               </Section>
               <Section title="Bank account">
-                <Row label="Bank name" value={bankName} />
-                <Row label="Account holder" value={bankHolder} />
-                <Row label="Account number" value={bankAccount} />
-                <Row label="BSB" value={bankBsb} />
+                <Row label="Bank name" value={bankName} copy />
+                <Row label="Account holder" value={bankHolder} copy />
+                <Row label="Account number" value={bankAccount} copy />
+                <Row label="BSB" value={bankBsb} copy />
               </Section>
               <Section title="Declarations">
                 {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
@@ -356,7 +385,7 @@ function TaskCard({
             </div>
           )}
 
-          {task.reviewStatus !== 'pending' && !showCountdown && (
+          {task.reviewStatus !== 'pending' && !isDone && (
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, paddingTop: 2 }}>
               <button onClick={() => onSetStatus(task.id, 'pending')} style={{ height: 34, padding: '0 16px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: '#8DA89A', fontSize: 12, fontWeight: 500, cursor: 'pointer', fontFamily: 'inherit' }}>
                 ↩ Reset decision
@@ -367,9 +396,7 @@ function TaskCard({
         </div>
       )}
 
-      {showCountdown && isDone && !hiding && !hidden && (
-        <Countdown seconds={48 * 60 * 60} onDone={handleDone} />
-      )}
+
     </div>
   )
 }

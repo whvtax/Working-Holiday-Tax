@@ -292,6 +292,7 @@ export default function DashboardClient() {
     const parts = raw.split(' | ')
     const userParts = parts.filter(p =>
       !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      && !p.startsWith('[Reviewer] ')
     )
     return userParts.join(' | ').trim()
   }
@@ -703,7 +704,7 @@ export default function DashboardClient() {
 
   return (
     <>
-      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes donePulse{0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,0.55)}60%{box-shadow:0 0 0 6px rgba(5,150,105,0)}}`}</style>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
 
       <div style={S.shell}>
@@ -809,16 +810,7 @@ export default function DashboardClient() {
                   <div style={S.pgTitle}>Tasks</div>
                   <div style={{...S.pgSub,marginBottom:0}}>Tax return submissions awaiting processing</div>
                 </div>
-                <button
-                  onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients()]);setRefreshing(false)}}
-                  style={{display:'flex',alignItems:'center',gap:6,height:34,padding:'0 14px',background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:100,cursor:refreshing?'default':'pointer',color:'#587066',fontSize:12,fontWeight:600,fontFamily:'inherit',flexShrink:0}}
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{animation:refreshing?'spin 0.7s linear infinite':'none',display:'block'}}>
-                    <path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Refresh
-                </button>
+
               </div>
 
               {/* Season stats */}
@@ -883,8 +875,8 @@ export default function DashboardClient() {
                   <span style={{color:'#059669',fontSize:8}}>●</span> Done — {doneTasks.length}
                 </div>
                 {doneTasks.map(t=>(
-                  <div key={t.id} style={{...S.taskCard,opacity:0.72,cursor:'default'}}>
-                    <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0}}/>
+                  <div key={t.id} style={{...S.taskCard,opacity:0.82,cursor:'default'}}>
+                    <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0,animation:'donePulse 2s ease-in-out infinite'}}/>
                     <div style={{flex:1}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
                       <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
@@ -924,7 +916,27 @@ export default function DashboardClient() {
                 Back to Tasks
               </button>
 
-              {/* Header */}
+              {/* ── DONE: locked view — only name + 2 actions ── */}
+              {activeTask.done && (
+                <div style={{...S.card,padding:'28px 24px',textAlign:'center' as const}}>
+                  <div style={{width:56,height:56,borderRadius:16,background:'#ecfdf5',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,margin:'0 auto 14px'}}>✓</div>
+                  <div style={{fontSize:18,fontWeight:700,color:'#0a1410',marginBottom:4}}>{activeTask.clientName}</div>
+                  <div style={{fontSize:12,color:'#7a8a82',marginBottom:6}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
+                  <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 14px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Done</span>
+                  <div style={{display:'flex',gap:10}}>
+                    <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>transferToClients(activeTask)}>
+                      👤 Move to clients
+                    </button>
+                    <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
+                      🗑️ Delete permanently
+                    </button>
+                  </div>
+                  <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:10}}>Move to clients creates a client card. Delete permanently removes all data.</div>
+                </div>
+              )}
+
+              {/* ── PENDING: full detail view ── */}
+              {!activeTask.done && (<>
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
@@ -1029,13 +1041,12 @@ export default function DashboardClient() {
                       const abnVal    = (activeTask.notes||'').match(/ABN: ([^|]+)/)?.[1]?.trim()||''
                       const abnNum    = (activeTask.notes||'').match(/ABN Number: ([^|]+)/)?.[1]?.trim()||''
                       const abnIncome = (activeTask.notes||'').match(/ABN Income: ([^|]+)/)?.[1]?.trim()||''
-                      if (!abnVal) return null
                       return (
                         <>
                           <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#c2410c',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏢 ABN</span></div>
-                          <div style={S.row}><span style={S.lbl}>Has ABN</span><span style={{...S.val,color:abnVal==='Yes'?'#0E5C42':'#555',fontWeight:600}}>{abnVal}</span></div>
-                          {abnVal==='Yes' && abnNum && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum}</span><CopyBtn text={abnNum}/></div>}
-                          {abnVal==='Yes' && abnIncome && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome}</span><CopyBtn text={abnIncome}/></div>}
+                          <div style={S.row}><span style={S.lbl}>Has ABN</span><span style={{...S.val,color:abnVal==='Yes'?'#0E5C42':'#c0392b',fontWeight:600}}>{abnVal==='Yes'?'Yes ✓':abnVal==='No'?'No':'Not specified'}</span></div>
+                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'—'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
+                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
                         </>
                       )
                     })()}
@@ -1210,27 +1221,13 @@ export default function DashboardClient() {
 
                             {/* Actions */}
               <div style={{display:'flex',gap:10,marginBottom:8}}>
-                {!activeTask.done
-                  ? <>
-                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                        Download PDF
-                      </button>
-                      <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
-                    </>
-                  : <>
-                      <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>transferToClients(activeTask)}>
-                        👤 Move to clients
-                      </button>
-                      <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
-                        🗑️ Delete permanently
-                      </button>
-                    </>
-                }
+                <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                  Download PDF
+                </button>
+                <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
               </div>
-              {activeTask.done && (
-                <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:4}}>Move to clients creates a client card. Delete permanently removes all data.</div>
-              )}
+              </>) /* end !activeTask.done */}
             </div>
           )}
 
