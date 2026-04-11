@@ -467,7 +467,7 @@ export default function ReviewerClient() {
           })
         }
       } catch {}
-    }, 20000)
+    }, 10000)
     return () => clearInterval(interval)
   }, [])
 

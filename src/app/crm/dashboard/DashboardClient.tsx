@@ -135,7 +135,7 @@ export default function DashboardClient() {
 
   // Auto-poll every 20s — keeps all open sessions in sync
   useEffect(()=>{
-    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients()]) }, 20_000)
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients()]) }, 10_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients])
 
@@ -183,9 +183,11 @@ export default function DashboardClient() {
 
   async function saveTaskNotes() {
     if(!activeTask) return
-    // Preserve structured data (passport, declarations etc.) — append user notes after them
-    const structuredParts = (activeTask.notes||'').split(' | ').filter(p =>
+    // Preserve structured data (passport, declarations etc.) AND reviewer notes
+    const allParts = (activeTask.notes||'').split(' | ')
+    const structuredParts = allParts.filter(p =>
       p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      || p.startsWith('📝 ')
     )
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
@@ -906,7 +908,7 @@ export default function DashboardClient() {
                       <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
                     </div>
                     <div style={{display:'flex',gap:6}}>
-                      <button onClick={e=>{e.stopPropagation();setConfirmTransfer(t)}} style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}>👤 Clients</button>
+                      <button onClick={e=>{e.stopPropagation();transferToClients(t)}} style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}>👤 Clients</button>
                       <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} style={{padding:'4px 10px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}>🗑️ Delete</button>
                     </div>
                   </div>
