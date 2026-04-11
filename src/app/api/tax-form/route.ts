@@ -65,16 +65,21 @@ export async function POST(req: NextRequest) {
       taxStatus:   sanitiseShort(formData.get('taxStatus')),
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
-      notes:       [
-        formData.get('taxStatusText') ? sanitiseField(formData.get('taxStatusText')) : '',
-        formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
-        formData.get('declaredText')  ? sanitiseField(formData.get('declaredText')) : '',
-        formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
-        formData.get('declaredIncome') ? sanitiseField(formData.get('declaredIncome')) : '',
-        formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
-        formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
-        formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
-      ].filter(Boolean).join(' | '),
+      notes:       (() => {
+        const hasAbn = sanitiseShort(formData.get('hasAbn')) || ''
+        const abnNumber = sanitiseShort(formData.get('abnNumber')) || ''
+        const abnIncome = sanitiseShort(formData.get('abnIncome')) || ''
+        return [
+          formData.get('taxStatusText') ? sanitiseField(formData.get('taxStatusText')) : '',
+          formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
+          formData.get('declaredText')  ? sanitiseField(formData.get('declaredText')) : '',
+          formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
+          formData.get('declaredIncome') ? sanitiseField(formData.get('declaredIncome')) : '',
+          hasAbn ? `ABN: ${hasAbn}` : '',
+          hasAbn === 'Yes' && abnNumber ? `ABN Number: ${abnNumber}` : '',
+          hasAbn === 'Yes' && abnIncome ? `ABN Income: ${abnIncome}` : '',
+        ].filter(Boolean).join(' | ')
+      })(),
       fileUrls,
     })
 

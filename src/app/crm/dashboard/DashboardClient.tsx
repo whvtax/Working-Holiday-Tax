@@ -140,8 +140,6 @@ export default function DashboardClient() {
   const [newSuperYear, setNewSuperYear] = useState('')
   const [newSuperAmt, setNewSuperAmt]   = useState('')
   const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25' as string})
-  const [confirmRemoveTax, setConfirmRemoveTax] = useState<string|null>(null)
-  const [confirmRemoveSuper, setConfirmRemoveSuper] = useState<string|null>(null)
 
   const loadTasks   = useCallback(async()=>{
     try {
@@ -201,46 +199,31 @@ export default function DashboardClient() {
     await Promise.all([loadClients(), loadArchived()])
   }
   async function toggleCheckin(clientId: string, year: string, current: boolean) {
-    setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
-    try {
-      const res = await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'checkin',year,done:!current})})
-      if (!res.ok) throw new Error()
-    } catch {
-      // Rollback optimistic update on failure
-      setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:current}} : c))
-    }
+      setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
+    await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'checkin',year,done:!current})})
   }
 
   async function markDone(id:string) {
-    setConfirmComplete(null)
-    try {
-      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'done'})})
-      if (!res.ok) { alert('Failed to mark task as done. Please try again.'); return }
-    } catch { alert('Failed to mark task as done. Please check your connection.'); return }
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
+    setConfirmComplete(null)
     setActiveTask(null)
     setTaskView('list')
+    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'done'})})
   }
 
   async function transferToClients(task: Task) {
     setConfirmTransfer(null)
-    try {
-      const res = await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
-      if (!res.ok) { alert('Failed to transfer task. Please try again.'); return }
-    } catch { alert('Failed to transfer task. Please check your connection.'); return }
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
+    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
     await Promise.all([loadClients(), loadArchived()])
   }
 
   async function deleteTaskPermanently(id: string) {
     setConfirmPermDelete(null)
-    try {
-      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete_permanent'})})
-      if (!res.ok) { alert('Failed to delete task. Please try again.'); return }
-    } catch { alert('Failed to delete task. Please check your connection.'); return }
     setTasks(prev => prev.filter(t => t.id !== id))
     setActiveTask(null); setTaskView('list')
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete_permanent'})})
   }
 
   async function saveTaskNotes() {
@@ -252,10 +235,7 @@ export default function DashboardClient() {
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
       : structuredParts.join(' | ')
-    try {
-      const res = await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'notes',notes:merged})})
-      if (!res.ok) { alert('Failed to save notes. Please try again.'); return }
-    } catch { alert('Failed to save notes. Please check your connection.'); return }
+    await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'notes',notes:merged})})
     setNotesSaved(true); setTimeout(()=>setNotesSaved(false),2500)
   }
 
@@ -277,10 +257,7 @@ export default function DashboardClient() {
         })
       }
     }
-    try {
-      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
-      if (!res.ok) { alert('Failed to archive task. Please try again.'); return }
-    } catch { alert('Failed to archive task. Please check your connection.'); return }
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null); setCaptureRefund(null)
     setCaptureRefundAmt(''); setCaptureSuperAmt(''); setCaptureRefundType('refund')
     await Promise.all([loadTasks(),loadClients(),loadArchived()])
@@ -299,51 +276,37 @@ export default function DashboardClient() {
 
   async function addTaxReturn() {
     if(!activeClient||!newTaxYear||!newTaxAmt) return
-    try {
-      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
-        body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:parseFloat(newTaxAmt),type:newTaxType,completedAt:new Date().toISOString()}})})
-      if (!res.ok) { alert('Failed to add tax return. Please try again.'); return }
-    } catch { alert('Failed to add tax return. Please check your connection.'); return }
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+      body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:parseFloat(newTaxAmt),type:newTaxType,completedAt:new Date().toISOString()}})})
     setNewTaxYear(''); setNewTaxAmt(''); setNewTaxType('refund'); setShowAddTax(false)
     refreshClient()
   }
 
   async function removeTaxReturn(year:string) {
     if(!activeClient) return
-    try {
-      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-tax',year})})
-      if (!res.ok) { alert('Failed to remove tax return. Please try again.'); return }
-    } catch { alert('Failed to remove tax return. Please check your connection.'); return }
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-tax',year})})
     refreshClient()
   }
 
   async function addSuperReturn() {
     if(!activeClient||!newSuperYear||!newSuperAmt) return
-    try {
-      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
-        body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:parseFloat(newSuperAmt),completedAt:new Date().toISOString()}})})
-      if (!res.ok) { alert('Failed to add super return. Please try again.'); return }
-    } catch { alert('Failed to add super return. Please check your connection.'); return }
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+      body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:parseFloat(newSuperAmt),completedAt:new Date().toISOString()}})})
     setNewSuperYear(''); setNewSuperAmt(''); setShowAddSuper(false)
     refreshClient()
   }
 
   async function removeSuperReturn(year:string) {
     if(!activeClient) return
-    try {
-      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-super',year})})
-      if (!res.ok) { alert('Failed to remove super return. Please try again.'); return }
-    } catch { alert('Failed to remove super return. Please check your connection.'); return }
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-super',year})})
     refreshClient()
   }
 
   async function refreshClient() {
     if(!activeClient) return
-    try {
-      const r=await fetch(`/api/crm/clients/${activeClient.id}`)
-      const d=await r.json()
-      if(d.ok){ setActiveClient(d.client); await loadClients() }
-    } catch { /* silent — UI stays as-is */ }
+    const r=await fetch(`/api/crm/clients/${activeClient.id}`)
+    const d=await r.json()
+    if(d.ok){ setActiveClient(d.client); await loadClients() }
   }
 
   async function deleteClient(id:string) {
@@ -369,17 +332,14 @@ export default function DashboardClient() {
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    try {
-      const res = await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
-        body:JSON.stringify({
-          clientName:newClient.fullName, taskType:'tax-return',
-          whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
-          dob:newClient.dob, taxYear:newClient.taxYear, submittedAt:new Date().toISOString(),
-          address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',
-          howHeard:'',auPhone:'',notes:'',fileUrls:[],
-        })})
-      if (!res.ok) { alert('Failed to add client. Please try again.'); return }
-    } catch { alert('Failed to add client. Please check your connection.'); return }
+    await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+      body:JSON.stringify({
+        clientName:newClient.fullName, taskType:'tax-return',
+        whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
+        dob:newClient.dob, taxYear:newClient.taxYear, submittedAt:new Date().toISOString(),
+        address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',
+        howHeard:'',auPhone:'',notes:'',fileUrls:[],
+      })})
     setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25'})
     setShowAddModal(false); await loadTasks()
   }
@@ -392,10 +352,10 @@ export default function DashboardClient() {
   // Strip structured form data from notes — return only the user-written portion
   const extractUserNotes = (raw:string) => {
     if (!raw) return ''
-    // Structured parts — must match the list in saveTaskNotes exactly
+    // Structured parts: "Key: Value | ...", "→ ✓ ...", "I confirm...", "I declare...", "I have read..."
     const parts = raw.split(' | ')
     const userParts = parts.filter(p =>
-      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|Tax status)/i)
+      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
     )
     return userParts.join(' | ').trim()
   }
@@ -1745,7 +1705,7 @@ export default function DashboardClient() {
                               <div style={{display:'flex',alignItems:'center',gap:6,background:tax.type==='owed'?'#fff8f7':'#e8f5f0',border:`1px solid ${tax.type==='owed'?'#fca5a5':'#b0d8c8'}`,borderRadius:8,padding:'4px 10px'}}>
                                 <span style={{fontSize:11,fontWeight:700,color:tax.type==='owed'?'#c0392b':'#0E5C42'}}>💰 Tax {tax.type==='owed'?'owed':'refund'}</span>
                                 <span style={{fontSize:12,fontWeight:600,color:tax.type==='owed'?'#c0392b':'#0a1410'}}>{tax.type==='owed'?'-':''}{fmtCur(tax.refundAmount)}</span>
-                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>setConfirmRemoveTax(year)}>×</button>
+                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeTaxReturn(year)}>×</button>
                               </div>
                             ) : (
                               <div style={{display:'flex',alignItems:'center',gap:4,background:'#f7fbf9',border:'1px dashed #d8e4dc',borderRadius:8,padding:'4px 10px'}}>
@@ -1756,7 +1716,7 @@ export default function DashboardClient() {
                               <div style={{display:'flex',alignItems:'center',gap:6,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:8,padding:'4px 10px'}}>
                                 <span style={{fontSize:11,fontWeight:700,color:'#2563eb'}}>🏦 Super</span>
                                 <span style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{fmtCur(sup.amount)}</span>
-                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>setConfirmRemoveSuper(year)}>×</button>
+                                <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeSuperReturn(year)}>×</button>
                               </div>
                             )}
                           </div>
@@ -1957,34 +1917,6 @@ export default function DashboardClient() {
             <div style={S.mFooter}>
               <button style={S.mCancel} onClick={()=>setConfirmDeleteClient(null)}>Cancel</button>
               <button style={S.mDel} onClick={()=>deleteClient(confirmDeleteClient)}>Yes, delete</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {confirmRemoveTax && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmRemoveTax(null)}}>
-          <div style={{...S.modal,maxWidth:340,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>💰</div>
-            <div style={S.mTitle}>Remove tax return?</div>
-            <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>This will permanently remove the {confirmRemoveTax} tax return entry.</div>
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmRemoveTax(null)}>Cancel</button>
-              <button style={S.mDel} onClick={()=>{ removeTaxReturn(confirmRemoveTax); setConfirmRemoveTax(null) }}>Yes, remove</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {confirmRemoveSuper && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmRemoveSuper(null)}}>
-          <div style={{...S.modal,maxWidth:340,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>🏦</div>
-            <div style={S.mTitle}>Remove super return?</div>
-            <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>This will permanently remove the {confirmRemoveSuper} super return entry.</div>
-            <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmRemoveSuper(null)}>Cancel</button>
-              <button style={S.mDel} onClick={()=>{ removeSuperReturn(confirmRemoveSuper); setConfirmRemoveSuper(null) }}>Yes, remove</button>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -260,129 +260,97 @@ export default function TaxFormPage() {
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ Yes, I agree' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredText', 'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.')
-    fd.append('declaredIncome', declaredIncome ? '✓ ' + NEW_DECL_TEXT : '')
+    const NEW_DECL_TEXT = 'I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.'
+  fd.append('declaredIncome', declaredIncome ? '✓ ' + NEW_DECL_TEXT : '')
     fd.append('taxStatusText', 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:')
     if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
     if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
 
+    // Upload invoices in background — don't block the optimistic UX
+    const allInvoiceFiles = [
+      ...invoices.files,
+      ...abnInvoices.files,
+    ]
     const invoiceUrls: string[] = []
-    try {
-      const allFiles = [
-        ...invoices.files.map(f => ({ file: f, type: 'invoice' })),
-        ...abnInvoices.files.map(f => ({ file: f, type: 'abn-invoice' })),
-      ]
-      const results = await Promise.all(
-        allFiles.map(({ file: f }) =>
-          fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
-            method: 'POST', body: f, headers: { 'Content-Type': f.type },
-          }).then(r => r.ok ? r.json() : null).catch(() => null)
+    if (allInvoiceFiles.length > 0) {
+      try {
+        const results = await Promise.all(
+          allInvoiceFiles.map(f => {
+            if (f.size > 10 * 1024 * 1024) return Promise.resolve(null) // skip oversized
+            return fetch(`/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`, {
+              method: 'POST', body: f, headers: { 'Content-Type': f.type },
+            }).then(r => r.ok ? r.json() : null).catch(() => null)
+          })
         )
-      )
-      results.forEach(r => { if (r?.url) invoiceUrls.push(r.url) })
-    } catch {
-      invoices.files.forEach((f, i) => fd.append(`invoices_${i}`, f))
+        results.forEach(r => { if (r?.url) invoiceUrls.push(r.url) })
+      } catch {
+        // fallback: attach directly to formData
+        allInvoiceFiles.forEach((f, i) => fd.append(`invoices_${i}`, f))
+      }
     }
     if (invoiceUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
       if (res.ok) {
-        window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
+        window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true)
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
         else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
-        else alert('Something went wrong. Please try again or contact us directly.')
+        else alert('Something went wrong. Please try again.')
       }
-    } catch {
-      alert('Something went wrong. Please try again or contact us directly.')
-    } finally {
-      setLoading(false)
-    }
+    } catch { alert('Something went wrong. Please try again.') }
+    finally { setLoading(false) }
   }
+
+
+  // Fireworks on success
+  useEffect(() => {
+    if (!submitted) return
+    const c = document.getElementById('fw-canvas') as HTMLCanvasElement | null
+    if (!c) return
+    const ctx = c.getContext('2d')!
+    let W = (c.width = window.innerWidth), H = (c.height = window.innerHeight)
+    const onResize = () => { W = c.width = window.innerWidth; H = c.height = window.innerHeight }
+    window.addEventListener('resize', onResize)
+    const colors = ['#FFD700','#FF6B35','#FF6B6B','#E91E8C','#4ECDC4','#45B7D1','#7C4DFF','#00E676','#FFEA00','#FF1744','#00BCD4','#76FF03']
+    type P = { x:number;y:number;color:string;type:string;r:number;vx:number;vy:number;alpha:number;gravity:number;spin:number;rot:number }
+    const particles: P[] = []
+    function mkP(x:number,y:number,color:string,type:string): P {
+      const a=Math.random()*Math.PI*2,s=Math.random()*10+3
+      return {x,y,color,type,r:Math.random()*4+2,vx:Math.cos(a)*s,vy:Math.sin(a)*s-4,alpha:1,gravity:0.18,spin:Math.random()*0.3-0.15,rot:Math.random()*Math.PI*2}
+    }
+    function burst(x:number,y:number){const t=['circle','circle','star','spark'];for(let i=0;i<90;i++)particles.push(mkP(x,y,colors[Math.floor(Math.random()*colors.length)],t[Math.floor(Math.random()*t.length)]))}
+    let shots=0;function fireRandom(){if(shots>=12)return;burst(Math.random()*W*0.8+W*0.1,Math.random()*H*0.55+H*0.05);shots++;if(shots<12)setTimeout(fireRandom,350)}
+    setTimeout(fireRandom,80)
+    let raf:number
+    function loop(){
+      ctx.clearRect(0,0,W,H)
+      for(let i=particles.length-1;i>=0;i--){
+        const p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.vx*=0.98;p.alpha-=0.013;p.rot+=p.spin
+        if(p.alpha<=0){particles.splice(i,1);continue}
+        ctx.save();ctx.globalAlpha=Math.max(0,p.alpha);ctx.fillStyle=p.color;ctx.translate(p.x,p.y);ctx.rotate(p.rot)
+        if(p.type==='star'){ctx.beginPath();for(let j=0;j<5;j++){ctx.lineTo(Math.cos((18+j*72)*Math.PI/180)*p.r,-Math.sin((18+j*72)*Math.PI/180)*p.r);ctx.lineTo(Math.cos((54+j*72)*Math.PI/180)*p.r*0.4,-Math.sin((54+j*72)*Math.PI/180)*p.r*0.4)}ctx.closePath();ctx.fill()}
+        else if(p.type==='spark'){ctx.fillRect(-p.r*2,-p.r*0.4,p.r*4,p.r*0.8)}
+        else{ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill()}
+        ctx.restore()
+      }
+      if(particles.length>0||shots<12)raf=requestAnimationFrame(loop)
+    }
+    raf=requestAnimationFrame(loop)
+    return()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',onResize)}
+  }, [submitted])
 
   /* ── Success screen ── */
   if (submitted) {
-    const firstName = fullName.split(' ')[0]
-    const _ = lastName
+    const firstName = (fullName.split(' ')[0] || lastName || 'there')
     return (
       <>
         <style>{styles}</style>
         <div className="form-success-wrap">
-
         <canvas id="fw-canvas" className="fireworks-canvas" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-  var c=document.getElementById('fw-canvas');
-  if(!c)return;
-  var ctx=c.getContext('2d');
-  var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
-  window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
-  var particles=[];
-  var colors=['#FFD700','#FF6B35','#FF6B6B','#E91E8C','#4ECDC4','#45B7D1','#7C4DFF','#00E676','#FFEA00','#FF1744','#00BCD4','#76FF03'];
-  function Particle(x,y,color,type){
-    this.x=x; this.y=y; this.color=color; this.type=type||'circle';
-    this.r=Math.random()*4+2;
-    var angle=Math.random()*Math.PI*2;
-    var speed=Math.random()*10+3;
-    this.vx=Math.cos(angle)*speed;
-    this.vy=Math.sin(angle)*speed-4;
-    this.alpha=1;
-    this.gravity=0.18;
-    this.spin=Math.random()*0.3-0.15;
-    this.rot=Math.random()*Math.PI*2;
-  }
-  Particle.prototype.update=function(){
-    this.x+=this.vx; this.y+=this.vy;
-    this.vy+=this.gravity;
-    this.vx*=0.98;
-    this.alpha-=0.013;
-    this.rot+=this.spin;
-  };
-  Particle.prototype.draw=function(){
-    ctx.save(); ctx.globalAlpha=Math.max(0,this.alpha);
-    ctx.fillStyle=this.color;
-    ctx.translate(this.x,this.y); ctx.rotate(this.rot);
-    if(this.type==='star'){
-      ctx.beginPath();
-      for(var i=0;i<5;i++){
-        ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*this.r, -Math.sin((18+i*72)*Math.PI/180)*this.r);
-        ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*this.r*0.4, -Math.sin((54+i*72)*Math.PI/180)*this.r*0.4);
-      }
-      ctx.closePath(); ctx.fill();
-    } else if(this.type==='spark'){
-      ctx.fillRect(-this.r*2,-this.r*0.4,this.r*4,this.r*0.8);
-    } else {
-      ctx.beginPath(); ctx.arc(0,0,this.r,0,Math.PI*2); ctx.fill();
-    }
-    ctx.restore();
-  };
-  function burst(x,y){
-    var count=90;
-    var types=['circle','circle','star','spark'];
-    for(var i=0;i<count;i++){
-      var type=types[Math.floor(Math.random()*types.length)];
-      particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)],type));
-    }
-  }
-  var shots=0; var maxShots=12; var shotInterval=350;
-  function fireRandom(){
-    if(shots>=maxShots)return;
-    burst(Math.random()*W*0.8+W*0.1, Math.random()*H*0.55+H*0.05);
-    shots++;
-    if(shots<maxShots) setTimeout(fireRandom, shotInterval);
-  }
-  setTimeout(fireRandom, 80);
-  function loop(){
-    ctx.clearRect(0,0,W,H);
-    particles=particles.filter(function(p){return p.alpha>0;});
-    particles.forEach(function(p){p.update();p.draw();});
-    if(particles.length>0||shots<maxShots) requestAnimationFrame(loop);
-  }
-  loop();
-})();
-        ` }} />
-          <div className="success-icon">
+        <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
               <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -541,7 +509,8 @@ export default function TaxFormPage() {
                   Please upload invoices for all business-related expenses you would like to claim as deductions.
                 </p>
                 <MultiFileUpload
-                  state={abnInvoices}
+                  id="abnInvoices"
+                  value={abnInvoices}
                   onChange={setAbnInvoices}
                   accept="image/jpeg,image/png,image/webp,application/pdf"
                   maxFiles={10}
@@ -621,7 +590,7 @@ export default function TaxFormPage() {
                   <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a>.
                 </p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
-                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
+                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : 'no'); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="check-label">I confirm this declaration</span>
                 </label>
@@ -666,7 +635,7 @@ export default function TaxFormPage() {
             </div>
           )}
 
-          <button type="submit" className="submit-btn" disabled={loading}>
+          <button type="submit" className="submit-btn" disabled={loading || !declared || !declaredIncome || !taxStatus}>
             {loading ? (
               <span className="btn-loading">
                 <svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none">

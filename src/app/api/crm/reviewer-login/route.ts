@@ -1,16 +1,20 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyReviewerPassword, createReviewerSession, recordReviewerFailRedis, resetReviewerFailRedis, isReviewerLockedRedis } from '@/lib/crm-store'
-import { getRedis } from '@/lib/rate-limit'
+import { getRedis, disconnectRedis } from '@/lib/redis'
 
 export async function POST(req: NextRequest) {
+  let redis = null
   try {
     const { password } = await req.json()
     const hash = process.env.REVIEWER_PASSWORD_HASH
     if (!hash) return NextResponse.json({ ok: false, error: 'not_configured' }, { status: 503 })
 
-    let redis: any = null
-    try { redis = await getRedis() } catch {}
+    try {
+      redis = await getRedis()
+    } catch (err) {
+      console.warn('[reviewer-login] Redis unavailable — brute-force protection disabled:', err)
+    }
 
     if (redis) {
       const locked = await isReviewerLockedRedis(redis)
@@ -64,5 +68,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error('[reviewer-login]', err)
     return NextResponse.json({ ok: false }, { status: 500 })
+  } finally {
+    await disconnectRedis(redis)
   }
 }
