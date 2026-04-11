@@ -244,10 +244,11 @@ export default function TaxFormPage() {
         return null
       }
       const attempt = async () => {
-        // Normalize content-type for iOS HEIC photos
+        // Normalize content-type for iOS HEIC photos — keep original type, server will detect from magic bytes
         let contentType = f.type || 'image/jpeg'
         if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
-        if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
+        // Don't rename HEIC→jpeg; send real type and let server detect from magic bytes
+        if (contentType === 'image/heif') contentType = 'image/heic'
         const r = await fetch(
           `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
           { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
