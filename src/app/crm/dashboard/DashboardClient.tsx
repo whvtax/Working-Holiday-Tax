@@ -401,7 +401,7 @@ export default function DashboardClient() {
 
     else if (task.taskType === 'abn') {
       const gender   = getNote('Gender')
-      const decl1Val = findDecl(['→ ✓ I confirm this','→ ✓ I confirm'])
+      const decl1Val = findDecl(['→ ✓ I declare that I do not own','→ ✓ I confirm'])
       const decl2Val = findDecl(['→ ✓ I have read','→ ✓ I agree'])
 
       formBody =
@@ -422,8 +422,8 @@ export default function DashboardClient() {
           : `<p style="font-size:12px;color:#aabab2">No files uploaded</p>`)
         + sec('Declaration')
         + declBox(
-            'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
-            'I confirm this declaration',
+            '',
+            decl1Val !== '—' ? decl1Val.replace('→ ✓ ','') : 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
             decl1Val !== '—'
           )
         + declBox(
@@ -1128,7 +1128,7 @@ export default function DashboardClient() {
                 </div>
               </div>
               {/* Declaration + Notes side by side */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12,alignItems:'start'}}>
                 {/* Declaration card — per form type */}
                 <div style={S.card}>
                   {(()=>{
@@ -1193,8 +1193,7 @@ export default function DashboardClient() {
                       const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
                       return <>
                         <div style={S.secHead}><span>Business Declaration</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader.</div>
-                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600,fontSize:11,lineHeight:1.5}}>{declVal.replace('→ ✓ ','').replace('→ ','')}</span></div>
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>Client Agreement</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
