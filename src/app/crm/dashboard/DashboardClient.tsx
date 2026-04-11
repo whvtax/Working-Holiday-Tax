@@ -201,8 +201,14 @@ export default function DashboardClient() {
     await Promise.all([loadClients(), loadArchived()])
   }
   async function toggleCheckin(clientId: string, year: string, current: boolean) {
-      setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
-    await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'checkin',year,done:!current})})
+    setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
+    try {
+      const res = await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'checkin',year,done:!current})})
+      if (!res.ok) throw new Error()
+    } catch {
+      // Rollback optimistic update on failure
+      setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:current}} : c))
+    }
   }
 
   async function markDone(id:string) {
@@ -218,17 +224,23 @@ export default function DashboardClient() {
 
   async function transferToClients(task: Task) {
     setConfirmTransfer(null)
+    try {
+      const res = await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
+      if (!res.ok) { alert('Failed to transfer task. Please try again.'); return }
+    } catch { alert('Failed to transfer task. Please check your connection.'); return }
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
     await Promise.all([loadClients(), loadArchived()])
   }
 
   async function deleteTaskPermanently(id: string) {
     setConfirmPermDelete(null)
+    try {
+      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete_permanent'})})
+      if (!res.ok) { alert('Failed to delete task. Please try again.'); return }
+    } catch { alert('Failed to delete task. Please check your connection.'); return }
     setTasks(prev => prev.filter(t => t.id !== id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete_permanent'})})
   }
 
   async function saveTaskNotes() {
@@ -240,7 +252,10 @@ export default function DashboardClient() {
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
       : structuredParts.join(' | ')
-    await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'notes',notes:merged})})
+    try {
+      const res = await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'notes',notes:merged})})
+      if (!res.ok) { alert('Failed to save notes. Please try again.'); return }
+    } catch { alert('Failed to save notes. Please check your connection.'); return }
     setNotesSaved(true); setTimeout(()=>setNotesSaved(false),2500)
   }
 
@@ -262,7 +277,10 @@ export default function DashboardClient() {
         })
       }
     }
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
+    try {
+      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
+      if (!res.ok) { alert('Failed to archive task. Please try again.'); return }
+    } catch { alert('Failed to archive task. Please check your connection.'); return }
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null); setCaptureRefund(null)
     setCaptureRefundAmt(''); setCaptureSuperAmt(''); setCaptureRefundType('refund')
     await Promise.all([loadTasks(),loadClients(),loadArchived()])
@@ -281,37 +299,51 @@ export default function DashboardClient() {
 
   async function addTaxReturn() {
     if(!activeClient||!newTaxYear||!newTaxAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
-      body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:parseFloat(newTaxAmt),type:newTaxType,completedAt:new Date().toISOString()}})})
+    try {
+      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+        body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:parseFloat(newTaxAmt),type:newTaxType,completedAt:new Date().toISOString()}})})
+      if (!res.ok) { alert('Failed to add tax return. Please try again.'); return }
+    } catch { alert('Failed to add tax return. Please check your connection.'); return }
     setNewTaxYear(''); setNewTaxAmt(''); setNewTaxType('refund'); setShowAddTax(false)
     refreshClient()
   }
 
   async function removeTaxReturn(year:string) {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-tax',year})})
+    try {
+      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-tax',year})})
+      if (!res.ok) { alert('Failed to remove tax return. Please try again.'); return }
+    } catch { alert('Failed to remove tax return. Please check your connection.'); return }
     refreshClient()
   }
 
   async function addSuperReturn() {
     if(!activeClient||!newSuperYear||!newSuperAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
-      body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:parseFloat(newSuperAmt),completedAt:new Date().toISOString()}})})
+    try {
+      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+        body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:parseFloat(newSuperAmt),completedAt:new Date().toISOString()}})})
+      if (!res.ok) { alert('Failed to add super return. Please try again.'); return }
+    } catch { alert('Failed to add super return. Please check your connection.'); return }
     setNewSuperYear(''); setNewSuperAmt(''); setShowAddSuper(false)
     refreshClient()
   }
 
   async function removeSuperReturn(year:string) {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-super',year})})
+    try {
+      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-super',year})})
+      if (!res.ok) { alert('Failed to remove super return. Please try again.'); return }
+    } catch { alert('Failed to remove super return. Please check your connection.'); return }
     refreshClient()
   }
 
   async function refreshClient() {
     if(!activeClient) return
-    const r=await fetch(`/api/crm/clients/${activeClient.id}`)
-    const d=await r.json()
-    if(d.ok){ setActiveClient(d.client); await loadClients() }
+    try {
+      const r=await fetch(`/api/crm/clients/${activeClient.id}`)
+      const d=await r.json()
+      if(d.ok){ setActiveClient(d.client); await loadClients() }
+    } catch { /* silent — UI stays as-is */ }
   }
 
   async function deleteClient(id:string) {
@@ -337,14 +369,17 @@ export default function DashboardClient() {
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
-      body:JSON.stringify({
-        clientName:newClient.fullName, taskType:'tax-return',
-        whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
-        dob:newClient.dob, taxYear:newClient.taxYear, submittedAt:new Date().toISOString(),
-        address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',
-        howHeard:'',auPhone:'',notes:'',fileUrls:[],
-      })})
+    try {
+      const res = await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+        body:JSON.stringify({
+          clientName:newClient.fullName, taskType:'tax-return',
+          whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
+          dob:newClient.dob, taxYear:newClient.taxYear, submittedAt:new Date().toISOString(),
+          address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',
+          howHeard:'',auPhone:'',notes:'',fileUrls:[],
+        })})
+      if (!res.ok) { alert('Failed to add client. Please try again.'); return }
+    } catch { alert('Failed to add client. Please check your connection.'); return }
     setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25'})
     setShowAddModal(false); await loadTasks()
   }

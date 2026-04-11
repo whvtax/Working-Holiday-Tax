@@ -102,7 +102,7 @@ export default function SuperFormPage() {
     fd.append('formType', 'super')
     fd.append('firstName', firstName); fd.append('lastName', lastName)
     fd.append('dob', dob); fd.append('passport', passport)
-    fd.append('passportCountry', passportCountry); fd.append('smsPhone', smsPhone)
+    fd.append('passportCountry', passportCountry); fd.append('smsPhone', smsPhone); fd.append('auPhone', smsPhone)
     fd.append('email', email); fd.append('auAddress', auAddress)
     fd.append('homeAddress', homeAddress); fd.append('tfn', tfn)
     fd.append('superFunds', superFunds)

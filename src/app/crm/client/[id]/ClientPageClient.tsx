@@ -58,21 +58,30 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   async function save() {
     setSaving(true)
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'update',data:form})})
-    const data = await res.json()
-    if (data.ok) { setClient(data.client); setEditing(false); showMsg('Changes saved') }
+    try {
+      const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'update',data:form})})
+      const data = await res.json()
+      if (data.ok) { setClient(data.client); setEditing(false); showMsg('Changes saved') }
+      else showMsg('⚠️ Failed to save. Please try again.')
+    } catch { showMsg('⚠️ Failed to save. Please check your connection.') }
     setSaving(false)
   }
   async function doClear() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'clear'})})
-    const data = await res.json()
-    if (data.ok) { await load(); showMsg('Sensitive details cleared') }
+    try {
+      const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'clear'})})
+      const data = await res.json()
+      if (data.ok) { await load(); showMsg('Sensitive details cleared') }
+      else showMsg('⚠️ Failed to clear. Please try again.')
+    } catch { showMsg('⚠️ Failed to clear. Please check your connection.') }
     setShowClear(false)
   }
   async function doHandle() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'handle'})})
-    const data = await res.json()
-    if (data.ok) { await load(); showMsg('Marked as handled') }
+    try {
+      const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'handle'})})
+      const data = await res.json()
+      if (data.ok) { await load(); showMsg('Marked as handled') }
+      else showMsg('⚠️ Failed. Please try again.')
+    } catch { showMsg('⚠️ Failed. Please check your connection.') }
     setShowHandle(false)
   }
 
