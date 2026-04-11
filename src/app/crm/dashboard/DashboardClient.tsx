@@ -313,7 +313,7 @@ export default function DashboardClient() {
     setShowAddModal(false); await loadTasks()
   }
 
-  const fmtDate   = (iso:string) => iso ? new Date(iso).toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}) : '—'
+  const fmtDate   = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST' : '—'
   const fmtDateTime = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{
     day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'
   }) + ' AEST' : '—'
@@ -400,7 +400,7 @@ export default function DashboardClient() {
     if (task.taskType === 'tfn') {
       const passport = getNote('Passport No')
       const gender   = getNote('Gender')
-      const decl1Val = findDecl(['→ ✓ I confirm this','→ ✓ I confirm'])
+      const decl1Val = findDecl(['→ ✓ I confirm I am currently','→ ✓ I confirm this','→ ✓ I confirm'])
       const decl2Val = findDecl(['→ ✓ I have read','→ ✓ I agree'])
 
       formBody =
@@ -422,8 +422,8 @@ export default function DashboardClient() {
           : `<p style="font-size:12px;color:#aabab2">No files uploaded</p>`)
         + sec('Declaration')
         + declBox(
-            'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.',
-            'I confirm this declaration',
+            '',
+            decl1Val !== '—' ? decl1Val.replace('✓ ','') : 'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.',
             decl1Val !== '—'
           )
         + declBox(
@@ -1226,7 +1226,7 @@ export default function DashboardClient() {
 
                     // TFN: Personal declaration + Client Agreement
                     if (activeTask.taskType === 'tfn') {
-                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
+                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm I am')) || parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
                       const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
                       return <>
                         <div style={S.secHead}><span>Personal Declaration</span></div>

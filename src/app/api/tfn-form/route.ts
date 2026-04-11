@@ -47,7 +47,6 @@ export async function POST(req: NextRequest) {
       notes:       [
         formData.get('passport') ? `Passport No: ${sanitiseShort(formData.get('passport'))}` : '',
         formData.get('gender') ? `Gender: ${sanitiseShort(formData.get('gender'))}` : '',
-        formData.get('declaredText') ? sanitiseField(formData.get('declaredText')) : '',
         formData.get('declared')     ? `→ ${sanitiseField(formData.get('declared'))}` : '',
         formData.get('terms')        ? `→ ${sanitiseField(formData.get('terms'))}` : '',
       ].filter(Boolean).join(' | '),
