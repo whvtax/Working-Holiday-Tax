@@ -1,4 +1,4 @@
-import { sql, db } from '@vercel/postgres'
+import { sql } from '@vercel/postgres'
 import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
@@ -247,38 +247,30 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
     .map(s => (s ?? '').trim())
     .filter(Boolean)
     .join('\n')
-  const client = await db.connect()
-  try {
-    await client.query('BEGIN')
-    await client.query(
-      `INSERT INTO crm_clients
-        (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'[]','[]',
-         '{"done":false,"completedAt":"","notes":""}',
-         '{"done":false,"completedAt":"","notes":""}',
-         $9)
-       ON CONFLICT (id) DO UPDATE SET
-         how_heard = CASE
-           WHEN crm_clients.how_heard = '' AND EXCLUDED.how_heard != ''
-           THEN EXCLUDED.how_heard
-           ELSE crm_clients.how_heard
-         END,
-         notes = CASE
-           WHEN EXCLUDED.notes != '' AND crm_clients.notes NOT LIKE '%' || EXCLUDED.notes || '%'
-           THEN TRIM(crm_clients.notes || E'\\n' || EXCLUDED.notes)
-           ELSE crm_clients.notes
-         END`,
-      [task.clientId, task.clientName, task.dob, task.whatsapp, task.email,
-       task.country, task.howHeard, taskNotes, new Date().toISOString()]
-    )
-    await client.query('DELETE FROM crm_tasks WHERE id = $1', [taskId])
-    await client.query('COMMIT')
-  } catch (err) {
-    await client.query('ROLLBACK')
-    throw err
-  } finally {
-    client.release()
-  }
+
+  await sql`
+    INSERT INTO crm_clients
+      (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
+    VALUES
+      (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
+       ${task.country},${task.howHeard},${taskNotes},'[]','[]',
+       '{"done":false,"completedAt":"","notes":""}',
+       '{"done":false,"completedAt":"","notes":""}',
+       ${new Date().toISOString()})
+    ON CONFLICT (id) DO UPDATE SET
+      how_heard = CASE
+        WHEN crm_clients.how_heard = '' AND EXCLUDED.how_heard != ''
+        THEN EXCLUDED.how_heard
+        ELSE crm_clients.how_heard
+      END,
+      notes = CASE
+        WHEN EXCLUDED.notes != '' AND crm_clients.notes NOT LIKE '%' || EXCLUDED.notes || '%'
+        THEN TRIM(crm_clients.notes || E'\n' || EXCLUDED.notes)
+        ELSE crm_clients.notes
+      END
+  `
+
+  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
 }
 
 // Delete task permanently — no client card created, all data gone

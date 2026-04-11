@@ -99,9 +99,7 @@ const REVIEWER_SESSION_TTL = 4 * 60 * 60 * 1000 // 4 hours
 export function hashReviewerPassword(password: string): string {
   const salt = process.env.PASSWORD_SALT
   if (!salt) throw new Error('Missing env var: PASSWORD_SALT')
-  // FIX: require explicit REVIEWER_SALT — no fallback to weak derived value
-  const reviewerSalt = process.env.REVIEWER_SALT
-  if (!reviewerSalt) throw new Error('Missing env var: REVIEWER_SALT')
+  const reviewerSalt = process.env.REVIEWER_SALT || (salt + '_reviewer')
   return crypto.pbkdf2Sync(password, reviewerSalt, 100_000, 64, 'sha512').toString('hex')
 }
 

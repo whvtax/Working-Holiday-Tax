@@ -61,11 +61,7 @@ export async function POST(req: NextRequest) {
     await redis.del('crm_otp_attempts')
     await redis.set('crm_otp', otpHash, { EX: 600 }) // expires in 10 minutes
 
-    if (!ADMIN_EMAIL) {
-      console.error('[CRM login] CRM_ADMIN_EMAIL env var not set — OTP cannot be delivered')
-      return NextResponse.json({ ok: false, message: 'Server misconfiguration. Contact your administrator.' }, { status: 500 })
-    }
-    await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
+    if (ADMIN_EMAIL) await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
 
     return NextResponse.json({ ok: true, otpSent: true })
 

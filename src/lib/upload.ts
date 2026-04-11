@@ -134,20 +134,8 @@ export async function uploadFiles(
   files: (File | null)[],
   folder: string,
 ): Promise<string[]> {
-  const nonNull = files.filter((f): f is File => f !== null && f.size > 0)
-  const totalBytes = nonNull.reduce((sum, f) => sum + f.size, 0)
-  const MAX_TOTAL_BYTES = 50 * 1024 * 1024 // 50 MB
-  if (totalBytes > MAX_TOTAL_BYTES) {
-    throw new Error(`Total upload size exceeds 50 MB limit (${Math.round(totalBytes / 1024 / 1024)} MB). Please reduce the number or size of files.`)
-  }
-  // Upload in batches of 3 to avoid OOM / timeout on serverless
-  const results: string[] = []
-  for (let i = 0; i < nonNull.length; i += 3) {
-    const batch = nonNull.slice(i, i + 3)
-    const batchResults = await Promise.all(batch.map(f => uploadFile(f, folder)))
-    results.push(...batchResults.filter((u): u is string => u !== null))
-  }
-  return results
+  const results = await Promise.all(files.map(f => uploadFile(f, folder)))
+  return results.filter((u): u is string => u !== null)
 }
 
 export async function deleteFiles(urls: string[]): Promise<void> {
