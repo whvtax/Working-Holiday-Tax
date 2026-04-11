@@ -998,13 +998,7 @@ export default function DashboardClient() {
               {/* 4 sections — adapted per taskType */}
               <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',gap:12,marginBottom:12}}>
 
-                {/* ── Reviewer note ── */}
-                {(activeTask).reviewerNote && (
-                  <div style={{background:'#FFF8EC',border:'1px solid #FDE68A',borderRadius:12,padding:'12px 16px',marginBottom:12}}>
-                    <p style={{fontSize:11,fontWeight:600,color:'#B45309',marginBottom:6,textTransform:'uppercase',letterSpacing:'0.04em'}}>📝 Reviewer note</p>
-                    <p style={{fontSize:13,color:'#1A2822',lineHeight:1.6}}>{(activeTask as any).reviewerNote}</p>
-                  </div>
-                )}
+
 
                 {/* ── Panel 1: Personal details ── */}
                 <div style={S.card}>
@@ -1266,16 +1260,7 @@ export default function DashboardClient() {
                 {/* Notes */}
                 <div style={{...S.card,display:'flex',flexDirection:'column' as const,minWidth:0}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
-                  {(()=>{
-                    const reviewerNote = (activeTask.notes||'').split(' | ').find(p=>p.startsWith('📝 '))?.slice(3)
-                    if (!reviewerNote) return null
-                    return (
-                      <div style={{padding:'8px 14px',background:'#FFF8EC',borderBottom:'1px solid #FDE68A',display:'flex',gap:8,alignItems:'flex-start'}}>
-                        <span style={{fontSize:11,fontWeight:700,color:'#B45309',flexShrink:0,marginTop:1}}>📝 Reviewer:</span>
-                        <span style={{fontSize:12,color:'#1A2822',lineHeight:1.5}}>{reviewerNote}</span>
-                      </div>
-                    )
-                  })()}
+
                   <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
                     placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
