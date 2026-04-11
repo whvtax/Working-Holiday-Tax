@@ -185,10 +185,12 @@ export default function DashboardClient() {
     if(!activeTask) return
     // Preserve structured data (passport, declarations etc.) AND reviewer notes
     const allParts = (activeTask.notes||'').split(' | ')
+    // Keep structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
       p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
     )
+    // taskNotes is the admin's own notes (stripped of 📝 prefix when loaded)
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
       : structuredParts.join(' | ')
@@ -290,11 +292,12 @@ export default function DashboardClient() {
   // Strip structured form data from notes — return only the user-written portion
   const extractUserNotes = (raw:string) => {
     if (!raw) return ''
-    // Structured parts: "Key: Value | ...", "→ ✓ ...", "I confirm...", "I declare...", "I have read..."
     const parts = raw.split(' | ')
-    const userParts = parts.filter(p =>
-      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
-    )
+    const userParts = parts
+      .filter(p =>
+        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      )
+      .map(p => p.startsWith('📝 ') ? p.slice(3) : p) // strip reviewer prefix for display
     return userParts.join(' | ').trim()
   }
 
@@ -1140,9 +1143,9 @@ export default function DashboardClient() {
                 </div>
               </div>
               {/* Declaration + Notes side by side */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12,alignItems:'start'}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12,alignItems:'stretch'}}>
                 {/* Declaration card — per form type */}
-                <div style={S.card}>
+                <div style={{...S.card,height:'100%',boxSizing:'border-box' as const}}>
                   {(()=>{
                     const parts = (activeTask.notes||'').split(' | ')
 
@@ -1220,6 +1223,16 @@ export default function DashboardClient() {
                 {/* Notes */}
                 <div style={{...S.card,display:'flex',flexDirection:'column' as const}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
+                  {(()=>{
+                    const reviewerNote = (activeTask.notes||'').split(' | ').find(p=>p.startsWith('📝 '))?.slice(3)
+                    if (!reviewerNote) return null
+                    return (
+                      <div style={{padding:'8px 14px',background:'#FFF8EC',borderBottom:'1px solid #FDE68A',display:'flex',gap:8,alignItems:'flex-start'}}>
+                        <span style={{fontSize:11,fontWeight:700,color:'#B45309',flexShrink:0,marginTop:1}}>📝 Reviewer:</span>
+                        <span style={{fontSize:12,color:'#1A2822',lineHeight:1.5}}>{reviewerNote}</span>
+                      </div>
+                    )
+                  })()}
                   <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
                     placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
