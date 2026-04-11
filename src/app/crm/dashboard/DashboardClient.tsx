@@ -791,10 +791,10 @@ export default function DashboardClient() {
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <div style={{padding:'9px 11px 16px',display:'flex',alignItems:'center',gap:8}}>
-            <button style={{...S.sbLock,padding:0,flex:'none',width:'auto',gap:6,height:30,paddingLeft:10,paddingRight:10,background:'rgba(255,255,255,0.08)',border:'1px solid rgba(255,255,255,0.12)',borderRadius:8}} onClick={lockAndExit}>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
-              Lock
+          <div style={{padding:'12px 14px 18px'}}>
+            <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:40,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:10,cursor:'pointer',color:'rgba(255,255,255,0.85)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+              Lock & Exit
             </button>
           </div>
         </aside>
@@ -809,6 +809,16 @@ export default function DashboardClient() {
                   <div style={S.pgTitle}>Tasks</div>
                   <div style={{...S.pgSub,marginBottom:0}}>Tax return submissions awaiting processing</div>
                 </div>
+                <button
+                  onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients()]);setRefreshing(false)}}
+                  style={{display:'flex',alignItems:'center',gap:6,height:34,padding:'0 14px',background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:100,cursor:refreshing?'default':'pointer',color:'#587066',fontSize:12,fontWeight:600,fontFamily:'inherit',flexShrink:0}}
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{animation:refreshing?'spin 0.7s linear infinite':'none',display:'block'}}>
+                    <path d="M23 4v6h-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Refresh
+                </button>
 
               </div>
 
