@@ -6,12 +6,10 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
         body > div > footer { display: none !important; }
         a[href="#main-content"] { display: none !important; }
         .grain { display: none !important; }
-        #main-content { display: contents; }
-        body { margin: 0; padding: 0; }
+        #main-content { margin: 0 !important; padding: 0 !important; display: block !important; }
+        body { margin: 0 !important; padding: 0 !important; }
       `}</style>
-      <div style={{ minHeight: '100vh' }}>
-        {children}
-      </div>
+      {children}
     </>
   )
 }
