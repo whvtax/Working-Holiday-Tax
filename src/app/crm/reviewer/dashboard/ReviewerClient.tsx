@@ -8,7 +8,7 @@ type Task = {
   whatsapp: string; email: string; country: string; dob: string; taxYear: string
   address: string; tfn: string; bankDetails: string; primaryJob: string
   marital: string; taxStatus: string; notes: string; fileUrls: string[]
-  done: boolean; reviewStatus: ReviewStatus; reviewerNote: string; reviewedAt: string
+  done: boolean; reviewStatus: ReviewStatus; reviewerNote: string
   auPhone?: string
 }
 
@@ -21,81 +21,18 @@ const TYPE_LABEL: Record<string, string> = {
   'abn': 'ABN Application',
 }
 
-// Declaration texts exactly as shown in the forms
-const DECL_TEXTS: Record<string, string> = {
-  'tfn-confirm':   'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.',
-  'abn-confirm':   'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
-  'terms':         'I have read and accept the Client Agreement & Privacy Policy.',
-  'tax-accuracy':  'I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.',
-  'tax-income':    'I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.',
-}
-
-type DeclItem = { text: string; checkLabel: string; checked: boolean; isRadio?: boolean; radioOptions?: string[]; selectedOption?: string }
-
-function parseNotes(notes: string, taskType?: string): { declarations: DeclItem[]; extras: string[] } {
+function parseNotes(notes: string) {
   if (!notes) return { declarations: [], extras: [] }
   const parts = notes.split(' | ').map((s: string) => s.trim()).filter(Boolean)
-  const declarations: DeclItem[] = []
+  const declarations: string[] = []
   const extras: string[] = []
-
   for (const p of parts) {
-    const isDecl = p.startsWith('→') || p.startsWith('✓') || p.match(/^I (confirm|declare|have read)/)
-    if (!isDecl) { extras.push(p); continue }
-    const clean = p.replace(/^→\s*/, '').replace(/^[✓✗]\s*/, '')
-
-    // Tax residency radio (→ Australian resident... or → Working holiday maker...)
-    if (p.startsWith('→ Australian') || p.startsWith('→ Working holiday') || p.startsWith('→ resident') || p.startsWith('→ whm')) {
-      const val = p.replace('→ ','').replace('resident','Australian resident for tax purposes').replace('whm','Working holiday maker for tax purposes')
-      declarations.push({
-        text: 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:',
-        checkLabel: '',
-        checked: true,
-        isRadio: true,
-        radioOptions: ['Australian resident for tax purposes','Working holiday maker for tax purposes'],
-        selectedOption: val,
-      })
-      continue
+    if (p.startsWith('→') || p.startsWith('✓') || p.match(/^I (confirm|declare|have read)/)) {
+      declarations.push(p.replace(/^→\s*/, '').replace(/^✓\s*/, ''))
+    } else {
+      extras.push(p)
     }
-
-    // Tax accuracy declaration (Yes/No)
-    if (p.includes('Yes, I agree') || p.includes('✓ Yes') || p.includes('✗ No')) {
-      const agreed = p.includes('Yes')
-      declarations.push({
-        text: DECL_TEXTS['tax-accuracy'],
-        checkLabel: agreed ? 'Yes, I agree' : 'No',
-        checked: agreed,
-      })
-      continue
-    }
-
-    // Income declaration (tax-return only)
-    if (p.includes('I declare under my full legal responsibility') || p.includes('legal responsibility')) {
-      declarations.push({ text: DECL_TEXTS['tax-income'], checkLabel: 'I confirm this declaration', checked: true })
-      continue
-    }
-
-    // TFN confirm
-    if (p.includes('first visit') || p.includes('not been issued a TFN')) {
-      declarations.push({ text: DECL_TEXTS['tfn-confirm'], checkLabel: 'I confirm this declaration', checked: true })
-      continue
-    }
-
-    // ABN confirm
-    if (p.includes('sole trader') || p.includes('been issued, an ABN')) {
-      declarations.push({ text: DECL_TEXTS['abn-confirm'], checkLabel: 'I confirm this declaration', checked: true })
-      continue
-    }
-
-    // Terms / Client Agreement
-    if (p.includes('Client Agreement') || p.includes('Privacy Policy') || p.includes('I have read')) {
-      declarations.push({ text: DECL_TEXTS['terms'], checkLabel: 'I confirm this declaration', checked: !p.includes('✗') })
-      continue
-    }
-
-    // Generic fallback
-    declarations.push({ text: '', checkLabel: clean, checked: !p.includes('✗') })
   }
-
   return { declarations, extras }
 }
 
@@ -119,74 +56,13 @@ function Row({ label, value }: { label: string; value?: string | null }) {
     </div>
   )
 }
-function BankRows({ raw }: { raw?: string | null }) {
-  if (!raw) return null
-  const parts = (raw || '').split(' | ')
-  const bankName    = parts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','').trim()    || ''
-  const bankHolder  = parts.find(p=>p.startsWith('Name:'))?.replace('Name: ','').trim()    || ''
-  const bankAccount = parts.find(p=>p.startsWith('Account:'))?.replace('Account: ','').trim() || ''
-  const bankBsb     = parts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','').trim()      || ''
-  const [copied, setCopied] = React.useState<string|null>(null)
-  function copy(val: string, key: string) {
-    navigator.clipboard.writeText(val).then(() => { setCopied(key); setTimeout(()=>setCopied(null),1500) })
-  }
-  const G = '#0B5240'
-  const fields: [string, string, string][] = [
-    ['Bank name', bankName, 'name'],
-    ['Account holder', bankHolder, 'holder'],
-    ['Account number', bankAccount, 'account'],
-    ['BSB', bankBsb, 'bsb'],
-  ]
-  return (
-    <div style={{ borderBottom: '1px solid #F4FAF7' }}>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '7px 16px', background: '#F0F7F4', borderBottom: '1px solid #E2EDE8' }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: G, textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>Bank account 🔒</span>
-      </div>
-      {fields.map(([label, value, key]) => !value ? null : (
-        <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 16px 8px 24px', borderBottom: '1px solid #F4FAF7' }}>
-          <span style={{ fontSize: 11, color: '#8DA89A', width: 110, flexShrink: 0, fontWeight: 500 }}>{label}</span>
-          <span style={{ fontSize: 13, color: '#1A2822', flex: 1, fontFamily: 'monospace', letterSpacing: '0.02em' }}>{value}</span>
-          <button onClick={() => copy(value, key)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied===key ? '#059669' : '#C8D8D0', padding: '2px 3px', borderRadius: 4, flexShrink: 0, lineHeight: 1 }} title="Copy">
-            {copied===key
-              ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            }
-          </button>
-        </div>
-      ))}
-    </div>
-  )
-}
 
-
-function DeclRow({ item, isLast }: { item: DeclItem; isLast: boolean }) {
-  if (item.isRadio) {
-    return (
-      <div style={{ padding: '12px 16px', borderBottom: isLast ? 'none' : '1px solid #F4FAF7' }}>
-        <p style={{ fontSize: 12, color: '#587066', lineHeight: 1.7, marginBottom: 10 }}>{item.text}</p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {(item.radioOptions || []).map(opt => {
-            const active = opt === item.selectedOption
-            return (
-              <div key={opt} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 10, border: `1.5px solid ${active ? G : '#D4EAE2'}`, background: active ? '#EAF6F1' : '#F5F9F7' }}>
-                <div style={{ width: 14, height: 14, borderRadius: '50%', border: `2px solid ${active ? G : '#D4EAE2'}`, background: active ? G : '#fff', flexShrink: 0 }} />
-                <span style={{ fontSize: 13, fontWeight: active ? 600 : 400, color: active ? G : '#587066' }}>{opt}</span>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    )
-  }
+function DeclRow({ text }: { text: string }) {
+  const clean = text.replace(/^[→✓]\s*/, '')
   return (
-    <div style={{ padding: '12px 16px', borderBottom: isLast ? 'none' : '1px solid #F4FAF7' }}>
-      {item.text && <p style={{ fontSize: 12, color: '#587066', lineHeight: 1.7, marginBottom: 10 }}>{item.text}</p>}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-        <div style={{ width: 20, height: 20, borderRadius: 6, border: `2px solid ${item.checked ? G : '#D4EAE2'}`, background: item.checked ? G : '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-          {item.checked && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-        </div>
-        <span style={{ fontSize: 13, color: '#1A2822', fontWeight: 500, lineHeight: 1.5 }}>{item.checkLabel}</span>
-      </div>
+    <div style={{ display: 'flex', gap: 10, padding: '9px 16px', borderBottom: '1px solid #F4FAF7', alignItems: 'flex-start' }}>
+      <span style={{ width: 18, height: 18, borderRadius: '50%', background: '#EAF6F1', color: G, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 800, flexShrink: 0, marginTop: 1 }}>✓</span>
+      <span style={{ fontSize: 13, color: '#1A2822', lineHeight: 1.5 }}>{clean}</span>
     </div>
   )
 }
@@ -203,14 +79,13 @@ function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void })
 
 function TaskCard({
   task, expanded, onToggle, onSetStatus, acting,
-  setViewUrl, notes, setNotes, savingNote, onSaveNote, saveNoteError,
+  setViewUrl, notes, setNotes, savingNote, onSaveNote,
 }: {
   task: Task; expanded: boolean; onToggle: () => void
   onSetStatus: (id: string, s: ReviewStatus) => void; acting: string | null
   setViewUrl: (u: string | null) => void
   notes: Record<string, string>; setNotes: React.Dispatch<React.SetStateAction<Record<string, string>>>
   savingNote: string | null; onSaveNote: (id: string, note: string) => void
-  saveNoteError: string | null
 }) {
   const [hiding, setHiding] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -230,7 +105,7 @@ function TaskCard({
 
   if (hidden) return null
 
-  const { declarations, extras } = parseNotes(task.notes, task.taskType)
+  const { declarations, extras } = parseNotes(task.notes)
 
   const statusMap: Record<string, { bg: string; color: string; label: string }> = {
     pending:  { bg: '#FFF8EC', color: '#B45309', label: 'Pending' },
@@ -278,114 +153,144 @@ function TaskCard({
       {!isDone && expanded && (
         <div style={{ padding: 14, background: '#F4F9F6' }}>
 
-          {/* ── TFN Application ── */}
-          {task.taskType === 'tfn' && (<>
-            <Section title="Personal details">
-              <Row label="Full name"    value={task.clientName} />
-              <Row label="Date of birth" value={task.dob} />
-              <Row label="Country of birth / passport" value={task.country} />
-              <Row label="Gender"       value={extras.find(e=>e.startsWith('Gender:'))?.split(':')[1]?.trim()} />
-              <Row label="Passport No"  value={extras.find(e=>e.startsWith('Passport No:'))?.split(':').slice(1).join(':').trim()} />
-              <Row label="Marital status" value={task.marital} />
-            </Section>
-            <Section title="Contact &amp; location">
-              <Row label="WhatsApp"     value={task.whatsapp} />
-              <Row label="AU Phone"     value={task.auPhone} />
-              <Row label="Email"        value={task.email} />
-              <Row label="AU Address"   value={task.address} />
-            </Section>
-            <Section title="Tax details">
-              <Row label="TFN (if existing)" value={task.tfn} />
-              <Row label="Primary employer"  value={task.primaryJob} />
-              <BankRows raw={task.bankDetails} />
-            </Section>
-          </>)}
+          {/* ── Per-form-type display ── */}
+          {task.taskType === 'tax-return' && (() => {
+            const parts = (task.notes || '').split(' | ')
+            const getNote = (prefix: string) => task.notes.match(new RegExp(prefix + ': ([^|]+)'))?.[1]?.trim() || ''
+            const taxStatusVal = parts.find((p: string) => p.startsWith('→') && !p.includes('agree') && !p.includes('Yes') && !p.includes('No'))?.replace('→ ', '') || task.taxStatus || '—'
+            const declaredVal = parts.filter((p: string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ', '') || '—'
+            const abnVal = getNote('ABN') || ''
+            const abnNumber = getNote('ABN Number') || ''
+            const abnIncome = getNote('ABN Income') || ''
+            const bkParts = (task.bankDetails || '').split(' | ')
+            const bankName    = bkParts.find(p => p.startsWith('Bank:'))?.replace('Bank: ', '') || task.bankDetails || ''
+            const bankHolder  = bkParts.find(p => p.startsWith('Name:'))?.replace('Name: ', '') || ''
+            const bankAccount = bkParts.find(p => p.startsWith('Account:'))?.replace('Account: ', '') || ''
+            const bankBsb     = bkParts.find(p => p.startsWith('BSB:'))?.replace('BSB: ', '') || ''
+            return (<>
+              <Section title="Personal details">
+                <Row label="Full name" value={task.clientName} />
+                <Row label="Date of birth" value={task.dob} />
+                <Row label="Home country" value={task.country} />
+                <Row label="Marital status" value={task.marital} />
+              </Section>
+              <Section title="Contact details">
+                <Row label="WhatsApp" value={task.whatsapp} />
+                <Row label="AU Phone" value={task.auPhone} />
+                <Row label="Email" value={task.email} />
+                <Row label="Address" value={task.address} />
+              </Section>
+              <Section title="Tax & employment">
+                <Row label="Tax File Number" value={task.tfn} />
+                <Row label="Tax year" value={task.taxYear} />
+                <Row label="Primary job" value={task.primaryJob} />
+                <Row label="Tax residency" value={taxStatusVal} />
+              </Section>
+              <Section title="ABN">
+                <Row label="Has ABN" value={abnVal || '—'} />
+                {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || '—'} />}
+                {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || '—'} />}
+              </Section>
+              <Section title="Bank account">
+                <Row label="Bank name" value={bankName} />
+                <Row label="Account holder" value={bankHolder} />
+                <Row label="Account number" value={bankAccount} />
+                <Row label="BSB" value={bankBsb} />
+              </Section>
+              <Section title="Declarations">
+                {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
+              </Section>
+            </>)
+          })()}
 
-          {/* ── ABN Application ── */}
-          {task.taskType === 'abn' && (<>
-            <Section title="Personal details">
-              <Row label="Full name"    value={task.clientName} />
-              <Row label="Date of birth" value={task.dob} />
-              <Row label="Country"      value={task.country} />
-              <Row label="Gender"       value={extras.find(e=>e.startsWith('Gender:'))?.split(':')[1]?.trim()} />
-              <Row label="Marital status" value={task.marital} />
-            </Section>
-            <Section title="Contact &amp; location">
-              <Row label="WhatsApp"     value={task.whatsapp} />
-              <Row label="AU Phone"     value={task.auPhone} />
-              <Row label="Email"        value={task.email} />
-              <Row label="AU Address"   value={task.address} />
-            </Section>
-            <Section title="Business details">
-              <Row label="TFN"          value={task.tfn} />
-              <Row label="Business description" value={task.primaryJob} />
-              <BankRows raw={task.bankDetails} />
-            </Section>
-          </>)}
+          {task.taskType === 'tfn' && (() => {
+            const passportNo = task.notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || ''
+            const gender = task.notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || ''
+            return (<>
+              <Section title="Personal details">
+                <Row label="Full name" value={task.clientName} />
+                <Row label="Date of birth" value={task.dob} />
+                <Row label="Country of passport" value={task.country} />
+                <Row label="Passport number" value={passportNo} />
+                <Row label="Gender" value={gender} />
+                <Row label="Marital status" value={task.marital} />
+              </Section>
+              <Section title="Contact details">
+                <Row label="WhatsApp" value={task.whatsapp} />
+                <Row label="AU Phone" value={task.auPhone} />
+                <Row label="Email" value={task.email} />
+                <Row label="Address" value={task.address} />
+              </Section>
+              <Section title="Declarations">
+                {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
+              </Section>
+            </>)
+          })()}
 
-          {/* ── Super Refund ── */}
-          {task.taskType === 'super' && (<>
-            <Section title="Personal details">
-              <Row label="Full name"    value={task.clientName} />
-              <Row label="Date of birth" value={task.dob} />
-              <Row label="Country"      value={task.country} />
-              <Row label="Passport No"  value={extras.find(e=>e.startsWith('Passport No:'))?.split(':').slice(1).join(':').trim()} />
-              <Row label="Marital status" value={task.marital} />
-            </Section>
-            <Section title="Contact &amp; location">
-              <Row label="WhatsApp"     value={task.whatsapp} />
-              <Row label="AU Phone"     value={task.auPhone} />
-              <Row label="Email"        value={task.email} />
-              <Row label="AU Address"   value={task.address} />
-              <Row label="Home country address" value={extras.find(e=>e.startsWith('Home Country Address:'))?.split(':').slice(1).join(':').trim()} />
-            </Section>
-            <Section title="Super &amp; financial details">
-              <Row label="TFN"          value={task.tfn} />
-              <BankRows raw={task.bankDetails} />
-              <Row label="Super funds"  value={extras.find(e=>e.startsWith('Super Funds:'))?.split(':').slice(1).join(':').trim()} />
-            </Section>
-          </>)}
+          {task.taskType === 'abn' && (() => {
+            const gender = task.notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || ''
+            return (<>
+              <Section title="Personal details">
+                <Row label="Full name" value={task.clientName} />
+                <Row label="Date of birth" value={task.dob} />
+                <Row label="Country" value={task.country} />
+                <Row label="Gender" value={gender} />
+                <Row label="Marital status" value={task.marital} />
+              </Section>
+              <Section title="Contact details">
+                <Row label="WhatsApp" value={task.whatsapp} />
+                <Row label="AU Phone" value={task.auPhone} />
+                <Row label="Email" value={task.email} />
+                <Row label="Address" value={task.address} />
+              </Section>
+              <Section title="Business details">
+                <Row label="TFN" value={task.tfn} />
+                <Row label="Business activity" value={task.primaryJob} />
+              </Section>
+              <Section title="Declarations">
+                {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
+              </Section>
+            </>)
+          })()}
 
-          {/* ── Tax Return ── */}
-          {task.taskType === 'tax-return' && (<>
-            <Section title="Personal details">
-              <Row label="Full name"    value={task.clientName} />
-              <Row label="Date of birth" value={task.dob} />
-              <Row label="Country"      value={task.country} />
-              <Row label="Marital status" value={task.marital} />
-              <Row label="Tax year"     value={task.taxYear} />
-            </Section>
-            <Section title="Contact &amp; location">
-              <Row label="WhatsApp"     value={task.whatsapp} />
-              <Row label="AU Phone"     value={task.auPhone} />
-              <Row label="Email"        value={task.email} />
-              <Row label="AU Address"   value={task.address} />
-            </Section>
-            <Section title="Tax &amp; income details">
-              <Row label="Tax status"   value={task.taxStatus} />
-              <Row label="TFN"          value={task.tfn} />
-              <BankRows raw={task.bankDetails} />
-              <Row label="Primary job / employer" value={task.primaryJob} />
-              {(()=>{
-                const abnVal = extras.find(e=>e.startsWith('ABN:'))?.split(':').slice(1).join(':').trim()
-                const abnNum = extras.find(e=>e.startsWith('ABN Number:'))?.split(':').slice(1).join(':').trim()
-                const abnInc = extras.find(e=>e.startsWith('ABN Income:'))?.split(':').slice(1).join(':').trim()
-                if (abnVal === 'No') return <Row label="Has ABN" value="No — client does not have an ABN" />
-                if (abnVal === 'Yes') return (<>
-                  <Row label="Has ABN"      value="Yes" />
-                  <Row label="ABN Number"   value={abnNum || '—'} />
-                  <Row label="ABN Income"   value={abnInc ? `AUD ${abnInc}` : '—'} />
-                </>)
-                return null
-              })()}
-            </Section>
-          </>)}
-
-          {declarations.length > 0 && (
-            <Section title="Declarations">
-              {declarations.map((item, i) => <DeclRow key={i} item={item} isLast={i === declarations.length - 1} />)}
-            </Section>
-          )}
+          {task.taskType === 'super' && (() => {
+            const passportNo = task.notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || ''
+            const superFunds = task.notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || ''
+            const homeAddr   = task.notes.match(/Home Country Address: ([^|]+)/)?.[1]?.trim() || ''
+            const bkParts = (task.bankDetails || '').split(' | ')
+            const bankName    = bkParts.find(p => p.startsWith('Bank:'))?.replace('Bank: ', '') || task.bankDetails || ''
+            const bankHolder  = bkParts.find(p => p.startsWith('Name:'))?.replace('Name: ', '') || ''
+            const bankAccount = bkParts.find(p => p.startsWith('Account:'))?.replace('Account: ', '') || ''
+            const bankBsb     = bkParts.find(p => p.startsWith('BSB:'))?.replace('BSB: ', '') || ''
+            return (<>
+              <Section title="Personal details">
+                <Row label="Full name" value={task.clientName} />
+                <Row label="Date of birth" value={task.dob} />
+                <Row label="Country (passport)" value={task.country} />
+                <Row label="Passport number" value={passportNo} />
+              </Section>
+              <Section title="Contact details">
+                <Row label="WhatsApp" value={task.whatsapp} />
+                <Row label="AU Phone" value={task.auPhone} />
+                <Row label="Email" value={task.email} />
+                <Row label="Address" value={task.address} />
+                <Row label="Home country address" value={homeAddr} />
+              </Section>
+              <Section title="Super & tax details">
+                <Row label="TFN" value={task.tfn} />
+                <Row label="Super fund(s)" value={superFunds} />
+              </Section>
+              <Section title="Bank account">
+                <Row label="Bank name" value={bankName} />
+                <Row label="Account holder" value={bankHolder} />
+                <Row label="Account number" value={bankAccount} />
+                <Row label="BSB" value={bankBsb} />
+              </Section>
+              <Section title="Declarations">
+                {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
+              </Section>
+            </>)
+          })()}
 
           {task.fileUrls?.length > 0 && (
             <Section title="Documents uploaded">
@@ -427,11 +332,6 @@ function TaskCard({
                 {savingNote === task.id ? '...' : 'Save'}
               </button>
             </div>
-            {saveNoteError === task.id && (
-              <p style={{ fontSize: 11, color: '#c0392b', margin: '4px 0 0', padding: '0 4px' }}>
-                ⚠️ Failed to save note. Please try again.
-              </p>
-            )}
           </div>
 
           {/* Action buttons */}
@@ -468,7 +368,7 @@ function TaskCard({
       )}
 
       {showCountdown && isDone && !hiding && !hidden && (
-        <Countdown seconds={72 * 60 * 60} onDone={handleDone} />
+        <Countdown seconds={48 * 60 * 60} onDone={handleDone} />
       )}
     </div>
   )
@@ -479,9 +379,8 @@ export default function ReviewerClient() {
   const [loading, setLoading]       = useState(true)
   const [refreshing, setRefreshing] = useState(false)
   const [notes, setNotes]           = useState<Record<string, string>>({})
-  const [savingNote, setSavingNote]     = useState<string | null>(null)
-  const [saveNoteError, setSaveNoteError] = useState<string | null>(null)
-  const [expanded, setExpanded]         = useState<string | null>(null)
+  const [savingNote, setSavingNote] = useState<string | null>(null)
+  const [expanded, setExpanded]     = useState<string | null>(null)
 
   const [acting, setActing]         = useState<string | null>(null)
   const [viewUrl, setViewUrl]       = useState<string | null>(null)
@@ -493,6 +392,16 @@ export default function ReviewerClient() {
       if (d.ok) {
         const active = d.tasks.filter((t: Task) => !t.done)
         setTasks(active)
+        // Initialise textarea with existing reviewer note (do not overwrite user's live edits)
+        setNotes(prev => {
+          const updated = { ...prev }
+          active.forEach((t: Task) => {
+            if (!(t.id in updated) && t.reviewerNote) {
+              updated[t.id] = t.reviewerNote
+            }
+          })
+          return updated
+        })
         setNewTaskCount(0)
         prevCountRef.current = active.filter((t: Task) => t.reviewStatus === 'pending').length
       }
@@ -550,44 +459,27 @@ export default function ReviewerClient() {
     // Fire API in background
     fetch('/api/crm/review', {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ taskId, status }),
     }).catch(console.error)
   }
 
   async function saveNote(taskId: string, note: string) {
     setSavingNote(taskId)
-    setSaveNoteError(null)
-    try {
-      const res = await fetch('/api/crm/review', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-        body: JSON.stringify({ taskId, note }),
-      })
-      if (!res.ok) throw new Error('Server error')
-    } catch {
-      setSaveNoteError(taskId)
-    } finally {
-      setSavingNote(null)
-    }
+    fetch('/api/crm/review', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ taskId, note }),
+    }).catch(console.error).finally(() => setSavingNote(null))
   }
 
   async function logout() {
-    await fetch('/api/crm/reviewer-logout', { method: 'POST', headers: {'X-Requested-With': 'XMLHttpRequest'} })
+    await fetch('/api/crm/reviewer-logout', { method: 'POST' })
     window.location.href = '/crm/reviewer'
   }
 
-  // Hide decided tasks from reviewer after 48 hours
-  const HIDE_AFTER_MS = 48 * 60 * 60 * 1000
-  const visibleTasks = tasks.filter(t => {
-    if (t.reviewStatus === 'pending') return true
-    const decidedAt = t.reviewedAt ? new Date(t.reviewedAt).getTime() : null
-    if (!decidedAt) return true // no timestamp yet — keep visible
-    return Date.now() - decidedAt < HIDE_AFTER_MS
-  })
-
-  const counts = { pending: visibleTasks.filter(t => t.reviewStatus === 'pending').length }
-  const filtered = [...visibleTasks].sort((a, b) => {
+  const counts = { pending: tasks.filter(t => t.reviewStatus === 'pending').length }
+  const filtered = [...tasks].sort((a, b) => {
     const statusOrder = { pending: 0, approved: 1, rejected: 1 }
     const statusDiff = (statusOrder[a.reviewStatus] ?? 0) - (statusOrder[b.reviewStatus] ?? 0)
     if (statusDiff !== 0) return statusDiff
@@ -682,7 +574,6 @@ export default function ReviewerClient() {
               setNotes={setNotes}
               savingNote={savingNote}
               onSaveNote={saveNote}
-              saveNoteError={saveNoteError}
               setViewUrl={setViewUrl}
 
             />

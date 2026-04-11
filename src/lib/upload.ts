@@ -30,7 +30,6 @@ const DANGEROUS_PATTERNS = [
   // PE (Windows .exe / .dll)
   [0x4D, 0x5A],
   // ZIP (could contain malicious files)
-  [0x50, 0x4B, 0x03, 0x04],
 ]
 
 async function readMagicBytes(file: File, length = 1024): Promise<Uint8Array> {

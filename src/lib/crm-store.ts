@@ -51,8 +51,9 @@ export function validateSession(token: string | undefined): boolean {
     if (!crypto.timingSafeEqual(sigBuf, expBuf)) return false
     const { iat, exp } = JSON.parse(Buffer.from(payload, 'base64url').toString())
     const now = Date.now()
+    // Must not be expired AND must not be older than max session TTL from issuance
     if (now >= exp) return false
-    if (iat && now - iat > SESSION_TTL + 60_000) return false
+    if (iat && now - iat > SESSION_TTL + 60_000) return false // 1-min grace for clock skew
     return true
   } catch { return false }
 }
@@ -64,7 +65,7 @@ const LOCKOUT_MS   = 30 * 60 * 1000
 const KEY_COUNT    = 'crm_fail_count'
 const KEY_TS       = 'crm_fail_ts'
 const KEY_LOCKED   = 'crm_locked'
-const TTL_SECS     = 35 * 60
+const TTL_SECS     = 35 * 60 // slightly longer than lockout
 
 export async function recordFailedAttemptRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
   const now   = Date.now()
@@ -85,6 +86,7 @@ export async function isLockedOutRedis(redis: import('redis').RedisClientType): 
   if (!locked) return false
   const ts = await redis.get(KEY_TS)
   if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
+    // Lockout expired — clear manually (TTL will also clean it, this is just faster)
     await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
     return false
   }
@@ -170,5 +172,3 @@ export async function isReviewerLockedRedis(redis: import('redis').RedisClientTy
   }
   return true
 }
-
-

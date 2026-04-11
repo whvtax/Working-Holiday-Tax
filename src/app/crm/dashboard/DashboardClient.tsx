@@ -26,7 +26,7 @@ type Client = {
 type View = 'tasks'|'clients'|'client-detail'|'archive'
 
 const CY = new Date().getFullYear()
-const TAX_YEARS = Array.from({length:8},(_,i)=>`${CY-7+i}-${String(CY-6+i).slice(2)}`)
+const TAX_YEARS = Array.from({length:9},(_,i)=>`${CY-2+i}-${String(CY-1+i).slice(2)}`)
 const TASK_LABELS: Record<TaskType,string> = {
   'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application'
 }
@@ -59,39 +59,6 @@ function CopyBtn({ text }: { text: string }) {
     </button>
   )
 }
-function parseBankDetails(raw: string) {
-  const parts = (raw || '').split(' | ')
-  return {
-    bankName:    parts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','').trim()    || '',
-    bankHolder:  parts.find(p=>p.startsWith('Name:'))?.replace('Name: ','').trim()    || '',
-    bankAccount: parts.find(p=>p.startsWith('Account:'))?.replace('Account: ','').trim() || '',
-    bankBsb:     parts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','').trim()      || '',
-  }
-}
-
-function BankRows({ raw, S }: { raw: string; S: Record<string,React.CSSProperties> }) {
-  const { bankName, bankHolder, bankAccount, bankBsb } = parseBankDetails(raw)
-  if (!raw || (!bankName && !bankHolder && !bankAccount && !bankBsb)) {
-    return <div style={S.row}><span style={S.lbl}>Bank 🔒</span><span style={{...S.val,direction:'ltr'}}>—</span></div>
-  }
-  const fields: [string, string][] = [
-    ['Bank name', bankName],
-    ['Account holder', bankHolder],
-    ['Account number', bankAccount],
-    ['BSB', bankBsb],
-  ]
-  return (<>
-    {fields.map(([label, value]) => (
-      <div key={label} style={S.row}>
-        <span style={S.lbl}>{label}</span>
-        <span style={{...S.val, direction:'ltr', textAlign:'right', fontFamily:'monospace', fontSize:12}}>{value || '—'}</span>
-        {value && <CopyBtn text={value} />}
-      </div>
-    ))}
-  </>)
-}
-
-
 
 export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
@@ -168,39 +135,27 @@ export default function DashboardClient() {
 
   // Auto-poll every 20s — keeps all open sessions in sync
   useEffect(()=>{
-    const id = setInterval(()=>{ if (!document.hidden) Promise.all([loadTasks(), loadClients()]) }, 60_000)
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients()]) }, 20_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients])
 
   const openArchive = useCallback(()=>{ setView('archive'); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
-  async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST',headers:{'X-Requested-With':'XMLHttpRequest'}}); window.location.replace('/crm') }
+  async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
   async function archiveClient(id: string) {
-    // Optimistic update
-    setClients(prev => prev.filter(c => c.id !== id))
-    try {
-      const res = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'archive'})})
-      if (!res.ok) throw new Error('Archive failed')
-    } catch {
-      // Rollback on failure — reload from server
-      alert('Failed to archive client. Please try again.')
-    }
+      setClients(prev => prev.filter(c => c.id !== id))
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
     await Promise.all([loadClients(), loadArchived()])
   }
   async function unarchiveClient(id: string) {
-    setArchivedClients(prev => prev.filter(c => c.id !== id))
-    try {
-      const res = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'unarchive'})})
-      if (!res.ok) throw new Error('Unarchive failed')
-    } catch {
-      alert('Failed to unarchive client. Please try again.')
-    }
+      setArchivedClients(prev => prev.filter(c => c.id !== id))
+    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'unarchive'})})
     await Promise.all([loadClients(), loadArchived()])
   }
   async function toggleCheckin(clientId: string, year: string, current: boolean) {
       setClients(prev => prev.map(c => c.id===clientId ? {...c, yearlyCheckins:{...c.yearlyCheckins,[year]:!current}} : c))
-    await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'checkin',year,done:!current})})
+    await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkin',year,done:!current})})
   }
 
   async function markDone(id:string) {
@@ -208,14 +163,14 @@ export default function DashboardClient() {
     setConfirmComplete(null)
     setActiveTask(null)
     setTaskView('list')
-    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'done'})})
+    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
   }
 
   async function transferToClients(task: Task) {
     setConfirmTransfer(null)
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
+    await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
     await Promise.all([loadClients(), loadArchived()])
   }
 
@@ -223,19 +178,19 @@ export default function DashboardClient() {
     setConfirmPermDelete(null)
     setTasks(prev => prev.filter(t => t.id !== id))
     setActiveTask(null); setTaskView('list')
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete_permanent'})})
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})})
   }
 
   async function saveTaskNotes() {
     if(!activeTask) return
     // Preserve structured data (passport, declarations etc.) — append user notes after them
     const structuredParts = (activeTask.notes||'').split(' | ').filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|Tax status)/i)
+      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
     )
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
       : structuredParts.join(' | ')
-    await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'notes',notes:merged})})
+    await fetch(`/api/crm/tasks/${activeTask.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:merged})})
     setNotesSaved(true); setTimeout(()=>setNotesSaved(false),2500)
   }
 
@@ -245,19 +200,19 @@ export default function DashboardClient() {
       if (refundData.amount > 0) {
         await fetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
           method: 'POST',
-          headers: {'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+          headers: {'Content-Type':'application/json'},
           body: JSON.stringify({year: refundData.year, refundAmount: refundData.amount, type: refundData.type})
         })
       }
       if (refundData.superAmount > 0) {
         await fetch(`/api/crm/clients/${refundData.clientId}/tax-returns`, {
           method: 'POST',
-          headers: {'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+          headers: {'Content-Type':'application/json'},
           body: JSON.stringify({year: refundData.year, superAmount: refundData.superAmount, isSuper: true, refundAmount: 0, type: 'refund'})
         })
       }
     }
-    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'delete'})})
+    await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null); setCaptureRefund(null)
     setCaptureRefundAmt(''); setCaptureSuperAmt(''); setCaptureRefundType('refund')
     await Promise.all([loadTasks(),loadClients(),loadArchived()])
@@ -265,18 +220,13 @@ export default function DashboardClient() {
 
   async function saveClientNotes() {
     if(!activeClient) return
-    try {
-      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'notes',notes:clientNotes})})
-      if (!res.ok) throw new Error('Server error')
-      setClientNotesSaved(true); setTimeout(()=>setClientNotesSaved(false),2500)
-    } catch {
-      alert('Failed to save notes. Please try again.')
-    }
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:clientNotes})})
+    setClientNotesSaved(true); setTimeout(()=>setClientNotesSaved(false),2500)
   }
 
   async function addTaxReturn() {
     if(!activeClient||!newTaxYear||!newTaxAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:parseFloat(newTaxAmt),type:newTaxType,completedAt:new Date().toISOString()}})})
     setNewTaxYear(''); setNewTaxAmt(''); setNewTaxType('refund'); setShowAddTax(false)
     refreshClient()
@@ -284,13 +234,13 @@ export default function DashboardClient() {
 
   async function removeTaxReturn(year:string) {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-tax',year})})
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove-tax',year})})
     refreshClient()
   }
 
   async function addSuperReturn() {
     if(!activeClient||!newSuperYear||!newSuperAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:parseFloat(newSuperAmt),completedAt:new Date().toISOString()}})})
     setNewSuperYear(''); setNewSuperAmt(''); setShowAddSuper(false)
     refreshClient()
@@ -298,7 +248,7 @@ export default function DashboardClient() {
 
   async function removeSuperReturn(year:string) {
     if(!activeClient) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'remove-super',year})})
+    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'remove-super',year})})
     refreshClient()
   }
 
@@ -310,29 +260,15 @@ export default function DashboardClient() {
   }
 
   async function deleteClient(id:string) {
-    setConfirmDeleteClient(null)
-    try {
-      const res = await fetch(`/api/crm/clients/${id}`,{method:'DELETE',headers:{'X-Requested-With':'XMLHttpRequest'}})
-      const data = await res.json()
-      if (!res.ok) {
-        if (res.status === 409) {
-          alert(`Cannot delete: this client has ${data.count} open task(s). Archive all tasks first.`)
-        } else {
-          alert('Delete failed. Please try again.')
-        }
-        return
-      }
-      setArchivedClients(prev => prev.filter(c => c.id !== id))
-      setActiveClient(null); setView('archive')
-    } catch {
-      alert('Delete failed. Please check your connection and try again.')
-    }
+    setArchivedClients(prev => prev.filter(c => c.id !== id))
+    setActiveClient(null); setView('archive'); setConfirmDeleteClient(null)
+    await fetch(`/api/crm/clients/${id}`,{method:'DELETE'})
     await loadClients()
   }
 
   async function addClient(e:React.FormEvent) {
     e.preventDefault()
-    await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},
+    await fetch('/api/crm/tasks',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         clientName:newClient.fullName, taskType:'tax-return',
         whatsapp:newClient.whatsapp, email:newClient.email, country:newClient.country,
@@ -399,12 +335,10 @@ export default function DashboardClient() {
       try { name = decodeURIComponent(name) } catch {}
       name = name.replace(/^\d+_/,'').slice(0,80)
       const isPdf = url.toLowerCase().endsWith('.pdf')
-      // Security: only allow https:// URLs — reject javascript: or data: schemes
-      const safeHref = url.startsWith('https://') ? esc(url) : '#'
       return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#F5F9F7;border:1.5px solid #D4EAE2;border-radius:12px;margin-bottom:8px">` +
         `<span style="font-size:20px">${isPdf?'📄':'🖼️'}</span>` +
         `<span style="font-size:13px;color:#080F0D;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span>` +
-        `<a href="${safeHref}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
+        `<a href="${esc(url)}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
         `</div>`
     }
 
@@ -459,8 +393,8 @@ export default function DashboardClient() {
             decl1Val !== '—'
           )
         + declBox(
-            'I have read and accept the Client Agreement & Privacy Policy.',
-            'I confirm this declaration',
+            '',
+            'I have read and accept the Client Agreement & Privacy Policy',
             decl2Val !== '—'
           )
     }
@@ -493,8 +427,8 @@ export default function DashboardClient() {
             decl1Val !== '—'
           )
         + declBox(
-            'I have read and accept the Client Agreement & Privacy Policy.',
-            'I confirm this declaration',
+            '',
+            'I have read and accept the Client Agreement & Privacy Policy',
             decl2Val !== '—'
           )
     }
@@ -531,8 +465,8 @@ export default function DashboardClient() {
           : `<p style="font-size:12px;color:#aabab2">No files uploaded</p>`)
         + sec('Declaration')
         + declBox(
-            'I have read and accept the Client Agreement & Privacy Policy.',
-            'I confirm this declaration',
+            '',
+            'I have read and accept the Client Agreement & Privacy Policy',
             declVal !== '—'
           )
     }
@@ -562,6 +496,16 @@ export default function DashboardClient() {
         + field('Tax File Number (TFN)', task.tfn)
         + field('Tax Year', task.taxYear)
         + field('Primary job in the past year', task.primaryJob)
+        + sec('ABN (Australian Business Number)')
+        + (() => {
+            const abnValPdf    = (task.notes||'').match(/ABN: ([^|]+)/)?.[1]?.trim()||''
+            const abnNumPdf    = (task.notes||'').match(/ABN Number: ([^|]+)/)?.[1]?.trim()||''
+            const abnIncomePdf = (task.notes||'').match(/ABN Income: ([^|]+)/)?.[1]?.trim()||''
+            if (!abnValPdf) return radioField('Has ABN?', '', ['Yes','No'])
+            return radioField('Has ABN?', abnValPdf, ['Yes','No'])
+              + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
+              + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
+          })()
         + sec('Bank account details')
         + field('Bank name', bkName)
         + field('Account holder full name', bkHolder)
@@ -595,11 +539,6 @@ export default function DashboardClient() {
               `</div>`
           }).join('') +
           `</div></div>`
-        + declBox(
-            'I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.',
-            'I confirm this declaration',
-            parts.some(p => p.startsWith('✓ I declare under my full legal'))
-          )
         + sec('How did you hear about us?')
         + field('How did you hear about us?', task.howHeard)
     }
@@ -844,7 +783,7 @@ export default function DashboardClient() {
             </div>
 
             <nav style={S.sbNav}>
-              <SbButton v="tasks" label="Tasks" badge={(pendingTasks.length + doneTasks.length) || undefined}
+              <SbButton v="tasks" label="Tasks" badge={pendingTasks.length}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
               <SbButton v="clients" label="Clients"
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
@@ -944,15 +883,31 @@ export default function DashboardClient() {
                   <span style={{color:'#059669',fontSize:8}}>●</span> Done — {doneTasks.length}
                 </div>
                 {doneTasks.map(t=>(
-                  <div key={t.id} style={{...S.taskCard,opacity:0.65,cursor:'default'}}>
+                  <div key={t.id} style={{...S.taskCard,opacity:0.72,cursor:'default'}}>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0}}/>
                     <div style={{flex:1}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
                       <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
                     </div>
-                    <div style={{fontSize:11,color:'#aabab2',marginRight:8}}>{fmtDate(t.submittedAt)}</div>
-                    <button onClick={()=>transferToClients(t)} style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #c8eadf',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}>👤 Move</button>
-                    <button onClick={()=>setConfirmDelete(t.id)} style={{padding:'4px 10px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,fontWeight:600,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}}>📁 Archive</button>
+                    <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+                      {t.reviewStatus === 'approved' && (
+                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#EAF6F1',color:'#059669',border:'1px solid #6EE7B7',whiteSpace:'nowrap'}}>
+                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#059669" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          Approved
+                        </span>
+                      )}
+                      {t.reviewStatus === 'rejected' && (
+                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#FEF2F2',color:'#DC2626',border:'1px solid #FCA5A5',whiteSpace:'nowrap'}}>
+                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                          Rejected
+                        </span>
+                      )}
+                      <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
+                    </div>
+                    <div style={{display:'flex',gap:6}}>
+                      <button onClick={e=>{e.stopPropagation();setConfirmTransfer(t)}} style={{padding:'4px 10px',background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:7,fontSize:11,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}>👤 Clients</button>
+                      <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} style={{padding:'4px 10px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}>🗑️ Delete</button>
+                    </div>
                   </div>
                 ))}
               </>}
@@ -1070,20 +1025,52 @@ export default function DashboardClient() {
                     {([['TFN 🔒',activeTask.tfn],['Employer',activeTask.primaryJob],['Tax Year',activeTask.taxYear],['Tax status',activeTask.taxStatus]] as [string,string][]).map(([l,v])=>(
                       <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
                     ))}
-                    <div style={{...S.row,background:'#f7fbf9',borderRadius:8,margin:'4px 8px',padding:'6px 8px',flexDirection:'column',alignItems:'stretch',gap:0}}>
-                      <span style={{...S.lbl,marginBottom:4,color:'#0E5C42',fontWeight:700}}>Bank account 🔒</span>
-                      <BankRows raw={activeTask.bankDetails} S={S} />
-                    </div>
+                    {(()=>{
+                      const abnVal    = (activeTask.notes||'').match(/ABN: ([^|]+)/)?.[1]?.trim()||''
+                      const abnNum    = (activeTask.notes||'').match(/ABN Number: ([^|]+)/)?.[1]?.trim()||''
+                      const abnIncome = (activeTask.notes||'').match(/ABN Income: ([^|]+)/)?.[1]?.trim()||''
+                      if (!abnVal) return null
+                      return (
+                        <>
+                          <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#c2410c',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏢 ABN</span></div>
+                          <div style={S.row}><span style={S.lbl}>Has ABN</span><span style={{...S.val,color:abnVal==='Yes'?'#0E5C42':'#555',fontWeight:600}}>{abnVal}</span></div>
+                          {abnVal==='Yes' && abnNum && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum}</span><CopyBtn text={abnNum}/></div>}
+                          {abnVal==='Yes' && abnIncome && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome}</span><CopyBtn text={abnIncome}/></div>}
+                        </>
+                      )
+                    })()}
+                    {(()=>{
+                      const bkParts=(activeTask.bankDetails||'').split(' | ')
+                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'—'
+                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'—'
+                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'—'
+                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'—'
+                      return(<>
+                        <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
+                        {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
+                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                        ))}
+                      </>)
+                    })()}
                   </>}
                   {activeTask.taskType==='super' && <>
                     <div style={S.secHead}><span>Super details</span></div>
                     {(()=>{const superFunds=(activeTask.notes||'').match(/Super Funds: ([^|]+)/)?.[1]?.trim()||'—';return([['TFN 🔒',activeTask.tfn],['Super fund(s)',superFunds]] as [string,string][])})().map(([l,v])=>(
                       <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
                     ))}
-                    <div style={{...S.row,background:'#f7fbf9',borderRadius:8,margin:'4px 8px',padding:'6px 8px',flexDirection:'column',alignItems:'stretch',gap:0}}>
-                      <span style={{...S.lbl,marginBottom:4,color:'#0E5C42',fontWeight:700}}>Bank account 🔒</span>
-                      <BankRows raw={activeTask.bankDetails} S={S} />
-                    </div>
+                    {(()=>{
+                      const bkParts=(activeTask.bankDetails||'').split(' | ')
+                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'—'
+                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'—'
+                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'—'
+                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'—'
+                      return(<>
+                        <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
+                        {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
+                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                        ))}
+                      </>)
+                    })()}
                   </>}
                   {activeTask.taskType==='tfn' && <>
                     <div style={S.secHead}><span>Tax details</span></div>
@@ -1132,93 +1119,79 @@ export default function DashboardClient() {
               </div>
               {/* Declaration + Notes side by side */}
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-                {/* Declaration card — visual checkboxes matching the forms exactly */}
+                {/* Declaration card — per form type */}
                 <div style={S.card}>
                   {(()=>{
-                    const rawNotes = activeTask.notes || ''
-                    const parts = rawNotes.split(' | ')
-                    const findPart = (prefixes: string[]) => parts.find((p:string) => prefixes.some(px => p.startsWith(px)))
-                    const G = '#0B5240'
-                    const declBox = (text: string, checked: boolean, label: string) => (
-                      <div style={{background:'#F5F9F7',border:`1.5px solid ${checked?G:'#D4EAE2'}`,borderRadius:12,padding:'12px 14px',marginBottom:8}}>
-                        {text && <p style={{fontSize:12,color:'#587066',lineHeight:1.7,marginBottom:10}}>{text}</p>}
-                        <div style={{display:'flex',alignItems:'flex-start',gap:10}}>
-                          <div style={{width:20,height:20,borderRadius:6,border:`2px solid ${checked?G:'#D4EAE2'}`,background:checked?G:'#fff',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
-                            {checked && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                          </div>
-                          <span style={{fontSize:13,color:'#1A2822',fontWeight:500,lineHeight:1.5}}>{label}</span>
-                        </div>
-                      </div>
-                    )
-                    const radioBox = (label: string, options: string[], selected: string) => (
-                      <div style={{marginBottom:8}}>
-                        <p style={{fontSize:12,color:'#587066',lineHeight:1.7,marginBottom:10}}>{label}</p>
-                        <div style={{display:'flex',flexDirection:'column' as const,gap:6}}>
-                          {options.map(opt => {
-                            const active = opt === selected
-                            return (
-                              <div key={opt} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',borderRadius:10,border:`1.5px solid ${active?G:'#D4EAE2'}`,background:active?'#EAF6F1':'#F5F9F7'}}>
-                                <div style={{width:14,height:14,borderRadius:'50%',border:`2px solid ${active?G:'#D4EAE2'}`,background:active?G:'#fff',flexShrink:0}}/>
-                                <span style={{fontSize:13,fontWeight:active?600:400,color:active?G:'#587066'}}>{opt}</span>
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )
+                    const parts = (activeTask.notes||'').split(' | ')
 
+                    // TAX RETURN: Tax Residency + Agreement
                     if (activeTask.taskType === 'tax-return') {
-                      const normStatus = (v: string) => {
-                        if (!v || v==='—') return v
-                        if (v==='resident') return 'Australian resident for tax purposes'
-                        if (v==='whm') return 'Working holiday maker for tax purposes'
-                        return v.replace('→ ','')
+                      // Normalise raw radio values saved by older submissions
+                      const normaliseTaxStatus = (v: string) => {
+                        if (!v || v === '—') return v
+                        if (v === 'resident') return 'Australian resident for tax purposes'
+                        if (v === 'whm') return 'Working holiday maker for tax purposes'
+                        return v
                       }
-                      const rawTaxVal = findPart(['→ Australian','→ Working holiday','→ resident','→ whm'])?.replace('→ ','') || activeTask.taxStatus || ''
-                      const taxStatus = normStatus(rawTaxVal)
-                      const agreedPart = findPart(['→ ✓ Yes','→ ✗ No','→ ✓ I agree'])
-                      const agreed = agreedPart ? !agreedPart.includes('✗') && !agreedPart.includes('No') : false
-                      const hasIncome = parts.some((p:string) => p.includes('legal responsibility') || p.startsWith('✓ I declare under'))
+                      // notes format: "taxStatusText | → taxStatusValue | declaredText | → declaredValue"
+                      // Find parts by prefix so order doesn't matter and long texts with natural " | " don't break parsing
+                      const taxStatusLabel = parts.find((p:string) => !p.startsWith('→') && (p.startsWith('I confirm that I have reviewed') || p.length > 40 && !p.startsWith('I declare'))) || 'I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:'
+                      const rawTaxVal      = parts.find((p:string) => p.startsWith('→') && !p.includes('agree') && !p.includes('Yes') && !p.includes('No'))?.replace('→ ','') || activeTask.taxStatus || '—'
+                      const taxStatusValue = normaliseTaxStatus(rawTaxVal)
+                      const declLabel      = parts.find((p:string) => !p.startsWith('→') && p.startsWith('I declare')) || 'I declare that all information provided is true, complete, and accurate. I confirm that I have read and accept the Client Agreement & Privacy Policy.'
+                      const rawDeclVal     = parts.filter((p:string) => p.startsWith('→')).slice(-1)[0]?.replace('→ ','') || '—'
+                      const declValue      = rawDeclVal
                       return <>
-                        <div style={S.secHead}><span>Declarations</span></div>
-                        <div style={{padding:'10px 14px'}}>
-                          {radioBox('I confirm that I have reviewed the Tax Residency Explained section and all relevant ATO information, and I declare that I am:',['Australian resident for tax purposes','Working holiday maker for tax purposes'],taxStatus)}
-                          {declBox('I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.',agreed,agreed?'Yes, I agree':'No')}
-                          {hasIncome && declBox('I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.',true,'I confirm this declaration')}
-                        </div>
+                        <div style={S.secHead}><span>Tax Residency Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{taxStatusLabel}</div>
+                        <div style={S.row}><span style={S.lbl}>Selected</span><span style={{...S.val,color:'#0E5C42',fontWeight:600}}>{taxStatusValue}</span></div>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
+                        <div style={S.secHead}><span>General Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>{declLabel}</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:declValue.includes('agree')||declValue.includes('✓')?'#059669':'#c0392b',fontWeight:600}}>{declValue}</span></div>
                       </>
                     }
-                    if (activeTask.taskType === 'tfn') {
-                      const decl1 = !!findPart(['→ ✓ I confirm this','→ ✓ I confirm'])
-                      const terms = !!findPart(['→ ✓ I have read','→ ✓ I agree'])
-                      return <>
-                        <div style={S.secHead}><span>Declarations</span></div>
-                        <div style={{padding:'10px 14px'}}>
-                          {declBox('I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.',decl1,'I confirm this declaration')}
-                          {declBox('I have read and accept the Client Agreement & Privacy Policy.',terms,'I confirm this declaration')}
-                        </div>
-                      </>
-                    }
-                    if (activeTask.taskType === 'abn') {
-                      const decl1 = !!findPart(['→ ✓ I confirm this','→ ✓ I confirm'])
-                      const terms = !!findPart(['→ ✓ I have read','→ ✓ I agree'])
-                      return <>
-                        <div style={S.secHead}><span>Declarations</span></div>
-                        <div style={{padding:'10px 14px'}}>
-                          {declBox('I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',decl1,'I confirm this declaration')}
-                          {declBox('I have read and accept the Client Agreement & Privacy Policy.',terms,'I confirm this declaration')}
-                        </div>
-                      </>
-                    }
+
+                    // SUPER: Client Agreement only
                     if (activeTask.taskType === 'super') {
-                      const terms = !!findPart(['→ ✓ I have read','→ ✓ I agree','→ ✓'])
+                      const declVal = parts.find((p:string)=>p.startsWith('→')) || '—'
                       return <>
-                        <div style={S.secHead}><span>Declarations</span></div>
-                        <div style={{padding:'10px 14px'}}>
-                          {declBox('I have read and accept the Client Agreement & Privacy Policy.',terms,'I confirm this declaration')}
-                        </div>
+                        <div style={S.secHead}><span>Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
                       </>
                     }
+
+                    // TFN: Personal declaration + Client Agreement
+                    if (activeTask.taskType === 'tfn') {
+                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
+                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
+                      return <>
+                        <div style={S.secHead}><span>Personal Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
+                        <div style={S.secHead}><span>Client Agreement</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
+                      </>
+                    }
+
+                    // ABN: Business declaration + Client Agreement
+                    if (activeTask.taskType === 'abn') {
+                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
+                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
+                      return <>
+                        <div style={S.secHead}><span>Business Declaration</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{declVal.replace('→ ','')}</span></div>
+                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
+                        <div style={S.secHead}><span>Client Agreement</span></div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
+                        <div style={S.row}><span style={S.lbl}>Response</span><span style={{...S.val,color:'#059669',fontWeight:600}}>{termsVal.replace('→ ','')}</span></div>
+                      </>
+                    }
+
                     return <div style={{padding:'14px',fontSize:12,color:'#aabab2'}}>No declaration data</div>
                   })()}
                 </div>
@@ -1473,7 +1446,7 @@ export default function DashboardClient() {
                             <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
                               <div style={{display:'flex',gap:4}}>
                                 <button style={{padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'}} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
-                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}} title="Archive" onClick={()=>archiveClient(cl.id)}>
+                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}} title="Move to Archive" onClick={()=>archiveClient(cl.id)}>
                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                                 </button>
                               </div>
@@ -1778,11 +1751,11 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Archive */}
-              <div style={{background:'#fff',borderRadius:13,padding:'14px 18px',border:'1px dashed #c8eadf'}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#0E5C42',marginBottom:4}}>📂 Archive client</div>
-                <div style={{fontSize:12,color:'#7a8a82',marginBottom:10}}>Move this client to the archive. You can restore them at any time.</div>
-                <button style={{padding:'7px 14px',border:'1px solid #c8eadf',borderRadius:8,background:'#e8f5f0',color:'#0E5C42',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>{archiveClient(activeClient.id);setActiveClient(null)}}>Archive client</button>
+              {/* Move to archive */}
+              <div style={{background:'#fff',borderRadius:13,padding:'14px 18px',border:'1px dashed #d8e4dc'}}>
+                <div style={{fontSize:12,fontWeight:600,color:'#0E5C42',marginBottom:4}}>📦 Archive client</div>
+                <div style={{fontSize:12,color:'#7a8a82',marginBottom:10}}>Moves this client to the archive. Cannot be deleted from the Clients tab.</div>
+                <button style={{padding:'7px 14px',border:'1px solid #b0d8c8',borderRadius:8,background:'#e8f5f0',color:'#0E5C42',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>archiveClient(activeClient.id)}>Move to archive →</button>
               </div>
             </div>
           )}
@@ -1876,12 +1849,12 @@ export default function DashboardClient() {
       {confirmDelete && (
         <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmDelete(null)}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
-            <div style={{fontSize:34,marginBottom:10}}>📁</div>
-            <div style={S.mTitle}>Archive to Clients?</div>
+            <div style={{fontSize:34,marginBottom:10}}>🗑️</div>
+            <div style={S.mTitle}>Delete &amp; archive?</div>
             <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>All sensitive data (TFN, bank, address, documents) will be deleted.<br/>The client will be moved to the Clients tab with basic info only.</div>
             <div style={S.mFooter}>
               <button style={S.mCancel} onClick={()=>setConfirmDelete(null)}>Cancel</button>
-              <button style={S.mDel} onClick={()=>deleteTask(confirmDelete)}>Yes, archive to Clients</button>
+              <button style={S.mDel} onClick={()=>deleteTask(confirmDelete)}>Yes, delete &amp; archive</button>
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@ export type Task = {
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────
-let _initPromise: Promise<void> | null = null
+let _dbInitialised = false
 
 const DB_TIMEOUT_MS = 8000 // 8 s — Vercel Postgres cold-start can be slow
 
@@ -47,7 +47,8 @@ async function sqlWithTimeout<T>(query: Promise<T>, label: string): Promise<T> {
   ])
 }
 
-async function _doInit() {
+export async function initDb() {
+  if (_dbInitialised) return // already ran this instance — skip
   await sqlWithTimeout(sql`
     CREATE TABLE IF NOT EXISTS crm_clients (
       id            TEXT PRIMARY KEY,
@@ -96,44 +97,37 @@ async function _doInit() {
     sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`,
     'ALTER crm_tasks file_urls'
   )
-  // Run remaining column additions in parallel — safe because each is idempotent (IF NOT EXISTS)
-  await Promise.all([
-    sqlWithTimeout(
-      sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`,
-      'ALTER crm_tasks au_phone'
-    ),
-    sqlWithTimeout(
-      sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS review_status TEXT NOT NULL DEFAULT 'pending'`,
-      'ALTER crm_tasks review_status'
-    ),
-    sqlWithTimeout(
-      sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewer_note TEXT NOT NULL DEFAULT ''`,
-      'ALTER crm_tasks reviewer_note'
-    ),
-    sqlWithTimeout(
-      sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewed_at TEXT NOT NULL DEFAULT ''`,
-      'ALTER crm_tasks reviewed_at'
-    ),
-    sqlWithTimeout(
-      sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
-      'ALTER crm_clients archived'
-    ),
-    sqlWithTimeout(
-      sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`,
-      'ALTER crm_clients yearly_checkins'
-    ),
-  ])
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`,
+    'ALTER crm_tasks au_phone'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS review_status TEXT NOT NULL DEFAULT 'pending'`,
+    'ALTER crm_tasks review_status'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewer_note TEXT NOT NULL DEFAULT ''`,
+    'ALTER crm_tasks reviewer_note'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewed_at TEXT NOT NULL DEFAULT ''`,
+    'ALTER crm_tasks reviewed_at'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`,
+    'ALTER crm_clients archived'
+  )
+  await sqlWithTimeout(
+    sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`,
+    'ALTER crm_clients yearly_checkins'
+  )
   await Promise.all([
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_submitted ON crm_tasks(submitted_at DESC)`, 'IDX tasks submitted'),
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_done ON crm_tasks(done)`, 'IDX tasks done'),
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_created ON crm_clients(created_at DESC)`, 'IDX clients created'),
     sqlWithTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_archived ON crm_clients(archived)`, 'IDX clients archived'),
   ])
-}
-
-// Promise singleton — concurrent cold-start requests share one init, no duplicate ALTERs
-export function initDb(): Promise<void> {
-  return (_initPromise ??= _doInit())
+  _dbInitialised = true
 }
 
 function toClient(r: Record<string,unknown>): ClientRecord {
@@ -212,7 +206,10 @@ export async function markTaskDone(id: string): Promise<void> {
   const task = await getTask(id)
   if (!task) return
 
-  // Update DB first — if file deletion fails later, task is still correctly marked done
+  if (task.fileUrls && task.fileUrls.length > 0) {
+    await deleteFiles(task.fileUrls)
+  }
+
   await sql`
     UPDATE crm_tasks SET
       done         = TRUE,
@@ -225,11 +222,6 @@ export async function markTaskDone(id: string): Promise<void> {
       file_urls    = '[]'
     WHERE id = ${id}
   `
-
-  // Delete files after DB is committed — non-blocking, best-effort
-  if (task.fileUrls && task.fileUrls.length > 0) {
-    deleteFiles(task.fileUrls).catch(err => console.error('[markTaskDone] file cleanup failed:', err))
-  }
 }
 
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
@@ -270,20 +262,18 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
 }
 
 // Delete task permanently — no client card created, all data gone
-// FIX: also cleans up Blob storage files (previously leaked)
 export async function deleteTaskPermanent(taskId: string): Promise<void> {
   await initDb()
-  const task = await getTask(taskId)
   await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
-  // Non-blocking cleanup — delete files after DB row is gone
-  if (task?.fileUrls && task.fileUrls.length > 0) {
-    deleteFiles(task.fileUrls).catch(err =>
-      console.error('[deleteTaskPermanent] file cleanup failed:', err)
-    )
-  }
 }
 
 // ── Clients ────────────────────────────────────────────────────────────────
+
+export async function getAllClients(): Promise<ClientRecord[]> {
+  await initDb()
+  const { rows } = await sql`SELECT * FROM crm_clients ORDER BY created_at DESC`
+  return rows.map(toClient)
+}
 
 export async function getClientById(id: string): Promise<ClientRecord | null> {
   await initDb()
@@ -384,7 +374,6 @@ export async function clearClientSensitiveData(id: string): Promise<ClientRecord
   const client = await getClientById(id)
   if (!client) return null
 
-  // Clear sensitive fields from tasks (TFN, bank, address, files)
   await sql`
     UPDATE crm_tasks SET
       address      = '',
@@ -397,11 +386,10 @@ export async function clearClientSensitiveData(id: string): Promise<ClientRecord
     WHERE client_id = ${id}
   `
 
-  // Clear email from client record — email is PII under Privacy Act / GDPR
   const clearedNote = client.notes.includes('[PII CLEARED]')
     ? client.notes
     : `[PII CLEARED ${new Date().toISOString().slice(0,10)}] ${client.notes}`.trim()
-  await sql`UPDATE crm_clients SET email = '', notes = ${clearedNote} WHERE id = ${id}`
+  await sql`UPDATE crm_clients SET notes = ${clearedNote} WHERE id = ${id}`
 
   return getClientById(id)
 }
@@ -433,7 +421,7 @@ export async function getAllArchivedClients(): Promise<ClientRecord[]> {
   return rows.map(toClient)
 }
 
-// Active clients only (excludes archived)
+// Override getAllClients to exclude archived
 export async function getAllActiveClients(): Promise<ClientRecord[]> {
   await initDb()
   const { rows } = await sql`SELECT * FROM crm_clients WHERE (archived = FALSE OR archived IS NULL) ORDER BY created_at DESC LIMIT 1000`
@@ -461,15 +449,4 @@ export async function setReviewStatus(taskId: string, status: ReviewStatus): Pro
   await initDb()
   const reviewedAt = status === 'pending' ? '' : new Date().toISOString()
   await sql`UPDATE crm_tasks SET review_status = ${status}, reviewed_at = ${reviewedAt} WHERE id = ${taskId}`
-}
-
-// Efficient check: does this client have any open (non-done) tasks?
-// Used by DELETE /api/crm/clients/[id] to prevent orphan tasks.
-export async function getOpenTaskCountByClientId(clientId: string): Promise<number> {
-  await initDb()
-  const { rows } = await sql`
-    SELECT COUNT(*) AS cnt FROM crm_tasks
-    WHERE client_id = ${clientId} AND done = FALSE
-  `
-  return Number(rows[0]?.cnt ?? 0)
 }

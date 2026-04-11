@@ -3,7 +3,6 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
-import { uploadFiles } from '@/lib/upload'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 import crypto from 'crypto'
@@ -18,34 +17,12 @@ export async function POST(req: NextRequest) {
     const formData  = await req.formData()
     const clientId  = `CLT-${crypto.randomUUID()}`
 
-    const bankStatementFile  = formData.get('bankStatement')  as File | null
-    const selfiePassportFile = formData.get('selfiePassport') as File | null
-
-    // Accept pre-uploaded invoice URLs (client-side upload) OR fallback files
-    const preUploadedUrls: string[] = (() => {
+    // All files are pre-uploaded client-side; server receives URLs only
+    const allFileUrls: string[] = (() => {
       try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
     })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
 
-    const fallbackInvoices: (File | null)[] = []
-    if (preUploadedUrls.length === 0) {
-      for (let i = 0; i < 10; i++) {
-        const f = formData.get(`invoices_${i}`) as File | null
-        if (f && f.size > 0) fallbackInvoices.push(f)
-        else break
-      }
-    }
-
-    let fileUrls: string[]
-    try {
-      const serverUrls = await uploadFiles(
-        [bankStatementFile, selfiePassportFile, ...fallbackInvoices],
-        `tax-form/${clientId}`
-      )
-      fileUrls = [...serverUrls, ...preUploadedUrls]
-    } catch (uploadErr) {
-      const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
-      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
-    }
+    const fileUrls: string[] = allFileUrls
 
     await createTask({
       clientId,
@@ -65,21 +42,16 @@ export async function POST(req: NextRequest) {
       taxStatus:   sanitiseShort(formData.get('taxStatus')),
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
-      notes:       (() => {
-        const hasAbn = sanitiseShort(formData.get('hasAbn')) || ''
-        const abnNumber = sanitiseShort(formData.get('abnNumber')) || ''
-        const abnIncome = sanitiseShort(formData.get('abnIncome')) || ''
-        return [
-          formData.get('taxStatusText') ? sanitiseField(formData.get('taxStatusText')) : '',
-          formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
-          formData.get('declaredText')  ? sanitiseField(formData.get('declaredText')) : '',
-          formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
-          formData.get('declaredIncome') ? sanitiseField(formData.get('declaredIncome')) : '',
-          hasAbn ? `ABN: ${hasAbn}` : '',
-          hasAbn === 'Yes' && abnNumber ? `ABN Number: ${abnNumber}` : '',
-          hasAbn === 'Yes' && abnIncome ? `ABN Income: ${abnIncome}` : '',
-        ].filter(Boolean).join(' | ')
-      })(),
+      notes:       [
+        formData.get('taxStatusText') ? sanitiseField(formData.get('taxStatusText')) : '',
+        formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
+        formData.get('declaredText')  ? sanitiseField(formData.get('declaredText')) : '',
+        formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
+        formData.get('declaredIncome') ? sanitiseField(formData.get('declaredIncome')) : '',
+        formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
+        formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
+        formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
+      ].filter(Boolean).join(' | '),
       fileUrls,
     })
 
