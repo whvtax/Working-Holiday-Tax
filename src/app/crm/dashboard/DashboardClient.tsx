@@ -88,6 +88,10 @@ export default function DashboardClient() {
   const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
   const [loading, setLoading]     = useState(true)
   const [refreshing, setRefreshing] = useState(false)
+  const [newClientsCount, setNewClientsCount] = useState(0)
+  const prevClientsCountRef = React.useRef(0)
+  const [newArchiveCount, setNewArchiveCount] = useState(0)
+  const prevArchiveCountRef = React.useRef(0)
   const [previewUrl, setPreviewUrl] = useState<string|null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
@@ -119,7 +123,15 @@ export default function DashboardClient() {
     try {
       const r=await fetch('/api/crm/clients',{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
-      const d=await r.json(); if(d.ok) setClients(d.clients)
+      const d=await r.json()
+      if(d.ok) {
+        const newCount = d.clients.length
+        if (prevClientsCountRef.current > 0 && newCount > prevClientsCountRef.current) {
+          setNewClientsCount(n => n + (newCount - prevClientsCountRef.current))
+        }
+        prevClientsCountRef.current = newCount
+        setClients(d.clients)
+      }
     } catch(e){ console.error('[loadClients]',e) }
   },[])
 
@@ -127,7 +139,15 @@ export default function DashboardClient() {
   const loadArchived = useCallback(async()=>{
     try {
       const r=await fetch('/api/crm/clients?archived=true',{cache:'no-store'})
-      const d=await r.json(); if(d.ok) setArchivedClients(d.clients)
+      const d=await r.json()
+      if(d.ok) {
+        const newCount = d.clients.length
+        if (prevArchiveCountRef.current > 0 && newCount > prevArchiveCountRef.current) {
+          setNewArchiveCount(n => n + (newCount - prevArchiveCountRef.current))
+        }
+        prevArchiveCountRef.current = newCount
+        setArchivedClients(d.clients)
+      }
     } catch(e){ console.error('[loadArchived]',e) }
   },[])
 
@@ -148,7 +168,7 @@ export default function DashboardClient() {
     }
   }, [activeTask?.id, tasks]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const openArchive = useCallback(()=>{ setView('archive'); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
+  const openArchive = useCallback(()=>{ setView('archive'); setNewArchiveCount(0); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
@@ -709,7 +729,7 @@ export default function DashboardClient() {
   }
 
   const SbButton = ({v,label,icon,badge}:{v:View,label:string,icon:React.ReactNode,badge?:number})=>(
-    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null) } }}>
+    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null); if(v==='clients') setNewClientsCount(0) } }}>
       {icon}{label}
       {badge!=null && badge>0 && <span style={S.sbBadge}>{badge}</span>}
     </button>
@@ -799,9 +819,9 @@ export default function DashboardClient() {
             <nav style={S.sbNav}>
               <SbButton v="tasks" label="Tasks" badge={pendingTasks.length}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
-              <SbButton v="clients" label="Clients"
+              <SbButton v="clients" label="Clients" badge={newClientsCount||undefined}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
-              <SbButton v="archive" label="Archive" badge={archivedClients.length||undefined}
+              <SbButton v="archive" label="Archive" badge={newArchiveCount||undefined}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
