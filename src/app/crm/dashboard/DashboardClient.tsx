@@ -987,7 +987,7 @@ export default function DashboardClient() {
               </div>
 
               {/* 4 sections — adapted per taskType */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
+              <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',gap:12,marginBottom:12}}>
 
                 {/* ── Reviewer note ── */}
                 {(activeTask).reviewerNote && (
@@ -1143,9 +1143,9 @@ export default function DashboardClient() {
                 </div>
               </div>
               {/* Declaration + Notes side by side */}
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12,alignItems:'stretch'}}>
+              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
                 {/* Declaration card — per form type */}
-                <div style={{...S.card,height:'100%',boxSizing:'border-box' as const}}>
+                <div style={{...S.card,minWidth:0,overflow:'hidden'}}>
                   {(()=>{
                     const parts = (activeTask.notes||'').split(' | ')
 
@@ -1221,7 +1221,7 @@ export default function DashboardClient() {
                 </div>
 
                 {/* Notes */}
-                <div style={{...S.card,display:'flex',flexDirection:'column' as const}}>
+                <div style={{...S.card,display:'flex',flexDirection:'column' as const,minWidth:0}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
                   {(()=>{
                     const reviewerNote = (activeTask.notes||'').split(' | ').find(p=>p.startsWith('📝 '))?.slice(3)
