@@ -139,6 +139,15 @@ export default function DashboardClient() {
     return ()=> clearInterval(id)
   },[loadTasks, loadClients])
 
+  // Sync taskNotes when activeTask updates from auto-refresh (e.g. reviewer added a note)
+  useEffect(()=>{
+    if (activeTask) {
+      // Find the live task from tasks array to get latest notes
+      const live = tasks.find(t => t.id === activeTask.id)
+      if (live) setTaskNotes(extractUserNotes(live.notes))
+    }
+  }, [activeTask?.id, tasks]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const openArchive = useCallback(()=>{ setView('archive'); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
