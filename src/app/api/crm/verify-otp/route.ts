@@ -1,15 +1,29 @@
 // src/app/api/crm/verify-otp/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { createSession } from '@/lib/crm-store'
-import { getRedis, disconnectRedis } from '@/lib/redis'
+import { createClient } from 'redis'
 import crypto from 'crypto'
 
 const OTP_MAX_ATTEMPTS = 5
 const OTP_ATTEMPT_KEY  = 'crm_otp_attempts'
 const OTP_ATTEMPT_TTL  = 600 // 10 min — matches OTP TTL
 
+async function getRedis() {
+  const client = createClient({
+    url: process.env.REDIS_URL,
+    socket: { connectTimeout: 3000, reconnectStrategy: false },
+  })
+  await Promise.race([
+    client.connect(),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Redis connect timeout')), 3500)
+    ),
+  ])
+  return client
+}
+
 export async function POST(req: NextRequest) {
-  let redis = null
+  let redis
   try {
     const { code } = await req.json()
     if (!code || typeof code !== 'string') {
@@ -17,15 +31,12 @@ export async function POST(req: NextRequest) {
     }
 
     redis = await getRedis()
-    if (!redis) {
-      console.error('[verify-otp] Redis unavailable — cannot verify OTP')
-      return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 })
-    }
 
     // Brute-force guard: limit OTP guesses per OTP lifecycle
     const attempts = await redis.incr(OTP_ATTEMPT_KEY)
     if (attempts === 1) await redis.expire(OTP_ATTEMPT_KEY, OTP_ATTEMPT_TTL)
     if (attempts > OTP_MAX_ATTEMPTS) {
+      // Invalidate the OTP so the attacker can't keep trying after a new login
       await redis.del('crm_otp')
       return NextResponse.json(
         { ok: false, error: 'too_many_attempts', message: 'Too many attempts. Please log in again.' },
@@ -76,6 +87,6 @@ export async function POST(req: NextRequest) {
     console.error('[CRM /api/crm/verify-otp]', err)
     return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 })
   } finally {
-    await disconnectRedis(redis)
+    if (redis) await redis.disconnect()
   }
 }

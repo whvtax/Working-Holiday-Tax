@@ -5,8 +5,25 @@ import {
   recordFailedAttemptRedis, resetFailedAttemptsRedis, isLockedOutRedis,
   generateOtp,
 } from '@/lib/crm-store'
-import { getRedis, disconnectRedis, RedisClient } from '@/lib/redis'
+import { createClient } from 'redis'
+type RedisClient = ReturnType<typeof createClient>
 import crypto from 'crypto'
+
+async function getRedis() {
+  const url = process.env.REDIS_URL
+  if (!url) throw new Error('Missing env var: REDIS_URL')
+  const client = createClient({
+    url,
+    socket: { connectTimeout: 3000, reconnectStrategy: false },
+  })
+  await Promise.race([
+    client.connect(),
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('Redis connect timeout')), 3500)
+    ),
+  ])
+  return client
+}
 
 let _cachedPasswordHash: string | null = null
 function getPasswordHash(): string {
@@ -61,11 +78,7 @@ export async function POST(req: NextRequest) {
     await redis.del('crm_otp_attempts')
     await redis.set('crm_otp', otpHash, { EX: 600 }) // expires in 10 minutes
 
-    if (!ADMIN_EMAIL) {
-      console.error('[CRM login] CRM_ADMIN_EMAIL env var not set — OTP cannot be delivered')
-      return NextResponse.json({ ok: false, message: 'Server misconfiguration. Contact your administrator.' }, { status: 500 })
-    }
-    await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
+    if (ADMIN_EMAIL) await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
 
     return NextResponse.json({ ok: true, otpSent: true })
 
@@ -73,7 +86,7 @@ export async function POST(req: NextRequest) {
     console.error('[CRM login]', err)
     return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
   } finally {
-    await disconnectRedis(redis)
+    if (redis) await (redis as RedisClient).disconnect()
   }
 }
 
