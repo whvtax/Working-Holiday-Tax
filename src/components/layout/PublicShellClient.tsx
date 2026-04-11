@@ -13,7 +13,7 @@ export default function PublicShellClient({
   footer: React.ReactNode
 }) {
   const pathname = usePathname()
-  const isCrm = pathname?.startsWith('/crm') || pathname?.endsWith('-form') || pathname === '/tax-form' || pathname?.startsWith('/tax-form') || pathname?.startsWith('/tfn-form') || pathname?.startsWith('/abn-form') || pathname?.startsWith('/super-form')
+  const isCrm = pathname?.startsWith('/crm')
 
   // Scroll to top on every page navigation
   useEffect(() => {
