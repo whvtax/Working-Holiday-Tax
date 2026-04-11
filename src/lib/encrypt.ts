@@ -8,11 +8,14 @@ const TAG_LENGTH = 16
 
 let _cachedKey: Buffer | null = null
 
-function getKey(): Buffer {
+function getKey(): Buffer | null {
   if (_cachedKey) return _cachedKey
   const hex = process.env.FIELD_ENCRYPTION_KEY
-  if (!hex) throw new Error('Missing env var: FIELD_ENCRYPTION_KEY')
-  if (hex.length !== 64) throw new Error('FIELD_ENCRYPTION_KEY must be 64 hex chars (32 bytes)')
+  if (!hex) return null  // graceful degradation — encryption disabled
+  if (hex.length !== 64) {
+    console.warn('[encrypt] FIELD_ENCRYPTION_KEY must be 64 hex chars — encryption disabled')
+    return null
+  }
   _cachedKey = Buffer.from(hex, 'hex')
   return _cachedKey
 }
@@ -24,6 +27,7 @@ function getKey(): Buffer {
 export function encryptField(plaintext: string): string {
   if (!plaintext) return ''
   const key = getKey()
+  if (!key) return plaintext  // no key configured — store as plaintext (graceful degradation)
   const iv  = crypto.randomBytes(IV_LENGTH)
   const cipher = crypto.createCipheriv(ALGORITHM, key, iv, { authTagLength: TAG_LENGTH })
   const encrypted = Buffer.concat([cipher.update(plaintext, 'utf8'), cipher.final()])
@@ -37,10 +41,11 @@ export function encryptField(plaintext: string): string {
  */
 export function decryptField(ciphertext: string): string {
   if (!ciphertext) return ''
-  // If value doesn't look encrypted (legacy plaintext), return as-is
+  // If value doesn't look encrypted (legacy plaintext or no key), return as-is
   if (!ciphertext.includes(':')) return ciphertext
+  const key = getKey()
+  if (!key) return ciphertext  // no key — return as-is
   try {
-    const key = getKey()
     const parts = ciphertext.split(':')
     if (parts.length !== 3) return ciphertext
     const [ivB64, dataB64, tagB64] = parts

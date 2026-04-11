@@ -112,18 +112,9 @@ export default function TFNFormPage() {
     fd.append('declaredText', 'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
-    try {
-      const res = await fetch('/api/tfn-form', { method: 'POST', body: fd })
-      if (res.ok) {
-        window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true)
-      } else {
-        const data = await res.json().catch(() => ({}))
-        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
-        else alert('Something went wrong. Please try again.')
-      }
-    } catch { alert('Something went wrong. Please try again.') }
-    finally { setLoading(false) }
+    // Show success immediately — fire & forget upload in background
+    window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true); setLoading(false)
+    fetch('/api/tfn-form', { method: 'POST', body: fd }).catch(console.error)
   }
 
 

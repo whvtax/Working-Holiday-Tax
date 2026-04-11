@@ -29,13 +29,11 @@ const DANGEROUS_PATTERNS = [
   [0x7F, 0x45, 0x4C, 0x46],
   // PE (Windows .exe / .dll)
   [0x4D, 0x5A],
-  // ZIP — could contain malicious files; also blocks polyglot PDF+ZIP attacks
+  // ZIP (could contain malicious files)
   [0x50, 0x4B, 0x03, 0x04],
-  [0x50, 0x4B, 0x05, 0x06],  // empty ZIP
-  [0x50, 0x4B, 0x07, 0x08],  // spanned ZIP
 ]
 
-async function readMagicBytes(file: File, length = 32): Promise<Uint8Array> {
+async function readMagicBytes(file: File, length = 1024): Promise<Uint8Array> {
   const slice = file.slice(0, length)
   const buffer = await slice.arrayBuffer()
   return new Uint8Array(buffer)
@@ -128,7 +126,6 @@ export async function uploadFile(
 
 /**
  * Upload multiple files and return an array of URLs (nulls filtered out).
- * Enforces a total size cap of 50MB across all files.
  */
 export async function uploadFiles(
   files: (File | null)[],

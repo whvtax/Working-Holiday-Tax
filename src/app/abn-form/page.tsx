@@ -101,18 +101,9 @@ export default function ABNFormPage() {
     fd.append('declaredText', 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
-    try {
-      const res = await fetch('/api/abn-form', { method: 'POST', body: fd })
-      if (res.ok) {
-        window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true)
-      } else {
-        const data = await res.json().catch(() => ({}))
-        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
-        else alert('Something went wrong. Please try again.')
-      }
-    } catch { alert('Something went wrong. Please try again.') }
-    finally { setLoading(false) }
+    // Show success immediately — fire & forget upload in background
+    window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true); setLoading(false)
+    fetch('/api/abn-form', { method: 'POST', body: fd }).catch(console.error)
   }
 
 

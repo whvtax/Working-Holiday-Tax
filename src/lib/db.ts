@@ -1,5 +1,6 @@
-import { sql } from '@vercel/postgres'
+import { sql, db } from '@vercel/postgres'
 import { deleteFiles } from '@/lib/upload'
+import { encryptField, decryptField } from '@/lib/encrypt'
 import crypto from 'crypto'
 
 export type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -165,8 +166,8 @@ function toTask(r: Record<string,unknown>): Task {
     country: r.country as string, dob: r.dob as string,
     taxYear: r.tax_year as string, submittedAt: r.submitted_at as string,
     done: r.done as boolean, address: r.address as string,
-    tfn: r.tfn as string,
-    bankDetails: r.bank_details as string,
+    tfn: decryptField(r.tfn as string),
+    bankDetails: decryptField(r.bank_details as string),
     primaryJob: r.primary_job as string, marital: r.marital as string,
     taxStatus: r.tax_status as string, howHeard: r.how_heard as string,
     auPhone: r.au_phone as string, notes: r.notes as string,
@@ -194,6 +195,8 @@ export async function getTask(id: string): Promise<Task | null> {
 export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
   await initDb()
   const id = `TASK-${crypto.randomUUID()}`
+  const encTfn  = encryptField(data.tfn ?? '')
+  const encBank = encryptField(data.bankDetails ?? '')
   await sqlWithTimeout(sql`
     INSERT INTO crm_tasks
       (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
@@ -201,7 +204,7 @@ export async function createTask(data: Omit<Task,'id'|'done'>): Promise<Task> {
     VALUES
       (${id},${data.clientId},${data.clientName},${data.taskType??'tax-return'},
        ${data.whatsapp},${data.email},${data.country},${data.dob},${data.taxYear},
-       ${data.submittedAt},false,${data.address},${data.tfn},${data.bankDetails},
+       ${data.submittedAt},false,${data.address},${encTfn},${encBank},
        ${data.primaryJob},${data.marital},${data.taxStatus},${data.howHeard},${data.auPhone},${data.notes},
        ${JSON.stringify(data.fileUrls ?? [])})
   `, 'INSERT crm_tasks')
@@ -247,30 +250,38 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
     .map(s => (s ?? '').trim())
     .filter(Boolean)
     .join('\n')
-
-  await sql`
-    INSERT INTO crm_clients
-      (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
-    VALUES
-      (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
-       ${task.country},${task.howHeard},${taskNotes},'[]','[]',
-       '{"done":false,"completedAt":"","notes":""}',
-       '{"done":false,"completedAt":"","notes":""}',
-       ${new Date().toISOString()})
-    ON CONFLICT (id) DO UPDATE SET
-      how_heard = CASE
-        WHEN crm_clients.how_heard = '' AND EXCLUDED.how_heard != ''
-        THEN EXCLUDED.how_heard
-        ELSE crm_clients.how_heard
-      END,
-      notes = CASE
-        WHEN EXCLUDED.notes != '' AND crm_clients.notes NOT LIKE '%' || EXCLUDED.notes || '%'
-        THEN TRIM(crm_clients.notes || E'\n' || EXCLUDED.notes)
-        ELSE crm_clients.notes
-      END
-  `
-
-  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
+  const client = await db.connect()
+  try {
+    await client.query('BEGIN')
+    await client.query(
+      `INSERT INTO crm_clients
+        (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'[]','[]',
+         '{"done":false,"completedAt":"","notes":""}',
+         '{"done":false,"completedAt":"","notes":""}',
+         $9)
+       ON CONFLICT (id) DO UPDATE SET
+         how_heard = CASE
+           WHEN crm_clients.how_heard = '' AND EXCLUDED.how_heard != ''
+           THEN EXCLUDED.how_heard
+           ELSE crm_clients.how_heard
+         END,
+         notes = CASE
+           WHEN EXCLUDED.notes != '' AND crm_clients.notes NOT LIKE '%' || EXCLUDED.notes || '%'
+           THEN TRIM(crm_clients.notes || E'\\n' || EXCLUDED.notes)
+           ELSE crm_clients.notes
+         END`,
+      [task.clientId, task.clientName, task.dob, task.whatsapp, task.email,
+       task.country, task.howHeard, taskNotes, new Date().toISOString()]
+    )
+    await client.query('DELETE FROM crm_tasks WHERE id = $1', [taskId])
+    await client.query('COMMIT')
+  } catch (err) {
+    await client.query('ROLLBACK')
+    throw err
+  } finally {
+    client.release()
+  }
 }
 
 // Delete task permanently — no client card created, all data gone

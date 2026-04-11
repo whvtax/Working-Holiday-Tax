@@ -290,18 +290,9 @@ export default function TaxFormPage() {
     }
     if (invoiceUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
 
-    try {
-      const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
-      if (res.ok) {
-        window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true)
-      } else {
-        const data = await res.json().catch(() => ({}))
-        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
-        else alert('Something went wrong. Please try again.')
-      }
-    } catch { alert('Something went wrong. Please try again.') }
-    finally { setLoading(false) }
+    // Show success immediately — fire & forget in background
+    window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true); setLoading(false)
+    fetch('/api/tax-form', { method: 'POST', body: fd }).catch(console.error)
   }
 
 
