@@ -15,21 +15,17 @@ export async function PATCH(req: NextRequest) {
   try {
     const { taskId, status, note } = await req.json()
 
-    if (!taskId) return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 })
-
-    // Validate status first before writing anything
-    if (status !== undefined && !VALID_STATUSES.has(status)) {
-      return NextResponse.json({ ok: false, error: 'invalid_status' }, { status: 400 })
-    }
-
     // Save note if provided
-    if (note !== undefined) {
+    if (note !== undefined && taskId) {
       const cleanNote = String(note).slice(0, 1000)
       await setReviewerNote(taskId, cleanNote)
     }
 
     // Save status if provided
     if (status !== undefined) {
+      if (!taskId || !VALID_STATUSES.has(status)) {
+        return NextResponse.json({ ok: false, error: 'invalid' }, { status: 400 })
+      }
       await setReviewStatus(taskId, status)
     }
 

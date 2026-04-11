@@ -84,15 +84,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
-    const { deleteClient, getOpenTaskCountByClientId } = await import('@/lib/db')
-    // Guard: refuse deletion if client has open (non-done) tasks
-    const openCount = await getOpenTaskCountByClientId(params.id)
-    if (openCount > 0) {
-      return NextResponse.json(
-        { ok: false, error: 'client_has_open_tasks', count: openCount },
-        { status: 409 }
-      )
-    }
+    const { deleteClient } = await import('@/lib/db')
     await deleteClient(params.id)
     return NextResponse.json({ ok:true })
   } catch (err) {
