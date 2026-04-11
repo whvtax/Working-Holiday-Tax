@@ -292,7 +292,6 @@ export default function DashboardClient() {
     const parts = raw.split(' | ')
     const userParts = parts.filter(p =>
       !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
-      && !p.startsWith('[Reviewer] ')
     )
     return userParts.join(' | ').trim()
   }
