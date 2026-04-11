@@ -811,6 +811,10 @@ const styles = `
   .file-name { font-size: 12.5px; font-weight: 600; color: #080F0D; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .file-size { font-size: 11px; color: #8AADA3; }
   .file-remove { width: 30px; height: 30px; border-radius: 8px; background: #FEE2E2; color: #ef4444; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; flex-shrink: 0; }
+  .check-box { width: 20px; height: 20px; border-radius: 6px; border: 2px solid #D4EAE2; background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all .15s; }
+  .check-box.checked { background: #0B5240; border-color: #0B5240; }
+  .check-label { font-size: 13px; color: #1A2822; font-weight: 500; line-height: 1.5; }
+  .check-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; cursor: pointer; }
   .errors-banner { background: #FFF5F5; border: 1px solid #FCA5A5; border-radius: 12px; padding: 12px 16px; font-size: 13px; color: #DC2626; font-weight: 500; margin-top: 16px; }
   .submit-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: #0B5240; color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; margin-top: 24px; transition: opacity .15s, transform .1s; }
   .submit-btn:active { transform: scale(.98); opacity: .9; }
