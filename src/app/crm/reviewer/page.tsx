@@ -11,7 +11,7 @@ export default function ReviewerLoginPage() {
     setLoading(true); setError('')
     const res = await fetch('/api/crm/reviewer-login', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
       body: JSON.stringify({ password }),
     })
     const data = await res.json()

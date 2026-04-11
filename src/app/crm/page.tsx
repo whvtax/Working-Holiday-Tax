@@ -16,7 +16,7 @@ export default function CrmLoginPage() {
     try {
       const res  = await fetch('/api/crm/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         body: JSON.stringify({ password }),
       })
       const data = await res.json()
@@ -39,7 +39,7 @@ export default function CrmLoginPage() {
     try {
       const res  = await fetch('/api/crm/verify-otp', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         body: JSON.stringify({ code: otp }),
       })
       const data = await res.json()
