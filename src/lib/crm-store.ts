@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { getRedis, disconnectRedis, RedisClient } from '@/lib/redis'
 
 export type FailedAttempt = { count: number; lastAttempt: number; locked: boolean }
 
@@ -51,9 +52,8 @@ export function validateSession(token: string | undefined): boolean {
     if (!crypto.timingSafeEqual(sigBuf, expBuf)) return false
     const { iat, exp } = JSON.parse(Buffer.from(payload, 'base64url').toString())
     const now = Date.now()
-    // Must not be expired AND must not be older than max session TTL from issuance
     if (now >= exp) return false
-    if (iat && now - iat > SESSION_TTL + 60_000) return false // 1-min grace for clock skew
+    if (iat && now - iat > SESSION_TTL + 60_000) return false
     return true
   } catch { return false }
 }
@@ -65,9 +65,9 @@ const LOCKOUT_MS   = 30 * 60 * 1000
 const KEY_COUNT    = 'crm_fail_count'
 const KEY_TS       = 'crm_fail_ts'
 const KEY_LOCKED   = 'crm_locked'
-const TTL_SECS     = 35 * 60 // slightly longer than lockout
+const TTL_SECS     = 35 * 60
 
-export async function recordFailedAttemptRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
+export async function recordFailedAttemptRedis(redis: RedisClient): Promise<FailedAttempt> {
   const now   = Date.now()
   const count = await redis.incr(KEY_COUNT)
   await redis.set(KEY_TS, String(now), { EX: TTL_SECS })
@@ -77,16 +77,15 @@ export async function recordFailedAttemptRedis(redis: import('redis').RedisClien
   return { count, lastAttempt: now, locked }
 }
 
-export async function resetFailedAttemptsRedis(redis: import('redis').RedisClientType): Promise<void> {
+export async function resetFailedAttemptsRedis(redis: RedisClient): Promise<void> {
   await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
 }
 
-export async function isLockedOutRedis(redis: import('redis').RedisClientType): Promise<boolean> {
+export async function isLockedOutRedis(redis: RedisClient): Promise<boolean> {
   const locked = await redis.get(KEY_LOCKED)
   if (!locked) return false
   const ts = await redis.get(KEY_TS)
   if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
-    // Lockout expired — clear manually (TTL will also clean it, this is just faster)
     await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
     return false
   }
@@ -100,7 +99,9 @@ const REVIEWER_SESSION_TTL = 4 * 60 * 60 * 1000 // 4 hours
 export function hashReviewerPassword(password: string): string {
   const salt = process.env.PASSWORD_SALT
   if (!salt) throw new Error('Missing env var: PASSWORD_SALT')
-  const reviewerSalt = process.env.REVIEWER_SALT || (salt + '_reviewer')
+  // FIX: require explicit REVIEWER_SALT — no fallback to weak derived value
+  const reviewerSalt = process.env.REVIEWER_SALT
+  if (!reviewerSalt) throw new Error('Missing env var: REVIEWER_SALT')
   return crypto.pbkdf2Sync(password, reviewerSalt, 100_000, 64, 'sha512').toString('hex')
 }
 
@@ -148,7 +149,7 @@ const RV_KEY_COUNT  = 'rv_fail_count'
 const RV_KEY_TS     = 'rv_fail_ts'
 const RV_KEY_LOCKED = 'rv_locked'
 
-export async function recordReviewerFailRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
+export async function recordReviewerFailRedis(redis: RedisClient): Promise<FailedAttempt> {
   const now   = Date.now()
   const count = await redis.incr(RV_KEY_COUNT)
   await redis.set(RV_KEY_TS, String(now), { EX: TTL_SECS })
@@ -158,11 +159,11 @@ export async function recordReviewerFailRedis(redis: import('redis').RedisClient
   return { count, lastAttempt: now, locked }
 }
 
-export async function resetReviewerFailRedis(redis: import('redis').RedisClientType): Promise<void> {
+export async function resetReviewerFailRedis(redis: RedisClient): Promise<void> {
   await redis.del(RV_KEY_COUNT, RV_KEY_TS, RV_KEY_LOCKED)
 }
 
-export async function isReviewerLockedRedis(redis: import('redis').RedisClientType): Promise<boolean> {
+export async function isReviewerLockedRedis(redis: RedisClient): Promise<boolean> {
   const locked = await redis.get(RV_KEY_LOCKED)
   if (!locked) return false
   const ts = await redis.get(RV_KEY_TS)
@@ -172,3 +173,6 @@ export async function isReviewerLockedRedis(redis: import('redis').RedisClientTy
   }
   return true
 }
+
+// Re-export getRedis/disconnectRedis so callers don't need two imports
+export { getRedis, disconnectRedis }

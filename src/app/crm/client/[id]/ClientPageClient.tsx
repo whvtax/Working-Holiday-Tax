@@ -44,27 +44,33 @@ export default function ClientPageClient({ id }: { id: string }) {
 
   async function saveNotes() {
     setNotesSaving(true)
-    await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:{...client,notes}})})
-    setNotesSaving(false)
-    setNotesSaved(true)
-    setTimeout(()=>setNotesSaved(false), 2500)
+    try {
+      const res = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'update',data:{...client,notes}})})
+      if (!res.ok) throw new Error('Server error')
+      setNotesSaved(true)
+      setTimeout(()=>setNotesSaved(false), 2500)
+    } catch {
+      showMsg('⚠️ Failed to save notes. Please try again.')
+    } finally {
+      setNotesSaving(false)
+    }
   }
 
   async function save() {
     setSaving(true)
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update',data:form})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'update',data:form})})
     const data = await res.json()
     if (data.ok) { setClient(data.client); setEditing(false); showMsg('Changes saved') }
     setSaving(false)
   }
   async function doClear() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'clear'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'clear'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Sensitive details cleared') }
     setShowClear(false)
   }
   async function doHandle() {
-    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'handle'})})
+    const res  = await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','X-Requested-With':'XMLHttpRequest'},body:JSON.stringify({action:'handle'})})
     const data = await res.json()
     if (data.ok) { await load(); showMsg('Marked as handled') }
     setShowHandle(false)
@@ -203,7 +209,7 @@ export default function ClientPageClient({ id }: { id: string }) {
           </Section>
           <Section title="Tax & employment">
             <Row label="TFN 🔒"        value={client.tfn}         field="tfn"         editing={editing} form={form} setForm={setForm} ltr/>
-            <Row label="Bank 🔒"       value={client.bankDetails} field="bankDetails" editing={editing} form={form} setForm={setForm} ltr/>
+            <BankSection raw={client.bankDetails} editing={editing} form={form} setForm={setForm} />
             <Row label="Employer"      value={client.primaryJob}  field="primaryJob"  editing={editing} form={form} setForm={setForm}/>
             <Row label="Tax status"    value={client.taxStatus}   field="taxStatus"   editing={editing} form={form} setForm={setForm}/>
           </Section>
@@ -280,3 +286,64 @@ function Row({label,value,field,editing,form,setForm,type='text',ltr=false}:{
     </div>
   )
 }
+function CopyFieldBtn({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false)
+  return (
+    <button
+      onClick={() => navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(()=>setCopied(false),1500) })}
+      style={{background:'none',border:'none',cursor:'pointer',color:copied?'#059669':'#c8d8d0',padding:'2px 4px',borderRadius:4,flexShrink:0,lineHeight:1}}
+      title="Copy"
+    >
+      {copied
+        ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      }
+    </button>
+  )
+}
+
+function BankSection({ raw, editing, form, setForm }: { raw:string; editing:boolean; form:Record<string,unknown>; setForm:(f:Record<string,unknown>)=>void }) {
+  const parts = (raw||'').split(' | ')
+  const bankName    = parts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','').trim()    || ''
+  const bankHolder  = parts.find(p=>p.startsWith('Name:'))?.replace('Name: ','').trim()    || ''
+  const bankAccount = parts.find(p=>p.startsWith('Account:'))?.replace('Account: ','').trim() || ''
+  const bankBsb     = parts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','').trim()      || ''
+
+  if (editing) {
+    // In edit mode, show as one editable text field
+    return (
+      <div className="cp-row">
+        <span className="cp-lbl">Bank 🔒</span>
+        <input className="cp-input" value={(form.bankDetails as string)??raw} onChange={e=>setForm({...form,bankDetails:e.target.value})} style={{direction:'ltr'}}/>
+      </div>
+    )
+  }
+
+  if (!raw) return (
+    <div className="cp-row"><span className="cp-lbl">Bank 🔒</span><span className="cp-val empty">—</span></div>
+  )
+
+  const fields: [string, string][] = [
+    ['Bank name', bankName],
+    ['Account holder', bankHolder],
+    ['Account number', bankAccount],
+    ['BSB', bankBsb],
+  ]
+
+  return (
+    <div style={{borderBottom:'1px solid #f5f7f6'}}>
+      <div className="cp-row" style={{borderBottom:'1px solid #f0f4f1',background:'#f7fbf9'}}>
+        <span className="cp-lbl" style={{color:'#0E5C42',fontWeight:700}}>Bank account 🔒</span>
+      </div>
+      {fields.map(([label, value]) => (
+        <div key={label} className="cp-row" style={{borderBottom:'none',paddingLeft:28}}>
+          <span className="cp-lbl" style={{minWidth:110}}>{label}</span>
+          <span className="cp-val ltr" style={{fontFamily:'monospace',fontSize:12}}>{value||'—'}</span>
+          {value && <CopyFieldBtn text={value} />}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+

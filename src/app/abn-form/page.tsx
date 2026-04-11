@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 
 type UploadState = { file: File | null; preview: string | null }
 
@@ -15,6 +15,10 @@ function Field({ label, required, children, error }: { label: string; required?:
 
 function FileUpload({ id, label, accept, value, onChange }: { id: string; label: string; accept: string; value: UploadState; onChange: (v: UploadState) => void }) {
   const inputRef = useRef<HTMLInputElement>(null)
+  // Cleanup object URL when preview changes or component unmounts (prevents memory leak)
+  React.useEffect(() => {
+    return () => { if (value.preview) URL.revokeObjectURL(value.preview) }
+  }, [value.preview])
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
     if (!file) return
@@ -57,7 +61,6 @@ export default function ABNFormPage() {
   const [tfn, setTfn]               = useState('')
   const [business, setBusiness]     = useState('')
   const [declared, setDeclared]     = useState(false)
-  const [declaredIncome, setDeclaredIncome] = useState(false)
   const [terms, setTerms]           = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
   const [submitted, setSubmitted]   = useState(false)
@@ -78,7 +81,6 @@ export default function ABNFormPage() {
     if (!business.trim())  e.business  = 'Required'
     if (!selfie.file)      e.selfie    = 'Required'
     if (!declared)         e.declared  = 'You must confirm this declaration to proceed'
-    if (!declaredIncome)   e.declaredIncome = 'You must confirm this declaration to proceed'
     if (!terms)            e.terms     = 'You must accept the terms'
     return e
   }
@@ -98,21 +100,50 @@ export default function ABNFormPage() {
     fd.append('declared',     declared ? '✓ I confirm this declaration' : '')
     fd.append('declaredText', 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
-    fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
-    try {
-      const res = await fetch('/api/abn-form', { method: 'POST', body: fd })
-      if (res.ok) {
-        window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
-      } else {
-        const data = await res.json().catch(() => ({}))
-        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
-        else alert('Something went wrong. Please try again.')
-      }
-    } catch { alert('Something went wrong. Please try again.') }
-    finally { setLoading(false) }
+    // Show success immediately — fire & forget upload in background
+    window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true); setLoading(false)
+    fetch('/api/abn-form', { method: 'POST', body: fd }).catch(console.error)
   }
+
+
+  // Fireworks animation on success
+  React.useEffect(() => {
+    if (!submitted) return
+    const c = document.getElementById('fw-canvas') as HTMLCanvasElement | null
+    if (!c) return
+    const ctx = c.getContext('2d')!
+    let W = (c.width = window.innerWidth), H = (c.height = window.innerHeight)
+    const onResize = () => { W = c.width = window.innerWidth; H = c.height = window.innerHeight }
+    window.addEventListener('resize', onResize)
+    const colors = ['#FFD700','#FF6B35','#FF6B6B','#E91E8C','#4ECDC4','#45B7D1','#7C4DFF','#00E676','#FFEA00','#FF1744','#00BCD4','#76FF03']
+    type PType = { x:number;y:number;color:string;type:string;r:number;vx:number;vy:number;alpha:number;gravity:number;spin:number;rot:number }
+    const particles: PType[] = []
+    function mkParticle(x:number,y:number,color:string,type:string): PType {
+      const angle = Math.random()*Math.PI*2, speed = Math.random()*10+3
+      return { x,y,color,type,r:Math.random()*4+2,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-4,alpha:1,gravity:0.18,spin:Math.random()*0.3-0.15,rot:Math.random()*Math.PI*2 }
+    }
+    function burst(x:number,y:number){ const types=['circle','circle','star','spark']; for(let i=0;i<90;i++) particles.push(mkParticle(x,y,colors[Math.floor(Math.random()*colors.length)],types[Math.floor(Math.random()*types.length)])) }
+    let shots=0; const maxShots=12
+    function fireRandom(){ if(shots>=maxShots)return; burst(Math.random()*W*0.8+W*0.1,Math.random()*H*0.55+H*0.05); shots++; if(shots<maxShots)setTimeout(fireRandom,350) }
+    setTimeout(fireRandom, 80)
+    let raf: number
+    function loop(){
+      ctx.clearRect(0,0,W,H)
+      for(let i=particles.length-1;i>=0;i--){
+        const p=particles[i]; p.x+=p.vx;p.y+=p.vy;p.vy+=p.gravity;p.vx*=0.98;p.alpha-=0.013;p.rot+=p.spin
+        if(p.alpha<=0){particles.splice(i,1);continue}
+        ctx.save();ctx.globalAlpha=Math.max(0,p.alpha);ctx.fillStyle=p.color;ctx.translate(p.x,p.y);ctx.rotate(p.rot)
+        if(p.type==='star'){ctx.beginPath();for(let j=0;j<5;j++){ctx.lineTo(Math.cos((18+j*72)*Math.PI/180)*p.r,-Math.sin((18+j*72)*Math.PI/180)*p.r);ctx.lineTo(Math.cos((54+j*72)*Math.PI/180)*p.r*0.4,-Math.sin((54+j*72)*Math.PI/180)*p.r*0.4)}ctx.closePath();ctx.fill()}
+        else if(p.type==='spark'){ctx.fillRect(-p.r*2,-p.r*0.4,p.r*4,p.r*0.8)}
+        else{ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill()}
+        ctx.restore()
+      }
+      if(particles.length>0||shots<maxShots) raf=requestAnimationFrame(loop)
+    }
+    raf=requestAnimationFrame(loop)
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize',onResize) }
+  }, [submitted])
 
   if (submitted) {
     const displayName = firstName || 'there'
@@ -120,80 +151,8 @@ export default function ABNFormPage() {
       <>
         <style>{css}</style>
         <div className="form-success-wrap">
-
         <canvas id="fw-canvas" className="fireworks-canvas" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-  var c=document.getElementById('fw-canvas');
-  if(!c)return;
-  var ctx=c.getContext('2d');
-  var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
-  window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
-  var particles=[];
-  var colors=['#FFD700','#FF6B35','#FF6B6B','#E91E8C','#4ECDC4','#45B7D1','#7C4DFF','#00E676','#FFEA00','#FF1744','#00BCD4','#76FF03'];
-  function Particle(x,y,color,type){
-    this.x=x; this.y=y; this.color=color; this.type=type||'circle';
-    this.r=Math.random()*4+2;
-    var angle=Math.random()*Math.PI*2;
-    var speed=Math.random()*10+3;
-    this.vx=Math.cos(angle)*speed;
-    this.vy=Math.sin(angle)*speed-4;
-    this.alpha=1;
-    this.gravity=0.18;
-    this.spin=Math.random()*0.3-0.15;
-    this.rot=Math.random()*Math.PI*2;
-  }
-  Particle.prototype.update=function(){
-    this.x+=this.vx; this.y+=this.vy;
-    this.vy+=this.gravity;
-    this.vx*=0.98;
-    this.alpha-=0.013;
-    this.rot+=this.spin;
-  };
-  Particle.prototype.draw=function(){
-    ctx.save(); ctx.globalAlpha=Math.max(0,this.alpha);
-    ctx.fillStyle=this.color;
-    ctx.translate(this.x,this.y); ctx.rotate(this.rot);
-    if(this.type==='star'){
-      ctx.beginPath();
-      for(var i=0;i<5;i++){
-        ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*this.r, -Math.sin((18+i*72)*Math.PI/180)*this.r);
-        ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*this.r*0.4, -Math.sin((54+i*72)*Math.PI/180)*this.r*0.4);
-      }
-      ctx.closePath(); ctx.fill();
-    } else if(this.type==='spark'){
-      ctx.fillRect(-this.r*2,-this.r*0.4,this.r*4,this.r*0.8);
-    } else {
-      ctx.beginPath(); ctx.arc(0,0,this.r,0,Math.PI*2); ctx.fill();
-    }
-    ctx.restore();
-  };
-  function burst(x,y){
-    var count=90;
-    var types=['circle','circle','star','spark'];
-    for(var i=0;i<count;i++){
-      var type=types[Math.floor(Math.random()*types.length)];
-      particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)],type));
-    }
-  }
-  var shots=0; var maxShots=12; var shotInterval=350;
-  function fireRandom(){
-    if(shots>=maxShots)return;
-    burst(Math.random()*W*0.8+W*0.1, Math.random()*H*0.55+H*0.05);
-    shots++;
-    if(shots<maxShots) setTimeout(fireRandom, shotInterval);
-  }
-  setTimeout(fireRandom, 80);
-  function loop(){
-    ctx.clearRect(0,0,W,H);
-    particles=particles.filter(function(p){return p.alpha>0;});
-    particles.forEach(function(p){p.update();p.draw();});
-    if(particles.length>0||shots<maxShots) requestAnimationFrame(loop);
-  }
-  loop();
-})();
-        ` }} />
-          <div className="success-icon">
+        <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
               <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -289,15 +248,6 @@ export default function ABNFormPage() {
             </label>
             {errors.declared && <span className="field-error">{errors.declared}</span>}
           </div>
-          <div className={`declaration-box${(errors as any).declaredIncome?' decl-error':''}`} style={{marginTop:10}}>
-            <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
-            <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
-              <input type="checkbox" checked={declaredIncome} onChange={e=>{ setDeclaredIncome(e.target.checked); setErrors(p=>({...p,declaredIncome:''})) }} className="hidden"/>
-              <div className={`check-box${declaredIncome?' checked':''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">I confirm this declaration</span>
-            </label>
-            {(errors as any).declaredIncome && <span className="field-error">{(errors as any).declaredIncome}</span>}
-          </div>
 
           <div className={`declaration-box${errors.terms?' decl-error':''}`} style={{marginTop:10}}>
             <label className="check-row">
@@ -323,7 +273,7 @@ export default function ABNFormPage() {
               </ul>
             </div>
           )}
-          <button type="submit" className="submit-btn" disabled={loading}>
+          <button type="submit" className="submit-btn" disabled={loading || !declared || !terms}>
             {loading ? <span className="btn-loading"><svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2.5" strokeDasharray="40" strokeDashoffset="10"/></svg>Submitting…</span> : 'Submit ABN Application →'}
           </button>
           <p className="form-footer-note">Your information is kept secure and private.</p>

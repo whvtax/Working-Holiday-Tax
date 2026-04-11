@@ -20,7 +20,12 @@ async function getTasks() {
 export async function GET(req: NextRequest) {
   if (!authRead(req)) return NextResponse.json({ ok:false }, { status:401 })
   const tasks = await getTasks()
-  return NextResponse.json({ ok:true, tasks })
+  // Reviewer sessions get tasks with sensitive fields redacted
+  const isReviewerOnly = !validateSession(req.cookies.get('crm_session')?.value)
+  const safeTasks = isReviewerOnly
+    ? tasks.map(t => ({ ...t, tfn: '••••••••••', bankDetails: '••• redacted •••' }))
+    : tasks
+  return NextResponse.json({ ok:true, tasks: safeTasks })
 }
 
 export async function POST(req: NextRequest) {

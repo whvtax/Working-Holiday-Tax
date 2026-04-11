@@ -1,23 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { seedDemoData } from '@/lib/seed'
 import { validateSession } from '@/lib/crm-store'
 
 export async function POST(req: NextRequest) {
-  // Double-guard: block in production AND require explicit opt-in env var
-  // Set SEED_ENABLED=true only in dev/staging — never in production
-  if (process.env.NODE_ENV === 'production' || process.env.SEED_ENABLED !== 'true') {
-    return NextResponse.json({ ok: false, error: 'not_available' }, { status: 404 })
+  // Seed endpoint must never run in production
+  if (process.env.NODE_ENV === 'production') {
+    return NextResponse.json({ ok: false, error: 'Not available in production.' }, { status: 403 })
   }
+  // Still require admin auth in dev
+  const auth = validateSession(req.cookies.get('crm_session')?.value)
+  if (!auth) return NextResponse.json({ ok: false }, { status: 401 })
 
-  const token = req.cookies.get('crm_session')?.value
-  if (!validateSession(token)) {
-    return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 })
-  }
   try {
-    const result = await seedDemoData()
-    return NextResponse.json({ ok: true, ...result })
+    const { seedDb } = await import('@/lib/seed')
+    await seedDb()
+    return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[seed]', err)
-    return NextResponse.json({ ok: false, error: 'internal_error' }, { status: 500 })
+    return NextResponse.json({ ok: false, error: 'Seed failed.' }, { status: 500 })
   }
 }
