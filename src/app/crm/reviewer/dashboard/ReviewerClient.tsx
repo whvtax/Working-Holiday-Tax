@@ -531,7 +531,7 @@ export default function ReviewerClient() {
           })
         }
       } catch {}
-    }, 20000)
+    }, 60000)
     return () => clearInterval(interval)
   }, [])
 
@@ -547,12 +547,19 @@ export default function ReviewerClient() {
       return [...rest, decided]
     })
     setActing(null)
-    // Fire API in background
-    fetch('/api/crm/review', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
-      body: JSON.stringify({ taskId, status }),
-    }).catch(console.error)
+    // Await API — rollback optimistic update on failure
+    try {
+      const res = await fetch('/api/crm/review', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ taskId, status }),
+      })
+      if (!res.ok) throw new Error('Server error')
+    } catch {
+      // Rollback
+      setTasks(prev => prev.map(t => t.id === taskId ? { ...t, reviewStatus: 'pending' } : t))
+      alert('Failed to update status. Please try again.')
+    }
   }
 
   async function saveNote(taskId: string, note: string) {

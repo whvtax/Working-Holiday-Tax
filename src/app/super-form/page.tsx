@@ -110,9 +110,24 @@ export default function SuperFormPage() {
     fd.append('declared',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
     fd.append('declaredText', 'I have read and accept the Client Agreement & Privacy Policy.')
     if (selfie.file) fd.append('selfiePassport', selfie.file)
-    // Show success immediately — fire & forget upload in background
+    try {
+      const res = await fetch('/api/super-form', { method: 'POST', body: fd })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        if (data?.error === 'rate_limited') {
+          alert('Too many submissions. Please try again later.')
+        } else {
+          alert('Submission failed. Please check your connection and try again.')
+        }
+        setLoading(false)
+        return
+      }
+    } catch {
+      alert('Submission failed. Please check your connection and try again.')
+      setLoading(false)
+      return
+    }
     window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true); setLoading(false)
-    fetch('/api/super-form', { method: 'POST', body: fd }).catch(console.error)
   }
 
 

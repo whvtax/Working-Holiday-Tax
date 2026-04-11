@@ -290,9 +290,24 @@ export default function TaxFormPage() {
     }
     if (invoiceUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
 
-    // Show success immediately — fire & forget in background
+    try {
+      const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        if (data?.error === 'rate_limited') {
+          alert('Too many submissions. Please try again later.')
+        } else {
+          alert('Submission failed. Please check your connection and try again.')
+        }
+        setLoading(false)
+        return
+      }
+    } catch {
+      alert('Submission failed. Please check your connection and try again.')
+      setLoading(false)
+      return
+    }
     window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true); setLoading(false)
-    fetch('/api/tax-form', { method: 'POST', body: fd }).catch(console.error)
   }
 
 
