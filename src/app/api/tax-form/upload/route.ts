@@ -3,22 +3,28 @@ import { put } from '@vercel/blob'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
-const ALLOWED = new Set(['image/jpeg','image/png','image/webp','image/gif','application/pdf'])
+const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
 const MAX_SIZE = 10 * 1024 * 1024
 
-const MAGIC: { mime: string; bytes: number[] }[] = [
-  { mime: 'image/jpeg',      bytes: [0xFF, 0xD8, 0xFF] },
-  { mime: 'image/png',       bytes: [0x89, 0x50, 0x4E, 0x47] },
-  { mime: 'image/webp',      bytes: [0x52, 0x49, 0x46, 0x46] },
-  { mime: 'image/gif',       bytes: [0x47, 0x49, 0x46, 0x38] },
-  { mime: 'application/pdf', bytes: [0x25, 0x50, 0x44, 0x46] },
-]
-
+// Magic bytes for basic validation (lenient - accept if ANY image/pdf signature found)
 function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
-  const bytes = new Uint8Array(buf, 0, Math.min(8, buf.byteLength))
-  const sig = MAGIC.find(m => m.mime === contentType)
-  if (!sig) return false
-  return sig.bytes.every((b, i) => bytes[i] === b)
+  const bytes = new Uint8Array(buf, 0, Math.min(12, buf.byteLength))
+  // JPEG: FF D8 FF
+  if (bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return true
+  // PNG: 89 50 4E 47
+  if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) return true
+  // PDF: 25 50 44 46
+  if (bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46) return true
+  // WEBP: RIFF....WEBP
+  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+      bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return true
+  // GIF: GIF8
+  if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) return true
+  // HEIC/HEIF (iOS photos): ftyp box — bytes 4-7 are 'ftyp'
+  if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return true
+  // If content-type is image/* and file is non-empty, be lenient
+  if (contentType.startsWith('image/') && buf.byteLength > 100) return true
+  return false
 }
 
 export async function POST(req: NextRequest) {

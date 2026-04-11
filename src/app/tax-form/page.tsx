@@ -244,9 +244,13 @@ export default function TaxFormPage() {
         return null
       }
       const attempt = async () => {
+        // Normalize content-type for iOS HEIC photos
+        let contentType = f.type || 'image/jpeg'
+        if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
+        if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
         const r = await fetch(
           `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
-          { method: 'POST', body: f, headers: { 'Content-Type': f.type } }
+          { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
         )
         const data = await r.json().catch(() => ({}))
         if (!r.ok) throw new Error(data?.error || String(r.status))
@@ -622,7 +626,7 @@ export default function TaxFormPage() {
                   id="abnInvoices"
                   value={abnInvoices}
                   onChange={setAbnInvoices}
-                  accept="image/jpeg,image/png,image/webp,application/pdf"
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,application/pdf"
                   maxFiles={10}
                   label="Upload expense invoices"
                 />
@@ -652,12 +656,12 @@ export default function TaxFormPage() {
           <div>
 
             <Field label="Bank statements (to verify name)" required error={errors.bankStatement}>
-              <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png"
+              <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} />
             </Field>
 
             <Field label="Selfie holding your passport" required error={errors.selfiePassport}>
-              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf"
+              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
 
