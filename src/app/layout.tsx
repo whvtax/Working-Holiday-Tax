@@ -66,7 +66,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-AU" className={`${playfair.variable} ${dmSans.variable}`}>
       <body>
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:text-forest-500 focus:px-4 focus:py-2 focus:rounded-lg focus:font-medium" style={{ fontSize: '14px' }}>Skip to content</a>
         <div className="grain" aria-hidden="true" />
         {/* PublicShellClient hides Nav/Footer on /crm/* routes */}
         <PublicShellClient nav={<Nav />} footer={<Footer />}>

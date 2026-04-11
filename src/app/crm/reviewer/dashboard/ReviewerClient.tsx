@@ -517,7 +517,7 @@ export default function ReviewerClient() {
 
   return (
     <div style={{ minHeight: '100vh', background: '#F4F9F6', fontFamily: '-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif' }}>
-      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} .grain{display:none!important}`}</style>
       <style>{`
         .rv-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 20px; height: 54px; }
         .rv-btns { display: flex; gap: 8px; }
