@@ -570,7 +570,7 @@ export default function DashboardClient() {
       const rawStatus   = parts.find(p => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || task.taxStatus || '—'
       const taxStatus   = normStatus(rawStatus)
       const declaredVal = findDecl(['→ ✓ I declare that all','→ ✓ Yes','→ ✗ No','→ ✓ I agree','→ Yes'])
-      const incomeDecl   = findDecl(['→ ✓ I declare under my full legal'])
+      const incomeDecl   = findDecl(['→ ✓ I declare that all income'])
 
       formBody =
         sec('Contact details')
@@ -612,7 +612,7 @@ export default function DashboardClient() {
           `<div style="width:16px;height:16px;border-radius:50%;background:${G};flex-shrink:0"></div>` +
           `<span style="font-size:13px;font-weight:600;color:${G}">${esc(taxStatus||'—')}</span>` +
           `</div>`
-        + declBox('', declaredVal !== '—' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I declare that all information provided is true and accurate.') : '—', declaredVal !== '—')
+        + declBox('', declaredVal !== '—' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I confirm that all information provided is accurate and complete.') : '—', declaredVal !== '—')
         + declBox('', incomeDecl !== '—' ? (incomeDecl.replace('✓ ','').replace('→ ','') || 'I declare income truthfully disclosed.') : '—', incomeDecl !== '—')
         + sec('How did you hear about us?')
         + field('How did you hear about us?', task.howHeard)
@@ -1215,7 +1215,7 @@ export default function DashboardClient() {
                       const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '—'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
                       const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
-                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare under my full legal'))
+                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare that all income'))
                       return <>
                         <div style={S.secHead}><span>Tax Residency</span></div>
                         <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>

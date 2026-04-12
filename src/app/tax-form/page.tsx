@@ -239,8 +239,8 @@ export default function TaxFormPage() {
 
     // Pre-upload all files client-side for faster, more reliable submission
     const uploadOne = async (f: File): Promise<string | null> => {
-      if (f.size > 10 * 1024 * 1024) {
-        alert(`File "${f.name}" is too large (max 10MB). Please compress it and try again.`)
+      if (f.size > 25 * 1024 * 1024) {
+        alert(`File "${f.name}" is too large (max 25MB). Please compress it and try again.`)
         return null
       }
       const attempt = async () => {
@@ -274,7 +274,7 @@ export default function TaxFormPage() {
     const coreFailed = coreResults.filter(r => !r).length
     if (coreFailed > 0) {
       setLoading(false)
-      alert('Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.')
+      alert('Failed to upload required files. Please check your documents are images or PDFs under 25MB and try again.')
       return
     }
     const coreUrls: Record<string, string> = {}
@@ -301,8 +301,8 @@ export default function TaxFormPage() {
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
     fd.append('howHeard',    howHeard)
-    fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
-    fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
+    fd.append('declared',    declared === 'yes' ? '✓ I confirm that all information provided is accurate and complete. I understand that providing false information may result in penalties under Australian tax law, and I accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
+    fd.append('declaredIncome', declaredIncome ? '✓ I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide.' : '')
     if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
@@ -316,7 +316,7 @@ export default function TaxFormPage() {
       const failed = results.filter(r => !r).length
       if (failed > 0) {
         setLoading(false)
-        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 10MB and try again.`)
+        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 25MB and try again.`)
         return
       }
       results.forEach(url => { if (url) invoiceUrls.push(url) })
@@ -335,7 +335,7 @@ export default function TaxFormPage() {
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 25MB.'}`)
         else alert('Something went wrong. Please try again or contact us directly.')
       }
     } catch {
@@ -698,7 +698,7 @@ export default function TaxFormPage() {
             <Field label="" required error={errors.declared}>
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
                 <p className="decl-text">
-                  I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
+                  I confirm that all information provided is accurate and complete. I understand that providing false information may result in penalties under Australian tax law, and I accept the{' '}
                   <a href="/client-agreement" target="_blank" className="decl-link">Client Agreement</a>
                   {' '}&amp;{' '}
                   <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a>.
@@ -713,7 +713,7 @@ export default function TaxFormPage() {
 
             <Field label="" required error={(errors as any).declaredIncome}>
               <div className={`declaration-box${(errors as any).declaredIncome ? ' decl-error' : ''}`}>
-                <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
+                <p className="decl-text">I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide.</p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
                   <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
@@ -723,7 +723,6 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
-          <div className="form-section-title">How did you hear about us?</div>
           <div>
             <Field label="How did you hear about us?" required error={errors.howHeard}>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
