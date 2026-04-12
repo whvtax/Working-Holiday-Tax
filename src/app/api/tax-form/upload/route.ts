@@ -20,9 +20,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Invalid request' }, { status: 400 })
   }
 
-  // Don't rate-limit blob upload-completed callbacks — only token requests
-  const isUploadCallback = (body as any)?.type === 'blob.upload-completed'
-  if (!isUploadCallback) {
+  // Skip rate limiting for blob upload-completed callbacks from Vercel
+  const isCallback = (body as any)?.type === 'blob.upload-completed'
+  if (!isCallback) {
     if (await isRateLimited(ip, 'tax-form')) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
@@ -47,10 +47,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           pathname: `tax-form/invoices/${Date.now()}_${pathname}`,
         }
       },
+      // onUploadCompleted is called by Vercel Blob servers after upload.
+      // We don't need server-side processing — just return success silently.
+      // IMPORTANT: never throw here — a failure blocks the client from getting the URL.
       onUploadCompleted: async ({ blob }) => {
-        // No-op: we don't need server-side processing after upload
-        // Silently succeed to avoid callback failures blocking the upload
-        console.log('[upload] completed:', blob.url)
+        try {
+          console.log('[upload] completed:', blob.url)
+        } catch {
+          // Silently ignore — client already has the URL
+        }
       },
     })
 

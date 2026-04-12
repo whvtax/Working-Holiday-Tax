@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { upload } from '@vercel/blob/client'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -238,21 +237,21 @@ export default function TaxFormPage() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
 
-    // Pre-upload all files directly to Vercel Blob (bypasses 4.5MB serverless limit)
-    const uploadOne = async (f: File): Promise<string | null> => {
+    // Pre-upload invoices via /api/tax-form/upload (client → Blob directly)
+    const uploadInvoice = async (f: File): Promise<string | null> => {
       if (f.size > 25 * 1024 * 1024) {
-        alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB).\n\nMax size is 25MB. Please compress the file or take a lower-quality photo and try again.`)
+        alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB). Max 25MB.`)
         return null
       }
       for (let i = 0; i < 3; i++) {
         try {
+          const { upload } = await import('@vercel/blob/client')
           const blob = await upload(f.name, f, {
             access: 'public',
             handleUploadUrl: '/api/tax-form/upload',
           })
           return blob.url
-        } catch (e) {
-          console.error(`[upload] attempt ${i + 1} failed for "${f.name}":`, e)
+        } catch {
           if (i === 2) return null
           await new Promise(r => setTimeout(r, 800 * (i + 1)))
         }
@@ -260,28 +259,7 @@ export default function TaxFormPage() {
       return null
     }
 
-    // Helper: label for core files
-    const coreLabels: Record<string, string> = {
-      bankStatement: 'Bank Statement',
-      selfiePassport: 'Selfie + Passport',
-    }
-
-    // Upload bankStatement + selfiePassport client-side too
-    const coreUploads: { label: string; file: File }[] = []
-    if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
-    if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
-    const coreResults = await Promise.all(coreUploads.map(({ file: f }) => uploadOne(f)))
-    const failedCore = coreUploads.filter((_, i) => !coreResults[i])
-    if (failedCore.length > 0) {
-      setLoading(false)
-      const names = failedCore.map(u => coreLabels[u.label] || u.label).join(' and ')
-      alert(`❌ Failed to upload: ${names}\n\nPlease make sure your file is a photo (JPG, PNG, HEIC) or PDF under 10MB, then try again.\n\nIf the problem continues, try taking a new photo with lower quality settings.`)
-      return
-    }
-    const coreUrls: Record<string, string> = {}
-    coreUploads.forEach(({ label }, i) => { if (coreResults[i]) coreUrls[label] = coreResults[i]! })
-
-    // Build FormData (no file blobs — URLs only)
+    // Build FormData — selfie + bank go as files (same as TFN/ABN/Super forms)
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
@@ -295,8 +273,8 @@ export default function TaxFormPage() {
     fd.append('primaryJob',  primaryJob)
     fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
     if (hasAbn === 'yes') {
-      fd.append('abnNumber',   abnNumber)
-      fd.append('abnIncome',   abnIncome)
+      fd.append('abnNumber', abnNumber)
+      fd.append('abnIncome', abnIncome)
     }
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
@@ -304,31 +282,25 @@ export default function TaxFormPage() {
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
-    if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
-    if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
-    const invoiceUrls: string[] = []
-    const allInvoiceFiles = [
-      ...invoices.files,
-      ...abnInvoices.files,
-    ]
+    // Selfie + bank statement sent as files — server uploads them (same as TFN form, works fine)
+    if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
+    if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
+
+    // Invoices: pre-upload directly to Blob (can be large, bypass 4.5MB limit)
+    const allInvoiceFiles = [...invoices.files, ...abnInvoices.files]
     if (allInvoiceFiles.length > 0) {
-      const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
+      const results = await Promise.all(allInvoiceFiles.map(f => uploadInvoice(f)))
       const failedInvoices = allInvoiceFiles.filter((_, i) => !results[i])
       if (failedInvoices.length > 0) {
         setLoading(false)
         const names = failedInvoices.map(f => `"${f.name}"`).join(', ')
-        alert(`❌ Failed to upload invoice${failedInvoices.length > 1 ? 's' : ''}: ${names}\n\nPlease make sure each file is a photo (JPG, PNG) or PDF under 10MB, then try again.`)
+        alert(`❌ Failed to upload invoice${failedInvoices.length > 1 ? 's' : ''}: ${names}\n\nPlease make sure each file is a photo or PDF under 25MB.`)
         return
       }
-      results.forEach(url => { if (url) invoiceUrls.push(url) })
+      const invoiceUrls = results.filter(Boolean) as string[]
+      fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
     }
-    // Combine all uploaded URLs
-    const allFileUrls = [
-      ...Object.values(coreUrls),
-      ...invoiceUrls,
-    ]
-    if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
@@ -337,7 +309,7 @@ export default function TaxFormPage() {
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF.'}`)
         else alert('Something went wrong. Please try again or contact us directly.')
       }
     } catch {

@@ -5,6 +5,7 @@ import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import { uploadFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
@@ -14,15 +15,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 
-    const formData  = await req.formData()
-    const clientId  = `CLT-${crypto.randomUUID()}`
+    const formData = await req.formData()
+    const clientId = `CLT-${crypto.randomUUID()}`
 
-    // All files are pre-uploaded client-side; server receives URLs only
-    const allFileUrls: string[] = (() => {
+    // Upload selfie + bank statement server-side (same as TFN/ABN/Super forms — works fine)
+    const selfieFile  = formData.get('selfiePassport') as File | null
+    const bankFile    = formData.get('bankStatement')  as File | null
+    let coreUrls: string[] = []
+    try {
+      coreUrls = await uploadFiles([selfieFile, bankFile], `tax-form/${clientId}`)
+    } catch (uploadErr) {
+      const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
+      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+    }
+
+    // Invoice URLs pre-uploaded by client directly to Blob
+    const invoiceUrls: string[] = (() => {
       try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
     })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
 
-    const fileUrls: string[] = allFileUrls
+    const fileUrls = [...coreUrls, ...invoiceUrls]
 
     await createTask({
       clientId,
@@ -42,11 +54,11 @@ export async function POST(req: NextRequest) {
       taxStatus:   sanitiseShort(formData.get('taxStatus')),
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
-      notes:       [
-        formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
-        formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
+      notes: [
+        formData.get('taxStatus')      ? `→ ${sanitiseField(formData.get('taxStatus'))}`      : '',
+        formData.get('declared')       ? `→ ${sanitiseField(formData.get('declared'))}`       : '',
         formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',
-        formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
+        formData.get('hasAbn')    ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}`           : '',
         formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
         formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
       ].filter(Boolean).join(' | '),
