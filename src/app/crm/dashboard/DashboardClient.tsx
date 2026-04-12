@@ -268,14 +268,14 @@ export default function DashboardClient() {
 
   async function saveTaskNotes() {
     if(!activeTask) return
-    // Preserve structured data (passport, declarations etc.) AND reviewer notes
+    // Preserve structured data (passport, declarations, ABN/TFN/Expense fields) AND reviewer notes
     const allParts = (activeTask.notes||'').split(' | ')
     // Keep structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expense:|ABN Receipts:|TFN Expense:|TFN Receipts:|Expense Amount:)/i)
       || p.startsWith('📝 ')
     )
-    // taskNotes is the admin's own notes (stripped of 📝 prefix when loaded)
+    // taskNotes is the admin's own free-text notes only
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
       : structuredParts.join(' | ')
@@ -380,9 +380,9 @@ export default function DashboardClient() {
     const parts = raw.split(' | ')
     const userParts = parts
       .filter(p =>
-        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expense:|ABN Receipts:|TFN Expense:|TFN Receipts:|Expense Amount:)/i)
+        && !p.startsWith('📝 ') // exclude reviewer notes from admin textarea
       )
-      .map(p => p.startsWith('📝 ') ? p.slice(3) : p) // strip reviewer prefix for display
     return userParts.join(' | ').trim()
   }
 
@@ -597,10 +597,12 @@ export default function DashboardClient() {
               + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Type of work under ABN', (task.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'—') : '')
+              + (abnValPdf==='Yes' ? (() => { const abnExp=(task.notes||'').match(/ABN Expense: ([^|]+)/)?.[1]?.trim()||''; const abnRec=(task.notes||'').match(/ABN Receipts: ([^|]+)/)?.[1]?.trim()||''; return abnExp ? field('Business expenses (ABN)', abnExp) + (abnRec ? field('Business receipts/invoices', abnRec + ' receipts — client to send to team') : `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send business invoices/receipts to team</p>`) : '' })() : '')
           })()
         + (() => {
-            const expAmt = (task.notes||'').match(/Expense Amount: ([^|]+)/)?.[1]?.trim()||''
-            return expAmt ? sec('Work-related expenses') + field('Total expense amount', expAmt) : ''
+            const tfnExp = (task.notes||'').match(/TFN Expense: ([^|]+)/)?.[1]?.trim()||''
+            const tfnRec = (task.notes||'').match(/TFN Receipts: ([^|]+)/)?.[1]?.trim()||''
+            return tfnExp ? sec('Personal expenses (TFN)') + field('Personal work-related expenses', tfnExp) + (tfnRec ? field('Personal receipts', tfnRec + ' receipts — client to send to team') : `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send personal receipts to team</p>`) : ''
           })()
         + sec('Bank account details')
         + field('Bank name', bkName)
@@ -612,9 +614,10 @@ export default function DashboardClient() {
           ? (task.fileUrls??[]).map(fileItem).join('')
           : `<p style="font-size:12px;color:#aabab2">No files uploaded</p>`)
         + (() => {
-            const expCount = (task.notes||'').match(/Expense Count: ([^|]+)/)?.[1]?.trim()||'—'
-            return field('Number of expense receipts', expCount)
-              + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:8px 12px;margin-top:4px;margin-bottom:8px">📲 Client to send receipts via WhatsApp</p>`
+            const expAmt = (task.notes||'').match(/Expense Amount: ([^|]+)/)?.[1]?.trim()||''
+            if (!expAmt) return ''
+            return field('Total work-related expenses', expAmt)
+              + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:8px 12px;margin-top:4px;margin-bottom:8px">Client to send invoices/receipts to team</p>`
           })()
         + sec('Declaration')
         + `<div style="font-size:12px;color:#587066;margin-bottom:6px">Tax residency status:</div>`
@@ -1140,17 +1143,20 @@ export default function DashboardClient() {
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'—'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
                           {abnVal==='Yes' && (()=>{const abnWork=(activeTask.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'';return abnWork?<div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork}</span><CopyBtn text={abnWork}/></div>:null})()}
+                          {abnVal==='Yes' && (()=>{const abnExp=(activeTask.notes||'').match(/ABN Expense: ([^|]+)/)?.[1]?.trim()||'';const abnRec=(activeTask.notes||'').match(/ABN Receipts: ([^|]+)/)?.[1]?.trim()||'';return abnExp?(<><div style={S.row}><span style={S.lbl}>Business expenses</span><span style={{...S.val,direction:'ltr',color:'#0E5C42',fontWeight:600}}>{abnExp}</span><CopyBtn text={abnExp}/></div>{abnRec&&<div style={S.row}><span style={S.lbl}>Business receipts</span><span style={{...S.val,direction:'ltr'}}>{abnRec} receipts</span></div>}<div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px'}}><span style={{fontSize:11,color:'#92400e'}}>Client to send business invoices/receipts to team</span></div></>):null})()}
                         </>
                       )
                     })()}
                     {(()=>{
-                      const expAmt=(activeTask.notes||'').match(/Expense Amount: ([^|]+)/)?.[1]?.trim()||''
-                      return expAmt ? (
+                      const tfnExp=(activeTask.notes||'').match(/TFN Expense: ([^|]+)/)?.[1]?.trim()||''
+                      const tfnRec=(activeTask.notes||'').match(/TFN Receipts: ([^|]+)/)?.[1]?.trim()||''
+                      return tfnExp ? (
                         <>
-                          <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🧾 Expenses</span></div>
-                          <div style={S.row}><span style={S.lbl}>Expense amount</span><span style={{...S.val,direction:'ltr',color:'#0E5C42',fontWeight:600}}>{expAmt}</span><CopyBtn text={expAmt}/></div>
+                          <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🧾 Personal Expenses (TFN)</span></div>
+                          <div style={S.row}><span style={S.lbl}>Personal expenses</span><span style={{...S.val,direction:'ltr',color:'#0E5C42',fontWeight:600}}>{tfnExp}</span><CopyBtn text={tfnExp}/></div>
+                          {tfnRec&&<div style={S.row}><span style={S.lbl}>Personal receipts</span><span style={{...S.val,direction:'ltr'}}>{tfnRec} receipts</span></div>}
                           <div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px',alignItems:'flex-start'}}>
-                            <span style={{fontSize:11,color:'#92400e'}}>⚠️ Client has expenses — request invoices via WhatsApp</span>
+                            <span style={{fontSize:11,color:'#92400e'}}>Client to send personal receipts to team</span>
                           </div>
                         </>
                       ) : null
@@ -1219,11 +1225,16 @@ export default function DashboardClient() {
                     )
                   })}
                   {activeTask.taskType==='tax-return' && (()=>{
-                    const expCount=(activeTask.notes||'').match(/Expense Count: ([^|]+)/)?.[1]?.trim()||''
-                    return expCount ? (
+                    const tfnExp2=(activeTask.notes||'').match(/TFN Expense: ([^|]+)/)?.[1]?.trim()||''
+                    const abnExp2=(activeTask.notes||'').match(/ABN Expense: ([^|]+)/)?.[1]?.trim()||''
+                    const tfnRec2=(activeTask.notes||'').match(/TFN Receipts: ([^|]+)/)?.[1]?.trim()||''
+                    const abnRec2=(activeTask.notes||'').match(/ABN Receipts: ([^|]+)/)?.[1]?.trim()||''
+                    const hasAnyExp = tfnExp2 || abnExp2
+                    return hasAnyExp ? (
                       <>
-                        <div style={{...S.row,borderTop:'1px solid #f0f4f1',marginTop:6}}><span style={S.lbl}>Expense receipts</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>{expCount}</span></div>
-                        <div style={{fontSize:11,color:'#92400e',background:'#FFFCF5',border:'1px solid #E9A020',borderRadius:8,padding:'7px 10px',margin:'6px 0 4px',lineHeight:1.5}}>📲 Client to send receipts via WhatsApp</div>
+                        {tfnExp2 && <div style={{...S.row,borderTop:'1px solid #f0f4f1',marginTop:6}}><span style={S.lbl}>Personal expenses (TFN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>{tfnExp2}{tfnRec2 ? ` — ${tfnRec2} receipts` : ''}</span></div>}
+                        {abnExp2 && <div style={S.row}><span style={S.lbl}>Business expenses (ABN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>{abnExp2}{abnRec2 ? ` — ${abnRec2} receipts` : ''}</span></div>}
+                        <div style={{fontSize:11,color:'#92400e',background:'#FFFCF5',border:'1px solid #E9A020',borderRadius:8,padding:'7px 10px',margin:'6px 0 4px',lineHeight:1.5}}>Client to send invoices/receipts to team</div>
                       </>
                     ) : null
                   })()}
@@ -1246,8 +1257,8 @@ export default function DashboardClient() {
                       }
                       const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '—'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
-                      const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
-                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare that all income'))
+                      const declaredPart = parts.find((p:string) => p.includes('I confirm that all information provided is accurate'))
+                      const incomePart   = parts.find((p:string) => p.includes('I declare that all income earned'))
                       return <>
                         <div style={S.secHead}><span>Tax Residency</span></div>
                         <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>
@@ -1258,7 +1269,7 @@ export default function DashboardClient() {
                         <div style={S.secHead}><span>General Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {declaredPart
-                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace('→ ✓ ','')}</span></>
+                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace(/^→\s*✓?\s*/,'')}</span></>
                             : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
                           }
                         </div>
@@ -1266,7 +1277,7 @@ export default function DashboardClient() {
                         <div style={S.secHead}><span>Income Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {incomePart
-                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{incomePart.replace('→ ✓ ','')}</span></>
+                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{incomePart.replace(/^→\s*✓?\s*/,'')}</span></>
                             : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
                           }
                         </div>

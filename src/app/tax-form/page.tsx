@@ -112,7 +112,10 @@ export default function TaxFormPage() {
   const [abnNumber, setAbnNumber]     = useState('')
   const [abnIncome, setAbnIncome]     = useState('')
   const [abnWorkType, setAbnWorkType] = useState('')
-  const [expenseCount, setExpenseCount] = useState('')
+  const [abnExpense, setAbnExpense]         = useState('')
+  const [abnExpenseCount, setAbnExpenseCount] = useState('')
+  const [tfnExpense, setTfnExpense]         = useState('')
+  const [tfnExpenseCount, setTfnExpenseCount] = useState('')
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -221,8 +224,11 @@ export default function TaxFormPage() {
       fd.append('abnNumber',   abnNumber)
       fd.append('abnIncome',   abnIncome)
       fd.append('abnWorkType', abnWorkType)
+      if (abnExpense) fd.append('abnExpense', abnExpense)
+      if (abnExpenseCount) fd.append('abnExpenseCount', abnExpenseCount)
     }
-    fd.append('expenseCount', expenseCount)
+    if (tfnExpense) fd.append('tfnExpense', tfnExpense)
+    if (tfnExpenseCount) fd.append('tfnExpenseCount', tfnExpenseCount)
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
@@ -529,6 +535,23 @@ export default function TaxFormPage() {
                 <input className={`inp ${errors.abnWorkType ? 'inp-err' : ''}`} type="text" placeholder="e.g. Construction, Cleaning, Delivery, Farming"
                   value={abnWorkType} onChange={e => { setAbnWorkType(e.target.value); setErrors(p => ({...p, abnWorkType: ''})) }} />
               </Field>
+
+              <Field label="Total business expenses under ABN (AUD) — leave blank if none">
+                <input className={`inp`} type="text" inputMode="decimal" placeholder="e.g. 2,000"
+                  value={abnExpense} onChange={e => setAbnExpense(e.target.value)} />
+              </Field>
+
+              {abnExpense.trim() !== '' && (
+                <div style={{marginTop:'-4px',marginBottom:'14px'}}>
+                  <Field label="Number of business expense receipts/invoices">
+                    <input className="inp" type="number" inputMode="numeric" min="0" placeholder="e.g. 5"
+                      value={abnExpenseCount} onChange={e => setAbnExpenseCount(e.target.value)} />
+                  </Field>
+                  <div style={{background:'#FFFCF5',border:'1.5px solid #E9A020',borderRadius:'10px',padding:'10px 14px',fontSize:'13px',color:'#92400e',lineHeight:1.6}}>
+                    Please send all ABN-related invoices and receipts to our team so we can claim them for you.
+                  </div>
+                </div>
+              )}
             </>)}
 
           <div className="form-section-title">Bank account details</div>
@@ -563,35 +586,26 @@ export default function TaxFormPage() {
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
 
-            <Field label="Total work-related expenses (AUD) — leave blank if none" error={errors.expenseCount}>
+            <Field label="Total personal work-related expenses (AUD) — leave blank if none">
               <input
-                className={`inp ${errors.expenseCount ? 'inp-err' : ''}`}
+                className="inp"
                 type="text"
                 inputMode="decimal"
                 placeholder="e.g. 1,500"
-                value={expenseCount}
-                onChange={e => { setExpenseCount(e.target.value); setErrors(p => ({...p, expenseCount: ''})) }}
+                value={tfnExpense}
+                onChange={e => setTfnExpense(e.target.value)}
               />
             </Field>
 
-            {expenseCount.trim() !== '' && (
-              <div style={{background:'#F0FDF4',border:'1.5px solid #86EFAC',borderRadius:'12px',padding:'14px 16px',marginTop:'-4px',marginBottom:'14px'}}>
-                <p style={{fontSize:'13px',color:'#166534',lineHeight:1.65,marginBottom:'10px'}}>
-                  <strong>📲 Please send your invoices/receipts via WhatsApp</strong><br/>
-                  To claim your expenses, send us all receipts and invoices on WhatsApp. Our team will review them for your tax return.
-                </p>
-                <a
-                  href="https://wa.me/61424513998"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{display:'inline-flex',alignItems:'center',gap:6,background:'#22C55E',color:'#fff',fontSize:'13px',fontWeight:600,padding:'9px 18px',borderRadius:'100px',textDecoration:'none'}}
-                >
-                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                    <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.3)"/>
-                    <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3l.46 1.35c.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
-                  </svg>
-                  Send invoices on WhatsApp →
-                </a>
+            {tfnExpense.trim() !== '' && (
+              <div style={{marginTop:'-4px',marginBottom:'14px'}}>
+                <Field label="Number of personal expense receipts">
+                  <input className="inp" type="number" inputMode="numeric" min="0" placeholder="e.g. 3"
+                    value={tfnExpenseCount} onChange={e => setTfnExpenseCount(e.target.value)} />
+                </Field>
+                <div style={{background:'#FFFCF5',border:'1.5px solid #E9A020',borderRadius:'10px',padding:'10px 14px',fontSize:'13px',color:'#92400e',lineHeight:1.6}}>
+                  Please send all personal work-related receipts to our team so we can review them for your tax return.
+                </div>
               </div>
             )}
           </div>

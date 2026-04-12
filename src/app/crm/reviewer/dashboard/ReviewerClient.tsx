@@ -58,14 +58,17 @@ function Row({ label, value, copy }: { label: string; value?: string | null; cop
   )
 }
 
-function DeclRow({ text }: { text: string }) {
-  const clean = text.replace(/^[→✓]\s*/, '')
+function DeclRow({ text, checked = true }: { text: string; checked?: boolean }) {
+  const clean = text.replace(/^[→✓]\\s*/, '')
   return (
     <div style={{ display: 'flex', gap: 10, padding: '12px 16px', borderBottom: '1px solid #F4FAF7', alignItems: 'flex-start' }}>
-      <div style={{ width: 22, height: 22, borderRadius: 6, background: '#0B5240', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-        <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <div style={{ width: 22, height: 22, borderRadius: 6, background: checked ? '#0B5240' : '#FEE2E2', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
+        {checked
+          ? <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          : <svg width={11} height={11} viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round"/></svg>
+        }
       </div>
-      <span style={{ fontSize: 13, color: '#1A2822', lineHeight: 1.55, fontWeight: 500 }}>{clean}</span>
+      <span style={{ fontSize: 13, color: checked ? '#1A2822' : '#DC2626', lineHeight: 1.55, fontWeight: 500 }}>{clean}</span>
     </div>
   )
 }
@@ -190,13 +193,14 @@ function TaskCard({
             const parts = (task.notes || '').split(' | ')
             const getNote = (prefix: string) => task.notes.match(new RegExp(prefix + ': ([^|]+)'))?.[1]?.trim() || ''
             const taxStatusVal = parts.find((p: string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ', '') || task.taxStatus || '—'
-            const declaredVal = parts.find((p: string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))?.replace('→ ✓ ', '') || '—'
-            const incomeDecl  = parts.find((p: string) => p.startsWith('→ ✓ I declare that all income'))?.replace('→ ✓ ', '') || ''
+            const declaredVal = parts.find((p: string) => p.includes('I confirm that all information provided is accurate'))?.replace(/^→\s*✓?\s*/, '') || ''
+            const incomeDecl  = parts.find((p: string) => p.includes('I declare that all income earned'))?.replace(/^→\s*✓?\s*/, '') || ''
             const abnVal = getNote('ABN') || ''
             const abnNumber = getNote('ABN Number') || ''
             const abnIncome = getNote('ABN Income') || ''
             const abnWorkType = getNote('ABN Work Type') || ''
-            const expenseAmount = getNote('Expense Amount') || ''
+            const abnExpense = getNote('ABN Expense') || ''
+            const tfnExpense = getNote('TFN Expense') || ''
             const bkParts = (task.bankDetails || '').split(' | ')
             const bankName    = bkParts.find(p => p.startsWith('Bank:'))?.replace('Bank: ', '') || task.bankDetails || ''
             const bankHolder  = bkParts.find(p => p.startsWith('Name:'))?.replace('Name: ', '') || ''
@@ -223,15 +227,23 @@ function TaskCard({
               </Section>
               <Section title="ABN">
                 <Row label="Has ABN" value={abnVal === 'Yes' ? 'Yes ✓' : abnVal === 'No' ? 'No' : 'Not specified'} />
-                {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || 'Not provided'} copy />}
-                {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} copy />}
-                {abnVal === 'Yes' && abnWorkType && <Row label="ABN work type" value={abnWorkType} copy />}
+                {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || 'Not provided'} />}
+                {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} />}
+                {abnVal === 'Yes' && abnWorkType && <Row label="ABN work type" value={abnWorkType} />}
+                {abnVal === 'Yes' && abnExpense && <Row label="Business expenses (ABN)" value={abnExpense} />}
+                {abnVal === 'Yes' && abnExpense && (() => { const abnRec=(task.notes||'').match(/ABN Receipts: ([^|]+)/)?.[1]?.trim()||''; return abnRec ? <Row label="Business receipts" value={`${abnRec} receipts`} /> : null })()}
+                {abnVal === 'Yes' && abnExpense && (
+                  <div style={{fontSize:11,color:'#92400e',background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,padding:'8px 12px',margin:'4px 16px 8px'}}>
+                    Client to send business invoices/receipts to team
+                  </div>
+                )}
               </Section>
-              {expenseAmount && (
-                <Section title="Work-related expenses">
-                  <Row label="Total expense amount" value={expenseAmount} copy />
+              {tfnExpense && (
+                <Section title="Personal expenses (TFN)">
+                  <Row label="Personal work-related expenses" value={tfnExpense} />
+                  {getNote('TFN Receipts') && <Row label="Personal receipts" value={`${getNote('TFN Receipts')} receipts`} />}
                   <div style={{fontSize:11,color:'#92400e',background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,padding:'8px 12px',marginTop:4}}>
-                    ⚠️ Client has expenses — request invoices via WhatsApp
+                    Client to send personal receipts to team
                   </div>
                 </Section>
               )}
@@ -242,8 +254,9 @@ function TaskCard({
                 <Row label="BSB" value={bankBsb} />
               </Section>
               <Section title="Declarations">
-                {declaredVal !== '—' && <DeclRow text={declaredVal} />}
-                {incomeDecl && <DeclRow text={incomeDecl} />}
+                <DeclRow text="I confirm that all information provided is accurate and complete. I understand that providing false information may result in penalties under Australian tax law, and I accept the Client Agreement & Privacy Policy." checked={!!declaredVal} />
+                <DeclRow text="I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide." checked={!!incomeDecl} />
+                <Row label="Tax residency" value={taxStatusVal} />
               </Section>
             </>)
           })()}

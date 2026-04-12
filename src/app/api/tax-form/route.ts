@@ -53,7 +53,10 @@ export async function POST(req: NextRequest) {
         formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
         formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
         formData.get('abnWorkType') ? `ABN Work Type: ${sanitiseShort(formData.get('abnWorkType'))}` : '',
-        formData.get('expenseCount') ? `Expense Amount: $${sanitiseShort(formData.get('expenseCount'))} AUD` : '',
+        formData.get('abnExpense')  ? `ABN Expense: $${sanitiseShort(formData.get('abnExpense'))} AUD` : '',
+        formData.get('abnExpenseCount') ? `ABN Receipts: ${sanitiseShort(formData.get('abnExpenseCount'))}` : '',
+        formData.get('tfnExpense')  ? `TFN Expense: $${sanitiseShort(formData.get('tfnExpense'))} AUD` : '',
+        formData.get('tfnExpenseCount') ? `TFN Receipts: ${sanitiseShort(formData.get('tfnExpenseCount'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
     })
