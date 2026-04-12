@@ -5,7 +5,6 @@ import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
-import { uploadFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
@@ -18,23 +17,10 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData()
     const clientId = `CLT-${crypto.randomUUID()}`
 
-    // Upload selfie + bank statement server-side (same as TFN/ABN/Super forms — works fine)
-    const selfieFile  = formData.get('selfiePassport') as File | null
-    const bankFile    = formData.get('bankStatement')  as File | null
-    let coreUrls: string[] = []
-    try {
-      coreUrls = await uploadFiles([selfieFile, bankFile], `tax-form/${clientId}`)
-    } catch (uploadErr) {
-      const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
-      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
-    }
-
-    // Invoice URLs pre-uploaded by client directly to Blob
-    const invoiceUrls: string[] = (() => {
+    // ALL files are pre-uploaded by client — server receives URLs only (no file bytes pass through)
+    const allFileUrls: string[] = (() => {
       try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
     })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
-
-    const fileUrls = [...coreUrls, ...invoiceUrls]
 
     await createTask({
       clientId,
@@ -62,7 +48,7 @@ export async function POST(req: NextRequest) {
         formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
         formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
       ].filter(Boolean).join(' | '),
-      fileUrls,
+      fileUrls: allFileUrls,
     })
 
     return NextResponse.json({ ok: true })

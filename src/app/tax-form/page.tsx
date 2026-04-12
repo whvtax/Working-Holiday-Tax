@@ -237,8 +237,8 @@ export default function TaxFormPage() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
 
-    // Pre-upload invoices via /api/tax-form/upload (client → Blob directly)
-    const uploadInvoice = async (f: File): Promise<string | null> => {
+    // Upload file directly to Blob (bypasses Vercel 4.5MB serverless limit)
+    const uploadOne = async (f: File): Promise<string | null> => {
       if (f.size > 25 * 1024 * 1024) {
         alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB). Max 25MB.`)
         return null
@@ -259,7 +259,41 @@ export default function TaxFormPage() {
       return null
     }
 
-    // Build FormData — selfie + bank go as files (same as TFN/ABN/Super forms)
+    // Upload selfie + bank statement (client → Blob directly, no server involved)
+    const coreFiles = [
+      { label: 'Selfie + Passport', file: selfiePassport.file },
+      { label: 'Bank Statement',    file: bankStatement.file },
+    ].filter(f => f.file) as { label: string; file: File }[]
+
+    const coreResults = await Promise.all(coreFiles.map(({ file: f }) => uploadOne(f)))
+    const failedCore = coreFiles.filter((_, i) => !coreResults[i])
+    if (failedCore.length > 0) {
+      setLoading(false)
+      const names = failedCore.map(f => f.label).join(' and ')
+      alert(`❌ Failed to upload: ${names}\n\nPlease make sure your file is a photo (JPG, PNG, HEIC) or PDF, then try again.`)
+      return
+    }
+
+    // Upload invoices (client → Blob directly)
+    const allInvoiceFiles = [...invoices.files, ...abnInvoices.files]
+    const invoiceResults = allInvoiceFiles.length > 0
+      ? await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
+      : []
+    const failedInvoices = allInvoiceFiles.filter((_, i) => !invoiceResults[i])
+    if (failedInvoices.length > 0) {
+      setLoading(false)
+      const names = failedInvoices.map(f => `"${f.name}"`).join(', ')
+      alert(`❌ Failed to upload invoice${failedInvoices.length > 1 ? 's' : ''}: ${names}\n\nPlease make sure each file is a photo or PDF under 25MB.`)
+      return
+    }
+
+    // All file URLs combined — server receives only text + URLs, no file bytes
+    const allFileUrls = [
+      ...coreResults.filter(Boolean) as string[],
+      ...invoiceResults.filter(Boolean) as string[],
+    ]
+
+    // Build FormData with text fields + file URLs only
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
@@ -282,25 +316,7 @@ export default function TaxFormPage() {
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
-
-    // Selfie + bank statement sent as files — server uploads them (same as TFN form, works fine)
-    if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
-    if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
-
-    // Invoices: pre-upload directly to Blob (can be large, bypass 4.5MB limit)
-    const allInvoiceFiles = [...invoices.files, ...abnInvoices.files]
-    if (allInvoiceFiles.length > 0) {
-      const results = await Promise.all(allInvoiceFiles.map(f => uploadInvoice(f)))
-      const failedInvoices = allInvoiceFiles.filter((_, i) => !results[i])
-      if (failedInvoices.length > 0) {
-        setLoading(false)
-        const names = failedInvoices.map(f => `"${f.name}"`).join(', ')
-        alert(`❌ Failed to upload invoice${failedInvoices.length > 1 ? 's' : ''}: ${names}\n\nPlease make sure each file is a photo or PDF under 25MB.`)
-        return
-      }
-      const invoiceUrls = results.filter(Boolean) as string[]
-      fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
-    }
+    if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
