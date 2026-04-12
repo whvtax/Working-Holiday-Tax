@@ -1328,8 +1328,8 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Bank details card — shown for tax-return only */}
-              {activeTask.taskType === 'tax-return' && activeTask.bankDetails && (
+              {/* Bank details card — shown for tax-return and super */}
+              {(activeTask.taskType === 'tax-return' || activeTask.taskType === 'super') && activeTask.bankDetails && (
                 <BankCard bankDetails={activeTask.bankDetails} />
               )}
 
