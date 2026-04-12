@@ -1435,35 +1435,25 @@ describe('💰 POST + DELETE /api/crm/clients/[id]/tax-returns', () => {
 })
 
 // ══════════════════════════════════════════════════════════════
-// NOTE: /api/tax-form/upload now uses @vercel/blob handleUpload
-// (client-upload pattern) to bypass Vercel's 4.5MB serverless limit.
-// The route issues a signed token; the client uploads directly to Blob.
-// Tests here verify: rate limiting, allowed extensions, and that
-// dangerous extensions are rejected at token-generation time.
+// /api/tax-form/upload — raw ArrayBuffer upload route
+// Validates magic bytes, rejects dangerous files, rate limits.
 // ══════════════════════════════════════════════════════════════
-jest.mock('@vercel/blob/client', () => ({
-  handleUpload: jest.fn(async ({ body, onBeforeGenerateToken, onUploadCompleted }) => {
-    // Extract pathname from the handleUpload body payload structure
-    const pathname = body?.payload?.pathname ?? body?.pathname ?? 'test.jpg'
-    // Call onBeforeGenerateToken — errors propagate to the route's catch block → 400
-    const tokenOptions = await onBeforeGenerateToken(pathname, null)
-    await onUploadCompleted?.({ blob: { url: `https://blob.vercel-storage.com/${tokenOptions.pathname ?? pathname}` } })
-    return { url: `https://blob.vercel-storage.com/${tokenOptions.pathname ?? pathname}` }
-  }),
-}))
-
-describe('📤 POST /api/tax-form/upload (client-upload via handleUpload)', () => {
-  function uploadTokenReq(pathname, ip = '10.0.0.2') {
-    return new NextRequest('http://localhost/api/tax-form/upload', {
-      method: 'POST',
-      body: JSON.stringify({ type: 'blob.generate-client-token', payload: { pathname, callbackUrl: 'http://localhost/api/tax-form/upload', clientPayload: null, multipart: false } }),
-      headers: { 'content-type': 'application/json', 'x-forwarded-for': ip },
-    })
+describe('📤 POST /api/tax-form/upload', () => {
+  function uploadReq(bytes, contentType = 'image/jpeg', filename = 'invoice.jpg') {
+    const buf = new Uint8Array(bytes.length === 0 ? [] : bytes)
+    return new NextRequest(
+      `http://localhost/api/tax-form/upload?filename=${encodeURIComponent(filename)}`,
+      {
+        method: 'POST',
+        body: buf.length > 0 ? buf : new Uint8Array(0),
+        headers: { 'content-type': contentType, 'x-forwarded-for': '10.0.0.2' },
+      }
+    )
   }
 
   beforeEach(() => {
     resetDb()
-    require('@vercel/blob/client').handleUpload.mockClear()
+    require('@vercel/blob').put.mockClear()
     const redisMock = require('redis')
     redisMock.state.execResult = [1, 1]
     redisMock.createClient.mockImplementation(() => ({
@@ -1482,84 +1472,98 @@ describe('📤 POST /api/tax-form/upload (client-upload via handleUpload)', () =
     }))
   })
 
-  test('✅ valid JPEG — token generated successfully', async () => {
+  test('✅ valid JPEG uploads successfully and returns URL', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('invoice.jpg'))
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(jpegBytes, 'image/jpeg', 'invoice.jpg'))
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.ok).toBe(true)
+    expect(body.url).toContain('tax-form/invoices/')
+  })
+
+  test('✅ valid PDF uploads successfully', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const pdfBytes = [0x25, 0x50, 0x44, 0x46, 0x2D, 0x31, ...Array(100).fill(0x20)]
+    const res = await POST(uploadReq(pdfBytes, 'application/pdf', 'bank.pdf'))
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('✅ valid PNG uploads successfully', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const pngBytes = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(pngBytes, 'image/png', 'photo.png'))
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('✅ valid HEIC from iPhone uploads successfully', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const heicBytes = [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(heicBytes, 'image/heic', 'photo.heic'))
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('✅ HEIC sent as image/jpeg (iOS quirk) still uploads', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const heicBytes = [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(heicBytes, 'image/jpeg', 'photo.jpg'))
     expect(res.status).toBe(200)
   })
 
-  test('✅ valid PDF — token generated successfully', async () => {
+  test('❌ EXE disguised as JPEG rejected (MZ header)', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('bank.pdf'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ valid PNG — token generated successfully', async () => {
-    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('photo.png'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ valid HEIC from iPhone — token generated successfully', async () => {
-    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('photo.heic'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ valid HEIF — token generated successfully', async () => {
-    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('photo.heif'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ valid WEBP — token generated successfully', async () => {
-    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('photo.webp'))
-    expect(res.status).toBe(200)
-  })
-
-  test('❌ .exe extension is rejected before token is issued', async () => {
-    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('virus.exe'))
+    const exeBytes = [0x4D, 0x5A, 0x90, 0x00, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(exeBytes, 'image/jpeg', 'virus.jpg'))
     expect(res.status).toBe(400)
   })
 
-  test('❌ .zip extension is rejected before token is issued', async () => {
+  test('❌ ELF executable disguised as PDF rejected', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('archive.zip'))
+    const elfBytes = [0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(elfBytes, 'application/pdf', 'malware.pdf'))
     expect(res.status).toBe(400)
   })
 
-  test('❌ .php extension is rejected before token is issued', async () => {
+  test('❌ PHP script disguised as image rejected', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('shell.php'))
+    const phpBytes = [...'<?php system($_GET["cmd"]); ?>'].map(c => c.charCodeAt(0))
+    const res = await POST(uploadReq(phpBytes, 'image/jpeg', 'shell.jpg'))
     expect(res.status).toBe(400)
   })
 
-  test('❌ .js extension is rejected before token is issued', async () => {
+  test('❌ empty body rejected', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('malware.js'))
+    const res = await POST(uploadReq([], 'image/jpeg', 'empty.jpg'))
     expect(res.status).toBe(400)
-  })
-
-  test('✅ file is stored under tax-form/invoices/ path', async () => {
-    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const [, { onBeforeGenerateToken }] = [null, require('@vercel/blob/client').handleUpload.mock.calls[0] ?? [null, {}]]
-    // Directly test onBeforeGenerateToken logic via the mock
-    require('@vercel/blob/client').handleUpload.mockImplementationOnce(async ({ onBeforeGenerateToken }) => {
-      const opts = await onBeforeGenerateToken('receipt.jpg', null)
-      expect(opts.pathname).toContain('tax-form/invoices/')
-      return {}
-    })
-    await POST(uploadTokenReq('receipt.jpg'))
   })
 
   test('❌ returns 429 when rate limited', async () => {
     const redisMock = require('redis')
     redisMock.state.execResult = [6, 1]
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await POST(uploadTokenReq('invoice.jpg'))
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(jpegBytes, 'image/jpeg', 'invoice.jpg'))
     expect(res.status).toBe(429)
+  })
+
+  test('✅ filename sanitised — special chars replaced with underscores', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    require('@vercel/blob').put.mockClear()
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    await POST(uploadReq(jpegBytes, 'image/jpeg', 'my file! (1).jpg'))
+    const [blobPath] = require('@vercel/blob').put.mock.calls[0]
+    expect(blobPath).not.toContain(' ')
+    expect(blobPath).not.toContain('!')
+  })
+
+  test('✅ URL saved to tax-form/invoices/ folder', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    const res = await POST(uploadReq(jpegBytes, 'image/jpeg', 'receipt.jpg'))
+    expect((await res.json()).url).toContain('tax-form/invoices/')
   })
 })
 

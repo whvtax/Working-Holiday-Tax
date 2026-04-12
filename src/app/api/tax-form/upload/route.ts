@@ -1,58 +1,77 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { handleUpload, type HandleUploadBody } from '@vercel/blob/client'
+import { put } from '@vercel/blob'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
-const ALLOWED_TYPES = new Set([
+// Tell Next.js not to parse the body — we read it as raw ArrayBuffer
+// This also disables the default 4MB body size limit
+export const config = { api: { bodyParser: false } }
+
+// Vercel App Router: disable body size limit for this route
+export const maxDuration = 60
+
+const ALLOWED = new Set([
   'image/jpeg','image/jpg','image/png','image/webp',
   'image/gif','image/heic','image/heif','application/pdf'
 ])
 const MAX_SIZE = 25 * 1024 * 1024 // 25MB
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
-  const ip = getClientIp(req)
+// Detect actual file type from magic bytes regardless of declared content-type
+function detectFileType(buf: ArrayBuffer): string | null {
+  const bytes = new Uint8Array(buf, 0, Math.min(12, buf.byteLength))
+  // JPEG: FF D8 FF
+  if (bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return 'image/jpeg'
+  // PNG: 89 50 4E 47
+  if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) return 'image/png'
+  // PDF: 25 50 44 46
+  if (bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46) return 'application/pdf'
+  // WEBP: RIFF....WEBP
+  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+      bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return 'image/webp'
+  // GIF: GIF8
+  if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) return 'image/gif'
+  // HEIC/HEIF (iOS photos): ftyp box — bytes 4-7 are 'ftyp'
+  if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return 'image/heic'
+  return null
+}
 
-  // Rate-limit on the token request (not on the actual upload)
+export async function POST(req: NextRequest) {
+  const ip = getClientIp(req)
   if (await isRateLimited(ip, 'tax-form')) {
     return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
   }
-
   try {
-    const body = await req.json() as HandleUploadBody
+    const filename = req.nextUrl.searchParams.get('filename') ?? 'file'
+    const declaredType = req.headers.get('content-type') ?? ''
+    const body = await req.arrayBuffer()
 
-    const jsonResponse = await handleUpload({
+    if (body.byteLength === 0) {
+      return NextResponse.json({ ok: false, error: 'Empty file' }, { status: 400 })
+    }
+    if (body.byteLength > MAX_SIZE) {
+      return NextResponse.json({ ok: false, error: `File too large (max 25MB)` }, { status: 400 })
+    }
+
+    // Detect type from magic bytes — handles iOS HEIC sent with wrong content-type
+    const detectedType = detectFileType(body)
+
+    // SECURITY: if magic bytes don't match any known safe format → reject.
+    // This blocks EXE/ELF/PHP/ZIP etc. even if declared as image/jpeg.
+    if (!detectedType) {
+      return NextResponse.json({ ok: false, error: 'File content not recognised. Please upload a genuine photo or PDF.' }, { status: 400 })
+    }
+
+    const contentType = detectedType
+
+    const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
+    const blob = await put(
+      `tax-form/invoices/${Date.now()}_${Math.random().toString(36).slice(2,7)}_${safeName}`,
       body,
-      request: req,
-      onBeforeGenerateToken: async (pathname, clientPayload) => {
-        // Validate file type from pathname extension before issuing token
-        const ext = pathname.split('.').pop()?.toLowerCase() ?? ''
-        const extToType: Record<string, string> = {
-          jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png',
-          webp: 'image/webp', gif: 'image/gif',
-          heic: 'image/heic', heif: 'image/heif', pdf: 'application/pdf',
-        }
-        const mimeType = extToType[ext]
-        if (!mimeType || !ALLOWED_TYPES.has(mimeType)) {
-          throw new Error(`File type ".${ext}" is not allowed. Please upload a photo or PDF.`)
-        }
-        return {
-          allowedContentTypes: Array.from(ALLOWED_TYPES),
-          maximumSizeInBytes: MAX_SIZE,
-          tokenPayload: clientPayload,
-          addRandomSuffix: true,
-          pathname: `tax-form/invoices/${pathname}`,
-        }
-      },
-      onUploadCompleted: async ({ blob }) => {
-        // Optional: log completed uploads
-        console.log('[upload] completed:', blob.url)
-      },
-    })
-
-    return NextResponse.json(jsonResponse)
+      { access: 'public', contentType: contentType || 'application/octet-stream' }
+    )
+    return NextResponse.json({ ok: true, url: blob.url })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'Upload failed'
     console.error('[invoice-upload]', err)
-    return NextResponse.json({ ok: false, error: message }, { status: 400 })
+    return NextResponse.json({ ok: false, error: 'Upload failed' }, { status: 500 })
   }
 }
