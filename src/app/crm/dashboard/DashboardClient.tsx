@@ -381,9 +381,15 @@ export default function DashboardClient() {
     const userParts = parts
       .filter(p =>
         !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+        && !p.startsWith('📝 ')
       )
-      .map(p => p.startsWith('📝 ') ? p.slice(3) : p) // strip reviewer prefix for display
     return userParts.join(' | ').trim()
+  }
+
+  const extractReviewerNote = (raw:string) => {
+    if (!raw) return ''
+    const rp = (raw||'').split(' | ').find(p => p.startsWith('📝 '))
+    return rp ? rp.slice(3).trim() : ''
   }
 
   const downloadTaskPdf = (task: Task) => {
@@ -1147,6 +1153,19 @@ export default function DashboardClient() {
                     {(()=>{const superFunds=(activeTask.notes||'').match(/Super Funds: ([^|]+)/)?.[1]?.trim()||'—';return([['TFN 🔒',activeTask.tfn],['Super fund(s)',superFunds]] as [string,string][])})().map(([l,v])=>(
                       <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
                     ))}
+                    {(()=>{
+                      const bkParts=(activeTask.bankDetails||'').split(' | ')
+                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'—'
+                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'—'
+                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'—'
+                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'—'
+                      return(<>
+                        <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
+                        {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
+                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                        ))}
+                      </>)
+                    })()}
                   </>}
                   {activeTask.taskType==='tfn' && <>
                     <div style={S.secHead}><span>Tax details</span></div>
@@ -1309,6 +1328,13 @@ export default function DashboardClient() {
                 <div style={{...S.card,display:'flex',flexDirection:'column' as const,minWidth:0}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
 
+                  {extractReviewerNote(activeTask.notes) && (
+                    <div style={{margin:'0 0 8px',padding:'8px 10px',background:'#fffbeb',border:'1.5px solid #fde68a',borderRadius:8,fontSize:12,color:'#92400e',lineHeight:1.5}}>
+                      <span style={{fontWeight:700,fontSize:10,textTransform:'uppercase' as const,letterSpacing:'0.05em',display:'block',marginBottom:3,color:'#b45309'}}>📝 Reviewer note</span>
+                      {extractReviewerNote(activeTask.notes)}
+                    </div>
+                  )}
+
                   <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
                     placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
@@ -1318,12 +1344,7 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Bank details card — shown for tax-return only */}
-              {activeTask.taskType === 'tax-return' && activeTask.bankDetails && (
-                <BankCard bankDetails={activeTask.bankDetails} />
-              )}
-
-                            {/* Actions */}
+              {/* Actions */}
               <div style={{display:'flex',gap:10,marginBottom:8}}>
                 <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>

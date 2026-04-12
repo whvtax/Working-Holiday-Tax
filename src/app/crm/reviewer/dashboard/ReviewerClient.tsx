@@ -305,7 +305,6 @@ function TaskCard({
               </Section>
               <Section title="Contact details">
                 <Row label="WhatsApp" value={task.whatsapp} />
-                <Row label="AU Phone" value={task.auPhone} />
                 <Row label="Email" value={task.email} />
                 <Row label="Address" value={task.address} />
                 <Row label="Home country address" value={homeAddr} />
@@ -313,6 +312,12 @@ function TaskCard({
               <Section title="Super & tax details">
                 <Row label="TFN" value={task.tfn} />
                 <Row label="Super fund(s)" value={superFunds} />
+              </Section>
+              <Section title="Bank account">
+                <Row label="Bank name" value={bankName} copy />
+                <Row label="Account holder" value={bankHolder} copy />
+                <Row label="Account number" value={bankAccount} copy />
+                <Row label="BSB" value={bankBsb} copy />
               </Section>
               <Section title="Declarations">
                 {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
