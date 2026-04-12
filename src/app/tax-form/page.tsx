@@ -177,7 +177,9 @@ export default function TaxFormPage() {
   // Files
   const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
-  const [invoices, setInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
+
+  const [hasExpenses, setHasExpenses] = useState<'yes'|'no'|''>('')
+  const [expenseFiles, setExpenseFiles] = useState<MultiUploadState>({ files: [], previews: [] })
 
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
@@ -189,7 +191,7 @@ export default function TaxFormPage() {
   const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
   const [abnNumber, setAbnNumber]     = useState('')
   const [abnIncome, setAbnIncome]     = useState('')
-  const [abnInvoices, setAbnInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
+  const [abnWork, setAbnWork]         = useState('')
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -215,6 +217,7 @@ export default function TaxFormPage() {
     if (hasAbn === 'yes') {
       if (!abnNumber.trim()) e.abnNumber   = 'Required'
       if (!abnIncome.trim()) e.abnIncome   = 'Required'
+      if (!abnWork.trim())   e.abnWork     = 'Required'
     }
     if (!bankName.trim())    e.bankName    = 'Required'
     if (!bankHolder.trim())  e.bankHolder  = 'Required'
@@ -296,6 +299,7 @@ export default function TaxFormPage() {
     if (hasAbn === 'yes') {
       fd.append('abnNumber',   abnNumber)
       fd.append('abnIncome',   abnIncome)
+      fd.append('abnWork',     abnWork)
     }
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
@@ -308,8 +312,7 @@ export default function TaxFormPage() {
 
     const invoiceUrls: string[] = []
     const allInvoiceFiles = [
-      ...invoices.files,
-      ...abnInvoices.files,
+      ...(hasExpenses === 'yes' ? expenseFiles.files : []),
     ]
     if (allInvoiceFiles.length > 0) {
       const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
@@ -618,18 +621,9 @@ export default function TaxFormPage() {
                   value={abnIncome} onChange={e => { setAbnIncome(e.target.value); setErrors(p => ({...p, abnIncome: ''})) }} />
               </Field>
 
-              <Field label="Business expense invoices" error={errors.abnInvoices}>
-                <p style={{fontSize:'12px',color:'#587066',marginBottom:'10px',lineHeight:1.6}}>
-                  Please upload invoices for all business-related expenses you would like to claim as deductions.
-                </p>
-                <MultiFileUpload
-                  id="abnInvoices"
-                  value={abnInvoices}
-                  onChange={setAbnInvoices}
-                  accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,application/pdf"
-                  maxFiles={10}
-                  label="Upload expense invoices"
-                />
+              <Field label="What work did you do under your ABN?" required error={errors.abnWork}>
+                <input className={`inp ${errors.abnWork ? 'inp-err' : ''}`} type="text" placeholder="e.g. Delivery driver, Freelance photographer"
+                  value={abnWork} onChange={e => { setAbnWork(e.target.value); setErrors(p => ({...p, abnWork: ''})) }} />
               </Field>
             </>)}
 
@@ -655,7 +649,7 @@ export default function TaxFormPage() {
           <div className="form-section-title">Documents</div>
           <div>
 
-            <Field label="Bank statements (to verify name)" required error={errors.bankStatement}>
+            <Field label="Bank statements" required error={errors.bankStatement}>
               <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} />
             </Field>
@@ -665,10 +659,32 @@ export default function TaxFormPage() {
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
 
-            <Field label="Work-related expense invoices">
-              <MultiFileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
-                value={invoices} onChange={setInvoices} maxFiles={10} />
+
+            <Field label="Do you have work-related or ABN expenses?" error={errors.hasExpenses}>
+              <div className="radio-group">
+                {(['yes','no'] as const).map(opt => (
+                  <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>
+                    <input type="radio" name="hasExpenses" value={opt} checked={hasExpenses === opt}
+                      onChange={() => { setHasExpenses(opt); setErrors(p => ({...p, hasExpenses: ''})) }} className="hidden" />
+                    <div className={`radio-dot ${hasExpenses === opt ? 'radio-dot-active' : ''}`} />
+                    {opt === 'yes' ? 'Yes' : 'No'}
+                  </label>
+                ))}
+              </div>
             </Field>
+
+            {hasExpenses === 'yes' && (
+              <Field label="Please upload all invoices / receipts">
+                <MultiFileUpload
+                  id="expenseFiles"
+                  value={expenseFiles}
+                  onChange={setExpenseFiles}
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,application/pdf"
+                  maxFiles={10}
+                  label="Upload invoices / receipts"
+                />
+              </Field>
+            )}
           </div>
 
           <div className="form-section-title">Declaration</div>
@@ -740,7 +756,7 @@ export default function TaxFormPage() {
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
-                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
+                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',abnWork:'ABN Work Type',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
                     bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>

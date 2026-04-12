@@ -602,6 +602,7 @@ export default function DashboardClient() {
             return radioField('Has ABN?', abnValPdf, ['Yes','No'])
               + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
+              + (abnValPdf==='Yes' ? field('Work done under ABN', (task.notes||'').match(/ABN Work: ([^|]+)/)?.[1]?.trim()||'—') : '')
           })()
         + sec('Bank account details')
         + field('Bank name', bkName)
@@ -1125,12 +1126,14 @@ export default function DashboardClient() {
                       const abnVal    = (activeTask.notes||'').match(/ABN: ([^|]+)/)?.[1]?.trim()||''
                       const abnNum    = (activeTask.notes||'').match(/ABN Number: ([^|]+)/)?.[1]?.trim()||''
                       const abnIncome = (activeTask.notes||'').match(/ABN Income: ([^|]+)/)?.[1]?.trim()||''
+                      const abnWork   = (activeTask.notes||'').match(/ABN Work: ([^|]+)/)?.[1]?.trim()||''
                       return (
                         <>
                           <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#c2410c',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏢 ABN</span></div>
                           <div style={S.row}><span style={S.lbl}>Has ABN</span><span style={{...S.val,color:abnVal==='Yes'?'#0E5C42':'#c0392b',fontWeight:600}}>{abnVal==='Yes'?'Yes ✓':abnVal==='No'?'No':'Not specified'}</span></div>
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'—'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
+                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork||'—'}</span>{abnWork&&<CopyBtn text={abnWork}/>}</div>}
                         </>
                       )
                     })()}
