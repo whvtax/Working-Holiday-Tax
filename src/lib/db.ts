@@ -170,6 +170,27 @@ function toTask(r: Record<string,unknown>): Task {
   }
 }
 
+// ── Returning client lookup ────────────────────────────────────────────────
+
+export async function findExistingClient(email: string, whatsapp: string): Promise<ClientRecord | null> {
+  await initDb()
+  const normalise = (s: string) => (s ?? '').trim().toLowerCase().replace(/\s+/g, '')
+  const e = normalise(email)
+  const w = normalise(whatsapp)
+  if (!e && !w) return null
+
+  // Search active + archived clients by email or whatsapp
+  const { rows } = await sql`
+    SELECT * FROM crm_clients
+    WHERE
+      (${e} != '' AND LOWER(TRIM(email))    = ${e}) OR
+      (${w} != '' AND LOWER(TRIM(whatsapp)) = ${w})
+    ORDER BY created_at DESC
+    LIMIT 1
+  `
+  return rows[0] ? toClient(rows[0]) : null
+}
+
 // ── Tasks ──────────────────────────────────────────────────────────────────
 
 export async function getAllTasks(): Promise<Task[]> {

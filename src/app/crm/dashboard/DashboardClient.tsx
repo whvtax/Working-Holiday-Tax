@@ -1147,19 +1147,6 @@ export default function DashboardClient() {
                     {(()=>{const superFunds=(activeTask.notes||'').match(/Super Funds: ([^|]+)/)?.[1]?.trim()||'—';return([['TFN 🔒',activeTask.tfn],['Super fund(s)',superFunds]] as [string,string][])})().map(([l,v])=>(
                       <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
                     ))}
-                    {(()=>{
-                      const bkParts=(activeTask.bankDetails||'').split(' | ')
-                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'—'
-                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'—'
-                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'—'
-                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'—'
-                      return(<>
-                        <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
-                        {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
-                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
-                        ))}
-                      </>)
-                    })()}
                   </>}
                   {activeTask.taskType==='tfn' && <>
                     <div style={S.secHead}><span>Tax details</span></div>
@@ -1331,8 +1318,8 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Bank details card — shown for tax-return and super */}
-              {(activeTask.taskType === 'tax-return' || activeTask.taskType === 'super') && activeTask.bankDetails && (
+              {/* Bank details card — shown for tax-return only */}
+              {activeTask.taskType === 'tax-return' && activeTask.bankDetails && (
                 <BankCard bankDetails={activeTask.bankDetails} />
               )}
 

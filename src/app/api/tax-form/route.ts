@@ -1,7 +1,7 @@
 export const maxDuration = 60
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { createTask } from '@/lib/db'
+import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
@@ -15,7 +15,10 @@ export async function POST(req: NextRequest) {
     }
 
     const formData  = await req.formData()
-    const clientId  = `CLT-${crypto.randomUUID()}`
+    const email     = sanitiseShort(formData.get('email'))
+    const whatsapp  = sanitiseShort(formData.get('waNumber'))
+    const existing  = await findExistingClient(email, whatsapp)
+    const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
     // All files are pre-uploaded client-side; server receives URLs only
     const allFileUrls: string[] = (() => {
@@ -28,9 +31,9 @@ export async function POST(req: NextRequest) {
       clientId,
       clientName:  sanitiseShort(formData.get('fullName')),
       taskType:    'tax-return',
-      whatsapp:    sanitiseShort(formData.get('waNumber')),
+      whatsapp,
       auPhone:     sanitiseShort(formData.get('auPhone')),
-      email:       sanitiseShort(formData.get('email')),
+      email,
       country:     sanitiseShort(formData.get('country')),
       dob:         sanitiseShort(formData.get('dob')),
       taxYear:     sanitiseShort(formData.get('taxYear')) || '2024-25',

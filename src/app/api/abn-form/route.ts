@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createTask } from '@/lib/db'
+import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { uploadFiles } from '@/lib/upload'
 import { getClientIp } from '@/lib/get-ip'
@@ -14,8 +14,11 @@ export async function POST(req: NextRequest) {
     }
 
     const formData  = await req.formData()
-    const clientId  = `CLT-${crypto.randomUUID()}`
+    const email     = sanitiseShort(formData.get('email'))
+    const whatsapp  = sanitiseShort(formData.get('whatsapp') ?? formData.get('smsPhone'))
     const fullName  = [sanitiseShort(formData.get('firstName')), sanitiseShort(formData.get('lastName'))].filter(Boolean).join(' ')
+    const existing  = await findExistingClient(email, whatsapp)
+    const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
     const selfieFile = formData.get('selfiePassport') as File | null
     let fileUrls: string[]
@@ -30,8 +33,8 @@ export async function POST(req: NextRequest) {
       clientId,
       clientName:  fullName,
       taskType:    'abn',
-      whatsapp:    sanitiseShort(formData.get('whatsapp') ?? formData.get('smsPhone')),
-      email:       sanitiseShort(formData.get('email')),
+      whatsapp,
+      email,
       country:     sanitiseShort(formData.get('country') ?? formData.get('passportCountry')),
       dob:         sanitiseShort(formData.get('dob')),
       taxYear:     '',
