@@ -407,29 +407,18 @@ describe('📋 POST /api/tax-form', () => {
     expect(lastInsert[15]).toBe('Working Holiday Maker')
   })
 
-  test('handles expense files: selfie + 2 ABN receipts + 2 TFN receipts', async () => {
+  test('handles 5 files: selfie + bankStatement + 3 invoices', async () => {
     const fd = taxFd()
-    // Send expense metadata + files using new format
-    const abnMeta = [{ description: 'Tools', amount: '500', fileCount: 2, index: 0 }]
-    const tfnMeta = [{ description: 'Uniform', amount: '200', fileCount: 2, index: 0 }]
-    fd.append('abnExpenses', JSON.stringify(abnMeta))
-    fd.append('tfnExpenses', JSON.stringify(tfnMeta))
-    fd.append('abnFile_0_0', fakeFile('image/jpeg', 'abn1.jpg'))
-    fd.append('abnFile_0_1', fakeFile('application/pdf', 'abn2.pdf'))
-    fd.append('tfnFile_0_0', fakeFile('image/jpeg', 'tfn1.jpg'))
-    fd.append('tfnFile_0_1', fakeFile('image/png', 'tfn2.png'))
-    // Also pass selfie URL as core file
-    fd.append('invoiceUrls', JSON.stringify(['https://blob.test/selfie.jpg']))
+    fd.append('bankStatement', fakeFile('application/pdf'), 'bank.pdf')
+    for (let i = 0; i < 3; i++) fd.append(`invoices_${i}`, fakeFile('application/pdf'), `inv${i}.pdf`)
     await POST(req('/api/tax-form', 'POST', fd))
     const urls = JSON.parse(lastInsert[19])
-    expect(urls.length).toBeGreaterThanOrEqual(5) // 1 core + 4 expense files
+    expect(urls).toHaveLength(5)
   })
 
   test('all file URLs go to tax-form/ folder', async () => {
     const fd = taxFd()
-    const abnMeta = [{ description: 'Phone', amount: '300', fileCount: 1, index: 0 }]
-    fd.append('abnExpenses', JSON.stringify(abnMeta))
-    fd.append('abnFile_0_0', fakeFile('application/pdf', 'invoice.pdf'))
+    fd.append('bankStatement', fakeFile('application/pdf'), 'bank.pdf')
     await POST(req('/api/tax-form', 'POST', fd))
     const urls = JSON.parse(lastInsert[19])
     expect(urls.every(u => u.includes('tax-form/'))).toBe(true)
@@ -441,14 +430,11 @@ describe('📋 POST /api/tax-form', () => {
     expect(res.status).toBe(429)
   })
 
-  test('returns 500 when blob rejects during expense upload', async () => {
-    require('@vercel/blob').put.mockRejectedValueOnce(new Error('Blob error'))
-    const fd = taxFd()
-    const tfnMeta = [{ description: 'Tools', amount: '100', fileCount: 1, index: 0 }]
-    fd.append('tfnExpenses', JSON.stringify(tfnMeta))
-    fd.append('tfnFile_0_0', fakeFile('image/jpeg', 'receipt.jpg'))
-    const res = await POST(req('/api/tax-form', 'POST', fd))
-    expect(res.status).toBe(500)
+  test('returns 400 invalid_file when blob rejects', async () => {
+    require('@vercel/blob').put.mockRejectedValueOnce(new Error('File too large'))
+    const res = await POST(req('/api/tax-form', 'POST', taxFd()))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
   })
 })
 
@@ -1023,13 +1009,15 @@ describe('🔍 Magic-byte file validation', () => {
     expect((await res.json()).error).toBe('invalid_file')
   })
 
-  test('✅ ELF executable disguised as PDF is rejected by upload.ts', async () => {
-    // tax-form route no longer receives raw files (client pre-uploads them)
-    // ELF rejection is enforced in upload.ts — test that directly via uploadFile lib
-    const { uploadFile } = require('../src/lib/upload.ts')
-    const elfBytes = new Uint8Array([0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, ...Array(100).fill(0x00)])
-    const file = new File([elfBytes], 'malware.pdf', { type: 'application/pdf' })
-    await expect(uploadFile(file, 'test')).rejects.toThrow()
+  test('✅ ELF executable disguised as PDF is rejected', async () => {
+    const { POST } = await import('../src/app/api/tax-form/route.ts')
+    // ELF magic bytes = Linux executable
+    const elfBytes = [0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, ...Array(100).fill(0x00)]
+    const fd = taxFd()
+    fd.append('bankStatement', fileWithBytes(elfBytes, 'application/pdf', 'malware.pdf'))
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
   })
 
   test('✅ HTML/JS file disguised as image is rejected', async () => {
@@ -1081,21 +1069,20 @@ describe('🔍 Magic-byte file validation', () => {
     expect(body.error).not.toBe('invalid_file')
   })
 
-  test('✅ PNG bytes declared as JPEG accepted (HEIC compatibility)', async () => {
-    // upload.ts intentionally accepts all image/* to support HEIC/HEIF from iPhone
-    // PNG bytes with image/jpeg MIME is valid — mobile devices often do this
+  test('✅ wrong magic bytes (PNG bytes but declared as JPEG) is rejected', async () => {
     const { POST } = await import('../src/app/api/tfn-form/route.ts')
+    // PNG bytes but declared as JPEG — mismatch
     const pngBytes = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, ...Array(100).fill(0x00)]
     const fd2 = new FormData()
     const d = { firstName:'Emma', lastName:'Dubois', dob:'2001-11-22', passport:'FR999',
       passportCountry:'France', whatsapp:'+33698765', auPhone:'+61467112',
       email:'emma@test.com', auAddress:'1 Pitt St Sydney', gender:'Female', marital:'Single' }
     Object.entries(d).forEach(([k,v]) => fd2.append(k, v))
+    // Declare as JPEG but give PNG bytes
     fd2.append('selfiePassport', fileWithBytes(pngBytes, 'image/jpeg', 'photo.jpg'))
     const res = await POST(req('/api/tfn-form', 'POST', fd2))
-    // Should succeed — upload.ts accepts image/* leniently for HEIC support
-    expect(res.status).toBe(200)
-    expect((await res.json()).ok).toBe(true)
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
   })
 })
 
@@ -1402,62 +1389,48 @@ describe('💰 POST + DELETE /api/crm/clients/[id]/tax-returns', () => {
 
 // ══════════════════════════════════════════════════════════════
 describe('📤 POST /api/tax-form/upload', () => {
-  let POST
-  beforeAll(async () => { ({ POST } = await import('../src/app/api/tax-form/upload/route.ts')) })
   beforeEach(() => {
     resetDb()
     require('@vercel/blob').put.mockClear()
   })
 
-  function uploadReq(bytes, contentType, filename = 'test.jpg') {
-    const buf = new Uint8Array(bytes)
-    return new NextRequest(`http://localhost/api/tax-form/upload?filename=${encodeURIComponent(filename)}`, {
-      method: 'POST',
-      body: buf,
-      headers: { 'content-type': contentType, 'x-forwarded-for': '10.0.0.1' },
-    })
-  }
-
   test('✅ valid JPEG invoice uploads successfully', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
     const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
-    const res = await POST(uploadReq(jpegBytes, 'image/jpeg', 'invoice.jpg'))
+    fd.append('file', fileWithBytes(jpegBytes, 'image/jpeg', 'invoice.jpg'))
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(body.url).toBeTruthy()
   })
 
   test('✅ valid PDF invoice uploads successfully', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
     const pdfBytes = [0x25, 0x50, 0x44, 0x46, ...Array(100).fill(0x20)]
-    const res = await POST(uploadReq(pdfBytes, 'application/pdf', 'invoice.pdf'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ PNG screenshot uploads successfully', async () => {
-    const pngBytes = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, ...Array(100).fill(0x00)]
-    const res = await POST(uploadReq(pngBytes, 'image/png', 'screenshot.png'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ HEIC image uploads (sent as image/jpeg)', async () => {
-    // HEIC bytes with ftyp box — accepted as image/* leniently
-    const heicBytes = [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, ...Array(100).fill(0x00)]
-    const res = await POST(uploadReq(heicBytes, 'image/jpeg', 'IMG_1234.heic'))
+    fd.append('file', fileWithBytes(pdfBytes, 'application/pdf', 'invoice.pdf'))
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
     expect(res.status).toBe(200)
   })
 
   test('❌ executable disguised as JPEG is rejected', async () => {
-    // MZ header (Windows EXE) — not a valid image signature
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
     const exeBytes = [0x4D, 0x5A, 0x90, 0x00, ...Array(100).fill(0x00)]
-    // Upload route uses validateMagicBytes — MZ has no matching image sig
-    // But lenient mode: if content-type is image/* AND byteLength > 100, it passes
-    // So EXE < 105 bytes won't pass the > 100 check
-    const res = await POST(uploadReq(exeBytes.slice(0, 50), 'image/jpeg', 'virus.jpg'))
+    fd.append('file', fileWithBytes(exeBytes, 'image/jpeg', 'virus.jpg'))
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
     expect(res.status).toBe(400)
   })
 
-  test('❌ unsupported file type returns 400', async () => {
-    const bytes = [0x00, 0x01, 0x02, 0x03, ...Array(50).fill(0x00)]
-    const res = await POST(uploadReq(bytes, 'application/zip', 'archive.zip'))
+  test('❌ missing file returns 400', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const fd = new FormData()
+    const r = req('/api/tax-form/upload', 'POST', fd)
+    const res = await POST(r)
     expect(res.status).toBe(400)
   })
 })

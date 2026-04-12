@@ -268,16 +268,14 @@ export default function DashboardClient() {
 
   async function saveTaskNotes() {
     if(!activeTask) return
-    // Preserve structured data (passport, declarations, ABN/TFN/Expense fields) AND reviewer notes
+    // Preserve structured data (passport, declarations etc.) AND reviewer notes
     const allParts = (activeTask.notes||'').split(' | ')
     // Keep structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|ABN Expense:|TFN Expense:|ABN Receipts:|TFN Receipts:|Expense Amount:|ABN Expense Item|TFN Expense Item)/i)
-      || p.match(/^\$[\d,.]+ AUD/)
-      || p.match(/^\d+ (file|receipt)/)
+      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
     )
-    // taskNotes is the admin's own free-text notes only
+    // taskNotes is the admin's own notes (stripped of 📝 prefix when loaded)
     const merged = taskNotes.trim()
       ? [...structuredParts, taskNotes.trim()].join(' | ')
       : structuredParts.join(' | ')
@@ -377,30 +375,14 @@ export default function DashboardClient() {
   }) + ' AEST' : '—'
 
   // Strip structured form data from notes — return only the user-written portion
-  const parseExpenseItems = (notes: string, prefix: string) => {
-    const raw = notes.match(new RegExp(prefix + ' Expenses: (.*?)(?= \\| (?:ABN|TFN|→|Passport|Super|Gender|I confirm|I declare)|$)'))?.[1]?.trim() || ''
-    if (!raw) return []
-    return raw.split(' ;; ').map(item => {
-      const m = item.match(/Item \d+: (.+?) · \$(.+?) AUD · (\d+) file/)
-      return m ? { description: m[1], amount: m[2], files: m[3] } : null
-    }).filter(Boolean) as {description:string;amount:string;files:string}[]
-  }
-
   const extractUserNotes = (raw:string) => {
     if (!raw) return ''
     const parts = raw.split(' | ')
-    const userParts = parts.filter(p => {
-      const t = p.trim()
-      if (!t) return false
-      if (p.startsWith('📝 ')) return false // reviewer notes shown separately
-      // All known structured prefixes — new and old formats
-      if (t.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|ABN Expense:|TFN Expense:|ABN Receipts:|TFN Receipts:|Expense Amount:|ABN Expense Item|TFN Expense Item)/i)) return false
-      // Fragments of old-format expense items (e.g. "$500 AUD | 1 receipt(s)")
-      if (t.match(/^\$[\d,.]+ AUD/)) return false
-      // Fragments of new-format expense items (e.g. "$500 AUD · 1 file(s)")
-      if (t.match(/^\d+ (file|receipt)/)) return false
-      return true
-    })
+    const userParts = parts
+      .filter(p =>
+        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      )
+      .map(p => p.startsWith('📝 ') ? p.slice(3) : p) // strip reviewer prefix for display
     return userParts.join(' | ').trim()
   }
 
@@ -614,29 +596,6 @@ export default function DashboardClient() {
             return radioField('Has ABN?', abnValPdf, ['Yes','No'])
               + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
-              + (abnValPdf==='Yes' ? field('Type of work under ABN', (task.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'—') : '')
-              + (abnValPdf==='Yes' ? (() => {
-                  const raw = (task.notes||'').match(/ABN Expenses: (.+?)(?= \| [A-Z]|$)/)?.[1]?.trim()||''
-                  if (!raw) return ''
-                  const items = raw.split(' || ').map(item => { const m=item.match(/Item \d+: (.+?) \| \$(.+?) AUD \| (\d+) receipt/); return m?{description:m[1],amount:m[2],receipts:m[3]}:null }).filter(Boolean) as {description:string;amount:string;receipts:string}[]
-                  if (!items.length) return ''
-                  const total = items.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
-                  return sec('Business expenses (ABN)')
-                    + items.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.files)} file(s)`)).join('')
-                    + field('Total business expenses', `$${total.toLocaleString()} AUD`)
-                    + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send business invoices/receipts to team</p>`
-                })() : '')
-          })()
-        + (() => {
-            const tfnRaw = (task.notes||'').match(/TFN Expenses: (.+?)(?= \| [A-Z]|$)/)?.[1]?.trim()||''
-            if (!tfnRaw) return ''
-            const tfnItems = tfnRaw.split(' || ').map(item => { const m=item.match(/Item \d+: (.+?) \| \$(.+?) AUD \| (\d+) receipt/); return m?{description:m[1],amount:m[2],receipts:m[3]}:null }).filter(Boolean) as {description:string;amount:string;receipts:string}[]
-            if (!tfnItems.length) return ''
-            const tfnTotal = tfnItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
-            return sec('Personal expenses (TFN)')
-              + tfnItems.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.files)} file(s)`)).join('')
-              + field('Total personal expenses', `$${tfnTotal.toLocaleString()} AUD`)
-              + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send personal receipts to team</p>`
           })()
         + sec('Bank account details')
         + field('Bank name', bkName)
@@ -647,12 +606,6 @@ export default function DashboardClient() {
         + ((task.fileUrls??[]).length > 0
           ? (task.fileUrls??[]).map(fileItem).join('')
           : `<p style="font-size:12px;color:#aabab2">No files uploaded</p>`)
-        + (() => {
-            const expAmt = (task.notes||'').match(/Expense Amount: ([^|]+)/)?.[1]?.trim()||''
-            if (!expAmt) return ''
-            return field('Total work-related expenses', expAmt)
-              + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:8px 12px;margin-top:4px;margin-bottom:8px">Client to send invoices/receipts to team</p>`
-          })()
         + sec('Declaration')
         + `<div style="font-size:12px;color:#587066;margin-bottom:6px">Tax residency status:</div>`
         + `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1.5px solid ${G};background:#EAF6F1;margin-bottom:10px">` +
@@ -1176,43 +1129,6 @@ export default function DashboardClient() {
                           <div style={S.row}><span style={S.lbl}>Has ABN</span><span style={{...S.val,color:abnVal==='Yes'?'#0E5C42':'#c0392b',fontWeight:600}}>{abnVal==='Yes'?'Yes ✓':abnVal==='No'?'No':'Not specified'}</span></div>
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'—'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
-                          {abnVal==='Yes' && (()=>{const abnWork=(activeTask.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'';return abnWork?<div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork}</span><CopyBtn text={abnWork}/></div>:null})()}
-                          {abnVal==='Yes' && (()=>{
-                            const items = parseExpenseItems(activeTask.notes||'', 'ABN')
-                            if (!items.length) return null
-                            const total = items.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
-                            return (<>
-                              <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#c2410c',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🧾 Business Expenses (ABN)</span></div>
-                              {items.map((e,i)=>(
-                                <div key={i} style={{...S.row,flexDirection:'column' as const,alignItems:'flex-start',gap:2}}>
-                                  <span style={{...S.lbl,fontWeight:600}}>{e.description}</span>
-                                  <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.files} file(s)</span>
-                                </div>
-                              ))}
-                              <div style={S.row}><span style={S.lbl}>Total business expenses</span><span style={{...S.val,color:'#0E5C42',fontWeight:700}}>${total.toLocaleString()} AUD</span></div>
-                              <div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px'}}><span style={{fontSize:11,color:'#92400e'}}>Client to send business invoices/receipts to team</span></div>
-                            </>)
-                          })()}
-                        </>
-                      )
-                    })()}
-                    {(()=>{
-                      const items = parseExpenseItems(activeTask.notes||'', 'TFN')
-                      if (!items.length) return null
-                      const total = items.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
-                      return (
-                        <>
-                          <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🧾 Personal Expenses (TFN)</span></div>
-                          {items.map((e,i)=>(
-                            <div key={i} style={{...S.row,flexDirection:'column' as const,alignItems:'flex-start',gap:2}}>
-                              <span style={{...S.lbl,fontWeight:600}}>{e.description}</span>
-                              <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.files} file(s)</span>
-                            </div>
-                          ))}
-                          <div style={S.row}><span style={S.lbl}>Total personal expenses</span><span style={{...S.val,color:'#0E5C42',fontWeight:700}}>${total.toLocaleString()} AUD</span></div>
-                          <div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px',alignItems:'flex-start'}}>
-                            <span style={{fontSize:11,color:'#92400e'}}>Client to send personal receipts to team</span>
-                          </div>
                         </>
                       )
                     })()}
@@ -1279,20 +1195,6 @@ export default function DashboardClient() {
                       </div>
                     )
                   })}
-                  {activeTask.taskType==='tax-return' && (()=>{
-                    const tfnItems = parseExpenseItems(activeTask.notes||'', 'TFN')
-                    const abnItems = parseExpenseItems(activeTask.notes||'', 'ABN')
-                    const tfnTotal = tfnItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
-                    const abnTotal = abnItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
-                    const hasAnyExp = tfnItems.length > 0 || abnItems.length > 0
-                    return hasAnyExp ? (
-                      <>
-                        {tfnItems.length > 0 && <div style={{...S.row,borderTop:'1px solid #f0f4f1',marginTop:6}}><span style={S.lbl}>Personal expenses (TFN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>${tfnTotal.toLocaleString()} AUD · {tfnItems.length} item(s)</span></div>}
-                        {abnItems.length > 0 && <div style={S.row}><span style={S.lbl}>Business expenses (ABN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>${abnTotal.toLocaleString()} AUD · {abnItems.length} item(s)</span></div>}
-                        <div style={{fontSize:11,color:'#92400e',background:'#FFFCF5',border:'1px solid #E9A020',borderRadius:8,padding:'7px 10px',margin:'6px 0 4px',lineHeight:1.5}}>Client to send invoices/receipts to team</div>
-                      </>
-                    ) : null
-                  })()}
                 </div>
               </div>
               {/* Declaration + Notes side by side */}
@@ -1312,8 +1214,8 @@ export default function DashboardClient() {
                       }
                       const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '—'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
-                      const declaredPart = parts.find((p:string) => p.includes('I confirm that all information provided is accurate'))
-                      const incomePart   = parts.find((p:string) => p.includes('I declare that all income earned'))
+                      const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
+                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare that all income'))
                       return <>
                         <div style={S.secHead}><span>Tax Residency</span></div>
                         <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>
@@ -1324,7 +1226,7 @@ export default function DashboardClient() {
                         <div style={S.secHead}><span>General Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {declaredPart
-                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace(/^→\s*✓?\s*/,'')}</span></>
+                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace('→ ✓ ','')}</span></>
                             : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
                           }
                         </div>
@@ -1332,7 +1234,7 @@ export default function DashboardClient() {
                         <div style={S.secHead}><span>Income Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {incomePart
-                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{incomePart.replace(/^→\s*✓?\s*/,'')}</span></>
+                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{incomePart.replace('→ ✓ ','')}</span></>
                             : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
                           }
                         </div>

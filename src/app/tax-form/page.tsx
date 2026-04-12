@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
+type MultiUploadState = { files: File[]; previews: (string | null)[] }
 
 /* ── Field wrapper ── */
 function Field({ label, required, children, error }: { label: string; required?: boolean; children: React.ReactNode; error?: string }) {
@@ -76,7 +77,83 @@ function FileUpload({
   )
 }
 
+/* ── Multi File Upload (up to 15 files) ── */
+function MultiFileUpload({
+  id, label, accept, value, onChange, maxFiles = 15
+}: {
+  id: string; label: string; accept: string
+  value: MultiUploadState; onChange: (v: MultiUploadState) => void
+  maxFiles?: number
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files ?? [])
+    if (!selected.length) return
+    const remaining = maxFiles - value.files.length
+    const toAdd = selected.slice(0, remaining)
+    const newPreviews = toAdd.map(f => f.type.startsWith('image/') ? URL.createObjectURL(f) : null)
+    onChange({
+      files: [...value.files, ...toAdd],
+      previews: [...value.previews, ...newPreviews],
+    })
+    if (inputRef.current) inputRef.current.value = ''
+  }
+
+  const handleRemove = (i: number) => {
+    const p = value.previews[i]
+    if (p) URL.revokeObjectURL(p)
+    onChange({
+      files: value.files.filter((_, idx) => idx !== i),
+      previews: value.previews.filter((_, idx) => idx !== i),
+    })
+  }
+
+  const canAdd = value.files.length < maxFiles
+
+  return (
+    <div>
+      {value.files.map((f, i) => (
+        <div key={i} className="file-zone" style={{marginBottom: 8, cursor:'default'}}>
+          <div className="file-selected">
+            {value.previews[i]
+              ? <img src={value.previews[i]!} alt="preview" className="file-img-preview" />
+              : <div className="file-icon-box">📄</div>
+            }
+            <div className="file-meta">
+              <span className="file-name">{f.name}</span>
+              <span className="file-size">{(f.size / 1024).toFixed(0)} KB</span>
+            </div>
+            <button type="button" className="file-remove" onClick={() => handleRemove(i)}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      ))}
+      {canAdd && (
+        <div className="file-zone" onClick={() => inputRef.current?.click()} style={{cursor:'pointer'}}>
+          <input ref={inputRef} id={id} type="file" accept={accept} multiple className="hidden" onChange={handleChange} />
+          <div className="file-empty">
+            <div className="file-upload-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 16V8M8 12l4-4 4 4" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <rect x="3" y="3" width="18" height="18" rx="4" stroke="#C8EAE0" strokeWidth="1.2"/>
+              </svg>
+            </div>
+            <span className="file-upload-label">{label}</span>
+            <span className="file-upload-sub">
+              {value.files.length === 0
+                ? `Tap to add files (max ${maxFiles})`
+                : `Add more (${value.files.length}/${maxFiles})`}
+            </span>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
 
 /* ── Main Form ── */
 export default function TaxFormPage() {
@@ -111,11 +188,6 @@ export default function TaxFormPage() {
   const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
   const [abnNumber, setAbnNumber]     = useState('')
   const [abnIncome, setAbnIncome]     = useState('')
-  const [abnWorkType, setAbnWorkType] = useState('')
-  type ExpenseItem = { description: string; amount: string; files: UploadState[] }
-  const emptyExpense = (): ExpenseItem => ({ description: '', amount: '', files: [{ file: null, preview: null }] })
-  const [abnExpenses, setAbnExpenses] = useState<ExpenseItem[]>([emptyExpense()])
-  const [tfnExpenses, setTfnExpenses] = useState<ExpenseItem[]>([emptyExpense()])
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -141,7 +213,6 @@ export default function TaxFormPage() {
     if (hasAbn === 'yes') {
       if (!abnNumber.trim()) e.abnNumber   = 'Required'
       if (!abnIncome.trim()) e.abnIncome   = 'Required'
-      if (!abnWorkType.trim()) e.abnWorkType = 'Required'
     }
     if (!bankName.trim())    e.bankName    = 'Required'
     if (!bankHolder.trim())  e.bankHolder  = 'Required'
@@ -171,17 +242,10 @@ export default function TaxFormPage() {
         return null
       }
       const attempt = async () => {
-        // Normalize content-type for iOS HEIC/HEIF and unknown types
+        // Normalize content-type for iOS HEIC photos
         let contentType = f.type || 'image/jpeg'
         if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
         if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
-        // Some browsers send wrong MIME for PDFs on mobile
-        if (f.name.toLowerCase().endsWith('.pdf')) contentType = 'application/pdf'
-        // Force image/jpeg for common image extensions if MIME is wrong
-        if (!contentType.startsWith('image/') && !contentType.includes('pdf')) {
-          const ext = f.name.split('.').pop()?.toLowerCase() || ''
-          if (['jpg','jpeg','png','webp','gif','heic','heif'].includes(ext)) contentType = 'image/jpeg'
-        }
         const r = await fetch(
           `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
           { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
@@ -208,7 +272,7 @@ export default function TaxFormPage() {
     const coreFailed = coreResults.filter(r => !r).length
     if (coreFailed > 0) {
       setLoading(false)
-      alert('Failed to upload your documents. Please ensure files are JPG, PNG, or PDF format and under 10MB. If uploading from your camera roll on iPhone, try saving the photo as JPEG first.')
+      alert('Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.')
       return
     }
     const coreUrls: Record<string, string> = {}
@@ -227,23 +291,10 @@ export default function TaxFormPage() {
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
     fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
-    // Send expense files directly as File objects — server uploads them (same as selfie in other forms)
-    const validAbn = abnExpenses.filter(e => e.description.trim() || e.amount.trim())
-    const validTfn = tfnExpenses.filter(e => e.description.trim() || e.amount.trim())
     if (hasAbn === 'yes') {
       fd.append('abnNumber',   abnNumber)
       fd.append('abnIncome',   abnIncome)
-      fd.append('abnWorkType', abnWorkType)
-      if (validAbn.length > 0) {
-        fd.append('abnExpenses', JSON.stringify(validAbn.map((e, i) => ({ description: e.description, amount: e.amount, fileCount: e.files.filter(f=>f.file).length, index: i }))))
-        validAbn.forEach((item, i) => item.files.forEach((f, fi) => { if (f.file) fd.append(`abnFile_${i}_${fi}`, f.file) }))
-      }
     }
-    if (validTfn.length > 0) {
-      fd.append('tfnExpenses', JSON.stringify(validTfn.map((e, i) => ({ description: e.description, amount: e.amount, fileCount: e.files.filter(f=>f.file).length, index: i }))))
-      validTfn.forEach((item, i) => item.files.forEach((f, fi) => { if (f.file) fd.append(`tfnFile_${i}_${fi}`, f.file) }))
-    }
-
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
@@ -545,59 +596,6 @@ export default function TaxFormPage() {
                 <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
                   value={abnIncome} onChange={e => { setAbnIncome(e.target.value); setErrors(p => ({...p, abnIncome: ''})) }} />
               </Field>
-
-              <Field label="What type of work did you do under your ABN?" required error={errors.abnWorkType}>
-                <input className={`inp ${errors.abnWorkType ? 'inp-err' : ''}`} type="text" placeholder="e.g. Construction, Cleaning, Delivery, Farming"
-                  value={abnWorkType} onChange={e => { setAbnWorkType(e.target.value); setErrors(p => ({...p, abnWorkType: ''})) }} />
-              </Field>
-
-              <div style={{marginBottom:'14px'}}>
-                <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
-                  Business expenses under ABN <span style={{fontWeight:400,color:'#6b7280'}}>(leave empty if none)</span>
-                </label>
-                {abnExpenses.map((item, i) => (
-                  <div key={i} style={{background:'#f7fbf9',border:'1.5px solid #d4eae2',borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',position:'relative'}}>
-                    <div style={{fontSize:'11px',fontWeight:700,color:'#0E5C42',marginBottom:'8px',textTransform:'uppercase',letterSpacing:'0.05em'}}>Expense {i + 1}</div>
-                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'10px'}}>
-                      <div>
-                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Description</label>
-                        <input className="inp" type="text" placeholder="e.g. Work tools, uniform, car" style={{fontSize:'13px'}}
-                          value={item.description}
-                          onChange={e => { const n=[...abnExpenses]; n[i]={...n[i],description:e.target.value}; setAbnExpenses(n) }} />
-                      </div>
-                      <div>
-                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Amount (AUD)</label>
-                        <input className="inp" type="text" inputMode="decimal" placeholder="e.g. 500" style={{fontSize:'13px'}}
-                          value={item.amount}
-                          onChange={e => { const n=[...abnExpenses]; n[i]={...n[i],amount:e.target.value}; setAbnExpenses(n) }} />
-                      </div>
-                    </div>
-                    <div>
-                      <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'6px'}}>Invoices / receipts</label>
-                      {item.files.map((f, fi) => (
-                        <div key={fi} style={{marginBottom:'6px'}}>
-                          <FileUpload id={`abn-${i}-file-${fi}`} label="Upload invoice or receipt" accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
-                            value={f}
-                            onChange={v => { const n=[...abnExpenses]; n[i]={...n[i],files:n[i].files.map((x,xi)=>xi===fi?v:x)}; setAbnExpenses(n) }} />
-                        </div>
-                      ))}
-                      <button type="button"
-                        onClick={() => { const n=[...abnExpenses]; n[i]={...n[i],files:[...n[i].files,{file:null,preview:null}]}; setAbnExpenses(n) }}
-                        style={{display:'flex',alignItems:'center',gap:5,background:'none',border:'1px dashed #9ca3af',borderRadius:'8px',padding:'6px 12px',fontSize:'12px',color:'#6b7280',cursor:'pointer',fontFamily:'inherit',marginTop:'2px'}}>
-                        + Add another file
-                      </button>
-                    </div>
-                    {abnExpenses.length > 1 && (
-                      <button type="button" onClick={() => setAbnExpenses(abnExpenses.filter((_,j)=>j!==i))}
-                        style={{position:'absolute',top:'10px',right:'12px',background:'none',border:'none',cursor:'pointer',fontSize:'16px',color:'#9ca3af',lineHeight:1}}>✕</button>
-                    )}
-                  </div>
-                ))}
-                <button type="button" onClick={() => setAbnExpenses([...abnExpenses, emptyExpense()])}
-                  style={{display:'flex',alignItems:'center',gap:6,background:'none',border:'1.5px dashed #0E5C42',borderRadius:'10px',padding:'9px 16px',fontSize:'13px',color:'#0E5C42',fontWeight:600,cursor:'pointer',width:'100%',justifyContent:'center',fontFamily:'inherit'}}>
-                  + Add business expense
-                </button>
-              </div>
             </>)}
 
           <div className="form-section-title">Bank account details</div>
@@ -631,54 +629,7 @@ export default function TaxFormPage() {
               <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
-
-            <div style={{marginBottom:'14px'}}>
-                <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
-                  Personal work-related expenses <span style={{fontWeight:400,color:'#6b7280'}}>(leave empty if none)</span>
-                </label>
-                {tfnExpenses.map((item, i) => (
-                  <div key={i} style={{background:'#f7fbf9',border:'1.5px solid #d4eae2',borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',position:'relative'}}>
-                    <div style={{fontSize:'11px',fontWeight:700,color:'#0E5C42',marginBottom:'8px',textTransform:'uppercase',letterSpacing:'0.05em'}}>Expense {i + 1}</div>
-                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'10px'}}>
-                      <div>
-                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Description</label>
-                        <input className="inp" type="text" placeholder="e.g. Work uniform, phone, tools" style={{fontSize:'13px'}}
-                          value={item.description}
-                          onChange={e => { const n=[...tfnExpenses]; n[i]={...n[i],description:e.target.value}; setTfnExpenses(n) }} />
-                      </div>
-                      <div>
-                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Amount (AUD)</label>
-                        <input className="inp" type="text" inputMode="decimal" placeholder="e.g. 300" style={{fontSize:'13px'}}
-                          value={item.amount}
-                          onChange={e => { const n=[...tfnExpenses]; n[i]={...n[i],amount:e.target.value}; setTfnExpenses(n) }} />
-                      </div>
-                    </div>
-                    <div>
-                      <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'6px'}}>Invoices / receipts</label>
-                      {item.files.map((f, fi) => (
-                        <div key={fi} style={{marginBottom:'6px'}}>
-                          <FileUpload id={`tfn-${i}-file-${fi}`} label="Upload invoice or receipt" accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
-                            value={f}
-                            onChange={v => { const n=[...tfnExpenses]; n[i]={...n[i],files:n[i].files.map((x,xi)=>xi===fi?v:x)}; setTfnExpenses(n) }} />
-                        </div>
-                      ))}
-                      <button type="button"
-                        onClick={() => { const n=[...tfnExpenses]; n[i]={...n[i],files:[...n[i].files,{file:null,preview:null}]}; setTfnExpenses(n) }}
-                        style={{display:'flex',alignItems:'center',gap:5,background:'none',border:'1px dashed #9ca3af',borderRadius:'8px',padding:'6px 12px',fontSize:'12px',color:'#6b7280',cursor:'pointer',fontFamily:'inherit',marginTop:'2px'}}>
-                        + Add another file
-                      </button>
-                    </div>
-                    {tfnExpenses.length > 1 && (
-                      <button type="button" onClick={() => setTfnExpenses(tfnExpenses.filter((_,j)=>j!==i))}
-                        style={{position:'absolute',top:'10px',right:'12px',background:'none',border:'none',cursor:'pointer',fontSize:'16px',color:'#9ca3af',lineHeight:1}}>✕</button>
-                    )}
-                  </div>
-                ))}
-                <button type="button" onClick={() => setTfnExpenses([...tfnExpenses, emptyExpense()])}
-                  style={{display:'flex',alignItems:'center',gap:6,background:'none',border:'1.5px dashed #0E5C42',borderRadius:'10px',padding:'9px 16px',fontSize:'13px',color:'#0E5C42',fontWeight:600,cursor:'pointer',width:'100%',justifyContent:'center',fontFamily:'inherit'}}>
-                  + Add personal expense
-                </button>
-              </div>
+          </div>
           </div>
 
           <div className="form-section-title">Declaration</div>
@@ -749,9 +700,7 @@ export default function TaxFormPage() {
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
-                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',
-                    abnWorkType:'ABN Work Type',expenseCount:'Number of Expense Receipts',
-                    bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
+                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
                     bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>
