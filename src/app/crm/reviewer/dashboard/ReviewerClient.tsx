@@ -340,17 +340,7 @@ function TaskCard({
                     </div>
                     <div style={{ display: 'flex', gap: 6, marginLeft: 12, flexShrink: 0 }}>
                       <button onClick={() => setViewUrl(url)} style={{ height: 30, padding: '0 12px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: G, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>View</button>
-                      <button onClick={async () => {
-                        try {
-                          const res = await fetch(url)
-                          const blob = await res.blob()
-                          const a = document.createElement('a')
-                          a.href = URL.createObjectURL(blob)
-                          a.download = name
-                          a.click()
-                          URL.revokeObjectURL(a.href)
-                        } catch { window.open(url, '_blank') }
-                      }} style={{ height: 30, padding: '0 12px', borderRadius: 100, border: 'none', background: G, color: '#fff', fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>↓</button>
+
                     </div>
                   </div>
                 )

@@ -228,6 +228,8 @@ export default function DashboardClient() {
     // Trigger archive badge — client moved to archive
     setNewArchiveCount(n => n + 1)
     await Promise.all([loadClients(), loadArchived()])
+    setActiveClient(null)
+    setView('tasks')
   }
   async function unarchiveClient(id: string) {
       setArchivedClients(prev => prev.filter(c => c.id !== id))
@@ -1198,7 +1200,6 @@ export default function DashboardClient() {
                               URL.revokeObjectURL(a.href)
                             } catch { window.open(url,'_blank') }
                           }} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>Download ↓</button>
-                        </div>
                       </div>
                     )
                   })}
