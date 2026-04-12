@@ -239,8 +239,8 @@ export default function TaxFormPage() {
 
     // Pre-upload all files client-side for faster, more reliable submission
     const uploadOne = async (f: File): Promise<string | null> => {
-      if (f.size > 25 * 1024 * 1024) {
-        alert(`File "${f.name}" is too large (max 25MB). Please compress it and try again.`)
+      if (f.size > 50 * 1024 * 1024) {
+        alert(`File "${f.name}" is too large (max 50MB). Please compress it and try again.`)
         return null
       }
       const attempt = async () => {
@@ -274,7 +274,7 @@ export default function TaxFormPage() {
     const coreFailed = coreResults.filter(r => !r).length
     if (coreFailed > 0) {
       setLoading(false)
-      alert('Failed to upload required files. Please check your documents are images or PDFs under 25MB and try again.')
+      alert('Failed to upload required files. Please check your documents are images or PDFs under 50MB and try again.')
       return
     }
     const coreUrls: Record<string, string> = {}
@@ -316,7 +316,7 @@ export default function TaxFormPage() {
       const failed = results.filter(r => !r).length
       if (failed > 0) {
         setLoading(false)
-        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 25MB and try again.`)
+        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 50MB and try again.`)
         return
       }
       results.forEach(url => { if (url) invoiceUrls.push(url) })
@@ -335,7 +335,7 @@ export default function TaxFormPage() {
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 25MB.'}`)
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 50MB.'}`)
         else alert('Something went wrong. Please try again or contact us directly.')
       }
     } catch {

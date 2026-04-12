@@ -4,7 +4,7 @@ import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
 const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
-const MAX_SIZE = 25 * 1024 * 1024
+const MAX_SIZE = 50 * 1024 * 1024
 
 // Magic bytes for basic validation (lenient - accept if ANY image/pdf signature found)
 function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
     }
     const body = await req.arrayBuffer()
     if (body.byteLength > MAX_SIZE) {
-      return NextResponse.json({ ok: false, error: 'File too large (max 25MB)' }, { status: 400 })
+      return NextResponse.json({ ok: false, error: 'File too large (max 50MB)' }, { status: 400 })
     }
     if (!validateMagicBytes(body, contentType)) {
       return NextResponse.json({ ok: false, error: 'File content does not match declared type' }, { status: 400 })
