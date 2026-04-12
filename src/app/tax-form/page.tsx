@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { upload } from '@vercel/blob/client'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -237,29 +238,20 @@ export default function TaxFormPage() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
 
-    // Pre-upload all files client-side for faster, more reliable submission
+    // Pre-upload all files directly to Vercel Blob (bypasses 4.5MB serverless limit)
     const uploadOne = async (f: File): Promise<string | null> => {
       if (f.size > 25 * 1024 * 1024) {
         alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB).\n\nMax size is 25MB. Please compress the file or take a lower-quality photo and try again.`)
         return null
       }
-      const attempt = async () => {
-        // Normalize content-type for iOS HEIC photos — keep original type, server will detect from magic bytes
-        let contentType = f.type || 'image/jpeg'
-        if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
-        // Don't rename HEIC→jpeg; send real type and let server detect from magic bytes
-        if (contentType === 'image/heif') contentType = 'image/heic'
-        const r = await fetch(
-          `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
-          { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
-        )
-        const data = await r.json().catch(() => ({}))
-        if (!r.ok) throw new Error(data?.error || String(r.status))
-        return data
-      }
       for (let i = 0; i < 3; i++) {
-        try { const res = await attempt(); return res?.url ?? null }
-        catch (e) {
+        try {
+          const blob = await upload(f.name, f, {
+            access: 'public',
+            handleUploadUrl: '/api/tax-form/upload',
+          })
+          return blob.url
+        } catch (e) {
           if (i === 2) return null
           await new Promise(r => setTimeout(r, 800 * (i + 1)))
         }
