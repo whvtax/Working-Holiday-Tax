@@ -13,7 +13,6 @@ const MAX_SIZE = 25 * 1024 * 1024 // 25MB
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const ip = getClientIp(req)
 
-  // Parse body first to check if this is a callback (no rate limit needed)
   let body: HandleUploadBody
   try {
     body = await req.json() as HandleUploadBody
@@ -21,9 +20,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: 'Invalid request' }, { status: 400 })
   }
 
-  // Only rate-limit token generation requests, not blob callbacks
-  const isCallback = (body as any)?.type === 'blob.upload-completed'
-  if (!isCallback) {
+  // Don't rate-limit blob upload-completed callbacks — only token requests
+  const isUploadCallback = (body as any)?.type === 'blob.upload-completed'
+  if (!isUploadCallback) {
     if (await isRateLimited(ip, 'tax-form')) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
@@ -49,6 +48,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         }
       },
       onUploadCompleted: async ({ blob }) => {
+        // No-op: we don't need server-side processing after upload
+        // Silently succeed to avoid callback failures blocking the upload
         console.log('[upload] completed:', blob.url)
       },
     })
