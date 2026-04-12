@@ -1,11 +1,10 @@
 import { put, del } from '@vercel/blob'
 
 const ALLOWED_MIME_TYPES = new Set([
-  'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif',
-  'image/heic', 'image/heif',
+  'image/jpeg', 'image/png', 'image/webp', 'image/gif',
   'application/pdf',
 ])
-const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024 // 50 MB per file
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024 // 10 MB per file
 const MAX_FILENAME_LENGTH = 200
 
 const MAGIC_SIGNATURES: { mime: string; offset: number; bytes: number[] }[] = [
@@ -19,11 +18,6 @@ const MAGIC_SIGNATURES: { mime: string; offset: number; bytes: number[] }[] = [
   { mime: 'image/gif',        offset: 0, bytes: [0x47, 0x49, 0x46, 0x38] },
   // PDF: %PDF
   { mime: 'application/pdf',  offset: 0, bytes: [0x25, 0x50, 0x44, 0x46] },
-  // HEIC/HEIF: ftyp box at offset 4
-  { mime: 'image/heic',       offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] },
-  { mime: 'image/heif',       offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] },
-  // Also JPEG fallback for HEIC files misreported as jpeg
-  { mime: 'image/jpg',        offset: 0, bytes: [0xFF, 0xD8, 0xFF] },
 ]
 
 const DANGEROUS_PATTERNS = [
@@ -75,16 +69,12 @@ async function validateFileContents(file: File): Promise<void> {
 
   const signatures = MAGIC_SIGNATURES.filter(s => s.mime === file.type)
   if (signatures.length === 0) {
-    // HEIC/HEIF files from iOS are often reported as image/jpeg or application/octet-stream
-    // If the ftyp box is present at offset 4, accept it
-    if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return
+    // No signature defined for this type — already blocked by ALLOWED_MIME_TYPES check
     throw new Error(`File type not allowed: ${file.type}`)
   }
 
   const validSignature = signatures.some(sig => matchesMagicBytes(bytes, sig))
-  // For HEIC/HEIF also check the ftyp box as fallback
-  const isHeicFtyp = bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70
-  if (!validSignature && !isHeicFtyp) {
+  if (!validSignature) {
     throw new Error(
       `File content does not match declared type (${file.type}). ` +
       `Please upload a genuine image or PDF file.`
@@ -111,7 +101,7 @@ export async function uploadFile(
   }
 
   if (file.size > MAX_FILE_SIZE_BYTES) {
-    throw new Error(`File too large (max 50 MB per file)`)
+    throw new Error(`File too large (max 10 MB per file)`)
   }
 
   if (file.name.length > MAX_FILENAME_LENGTH) {
