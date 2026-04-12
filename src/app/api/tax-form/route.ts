@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
+import { uploadFiles } from '@/lib/upload'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 import crypto from 'crypto'
@@ -14,18 +15,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 
-    const formData  = await req.formData()
-    const email     = sanitiseShort(formData.get('email'))
-    const whatsapp  = sanitiseShort(formData.get('waNumber'))
-    const existing  = await findExistingClient(email, whatsapp)
-    const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
+    const formData = await req.formData()
+    const email    = sanitiseShort(formData.get('email'))
+    const whatsapp = sanitiseShort(formData.get('waNumber'))
+    const existing = await findExistingClient(email, whatsapp)
+    const clientId = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
-    // All files are pre-uploaded client-side; server receives URLs only
-    const allFileUrls: string[] = (() => {
-      try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
-    })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
+    // Collect all files sent from the form (same pattern as TFN/Super/ABN)
+    const selfieFile   = formData.get('selfiePassport') as File | null
+    const bankStmtFile = formData.get('bankStatement')  as File | null
+    const invoiceFiles = formData.getAll('invoiceFiles') as File[]
 
-    const fileUrls: string[] = allFileUrls
+    const allFiles = [selfieFile, bankStmtFile, ...invoiceFiles].filter((f): f is File => !!f && f.size > 0)
+
+    let fileUrls: string[]
+    try {
+      fileUrls = await uploadFiles(allFiles, `tax-form/${clientId}`)
+    } catch (uploadErr) {
+      const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
+      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+    }
 
     await createTask({
       clientId,
@@ -45,13 +54,13 @@ export async function POST(req: NextRequest) {
       taxStatus:   sanitiseShort(formData.get('taxStatus')),
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
-      notes:       [
-        formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
-        formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
-        formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',
-        formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
-        formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
-        formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
+      notes: [
+        formData.get('taxStatus')      ? `→ ${sanitiseField(formData.get('taxStatus'))}`           : '',
+        formData.get('declared')       ? `→ ${sanitiseField(formData.get('declared'))}`            : '',
+        formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}`      : '',
+        formData.get('hasAbn')         ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}`           : '',
+        formData.get('abnNumber')      ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
+        formData.get('abnIncome')      ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
     })

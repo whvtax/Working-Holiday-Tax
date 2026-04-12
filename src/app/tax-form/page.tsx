@@ -237,50 +237,6 @@ export default function TaxFormPage() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
 
-    // Pre-upload all files client-side for faster, more reliable submission
-    const uploadOne = async (f: File): Promise<string | null> => {
-      if (f.size > 50 * 1024 * 1024) {
-        alert(`File "${f.name}" is too large (max 50MB). Please compress it and try again.`)
-        return null
-      }
-      const attempt = async () => {
-        // Normalize content-type for iOS HEIC photos
-        let contentType = f.type || 'image/jpeg'
-        if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
-        if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
-        const r = await fetch(
-          `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
-          { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
-        )
-        const data = await r.json().catch(() => ({}))
-        if (!r.ok) throw new Error(data?.error || String(r.status))
-        return data
-      }
-      for (let i = 0; i < 3; i++) {
-        try { const res = await attempt(); return res?.url ?? null }
-        catch (e) {
-          if (i === 2) return null
-          await new Promise(r => setTimeout(r, 800 * (i + 1)))
-        }
-      }
-      return null
-    }
-
-    // Upload bankStatement + selfiePassport client-side too
-    const coreUploads: { label: string; file: File }[] = []
-    if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
-    if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
-    const coreResults = await Promise.all(coreUploads.map(({ file: f }) => uploadOne(f)))
-    const coreFailed = coreResults.filter(r => !r).length
-    if (coreFailed > 0) {
-      setLoading(false)
-      alert('Failed to upload required files. Please check your documents are images or PDFs under 50MB and try again.')
-      return
-    }
-    const coreUrls: Record<string, string> = {}
-    coreUploads.forEach(({ label }, i) => { if (coreResults[i]) coreUrls[label] = coreResults[i]! })
-
-    // Build FormData (no file blobs — URLs only)
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
@@ -303,46 +259,27 @@ export default function TaxFormPage() {
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ I confirm that all information provided is accurate and complete. I understand that providing false information may result in penalties under Australian tax law, and I accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredIncome', declaredIncome ? '✓ I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide.' : '')
-    if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
-    if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
-    const invoiceUrls: string[] = []
-    const allInvoiceFiles = [
-      ...invoices.files,
-      ...abnInvoices.files,
-    ]
-    if (allInvoiceFiles.length > 0) {
-      const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
-      const failed = results.filter(r => !r).length
-      if (failed > 0) {
-        setLoading(false)
-        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 50MB and try again.`)
-        return
-      }
-      results.forEach(url => { if (url) invoiceUrls.push(url) })
-    }
-    // Combine all uploaded URLs
-    const allFileUrls = [
-      ...Object.values(coreUrls),
-      ...invoiceUrls,
-    ]
-    if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
+    // Attach files directly — server uploads to Blob (same as TFN/Super/ABN)
+    if (selfiePassport.file)  fd.append('selfiePassport', selfiePassport.file)
+    if (bankStatement.file)   fd.append('bankStatement',  bankStatement.file)
+    const allInvoiceFiles = [...invoices.files, ...abnInvoices.files]
+    allInvoiceFiles.forEach(f => fd.append('invoiceFiles', f))
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
       if (res.ok) {
-        window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
+        window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true)
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 50MB.'}`)
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF.'}`)
         else alert('Something went wrong. Please try again or contact us directly.')
       }
     } catch {
       alert('Something went wrong. Please try again or contact us directly.')
-    } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   /* ── Success screen ── */
