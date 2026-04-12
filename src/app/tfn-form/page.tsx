@@ -114,7 +114,7 @@ export default function TFNFormPage() {
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 25MB.'}`)
         else alert('Something went wrong. Please try again.')
       }
     } catch { alert('Something went wrong. Please try again.') }
@@ -337,7 +337,7 @@ export default function TFNFormPage() {
 
           <div className="form-section-title">Documents</div>
           <Field label="Selfie with passport" required error={errors.selfie}>
-            <FileUpload id="selfie" label="Upload selfie with passport" accept=".jpg,.jpeg,.png,.webp,.pdf" value={selfie} onChange={v=>{ setSelfie(v); setErrors(p=>({...p,selfie:''})) }}/>
+            <FileUpload id="selfie" label="Upload selfie with passport" accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.pdf" value={selfie} onChange={v=>{ setSelfie(v); setErrors(p=>({...p,selfie:''})) }}/>
           </Field>
 
           <div className="form-section-title">Declaration</div>
