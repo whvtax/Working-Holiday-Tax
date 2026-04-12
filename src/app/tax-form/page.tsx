@@ -171,10 +171,17 @@ export default function TaxFormPage() {
         return null
       }
       const attempt = async () => {
-        // Normalize content-type for iOS HEIC photos
+        // Normalize content-type for iOS HEIC/HEIF and unknown types
         let contentType = f.type || 'image/jpeg'
         if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
         if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
+        // Some browsers send wrong MIME for PDFs on mobile
+        if (f.name.toLowerCase().endsWith('.pdf')) contentType = 'application/pdf'
+        // Force image/jpeg for common image extensions if MIME is wrong
+        if (!contentType.startsWith('image/') && !contentType.includes('pdf')) {
+          const ext = f.name.split('.').pop()?.toLowerCase() || ''
+          if (['jpg','jpeg','png','webp','gif','heic','heif'].includes(ext)) contentType = 'image/jpeg'
+        }
         const r = await fetch(
           `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
           { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
@@ -201,7 +208,7 @@ export default function TaxFormPage() {
     const coreFailed = coreResults.filter(r => !r).length
     if (coreFailed > 0) {
       setLoading(false)
-      alert('Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.')
+      alert('Failed to upload your documents. Please ensure files are JPG, PNG, or PDF format and under 10MB. If uploading from your camera roll on iPhone, try saving the photo as JPEG first.')
       return
     }
     const coreUrls: Record<string, string> = {}

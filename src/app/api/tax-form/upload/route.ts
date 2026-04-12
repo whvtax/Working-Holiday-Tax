@@ -35,9 +35,15 @@ export async function POST(req: NextRequest) {
   }
   try {
     const filename = req.nextUrl.searchParams.get('filename') ?? 'invoice'
-    const contentType = req.headers.get('content-type') ?? ''
+    let contentType = req.headers.get('content-type') ?? ''
+    // Normalize: some mobile browsers send wrong MIME types
+    if (contentType === 'image/jpg') contentType = 'image/jpeg'
     if (!ALLOWED.has(contentType)) {
-      return NextResponse.json({ ok: false, error: 'File type not allowed' }, { status: 400 })
+      // Try to infer from filename extension as fallback
+      const ext = filename.split('.').pop()?.toLowerCase() || ''
+      const extMap: Record<string,string> = { jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', pdf:'application/pdf', webp:'image/webp', heic:'image/jpeg', heif:'image/jpeg', gif:'image/gif' }
+      if (extMap[ext]) { contentType = extMap[ext] }
+      else return NextResponse.json({ ok: false, error: 'File type not allowed' }, { status: 400 })
     }
     const body = await req.arrayBuffer()
     if (body.byteLength > MAX_SIZE) {
