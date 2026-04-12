@@ -47,13 +47,13 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   )
 }
 
-function Row({ label, value, copy }: { label: string; value?: string | null; copy?: boolean }) {
+function Row({ label, value }: { label: string; value?: string | null }) {
   if (!value) return null
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '9px 16px', borderBottom: '1px solid #F4FAF7' }}>
       <span style={{ fontSize: 11, color: '#8DA89A', width: 120, flexShrink: 0, fontWeight: 500 }}>{label}</span>
       <span style={{ fontSize: 13, color: '#1A2822', lineHeight: 1.5, flex: 1, wordBreak: 'break-word', direction: 'ltr' }}>{value}</span>
-      {copy && <CopyBtn text={value} />}
+
     </div>
   )
 }
@@ -70,23 +70,6 @@ function DeclRow({ text }: { text: string }) {
   )
 }
 
-
-function CopyBtn({ text }: { text: string }) {
-  const [copied, setCopied] = React.useState(false)
-  return (
-    <button
-      onClick={() => { navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500) }) }}
-      style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 10px', background: copied ? '#EAF6F1' : '#f4f9f6', border: `1px solid ${copied ? '#6EE7B7' : '#D4EAE2'}`, borderRadius: 6, cursor: 'pointer', color: copied ? '#059669' : '#587066', fontSize: 11, fontWeight: 600, fontFamily: 'inherit', flexShrink: 0, transition: 'all 0.15s', whiteSpace: 'nowrap' as const }}
-      title="Copy"
-    >
-      {copied
-        ? <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        : <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-      }
-      {copied ? 'Copied!' : 'Copy'}
-    </button>
-  )
-}
 
 function Countdown({ seconds, onDone }: { seconds: number; onDone: () => void }) {
   const onDoneRef = React.useRef(onDone)
@@ -221,14 +204,14 @@ function TaskCard({
               </Section>
               <Section title="ABN">
                 <Row label="Has ABN" value={abnVal === 'Yes' ? 'Yes ✓' : abnVal === 'No' ? 'No' : 'Not specified'} />
-                {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || 'Not provided'} copy />}
-                {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} copy />}
+                {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || 'Not provided'} />}
+                {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} />}
               </Section>
               <Section title="Bank account">
-                <Row label="Bank name" value={bankName} copy />
-                <Row label="Account holder" value={bankHolder} copy />
-                <Row label="Account number" value={bankAccount} copy />
-                <Row label="BSB" value={bankBsb} copy />
+                <Row label="Bank name" value={bankName} />
+                <Row label="Account holder" value={bankHolder} />
+                <Row label="Account number" value={bankAccount} />
+                <Row label="BSB" value={bankBsb} />
               </Section>
               <Section title="Declarations">
                 {declaredVal !== '—' && <DeclRow text={declaredVal} />}
@@ -314,10 +297,10 @@ function TaskCard({
                 <Row label="Super fund(s)" value={superFunds} />
               </Section>
               <Section title="Bank account">
-                <Row label="Bank name" value={bankName} copy />
-                <Row label="Account holder" value={bankHolder} copy />
-                <Row label="Account number" value={bankAccount} copy />
-                <Row label="BSB" value={bankBsb} copy />
+                <Row label="Bank name" value={bankName} />
+                <Row label="Account holder" value={bankHolder} />
+                <Row label="Account number" value={bankAccount} />
+                <Row label="BSB" value={bankBsb} />
               </Section>
               <Section title="Declarations">
                 {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
