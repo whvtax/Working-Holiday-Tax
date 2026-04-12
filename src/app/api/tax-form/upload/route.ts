@@ -28,10 +28,11 @@ function detectFileType(buf: ArrayBuffer): string | null {
 // Magic bytes for basic validation — also handles iOS HEIC sent with wrong content-type
 function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
   const detected = detectFileType(buf)
-  // If we detected a known type, it's valid
+  // If we detected a known type, it's valid regardless of declared content-type
   if (detected !== null) return true
-  // Lenient fallback: if declared as image and file is non-empty, allow
-  if (contentType.startsWith('image/') && buf.byteLength > 100) return true
+  // Strict rejection: unknown magic bytes are not accepted.
+  // The lenient fallback was removed because it allowed executables (MZ/ELF headers)
+  // declared as image/* to pass through — a real security vulnerability.
   return false
 }
 

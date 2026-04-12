@@ -240,7 +240,7 @@ export default function TaxFormPage() {
     // Pre-upload all files client-side for faster, more reliable submission
     const uploadOne = async (f: File): Promise<string | null> => {
       if (f.size > 10 * 1024 * 1024) {
-        alert(`File "${f.name}" is too large (max 10MB). Please compress it and try again.`)
+        alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB).\n\nMax size is 10MB. Please compress the file or take a lower-quality photo and try again.`)
         return null
       }
       const attempt = async () => {
@@ -267,15 +267,22 @@ export default function TaxFormPage() {
       return null
     }
 
+    // Helper: label for core files
+    const coreLabels: Record<string, string> = {
+      bankStatement: 'Bank Statement',
+      selfiePassport: 'Selfie + Passport',
+    }
+
     // Upload bankStatement + selfiePassport client-side too
     const coreUploads: { label: string; file: File }[] = []
     if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
     if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
     const coreResults = await Promise.all(coreUploads.map(({ file: f }) => uploadOne(f)))
-    const coreFailed = coreResults.filter(r => !r).length
-    if (coreFailed > 0) {
+    const failedCore = coreUploads.filter((_, i) => !coreResults[i])
+    if (failedCore.length > 0) {
       setLoading(false)
-      alert('Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.')
+      const names = failedCore.map(u => coreLabels[u.label] || u.label).join(' and ')
+      alert(`❌ Failed to upload: ${names}\n\nPlease make sure your file is a photo (JPG, PNG, HEIC) or PDF under 10MB, then try again.\n\nIf the problem continues, try taking a new photo with lower quality settings.`)
       return
     }
     const coreUrls: Record<string, string> = {}
@@ -314,10 +321,11 @@ export default function TaxFormPage() {
     ]
     if (allInvoiceFiles.length > 0) {
       const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
-      const failed = results.filter(r => !r).length
-      if (failed > 0) {
+      const failedInvoices = allInvoiceFiles.filter((_, i) => !results[i])
+      if (failedInvoices.length > 0) {
         setLoading(false)
-        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 10MB and try again.`)
+        const names = failedInvoices.map(f => `"${f.name}"`).join(', ')
+        alert(`❌ Failed to upload invoice${failedInvoices.length > 1 ? 's' : ''}: ${names}\n\nPlease make sure each file is a photo (JPG, PNG) or PDF under 10MB, then try again.`)
         return
       }
       results.forEach(url => { if (url) invoiceUrls.push(url) })

@@ -39,6 +39,7 @@ jest.mock('@vercel/postgres', () => {
         primary_job: row[13] || '', marital: row[14] || '', tax_status: row[15] || '',
         how_heard: row[16] || '', au_phone: row[17] || '', notes: row[18] || '',
         file_urls: row[19] || '[]',
+        review_status: 'pending', reviewer_note: '', reviewed_at: '',
       }] })
     }
     if (q.startsWith('SELECT * FROM CRM_TASKS')) {
@@ -50,6 +51,7 @@ jest.mock('@vercel/postgres', () => {
         primary_job: row[13] || '', marital: row[14] || '', tax_status: row[15] || '',
         how_heard: row[16] || '', au_phone: row[17] || '', notes: row[18] || '',
         file_urls: row[19] || '[]',
+        review_status: 'pending', reviewer_note: '', reviewed_at: '',
       }))
       return Promise.resolve({ rows })
     }
@@ -407,18 +409,43 @@ describe('📋 POST /api/tax-form', () => {
     expect(lastInsert[15]).toBe('Working Holiday Maker')
   })
 
-  test('handles 5 files: selfie + bankStatement + 3 invoices', async () => {
-    const fd = taxFd()
-    fd.append('bankStatement', fakeFile('application/pdf'), 'bank.pdf')
-    for (let i = 0; i < 3; i++) fd.append(`invoices_${i}`, fakeFile('application/pdf'), `inv${i}.pdf`)
+  test('handles 5 files: sends 5 pre-uploaded URLs in invoiceUrls field', async () => {
+    // The real flow: client pre-uploads files → gets URLs → sends URLs to /api/tax-form
+    // So we simulate that by sending invoiceUrls JSON with 5 URLs
+    const fd = new FormData()
+    const d = { fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
+      auPhone:'+61412345678', email:'jonas@test.com', country:'Belgium',
+      taxYear:'2023-24', address:'42 Collins St Melbourne', tfn:'999888777',
+      bankDetails:'NAB — 083000 — 87654321', primaryJob:'Chef', marital:'Single',
+      taxStatus:'Working Holiday Maker', howHeard:'Instagram' }
+    Object.entries(d).forEach(([k, v]) => fd.append(k, v))
+    const fakeUrls = [
+      'https://blob.vercel-storage.com/tax-form/invoices/bank.pdf',
+      'https://blob.vercel-storage.com/tax-form/invoices/selfie.jpg',
+      'https://blob.vercel-storage.com/tax-form/invoices/inv0.pdf',
+      'https://blob.vercel-storage.com/tax-form/invoices/inv1.pdf',
+      'https://blob.vercel-storage.com/tax-form/invoices/inv2.pdf',
+    ]
+    fd.append('invoiceUrls', JSON.stringify(fakeUrls))
     await POST(req('/api/tax-form', 'POST', fd))
     const urls = JSON.parse(lastInsert[19])
     expect(urls).toHaveLength(5)
+    expect(urls.every(u => u.startsWith('https://'))).toBe(true)
   })
 
   test('all file URLs go to tax-form/ folder', async () => {
-    const fd = taxFd()
-    fd.append('bankStatement', fakeFile('application/pdf'), 'bank.pdf')
+    const fd = new FormData()
+    const d = { fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
+      auPhone:'+61412345678', email:'jonas@test.com', country:'Belgium',
+      taxYear:'2023-24', address:'42 Collins St Melbourne', tfn:'999888777',
+      bankDetails:'NAB — 083000 — 87654321', primaryJob:'Chef', marital:'Single',
+      taxStatus:'Working Holiday Maker', howHeard:'Instagram' }
+    Object.entries(d).forEach(([k, v]) => fd.append(k, v))
+    const fakeUrls = [
+      'https://blob.vercel-storage.com/tax-form/invoices/bank.pdf',
+      'https://blob.vercel-storage.com/tax-form/invoices/selfie.jpg',
+    ]
+    fd.append('invoiceUrls', JSON.stringify(fakeUrls))
     await POST(req('/api/tax-form', 'POST', fd))
     const urls = JSON.parse(lastInsert[19])
     expect(urls.every(u => u.includes('tax-form/'))).toBe(true)
@@ -430,11 +457,29 @@ describe('📋 POST /api/tax-form', () => {
     expect(res.status).toBe(429)
   })
 
-  test('returns 400 invalid_file when blob rejects', async () => {
-    require('@vercel/blob').put.mockRejectedValueOnce(new Error('File too large'))
-    const res = await POST(req('/api/tax-form', 'POST', taxFd()))
-    expect(res.status).toBe(400)
-    expect((await res.json()).error).toBe('invalid_file')
+  test('rejects non-https URLs in invoiceUrls (security: only accepts https blob URLs)', async () => {
+    // Security check: the API filters out any URLs that don't start with https://
+    const fd = new FormData()
+    const d = { fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
+      auPhone:'+61412345678', email:'jonas@test.com', country:'Belgium',
+      taxYear:'2023-24', address:'42 Collins St Melbourne', tfn:'999888777',
+      bankDetails:'NAB — 083000 — 87654321', primaryJob:'Chef', marital:'Single',
+      taxStatus:'Working Holiday Maker', howHeard:'Instagram' }
+    Object.entries(d).forEach(([k, v]) => fd.append(k, v))
+    // Mix valid and invalid URLs
+    const mixedUrls = [
+      'https://blob.vercel-storage.com/tax-form/invoices/safe.jpg',
+      'javascript:alert(1)',
+      'http://evil.com/hack',
+      'file:///etc/passwd',
+    ]
+    fd.append('invoiceUrls', JSON.stringify(mixedUrls))
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200) // form submits fine
+    const urls = JSON.parse(lastInsert[19])
+    // Only the https:// URL should survive the filter
+    expect(urls).toHaveLength(1)
+    expect(urls[0]).toBe('https://blob.vercel-storage.com/tax-form/invoices/safe.jpg')
   })
 })
 
@@ -1009,15 +1054,17 @@ describe('🔍 Magic-byte file validation', () => {
     expect((await res.json()).error).toBe('invalid_file')
   })
 
-  test('✅ ELF executable disguised as PDF is rejected', async () => {
-    const { POST } = await import('../src/app/api/tax-form/route.ts')
+  test('✅ ELF executable disguised as PDF is rejected by upload route', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
     // ELF magic bytes = Linux executable
     const elfBytes = [0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, ...Array(100).fill(0x00)]
-    const fd = taxFd()
-    fd.append('bankStatement', fileWithBytes(elfBytes, 'application/pdf', 'malware.pdf'))
-    const res = await POST(req('/api/tax-form', 'POST', fd))
+    const r = new NextRequest(
+      'http://localhost/api/tax-form/upload?filename=malware.pdf',
+      { method: 'POST', body: new Uint8Array(elfBytes),
+        headers: { 'content-type': 'application/pdf', 'x-forwarded-for': '10.0.0.3' } }
+    )
+    const res = await POST(r)
     expect(res.status).toBe(400)
-    expect((await res.json()).error).toBe('invalid_file')
   })
 
   test('✅ HTML/JS file disguised as image is rejected', async () => {
@@ -1389,48 +1436,316 @@ describe('💰 POST + DELETE /api/crm/clients/[id]/tax-returns', () => {
 
 // ══════════════════════════════════════════════════════════════
 describe('📤 POST /api/tax-form/upload', () => {
+  // Helper: create a NextRequest that sends raw bytes as body (how the real client sends files)
+  function uploadReq(bytes, contentType = 'image/jpeg', filename = 'invoice.jpg') {
+    const buf = new Uint8Array(bytes)
+    return new NextRequest(
+      `http://localhost/api/tax-form/upload?filename=${encodeURIComponent(filename)}`,
+      {
+        method: 'POST',
+        body: buf,
+        headers: {
+          'content-type': contentType,
+          'x-forwarded-for': '10.0.0.2',
+        },
+      }
+    )
+  }
+
   beforeEach(() => {
     resetDb()
     require('@vercel/blob').put.mockClear()
+    // Reset redis to not rate-limit
+    const redisMock = require('redis')
+    redisMock.state.execResult = [1, 1]
+    redisMock.createClient.mockImplementation(() => ({
+      connect: jest.fn(async () => {}),
+      disconnect: jest.fn(async () => {}),
+      multi: jest.fn(() => ({
+        incr: jest.fn().mockReturnThis(),
+        expire: jest.fn().mockReturnThis(),
+        exec: jest.fn(() => Promise.resolve(redisMock.state.execResult)),
+      })),
+      get: jest.fn(async () => null),
+      set: jest.fn(async () => 'OK'),
+      del: jest.fn(async () => 1),
+      incr: jest.fn(async () => 1),
+      expire: jest.fn(async () => 1),
+    }))
   })
 
-  test('✅ valid JPEG invoice uploads successfully', async () => {
+  test('✅ valid JPEG uploads successfully and returns URL', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const fd = new FormData()
     const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
-    fd.append('file', fileWithBytes(jpegBytes, 'image/jpeg', 'invoice.jpg'))
-    const r = req('/api/tax-form/upload', 'POST', fd)
+    const r = uploadReq(jpegBytes, 'image/jpeg', 'invoice.jpg')
     const res = await POST(r)
     expect(res.status).toBe(200)
     const body = await res.json()
+    expect(body.ok).toBe(true)
+    expect(body.url).toMatch(/^https:\/\/blob\.vercel-storage\.com\/tax-form\/invoices\//)
+  })
+
+  test('✅ valid PDF uploads successfully and returns URL', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const pdfBytes = [0x25, 0x50, 0x44, 0x46, 0x2D, 0x31, 0x2E, 0x34, ...Array(100).fill(0x20)]
+    const r = uploadReq(pdfBytes, 'application/pdf', 'bank.pdf')
+    const res = await POST(r)
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.ok).toBe(true)
     expect(body.url).toBeTruthy()
   })
 
-  test('✅ valid PDF invoice uploads successfully', async () => {
+  test('✅ valid PNG uploads successfully', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const fd = new FormData()
-    const pdfBytes = [0x25, 0x50, 0x44, 0x46, ...Array(100).fill(0x20)]
-    fd.append('file', fileWithBytes(pdfBytes, 'application/pdf', 'invoice.pdf'))
-    const r = req('/api/tax-form/upload', 'POST', fd)
+    const pngBytes = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, ...Array(100).fill(0x00)]
+    const r = uploadReq(pngBytes, 'image/png', 'photo.png')
     const res = await POST(r)
     expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
   })
 
-  test('❌ executable disguised as JPEG is rejected', async () => {
+  test('✅ HEIC from iPhone uploads successfully (magic bytes: ftyp)', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const fd = new FormData()
-    const exeBytes = [0x4D, 0x5A, 0x90, 0x00, ...Array(100).fill(0x00)]
-    fd.append('file', fileWithBytes(exeBytes, 'image/jpeg', 'virus.jpg'))
-    const r = req('/api/tax-form/upload', 'POST', fd)
+    // HEIC: bytes 4-7 are 'ftyp' (0x66 0x74 0x79 0x70)
+    const heicBytes = [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63, ...Array(100).fill(0x00)]
+    const r = uploadReq(heicBytes, 'image/heic', 'photo.heic')
+    const res = await POST(r)
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+  })
+
+  test('❌ executable disguised as JPEG is rejected (MZ header)', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const exeBytes = [0x4D, 0x5A, 0x90, 0x00, ...Array(100).fill(0x00)] // MZ = Windows EXE
+    const r = uploadReq(exeBytes, 'image/jpeg', 'virus.jpg')
     const res = await POST(r)
     expect(res.status).toBe(400)
   })
 
-  test('❌ missing file returns 400', async () => {
+  test('❌ ELF executable disguised as PDF is rejected', async () => {
     const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
-    const fd = new FormData()
-    const r = req('/api/tax-form/upload', 'POST', fd)
+    const elfBytes = [0x7F, 0x45, 0x4C, 0x46, 0x02, 0x01, ...Array(100).fill(0x00)] // ELF = Linux EXE
+    const r = uploadReq(elfBytes, 'application/pdf', 'malware.pdf')
     const res = await POST(r)
     expect(res.status).toBe(400)
+  })
+
+  test('❌ PHP script disguised as image is rejected', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const phpBytes = [...'<?php system($_GET["cmd"]); ?>'].map(c => c.charCodeAt(0))
+    const r = uploadReq(phpBytes, 'image/jpeg', 'shell.php.jpg')
+    const res = await POST(r)
+    expect(res.status).toBe(400)
+  })
+
+  test('❌ empty body (0 bytes) is rejected', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const r = uploadReq([], 'image/jpeg', 'empty.jpg')
+    const res = await POST(r)
+    expect(res.status).toBe(400)
+  })
+
+  test('❌ returns 429 when rate limited', async () => {
+    const redisMock = require('redis')
+    redisMock.state.execResult = [6, 1]
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    const r = uploadReq(jpegBytes, 'image/jpeg', 'invoice.jpg')
+    const res = await POST(r)
+    expect(res.status).toBe(429)
+  })
+
+  test('✅ filename is sanitised: special chars replaced with underscores', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    require('@vercel/blob').put.mockClear()
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    const r = uploadReq(jpegBytes, 'image/jpeg', 'my file! (1).jpg')
+    await POST(r)
+    const [blobPath] = require('@vercel/blob').put.mock.calls[0]
+    expect(blobPath).not.toContain(' ')
+    expect(blobPath).not.toContain('!')
+    expect(blobPath).not.toContain('(')
+  })
+
+  test('✅ URL is saved to correct folder: tax-form/invoices/', async () => {
+    const { POST } = await import('../src/app/api/tax-form/upload/route.ts')
+    require('@vercel/blob').put.mockClear()
+    const jpegBytes = [0xFF, 0xD8, 0xFF, 0xE0, ...Array(100).fill(0x00)]
+    const r = uploadReq(jpegBytes, 'image/jpeg', 'receipt.jpg')
+    const res = await POST(r)
+    const body = await res.json()
+    expect(body.url).toContain('tax-form/invoices/')
+  })
+})
+
+// ══════════════════════════════════════════════════════════════
+// 📎 ABN INVOICE LIMITS — בדיקת מגבלת חשבוניות
+// ══════════════════════════════════════════════════════════════
+describe('📎 Tax form — ABN invoice URL limits', () => {
+  let POST
+
+  beforeAll(async () => {
+    ;({ POST } = await import('../src/app/api/tax-form/route.ts'))
+  })
+
+  beforeEach(() => {
+    resetDb()
+    setRateCount(1)
+  })
+
+  // Helper: build a tax form submission with pre-uploaded invoice URLs
+  function taxFdWithUrls(invoiceUrls) {
+    const fd = new FormData()
+    const d = {
+      fullName:'Test User', dob:'1997-06-15', waNumber:'+32477000000',
+      auPhone:'+61412000000', email:'test@test.com', country:'Belgium',
+      taxYear:'2024-25', address:'1 Test St Melbourne', tfn:'123456789',
+      bankDetails:'CBA — 062000 — 12345678', primaryJob:'Worker',
+      marital:'Single', taxStatus:'Working Holiday Maker', howHeard:'TikTok',
+    }
+    Object.entries(d).forEach(([k, v]) => fd.append(k, v))
+    if (invoiceUrls.length > 0) {
+      fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
+    }
+    return fd
+  }
+
+  function makeUrls(count, prefix = 'invoice') {
+    return Array.from({ length: count }, (_, i) =>
+      `https://blob.vercel-storage.com/tax-form/invoices/${prefix}_${i}.jpg`
+    )
+  }
+
+  // ── ללא ABN: עד 10 חשבוניות פרטיות ──────────────────────────────────────
+
+  test('✅ ללא ABN: 0 חשבוניות — נשמר תקין', async () => {
+    const fd = taxFdWithUrls([])
+    fd.append('hasAbn', 'No')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200)
+    const urls = JSON.parse(lastInsert[19])
+    expect(urls).toHaveLength(0)
+  })
+
+  test('✅ ללא ABN: 5 חשבוניות פרטיות — נשמרות תקין', async () => {
+    const invoiceUrls = makeUrls(5, 'private')
+    const fd = taxFdWithUrls(invoiceUrls)
+    fd.append('hasAbn', 'No')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200)
+    const urls = JSON.parse(lastInsert[19])
+    expect(urls).toHaveLength(5)
+  })
+
+  test('✅ ללא ABN: 10 חשבוניות פרטיות (מקסימום) — נשמרות תקין', async () => {
+    const invoiceUrls = makeUrls(10, 'private')
+    const fd = taxFdWithUrls(invoiceUrls)
+    fd.append('hasAbn', 'No')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200)
+    const urls = JSON.parse(lastInsert[19])
+    expect(urls).toHaveLength(10)
+  })
+
+  test('✅ ללא ABN: 10 חשבוניות + bankStatement + selfie = 12 URLs סה"כ', async () => {
+    const coreUrls = [
+      'https://blob.vercel-storage.com/tax-form/invoices/bank.pdf',
+      'https://blob.vercel-storage.com/tax-form/invoices/selfie.jpg',
+    ]
+    const invoiceUrls = [...coreUrls, ...makeUrls(10, 'private')]
+    const fd = taxFdWithUrls(invoiceUrls)
+    fd.append('hasAbn', 'No')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200)
+    const urls = JSON.parse(lastInsert[19])
+    expect(urls).toHaveLength(12) // 2 core + 10 invoices
+  })
+
+  // ── עם ABN: עד 10 פרטיות + 10 עסקיות = 20 חשבוניות ────────────────────
+
+  test('✅ עם ABN: 10 חשבוניות עסקיות + 10 פרטיות = 20 URLs — נשמרות תקין', async () => {
+    const businessUrls = makeUrls(10, 'business')
+    const privateUrls = makeUrls(10, 'private')
+    const allUrls = [...businessUrls, ...privateUrls]
+    const fd = taxFdWithUrls(allUrls)
+    fd.append('hasAbn', 'Yes')
+    fd.append('abnNumber', '12 345 678 901')
+    fd.append('abnIncome', '15000')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200)
+    const urls = JSON.parse(lastInsert[19])
+    expect(urls).toHaveLength(20)
+  })
+
+  test('✅ עם ABN: ABN number ו-income נשמרים ב-notes', async () => {
+    const fd = taxFdWithUrls([])
+    fd.append('hasAbn', 'Yes')
+    fd.append('abnNumber', '98 765 432 100')
+    fd.append('abnIncome', '22000')
+    await POST(req('/api/tax-form', 'POST', fd))
+    const notes = lastInsert[18]
+    expect(notes).toContain('ABN: Yes')
+    expect(notes).toContain('98 765 432 100')
+    expect(notes).toContain('22000')
+  })
+
+  test('✅ עם ABN: 0 חשבוניות עסקיות + 10 פרטיות = 10 URLs', async () => {
+    const privateUrls = makeUrls(10, 'private')
+    const fd = taxFdWithUrls(privateUrls)
+    fd.append('hasAbn', 'Yes')
+    fd.append('abnNumber', '12 345 678 901')
+    fd.append('abnIncome', '5000')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200)
+    const urls = JSON.parse(lastInsert[19])
+    expect(urls).toHaveLength(10)
+  })
+
+  test('✅ עם ABN: 10 עסקיות + 0 פרטיות = 10 URLs', async () => {
+    const businessUrls = makeUrls(10, 'business')
+    const fd = taxFdWithUrls(businessUrls)
+    fd.append('hasAbn', 'Yes')
+    fd.append('abnNumber', '12 345 678 901')
+    fd.append('abnIncome', '18000')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(200)
+    const urls = JSON.parse(lastInsert[19])
+    expect(urls).toHaveLength(10)
+  })
+
+  test('✅ כל ה-URLs עוברים סינון: non-https נמחקים', async () => {
+    const mixedUrls = [
+      'https://blob.vercel-storage.com/tax-form/invoices/good.jpg',
+      'http://evil.com/hack.jpg',
+      'javascript:alert(1)',
+      'https://blob.vercel-storage.com/tax-form/invoices/also-good.pdf',
+      'file:///etc/passwd',
+    ]
+    const fd = taxFdWithUrls(mixedUrls)
+    fd.append('hasAbn', 'No')
+    await POST(req('/api/tax-form', 'POST', fd))
+    const urls = JSON.parse(lastInsert[19])
+    // Only 2 https:// URLs should survive
+    expect(urls).toHaveLength(2)
+    expect(urls.every(u => u.startsWith('https://'))).toBe(true)
+  })
+
+  test('✅ hasAbn=No נשמר ב-notes', async () => {
+    const fd = taxFdWithUrls([])
+    fd.append('hasAbn', 'No')
+    await POST(req('/api/tax-form', 'POST', fd))
+    const notes = lastInsert[18]
+    expect(notes).toContain('ABN: No')
+  })
+
+  test('✅ rate limit: 429 גם בטופס עם ABN', async () => {
+    setRateCount(6)
+    const fd = taxFdWithUrls([])
+    fd.append('hasAbn', 'Yes')
+    fd.append('abnNumber', '12 345 678 901')
+    fd.append('abnIncome', '10000')
+    const res = await POST(req('/api/tax-form', 'POST', fd))
+    expect(res.status).toBe(429)
   })
 })
