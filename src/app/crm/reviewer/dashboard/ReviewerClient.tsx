@@ -225,10 +225,10 @@ function TaskCard({
                 {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} copy />}
               </Section>
               <Section title="Bank account">
-                <Row label="Bank name" value={bankName} copy />
-                <Row label="Account holder" value={bankHolder} copy />
-                <Row label="Account number" value={bankAccount} copy />
-                <Row label="BSB" value={bankBsb} copy />
+                <Row label="Bank name" value={bankName} />
+                <Row label="Account holder" value={bankHolder} />
+                <Row label="Account number" value={bankAccount} />
+                <Row label="BSB" value={bankBsb} />
               </Section>
               <Section title="Declarations">
                 {declaredVal !== '—' && <DeclRow text={declaredVal} />}
