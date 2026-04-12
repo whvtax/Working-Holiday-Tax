@@ -177,7 +177,6 @@ export default function TaxFormPage() {
   // Files
   const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
-  const [invoices, setInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
 
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
@@ -189,7 +188,6 @@ export default function TaxFormPage() {
   const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
   const [abnNumber, setAbnNumber]     = useState('')
   const [abnIncome, setAbnIncome]     = useState('')
-  const [abnInvoices, setAbnInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -237,50 +235,6 @@ export default function TaxFormPage() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
 
-    // Pre-upload all files client-side for faster, more reliable submission
-    const uploadOne = async (f: File): Promise<string | null> => {
-      if (f.size > 10 * 1024 * 1024) {
-        alert(`File "${f.name}" is too large (max 10MB). Please compress it and try again.`)
-        return null
-      }
-      const attempt = async () => {
-        // Normalize content-type for iOS HEIC photos
-        let contentType = f.type || 'image/jpeg'
-        if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
-        if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
-        const r = await fetch(
-          `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
-          { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
-        )
-        const data = await r.json().catch(() => ({}))
-        if (!r.ok) throw new Error(data?.error || String(r.status))
-        return data
-      }
-      for (let i = 0; i < 3; i++) {
-        try { const res = await attempt(); return res?.url ?? null }
-        catch (e) {
-          if (i === 2) return null
-          await new Promise(r => setTimeout(r, 800 * (i + 1)))
-        }
-      }
-      return null
-    }
-
-    // Upload bankStatement + selfiePassport client-side too
-    const coreUploads: { label: string; file: File }[] = []
-    if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
-    if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
-    const coreResults = await Promise.all(coreUploads.map(({ file: f }) => uploadOne(f)))
-    const coreFailed = coreResults.filter(r => !r).length
-    if (coreFailed > 0) {
-      setLoading(false)
-      alert('Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.')
-      return
-    }
-    const coreUrls: Record<string, string> = {}
-    coreUploads.forEach(({ label }, i) => { if (coreResults[i]) coreUrls[label] = coreResults[i]! })
-
-    // Build FormData (no file blobs — URLs only)
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
@@ -303,39 +257,19 @@ export default function TaxFormPage() {
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ I confirm that all information provided is accurate and complete. I understand that providing false information may result in penalties under Australian tax law, and I accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredIncome', declaredIncome ? '✓ I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide.' : '')
-    if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
-    if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
-    const invoiceUrls: string[] = []
-    const allInvoiceFiles = [
-      ...invoices.files,
-      ...abnInvoices.files,
-    ]
-    if (allInvoiceFiles.length > 0) {
-      const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
-      const failed = results.filter(r => !r).length
-      if (failed > 0) {
-        setLoading(false)
-        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 10MB and try again.`)
-        return
-      }
-      results.forEach(url => { if (url) invoiceUrls.push(url) })
-    }
-    // Combine all uploaded URLs
-    const allFileUrls = [
-      ...Object.values(coreUrls),
-      ...invoiceUrls,
-    ]
-    if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
+    // Attach files directly — same pattern as TFN/Super/ABN
+    if (selfiePassport.file) fd.append('selfiePassport', selfiePassport.file)
+    if (bankStatement.file)  fd.append('bankStatement',  bankStatement.file)
 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
       if (res.ok) {
-        window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
+        window.scrollTo({top:0,behavior:'instant'}); setSubmitted(true)
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF.'}`)
         else alert('Something went wrong. Please try again or contact us directly.')
       }
     } catch {
@@ -617,23 +551,6 @@ export default function TaxFormPage() {
                 <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
                   value={abnIncome} onChange={e => { setAbnIncome(e.target.value); setErrors(p => ({...p, abnIncome: ''})) }} />
               </Field>
-
-              <Field label="Business expense invoices" error={errors.abnInvoices}>
-                <p style={{fontSize:'12px',color:'#587066',marginBottom:'10px',lineHeight:1.6}}>
-                  Please upload invoices for all business-related expenses you would like to claim as deductions.
-                </p>
-                <MultiFileUpload
-                  id="abnInvoices"
-                  value={abnInvoices}
-                  onChange={setAbnInvoices}
-                  accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,application/pdf"
-                  maxFiles={5}
-                  label="Upload expense invoices"
-                />
-                <p style={{fontSize:'12px',color:'#587066',marginTop:'8px',lineHeight:1.6}}>
-                  If you have more than 5 invoices, please send them to us via WhatsApp.
-                </p>
-              </Field>
             </>)}
 
           <div className="form-section-title">Bank account details</div>
@@ -666,14 +583,6 @@ export default function TaxFormPage() {
             <Field label="Selfie holding your passport" required error={errors.selfiePassport}>
               <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
-            </Field>
-
-            <Field label="Work-related expense invoices">
-              <MultiFileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
-                value={invoices} onChange={setInvoices} maxFiles={5} />
-              <p style={{fontSize:'12px',color:'#587066',marginTop:'8px',lineHeight:1.6}}>
-                If you have more than 5 invoices, please send them to us via WhatsApp.
-              </p>
             </Field>
             </Field>
           </div>
