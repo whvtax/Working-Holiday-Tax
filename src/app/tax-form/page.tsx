@@ -673,7 +673,7 @@ export default function TaxFormPage() {
 
             {hasExpenses === 'yes' && (
               <div style={{background:'#EAF6F1',border:'1.5px solid #A7D9C5',borderRadius:12,padding:'12px 16px',fontSize:13,color:'#0B5240',fontWeight:500,lineHeight:1.6}}>
-                📎 Please send us all your invoices / receipts via WhatsApp or email.
+                Please send us all your invoices / receipts.
               </div>
             )}
           </div>
