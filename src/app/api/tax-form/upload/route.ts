@@ -12,13 +12,24 @@ const MAX_SIZE = 25 * 1024 * 1024 // 25MB
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const ip = getClientIp(req)
-  if (await isRateLimited(ip, 'tax-form')) {
-    return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+
+  // Parse body first to check if this is a callback (no rate limit needed)
+  let body: HandleUploadBody
+  try {
+    body = await req.json() as HandleUploadBody
+  } catch {
+    return NextResponse.json({ ok: false, error: 'Invalid request' }, { status: 400 })
+  }
+
+  // Only rate-limit token generation requests, not blob callbacks
+  const isCallback = (body as any)?.type === 'blob.upload-completed'
+  if (!isCallback) {
+    if (await isRateLimited(ip, 'tax-form')) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+    }
   }
 
   try {
-    const body = await req.json() as HandleUploadBody
-
     const response = await handleUpload({
       body,
       request: req,

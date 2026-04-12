@@ -252,6 +252,7 @@ export default function TaxFormPage() {
           })
           return blob.url
         } catch (e) {
+          console.error(`[upload] attempt ${i + 1} failed for "${f.name}":`, e)
           if (i === 2) return null
           await new Promise(r => setTimeout(r, 800 * (i + 1)))
         }
