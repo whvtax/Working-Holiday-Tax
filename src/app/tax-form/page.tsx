@@ -227,27 +227,22 @@ export default function TaxFormPage() {
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
     fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
-    // Upload expense receipt files for ABN and TFN items
-    const uploadExpenseFiles = async (items: ExpenseItem[]) => {
-      return Promise.all(items.map(async item => {
-        const urls = await Promise.all(
-          item.files.filter(f => f.file).map(f => uploadOne(f.file!))
-        )
-        return { description: item.description, amount: item.amount, fileUrls: urls.filter(Boolean) as string[] }
-      }))
-    }
-
+    // Send expense files directly as File objects — server uploads them (same as selfie in other forms)
     const validAbn = abnExpenses.filter(e => e.description.trim() || e.amount.trim())
     const validTfn = tfnExpenses.filter(e => e.description.trim() || e.amount.trim())
-    const [abnWithUrls, tfnWithUrls] = await Promise.all([
-      uploadExpenseFiles(validAbn),
-      uploadExpenseFiles(validTfn),
-    ])
-
     if (hasAbn === 'yes') {
-      if (abnWithUrls.length > 0) fd.append('abnExpenses', JSON.stringify(abnWithUrls))
+      fd.append('abnNumber',   abnNumber)
+      fd.append('abnIncome',   abnIncome)
+      fd.append('abnWorkType', abnWorkType)
+      if (validAbn.length > 0) {
+        fd.append('abnExpenses', JSON.stringify(validAbn.map((e, i) => ({ description: e.description, amount: e.amount, fileCount: e.files.filter(f=>f.file).length, index: i }))))
+        validAbn.forEach((item, i) => item.files.forEach((f, fi) => { if (f.file) fd.append(`abnFile_${i}_${fi}`, f.file) }))
+      }
     }
-    if (tfnWithUrls.length > 0) fd.append('tfnExpenses', JSON.stringify(tfnWithUrls))
+    if (validTfn.length > 0) {
+      fd.append('tfnExpenses', JSON.stringify(validTfn.map((e, i) => ({ description: e.description, amount: e.amount, fileCount: e.files.filter(f=>f.file).length, index: i }))))
+      validTfn.forEach((item, i) => item.files.forEach((f, fi) => { if (f.file) fd.append(`tfnFile_${i}_${fi}`, f.file) }))
+    }
 
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
@@ -257,11 +252,8 @@ export default function TaxFormPage() {
     fd.append('declaredIncome', declaredIncome ? '✓ I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide.' : '')
     if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
-    const expenseFileUrls = [
-      ...abnWithUrls.flatMap(e => e.fileUrls),
-      ...tfnWithUrls.flatMap(e => e.fileUrls),
-    ]
-    const allFileUrls = [...Object.values(coreUrls), ...expenseFileUrls]
+
+    const allFileUrls = [...Object.values(coreUrls)]
     if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 
     try {
