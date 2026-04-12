@@ -3,11 +3,7 @@ import { put } from '@vercel/blob'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
-// Tell Next.js not to parse the body — we read it as raw ArrayBuffer
-// This also disables the default 4MB body size limit
-export const config = { api: { bodyParser: false } }
-
-// Vercel App Router: disable body size limit for this route
+// Vercel App Router: allow up to 60s for large file uploads
 export const maxDuration = 60
 
 const ALLOWED = new Set([
