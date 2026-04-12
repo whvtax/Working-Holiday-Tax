@@ -112,10 +112,10 @@ export default function TaxFormPage() {
   const [abnNumber, setAbnNumber]     = useState('')
   const [abnIncome, setAbnIncome]     = useState('')
   const [abnWorkType, setAbnWorkType] = useState('')
-  const [abnExpense, setAbnExpense]         = useState('')
-  const [abnExpenseCount, setAbnExpenseCount] = useState('')
-  const [tfnExpense, setTfnExpense]         = useState('')
-  const [tfnExpenseCount, setTfnExpenseCount] = useState('')
+  type ExpenseItem = { description: string; amount: string; receipts: string }
+  const emptyExpense = (): ExpenseItem => ({ description: '', amount: '', receipts: '' })
+  const [abnExpenses, setAbnExpenses] = useState<ExpenseItem[]>([emptyExpense()])
+  const [tfnExpenses, setTfnExpenses] = useState<ExpenseItem[]>([emptyExpense()])
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -224,11 +224,11 @@ export default function TaxFormPage() {
       fd.append('abnNumber',   abnNumber)
       fd.append('abnIncome',   abnIncome)
       fd.append('abnWorkType', abnWorkType)
-      if (abnExpense) fd.append('abnExpense', abnExpense)
-      if (abnExpenseCount) fd.append('abnExpenseCount', abnExpenseCount)
+      const validAbn = abnExpenses.filter(e => e.description.trim() || e.amount.trim())
+      if (validAbn.length > 0) fd.append('abnExpenses', JSON.stringify(validAbn))
     }
-    if (tfnExpense) fd.append('tfnExpense', tfnExpense)
-    if (tfnExpenseCount) fd.append('tfnExpenseCount', tfnExpenseCount)
+    const validTfn = tfnExpenses.filter(e => e.description.trim() || e.amount.trim())
+    if (validTfn.length > 0) fd.append('tfnExpenses', JSON.stringify(validTfn))
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
@@ -536,22 +536,44 @@ export default function TaxFormPage() {
                   value={abnWorkType} onChange={e => { setAbnWorkType(e.target.value); setErrors(p => ({...p, abnWorkType: ''})) }} />
               </Field>
 
-              <Field label="Total business expenses under ABN (AUD) — leave blank if none">
-                <input className={`inp`} type="text" inputMode="decimal" placeholder="e.g. 2,000"
-                  value={abnExpense} onChange={e => setAbnExpense(e.target.value)} />
-              </Field>
-
-              {abnExpense.trim() !== '' && (
-                <div style={{marginTop:'-4px',marginBottom:'14px'}}>
-                  <Field label="Number of business expense receipts/invoices">
-                    <input className="inp" type="number" inputMode="numeric" min="0" placeholder="e.g. 5"
-                      value={abnExpenseCount} onChange={e => setAbnExpenseCount(e.target.value)} />
-                  </Field>
-                  <div style={{background:'#FFFCF5',border:'1.5px solid #E9A020',borderRadius:'10px',padding:'10px 14px',fontSize:'13px',color:'#92400e',lineHeight:1.6}}>
-                    Please send all ABN-related invoices and receipts to our team so we can claim them for you.
+              <div style={{marginBottom:'14px'}}>
+                <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
+                  Business expenses under ABN <span style={{fontWeight:400,color:'#6b7280'}}>(leave empty if none)</span>
+                </label>
+                {abnExpenses.map((item, i) => (
+                  <div key={i} style={{background:'#f7fbf9',border:'1.5px solid #d4eae2',borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',position:'relative'}}>
+                    <div style={{fontSize:'11px',fontWeight:700,color:'#0E5C42',marginBottom:'8px',textTransform:'uppercase',letterSpacing:'0.05em'}}>Expense {i + 1}</div>
+                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'8px'}}>
+                      <div>
+                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Description</label>
+                        <input className="inp" type="text" placeholder="e.g. Work tools, uniform, car" style={{fontSize:'13px'}}
+                          value={item.description}
+                          onChange={e => { const n=[...abnExpenses]; n[i]={...n[i],description:e.target.value}; setAbnExpenses(n) }} />
+                      </div>
+                      <div>
+                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Amount (AUD)</label>
+                        <input className="inp" type="text" inputMode="decimal" placeholder="e.g. 500" style={{fontSize:'13px'}}
+                          value={item.amount}
+                          onChange={e => { const n=[...abnExpenses]; n[i]={...n[i],amount:e.target.value}; setAbnExpenses(n) }} />
+                      </div>
+                    </div>
+                    <div>
+                      <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Number of invoices/receipts</label>
+                      <input className="inp" type="number" inputMode="numeric" min="0" placeholder="e.g. 3" style={{fontSize:'13px'}}
+                        value={item.receipts}
+                        onChange={e => { const n=[...abnExpenses]; n[i]={...n[i],receipts:e.target.value}; setAbnExpenses(n) }} />
+                    </div>
+                    {abnExpenses.length > 1 && (
+                      <button type="button" onClick={() => setAbnExpenses(abnExpenses.filter((_,j)=>j!==i))}
+                        style={{position:'absolute',top:'10px',right:'12px',background:'none',border:'none',cursor:'pointer',fontSize:'16px',color:'#9ca3af',lineHeight:1}}>✕</button>
+                    )}
                   </div>
-                </div>
-              )}
+                ))}
+                <button type="button" onClick={() => setAbnExpenses([...abnExpenses, emptyExpense()])}
+                  style={{display:'flex',alignItems:'center',gap:6,background:'none',border:'1.5px dashed #0E5C42',borderRadius:'10px',padding:'9px 16px',fontSize:'13px',color:'#0E5C42',fontWeight:600,cursor:'pointer',width:'100%',justifyContent:'center',fontFamily:'inherit'}}>
+                  + Add business expense
+                </button>
+              </div>
             </>)}
 
           <div className="form-section-title">Bank account details</div>
@@ -586,28 +608,44 @@ export default function TaxFormPage() {
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
 
-            <Field label="Total personal work-related expenses (AUD) — leave blank if none">
-              <input
-                className="inp"
-                type="text"
-                inputMode="decimal"
-                placeholder="e.g. 1,500"
-                value={tfnExpense}
-                onChange={e => setTfnExpense(e.target.value)}
-              />
-            </Field>
-
-            {tfnExpense.trim() !== '' && (
-              <div style={{marginTop:'-4px',marginBottom:'14px'}}>
-                <Field label="Number of personal expense receipts">
-                  <input className="inp" type="number" inputMode="numeric" min="0" placeholder="e.g. 3"
-                    value={tfnExpenseCount} onChange={e => setTfnExpenseCount(e.target.value)} />
-                </Field>
-                <div style={{background:'#FFFCF5',border:'1.5px solid #E9A020',borderRadius:'10px',padding:'10px 14px',fontSize:'13px',color:'#92400e',lineHeight:1.6}}>
-                  Please send all personal work-related receipts to our team so we can review them for your tax return.
-                </div>
+            <div style={{marginBottom:'14px'}}>
+                <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
+                  Personal work-related expenses <span style={{fontWeight:400,color:'#6b7280'}}>(leave empty if none)</span>
+                </label>
+                {tfnExpenses.map((item, i) => (
+                  <div key={i} style={{background:'#f7fbf9',border:'1.5px solid #d4eae2',borderRadius:'12px',padding:'12px 14px',marginBottom:'10px',position:'relative'}}>
+                    <div style={{fontSize:'11px',fontWeight:700,color:'#0E5C42',marginBottom:'8px',textTransform:'uppercase',letterSpacing:'0.05em'}}>Expense {i + 1}</div>
+                    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'8px',marginBottom:'8px'}}>
+                      <div>
+                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Description</label>
+                        <input className="inp" type="text" placeholder="e.g. Work uniform, phone, tools" style={{fontSize:'13px'}}
+                          value={item.description}
+                          onChange={e => { const n=[...tfnExpenses]; n[i]={...n[i],description:e.target.value}; setTfnExpenses(n) }} />
+                      </div>
+                      <div>
+                        <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Amount (AUD)</label>
+                        <input className="inp" type="text" inputMode="decimal" placeholder="e.g. 300" style={{fontSize:'13px'}}
+                          value={item.amount}
+                          onChange={e => { const n=[...tfnExpenses]; n[i]={...n[i],amount:e.target.value}; setTfnExpenses(n) }} />
+                      </div>
+                    </div>
+                    <div>
+                      <label style={{fontSize:'12px',color:'#4b5563',fontWeight:500,display:'block',marginBottom:'4px'}}>Number of receipts</label>
+                      <input className="inp" type="number" inputMode="numeric" min="0" placeholder="e.g. 2" style={{fontSize:'13px'}}
+                        value={item.receipts}
+                        onChange={e => { const n=[...tfnExpenses]; n[i]={...n[i],receipts:e.target.value}; setTfnExpenses(n) }} />
+                    </div>
+                    {tfnExpenses.length > 1 && (
+                      <button type="button" onClick={() => setTfnExpenses(tfnExpenses.filter((_,j)=>j!==i))}
+                        style={{position:'absolute',top:'10px',right:'12px',background:'none',border:'none',cursor:'pointer',fontSize:'16px',color:'#9ca3af',lineHeight:1}}>✕</button>
+                    )}
+                  </div>
+                ))}
+                <button type="button" onClick={() => setTfnExpenses([...tfnExpenses, emptyExpense()])}
+                  style={{display:'flex',alignItems:'center',gap:6,background:'none',border:'1.5px dashed #0E5C42',borderRadius:'10px',padding:'9px 16px',fontSize:'13px',color:'#0E5C42',fontWeight:600,cursor:'pointer',width:'100%',justifyContent:'center',fontFamily:'inherit'}}>
+                  + Add personal expense
+                </button>
               </div>
-            )}
           </div>
 
           <div className="form-section-title">Declaration</div>

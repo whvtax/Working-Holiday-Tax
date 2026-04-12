@@ -272,7 +272,7 @@ export default function DashboardClient() {
     const allParts = (activeTask.notes||'').split(' | ')
     // Keep structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expense:|ABN Receipts:|TFN Expense:|TFN Receipts:|Expense Amount:)/i)
+      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|Expense Amount:)/i)
       || p.startsWith('📝 ')
     )
     // taskNotes is the admin's own free-text notes only
@@ -375,12 +375,21 @@ export default function DashboardClient() {
   }) + ' AEST' : '—'
 
   // Strip structured form data from notes — return only the user-written portion
+  const parseExpenseItems = (notes: string, prefix: string) => {
+    const raw = notes.match(new RegExp(prefix + ' Expenses: ([^|]+(?:\\|[^|]+)*?)(?= \\| [A-Z]|$)'))?.[1]?.trim() || ''
+    if (!raw) return []
+    return raw.split(' || ').map(item => {
+      const m = item.match(/Item \d+: (.+?) \| \$(.+?) AUD \| (\d+) receipt/)
+      return m ? { description: m[1], amount: m[2], receipts: m[3] } : null
+    }).filter(Boolean) as {description:string;amount:string;receipts:string}[]
+  }
+
   const extractUserNotes = (raw:string) => {
     if (!raw) return ''
     const parts = raw.split(' | ')
     const userParts = parts
       .filter(p =>
-        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expense:|ABN Receipts:|TFN Expense:|TFN Receipts:|Expense Amount:)/i)
+        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|Expense Amount:)/i)
         && !p.startsWith('📝 ') // exclude reviewer notes from admin textarea
       )
     return userParts.join(' | ').trim()
@@ -597,12 +606,28 @@ export default function DashboardClient() {
               + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Type of work under ABN', (task.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'—') : '')
-              + (abnValPdf==='Yes' ? (() => { const abnExp=(task.notes||'').match(/ABN Expense: ([^|]+)/)?.[1]?.trim()||''; const abnRec=(task.notes||'').match(/ABN Receipts: ([^|]+)/)?.[1]?.trim()||''; return abnExp ? field('Business expenses (ABN)', abnExp) + (abnRec ? field('Business receipts/invoices', abnRec + ' receipts — client to send to team') : `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send business invoices/receipts to team</p>`) : '' })() : '')
+              + (abnValPdf==='Yes' ? (() => {
+                  const raw = (task.notes||'').match(/ABN Expenses: (.+?)(?= \| [A-Z]|$)/)?.[1]?.trim()||''
+                  if (!raw) return ''
+                  const items = raw.split(' || ').map(item => { const m=item.match(/Item \d+: (.+?) \| \$(.+?) AUD \| (\d+) receipt/); return m?{description:m[1],amount:m[2],receipts:m[3]}:null }).filter(Boolean) as {description:string;amount:string;receipts:string}[]
+                  if (!items.length) return ''
+                  const total = items.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
+                  return sec('Business expenses (ABN)')
+                    + items.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.receipts)} receipt(s)`)).join('')
+                    + field('Total business expenses', `$${total.toLocaleString()} AUD`)
+                    + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send business invoices/receipts to team</p>`
+                })() : '')
           })()
         + (() => {
-            const tfnExp = (task.notes||'').match(/TFN Expense: ([^|]+)/)?.[1]?.trim()||''
-            const tfnRec = (task.notes||'').match(/TFN Receipts: ([^|]+)/)?.[1]?.trim()||''
-            return tfnExp ? sec('Personal expenses (TFN)') + field('Personal work-related expenses', tfnExp) + (tfnRec ? field('Personal receipts', tfnRec + ' receipts — client to send to team') : `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send personal receipts to team</p>`) : ''
+            const tfnRaw = (task.notes||'').match(/TFN Expenses: (.+?)(?= \| [A-Z]|$)/)?.[1]?.trim()||''
+            if (!tfnRaw) return ''
+            const tfnItems = tfnRaw.split(' || ').map(item => { const m=item.match(/Item \d+: (.+?) \| \$(.+?) AUD \| (\d+) receipt/); return m?{description:m[1],amount:m[2],receipts:m[3]}:null }).filter(Boolean) as {description:string;amount:string;receipts:string}[]
+            if (!tfnItems.length) return ''
+            const tfnTotal = tfnItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
+            return sec('Personal expenses (TFN)')
+              + tfnItems.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.receipts)} receipt(s)`)).join('')
+              + field('Total personal expenses', `$${tfnTotal.toLocaleString()} AUD`)
+              + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send personal receipts to team</p>`
           })()
         + sec('Bank account details')
         + field('Bank name', bkName)
@@ -1143,23 +1168,44 @@ export default function DashboardClient() {
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'—'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
                           {abnVal==='Yes' && (()=>{const abnWork=(activeTask.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'';return abnWork?<div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork}</span><CopyBtn text={abnWork}/></div>:null})()}
-                          {abnVal==='Yes' && (()=>{const abnExp=(activeTask.notes||'').match(/ABN Expense: ([^|]+)/)?.[1]?.trim()||'';const abnRec=(activeTask.notes||'').match(/ABN Receipts: ([^|]+)/)?.[1]?.trim()||'';return abnExp?(<><div style={S.row}><span style={S.lbl}>Business expenses</span><span style={{...S.val,direction:'ltr',color:'#0E5C42',fontWeight:600}}>{abnExp}</span><CopyBtn text={abnExp}/></div>{abnRec&&<div style={S.row}><span style={S.lbl}>Business receipts</span><span style={{...S.val,direction:'ltr'}}>{abnRec} receipts</span></div>}<div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px'}}><span style={{fontSize:11,color:'#92400e'}}>Client to send business invoices/receipts to team</span></div></>):null})()}
+                          {abnVal==='Yes' && (()=>{
+                            const items = parseExpenseItems(activeTask.notes||'', 'ABN')
+                            if (!items.length) return null
+                            const total = items.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
+                            return (<>
+                              <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#c2410c',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🧾 Business Expenses (ABN)</span></div>
+                              {items.map((e,i)=>(
+                                <div key={i} style={{...S.row,flexDirection:'column' as const,alignItems:'flex-start',gap:2}}>
+                                  <span style={{...S.lbl,fontWeight:600}}>{e.description}</span>
+                                  <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.receipts} receipt(s)</span>
+                                </div>
+                              ))}
+                              <div style={S.row}><span style={S.lbl}>Total business expenses</span><span style={{...S.val,color:'#0E5C42',fontWeight:700}}>${total.toLocaleString()} AUD</span></div>
+                              <div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px'}}><span style={{fontSize:11,color:'#92400e'}}>Client to send business invoices/receipts to team</span></div>
+                            </>)
+                          })()}
                         </>
                       )
                     })()}
                     {(()=>{
-                      const tfnExp=(activeTask.notes||'').match(/TFN Expense: ([^|]+)/)?.[1]?.trim()||''
-                      const tfnRec=(activeTask.notes||'').match(/TFN Receipts: ([^|]+)/)?.[1]?.trim()||''
-                      return tfnExp ? (
+                      const items = parseExpenseItems(activeTask.notes||'', 'TFN')
+                      if (!items.length) return null
+                      const total = items.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
+                      return (
                         <>
                           <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🧾 Personal Expenses (TFN)</span></div>
-                          <div style={S.row}><span style={S.lbl}>Personal expenses</span><span style={{...S.val,direction:'ltr',color:'#0E5C42',fontWeight:600}}>{tfnExp}</span><CopyBtn text={tfnExp}/></div>
-                          {tfnRec&&<div style={S.row}><span style={S.lbl}>Personal receipts</span><span style={{...S.val,direction:'ltr'}}>{tfnRec} receipts</span></div>}
+                          {items.map((e,i)=>(
+                            <div key={i} style={{...S.row,flexDirection:'column' as const,alignItems:'flex-start',gap:2}}>
+                              <span style={{...S.lbl,fontWeight:600}}>{e.description}</span>
+                              <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.receipts} receipt(s)</span>
+                            </div>
+                          ))}
+                          <div style={S.row}><span style={S.lbl}>Total personal expenses</span><span style={{...S.val,color:'#0E5C42',fontWeight:700}}>${total.toLocaleString()} AUD</span></div>
                           <div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px',alignItems:'flex-start'}}>
                             <span style={{fontSize:11,color:'#92400e'}}>Client to send personal receipts to team</span>
                           </div>
                         </>
-                      ) : null
+                      )
                     })()}
                     {(()=>{
                       const bkParts=(activeTask.bankDetails||'').split(' | ')
@@ -1225,15 +1271,15 @@ export default function DashboardClient() {
                     )
                   })}
                   {activeTask.taskType==='tax-return' && (()=>{
-                    const tfnExp2=(activeTask.notes||'').match(/TFN Expense: ([^|]+)/)?.[1]?.trim()||''
-                    const abnExp2=(activeTask.notes||'').match(/ABN Expense: ([^|]+)/)?.[1]?.trim()||''
-                    const tfnRec2=(activeTask.notes||'').match(/TFN Receipts: ([^|]+)/)?.[1]?.trim()||''
-                    const abnRec2=(activeTask.notes||'').match(/ABN Receipts: ([^|]+)/)?.[1]?.trim()||''
-                    const hasAnyExp = tfnExp2 || abnExp2
+                    const tfnItems = parseExpenseItems(activeTask.notes||'', 'TFN')
+                    const abnItems = parseExpenseItems(activeTask.notes||'', 'ABN')
+                    const tfnTotal = tfnItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
+                    const abnTotal = abnItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
+                    const hasAnyExp = tfnItems.length > 0 || abnItems.length > 0
                     return hasAnyExp ? (
                       <>
-                        {tfnExp2 && <div style={{...S.row,borderTop:'1px solid #f0f4f1',marginTop:6}}><span style={S.lbl}>Personal expenses (TFN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>{tfnExp2}{tfnRec2 ? ` — ${tfnRec2} receipts` : ''}</span></div>}
-                        {abnExp2 && <div style={S.row}><span style={S.lbl}>Business expenses (ABN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>{abnExp2}{abnRec2 ? ` — ${abnRec2} receipts` : ''}</span></div>}
+                        {tfnItems.length > 0 && <div style={{...S.row,borderTop:'1px solid #f0f4f1',marginTop:6}}><span style={S.lbl}>Personal expenses (TFN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>${tfnTotal.toLocaleString()} AUD · {tfnItems.length} item(s)</span></div>}
+                        {abnItems.length > 0 && <div style={S.row}><span style={S.lbl}>Business expenses (ABN)</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>${abnTotal.toLocaleString()} AUD · {abnItems.length} item(s)</span></div>}
                         <div style={{fontSize:11,color:'#92400e',background:'#FFFCF5',border:'1px solid #E9A020',borderRadius:8,padding:'7px 10px',margin:'6px 0 4px',lineHeight:1.5}}>Client to send invoices/receipts to team</div>
                       </>
                     ) : null
