@@ -274,7 +274,8 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   const cleanedNotes = rawNotes
     .split(' | ')
     .filter(p =>
-      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:)/i)
+      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      && p !== '🔄 Returning client'
     )
     .map(p => p.startsWith('📝 ') ? `Reviewer: ${p.slice(3)}` : p)
     .filter(Boolean)

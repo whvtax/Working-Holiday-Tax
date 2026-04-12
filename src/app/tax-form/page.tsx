@@ -295,6 +295,7 @@ export default function TaxFormPage() {
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
     fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
+    fd.append('hasExpenses',  hasExpenses === 'yes' ? 'Yes' : hasExpenses === 'no' ? 'No' : '')
     if (hasAbn === 'yes') {
       fd.append('abnNumber',   abnNumber)
       fd.append('abnIncome',   abnIncome)

@@ -210,6 +210,15 @@ function TaskCard({
                 {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || 'Not provided'} />}
                 {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} />}
               </Section>
+              {(() => {
+                const expVal = task.notes.match(/Expenses: ([^|]+)/)?.[1]?.trim() || ''
+                if (!expVal) return null
+                return (
+                  <Section title="Work expenses">
+                    <Row label="Has work / ABN expenses" value={expVal === 'Yes' ? 'Yes — needs receipts' : 'No'} />
+                  </Section>
+                )
+              })()}
               <Section title="Bank account">
                 <Row label="Bank name" value={bankName} />
                 <Row label="Account holder" value={bankHolder} />

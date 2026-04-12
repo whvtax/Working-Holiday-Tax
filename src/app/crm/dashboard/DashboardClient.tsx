@@ -270,9 +270,9 @@ export default function DashboardClient() {
     if(!activeTask) return
     // Preserve structured data (passport, declarations etc.) AND reviewer notes
     const allParts = (activeTask.notes||'').split(' | ')
-    // Keep structured form data AND reviewer notes (with 📝 prefix)
+    // Keep ALL structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
       || p === '🔄 Returning client'
     )
@@ -381,7 +381,8 @@ export default function DashboardClient() {
     const parts = raw.split(' | ')
     const userParts = parts
       .filter(p =>
-        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
+        // Strip ALL auto-generated form data — only keep human-written admin notes
+        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|→|I confirm|I declare|I have read|Working Holiday)/i)
         && !p.startsWith('📝 ')
         && p !== '🔄 Returning client'
       )
@@ -1140,6 +1141,16 @@ export default function DashboardClient() {
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork||'—'}</span>{abnWork&&<CopyBtn text={abnWork}/>}</div>}
                         </>
+                      )
+                    })()}
+                    {(()=>{
+                      const expVal = (activeTask.notes||'').match(/Expenses: ([^|]+)/)?.[1]?.trim()||''
+                      if (!expVal) return null
+                      return (
+                        <div style={{...S.row,background: expVal==='Yes'?'#fffbeb':'#f7fbf9',borderTop:'1px solid #e4ede8'}}>
+                          <span style={{...S.lbl,fontWeight:700}}>📎 Work expenses</span>
+                          <span style={{...S.val,color:expVal==='Yes'?'#b45309':'#0E5C42',fontWeight:600}}>{expVal==='Yes'?'Yes — needs receipts':'No'}</span>
+                        </div>
                       )
                     })()}
                     {(()=>{
