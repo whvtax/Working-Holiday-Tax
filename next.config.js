@@ -13,14 +13,7 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   experimental: {
-    serverActions: { bodySizeLimit: '25mb' },
-  },
-  // Increase body size limit for API routes (file uploads)
-  api: {
-    bodyParser: {
-      sizeLimit: '25mb',
-    },
-    responseLimit: '25mb',
+    serverActions: { bodySizeLimit: '15mb' },
   },
   images: {
     remotePatterns: [{ protocol: 'https', hostname: '**.vercel-storage.com' }],

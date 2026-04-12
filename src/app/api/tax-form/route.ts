@@ -14,13 +14,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
     }
 
-    const formData = await req.formData()
-    const clientId = `CLT-${crypto.randomUUID()}`
+    const formData  = await req.formData()
+    const clientId  = `CLT-${crypto.randomUUID()}`
 
-    // ALL files are pre-uploaded by client — server receives URLs only (no file bytes pass through)
+    // All files are pre-uploaded client-side; server receives URLs only
     const allFileUrls: string[] = (() => {
       try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
     })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
+
+    const fileUrls: string[] = allFileUrls
 
     await createTask({
       clientId,
@@ -40,15 +42,15 @@ export async function POST(req: NextRequest) {
       taxStatus:   sanitiseShort(formData.get('taxStatus')),
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
-      notes: [
-        formData.get('taxStatus')      ? `→ ${sanitiseField(formData.get('taxStatus'))}`      : '',
-        formData.get('declared')       ? `→ ${sanitiseField(formData.get('declared'))}`       : '',
+      notes:       [
+        formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
+        formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
         formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',
-        formData.get('hasAbn')    ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}`           : '',
+        formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
         formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
         formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
       ].filter(Boolean).join(' | '),
-      fileUrls: allFileUrls,
+      fileUrls,
     })
 
     return NextResponse.json({ ok: true })

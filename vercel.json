@@ -74,9 +74,6 @@
     "src/app/api/tax-form/route.ts": {
       "maxDuration": 60
     },
-    "src/app/api/tax-form/upload/route.ts": {
-      "maxDuration": 60
-    },
     "src/app/api/super-form/route.ts": {
       "maxDuration": 60
     },

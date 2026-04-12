@@ -237,36 +237,28 @@ export default function TaxFormPage() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
 
-    // Upload file directly to Blob using token (bypasses Vercel 4.5MB serverless limit)
-    // Step 1: GET token from server (tiny request, no file bytes)
-    // Step 2: PUT file directly to Blob using token (bypasses serverless entirely)
+    // Pre-upload all files client-side for faster, more reliable submission
     const uploadOne = async (f: File): Promise<string | null> => {
-      if (f.size > 25 * 1024 * 1024) {
-        alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB). Max 25MB.`)
+      if (f.size > 10 * 1024 * 1024) {
+        alert(`File "${f.name}" is too large (max 10MB). Please compress it and try again.`)
         return null
       }
+      const attempt = async () => {
+        // Normalize content-type for iOS HEIC photos
+        let contentType = f.type || 'image/jpeg'
+        if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
+        if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
+        const r = await fetch(
+          `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
+          { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
+        )
+        const data = await r.json().catch(() => ({}))
+        if (!r.ok) throw new Error(data?.error || String(r.status))
+        return data
+      }
       for (let i = 0; i < 3; i++) {
-        try {
-          // Get a short-lived upload token from our server
-          const tokenRes = await fetch(
-            `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
-            { method: 'GET' }
-          )
-          if (!tokenRes.ok) {
-            const data = await tokenRes.json().catch(() => ({}))
-            throw new Error(data?.error || `Token request failed: ${tokenRes.status}`)
-          }
-          const { token } = await tokenRes.json()
-
-          // Upload directly to Vercel Blob using the token
-          const { put } = await import('@vercel/blob/client')
-          const blob = await put(f.name, f, {
-            access: 'public',
-            token,
-          })
-          return blob.url
-        } catch (err) {
-          console.error(`[upload] attempt ${i + 1} failed for "${f.name}":`, err)
+        try { const res = await attempt(); return res?.url ?? null }
+        catch (e) {
           if (i === 2) return null
           await new Promise(r => setTimeout(r, 800 * (i + 1)))
         }
@@ -274,41 +266,21 @@ export default function TaxFormPage() {
       return null
     }
 
-    // Upload selfie + bank statement (client → Blob directly, no server involved)
-    const coreFiles = [
-      { label: 'Selfie + Passport', file: selfiePassport.file },
-      { label: 'Bank Statement',    file: bankStatement.file },
-    ].filter(f => f.file) as { label: string; file: File }[]
-
-    const coreResults = await Promise.all(coreFiles.map(({ file: f }) => uploadOne(f)))
-    const failedCore = coreFiles.filter((_, i) => !coreResults[i])
-    if (failedCore.length > 0) {
+    // Upload bankStatement + selfiePassport client-side too
+    const coreUploads: { label: string; file: File }[] = []
+    if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
+    if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
+    const coreResults = await Promise.all(coreUploads.map(({ file: f }) => uploadOne(f)))
+    const coreFailed = coreResults.filter(r => !r).length
+    if (coreFailed > 0) {
       setLoading(false)
-      const names = failedCore.map(f => f.label).join(' and ')
-      alert(`❌ Failed to upload: ${names}\n\nPlease make sure your file is a photo (JPG, PNG, HEIC) or PDF, then try again.`)
+      alert('Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.')
       return
     }
+    const coreUrls: Record<string, string> = {}
+    coreUploads.forEach(({ label }, i) => { if (coreResults[i]) coreUrls[label] = coreResults[i]! })
 
-    // Upload invoices (client → Blob directly)
-    const allInvoiceFiles = [...invoices.files, ...abnInvoices.files]
-    const invoiceResults = allInvoiceFiles.length > 0
-      ? await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
-      : []
-    const failedInvoices = allInvoiceFiles.filter((_, i) => !invoiceResults[i])
-    if (failedInvoices.length > 0) {
-      setLoading(false)
-      const names = failedInvoices.map(f => `"${f.name}"`).join(', ')
-      alert(`❌ Failed to upload invoice${failedInvoices.length > 1 ? 's' : ''}: ${names}\n\nPlease make sure each file is a photo or PDF under 25MB.`)
-      return
-    }
-
-    // All file URLs combined — server receives only text + URLs, no file bytes
-    const allFileUrls = [
-      ...coreResults.filter(Boolean) as string[],
-      ...invoiceResults.filter(Boolean) as string[],
-    ]
-
-    // Build FormData with text fields + file URLs only
+    // Build FormData (no file blobs — URLs only)
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
@@ -322,8 +294,8 @@ export default function TaxFormPage() {
     fd.append('primaryJob',  primaryJob)
     fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
     if (hasAbn === 'yes') {
-      fd.append('abnNumber', abnNumber)
-      fd.append('abnIncome', abnIncome)
+      fd.append('abnNumber',   abnNumber)
+      fd.append('abnIncome',   abnIncome)
     }
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
@@ -331,6 +303,29 @@ export default function TaxFormPage() {
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
+    if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
+    if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
+
+    const invoiceUrls: string[] = []
+    const allInvoiceFiles = [
+      ...invoices.files,
+      ...abnInvoices.files,
+    ]
+    if (allInvoiceFiles.length > 0) {
+      const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
+      const failed = results.filter(r => !r).length
+      if (failed > 0) {
+        setLoading(false)
+        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 10MB and try again.`)
+        return
+      }
+      results.forEach(url => { if (url) invoiceUrls.push(url) })
+    }
+    // Combine all uploaded URLs
+    const allFileUrls = [
+      ...Object.values(coreUrls),
+      ...invoiceUrls,
+    ]
     if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 
     try {
@@ -340,7 +335,7 @@ export default function TaxFormPage() {
       } else {
         const data = await res.json().catch(() => ({}))
         if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF.'}`)
+        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
         else alert('Something went wrong. Please try again or contact us directly.')
       }
     } catch {

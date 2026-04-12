@@ -2,10 +2,9 @@ import { put, del } from '@vercel/blob'
 
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg', 'image/png', 'image/webp', 'image/gif',
-  'image/heic', 'image/heif',
   'application/pdf',
 ])
-const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024 // 25 MB per file
+const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024 // 10 MB per file
 const MAX_FILENAME_LENGTH = 200
 
 const MAGIC_SIGNATURES: { mime: string; offset: number; bytes: number[] }[] = [
@@ -19,9 +18,6 @@ const MAGIC_SIGNATURES: { mime: string; offset: number; bytes: number[] }[] = [
   { mime: 'image/gif',        offset: 0, bytes: [0x47, 0x49, 0x46, 0x38] },
   // PDF: %PDF
   { mime: 'application/pdf',  offset: 0, bytes: [0x25, 0x50, 0x44, 0x46] },
-  // HEIC/HEIF (iOS photos): 'ftyp' box at bytes 4-7
-  { mime: 'image/heic',       offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] },
-  { mime: 'image/heif',       offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] },
 ]
 
 const DANGEROUS_PATTERNS = [
@@ -71,14 +67,6 @@ async function validateFileContents(file: File): Promise<void> {
     throw new Error('File contains potentially dangerous content and cannot be uploaded.')
   }
 
-  // HEIC/HEIF: ftyp box at bytes 4-7 — valid regardless of exact mime subtype
-  const isHeic = bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70
-  if (isHeic && (file.type === 'image/heic' || file.type === 'image/heif')) return
-
-  // For JPEG sent from iOS with type image/heic (common iOS quirk) — also allow
-  const isJpeg = bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF
-  if (isJpeg && (file.type === 'image/heic' || file.type === 'image/heif' || file.type === 'image/jpeg')) return
-
   const signatures = MAGIC_SIGNATURES.filter(s => s.mime === file.type)
   if (signatures.length === 0) {
     // No signature defined for this type — already blocked by ALLOWED_MIME_TYPES check
@@ -113,7 +101,7 @@ export async function uploadFile(
   }
 
   if (file.size > MAX_FILE_SIZE_BYTES) {
-    throw new Error(`File too large (max 25 MB per file)`)
+    throw new Error(`File too large (max 10 MB per file)`)
   }
 
   if (file.name.length > MAX_FILENAME_LENGTH) {
