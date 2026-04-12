@@ -2,248 +2,278 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
+import { NextStep } from '@/components/ui/NextStep'
+import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'Working Holiday Tax - Australian Tax Help for WHV Holders',
-  description: 'TFN, tax return, super withdrawal and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Ask us anything - free.',
-  alternates: { canonical: '/' },
+  title: 'ABN Registration for Working Holiday Visa Holders',
+  description: 'Set up your ABN correctly as a Working Holiday contractor. We handle registration and tax obligations - simple, fast, online.',
+  alternates: { canonical: '/abn' },
 }
 
-const IconDoc   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="7.5" x2="14" y2="7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="10.5" x2="11" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="13.5" x2="9" y2="13.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>)
-const IconLock  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="6" width="16" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M6.5 6V5a3.5 3.5 0 017 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M7.5 11l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
-const IconClock = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
-const IconPlus  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6.5v7M7 10h6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
-const IconStar  = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
-const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
+const faqs = [
+  { question: 'Can I have both a TFN and an ABN?', answer: 'Yes. You can have both, one for employment and one for contract work.' },
+  { question: 'Can I get an ABN without a TFN?', answer: 'No. You must have a TFN before applying for an ABN.' },
+  { question: 'Do I need to register for GST?', answer: 'Only if you earn over $75,000 per year. Most people on a Working Holiday do not need GST.' },
+  { question: 'What happens to my ABN when I leave Australia?', answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.' },
+  { question: 'Can my ABN be rejected?', answer: 'Yes. If your details do not match your work, your ABN may be rejected.' },
+]
 
-const TESTIMONIALS = [
-  { name:"Liam O'Brien", from:'Ireland · WHV 417', quote:"I had multiple employers and no idea what to do. They handled everything and made it easy.", amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
-  { name:'Emma T.',      from:'United Kingdom · WHV 417', quote:"They handled my TFN and tax return fast. I didn't have to stress about anything.", amount:'$2,450', initials:'E', bgColor:'#FCE7F3', textColor:'#9D174D' },
-  { name:'Max Fischer',  from:'Germany · WHV 417', quote:"They explained everything simply and helped me claim money I didn't even know about.", amount:'$4,100', initials:'M', bgColor:'#D1FAE5', textColor:'#065F46' },
+const MISTAKES = [
+  { title: 'Working as an employee with an ABN', body: 'If your employer controls your work, you may not actually need an ABN.' },
+  { title: 'Choosing the wrong business activity', body: 'Your ABN setup should match the work you actually do.' },
+  { title: 'Not tracking your income properly',   body: 'You need to track your income and set money aside for tax.' },
+  { title: 'Not lodging your tax return',         body: 'Your ABN income still needs to be reported correctly.' },
 ]
 
 const STEPS = [
-  { n:'1', title:'Tell us about your situation', body:"TFN, tax return, super - we'll guide you." },
-  { n:'2', title:'Send your details in minutes',  body:'Quick checklist, no complicated forms.' },
-  { n:'3', title:'We handle everything for you',  body:'We prepare, lodge, and manage it all.' },
-  { n:'4', title:'Get your money back',           body:'Refund goes straight to your account.' },
+  { n: '1', title: 'Tell us about your work',       body: 'Share your work and visa details so we can guide you correctly.' },
+  { n: '2', title: 'Send your details in minutes',  body: 'TFN and passport info - quick and simple.' },
+  { n: '3', title: 'We handle everything for you',  body: 'We prepare and submit your ABN correctly.' },
+  { n: '4', title: 'Get your ABN and start working', body: 'Receive your ABN within an hour and start invoicing straight away.' },
 ]
 
-const SERVICES = [
-  { n:'01', href:'/tfn',            icon:<IconDoc />,   title:'TFN Application',  desc:'Start working at the correct tax rate from day one.' },
-  { n:'02', href:'/abn',            icon:<IconPlus />,  title:'ABN Registration',  desc:'Set up your ABN so you can work and invoice properly.' },
-  { n:'03', href:'/tax-return',     icon:<IconLock />,  title:'Tax Return',        desc:'Get your tax refund handled correctly with the ATO.' },
-  { n:'04', href:'/superannuation', icon:<IconClock />, title:'Super Withdrawal',  desc:'Claim your super back when you leave Australia.' },
-]
+const CheckSVG = () => (
+  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+    <circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
+    <path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+)
 
-export default function HomePage() {
+export default function ABNPage() {
   return (
     <>
-      {/* ── HERO ─────────────────────────────────────────────────────────── */}
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        {/* Mobile: compact padding · Desktop: generous padding */}
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-14 lg:pb-12 text-center">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize:'10px', letterSpacing:'0.18em', color:'rgba(11,82,64,0.65)' }}>Working Holiday Visa Specialist</span>
-          </div>
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+            style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
+            <Link href="/" className="transition-colors hover:text-forest-500">Home</Link>
+            <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>
+            <span aria-current="page">ABN Registration</span>
+          </nav>
 
-          {/* Unified heading — clamp handles mobile→desktop sizing */}
-          <h1 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(24px, 3.06vw, 42px)', lineHeight:1.15, letterSpacing:'-0.025em', marginBottom:'14px' }}>
-              <span className="lg:whitespace-nowrap" style={{ display:'block' }}>Confused about tax in Australia?</span>
-              <span className="lg:whitespace-nowrap" style={{ display:'block', color:'#0B5240' }}>We’ve got you covered.</span>
+          <div className="max-w-[560px] lg:max-w-[700px]">
+
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+              <span className="font-medium uppercase"
+                style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
+                ABN Registration
+              </span>
+            </div>
+
+            <h1 className="font-serif font-black text-ink"
+              style={{
+                fontSize:'clamp(24px,3.2vw,44px)',
+                lineHeight:1.06,
+                letterSpacing:'-0.03em',
+                marginBottom:'10px',
+              }}>
+              {/* Desktop: locked 2 lines - nowrap per line */}
+              <span className="hidden lg:block">
+                <span style={{ display:'block', whiteSpace:'nowrap' }}>Set up your ABN and</span>
+                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>start working as a contractor</span>
+              </span>
+              {/* Mobile: 2 lines with green second line */}
+              <span className="lg:hidden">
+                <span style={{ display:'block', fontSize:'22px' }}>Set up your ABN and</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>start working as a contractor</span>
+              </span>
             </h1>
 
-          {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
-          <p className="font-light mx-auto"
-            style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
-            <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
-            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
-          </p>
+            <p className="font-semibold text-ink"
+              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
+              <span className="hidden lg:inline">We set up your ABN correctly from the start.</span>
+              <span className="lg:hidden" style={{ fontSize:'13px', whiteSpace:'nowrap' }}>We set up your ABN correctly from the start.</span>
+            </p>
 
-          {/* Mobile: tighter top margin · Desktop: more breathing room */}
-          <div style={{ marginTop:'24px', marginBottom:'16px' }} className="lg:mt-8 lg:mb-4">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Start your tax return →
-            </a>
-          </div>
+            <p className="font-light"
+              style={{
+                fontSize:'clamp(13px,1.2vw,15px)',
+                lineHeight:1.65,
+                color:'rgba(10,15,13,0.58)',
+                maxWidth:'44ch',
+                marginBottom:'0',
+              }}>
+              
+              No rejections or delays - set up correctly from the start.
+            
+            </p>
 
-          {/* Mobile: 2×2 grid · Desktop: single row */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served.','Most replies within 1 hour'].map((label,i) => (
-              <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
-                <CheckIcon />{label}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+            <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
+              style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                className="btn-primary inline-flex justify-center"
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
+                Register your ABN →
+              </a>
+              <a href="#how-to-register"
+                className="inline-flex btn-ghost-dark justify-center"
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
+                See how it works →
+              </a>
+            </div>
 
-      {/* ── URGENCY STRIP ────────────────────────────────────────────────── */}
-      <section style={{ background:'#0B5240' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14 text-center">
-          {/* Desktop: tighter maxWidth for 2-line break */}
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'10px', maxWidth:'22ch' }}>
-            Without a TFN, you lose 47% of your income.
-          </p>
-          <p className="font-light mx-auto"
-            style={{ fontSize:'clamp(13px, 1.5vw, 15px)', color:'rgba(255,255,255,0.65)', maxWidth:'34ch', marginBottom:'0', textAlign:'center', lineHeight:1.7 }}>
-            Most backpackers lose money before they even realise it. Don&apos;t be one of them.
-          </p>
-          <div style={{ marginTop:'20px' }} className="lg:mt-8">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-semibold transition-all"
-              style={{ height:'48px', padding:'0 28px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'320px', width:'100%' }}>
-              Stop losing money, get your TFN →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
-
-          <span className="section-label center">Why us</span>
-
-          <h2 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.12, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'10px', marginBottom:'10px' }}>
-            Built for backpackers on a Working Holiday visa.
-          </h2>
-
-          <p className="font-light text-muted mx-auto"
-            style={{ fontSize:'clamp(14px, 1.5vw, 16px)', lineHeight:1.7, maxWidth:'36ch', marginBottom:'32px', textAlign:'center' }}>
-            We deal with this every day - and know exactly how to maximise your refund.
-          </p>
-
-          {/* Mobile: 1-col · Desktop: 4-col with bigger padding and gap */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom:'36px' }}>
-            {[
-              { title:'Backpacker tax refund experts',   body:'We focus only on working holiday tax, so we know how to get you the most back.' },
-              { title:'ATO Compliant Service',           body:"Fully compliant with ATO rules, under a registered tax agent's supervision." },
-              { title:'Real support, no tax jargon',     body:'We guide you step by step and explain everything clearly in simple English.' },
-              { title:'We handle everything for you',    body:'No paperwork or stress, we handle everything for you from start to finish.' },
-            ].map((item,i) => (
-              <div key={i} className="pt-4 lg:pt-6 text-center lg:text-left" style={{ borderTop:'1px solid #E2EFE9' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
-                <p className="font-light text-muted leading-[1.7]" style={{ fontSize:'clamp(12px, 1.1vw, 13px)' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ marginTop:'8px' }} className="lg:mt-4">
-            <Link href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'44px', padding:'0 24px', fontSize:'13.5px' }}>
-              Start your tax return →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background:'#F4F9F6' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
-
-          <div className="text-center" style={{ marginBottom:'28px' }}>
-            <span className="section-label center">Client stories</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'26ch' }}>
-              See how much backpackers like you are getting back.
-            </h2>
-          </div>
-
-          {/* Mobile: 1-col · Desktop: 3-col with bigger padding and gap */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            {TESTIMONIALS.map((t,i) => (
-              <div key={i} className="bg-white rounded-2xl flex flex-col"
-                style={{ padding:'18px', boxShadow:'0 1px 4px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}
-                /* Desktop inline override for bigger padding */
-              >
-                <div style={{ padding:'0', boxShadow:'none' }} className="hidden lg:block" />
-                <div className="flex gap-0.5" style={{ marginBottom:'10px' }}>
-                  {Array.from({length:5}).map((_,si) => <IconStar key={si} />)}
-                </div>
-                {/* Mobile: short text, max ~2 lines via line-clamp */}
-                <p className="font-light text-body flex-1 line-clamp-3 lg:line-clamp-none"
-                  style={{ fontSize:'13px', lineHeight:1.7, marginBottom:'12px' }}>
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center justify-between" style={{ paddingTop:'10px', borderTop:'1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                      style={{ width:'30px', height:'30px', fontSize:'11px', background:t.bgColor, color:t.textColor }}>{t.initials}</div>
-                    <div>
-                      <p className="font-semibold text-ink" style={{ fontSize:'12px', lineHeight:1.2 }}>{t.name}</p>
-                      <p className="text-subtle" style={{ fontSize:'10.5px', marginTop:'1px' }}>{t.from}</p>
-                    </div>
-                  </div>
-                  {/* Mobile: larger amount · Desktop: even larger */}
-                  <span className="font-serif font-black text-forest-500 flex-shrink-0"
-                    style={{ fontSize:'clamp(18px, 2vw, 22px)', letterSpacing:'-0.03em' }}>{t.amount}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Stats - mobile 2×2 grid, desktop 4-col, bigger numbers on desktop */}
-          <div style={{ marginTop:'28px', paddingTop:'24px', borderTop:'1px solid #E2EFE9' }}>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
-              {[
-                {n:'4.9★', l:'from 300+ reviews'},
-                {n:'1,200+', l:'backpackers helped'},
-                {n:'< 1 hr', l:'Most replies within 1 hour'},
-                {n:'100%', l:'Fully online, no paperwork'},
-              ].map((s,i) => (
-                <div key={i} className="text-center py-2 lg:py-3">
-                  <p className="font-serif font-black text-forest-500"
-                    style={{ fontSize:'clamp(18px, 2.8vw, 28px)', letterSpacing:'-0.03em', lineHeight:1 }}>{s.n}</p>
-                  <p className="text-subtle"
-                    style={{ fontSize:'clamp(11px, 1.1vw, 12.5px)', marginTop:'5px', lineHeight:1.4 }}>{s.l}</p>
-                </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served.','Most replies within 1 hour'].map((t,i) => (
+                <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
+                  style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
+                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
+                </span>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
-          <div className="text-center" style={{ marginBottom:'36px' }}>
-            <span className="section-label center">How it works</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'24ch' }}>
-              How it works in 4 simple steps
-            </h2>
-            <p className="font-light text-muted mx-auto"
-              style={{ fontSize:'clamp(14px, 1.4vw, 16px)', lineHeight:1.7, maxWidth:'32ch', marginBottom:'4px' }}>
-              <em className="not-italic text-forest-400">We handle everything for you, you just get paid.</em>
+      {/* ── URGENCY STRIP ─────────────────────────────────────────────────── */}
+      {/* Mobile: py-8 · Desktop: py-12 */}
+      <section style={{ background:'#0B5240' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-8 lg:py-12 text-center">
+          <div className="mx-auto" style={{ maxWidth:'480px' }}>
+            <p className="font-serif font-black text-white"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'8px' }}>
+              Not sure if you need an ABN or TFN?
             </p>
+            <p className="font-light text-center lg:text-left"
+              style={{ fontSize:'clamp(13px,1.3vw,14.5px)', color:'rgba(255,255,255,0.68)', marginBottom:'0', lineHeight:1.7, maxWidth:'36ch', margin:'0 auto' }}>
+              We&apos;ll tell you exactly what you need<br />based on your situation
+            </p>
+            <div style={{ marginTop:'16px' }} className="lg:mt-7">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center justify-center font-semibold"
+                style={{ height:'50px', padding:'0 28px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'320px', width:'100%' }}>
+                Get help choosing the right setup →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      {/* ── HOW WE HELP ───────────────────────────────────────────────────── */}
+      {/* Mobile: py-10 · Desktop: py-16 */}
+      <section className="py-10 lg:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
+            <span className="section-label center">How we help</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              We help you choose the right setup
+            </h2>
+            <p className="font-semibold mx-auto"
+              style={{ fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.4, color:'#0B5240', maxWidth:'28ch', margin:'6px auto 10px', letterSpacing:'-0.01em' }}>
+              Then we handle everything for you
+            </p>
+            <p className="font-light text-muted"
+              style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'30ch', margin:'0 auto', color:'rgba(10,15,13,0.5)' }}>
+              Simple, clear, and set up correctly
+            </p>
           </div>
 
-          {/* Desktop 4-step horizontal - bigger circles, thicker connector */}
-          <div className="hidden lg:block" style={{ marginBottom:'56px' }}>
+          {/* Cards - equal height via items-stretch; mobile gap-4, desktop gap-6 */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
+            {[
+              { n:'01', title:'We help you choose the right setup', body:'Not sure if you need an ABN? We check your situation and give you a clear answer.' },
+              { n:'02', title:'We set up your ABN correctly', body:'We handle the registration so your ABN matches your work, no delays or issues.' },
+              { n:'03', title:'Set up correctly from day one', body:'Everything is done properly so you can start working without issues.' },
+            ].map((item,i) => (
+              <div key={i} className="rounded-2xl flex flex-col"
+                style={{ padding:'18px', background:'#F7FCF9', border:'1px solid #C8EAE0' }}
+                /* Desktop: larger padding */>
+                <span className="text-[10px] font-medium tracking-[0.12em] uppercase text-subtle block"
+                  style={{ marginBottom:'10px' }}>{item.n}</span>
+                <h3 className="font-semibold text-ink"
+                  style={{ fontSize:'clamp(13px,1.2vw,14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>
+                  {item.title}
+                </h3>
+                <p className="font-light text-muted leading-[1.7] flex-1"
+                  style={{ fontSize:'clamp(12px,1.1vw,13px)' }}>{item.body}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-6 lg:mt-8">
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+              className="btn-primary inline-flex"
+              style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%' }}>
+              Register your ABN →
+            </a>
+            <p style={{ marginTop:'10px', fontSize:'12px', color:'rgba(10,15,13,0.4)' }}>
+              Australian Business Register compliant
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── COMMON MISTAKES ───────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-16" style={{ background:'#FFFDF7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+
+          <div className="max-w-xl mx-auto text-center mb-7 lg:mb-10">
+            <span className="section-label center">Common mistakes</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              Setting up your ABN incorrectly<br /><em className="not-italic font-normal text-forest-400">can cause problems later</em>
+            </h2>
+            <p className="font-light text-muted mx-auto"
+              style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'32ch' }}>
+              These are common mistakes that can delay your setup or create issues later
+            </p>
+          </div>
+
+          {/* Mobile: gap-3; desktop: gap-5, equal height */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5" style={{ alignItems:'stretch' }}>
+            {MISTAKES.map((m,i) => (
+              <div key={i} className="rounded-xl flex flex-col"
+                style={{ padding:'16px', background:'#FFFCF5', border:'1.5px solid #F0D99A', boxShadow:'0 1px 4px rgba(0,0,0,.03)' }}>
+                <div className="flex items-center justify-center rounded-lg flex-shrink-0"
+                  style={{ width:'28px', height:'28px', background:'#FDF0D5', border:'1px solid #F0D99A', marginBottom:'10px' }}>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M6 2v4M6 8.5v.5" stroke="#C47E10" strokeWidth="1.8" strokeLinecap="round"/>
+                  </svg>
+                </div>
+                <p className="font-semibold text-ink" style={{ fontSize:'13px', marginBottom:'5px', lineHeight:1.35 }}>{m.title}</p>
+                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize:'12px' }}>{m.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW TO REGISTER ───────────────────────────────────────────────── */}
+      <section id="how-to-register" className="py-10 lg:py-16" style={{ background:'#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
+            <span className="section-label center">Step by step</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              How it works in 4 simple steps
+            </h2>
+            <p className="font-light text-muted"
+              style={{ fontSize:'clamp(13px,1.2vw,14.5px)', lineHeight:1.7 }}>
+              Simple, guided process from start to finish
+            </p>
+          </div>
+
+          {/* Desktop - full-width spread, thicker line, bigger circles */}
+          <div className="hidden lg:block" style={{ marginBottom:'48px' }}>
             <div className="relative flex items-start">
-              {/* Thicker, darker connector line */}
               <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
-                style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 25%, #0B5240 75%, #C8EAE0 100%)' }}
+                style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 20%, #0B5240 80%, #C8EAE0 100%)' }}
                 aria-hidden="true" />
               {STEPS.map((s,i) => (
-                <div key={i} className="flex-1 flex flex-col items-center px-4" style={{ zIndex:1 }}>
-                  {/* Bigger step circles on desktop */}
+                <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex:1 }}>
                   <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width:'40px', height:'40px', background:'#0B5240', fontSize:'15px', marginBottom:'20px', boxShadow:'0 0 0 5px #fff, 0 0 0 6px #C8EAE0' }}>
+                    style={{ width:'40px', height:'40px', background:'#0B5240', fontSize:'15px', marginBottom:'18px', boxShadow:'0 0 0 5px #EEF7F2, 0 0 0 6px #C8EAE0' }}>
                     {s.n}
                   </div>
                   <p className="font-semibold text-ink text-center"
-                    style={{ fontSize:'14px', marginBottom:'8px', lineHeight:1.3 }}>{s.title}</p>
+                    style={{ fontSize:'14px', marginBottom:'7px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
                   <p className="font-light text-muted text-center"
                     style={{ fontSize:'12.5px', lineHeight:1.7 }}>{s.body}</p>
                 </div>
@@ -251,88 +281,89 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mobile vertical steps - bigger circles, more spacing */}
-          <div className="lg:hidden flex flex-col" style={{ marginBottom:'32px' }}>
+          {/* Mobile - compact vertical, subtle line */}
+          <div className="lg:hidden flex flex-col" style={{ marginBottom:'28px', gap:'0' }}>
             {STEPS.map((s,i) => (
-              <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length-1 ? '24px':'0' }}>
+              <div key={i} className="flex gap-3.5" style={{ paddingBottom: i < STEPS.length-1 ? '18px':'0' }}>
                 <div className="flex flex-col items-center flex-shrink-0">
-                  {/* Slightly bigger on mobile too */}
                   <div className="rounded-full flex items-center justify-center font-bold text-white"
-                    style={{ width:'30px', height:'30px', background:'#0B5240', fontSize:'13px', flexShrink:0 }}>
+                    style={{ width:'28px', height:'28px', background:'#0B5240', fontSize:'12px', flexShrink:0 }}>
                     {s.n}
                   </div>
                   {i < STEPS.length-1 && (
-                    <div className="flex-1 w-px mt-2"
-                      style={{ minHeight:'22px', background:'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }}
+                    <div className="flex-1 mt-1.5"
+                      style={{ width:'1px', minHeight:'18px', background:'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }}
                       aria-hidden="true" />
                   )}
                 </div>
                 <div style={{ paddingTop:'3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'14px', marginBottom:'4px' }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'13px', lineHeight:1.7 }}>{s.body}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize:'13.5px', marginBottom:'3px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize:'12.5px', lineHeight:1.65 }}>{s.body}</p>
                 </div>
               </div>
             ))}
           </div>
-
-          <div className="text-center" style={{ marginTop:'8px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Start your tax return →
-            </a>
-            <p style={{ marginTop:'10px', fontSize:'12px', color:'#2FA880' }}>
-              Free to start&nbsp;&bull;&nbsp;No upfront fees&nbsp;&bull;&nbsp;Personal support throughout
-            </p>
-          </div>
         </div>
       </section>
 
-      {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background:'#EEF7F2' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
-
-          <div className="text-center" style={{ marginBottom:'28px' }}>
-            <span className="section-label center">What we help with</span>
+      {/* ── WHAT IS AN ABN ────────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-xl mx-auto text-center">
+            <span className="section-label center">What is an ABN?</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'22ch' }}>
-              Everything you need<br />
-              <em className="not-italic font-normal text-forest-400">to manage your tax in Australia.</em>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'16px', textWrap:'balance' }}>
+              An Australian Business Number (ABN) lets you work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
             </h2>
-            <p className="font-light text-muted mx-auto"
-              style={{ fontSize:'clamp(13px, 1.3vw, 15px)', textAlign:'center', lineHeight:1.7, maxWidth:'36ch' }}>
-              From your first job to your final refund, we handle everything for you.
+            <p className="font-light text-body leading-[1.75] mx-auto"
+              style={{ maxWidth:'40ch', marginBottom:'14px', fontSize:'13.5px' }}>
+              An ABN is an 11-digit number that identifies you when working as a contractor or freelancer in Australia. You include it on every invoice you send.
             </p>
-          </div>
-
-          {/* Desktop: bigger padding inside cards, larger gap between cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            {SERVICES.map((s) => (
-              <Link key={s.href} href={s.href}
-                className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
-                style={{ padding:'18px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <span className="font-medium uppercase text-subtle" style={{ fontSize:'10px', letterSpacing:'0.1em', marginBottom:'10px' }}>{s.n}</span>
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
-                  style={{ marginBottom:'10px' }}>{s.icon}</span>
-                <h3 className="font-semibold text-ink" style={{ fontSize:'13.5px', marginBottom:'5px' }}>{s.title}</h3>
-                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize:'12px', marginBottom:'12px' }}>{s.desc}</p>
-                <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize:'12px' }}>
-                  Learn more →
-                </span>
-              </Link>
-            ))}
+            <p className="font-light text-body leading-[1.75] mx-auto"
+              style={{ maxWidth:'40ch', fontSize:'13.5px' }}>
+              With an ABN, you get paid the full amount with no tax withheld automatically. You stay in control of your income and manage your own tax.
+            </p>
           </div>
         </div>
       </section>
 
-      <CtaBand
-        eyebrow="Start here"
-        heading="Get your tax sorted properly"
-        headingEm="in Australia or abroad."
-        sub={<>We handle your TFN, tax return, super and ABN<span className="hidden lg:inline"> - all in one place.</span><span className="lg:hidden"><br />all in one place.</span></>}
-        primaryLabel="Start your tax return"
-        trustLine="We usually respond within 1 hour"
-        clipTop
+      {/* ── FAQ ───────────────────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+
+            <div className="text-center">
+              <span className="section-label center">Questions</span>
+              <h2 className="font-serif font-black text-ink"
+                style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
+                ABN questions, answered.
+              </h2>
+              <p className="font-light text-muted"
+                style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
+                Have a question? Message us directly.
+              </p>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                className="btn-primary inline-flex items-center justify-center"
+                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
+                Get help now →
+              </a>
+            </div>
+
+            <div className="max-w-[700px]">
+              <Accordion items={faqs} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
+      <NextStep
+        eyebrow="What's next?"
+        heading="Next step: your tax return"
+        body="When the financial year ends, you'll need to lodge your tax return and declare your ABN income."
+        cta="Start your tax return →"
+        href="/tax-return"
       />
     </>
   )
