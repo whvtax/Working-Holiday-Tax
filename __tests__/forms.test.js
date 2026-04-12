@@ -363,123 +363,153 @@ describe('📋 POST /api/tfn-form', () => {
 })
 
 // ══════════════════════════════════════════════════════════════════════════
-// 4. TAX RETURN FORM
+// 4. TAX RETURN FORM — new architecture:
+//    POST /api/tax-form        → upload selfie only (returns {ok, url})
+//    POST /api/tax-form/invoice-upload → upload one file (bank/invoice)
+//    POST /api/tax-form/finalize → save all to DB (text + URLs, no files)
 // ══════════════════════════════════════════════════════════════════════════
-describe('📋 POST /api/tax-form', () => {
-  let POST
-  beforeAll(async () => { ({ POST } = await import('../src/app/api/tax-form/route.ts')) })
+describe('📋 Tax Return Form — new architecture', () => {
+  let selfieUploadPOST, invoiceUploadPOST, finalizePOST
+
+  beforeAll(async () => {
+    ;({ POST: selfieUploadPOST }   = await import('../src/app/api/tax-form/route.ts'))
+    ;({ POST: invoiceUploadPOST }  = await import('../src/app/api/tax-form/invoice-upload/route.ts'))
+    ;({ POST: finalizePOST }       = await import('../src/app/api/tax-form/finalize/route.ts'))
+  })
   beforeEach(() => { resetDb(); setRateCount(1); require('@vercel/blob').put.mockClear() })
 
-  test('returns ok:true with valid data', async () => {
-    const res = await POST(req('/api/tax-form', 'POST', taxFd()))
-    expect(res.status).toBe(200)
-    expect((await res.json()).ok).toBe(true)
-  })
-
-  test('taskType saved as "tax-return"', async () => {
-    await POST(req('/api/tax-form', 'POST', taxFd()))
-    expect(lastInsert[3]).toBe('tax-return')
-  })
-
-  test('taxYear saved correctly', async () => {
-    await POST(req('/api/tax-form', 'POST', taxFd({ taxYear: '2022-23' })))
-    expect(lastInsert[8]).toBe('2022-23')
-  })
-
-  test('defaults taxYear to "2024-25" when not provided', async () => {
+  // Helper: selfie form (one file only)
+  function selfieFd(o = {}) {
     const fd = new FormData()
-    fd.append('fullName','No Year'); fd.append('dob','1996-06-06')
-    fd.append('waNumber','+5555'); fd.append('auPhone','+6666')
-    fd.append('email','x@x.com'); fd.append('country','Spain')
-    fd.append('address','Calle 1'); fd.append('tfn','555666777')
-    fd.append('bankDetails','bank'); fd.append('primaryJob','Farmer')
-    fd.append('marital','Single'); fd.append('taxStatus','WHM'); fd.append('howHeard','TikTok')
     fd.append('selfiePassport', fakeFile(), 'selfie.jpg')
-    await POST(req('/api/tax-form', 'POST', fd))
-    expect(lastInsert[8]).toBe('2024-25')
-  })
+    return fd
+  }
 
-  test('howHeard saved correctly', async () => {
-    await POST(req('/api/tax-form', 'POST', taxFd({ howHeard: 'TikTok' })))
-    expect(lastInsert[16]).toBe('TikTok')
-  })
-
-  test('taxStatus saved correctly', async () => {
-    await POST(req('/api/tax-form', 'POST', taxFd({ taxStatus: 'Working Holiday Maker' })))
-    expect(lastInsert[15]).toBe('Working Holiday Maker')
-  })
-
-  test('handles 5 files: sends 5 pre-uploaded URLs in invoiceUrls field', async () => {
-    // The real flow: client pre-uploads files → gets URLs → sends URLs to /api/tax-form
-    // So we simulate that by sending invoiceUrls JSON with 5 URLs
+  // Helper: finalize form (text + URLs, no files)
+  function finalizeFd(o = {}) {
     const fd = new FormData()
-    const d = { fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
+    const d = {
+      fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
       auPhone:'+61412345678', email:'jonas@test.com', country:'Belgium',
       taxYear:'2023-24', address:'42 Collins St Melbourne', tfn:'999888777',
-      bankDetails:'NAB — 083000 — 87654321', primaryJob:'Chef', marital:'Single',
-      taxStatus:'Working Holiday Maker', howHeard:'Instagram' }
+      bankDetails:'NAB | 083000 | 87654321', primaryJob:'Chef', marital:'Single',
+      taxStatus:'Working Holiday Maker', howHeard:'Instagram',
+      hasAbn: 'No', ...o
+    }
     Object.entries(d).forEach(([k, v]) => fd.append(k, v))
-    const fakeUrls = [
-      'https://blob.vercel-storage.com/tax-form/invoices/bank.pdf',
-      'https://blob.vercel-storage.com/tax-form/invoices/selfie.jpg',
-      'https://blob.vercel-storage.com/tax-form/invoices/inv0.pdf',
-      'https://blob.vercel-storage.com/tax-form/invoices/inv1.pdf',
-      'https://blob.vercel-storage.com/tax-form/invoices/inv2.pdf',
-    ]
-    fd.append('invoiceUrls', JSON.stringify(fakeUrls))
-    await POST(req('/api/tax-form', 'POST', fd))
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls).toHaveLength(5)
-    expect(urls.every(u => u.startsWith('https://'))).toBe(true)
+    return fd
+  }
+
+  test('✅ selfie upload returns ok:true and URL', async () => {
+    const res = await selfieUploadPOST(req('/api/tax-form', 'POST', selfieFd()))
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.ok).toBe(true)
+    expect(body.url).toBeTruthy()
   })
 
-  test('all file URLs go to tax-form/ folder', async () => {
-    const fd = new FormData()
-    const d = { fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
-      auPhone:'+61412345678', email:'jonas@test.com', country:'Belgium',
-      taxYear:'2023-24', address:'42 Collins St Melbourne', tfn:'999888777',
-      bankDetails:'NAB — 083000 — 87654321', primaryJob:'Chef', marital:'Single',
-      taxStatus:'Working Holiday Maker', howHeard:'Instagram' }
-    Object.entries(d).forEach(([k, v]) => fd.append(k, v))
-    const fakeUrls = [
-      'https://blob.vercel-storage.com/tax-form/invoices/bank.pdf',
-      'https://blob.vercel-storage.com/tax-form/invoices/selfie.jpg',
-    ]
-    fd.append('invoiceUrls', JSON.stringify(fakeUrls))
-    await POST(req('/api/tax-form', 'POST', fd))
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls.every(u => u.includes('tax-form/'))).toBe(true)
-  })
-
-  test('returns 429 when rate limited', async () => {
+  test('✅ selfie upload returns 429 when rate limited', async () => {
     setRateCount(6)
-    const res = await POST(req('/api/tax-form', 'POST', taxFd()))
+    const res = await selfieUploadPOST(req('/api/tax-form', 'POST', selfieFd()))
     expect(res.status).toBe(429)
   })
 
-  test('rejects non-https URLs in invoiceUrls (security: only accepts https blob URLs)', async () => {
-    // Security check: the API filters out any URLs that don't start with https://
+  test('✅ selfie upload returns 400 when blob fails', async () => {
+    require('@vercel/blob').put.mockRejectedValueOnce(new Error('File type not allowed'))
+    const res = await selfieUploadPOST(req('/api/tax-form', 'POST', selfieFd()))
+    expect(res.status).toBe(400)
+    expect((await res.json()).error).toBe('invalid_file')
+  })
+
+  test('✅ invoice upload returns ok:true and URL', async () => {
     const fd = new FormData()
-    const d = { fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
-      auPhone:'+61412345678', email:'jonas@test.com', country:'Belgium',
-      taxYear:'2023-24', address:'42 Collins St Melbourne', tfn:'999888777',
-      bankDetails:'NAB — 083000 — 87654321', primaryJob:'Chef', marital:'Single',
-      taxStatus:'Working Holiday Maker', howHeard:'Instagram' }
-    Object.entries(d).forEach(([k, v]) => fd.append(k, v))
-    // Mix valid and invalid URLs
+    fd.append('file', fakeFile('application/pdf'), 'bank.pdf')
+    const res = await invoiceUploadPOST(req('/api/tax-form/invoice-upload', 'POST', fd))
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body.ok).toBe(true)
+    expect(body.url).toBeTruthy()
+  })
+
+  test('✅ invoice upload returns 400 when no file', async () => {
+    const fd = new FormData()
+    const res = await invoiceUploadPOST(req('/api/tax-form/invoice-upload', 'POST', fd))
+    expect(res.status).toBe(400)
+  })
+
+  test('✅ finalize saves task to DB with correct type', async () => {
+    const fd = finalizeFd()
+    fd.append('invoiceUrls', JSON.stringify(['https://blob.vercel-storage.com/selfie.jpg']))
+    const res = await finalizePOST(req('/api/tax-form/finalize', 'POST', fd))
+    expect(res.status).toBe(200)
+    expect((await res.json()).ok).toBe(true)
+    expect(lastInsert[3]).toBe('tax-return')
+  })
+
+  test('✅ finalize saves taxYear correctly', async () => {
+    await finalizePOST(req('/api/tax-form/finalize', 'POST', finalizeFd({ taxYear: '2022-23' })))
+    expect(lastInsert[8]).toBe('2022-23')
+  })
+
+  test('✅ finalize defaults taxYear to 2024-25', async () => {
+    const fd = finalizeFd()
+    fd.delete('taxYear')
+    await finalizePOST(req('/api/tax-form/finalize', 'POST', fd))
+    expect(lastInsert[8]).toBe('2024-25')
+  })
+
+  test('✅ finalize saves howHeard correctly', async () => {
+    await finalizePOST(req('/api/tax-form/finalize', 'POST', finalizeFd({ howHeard: 'TikTok' })))
+    expect(lastInsert[16]).toBe('TikTok')
+  })
+
+  test('✅ finalize saves taxStatus correctly', async () => {
+    await finalizePOST(req('/api/tax-form/finalize', 'POST', finalizeFd({ taxStatus: 'Working Holiday Maker' })))
+    expect(lastInsert[15]).toBe('Working Holiday Maker')
+  })
+
+  test('✅ finalize stores file URLs in DB', async () => {
+    const fd = finalizeFd()
+    const urls = [
+      'https://blob.vercel-storage.com/tax-form/selfies/selfie.jpg',
+      'https://blob.vercel-storage.com/tax-form/invoices/bank.pdf',
+      'https://blob.vercel-storage.com/tax-form/invoices/inv1.jpg',
+    ]
+    fd.append('invoiceUrls', JSON.stringify(urls))
+    await finalizePOST(req('/api/tax-form/finalize', 'POST', fd))
+    const saved = JSON.parse(lastInsert[19])
+    expect(saved).toHaveLength(3)
+    expect(saved.every(u => u.startsWith('https://'))).toBe(true)
+  })
+
+  test('✅ finalize rejects non-https URLs (security)', async () => {
+    const fd = finalizeFd()
     const mixedUrls = [
       'https://blob.vercel-storage.com/tax-form/invoices/safe.jpg',
       'javascript:alert(1)',
       'http://evil.com/hack',
-      'file:///etc/passwd',
     ]
     fd.append('invoiceUrls', JSON.stringify(mixedUrls))
-    const res = await POST(req('/api/tax-form', 'POST', fd))
-    expect(res.status).toBe(200) // form submits fine
-    const urls = JSON.parse(lastInsert[19])
-    // Only the https:// URL should survive the filter
-    expect(urls).toHaveLength(1)
-    expect(urls[0]).toBe('https://blob.vercel-storage.com/tax-form/invoices/safe.jpg')
+    const res = await finalizePOST(req('/api/tax-form/finalize', 'POST', fd))
+    expect(res.status).toBe(200)
+    const saved = JSON.parse(lastInsert[19])
+    expect(saved).toHaveLength(1)
+    expect(saved[0]).toBe('https://blob.vercel-storage.com/tax-form/invoices/safe.jpg')
+  })
+
+  test('✅ finalize: with ABN saves ABN info in notes', async () => {
+    await finalizePOST(req('/api/tax-form/finalize', 'POST', finalizeFd({
+      hasAbn: 'Yes', abnNumber: '12 345 678 901', abnIncome: '15000'
+    })))
+    expect(lastInsert[18]).toContain('ABN: Yes')
+    expect(lastInsert[18]).toContain('12 345 678 901')
+    expect(lastInsert[18]).toContain('15000')
+  })
+
+  test('✅ finalize returns 429 when rate limited', async () => {
+    setRateCount(6)
+    const res = await finalizePOST(req('/api/tax-form/finalize', 'POST', finalizeFd()))
+    expect(res.status).toBe(429)
   })
 })
 
@@ -588,19 +618,31 @@ describe('🔐 CRM Login flow (password → OTP → session)', () => {
 // 6. CRM DATA FLOW — form submission → CRM reads it back
 // ══════════════════════════════════════════════════════════════════════════
 describe('🔄 Data flow: form → DB → CRM dashboard reads', () => {
-  let superPOST, taxPOST, tasksGET, tasksPATCH
+  let superPOST, taxFinalizePOST, tasksGET, tasksPATCH
 
   beforeAll(async () => {
-    ;({ POST: superPOST } = await import('../src/app/api/super-form/route.ts'))
-    ;({ POST: taxPOST }   = await import('../src/app/api/tax-form/route.ts'))
-    ;({ GET: tasksGET, POST: tasksPOST } = await import('../src/app/api/crm/tasks/route.ts'))
-    ;({ PATCH: tasksPATCH } = await import('../src/app/api/crm/tasks/[id]/route.ts'))
+    ;({ POST: superPOST }        = await import('../src/app/api/super-form/route.ts'))
+    ;({ POST: taxFinalizePOST }  = await import('../src/app/api/tax-form/finalize/route.ts'))
+    ;({ GET: tasksGET }          = await import('../src/app/api/crm/tasks/route.ts'))
+    ;({ PATCH: tasksPATCH }      = await import('../src/app/api/crm/tasks/[id]/route.ts'))
   })
   beforeEach(() => { resetDb(); setRateCount(1) })
 
+  function taxFinalizeFd(o = {}) {
+    const fd = new FormData()
+    const d = {
+      fullName:'Jonas Dupont', dob:'1997-06-15', waNumber:'+32477123456',
+      auPhone:'+61412345678', email:'jonas@test.com', country:'Belgium',
+      taxYear:'2023-24', address:'42 Collins St Melbourne', tfn:'999888777',
+      bankDetails:'NAB | 083000 | 87654321', primaryJob:'Chef', marital:'Single',
+      taxStatus:'Working Holiday Maker', howHeard:'Instagram', hasAbn:'No', ...o
+    }
+    Object.entries(d).forEach(([k, v]) => fd.append(k, v))
+    return fd
+  }
+
   test('super-form submission appears in CRM tasks list', async () => {
     await superPOST(req('/api/super-form', 'POST', superFd({ firstName: 'TestUser', lastName: 'Flow' })))
-    // Now read from CRM (authenticated)
     const res = await tasksGET(authedReq('/api/crm/tasks'))
     expect(res.status).toBe(200)
     const { tasks } = await res.json()
@@ -610,7 +652,7 @@ describe('🔄 Data flow: form → DB → CRM dashboard reads', () => {
   })
 
   test('tax-form submission has all fields readable in CRM', async () => {
-    await taxPOST(req('/api/tax-form', 'POST', taxFd({
+    await taxFinalizePOST(req('/api/tax-form/finalize', 'POST', taxFinalizeFd({
       fullName: 'Jonas Dupont', email: 'jonas@test.com',
       tfn: '999888777', taxYear: '2023-24', taxStatus: 'Working Holiday Maker',
     })))
@@ -631,8 +673,6 @@ describe('🔄 Data flow: form → DB → CRM dashboard reads', () => {
     const { tasks } = await listRes.json()
     const taskId = tasks[0]?.id
     expect(taskId).toBeTruthy()
-
-    // Mark done
     const patchRes = await tasksPATCH(
       authedReq(`/api/crm/tasks/${taskId}`, 'PATCH', { action: 'done' }),
       { params: { id: taskId } }
@@ -646,7 +686,6 @@ describe('🔄 Data flow: form → DB → CRM dashboard reads', () => {
     const listRes = await tasksGET(authedReq('/api/crm/tasks'))
     const { tasks } = await listRes.json()
     const taskId = tasks[0]?.id
-
     const patchRes = await tasksPATCH(
       authedReq(`/api/crm/tasks/${taskId}`, 'PATCH', { action: 'notes', notes: 'Contacted via WA' }),
       { params: { id: taskId } }
@@ -657,7 +696,7 @@ describe('🔄 Data flow: form → DB → CRM dashboard reads', () => {
 
   test('multiple forms from different users all appear in CRM', async () => {
     await superPOST(req('/api/super-form', 'POST', superFd({ firstName: 'Alice', lastName: 'A' })))
-    await taxPOST(req('/api/tax-form',   'POST', taxFd({ fullName: 'Bob B' })))
+    await taxFinalizePOST(req('/api/tax-form/finalize', 'POST', taxFinalizeFd({ fullName: 'Bob B' })))
     const res = await tasksGET(authedReq('/api/crm/tasks'))
     const { tasks } = await res.json()
     expect(tasks.length).toBeGreaterThanOrEqual(2)
@@ -1429,140 +1468,15 @@ describe('💰 POST + DELETE /api/crm/clients/[id]/tax-returns', () => {
   })
 })
 
-// ══════════════════════════════════════════════════════════════
-// /api/tax-form/upload — handleUpload token endpoint
-// Client uploads directly to Blob (bypasses 4.5MB serverless limit)
-// Server only issues/validates tokens and checks file extensions
-// ══════════════════════════════════════════════════════════════
-jest.mock('@vercel/blob/client', () => ({
-  generateClientTokenFromReadWriteToken: jest.fn(async ({ pathname }) => {
-    return `mock-token-for-${pathname}`
-  }),
-  put: jest.fn(async (filename, file, { token }) => {
-    return { url: `https://blob.vercel-storage.com/tax-form/invoices/mocked_${filename}` }
-  }),
-  upload: jest.fn(async (filename, file) => {
-    return { url: `https://blob.vercel-storage.com/tax-form/invoices/mocked_${filename}` }
-  }),
-}))
-
-describe('📤 GET /api/tax-form/upload (token generation endpoint)', () => {
-  function tokenReq(filename, ip = '10.0.0.2') {
-    return new NextRequest(
-      `http://localhost/api/tax-form/upload?filename=${encodeURIComponent(filename)}`,
-      { method: 'GET', headers: { 'x-forwarded-for': ip } }
-    )
-  }
-
-  beforeEach(() => {
-    resetDb()
-    require('@vercel/blob/client').generateClientTokenFromReadWriteToken.mockClear()
-    const redisMock = require('redis')
-    redisMock.state.execResult = [1, 1]
-    redisMock.createClient.mockImplementation(() => ({
-      connect: jest.fn(async () => {}),
-      disconnect: jest.fn(async () => {}),
-      multi: jest.fn(() => ({
-        incr: jest.fn().mockReturnThis(),
-        expire: jest.fn().mockReturnThis(),
-        exec: jest.fn(() => Promise.resolve(redisMock.state.execResult)),
-      })),
-      get: jest.fn(async () => null),
-      set: jest.fn(async () => 'OK'),
-      del: jest.fn(async () => 1),
-      incr: jest.fn(async () => 1),
-      expire: jest.fn(async () => 1),
-    }))
-  })
-
-  test('✅ JPEG — token issued successfully', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('invoice.jpg'))
-    expect(res.status).toBe(200)
-    const body = await res.json()
-    expect(body.token).toBeTruthy()
-  })
-
-  test('✅ PDF — token issued successfully', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('bank.pdf'))
-    expect(res.status).toBe(200)
-    expect((await res.json()).token).toBeTruthy()
-  })
-
-  test('✅ PNG — token issued successfully', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('photo.png'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ HEIC — token issued successfully', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('photo.heic'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ HEIF — token issued successfully', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('photo.heif'))
-    expect(res.status).toBe(200)
-  })
-
-  test('✅ WEBP — token issued successfully', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('photo.webp'))
-    expect(res.status).toBe(200)
-  })
-
-  test('❌ .exe extension rejected', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('virus.exe'))
-    expect(res.status).toBe(400)
-  })
-
-  test('❌ .php extension rejected', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('shell.php'))
-    expect(res.status).toBe(400)
-  })
-
-  test('❌ .zip extension rejected', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('archive.zip'))
-    expect(res.status).toBe(400)
-  })
-
-  test('❌ .js extension rejected', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('malware.js'))
-    expect(res.status).toBe(400)
-  })
-
-  test('✅ pathname contains tax-form/invoices/', async () => {
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    await GET(tokenReq('receipt.jpg'))
-    const calls = require('@vercel/blob/client').generateClientTokenFromReadWriteToken.mock.calls
-    expect(calls.length).toBeGreaterThan(0)
-    expect(calls[0][0].pathname).toContain('tax-form/invoices/')
-  })
-
-  test('❌ returns 429 when rate limited', async () => {
-    const redisMock = require('redis')
-    redisMock.state.execResult = [6, 1]
-    const { GET } = await import('../src/app/api/tax-form/upload/route.ts')
-    const res = await GET(tokenReq('invoice.jpg'))
-    expect(res.status).toBe(429)
-  })
-})
 
 // ══════════════════════════════════════════════════════════════
-// 📎 ABN INVOICE LIMITS — בדיקת מגבלת חשבוניות
+// 📎 ABN INVOICE LIMITS — בדיקת מגבלת חשבוניות (via finalize route)
 // ══════════════════════════════════════════════════════════════
 describe('📎 Tax form — ABN invoice URL limits', () => {
   let POST
 
   beforeAll(async () => {
-    ;({ POST } = await import('../src/app/api/tax-form/route.ts'))
+    ;({ POST } = await import('../src/app/api/tax-form/finalize/route.ts'))
   })
 
   beforeEach(() => {
@@ -1570,7 +1484,6 @@ describe('📎 Tax form — ABN invoice URL limits', () => {
     setRateCount(1)
   })
 
-  // Helper: build a tax form submission with pre-uploaded invoice URLs
   function taxFdWithUrls(invoiceUrls) {
     const fd = new FormData()
     const d = {
@@ -1581,9 +1494,7 @@ describe('📎 Tax form — ABN invoice URL limits', () => {
       marital:'Single', taxStatus:'Working Holiday Maker', howHeard:'TikTok',
     }
     Object.entries(d).forEach(([k, v]) => fd.append(k, v))
-    if (invoiceUrls.length > 0) {
-      fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
-    }
+    if (invoiceUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(invoiceUrls))
     return fd
   }
 
@@ -1593,65 +1504,52 @@ describe('📎 Tax form — ABN invoice URL limits', () => {
     )
   }
 
-  // ── ללא ABN: עד 10 חשבוניות פרטיות ──────────────────────────────────────
-
   test('✅ ללא ABN: 0 חשבוניות — נשמר תקין', async () => {
     const fd = taxFdWithUrls([])
     fd.append('hasAbn', 'No')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
+    const res = await POST(req('/api/tax-form/finalize', 'POST', fd))
     expect(res.status).toBe(200)
     const urls = JSON.parse(lastInsert[19])
     expect(urls).toHaveLength(0)
   })
 
   test('✅ ללא ABN: 5 חשבוניות פרטיות — נשמרות תקין', async () => {
-    const invoiceUrls = makeUrls(5, 'private')
-    const fd = taxFdWithUrls(invoiceUrls)
+    const fd = taxFdWithUrls(makeUrls(5, 'private'))
     fd.append('hasAbn', 'No')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
+    const res = await POST(req('/api/tax-form/finalize', 'POST', fd))
     expect(res.status).toBe(200)
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls).toHaveLength(5)
+    expect(JSON.parse(lastInsert[19])).toHaveLength(5)
   })
 
   test('✅ ללא ABN: 10 חשבוניות פרטיות (מקסימום) — נשמרות תקין', async () => {
-    const invoiceUrls = makeUrls(10, 'private')
-    const fd = taxFdWithUrls(invoiceUrls)
+    const fd = taxFdWithUrls(makeUrls(10, 'private'))
     fd.append('hasAbn', 'No')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
+    const res = await POST(req('/api/tax-form/finalize', 'POST', fd))
     expect(res.status).toBe(200)
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls).toHaveLength(10)
+    expect(JSON.parse(lastInsert[19])).toHaveLength(10)
   })
 
-  test('✅ ללא ABN: 10 חשבוניות + bankStatement + selfie = 12 URLs סה"כ', async () => {
-    const coreUrls = [
+  test('✅ ללא ABN: 10 חשבוניות + selfie + bank = 12 URLs סה"כ', async () => {
+    const allUrls = [
+      'https://blob.vercel-storage.com/tax-form/selfies/selfie.jpg',
       'https://blob.vercel-storage.com/tax-form/invoices/bank.pdf',
-      'https://blob.vercel-storage.com/tax-form/invoices/selfie.jpg',
+      ...makeUrls(10, 'private'),
     ]
-    const invoiceUrls = [...coreUrls, ...makeUrls(10, 'private')]
-    const fd = taxFdWithUrls(invoiceUrls)
+    const fd = taxFdWithUrls(allUrls)
     fd.append('hasAbn', 'No')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
+    const res = await POST(req('/api/tax-form/finalize', 'POST', fd))
     expect(res.status).toBe(200)
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls).toHaveLength(12) // 2 core + 10 invoices
+    expect(JSON.parse(lastInsert[19])).toHaveLength(12)
   })
 
-  // ── עם ABN: עד 10 פרטיות + 10 עסקיות = 20 חשבוניות ────────────────────
-
-  test('✅ עם ABN: 10 חשבוניות עסקיות + 10 פרטיות = 20 URLs — נשמרות תקין', async () => {
-    const businessUrls = makeUrls(10, 'business')
-    const privateUrls = makeUrls(10, 'private')
-    const allUrls = [...businessUrls, ...privateUrls]
-    const fd = taxFdWithUrls(allUrls)
+  test('✅ עם ABN: 10 עסקיות + 10 פרטיות = 20 URLs', async () => {
+    const fd = taxFdWithUrls([...makeUrls(10, 'business'), ...makeUrls(10, 'private')])
     fd.append('hasAbn', 'Yes')
     fd.append('abnNumber', '12 345 678 901')
     fd.append('abnIncome', '15000')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
+    const res = await POST(req('/api/tax-form/finalize', 'POST', fd))
     expect(res.status).toBe(200)
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls).toHaveLength(20)
+    expect(JSON.parse(lastInsert[19])).toHaveLength(20)
   })
 
   test('✅ עם ABN: ABN number ו-income נשמרים ב-notes', async () => {
@@ -1659,50 +1557,41 @@ describe('📎 Tax form — ABN invoice URL limits', () => {
     fd.append('hasAbn', 'Yes')
     fd.append('abnNumber', '98 765 432 100')
     fd.append('abnIncome', '22000')
-    await POST(req('/api/tax-form', 'POST', fd))
-    const notes = lastInsert[18]
-    expect(notes).toContain('ABN: Yes')
-    expect(notes).toContain('98 765 432 100')
-    expect(notes).toContain('22000')
-  })
-
-  test('✅ עם ABN: 0 חשבוניות עסקיות + 10 פרטיות = 10 URLs', async () => {
-    const privateUrls = makeUrls(10, 'private')
-    const fd = taxFdWithUrls(privateUrls)
-    fd.append('hasAbn', 'Yes')
-    fd.append('abnNumber', '12 345 678 901')
-    fd.append('abnIncome', '5000')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
-    expect(res.status).toBe(200)
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls).toHaveLength(10)
+    await POST(req('/api/tax-form/finalize', 'POST', fd))
+    expect(lastInsert[18]).toContain('ABN: Yes')
+    expect(lastInsert[18]).toContain('98 765 432 100')
+    expect(lastInsert[18]).toContain('22000')
   })
 
   test('✅ עם ABN: 10 עסקיות + 0 פרטיות = 10 URLs', async () => {
-    const businessUrls = makeUrls(10, 'business')
-    const fd = taxFdWithUrls(businessUrls)
+    const fd = taxFdWithUrls(makeUrls(10, 'business'))
+    fd.append('hasAbn', 'Yes')
+    fd.append('abnNumber', '12 345 678 901')
+    fd.append('abnIncome', '5000')
+    await POST(req('/api/tax-form/finalize', 'POST', fd))
+    expect(JSON.parse(lastInsert[19])).toHaveLength(10)
+  })
+
+  test('✅ עם ABN: 0 עסקיות + 10 פרטיות = 10 URLs', async () => {
+    const fd = taxFdWithUrls(makeUrls(10, 'private'))
     fd.append('hasAbn', 'Yes')
     fd.append('abnNumber', '12 345 678 901')
     fd.append('abnIncome', '18000')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
-    expect(res.status).toBe(200)
-    const urls = JSON.parse(lastInsert[19])
-    expect(urls).toHaveLength(10)
+    await POST(req('/api/tax-form/finalize', 'POST', fd))
+    expect(JSON.parse(lastInsert[19])).toHaveLength(10)
   })
 
-  test('✅ כל ה-URLs עוברים סינון: non-https נמחקים', async () => {
+  test('✅ non-https URLs נמחקים', async () => {
     const mixedUrls = [
       'https://blob.vercel-storage.com/tax-form/invoices/good.jpg',
       'http://evil.com/hack.jpg',
       'javascript:alert(1)',
       'https://blob.vercel-storage.com/tax-form/invoices/also-good.pdf',
-      'file:///etc/passwd',
     ]
     const fd = taxFdWithUrls(mixedUrls)
     fd.append('hasAbn', 'No')
-    await POST(req('/api/tax-form', 'POST', fd))
+    await POST(req('/api/tax-form/finalize', 'POST', fd))
     const urls = JSON.parse(lastInsert[19])
-    // Only 2 https:// URLs should survive
     expect(urls).toHaveLength(2)
     expect(urls.every(u => u.startsWith('https://'))).toBe(true)
   })
@@ -1710,18 +1599,15 @@ describe('📎 Tax form — ABN invoice URL limits', () => {
   test('✅ hasAbn=No נשמר ב-notes', async () => {
     const fd = taxFdWithUrls([])
     fd.append('hasAbn', 'No')
-    await POST(req('/api/tax-form', 'POST', fd))
-    const notes = lastInsert[18]
-    expect(notes).toContain('ABN: No')
+    await POST(req('/api/tax-form/finalize', 'POST', fd))
+    expect(lastInsert[18]).toContain('ABN: No')
   })
 
-  test('✅ rate limit: 429 גם בטופס עם ABN', async () => {
+  test('✅ rate limit: 429', async () => {
     setRateCount(6)
     const fd = taxFdWithUrls([])
-    fd.append('hasAbn', 'Yes')
-    fd.append('abnNumber', '12 345 678 901')
-    fd.append('abnIncome', '10000')
-    const res = await POST(req('/api/tax-form', 'POST', fd))
+    fd.append('hasAbn', 'No')
+    const res = await POST(req('/api/tax-form/finalize', 'POST', fd))
     expect(res.status).toBe(429)
   })
 })

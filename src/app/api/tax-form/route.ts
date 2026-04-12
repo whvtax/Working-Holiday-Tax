@@ -1,12 +1,11 @@
 export const maxDuration = 60
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
-import { createTask } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
-import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
-import crypto from 'crypto'
+import { uploadFiles } from '@/lib/upload'
 
+// Uploads selfie only — one file, same as TFN form pattern (proven to work)
 export async function POST(req: NextRequest) {
   try {
     const ip = getClientIp(req)
@@ -15,43 +14,17 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = await req.formData()
-    const clientId = `CLT-${crypto.randomUUID()}`
+    const selfieFile = formData.get('selfiePassport') as File | null
 
-    // ALL files are pre-uploaded by client — server receives URLs only (no file bytes pass through)
-    const allFileUrls: string[] = (() => {
-      try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
-    })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
+    let selfieUrls: string[] = []
+    try {
+      selfieUrls = await uploadFiles([selfieFile], 'tax-form/selfies')
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Upload error'
+      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+    }
 
-    await createTask({
-      clientId,
-      clientName:  sanitiseShort(formData.get('fullName')),
-      taskType:    'tax-return',
-      whatsapp:    sanitiseShort(formData.get('waNumber')),
-      auPhone:     sanitiseShort(formData.get('auPhone')),
-      email:       sanitiseShort(formData.get('email')),
-      country:     sanitiseShort(formData.get('country')),
-      dob:         sanitiseShort(formData.get('dob')),
-      taxYear:     sanitiseShort(formData.get('taxYear')) || '2024-25',
-      address:     sanitiseField(formData.get('address')),
-      tfn:         sanitiseShort(formData.get('tfn')),
-      bankDetails: sanitiseField(formData.get('bankDetails')),
-      primaryJob:  sanitiseField(formData.get('primaryJob')),
-      marital:     sanitiseShort(formData.get('marital')),
-      taxStatus:   sanitiseShort(formData.get('taxStatus')),
-      howHeard:    sanitiseShort(formData.get('howHeard')),
-      submittedAt: new Date().toISOString(),
-      notes: [
-        formData.get('taxStatus')      ? `→ ${sanitiseField(formData.get('taxStatus'))}`      : '',
-        formData.get('declared')       ? `→ ${sanitiseField(formData.get('declared'))}`       : '',
-        formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',
-        formData.get('hasAbn')    ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}`           : '',
-        formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
-        formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
-      ].filter(Boolean).join(' | '),
-      fileUrls: allFileUrls,
-    })
-
-    return NextResponse.json({ ok: true })
+    return NextResponse.json({ ok: true, url: selfieUrls[0] ?? null })
   } catch (err) {
     console.error('[tax-form] FAILED:', err)
     return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
