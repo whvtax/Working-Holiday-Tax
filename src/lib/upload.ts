@@ -67,27 +67,30 @@ async function validateFileContents(file: File): Promise<void> {
     throw new Error('File contains potentially dangerous content and cannot be uploaded.')
   }
 
-  const signatures = MAGIC_SIGNATURES.filter(s => s.mime === file.type)
-  if (signatures.length === 0) {
-    // No signature defined for this type — already blocked by ALLOWED_MIME_TYPES check
-    throw new Error(`File type not allowed: ${file.type}`)
-  }
-
-  const validSignature = signatures.some(sig => matchesMagicBytes(bytes, sig))
-  if (!validSignature) {
-    throw new Error(
-      `File content does not match declared type (${file.type}). ` +
-      `Please upload a genuine image or PDF file.`
-    )
-  }
-
-  if (file.type === 'image/webp') {
-    const webpMarker = [0x57, 0x45, 0x42, 0x50] // WEBP
-    const markerMatch = webpMarker.every((b, i) => bytes[8 + i] === b)
-    if (!markerMatch) {
-      throw new Error('File content does not match declared type (image/webp).')
+  // For image/* types, be lenient — mobile devices often send HEIC/HEIF with
+  // wrong MIME or normalised to image/jpeg. Accept if no dangerous content found.
+  if (file.type.startsWith('image/')) {
+    // Still reject if it looks like an executable
+    const exeSigs = [[0x4D, 0x5A], [0x7F, 0x45, 0x4C, 0x46]]
+    for (const sig of exeSigs) {
+      if (sig.every((b, i) => bytes[i] === b)) {
+        throw new Error('File content does not match declared type.')
+      }
     }
+    return // Accept all image/* that aren't executables
   }
+
+  // For PDF, check magic bytes strictly
+  if (file.type === 'application/pdf') {
+    const pdfSig = { mime: 'application/pdf', offset: 0, bytes: [0x25, 0x50, 0x44, 0x46] }
+    if (!matchesMagicBytes(bytes, pdfSig)) {
+      throw new Error('File content does not match declared type (application/pdf).')
+    }
+    return
+  }
+
+  // Unknown type — already blocked by ALLOWED_MIME_TYPES check above
+  throw new Error(`File type not allowed: ${file.type}`)
 }
 
 export async function uploadFile(
