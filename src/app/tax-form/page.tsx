@@ -584,7 +584,6 @@ export default function TaxFormPage() {
               <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
-            </Field>
           </div>
 
           <div className="form-section-title">Declaration</div>
