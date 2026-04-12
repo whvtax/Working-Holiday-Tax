@@ -7,7 +7,7 @@ import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 import crypto from 'crypto'
 
-type ExpenseItem = { description: string; amount: string; receipts: string }
+type ExpenseItem = { description: string; amount: string; fileUrls?: string[] }
 
 function parseExpenses(raw: FormDataEntryValue | null): ExpenseItem[] {
   try { return JSON.parse(raw as string || '[]') } catch { return [] }
@@ -17,7 +17,7 @@ function formatExpenses(items: ExpenseItem[], prefix: string): string {
   const valid = items.filter(e => e.description?.trim() || e.amount?.trim())
   if (!valid.length) return ''
   return valid.map((e, i) =>
-    `${prefix} Item ${i+1}: ${e.description?.trim() || '—'} | $${e.amount?.trim() || '0'} AUD | ${e.receipts?.trim() || '0'} receipt(s)`
+    `${prefix} Item ${i+1}: ${e.description?.trim() || '—'} | $${e.amount?.trim() || '0'} AUD | ${(e.fileUrls?.length ?? 0)} file(s)`
   ).join(' || ')
 }
 
