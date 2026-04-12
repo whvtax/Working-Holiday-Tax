@@ -570,7 +570,7 @@ export default function DashboardClient() {
       const rawStatus   = parts.find(p => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || task.taxStatus || '—'
       const taxStatus   = normStatus(rawStatus)
       const declaredVal = findDecl(['→ ✓ I declare that all','→ ✓ Yes','→ ✗ No','→ ✓ I agree','→ Yes'])
-      const incomeDecl   = findDecl(['→ ✓ I declare that all income'])
+      const incomeDecl   = findDecl(['→ ✓ I declare under my full legal'])
 
       formBody =
         sec('Contact details')
@@ -612,7 +612,7 @@ export default function DashboardClient() {
           `<div style="width:16px;height:16px;border-radius:50%;background:${G};flex-shrink:0"></div>` +
           `<span style="font-size:13px;font-weight:600;color:${G}">${esc(taxStatus||'—')}</span>` +
           `</div>`
-        + declBox('', declaredVal !== '—' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I confirm that all information provided is accurate and complete.') : '—', declaredVal !== '—')
+        + declBox('', declaredVal !== '—' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I declare that all information provided is true and accurate.') : '—', declaredVal !== '—')
         + declBox('', incomeDecl !== '—' ? (incomeDecl.replace('✓ ','').replace('→ ','') || 'I declare income truthfully disclosed.') : '—', incomeDecl !== '—')
         + sec('How did you hear about us?')
         + field('How did you hear about us?', task.howHeard)
@@ -1052,11 +1052,7 @@ export default function DashboardClient() {
                 </div>
                 {activeTask.done
                   ? <span style={{background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Done</span>
-                  : activeTask.reviewStatus === 'approved'
-                  ? <span style={{background:'#EAF6F1',color:'#059669',border:'1px solid #6EE7B7',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Approved</span>
-                  : activeTask.reviewStatus === 'rejected'
-                  ? <span style={{background:'#FEF2F2',color:'#DC2626',border:'1px solid #FCA5A5',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✕ Rejected</span>
-                  : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending review</span>
+                  : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
                 }
               </div>
 
@@ -1215,7 +1211,7 @@ export default function DashboardClient() {
                       const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '—'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
                       const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
-                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare that all income'))
+                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare under my full legal'))
                       return <>
                         <div style={S.secHead}><span>Tax Residency</span></div>
                         <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>
@@ -1313,12 +1309,6 @@ export default function DashboardClient() {
                 <div style={{...S.card,display:'flex',flexDirection:'column' as const,minWidth:0}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
 
-                  {activeTask.reviewerNote && (
-                    <div style={{margin:'10px 10px 0',padding:'8px 12px',background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:8,fontSize:12,color:'#92400E',lineHeight:1.5}}>
-                      <span style={{fontWeight:700}}>📝 Reviewer: </span>{activeTask.reviewerNote}
-                    </div>
-                  )}
-
                   <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
                     placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
@@ -1328,8 +1318,8 @@ export default function DashboardClient() {
                 </div>
               </div>
 
-              {/* Bank details card — shown for super only (tax-return already shows bank in the grid above) */}
-              {activeTask.taskType === 'super' && activeTask.bankDetails && (
+              {/* Bank details card — shown for tax-return only */}
+              {activeTask.taskType === 'tax-return' && activeTask.bankDetails && (
                 <BankCard bankDetails={activeTask.bankDetails} />
               )}
 

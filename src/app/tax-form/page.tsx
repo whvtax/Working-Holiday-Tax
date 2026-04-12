@@ -177,6 +177,7 @@ export default function TaxFormPage() {
   // Files
   const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
+  const [invoices, setInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
 
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
@@ -188,6 +189,7 @@ export default function TaxFormPage() {
   const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
   const [abnNumber, setAbnNumber]     = useState('')
   const [abnIncome, setAbnIncome]     = useState('')
+  const [abnInvoices, setAbnInvoices] = useState<MultiUploadState>({ files: [], previews: [] })
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -299,12 +301,31 @@ export default function TaxFormPage() {
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
     fd.append('howHeard',    howHeard)
-    fd.append('declared',    declared === 'yes' ? '✓ I confirm that all information provided is accurate and complete. I understand that providing false information may result in penalties under Australian tax law, and I accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
-    fd.append('declaredIncome', declaredIncome ? '✓ I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide.' : '')
+    fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
+    fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
     if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
-    const allFileUrls = [...Object.values(coreUrls)]
+    const invoiceUrls: string[] = []
+    const allInvoiceFiles = [
+      ...invoices.files,
+      ...abnInvoices.files,
+    ]
+    if (allInvoiceFiles.length > 0) {
+      const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
+      const failed = results.filter(r => !r).length
+      if (failed > 0) {
+        setLoading(false)
+        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 10MB and try again.`)
+        return
+      }
+      results.forEach(url => { if (url) invoiceUrls.push(url) })
+    }
+    // Combine all uploaded URLs
+    const allFileUrls = [
+      ...Object.values(coreUrls),
+      ...invoiceUrls,
+    ]
     if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 
     try {
@@ -596,6 +617,20 @@ export default function TaxFormPage() {
                 <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
                   value={abnIncome} onChange={e => { setAbnIncome(e.target.value); setErrors(p => ({...p, abnIncome: ''})) }} />
               </Field>
+
+              <Field label="Business expense invoices" error={errors.abnInvoices}>
+                <p style={{fontSize:'12px',color:'#587066',marginBottom:'10px',lineHeight:1.6}}>
+                  Please upload invoices for all business-related expenses you would like to claim as deductions.
+                </p>
+                <MultiFileUpload
+                  id="abnInvoices"
+                  value={abnInvoices}
+                  onChange={setAbnInvoices}
+                  accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,application/pdf"
+                  maxFiles={10}
+                  label="Upload expense invoices"
+                />
+              </Field>
             </>)}
 
           <div className="form-section-title">Bank account details</div>
@@ -629,7 +664,11 @@ export default function TaxFormPage() {
               <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
-          </div>
+
+            <Field label="Work-related expense invoices">
+              <MultiFileUpload id="invoices" label="Upload invoices" accept=".pdf,.jpg,.jpeg,.png"
+                value={invoices} onChange={setInvoices} maxFiles={10} />
+            </Field>
           </div>
 
           <div className="form-section-title">Declaration</div>
@@ -659,7 +698,7 @@ export default function TaxFormPage() {
             <Field label="" required error={errors.declared}>
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
                 <p className="decl-text">
-                  I confirm that all information provided is accurate and complete. I understand that providing false information may result in penalties under Australian tax law, and I accept the{' '}
+                  I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
                   <a href="/client-agreement" target="_blank" className="decl-link">Client Agreement</a>
                   {' '}&amp;{' '}
                   <a href="/privacy" target="_blank" className="decl-link">Privacy Policy</a>.
@@ -674,7 +713,7 @@ export default function TaxFormPage() {
 
             <Field label="" required error={(errors as any).declaredIncome}>
               <div className={`declaration-box${(errors as any).declaredIncome ? ' decl-error' : ''}`}>
-                <p className="decl-text">I declare that all income earned in Australia and overseas during the relevant tax year has been fully disclosed. I understand that false or misleading information may constitute an offence under Australian law, and that Working Holiday Tax is not liable for any inaccuracies in the information I provide.</p>
+                <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
                   <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
@@ -684,6 +723,7 @@ export default function TaxFormPage() {
             </Field>
           </div>
 
+          <div className="form-section-title">How did you hear about us?</div>
           <div>
             <Field label="How did you hear about us?" required error={errors.howHeard}>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."

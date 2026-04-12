@@ -13,7 +13,7 @@ const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   experimental: {
-    serverActions: { bodySizeLimit: '50mb' },
+    serverActions: { bodySizeLimit: '15mb' },
   },
   images: {
     remotePatterns: [{ protocol: 'https', hostname: '**.vercel-storage.com' }],

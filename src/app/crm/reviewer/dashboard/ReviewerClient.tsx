@@ -191,7 +191,7 @@ function TaskCard({
             const getNote = (prefix: string) => task.notes.match(new RegExp(prefix + ': ([^|]+)'))?.[1]?.trim() || ''
             const taxStatusVal = parts.find((p: string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ', '') || task.taxStatus || '—'
             const declaredVal = parts.find((p: string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))?.replace('→ ✓ ', '') || '—'
-            const incomeDecl  = parts.find((p: string) => p.startsWith('→ ✓ I declare that all income'))?.replace('→ ✓ ', '') || ''
+            const incomeDecl  = parts.find((p: string) => p.startsWith('→ ✓ I declare under my full legal'))?.replace('→ ✓ ', '') || ''
             const abnVal = getNote('ABN') || ''
             const abnNumber = getNote('ABN Number') || ''
             const abnIncome = getNote('ABN Income') || ''
@@ -225,10 +225,10 @@ function TaskCard({
                 {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} copy />}
               </Section>
               <Section title="Bank account">
-                <Row label="Bank name" value={bankName} />
-                <Row label="Account holder" value={bankHolder} />
-                <Row label="Account number" value={bankAccount} />
-                <Row label="BSB" value={bankBsb} />
+                <Row label="Bank name" value={bankName} copy />
+                <Row label="Account holder" value={bankHolder} copy />
+                <Row label="Account number" value={bankAccount} copy />
+                <Row label="BSB" value={bankBsb} copy />
               </Section>
               <Section title="Declarations">
                 {declaredVal !== '—' && <DeclRow text={declaredVal} />}
@@ -262,14 +262,12 @@ function TaskCard({
           })()}
 
           {task.taskType === 'abn' && (() => {
-            const gender     = task.notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || ''
-            const passportNo = task.notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || ''
+            const gender = task.notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || ''
             return (<>
               <Section title="Personal details">
                 <Row label="Full name" value={task.clientName} />
                 <Row label="Date of birth" value={task.dob} />
                 <Row label="Country" value={task.country} />
-                <Row label="Passport number" value={passportNo} />
                 <Row label="Gender" value={gender} />
                 <Row label="Marital status" value={task.marital} />
               </Section>
@@ -315,12 +313,6 @@ function TaskCard({
               <Section title="Super & tax details">
                 <Row label="TFN" value={task.tfn} />
                 <Row label="Super fund(s)" value={superFunds} />
-              </Section>
-              <Section title="Bank account">
-                <Row label="Bank name" value={bankName} />
-                <Row label="Account holder" value={bankHolder} />
-                <Row label="Account number" value={bankAccount} />
-                <Row label="BSB" value={bankBsb} />
               </Section>
               <Section title="Declarations">
                 {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
