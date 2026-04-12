@@ -274,6 +274,7 @@ export default function DashboardClient() {
     const structuredParts = allParts.filter(p =>
       p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
+      || p === '🔄 Returning client'
     )
     // taskNotes is the admin's own notes (stripped of 📝 prefix when loaded)
     const merged = taskNotes.trim()
@@ -382,6 +383,7 @@ export default function DashboardClient() {
       .filter(p =>
         !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday)/i)
         && !p.startsWith('📝 ')
+        && p !== '🔄 Returning client'
       )
     return userParts.join(' | ').trim()
   }
@@ -1050,11 +1052,14 @@ export default function DashboardClient() {
                       </div>
                     )
                   })()}
-                  <div style={{fontSize:12,color:'#7a8a82',marginTop:3,display:'flex',alignItems:'center',gap:8}}>
+                  <div style={{fontSize:12,color:'#7a8a82',marginTop:3,display:'flex',alignItems:'center',gap:8,flexWrap:'wrap' as const}}>
                     <span>{activeTask.country}</span>
                     <span style={{background:TASK_COLORS[activeTask.taskType]+'22',color:TASK_COLORS[activeTask.taskType],borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>{TASK_LABELS[activeTask.taskType]}</span>
                     <span>{activeTask.taxYear}</span>
                     <span>· Submitted {fmtDate(activeTask.submittedAt)}</span>
+                    {(activeTask.notes||'').includes('🔄 Returning client') && (
+                      <span style={{background:'#eff6ff',color:'#1d4ed8',border:'1px solid #bfdbfe',borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>🔄 Returning client</span>
+                    )}
                   </div>
                 </div>
                 {activeTask.done

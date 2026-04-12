@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
     const email     = sanitiseShort(formData.get('email'))
     const whatsapp  = sanitiseShort(formData.get('waNumber'))
     const existing  = await findExistingClient(email, whatsapp)
+    const isReturning = !!existing
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
     // All files are pre-uploaded client-side; server receives URLs only
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest) {
       howHeard:    sanitiseShort(formData.get('howHeard')),
       submittedAt: new Date().toISOString(),
       notes:       [
+        isReturning ? '🔄 Returning client' : '',
         formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
         formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',

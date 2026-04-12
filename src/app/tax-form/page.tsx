@@ -179,7 +179,6 @@ export default function TaxFormPage() {
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
 
   const [hasExpenses, setHasExpenses] = useState<'yes'|'no'|''>('')
-  const [expenseFiles, setExpenseFiles] = useState<MultiUploadState>({ files: [], previews: [] })
 
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
@@ -312,7 +311,6 @@ export default function TaxFormPage() {
 
     const invoiceUrls: string[] = []
     const allInvoiceFiles = [
-      ...(hasExpenses === 'yes' ? expenseFiles.files : []),
     ]
     if (allInvoiceFiles.length > 0) {
       const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
@@ -674,16 +672,9 @@ export default function TaxFormPage() {
             </Field>
 
             {hasExpenses === 'yes' && (
-              <Field label="Please upload all invoices / receipts">
-                <MultiFileUpload
-                  id="expenseFiles"
-                  value={expenseFiles}
-                  onChange={setExpenseFiles}
-                  accept="image/jpeg,image/jpg,image/png,image/webp,image/heic,image/heif,application/pdf"
-                  maxFiles={10}
-                  label="Upload invoices / receipts"
-                />
-              </Field>
+              <div style={{background:'#EAF6F1',border:'1.5px solid #A7D9C5',borderRadius:12,padding:'12px 16px',fontSize:13,color:'#0B5240',fontWeight:500,lineHeight:1.6}}>
+                📎 Please send us all your invoices / receipts via WhatsApp or email.
+              </div>
             )}
           </div>
 

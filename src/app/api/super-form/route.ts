@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
     const whatsapp  = sanitiseShort(formData.get('whatsapp') ?? formData.get('smsPhone'))
     const fullName  = [sanitiseShort(formData.get('firstName')), sanitiseShort(formData.get('lastName'))].filter(Boolean).join(' ')
     const existing  = await findExistingClient(email, whatsapp)
+    const isReturning = !!existing
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
     const selfieFile = formData.get('selfiePassport') as File | null
@@ -48,6 +49,7 @@ export async function POST(req: NextRequest) {
       auPhone:     sanitiseShort(formData.get('auPhone')),
       submittedAt: new Date().toISOString(),
       notes:       [
+        isReturning ? '🔄 Returning client' : '',
         formData.get('passport') ? `Passport No: ${sanitiseShort(formData.get('passport'))}` : '',
         formData.get('superFunds') ? `Super Funds: ${sanitiseField(formData.get('superFunds'))}` : '',
         formData.get('homeAddress') ? `Home Country Address: ${sanitiseField(formData.get('homeAddress'))}` : '',

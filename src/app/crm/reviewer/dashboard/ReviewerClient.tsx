@@ -152,6 +152,9 @@ function TaskCard({
             <span style={{ fontWeight: 700, fontSize: 15, color: '#0D1B17' }}>{task.clientName || '—'}</span>
             <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 9px', borderRadius: 100, background: '#EAF6F1', color: G }}>{TYPE_LABEL[task.taskType] || task.taskType}</span>
             <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 9px', borderRadius: 100, background: statusInfo.bg, color: statusInfo.color }}>{statusInfo.label}</span>
+            {(task.notes||'').includes('🔄 Returning client') && (
+              <span style={{ fontSize: 10, fontWeight: 700, padding: '2px 9px', borderRadius: 100, background: '#eff6ff', color: '#1d4ed8' }}>🔄 Returning client</span>
+            )}
           </div>
           <div style={{ fontSize: 11, color: '#8DA89A' }}>
             {[task.country, task.taxYear, task.submittedAt ? `Submitted ${new Date(task.submittedAt).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST'}` : ''].filter(Boolean).join(' · ')}

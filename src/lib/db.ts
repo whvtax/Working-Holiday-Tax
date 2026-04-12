@@ -172,23 +172,37 @@ function toTask(r: Record<string,unknown>): Task {
 
 // ── Returning client lookup ────────────────────────────────────────────────
 
-export async function findExistingClient(email: string, whatsapp: string): Promise<ClientRecord | null> {
+export async function findExistingClient(email: string, whatsapp: string): Promise<{ id: string } | null> {
   await initDb()
   const normalise = (s: string) => (s ?? '').trim().toLowerCase().replace(/\s+/g, '')
   const e = normalise(email)
   const w = normalise(whatsapp)
   if (!e && !w) return null
 
-  // Search active + archived clients by email or whatsapp
-  const { rows } = await sql`
-    SELECT * FROM crm_clients
+  // 1. Check crm_clients first (completed tasks)
+  const { rows: clientRows } = await sql`
+    SELECT id FROM crm_clients
     WHERE
       (${e} != '' AND LOWER(TRIM(email))    = ${e}) OR
       (${w} != '' AND LOWER(TRIM(whatsapp)) = ${w})
     ORDER BY created_at DESC
     LIMIT 1
   `
-  return rows[0] ? toClient(rows[0]) : null
+  if (clientRows[0]) return { id: clientRows[0].id }
+
+  // 2. Also check pending tasks (not yet completed)
+  const { rows: taskRows } = await sql`
+    SELECT client_id FROM crm_tasks
+    WHERE done = false AND (
+      (${e} != '' AND LOWER(TRIM(email))    = ${e}) OR
+      (${w} != '' AND LOWER(TRIM(whatsapp)) = ${w})
+    )
+    ORDER BY submitted_at DESC
+    LIMIT 1
+  `
+  if (taskRows[0]) return { id: taskRows[0].client_id }
+
+  return null
 }
 
 // ── Tasks ──────────────────────────────────────────────────────────────────
