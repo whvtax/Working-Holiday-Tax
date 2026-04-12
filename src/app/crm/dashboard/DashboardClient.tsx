@@ -1052,7 +1052,11 @@ export default function DashboardClient() {
                 </div>
                 {activeTask.done
                   ? <span style={{background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Done</span>
-                  : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
+                  : activeTask.reviewStatus === 'approved'
+                  ? <span style={{background:'#EAF6F1',color:'#059669',border:'1px solid #6EE7B7',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Approved</span>
+                  : activeTask.reviewStatus === 'rejected'
+                  ? <span style={{background:'#FEF2F2',color:'#DC2626',border:'1px solid #FCA5A5',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✕ Rejected</span>
+                  : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending review</span>
                 }
               </div>
 
@@ -1308,6 +1312,12 @@ export default function DashboardClient() {
                 {/* Notes */}
                 <div style={{...S.card,display:'flex',flexDirection:'column' as const,minWidth:0}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
+
+                  {activeTask.reviewerNote && (
+                    <div style={{margin:'10px 10px 0',padding:'8px 12px',background:'#FFFBEB',border:'1px solid #FDE68A',borderRadius:8,fontSize:12,color:'#92400E',lineHeight:1.5}}>
+                      <span style={{fontWeight:700}}>📝 Reviewer: </span>{activeTask.reviewerNote}
+                    </div>
+                  )}
 
                   <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
                     placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>

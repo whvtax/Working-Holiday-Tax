@@ -262,12 +262,14 @@ function TaskCard({
           })()}
 
           {task.taskType === 'abn' && (() => {
-            const gender = task.notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || ''
+            const gender     = task.notes.match(/Gender: ([^|]+)/)?.[1]?.trim() || ''
+            const passportNo = task.notes.match(/Passport No: ([^|]+)/)?.[1]?.trim() || ''
             return (<>
               <Section title="Personal details">
                 <Row label="Full name" value={task.clientName} />
                 <Row label="Date of birth" value={task.dob} />
                 <Row label="Country" value={task.country} />
+                <Row label="Passport number" value={passportNo} />
                 <Row label="Gender" value={gender} />
                 <Row label="Marital status" value={task.marital} />
               </Section>
@@ -313,6 +315,12 @@ function TaskCard({
               <Section title="Super & tax details">
                 <Row label="TFN" value={task.tfn} />
                 <Row label="Super fund(s)" value={superFunds} />
+              </Section>
+              <Section title="Bank account">
+                <Row label="Bank name" value={bankName} copy />
+                <Row label="Account holder" value={bankHolder} copy />
+                <Row label="Account number" value={bankAccount} copy />
+                <Row label="BSB" value={bankBsb} copy />
               </Section>
               <Section title="Declarations">
                 {declarations.map((d: string, i: number) => <DeclRow key={i} text={d} />)}
