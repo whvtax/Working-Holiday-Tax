@@ -52,6 +52,8 @@ export async function POST(req: NextRequest) {
         formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
         formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
         formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
+        formData.get('abnWorkType') ? `ABN Work Type: ${sanitiseShort(formData.get('abnWorkType'))}` : '',
+        formData.get('expenseCount') ? `Expense Amount: $${sanitiseShort(formData.get('expenseCount'))} AUD` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
     })

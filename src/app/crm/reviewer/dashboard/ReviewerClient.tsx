@@ -195,6 +195,8 @@ function TaskCard({
             const abnVal = getNote('ABN') || ''
             const abnNumber = getNote('ABN Number') || ''
             const abnIncome = getNote('ABN Income') || ''
+            const abnWorkType = getNote('ABN Work Type') || ''
+            const expenseAmount = getNote('Expense Amount') || ''
             const bkParts = (task.bankDetails || '').split(' | ')
             const bankName    = bkParts.find(p => p.startsWith('Bank:'))?.replace('Bank: ', '') || task.bankDetails || ''
             const bankHolder  = bkParts.find(p => p.startsWith('Name:'))?.replace('Name: ', '') || ''
@@ -223,7 +225,16 @@ function TaskCard({
                 <Row label="Has ABN" value={abnVal === 'Yes' ? 'Yes ✓' : abnVal === 'No' ? 'No' : 'Not specified'} />
                 {abnVal === 'Yes' && <Row label="ABN number" value={abnNumber || 'Not provided'} copy />}
                 {abnVal === 'Yes' && <Row label="ABN income" value={abnIncome || 'Not provided'} copy />}
+                {abnVal === 'Yes' && abnWorkType && <Row label="ABN work type" value={abnWorkType} copy />}
               </Section>
+              {expenseAmount && (
+                <Section title="Work-related expenses">
+                  <Row label="Total expense amount" value={expenseAmount} copy />
+                  <div style={{fontSize:11,color:'#92400e',background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,padding:'8px 12px',marginTop:4}}>
+                    ⚠️ Client has expenses — request invoices via WhatsApp
+                  </div>
+                </Section>
+              )}
               <Section title="Bank account">
                 <Row label="Bank name" value={bankName} />
                 <Row label="Account holder" value={bankHolder} />

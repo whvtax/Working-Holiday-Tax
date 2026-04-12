@@ -596,6 +596,11 @@ export default function DashboardClient() {
             return radioField('Has ABN?', abnValPdf, ['Yes','No'])
               + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
+              + (abnValPdf==='Yes' ? field('Type of work under ABN', (task.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'—') : '')
+          })()
+        + (() => {
+            const expAmt = (task.notes||'').match(/Expense Amount: ([^|]+)/)?.[1]?.trim()||''
+            return expAmt ? sec('Work-related expenses') + field('Total expense amount', expAmt) : ''
           })()
         + sec('Bank account details')
         + field('Bank name', bkName)
@@ -606,6 +611,11 @@ export default function DashboardClient() {
         + ((task.fileUrls??[]).length > 0
           ? (task.fileUrls??[]).map(fileItem).join('')
           : `<p style="font-size:12px;color:#aabab2">No files uploaded</p>`)
+        + (() => {
+            const expCount = (task.notes||'').match(/Expense Count: ([^|]+)/)?.[1]?.trim()||'—'
+            return field('Number of expense receipts', expCount)
+              + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:8px 12px;margin-top:4px;margin-bottom:8px">📲 Client to send receipts via WhatsApp</p>`
+          })()
         + sec('Declaration')
         + `<div style="font-size:12px;color:#587066;margin-bottom:6px">Tax residency status:</div>`
         + `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1.5px solid ${G};background:#EAF6F1;margin-bottom:10px">` +
@@ -1129,8 +1139,21 @@ export default function DashboardClient() {
                           <div style={S.row}><span style={S.lbl}>Has ABN</span><span style={{...S.val,color:abnVal==='Yes'?'#0E5C42':'#c0392b',fontWeight:600}}>{abnVal==='Yes'?'Yes ✓':abnVal==='No'?'No':'Not specified'}</span></div>
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'—'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
                           {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
+                          {abnVal==='Yes' && (()=>{const abnWork=(activeTask.notes||'').match(/ABN Work Type: ([^|]+)/)?.[1]?.trim()||'';return abnWork?<div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork}</span><CopyBtn text={abnWork}/></div>:null})()}
                         </>
                       )
+                    })()}
+                    {(()=>{
+                      const expAmt=(activeTask.notes||'').match(/Expense Amount: ([^|]+)/)?.[1]?.trim()||''
+                      return expAmt ? (
+                        <>
+                          <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🧾 Expenses</span></div>
+                          <div style={S.row}><span style={S.lbl}>Expense amount</span><span style={{...S.val,direction:'ltr',color:'#0E5C42',fontWeight:600}}>{expAmt}</span><CopyBtn text={expAmt}/></div>
+                          <div style={{...S.row,background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,margin:'4px 0',padding:'8px 12px',alignItems:'flex-start'}}>
+                            <span style={{fontSize:11,color:'#92400e'}}>⚠️ Client has expenses — request invoices via WhatsApp</span>
+                          </div>
+                        </>
+                      ) : null
                     })()}
                     {(()=>{
                       const bkParts=(activeTask.bankDetails||'').split(' | ')
@@ -1195,6 +1218,15 @@ export default function DashboardClient() {
                       </div>
                     )
                   })}
+                  {activeTask.taskType==='tax-return' && (()=>{
+                    const expCount=(activeTask.notes||'').match(/Expense Count: ([^|]+)/)?.[1]?.trim()||''
+                    return expCount ? (
+                      <>
+                        <div style={{...S.row,borderTop:'1px solid #f0f4f1',marginTop:6}}><span style={S.lbl}>Expense receipts</span><span style={{...S.val,fontWeight:600,color:'#0B5240'}}>{expCount}</span></div>
+                        <div style={{fontSize:11,color:'#92400e',background:'#FFFCF5',border:'1px solid #E9A020',borderRadius:8,padding:'7px 10px',margin:'6px 0 4px',lineHeight:1.5}}>📲 Client to send receipts via WhatsApp</div>
+                      </>
+                    ) : null
+                  })()}
                 </div>
               </div>
               {/* Declaration + Notes side by side */}

@@ -4,7 +4,6 @@ import { useState, useRef } from 'react'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
-type MultiUploadState = { files: File[]; previews: (string | null)[] }
 
 /* ── Field wrapper ── */
 function Field({ label, required, children, error }: { label: string; required?: boolean; children: React.ReactNode; error?: string }) {
@@ -77,83 +76,7 @@ function FileUpload({
   )
 }
 
-/* ── Multi File Upload (up to 15 files) ── */
-function MultiFileUpload({
-  id, label, accept, value, onChange, maxFiles = 15
-}: {
-  id: string; label: string; accept: string
-  value: MultiUploadState; onChange: (v: MultiUploadState) => void
-  maxFiles?: number
-}) {
-  const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = Array.from(e.target.files ?? [])
-    if (!selected.length) return
-    const remaining = maxFiles - value.files.length
-    const toAdd = selected.slice(0, remaining)
-    const newPreviews = toAdd.map(f => f.type.startsWith('image/') ? URL.createObjectURL(f) : null)
-    onChange({
-      files: [...value.files, ...toAdd],
-      previews: [...value.previews, ...newPreviews],
-    })
-    if (inputRef.current) inputRef.current.value = ''
-  }
-
-  const handleRemove = (i: number) => {
-    const p = value.previews[i]
-    if (p) URL.revokeObjectURL(p)
-    onChange({
-      files: value.files.filter((_, idx) => idx !== i),
-      previews: value.previews.filter((_, idx) => idx !== i),
-    })
-  }
-
-  const canAdd = value.files.length < maxFiles
-
-  return (
-    <div>
-      {value.files.map((f, i) => (
-        <div key={i} className="file-zone" style={{marginBottom: 8, cursor:'default'}}>
-          <div className="file-selected">
-            {value.previews[i]
-              ? <img src={value.previews[i]!} alt="preview" className="file-img-preview" />
-              : <div className="file-icon-box">📄</div>
-            }
-            <div className="file-meta">
-              <span className="file-name">{f.name}</span>
-              <span className="file-size">{(f.size / 1024).toFixed(0)} KB</span>
-            </div>
-            <button type="button" className="file-remove" onClick={() => handleRemove(i)}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      ))}
-      {canAdd && (
-        <div className="file-zone" onClick={() => inputRef.current?.click()} style={{cursor:'pointer'}}>
-          <input ref={inputRef} id={id} type="file" accept={accept} multiple className="hidden" onChange={handleChange} />
-          <div className="file-empty">
-            <div className="file-upload-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M12 16V8M8 12l4-4 4 4" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <rect x="3" y="3" width="18" height="18" rx="4" stroke="#C8EAE0" strokeWidth="1.2"/>
-              </svg>
-            </div>
-            <span className="file-upload-label">{label}</span>
-            <span className="file-upload-sub">
-              {value.files.length === 0
-                ? `Tap to add files (max ${maxFiles})`
-                : `Add more (${value.files.length}/${maxFiles})`}
-            </span>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
 /* ── Main Form ── */
 export default function TaxFormPage() {
@@ -188,6 +111,8 @@ export default function TaxFormPage() {
   const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
   const [abnNumber, setAbnNumber]     = useState('')
   const [abnIncome, setAbnIncome]     = useState('')
+  const [abnWorkType, setAbnWorkType] = useState('')
+  const [expenseCount, setExpenseCount] = useState('')
   const [howHeard, setHowHeard]       = useState('')
 
   // UI
@@ -213,6 +138,7 @@ export default function TaxFormPage() {
     if (hasAbn === 'yes') {
       if (!abnNumber.trim()) e.abnNumber   = 'Required'
       if (!abnIncome.trim()) e.abnIncome   = 'Required'
+      if (!abnWorkType.trim()) e.abnWorkType = 'Required'
     }
     if (!bankName.trim())    e.bankName    = 'Required'
     if (!bankHolder.trim())  e.bankHolder  = 'Required'
@@ -294,7 +220,9 @@ export default function TaxFormPage() {
     if (hasAbn === 'yes') {
       fd.append('abnNumber',   abnNumber)
       fd.append('abnIncome',   abnIncome)
+      fd.append('abnWorkType', abnWorkType)
     }
+    fd.append('expenseCount', expenseCount)
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYear)
@@ -596,6 +524,11 @@ export default function TaxFormPage() {
                 <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
                   value={abnIncome} onChange={e => { setAbnIncome(e.target.value); setErrors(p => ({...p, abnIncome: ''})) }} />
               </Field>
+
+              <Field label="What type of work did you do under your ABN?" required error={errors.abnWorkType}>
+                <input className={`inp ${errors.abnWorkType ? 'inp-err' : ''}`} type="text" placeholder="e.g. Construction, Cleaning, Delivery, Farming"
+                  value={abnWorkType} onChange={e => { setAbnWorkType(e.target.value); setErrors(p => ({...p, abnWorkType: ''})) }} />
+              </Field>
             </>)}
 
           <div className="form-section-title">Bank account details</div>
@@ -629,7 +562,38 @@ export default function TaxFormPage() {
               <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
             </Field>
-          </div>
+
+            <Field label="Total work-related expenses (AUD) — leave blank if none" error={errors.expenseCount}>
+              <input
+                className={`inp ${errors.expenseCount ? 'inp-err' : ''}`}
+                type="text"
+                inputMode="decimal"
+                placeholder="e.g. 1,500"
+                value={expenseCount}
+                onChange={e => { setExpenseCount(e.target.value); setErrors(p => ({...p, expenseCount: ''})) }}
+              />
+            </Field>
+
+            {expenseCount.trim() !== '' && (
+              <div style={{background:'#F0FDF4',border:'1.5px solid #86EFAC',borderRadius:'12px',padding:'14px 16px',marginTop:'-4px',marginBottom:'14px'}}>
+                <p style={{fontSize:'13px',color:'#166534',lineHeight:1.65,marginBottom:'10px'}}>
+                  <strong>📲 Please send your invoices/receipts via WhatsApp</strong><br/>
+                  To claim your expenses, send us all receipts and invoices on WhatsApp. Our team will review them for your tax return.
+                </p>
+                <a
+                  href="https://wa.me/61424513998"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{display:'inline-flex',alignItems:'center',gap:6,background:'#22C55E',color:'#fff',fontSize:'13px',fontWeight:600,padding:'9px 18px',borderRadius:'100px',textDecoration:'none'}}
+                >
+                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+                    <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.3)"/>
+                    <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3l.46 1.35c.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
+                  </svg>
+                  Send invoices on WhatsApp →
+                </a>
+              </div>
+            )}
           </div>
 
           <div className="form-section-title">Declaration</div>
@@ -700,7 +664,9 @@ export default function TaxFormPage() {
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
-                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
+                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',
+                    abnWorkType:'ABN Work Type',expenseCount:'Number of Expense Receipts',
+                    bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
                     bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>
