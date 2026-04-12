@@ -237,7 +237,9 @@ export default function TaxFormPage() {
     if (Object.keys(errs).length) { setErrors(errs); return }
     setLoading(true)
 
-    // Upload file directly to Blob (bypasses Vercel 4.5MB serverless limit)
+    // Upload file directly to Blob using token (bypasses Vercel 4.5MB serverless limit)
+    // Step 1: GET token from server (tiny request, no file bytes)
+    // Step 2: PUT file directly to Blob using token (bypasses serverless entirely)
     const uploadOne = async (f: File): Promise<string | null> => {
       if (f.size > 25 * 1024 * 1024) {
         alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB). Max 25MB.`)
@@ -245,13 +247,26 @@ export default function TaxFormPage() {
       }
       for (let i = 0; i < 3; i++) {
         try {
-          const { upload } = await import('@vercel/blob/client')
-          const blob = await upload(f.name, f, {
+          // Get a short-lived upload token from our server
+          const tokenRes = await fetch(
+            `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
+            { method: 'GET' }
+          )
+          if (!tokenRes.ok) {
+            const data = await tokenRes.json().catch(() => ({}))
+            throw new Error(data?.error || `Token request failed: ${tokenRes.status}`)
+          }
+          const { token } = await tokenRes.json()
+
+          // Upload directly to Vercel Blob using the token
+          const { put } = await import('@vercel/blob/client')
+          const blob = await put(f.name, f, {
             access: 'public',
-            handleUploadUrl: '/api/tax-form/upload',
+            token,
           })
           return blob.url
-        } catch {
+        } catch (err) {
+          console.error(`[upload] attempt ${i + 1} failed for "${f.name}":`, err)
           if (i === 2) return null
           await new Promise(r => setTimeout(r, 800 * (i + 1)))
         }
