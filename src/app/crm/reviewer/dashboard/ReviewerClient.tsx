@@ -201,7 +201,7 @@ function TaskCard({
             const abnWorkType = getNote('ABN Work Type') || ''
             const abnExpenseRaw = getNote('ABN Expenses') || ''
             const tfnExpenseRaw = getNote('TFN Expenses') || ''
-            const parseItems = (raw: string) => raw ? raw.split(' || ').map(item => { const m=item.match(/Item \d+: (.+?) \| \$(.+?) AUD \| (\d+) receipt/); return m?{description:m[1],amount:m[2],receipts:m[3]}:null }).filter(Boolean) as {description:string;amount:string;receipts:string}[] : []
+            const parseItems = (raw: string) => raw ? raw.split(' ;; ').map(item => { const m=item.match(/Item \d+: (.+?) · \$(.+?) AUD · (\d+) file/); return m?{description:m[1],amount:m[2],files:m[3]}:null }).filter(Boolean) as {description:string;amount:string;files:string}[] : []
             const abnExpenseItems = parseItems(abnExpenseRaw)
             const tfnExpenseItems = parseItems(tfnExpenseRaw)
             const abnExpenseTotal = abnExpenseItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
@@ -237,7 +237,7 @@ function TaskCard({
                 {abnVal === 'Yes' && abnWorkType && <Row label="ABN work type" value={abnWorkType} />}
                 {abnVal === 'Yes' && abnExpenseItems.length > 0 && (<>
                   {abnExpenseItems.map((e,i) => (
-                    <Row key={i} label={`Business expense ${i+1}`} value={`${e.description} — $${e.amount} AUD — ${e.receipts} receipt(s)`} />
+                    <Row key={i} label={`Business expense ${i+1}`} value={`${e.description} — $${e.amount} AUD — ${e.files} file(s)`} />
                   ))}
                   <Row label="Total business expenses" value={`$${abnExpenseTotal.toLocaleString()} AUD`} />
                   <div style={{fontSize:11,color:'#92400e',background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,padding:'8px 12px',margin:'4px 16px 8px'}}>
@@ -248,7 +248,7 @@ function TaskCard({
               {tfnExpenseItems.length > 0 && (
                 <Section title="Personal expenses (TFN)">
                   {tfnExpenseItems.map((e,i) => (
-                    <Row key={i} label={`Personal expense ${i+1}`} value={`${e.description} — $${e.amount} AUD — ${e.receipts} receipt(s)`} />
+                    <Row key={i} label={`Personal expense ${i+1}`} value={`${e.description} — $${e.amount} AUD — ${e.files} file(s)`} />
                   ))}
                   <Row label="Total personal expenses" value={`$${tfnExpenseTotal.toLocaleString()} AUD`} />
                   <div style={{fontSize:11,color:'#92400e',background:'#FFF9F0',border:'1px solid #FDE68A',borderRadius:8,padding:'8px 12px',marginTop:4}}>

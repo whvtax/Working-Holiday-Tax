@@ -272,7 +272,9 @@ export default function DashboardClient() {
     const allParts = (activeTask.notes||'').split(' | ')
     // Keep structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|Expense Amount:)/i)
+      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|ABN Expense:|TFN Expense:|ABN Receipts:|TFN Receipts:|Expense Amount:|ABN Expense Item|TFN Expense Item)/i)
+      || p.match(/^\$[\d,.]+ AUD/)
+      || p.match(/^\d+ (file|receipt)/)
       || p.startsWith('📝 ')
     )
     // taskNotes is the admin's own free-text notes only
@@ -376,22 +378,29 @@ export default function DashboardClient() {
 
   // Strip structured form data from notes — return only the user-written portion
   const parseExpenseItems = (notes: string, prefix: string) => {
-    const raw = notes.match(new RegExp(prefix + ' Expenses: ([^|]+(?:\\|[^|]+)*?)(?= \\| [A-Z]|$)'))?.[1]?.trim() || ''
+    const raw = notes.match(new RegExp(prefix + ' Expenses: (.*?)(?= \\| (?:ABN|TFN|→|Passport|Super|Gender|I confirm|I declare)|$)'))?.[1]?.trim() || ''
     if (!raw) return []
-    return raw.split(' || ').map(item => {
-      const m = item.match(/Item \d+: (.+?) \| \$(.+?) AUD \| (\d+) receipt/)
-      return m ? { description: m[1], amount: m[2], receipts: m[3] } : null
-    }).filter(Boolean) as {description:string;amount:string;receipts:string}[]
+    return raw.split(' ;; ').map(item => {
+      const m = item.match(/Item \d+: (.+?) · \$(.+?) AUD · (\d+) file/)
+      return m ? { description: m[1], amount: m[2], files: m[3] } : null
+    }).filter(Boolean) as {description:string;amount:string;files:string}[]
   }
 
   const extractUserNotes = (raw:string) => {
     if (!raw) return ''
     const parts = raw.split(' | ')
-    const userParts = parts
-      .filter(p =>
-        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|Expense Amount:)/i)
-        && !p.startsWith('📝 ') // exclude reviewer notes from admin textarea
-      )
+    const userParts = parts.filter(p => {
+      const t = p.trim()
+      if (!t) return false
+      if (p.startsWith('📝 ')) return false // reviewer notes shown separately
+      // All known structured prefixes — new and old formats
+      if (t.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|→|I confirm|I declare|I have read|Working Holiday|ABN:|ABN Number:|ABN Income:|ABN Work Type:|ABN Expenses:|TFN Expenses:|ABN Expense:|TFN Expense:|ABN Receipts:|TFN Receipts:|Expense Amount:|ABN Expense Item|TFN Expense Item)/i)) return false
+      // Fragments of old-format expense items (e.g. "$500 AUD | 1 receipt(s)")
+      if (t.match(/^\$[\d,.]+ AUD/)) return false
+      // Fragments of new-format expense items (e.g. "$500 AUD · 1 file(s)")
+      if (t.match(/^\d+ (file|receipt)/)) return false
+      return true
+    })
     return userParts.join(' | ').trim()
   }
 
@@ -613,7 +622,7 @@ export default function DashboardClient() {
                   if (!items.length) return ''
                   const total = items.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
                   return sec('Business expenses (ABN)')
-                    + items.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.receipts)} receipt(s)`)).join('')
+                    + items.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.files)} file(s)`)).join('')
                     + field('Total business expenses', `$${total.toLocaleString()} AUD`)
                     + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send business invoices/receipts to team</p>`
                 })() : '')
@@ -625,7 +634,7 @@ export default function DashboardClient() {
             if (!tfnItems.length) return ''
             const tfnTotal = tfnItems.reduce((s,e)=>s+parseFloat(e.amount.replace(/,/g,'')||'0'),0)
             return sec('Personal expenses (TFN)')
-              + tfnItems.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.receipts)} receipt(s)`)).join('')
+              + tfnItems.map((e,i)=>field(`Item ${i+1}: ${esc(e.description)}`, `$${esc(e.amount)} AUD — ${esc(e.files)} file(s)`)).join('')
               + field('Total personal expenses', `$${tfnTotal.toLocaleString()} AUD`)
               + `<p style="font-size:11px;color:#92400e;background:#FFFCF5;border:1px solid #E9A020;border-radius:8px;padding:6px 10px;margin-bottom:8px">Client to send personal receipts to team</p>`
           })()
@@ -1177,7 +1186,7 @@ export default function DashboardClient() {
                               {items.map((e,i)=>(
                                 <div key={i} style={{...S.row,flexDirection:'column' as const,alignItems:'flex-start',gap:2}}>
                                   <span style={{...S.lbl,fontWeight:600}}>{e.description}</span>
-                                  <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.receipts} receipt(s)</span>
+                                  <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.files} file(s)</span>
                                 </div>
                               ))}
                               <div style={S.row}><span style={S.lbl}>Total business expenses</span><span style={{...S.val,color:'#0E5C42',fontWeight:700}}>${total.toLocaleString()} AUD</span></div>
@@ -1197,7 +1206,7 @@ export default function DashboardClient() {
                           {items.map((e,i)=>(
                             <div key={i} style={{...S.row,flexDirection:'column' as const,alignItems:'flex-start',gap:2}}>
                               <span style={{...S.lbl,fontWeight:600}}>{e.description}</span>
-                              <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.receipts} receipt(s)</span>
+                              <span style={{fontSize:11,color:'#6b7280'}}>${e.amount} AUD · {e.files} file(s)</span>
                             </div>
                           ))}
                           <div style={S.row}><span style={S.lbl}>Total personal expenses</span><span style={{...S.val,color:'#0E5C42',fontWeight:700}}>${total.toLocaleString()} AUD</span></div>

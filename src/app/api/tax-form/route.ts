@@ -15,8 +15,8 @@ function formatExpenses(items: ExpenseMeta[], fileUrlMap: Record<string, string[
   if (!valid.length) return ''
   return valid.map((e, i) => {
     const urls = fileUrlMap[e.index] || []
-    return `${prefix} Item ${i+1}: ${e.description?.trim() || '—'} | $${e.amount?.trim() || '0'} AUD | ${urls.length} file(s)`
-  }).join(' || ')
+    return `${prefix} Item ${i+1}: ${e.description?.trim() || '—'} · $${e.amount?.trim() || '0'} AUD · ${urls.length} file(s)`
+  }).join(' ;; ')
 }
 
 export async function POST(req: NextRequest) {
