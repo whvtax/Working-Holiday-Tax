@@ -4,7 +4,7 @@ import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
 const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
-const MAX_SIZE = 10 * 1024 * 1024
+const MAX_SIZE = 25 * 1024 * 1024
 
 // Detect actual file type from magic bytes regardless of declared content-type
 function detectFileType(buf: ArrayBuffer): string | null {
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const declaredType = req.headers.get('content-type') ?? ''
     const body = await req.arrayBuffer()
     if (body.byteLength > MAX_SIZE) {
-      return NextResponse.json({ ok: false, error: 'File too large (max 10MB)' }, { status: 400 })
+      return NextResponse.json({ ok: false, error: 'File too large (max 25MB)' }, { status: 400 })
     }
     // Detect actual file type from magic bytes — handles iOS HEIC sent as jpeg
     const detectedType = detectFileType(body)

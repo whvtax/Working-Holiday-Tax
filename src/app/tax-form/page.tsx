@@ -239,8 +239,8 @@ export default function TaxFormPage() {
 
     // Pre-upload all files client-side for faster, more reliable submission
     const uploadOne = async (f: File): Promise<string | null> => {
-      if (f.size > 10 * 1024 * 1024) {
-        alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB).\n\nMax size is 10MB. Please compress the file or take a lower-quality photo and try again.`)
+      if (f.size > 25 * 1024 * 1024) {
+        alert(`❌ "${f.name}" is too large (${(f.size / 1024 / 1024).toFixed(1)}MB).\n\nMax size is 25MB. Please compress the file or take a lower-quality photo and try again.`)
         return null
       }
       const attempt = async () => {
