@@ -399,9 +399,7 @@ export default function DashboardClient() {
     setShowAddModal(false); await loadTasks()
   }
 
-  const fmtDate   = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST' : '—'
-    day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'
-  }) + ' AEST' : '—'
+  const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST' : '—'
 
   // Strip structured form data from notes — return only the user-written portion
   const extractUserNotes = (raw:string) => {
