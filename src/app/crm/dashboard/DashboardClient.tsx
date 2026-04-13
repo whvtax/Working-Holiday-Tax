@@ -535,6 +535,7 @@ export default function DashboardClient() {
         + field('Last name', task.clientName.split(' ').pop() || '')
         + field('Date of birth', task.dob)
         + radioField('Gender as shown in passport', gender, ['Female','Male'])
+        + field('Country of passport', task.country)
         + field('WhatsApp Number', task.whatsapp)
         + field('Australian phone number', task.auPhone)
         + field('Email address', task.email)
@@ -632,6 +633,11 @@ export default function DashboardClient() {
               + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
               + (abnValPdf==='Yes' ? field('Work done under ABN', (task.notes||'').match(/ABN Work: ([^|]+)/)?.[1]?.trim()||'—') : '')
+          })()
+        + sec('Work-related expenses')
+        + (() => {
+            const expVal = (task.notes||'').match(/Expenses: ([^|]+)/)?.[1]?.trim()||''
+            return radioField('Did you have work-related expenses?', expVal || '', ['Yes','No'])
           })()
         + sec('Bank account details')
         + field('Bank name', bkName)
