@@ -237,13 +237,15 @@ export async function createTask(data: Omit<Task, 'id' | 'done'>): Promise<Task>
   await withTimeout(sql`
     INSERT INTO crm_tasks
       (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
-       done,address,tfn,bank_details,primary_job,marital,tax_status,how_heard,au_phone,notes,file_urls)
+       done,address,tfn,bank_details,primary_job,marital,tax_status,how_heard,au_phone,notes,file_urls,
+       review_status,reviewer_note,reviewed_at)
     VALUES
       (${id},${data.clientId},${data.clientName},${data.taskType ?? 'tax-return'},
        ${data.whatsapp},${data.email},${data.country},${data.dob},${data.taxYear},
        ${data.submittedAt},false,${data.address},${data.tfn},${data.bankDetails},
        ${data.primaryJob},${data.marital},${data.taxStatus},${data.howHeard},${data.auPhone},
-       ${data.notes},${JSON.stringify(data.fileUrls ?? [])})
+       ${data.notes},${JSON.stringify(data.fileUrls ?? [])},
+       ${'pending'},${''},${''})
   `, 'INSERT crm_tasks')
   return { ...data, id, done: false }
 }

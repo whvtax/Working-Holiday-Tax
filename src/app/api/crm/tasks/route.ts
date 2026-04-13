@@ -57,6 +57,9 @@ export async function POST(req: NextRequest) {
       auPhone:     sanitiseShort(body.auPhone),
       notes:       sanitiseField(body.notes),
       fileUrls:    safeFileUrls,
+      reviewStatus: 'pending',
+      reviewerNote: '',
+      reviewedAt:   '',
     })
     return NextResponse.json({ ok:true, task })
   } catch (err) {
