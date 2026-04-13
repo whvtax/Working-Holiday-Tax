@@ -22,8 +22,6 @@ function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
   if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) return true
   // HEIC/HEIF (iOS photos): ftyp box — bytes 4-7 are 'ftyp'
   if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return true
-  // If content-type is image/* and file is non-empty, be lenient
-  if (contentType.startsWith('image/') && buf.byteLength > 100) return true
   return false
 }
 

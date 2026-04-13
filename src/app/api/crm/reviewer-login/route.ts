@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     if (!hash) return NextResponse.json({ ok: false, error: 'not_configured' }, { status: 503 })
 
     let redis: any = null
-    try { redis = await getRedis() } catch {}
+    try { redis = await getRedis() } catch (redisErr) { console.error('[reviewer-login] Redis unavailable — brute-force protection skipped:', redisErr) }
 
     if (redis) {
       const locked = await isReviewerLockedRedis(redis)

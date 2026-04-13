@@ -326,6 +326,7 @@ function TaskCard({
                 const raw = url.split('/').pop() ?? `file-${i + 1}`
                 const name = decodeURIComponent(raw).replace(/^\d+_[a-z0-9]+_/i, '').slice(0, 60)
                 const isPdf = url.toLowerCase().includes('.pdf')
+                const proxyUrl = `/api/crm/file?url=${encodeURIComponent(url)}`
                 return (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', borderBottom: i < task.fileUrls.length - 1 ? '1px solid #F4FAF7' : 'none' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
@@ -333,7 +334,7 @@ function TaskCard({
                       <span style={{ fontSize: 12, color: '#1A2822', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{i + 1}. {name}</span>
                     </div>
                     <div style={{ display: 'flex', gap: 6, marginLeft: 12, flexShrink: 0 }}>
-                      <button onClick={() => setViewUrl(url)} style={{ height: 30, padding: '0 12px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: G, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>View</button>
+                      <button onClick={() => setViewUrl(proxyUrl)} style={{ height: 30, padding: '0 12px', borderRadius: 100, border: '1.5px solid #D4EAE2', background: '#fff', color: G, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>View</button>
 
                     </div>
                   </div>

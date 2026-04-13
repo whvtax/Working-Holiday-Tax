@@ -58,6 +58,9 @@ export async function POST(req: NextRequest) {
         formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
+      reviewStatus: 'pending',
+      reviewerNote: '',
+      reviewedAt:   '',
     })
 
     return NextResponse.json({ ok: true })

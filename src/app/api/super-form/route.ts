@@ -56,6 +56,9 @@ export async function POST(req: NextRequest) {
         formData.get('declared')     ? `→ ${sanitiseField(formData.get('declared'))}` : '',
       ].filter(Boolean).join(' | '),
       fileUrls,
+      reviewStatus: 'pending',
+      reviewerNote: '',
+      reviewedAt:   '',
     })
 
     return NextResponse.json({ ok: true })

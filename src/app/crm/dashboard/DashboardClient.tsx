@@ -146,8 +146,14 @@ export default function DashboardClient() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
-  const [confirmTransfer, setConfirmTransfer] = useState<Task|null>(null)
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
+
+  // Pagination
+  const PAGE_SIZE = 100
+  const [tasksTotal, setTasksTotal]     = useState(0)
+  const [clientsTotal, setClientsTotal] = useState(0)
+  const [tasksLoadingMore, setTasksLoadingMore]     = useState(false)
+  const [clientsLoadingMore, setClientsLoadingMore] = useState(false)
   const [captureRefund, setCaptureRefund] = useState<{taskId:string;taskType:string;taxYear:string;clientId:string}|null>(null)
   const [captureRefundAmt, setCaptureRefundAmt] = useState('')
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
@@ -164,31 +170,54 @@ export default function DashboardClient() {
 
   const loadTasks   = useCallback(async()=>{
     try {
-      const r=await fetch('/api/crm/tasks',{cache:'no-store'})
+      const r=await fetch(`/api/crm/tasks?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
-      const d=await r.json(); if(d.ok) setTasks(d.tasks)
+      const d=await r.json()
+      if(d.ok) { setTasks(d.tasks); setTasksTotal(d.total ?? d.tasks.length) }
     } catch(e){ console.error('[loadTasks]',e) }
   },[])
+
+  const loadMoreTasks = useCallback(async()=>{
+    setTasksLoadingMore(true)
+    try {
+      const r=await fetch(`/api/crm/tasks?limit=${PAGE_SIZE}&offset=${tasks.length}`,{cache:'no-store'})
+      const d=await r.json()
+      if(d.ok) { setTasks(prev=>[...prev,...d.tasks]); setTasksTotal(d.total ?? 0) }
+    } catch(e){ console.error('[loadMoreTasks]',e) }
+    finally { setTasksLoadingMore(false) }
+  },[tasks.length])
+
   const loadClients = useCallback(async()=>{
     try {
-      const r=await fetch('/api/crm/clients',{cache:'no-store'})
+      const r=await fetch(`/api/crm/clients?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
       const d=await r.json()
       if(d.ok) {
-        const newCount = d.clients.length
+        const newCount = d.total ?? d.clients.length
         if (prevClientsCountRef.current > 0 && newCount > prevClientsCountRef.current) {
           setNewClientsCount(n => n + (newCount - prevClientsCountRef.current))
         }
         prevClientsCountRef.current = newCount
         setClients(d.clients)
+        setClientsTotal(d.total ?? d.clients.length)
       }
     } catch(e){ console.error('[loadClients]',e) }
   },[])
 
+  const loadMoreClients = useCallback(async()=>{
+    setClientsLoadingMore(true)
+    try {
+      const r=await fetch(`/api/crm/clients?limit=${PAGE_SIZE}&offset=${clients.length}`,{cache:'no-store'})
+      const d=await r.json()
+      if(d.ok) { setClients(prev=>[...prev,...d.clients]); setClientsTotal(d.total ?? 0) }
+    } catch(e){ console.error('[loadMoreClients]',e) }
+    finally { setClientsLoadingMore(false) }
+  },[clients.length])
+
   const [archivedLoaded, setArchivedLoaded] = useState(false)
   const loadArchived = useCallback(async()=>{
     try {
-      const r=await fetch('/api/crm/clients?archived=true',{cache:'no-store'})
+      const r=await fetch(`/api/crm/clients?archived=true&limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
       const d=await r.json()
       if(d.ok) {
         const newCount = d.clients.length
@@ -205,7 +234,7 @@ export default function DashboardClient() {
 
   // Auto-poll every 20s — keeps all open sessions in sync
   useEffect(()=>{
-    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived()]) }, 10_000)
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived()]) }, 30_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients])
 
@@ -371,7 +400,6 @@ export default function DashboardClient() {
   }
 
   const fmtDate   = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST' : '—'
-  const fmtDateTime = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{
     day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'
   }) + ' AEST' : '—'
 
@@ -434,10 +462,11 @@ export default function DashboardClient() {
       try { name = decodeURIComponent(name) } catch {}
       name = name.replace(/^\d+_/,'').slice(0,80)
       const isPdf = url.toLowerCase().endsWith('.pdf')
+      const proxyUrl = `/api/crm/file?url=${encodeURIComponent(url)}`
       return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:#F5F9F7;border:1.5px solid #D4EAE2;border-radius:12px;margin-bottom:8px">` +
         `<span style="font-size:20px">${isPdf?'📄':'🖼️'}</span>` +
         `<span style="font-size:13px;color:#080F0D;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span>` +
-        `<a href="${esc(url)}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
+        `<a href="${esc(proxyUrl)}" style="font-size:11px;color:${G};background:${GL};border:1px solid #C8EAE0;border-radius:6px;padding:3px 10px;text-decoration:none;font-weight:600;white-space:nowrap">View ↗</a>` +
         `</div>`
     }
 
@@ -729,7 +758,7 @@ export default function DashboardClient() {
   } : null, [globalSearch, tasks, clients])
 
   const howHeardStats = useMemo(()=>clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [clients])
-  const archiveHowHeardStats = archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{})
+  const archiveHowHeardStats = useMemo(()=>archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [archivedClients])
   const visibleArchived = useMemo(()=>archivedClients.filter(c=>{
     const ms = !archiveSearch || c.fullName.toLowerCase().includes(archiveSearch.toLowerCase()) || c.whatsapp?.includes(archiveSearch) || c.email?.includes(archiveSearch)
     const my = archiveYearFilter.size===0 || c.taxReturns?.some(r=>archiveYearFilter.has(r.year)) || c.superReturns?.some(r=>archiveYearFilter.has(r.year))
@@ -999,6 +1028,18 @@ export default function DashboardClient() {
               </>}
 
               {tasks.length===0 && <div style={{background:'#fff',borderRadius:13,padding:48,textAlign:'center',color:'#aabab2',fontSize:14,border:'1px solid #e4ede8'}}>No tasks yet.</div>}
+
+              {tasks.length < tasksTotal && (
+                <div style={{textAlign:'center',padding:'16px 0'}}>
+                  <button
+                    onClick={loadMoreTasks}
+                    disabled={tasksLoadingMore}
+                    style={{background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:99,padding:'8px 28px',fontSize:13,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}
+                  >
+                    {tasksLoadingMore ? 'Loading…' : `Load more (${tasks.length} of ${tasksTotal})`}
+                  </button>
+                </div>
+              )}
             </div>
           )}
 
@@ -1209,21 +1250,22 @@ export default function DashboardClient() {
                     try { name = decodeURIComponent(rawName) } catch { name = rawName }
                     name = name.replace(/^\d+_/, '').replace(/[/\\<>:"'|?*]/g, '_').slice(0, 100)
                     const isPdf = url.toLowerCase().endsWith('.pdf')
+                    const proxyUrl = `/api/crm/file?url=${encodeURIComponent(url)}`
                     return (
                       <div key={url} style={{...S.row,justifyContent:'space-between',alignItems:'center'}}>
                         <span style={{fontSize:12,color:'#0a1410',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:'60%'}}>{isPdf ? '📄' : '🖼️'} {name}</span>
                         <div style={{display:'flex',gap:6}}>
-                          <button onClick={()=>setPreviewUrl(url)} style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>View</button>
+                          <button onClick={()=>setPreviewUrl(proxyUrl)} style={{fontSize:11,color:'#0E5C42',background:'#eaf6f1',border:'1px solid #c8eadf',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>View</button>
                           <button onClick={async()=>{
                             try {
-                              const res = await fetch(url)
+                              const res = await fetch(proxyUrl)
                               const blob = await res.blob()
                               const a = document.createElement('a')
                               a.href = URL.createObjectURL(blob)
                               a.download = name
                               a.click()
                               URL.revokeObjectURL(a.href)
-                            } catch { window.open(url,'_blank') }
+                            } catch { window.open(proxyUrl,'_blank') }
                           }} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>Download ↓</button>
                         </div>
                       </div>
@@ -1597,6 +1639,18 @@ export default function DashboardClient() {
                       })}
                     </tbody>
                   </table>
+                </div>
+              )}
+
+              {clients.length < clientsTotal && (
+                <div style={{textAlign:'center',padding:'16px 0'}}>
+                  <button
+                    onClick={loadMoreClients}
+                    disabled={clientsLoadingMore}
+                    style={{background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:99,padding:'8px 28px',fontSize:13,fontWeight:600,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}}
+                  >
+                    {clientsLoadingMore ? 'Loading…' : `Load more (${clients.length} of ${clientsTotal})`}
+                  </button>
                 </div>
               )}
             </div>
@@ -2048,16 +2102,24 @@ export default function DashboardClient() {
               </div>
             </div>
             <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200}}>
-              {previewUrl.toLowerCase().match(/\.(jpg|jpeg|png|gif|webp)$/)
-                ? <img src={previewUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}}/>
-                : previewUrl.toLowerCase().endsWith('.pdf')
-                  ? <iframe src={previewUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
-                  : <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
-                      <div style={{fontSize:32,marginBottom:12}}>📄</div>
-                      <div style={{fontSize:13}}>Cannot preview this file type</div>
-                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
-                    </div>
-              }
+              {(()=>{
+                // Extract original URL from proxy to detect file type
+                const origUrl = previewUrl.startsWith('/api/crm/file?url=')
+                  ? (() => { try { return decodeURIComponent(previewUrl.slice('/api/crm/file?url='.length)) } catch { return previewUrl } })()
+                  : previewUrl
+                const lower = origUrl.toLowerCase()
+                const isImage = /\.(jpg|jpeg|png|gif|webp|heic|heif)/.test(lower)
+                const isPdf   = lower.includes('.pdf')
+                if (isImage) return <img src={previewUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}}/>
+                if (isPdf)   return <iframe src={previewUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
+                return (
+                  <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
+                    <div style={{fontSize:32,marginBottom:12}}>📄</div>
+                    <div style={{fontSize:13}}>Cannot preview this file type</div>
+                    <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
+                  </div>
+                )
+              })()}
             </div>
           </div>
         </div>

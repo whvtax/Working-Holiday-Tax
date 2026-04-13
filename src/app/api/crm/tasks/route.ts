@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateSession, validateReviewerSession } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 
-// Reviewers can only read tasks — admin session required for mutations
 function authRead(req: NextRequest) {
   return validateSession(req.cookies.get('crm_session')?.value)
     || validateReviewerSession(req.cookies.get('crm_reviewer_session')?.value)
@@ -12,15 +11,18 @@ function authWrite(req: NextRequest) {
   return validateSession(req.cookies.get('crm_session')?.value)
 }
 
-async function getTasks() {
-  try { const { getAllTasks } = await import('@/lib/db'); return await getAllTasks() }
-  catch { return [] }
-}
-
 export async function GET(req: NextRequest) {
   if (!authRead(req)) return NextResponse.json({ ok:false }, { status:401 })
-  const tasks = await getTasks()
-  return NextResponse.json({ ok:true, tasks })
+  try {
+    const { searchParams } = new URL(req.url)
+    const limit  = Math.min(200, Math.max(1, parseInt(searchParams.get('limit')  ?? '100')))
+    const offset = Math.max(0, parseInt(searchParams.get('offset') ?? '0'))
+    const { getAllTasks, countTasks } = await import('@/lib/db')
+    const [tasks, total] = await Promise.all([getAllTasks(limit, offset), countTasks()])
+    return NextResponse.json({ ok:true, tasks, total, limit, offset })
+  } catch {
+    return NextResponse.json({ ok:true, tasks:[], total:0, limit:100, offset:0 })
+  }
 }
 
 export async function POST(req: NextRequest) {

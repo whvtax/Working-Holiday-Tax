@@ -1,29 +1,13 @@
-// src/app/api/crm/login/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import {
   hashPassword, verifyPassword,
   recordFailedAttemptRedis, resetFailedAttemptsRedis, isLockedOutRedis,
   generateOtp,
 } from '@/lib/crm-store'
-import { createClient } from 'redis'
-type RedisClient = ReturnType<typeof createClient>
+import { getRedis } from '@/lib/rate-limit'
 import crypto from 'crypto'
-
-async function getRedis() {
-  const url = process.env.REDIS_URL
-  if (!url) throw new Error('Missing env var: REDIS_URL')
-  const client = createClient({
-    url,
-    socket: { connectTimeout: 3000, reconnectStrategy: false },
-  })
-  await Promise.race([
-    client.connect(),
-    new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Redis connect timeout')), 3500)
-    ),
-  ])
-  return client
-}
+import type { createClient } from 'redis'
+type RedisClient = ReturnType<typeof createClient>
 
 let _cachedPasswordHash: string | null = null
 function getPasswordHash(): string {
@@ -35,14 +19,11 @@ function getPasswordHash(): string {
 }
 
 export async function POST(req: NextRequest) {
-  let redis
   try {
     let body: unknown
-    try {
-      body = await req.json()
-    } catch {
-      return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 })
-    }
+    try { body = await req.json() }
+    catch { return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 }) }
+
     const password = (body as Record<string, unknown>)?.password
     if (typeof password !== 'string' || password.length === 0) {
       return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 })
@@ -50,14 +31,13 @@ export async function POST(req: NextRequest) {
 
     const ADMIN_EMAIL = process.env.CRM_ADMIN_EMAIL
     const RESEND_KEY  = process.env.RESEND_API_KEY ?? ''
-    let PASSWORD_HASH: string
-    try {
-      PASSWORD_HASH = getPasswordHash()
-    } catch {
-      return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
-    }
 
-    redis = await getRedis()
+    let PASSWORD_HASH: string
+    try { PASSWORD_HASH = getPasswordHash() }
+    catch { return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 }) }
+
+    const redis = await getRedis()
+    if (!redis) return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
 
     if (await isLockedOutRedis(redis as RedisClient)) {
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
@@ -71,52 +51,58 @@ export async function POST(req: NextRequest) {
 
     await resetFailedAttemptsRedis(redis as RedisClient)
 
-    // Generate OTP and store in Redis (shared across all serverless instances)
     const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
-    // Reset attempt counter so a fresh login always gets a clean slate
     await redis.del('crm_otp_attempts')
-    await redis.set('crm_otp', otpHash, { EX: 600 }) // expires in 10 minutes
+    await redis.set('crm_otp', otpHash, { EX: 600 }) // 10 minutes
 
-    if (ADMIN_EMAIL) await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
+    if (ADMIN_EMAIL) {
+      const sent = await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
+      if (!sent) {
+        console.error('[CRM login] OTP generated but email delivery failed')
+        return NextResponse.json({ ok: false, message: 'Failed to send login code. Please try again.' }, { status: 500 })
+      }
+    }
 
     return NextResponse.json({ ok: true, otpSent: true })
 
   } catch (err) {
     console.error('[CRM login]', err)
     return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
-  } finally {
-    if (redis) await (redis as RedisClient).disconnect()
   }
+  // No disconnect() — Redis singleton stays alive for warm instance reuse
 }
 
-async function sendOtpEmail(to: string, apiKey: string, otp: string) {
-  if (!apiKey) { return }
+async function sendOtpEmail(to: string, apiKey: string, otp: string): Promise<boolean> {
+  if (!apiKey) return false
   const time = new Date().toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from:    'Working Holiday Tax <noreply@workingholidaytax.com.au>',
-      to:      [to],
-      subject: 'Your CRM login code',
-      html: `
-        <div style="font-family:system-ui,sans-serif;max-width:400px;margin:0 auto;">
-          <div style="background:#0E5C42;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
-            <h1 style="color:#fff;font-size:18px;margin:0;font-weight:600;">CRM Login Code</h1>
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from:    'Working Holiday Tax <noreply@workingholidaytax.com.au>',
+        to:      [to],
+        subject: 'Your CRM login code',
+        html: `
+          <div style="font-family:system-ui,sans-serif;max-width:400px;margin:0 auto;">
+            <div style="background:#0E5C42;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
+              <h1 style="color:#fff;font-size:18px;margin:0;font-weight:600;">CRM Login Code</h1>
+            </div>
+            <div style="background:#f9fafb;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 16px 16px;padding:32px;text-align:center;">
+              <p style="font-size:14px;color:#555;margin:0 0 20px;">Your one-time login code:</p>
+              <div style="background:#fff;border:2px solid #0E5C42;border-radius:12px;padding:20px;letter-spacing:0.3em;font-size:32px;font-weight:700;color:#0E5C42;">${otp}</div>
+              <p style="font-size:12px;color:#999;margin:16px 0 0;">Valid for 10 minutes · ${time} (Sydney)</p>
+            </div>
           </div>
-          <div style="background:#f9fafb;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 16px 16px;padding:32px;text-align:center;">
-            <p style="font-size:14px;color:#555;margin:0 0 20px;">Your one-time login code:</p>
-            <div style="background:#fff;border:2px solid #0E5C42;border-radius:12px;padding:20px;letter-spacing:0.3em;font-size:32px;font-weight:700;color:#0E5C42;">${otp}</div>
-            <p style="font-size:12px;color:#999;margin:16px 0 0;">Valid for 10 minutes · ${time} (Sydney)</p>
-          </div>
-        </div>
-      `,
-    }),
-  })
-  if (!res.ok) {
-    const body = await res.text()
-    console.error('[Resend error]', res.status, body)
+        `,
+      }),
+    })
+    if (!res.ok) { console.error('[Resend error]', res.status, await res.text()); return false }
+    return true
+  } catch (err) {
+    console.error('[sendOtpEmail]', err)
+    return false
   }
 }
 
@@ -130,7 +116,7 @@ async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
       from:    'Working Holiday Tax <noreply@workingholidaytax.com.au>',
       to:      [to],
       subject: '⚠️ CRM login blocked',
-      html: `<p>${attempts} failed login attempts at ${time}</p>`,
+      html:    `<p>${attempts} failed login attempts at ${time}</p>`,
     }),
-  })
+  }).catch(() => {}) // fire and forget — don't block the login response
 }
