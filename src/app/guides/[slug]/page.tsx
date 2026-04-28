@@ -116,45 +116,49 @@ export default function GuidePage({ params }: Props) {
       />
       <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100vh' }}>
 
-        {/* Breadcrumb */}
-        <div style={{ padding: '10px 0' }}>
-          <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '6px', alignItems: 'center', fontSize: '11.5px', color: '#8AADA3', flexWrap: 'wrap' }}>
-            <Link href="/" style={{ color: '#587066', textDecoration: 'none' }}>Home</Link>
-            <span>/</span>
-            <Link href="/guides" style={{ color: '#587066', textDecoration: 'none' }}>Tax Guides</Link>
-            <span>/</span>
-            <span style={{ color: '#8AADA3' }}>{guide.title}</span>
+        {/* Hero */}
+        <div style={{ background: '#F7F9F8' }}>
+          {/* Breadcrumb */}
+          <div style={{ padding: '10px 0' }}>
+            <div style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '6px', alignItems: 'center', fontSize: '11.5px', color: '#8AADA3', flexWrap: 'wrap' }}>
+              <Link href="/" style={{ color: '#587066', textDecoration: 'none' }}>Home</Link>
+              <span>/</span>
+              <Link href="/guides" style={{ color: '#587066', textDecoration: 'none' }}>Tax Guides</Link>
+              <span>/</span>
+              <span style={{ color: '#8AADA3' }}>{guide.title}</span>
+            </div>
+          </div>
+
+          <div style={{ maxWidth: '780px', margin: '0 auto', padding: '1rem 20px 2rem' }}>
+            {/* Meta */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.date}</span>
+              <span style={{ color: '#CDE3DB' }}>·</span>
+              <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.readTime} min read</span>
+            </div>
+
+            {/* Title */}
+            <h1
+              className="font-serif font-black text-ink"
+              style={{ fontSize: 'clamp(22px, 3.5vw, 30px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '0.75rem' }}
+            >
+              {guide.title}
+            </h1>
+
+            {/* Lead */}
+            <p style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '0', fontWeight: 300 }}>
+              {guide.description}
+            </p>
           </div>
         </div>
 
         {/* Layout */}
         <div style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px' }}>
-
             {/* Article */}
             <article style={{ padding: '2rem 0 3rem 0' }}>
 
-              {/* Meta */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.date}</span>
-                <span style={{ color: '#CDE3DB' }}>·</span>
-                <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.readTime} min read</span>
-              </div>
-
-              {/* Title */}
-              <h1
-                className="font-serif font-black text-ink"
-                style={{ fontSize: 'clamp(22px, 3.5vw, 30px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '0.75rem' }}
-              >
-                {guide.title}
-              </h1>
-
-              {/* Lead */}
-              <p style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '2rem', fontWeight: 300 }}>
-                {guide.description}
-              </p>
-
               {/* Body */}
-              <div>{parseBody(guide.body)}</div>
+              <div style={{ marginBottom: '2.5rem' }}>{parseBody(guide.body)}</div>
 
               {/* CTA */}
               <div style={{ background: '#0B5240', borderRadius: '16px', padding: '1.5rem 1.75rem', marginTop: '2.5rem' }}>
@@ -209,6 +213,16 @@ export default function GuidePage({ params }: Props) {
                   </div>
                 </Link>
               )}
+
+              {/* Back to all guides */}
+              <div style={{ marginTop: '2rem', paddingBottom: '1rem' }}>
+                <Link
+                  href="/guides"
+                  style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                >
+                  ← Back to all guides
+                </Link>
+              </div>
 
             </article>
         </div>

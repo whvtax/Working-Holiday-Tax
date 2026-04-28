@@ -63,7 +63,7 @@ export default function MedicarePage() {
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase"
                 style={{ fontSize:'10px', letterSpacing:'0.16em', color:'rgba(11,82,64,0.65)' }}>
-                Guide
+                Medicare
               </span>
             </div>
 

@@ -238,7 +238,7 @@ export default function GuidesClient({
       </section>
 
       {/* Grid */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 80px' }}>
+      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 80px', borderTop: '1px solid #E2EFE9' }}>
         <div className="guides-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
