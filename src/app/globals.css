@@ -321,6 +321,31 @@
 }
 
 .guide-card:hover {
-  background: #F5F9F7 !important;
-  transition: background 0.15s;
+  box-shadow: 0 4px 20px rgba(11, 82, 64, 0.1) !important;
+  border-color: #C8EAE0 !important;
+}
+
+@media (max-width: 768px) {
+  .guides-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .guide-card {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+
+  .guide-card-icon {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+    font-size: 18px !important;
+  }
+
+  .guide-card-desc {
+    display: none !important;
+  }
 }
