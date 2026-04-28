@@ -215,7 +215,7 @@ export default function GuidesClient({
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               <button
                 onClick={() => handleCategory(undefined)}
-                style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${!activeCategory ? '#0B5240' : '#E2EFE9'}`, background: !activeCategory ? '#0B5240' : 'transparent', color: !activeCategory ? '#fff' : '#587066', fontSize: '13px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${!activeCategory ? '#E9A020' : '#E2EFE9'}`, background: !activeCategory ? '#E9A020' : 'transparent', color: !activeCategory ? '#1A2822' : '#587066', fontSize: '13px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}
               >
                 All guides
               </button>
@@ -225,7 +225,7 @@ export default function GuidesClient({
                   <button
                     key={cat}
                     onClick={() => handleCategory(cat)}
-                    style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${isActive ? '#0B5240' : '#E2EFE9'}`, background: isActive ? '#0B5240' : 'transparent', color: isActive ? '#fff' : '#587066', fontSize: '13px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                    style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${isActive ? '#E9A020' : '#E2EFE9'}`, background: isActive ? '#E9A020' : 'transparent', color: isActive ? '#1A2822' : '#587066', fontSize: '13px', fontWeight: isActive ? 600 : 500, cursor: 'pointer', whiteSpace: 'nowrap' }}
                   >
                     {cat}
                   </button>
