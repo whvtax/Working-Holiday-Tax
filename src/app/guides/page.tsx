@@ -105,6 +105,7 @@ export default async function GuidesPage({
               <Link
                 key={guide.slug}
                 href={`/guides/${guide.slug}`}
+                className="guide-card"
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -112,10 +113,7 @@ export default async function GuidesPage({
                   padding: '24px',
                   background: '#fff',
                   textDecoration: 'none',
-                  transition: 'background 0.15s',
                 }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = '#F5F9F7'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = '#fff'}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span style={{

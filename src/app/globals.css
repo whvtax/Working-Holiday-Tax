@@ -319,3 +319,8 @@
   }
 
 }
+
+.guide-card:hover {
+  background: #F5F9F7 !important;
+  transition: background 0.15s;
+}
