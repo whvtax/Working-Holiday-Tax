@@ -914,7 +914,7 @@ We operate under the supervision of a registered tax agent. Our details are list
   {
     slug: 'what-is-mygov',
     title: 'What is myGov and do you need it to lodge your tax return?',
-    description: 'myGov is the Australian government's online portal for accessing services including the ATO. Here is what it is and how it fits into your tax obligations.',
+    description: 'myGov is the Australian government\'s online portal for accessing services including the ATO. Here is what it is and how it fits into your tax obligations.',
     category: 'Tax Return',
     date: '10 March 2025',
     readTime: 4,
