@@ -66,6 +66,13 @@ const guideIcons: Record<string, string> = {
   'gross-pay-vs-net-pay-australia':          '💹',
   'do-working-holiday-makers-pay-tax-on-tips': '🍽️',
   'tax-obligations-after-leaving-australia': '🛫',
+  'how-to-update-address-with-ato':           '📬',
+  'what-is-a-tax-refund-australia':           '💰',
+  'how-long-does-tax-refund-take-australia':  '⏱️',
+  'super-for-casual-and-part-time-workers':   '👷',
+  'employer-asking-you-to-work-more-than-visa-allows': '⚠️',
+  'farm-work-rights-working-holiday-australia': '🌾',
+  'what-is-superannuation-guarantee-charge':  '🏛️',
 }
 
 function Pagination({

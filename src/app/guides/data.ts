@@ -2058,6 +2058,261 @@ When you lodge your [tax return](/tax-return), you will be asked about your resi
 If you have been in Australia for an extended period, have significant ties to Australia such as a long-term lease or a partner who is a resident, or have income from sources beyond employment, your residency position may be worth exploring further. These situations are less common for typical working holiday makers but do arise, and in those cases specific advice is the right approach.
     `,
   },
+
+  // ─── NEW: TFN ──────────────────────────────────────────────────────────────
+  {
+    slug: 'how-to-update-address-with-ato',
+    title: 'How to update your address with the ATO in Australia',
+    description: 'If you move around Australia, keeping your address up to date with the ATO is important. Your TFN letter and any tax correspondence goes to the address on file.',
+    category: 'TFN',
+    date: '15 January 2025',
+    readTime: 3,
+    ctaHeading: 'Need help with your TFN or tax return?',
+    ctaBody: 'We handle everything for working holiday makers — from TFN applications to tax returns — supervised by a registered tax agent.',
+    ctaLabel: 'Get help from our team',
+    ctaHref: '/tfn',
+    body: `
+If you move to a new address in Australia, you should update it with the [Australian Taxation Office (ATO)](https://www.ato.gov.au) as soon as possible. The ATO sends your TFN letter and any other important tax correspondence to the address on file. If that address is wrong, you could miss documents that matter.
+
+## Why keeping your address updated matters
+
+Your TFN is delivered by post to the address you provided on your application. If you have already moved, the letter will not follow you. Beyond the TFN itself, the ATO may send notices, assessments, or refund information to your address on file. Missing these can cause delays in getting your tax refund.
+
+## How to update your address with the ATO
+
+The easiest way to update your address is through [myGov](https://my.gov.au), the Australian government's online portal. Once you link your myGov account to the ATO, you can update your contact details at any time. Log in, go to the ATO section, and select "My profile" to update your address.
+
+If you do not have a myGov account, you can also call the ATO directly on 13 28 61 and update your details over the phone. You will need your TFN and some identity information to verify who you are.
+
+## What address to use if you move frequently
+
+If you are travelling between hostels or work placements, consider using a reliable address — such as a friend's place, a long-term hostel, or a postal address — rather than a temporary one. This reduces the risk of missing important correspondence.
+
+## Does this affect your tax return?
+
+Not directly. Your tax return is lodged electronically and your refund is paid into your bank account, not sent by post. However, any ATO notices or adjustment letters will go to the address on file, so it is still worth keeping it current. You can update your address at any time through the [ATO's online services](https://www.ato.gov.au/individuals-and-families/your-tax-return/how-to-lodge-your-tax-return).
+    `,
+  },
+
+  // ─── NEW: Tax Return ───────────────────────────────────────────────────────
+  {
+    slug: 'what-is-a-tax-refund-australia',
+    title: 'What is a tax refund and how do you know if you are owed one in Australia?',
+    description: 'A tax refund is money the ATO pays back to you when you have paid more tax than you owed during the year. Most working holiday makers are owed one.',
+    category: 'Tax Return',
+    date: '20 January 2025',
+    readTime: 4,
+    ctaHeading: 'Find out how much you are owed',
+    ctaBody: 'We calculate your refund and lodge your tax return correctly. Most working holiday makers receive a refund. Let us handle it for you.',
+    ctaLabel: 'Start your tax return',
+    ctaHref: '/tax-return',
+    body: `
+A tax refund is the money the [Australian Taxation Office (ATO)](https://www.ato.gov.au) pays back to you when the tax withheld from your wages during the year was more than your actual tax liability. In simple terms — if your employer took out too much tax, you get the difference back.
+
+## Why most working holiday makers get a refund
+
+Your employer withholds tax from every pay based on an estimate of what you will earn over a full year. But many working holiday makers do not work the full financial year, earn varying amounts across different jobs, or stop working partway through. This means the estimate is usually higher than your actual tax obligation — and you end up overpaying throughout the year.
+
+When you lodge your [tax return](/tax-return), the ATO calculates what you actually owed and compares it to what was withheld. If you paid more than you owed, the difference is refunded to your bank account.
+
+## How to know if you are owed a refund
+
+The best way to know is to lodge a tax return. The ATO will calculate your position based on your income, the tax withheld, and any deductions or offsets you are entitled to. You can check your income and withholding figures through [myGov](https://my.gov.au) once your employer has submitted your income statement.
+
+As a general guide, if you earned under $45,000 as a working holiday maker and had tax withheld at 15%, you are likely owed a refund. The exact amount depends on your total income, how long you worked, and whether any deductions apply.
+
+## When does the ATO pay your refund?
+
+The [ATO](https://www.ato.gov.au/individuals-and-families/your-tax-return) typically processes returns and issues refunds within two weeks of lodgement if submitted electronically. If you use a registered tax agent, they may lodge on your behalf and the refund goes directly to your nominated bank account.
+
+## Can you get a refund after leaving Australia?
+
+Yes. You can lodge an Australian tax return from overseas and receive your refund into an Australian bank account or have it transferred internationally. The financial year runs from 1 July to 30 June, and returns can be lodged from 1 July onwards. There is no requirement to be in Australia to claim your refund.
+    `,
+  },
+  {
+    slug: 'how-long-does-tax-refund-take-australia',
+    title: 'How long does it take to get a tax refund in Australia?',
+    description: 'Most tax refunds in Australia are processed within two weeks of lodgement. Here is what affects the timeline and what to do if yours is taking longer.',
+    category: 'Tax Return',
+    date: '22 January 2025',
+    readTime: 3,
+    ctaHeading: 'Get your tax return lodged quickly',
+    ctaBody: 'We lodge your return electronically through our registered tax agent. Most refunds arrive within two weeks of lodgement.',
+    ctaLabel: 'Start your tax return',
+    ctaHref: '/tax-return',
+    body: `
+Once you lodge your Australian tax return electronically, the [ATO](https://www.ato.gov.au) typically processes it and issues your refund within two weeks. In many cases it is faster — sometimes within a few days. However, several factors can affect this timeline.
+
+## What affects how quickly you get your refund
+
+The main factor is how you lodge. Electronic lodgement — either directly through [myGov](https://my.gov.au) or through a registered tax agent — is the fastest method. Paper returns take significantly longer, often eight weeks or more.
+
+The time of year also matters. The ATO receives a large volume of returns shortly after 1 July when the new financial year begins. Lodging early in July or waiting until later in the year tends to result in faster processing than lodging during the peak period in August and September.
+
+If your return is selected for a manual review or if there are discrepancies between your return and information the ATO holds — such as income that does not match your employer's records — processing will take longer.
+
+## How to check your refund status
+
+You can check the progress of your return through [myGov](https://my.gov.au) once it has been lodged. The ATO updates the status as it moves through processing. If you used a tax agent, they can also check on your behalf.
+
+## What if your refund is taking longer than expected?
+
+If it has been more than 28 days since you lodged and you have not received your refund, you can contact the [ATO on 13 28 61](https://www.ato.gov.au/about-ato/contact-us) to follow up. Make sure your bank account details on file with the ATO are correct, as an incorrect BSB or account number will delay or redirect your payment.
+
+## Refunds after leaving Australia
+
+If you have already left Australia, your refund will be deposited into the Australian bank account you nominated on your tax return. If that account is now closed, contact the ATO to update your details before the refund is processed.
+    `,
+  },
+
+  // ─── NEW: Super ────────────────────────────────────────────────────────────
+  {
+    slug: 'super-for-casual-and-part-time-workers',
+    title: 'Are casual and part-time workers entitled to superannuation in Australia?',
+    description: 'Yes. Casual and part-time workers are entitled to superannuation in Australia regardless of how many hours they work, as long as they meet the earnings threshold.',
+    category: 'Super',
+    date: '25 January 2025',
+    readTime: 4,
+    ctaHeading: 'Claim your super before you leave',
+    ctaBody: 'We help working holiday makers claim their superannuation back through the DASP process. Fully online, handled by our registered team.',
+    ctaLabel: 'Start your super claim',
+    ctaHref: '/superannuation',
+    body: `
+Casual and part-time workers in Australia are entitled to superannuation contributions from their employer, provided they meet the minimum earnings threshold. This applies to working holiday makers just as it does to any other worker.
+
+## What is the earnings threshold?
+
+From 1 July 2022, the minimum monthly earnings threshold for superannuation was removed entirely. This means that regardless of how many hours you work or how much you earn in a given month, your employer must pay super on your earnings if you are 18 or over. Previously there was a $450 per month threshold, but this no longer applies.
+
+The current super rate is 11.5% of your ordinary time earnings, paid on top of your wage. This is set by the [ATO](https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/growing-and-keeping-track-of-your-super/how-much-super-your-employer-must-pay) and increases incrementally each year.
+
+## Does this apply to casual workers?
+
+Yes. Being casual does not exempt your employer from paying super. Whether you work one shift a week or five, your employer is required to contribute to your super fund based on your earnings. The same rules apply to part-time workers.
+
+## How to check your employer is paying super
+
+You can check your super balance through your super fund's online portal or through [myGov](https://my.gov.au) once your super fund is linked. Your payslip should also show the super contribution amount your employer is paying.
+
+If you believe your employer is not paying your super correctly, you can report it to the [ATO](https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/unpaid-super) or contact the [Fair Work Ombudsman](https://www.fairwork.gov.au) for guidance on your rights.
+
+## Can you claim your super back when you leave Australia?
+
+Yes. As a working holiday maker, you are entitled to claim your superannuation back when you leave Australia permanently through the [Departing Australia Superannuation Payment (DASP)](https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/withdrawing-and-using-your-super/departing-australia-superannuation-payment-dasp) process. Tax is withheld on the payment, but the remaining amount is paid to you directly.
+    `,
+  },
+
+  // ─── NEW: Work Rights ──────────────────────────────────────────────────────
+  {
+    slug: 'employer-asking-you-to-work-more-than-visa-allows',
+    title: 'What to do if your employer asks you to work more hours than your visa allows',
+    description: 'Working more than your visa allows can put your visa at risk. Here is what the rules say and what to do if your employer is pressuring you to breach them.',
+    category: 'Work Rights',
+    date: '28 January 2025',
+    readTime: 4,
+    ctaHeading: 'Questions about your tax and visa situation?',
+    ctaBody: 'We help working holiday makers navigate their tax obligations correctly. Get in touch for straightforward advice.',
+    ctaLabel: 'Talk to our team',
+    ctaHref: '/tax-return',
+    body: `
+Working holiday visas in Australia come with conditions that limit how long you can work for the same employer. Breaching these conditions can affect your visa. If your employer is asking you to work more than the rules allow, it is important to understand your rights.
+
+## What are the work hour rules on a working holiday visa?
+
+The Working Holiday Visa (subclass 417) and the Work and Holiday Visa (subclass 462) allow you to work for any employer in Australia, but there is a condition: you cannot work for the same employer for more than six months without written permission from the Department of Home Affairs.
+
+There is no weekly hour limit for most working holiday makers. The restriction is about duration with a single employer, not the number of hours per week. However, under [Fair Work](https://www.fairwork.gov.au) rules, full-time employees should not regularly work more than 38 hours per week plus reasonable additional hours.
+
+## What counts as the same employer?
+
+The six-month limit applies to working for the same employer at the same location. Moving to a different branch or location of the same business may still count as the same employer depending on the circumstances. If you are unsure, check with the [Department of Home Affairs](https://immi.homeaffairs.gov.au) or seek advice before continuing.
+
+## What to do if your employer is pressuring you
+
+You have the right to refuse work that would breach your visa conditions. Your employer cannot force you to work beyond what your visa allows. If you feel pressured, document the request in writing and consider contacting the [Fair Work Ombudsman](https://www.fairwork.gov.au/contact-us) anonymously. They provide free advice and can investigate employer conduct.
+
+You should also be aware that it is illegal for an employer to exploit visa holders. The [Fair Work Act](https://www.fairwork.gov.au/about-us/legislation) protects all workers in Australia regardless of visa status.
+
+## Can you extend the six-month period?
+
+In some circumstances, you can apply to the Department of Home Affairs for permission to continue working for the same employer beyond six months. This is uncommon but possible. Check the [Department of Home Affairs website](https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417) for current guidance.
+    `,
+  },
+  {
+    slug: 'farm-work-rights-working-holiday-australia',
+    title: 'Your work rights during farm work in Australia on a working holiday visa',
+    description: 'Farm work is one of the most common jobs for working holiday makers. Here is what you are legally entitled to, including pay rates, conditions, and protections.',
+    category: 'Work Rights',
+    date: '30 January 2025',
+    readTime: 5,
+    ctaHeading: 'Need help with your tax after farm work?',
+    ctaBody: 'Farm work income is taxed like any other work in Australia. We handle your tax return correctly so you get back everything you are owed.',
+    ctaLabel: 'Start your tax return',
+    ctaHref: '/tax-return',
+    body: `
+Farm work — including fruit picking, harvesting, and other agricultural work — is one of the most common types of employment for working holiday makers in Australia. It also has a history of wage theft and poor conditions. Understanding your legal rights before you start is essential.
+
+## What are you entitled to as a farm worker?
+
+All workers in Australia, including those on working holiday visas, are covered by the [Fair Work Act](https://www.fairwork.gov.au/about-us/legislation). This means you are entitled to at least the national minimum wage, safe working conditions, and protection from exploitation.
+
+For most farm work, the relevant award is the [Horticulture Award](https://www.fairwork.gov.au/employment-conditions/awards/awards-list), which sets minimum pay rates for piece work (paid per bin or kilogram) and hourly work. Your employer must pay whichever is higher — the piece rate or the minimum hourly rate.
+
+## Piece rates and minimum pay
+
+Many farms pay by piece rate — per bin picked, per kilogram harvested. This is legal, but your total pay for any hour must equal at least the minimum hourly rate under the Horticulture Award. If you are picking slowly on a bad day and your piece rate earnings fall below minimum wage for that hour, your employer must top up your pay.
+
+If you are unsure what rates apply to your work, check the [Fair Work Ombudsman's pay calculator](https://calculate.fairwork.gov.au) or call them on 13 13 94.
+
+## Deductions from your pay
+
+Some employers deduct costs for accommodation, transport, or meals from your wages. This is only legal if you have agreed to it in writing and the deductions are reasonable. Deductions that bring your pay below the minimum wage are illegal. The [Fair Work Ombudsman](https://www.fairwork.gov.au/pay-and-wages/deducting-pay-and-wages) provides clear guidance on what deductions are permitted.
+
+## What to do if you are not being paid correctly
+
+Keep records of your hours, your pay slips, and any written agreements about deductions. If you believe you are being underpaid, contact the [Fair Work Ombudsman](https://www.fairwork.gov.au/contact-us). Reports can be made anonymously and your visa status will not be used against you for making a complaint.
+
+The ATO also has a [tip-off line](https://www.ato.gov.au/about-ato/contact-us/report-tax-evasion-or-crime) if your employer is paying cash in hand without reporting it properly.
+    `,
+  },
+
+  // ─── NEW: Medicare & Other ─────────────────────────────────────────────────
+  {
+    slug: 'what-is-superannuation-guarantee-charge',
+    title: 'What is the Superannuation Guarantee Charge and what does it mean for you?',
+    description: 'If your employer fails to pay your super correctly, the ATO can charge them the Superannuation Guarantee Charge. Here is how it works and what it means for your super.',
+    category: 'Medicare & Other',
+    date: '1 February 2025',
+    readTime: 4,
+    ctaHeading: 'Make sure your super is paid before you leave',
+    ctaBody: 'We help working holiday makers track and claim their superannuation correctly before they leave Australia.',
+    ctaLabel: 'Start your super claim',
+    ctaHref: '/superannuation',
+    body: `
+The Superannuation Guarantee Charge (SGC) is a penalty the [Australian Taxation Office (ATO)](https://www.ato.gov.au/businesses-and-organisations/super-for-employers/paying-super-contributions/superannuation-guarantee-charge) applies to employers who fail to pay their employees' superannuation correctly or on time.
+
+## What triggers the SGC?
+
+The SGC applies when an employer does not pay the required super contributions — currently 11.5% of ordinary time earnings — by the quarterly due date. The charge is more expensive than simply paying the super on time, which is designed to discourage non-payment.
+
+The SGC includes the unpaid super amount, an interest component of 10% per year, and an administration fee. Unlike regular super contributions, SGC payments are not tax-deductible for the employer, making it a costly penalty.
+
+## What happens to your super if the SGC is charged?
+
+If your employer is charged the SGC because they did not pay your super, the [ATO](https://www.ato.gov.au) collects the charge from the employer and then distributes the super portion to your nominated super fund. This means your super is eventually protected even if your employer initially failed to pay it.
+
+## How do you know if your employer is behind on super?
+
+Check your super fund balance regularly through your fund's portal or through [myGov](https://my.gov.au). Super is paid quarterly, so if several months pass with no contributions appearing, it may be a sign that your employer has not paid.
+
+You can also report suspected non-payment to the [ATO](https://www.ato.gov.au/individuals-and-families/super-for-individuals-and-families/super/unpaid-super). The ATO investigates these reports and can pursue employers on your behalf.
+
+## Does this affect your DASP claim?
+
+If your employer owes you super that has not yet been paid, it may not appear in your super fund when you apply for your [Departing Australia Superannuation Payment (DASP)](/guides/what-is-dasp-super-withdrawal). Make sure all contributions are showing in your account before you submit your DASP claim. If contributions are missing, report them to the ATO before you leave.
+    `,
+  },
 ]
 
 export const categories: Category[] = ['TFN', 'ABN', 'Tax Return', 'Super', 'Work Rights', 'Medicare & Other']
