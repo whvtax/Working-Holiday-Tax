@@ -174,48 +174,65 @@ export default function GuidesClient({
 
   return (
     <>
-      {/* Filters */}
-      <section style={{ borderBottom: '1px solid #E2EFE9', background: '#fff', position: 'sticky', top: '68px', zIndex: 10 }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
-          <div style={{ display: 'flex', gap: '8px', padding: '12px 0', flexWrap: 'wrap' }}>
-            <button
-              onClick={() => handleCategory(undefined)}
-              style={{
-                padding: '6px 16px',
-                borderRadius: '100px',
-                border: `1px solid ${!activeCategory ? '#0B5240' : '#E2EFE9'}`,
-                background: !activeCategory ? '#0B5240' : 'transparent',
-                color: !activeCategory ? '#fff' : '#587066',
-                fontSize: '13px',
-                fontWeight: 500,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              All guides
-            </button>
-            {categories.map(cat => {
-              const isActive = activeCategory === cat
-              return (
-                <button
-                  key={cat}
-                  onClick={() => handleCategory(cat)}
-                  style={{
-                    padding: '6px 16px',
-                    borderRadius: '100px',
-                    border: `1px solid ${isActive ? '#0B5240' : '#E2EFE9'}`,
-                    background: isActive ? '#0B5240' : 'transparent',
-                    color: isActive ? '#fff' : '#587066',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {cat}
-                </button>
-              )
-            })}
+      {/* Hero with filters */}
+      <section className="relative overflow-hidden pt-[68px] bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-12">
+
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+            style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
+            <a href="/" className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none' }}>Home</a>
+            <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
+            <span aria-current="page">Tax Guides</span>
+          </nav>
+
+          <div className="max-w-[560px] lg:max-w-[700px]">
+
+            <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
+              <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+              <span className="font-medium uppercase"
+                style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
+                Tax Guides
+              </span>
+            </div>
+
+            <h1 className="font-serif font-black text-ink"
+              style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
+              <span className="hidden lg:block">
+                <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Everything you need to know</span>
+                <span style={{ display: 'block', whiteSpace: 'nowrap', color: '#0B5240' }}>about tax in Australia</span>
+              </span>
+              <span className="lg:hidden">
+                <span style={{ display: 'block', fontSize: '22px' }}>Everything you need to know</span>
+                <span style={{ display: 'block', color: '#0B5240', fontSize: '22px' }}>about tax in Australia</span>
+              </span>
+            </h1>
+
+            <p className="font-light"
+              style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '44ch', marginBottom: '20px' }}>
+              Clear, honest guides for working holiday makers. No jargon, no confusing forms — just the information you need, explained simply.
+            </p>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              <button
+                onClick={() => handleCategory(undefined)}
+                style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${!activeCategory ? '#0B5240' : '#E2EFE9'}`, background: !activeCategory ? '#0B5240' : 'transparent', color: !activeCategory ? '#fff' : '#587066', fontSize: '13px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}
+              >
+                All guides
+              </button>
+              {categories.map(cat => {
+                const isActive = activeCategory === cat
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategory(cat)}
+                    style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${isActive ? '#0B5240' : '#E2EFE9'}`, background: isActive ? '#0B5240' : 'transparent', color: isActive ? '#fff' : '#587066', fontSize: '13px', fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                  >
+                    {cat}
+                  </button>
+                )
+              })}
+            </div>
+
           </div>
         </div>
       </section>

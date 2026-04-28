@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { guides, getGuideBySlug, getCategoryColor } from '../data'
+import { guides, getGuideBySlug } from '../data'
 import { WA_URL } from '@/lib/constants'
 
 interface Props {
@@ -72,18 +72,18 @@ function parseBody(body: string) {
   return elements
 }
 
-function getRelated(current: { slug: string; category: string }) {
-  return guides
-    .filter(g => g.slug !== current.slug && g.category === current.category)
-    .slice(0, 4)
+function getNextGuide(current: { slug: string; category: string }) {
+  const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
+  if (sameCategory.length > 0) return sameCategory[Math.floor(Math.random() * sameCategory.length)]
+  const others = guides.filter(g => g.slug !== current.slug)
+  return others[Math.floor(Math.random() * others.length)] ?? null
 }
 
 export default function GuidePage({ params }: Props) {
   const guide = getGuideBySlug(params.slug)
   if (!guide) notFound()
 
-  const color = getCategoryColor(guide.category)
-  const related = getRelated(guide)
+  const nextGuide = getNextGuide(guide)
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -117,7 +117,7 @@ export default function GuidePage({ params }: Props) {
       <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100vh' }}>
 
         {/* Breadcrumb */}
-        <div style={{ borderBottom: '1px solid #E2EFE9', padding: '10px 0' }}>
+        <div style={{ padding: '10px 0' }}>
           <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '6px', alignItems: 'center', fontSize: '11.5px', color: '#8AADA3', flexWrap: 'wrap' }}>
             <Link href="/" style={{ color: '#587066', textDecoration: 'none' }}>Home</Link>
             <span>/</span>
@@ -128,25 +128,13 @@ export default function GuidePage({ params }: Props) {
         </div>
 
         {/* Layout */}
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 20px' }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(0, 1fr) min(220px, 30%)',
-            gap: '0',
-          }}>
+        <div style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px' }}>
 
             {/* Article */}
-            <article style={{ padding: '2rem 2rem 3rem 0', borderRight: '1px solid #E2EFE9', minWidth: 0 }}>
+            <article style={{ padding: '2rem 0 3rem 0' }}>
 
               {/* Meta */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-                <span style={{
-                  fontSize: '10.5px', fontWeight: 600, padding: '3px 10px',
-                  borderRadius: '100px', background: color.bg, color: color.text,
-                  border: `1px solid ${color.border}`, letterSpacing: '0.02em',
-                }}>
-                  {guide.category}
-                </span>
                 <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.date}</span>
                 <span style={{ color: '#CDE3DB' }}>·</span>
                 <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.readTime} min read</span>
@@ -161,18 +149,15 @@ export default function GuidePage({ params }: Props) {
               </h1>
 
               {/* Lead */}
-              <p style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: '1px solid #E2EFE9', fontWeight: 300 }}>
+              <p style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '2rem', fontWeight: 300 }}>
                 {guide.description}
               </p>
 
               {/* Body */}
               <div>{parseBody(guide.body)}</div>
 
-              {/* Divider */}
-              <div style={{ height: '1px', background: '#E2EFE9', margin: '2.5rem 0' }} />
-
               {/* CTA */}
-              <div style={{ background: '#0B5240', borderRadius: '16px', padding: '1.5rem 1.75rem' }}>
+              <div style={{ background: '#0B5240', borderRadius: '16px', padding: '1.5rem 1.75rem', marginTop: '2.5rem' }}>
                 <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>
                   Need help?
                 </p>
@@ -196,114 +181,36 @@ export default function GuidePage({ params }: Props) {
                 </a>
               </div>
 
-              {/* Mobile sidebar - shows below article on small screens */}
-              <div className="lg:hidden" style={{ marginTop: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div>
-                  <h4 style={{ fontSize: '10px', fontWeight: 600, color: '#8AADA3', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
-                    Our services
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {[
-                      { label: 'TFN application', href: '/tfn' },
-                      { label: 'ABN registration', href: '/abn' },
-                      { label: 'Tax return', href: '/tax-return' },
-                      { label: 'Super withdrawal', href: '/superannuation' },
-                    ].map(item => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="btn-primary"
-                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 14px', fontSize: '12.5px' }}
-                      >
-                        {item.label}
-                        <span>→</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-                {related.length > 0 && (
-                  <div>
-                    <h4 style={{ fontSize: '10px', fontWeight: 600, color: '#8AADA3', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
-                      Related guides
+              {/* Next Guide Teaser */}
+              {nextGuide && (
+                <Link
+                  href={`/guides/${nextGuide.slug}`}
+                  style={{ display: 'block', textDecoration: 'none', marginTop: '2rem' }}
+                >
+                  <div style={{
+                    border: '1px solid #E2EFE9',
+                    borderRadius: '16px',
+                    padding: '1.25rem 1.5rem',
+                    transition: 'border-color 0.2s',
+                    cursor: 'pointer',
+                  }}>
+                    <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>
+                      Keep reading →
+                    </p>
+                    <h4
+                      className="font-serif"
+                      style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', marginBottom: '6px', letterSpacing: '-0.02em', lineHeight: 1.3 }}
+                    >
+                      {nextGuide.title}
                     </h4>
-                    {related.map((g, idx) => (
-                      <Link
-                        key={g.slug}
-                        href={`/guides/${g.slug}`}
-                        style={{
-                          display: 'flex', flexDirection: 'column', gap: '2px',
-                          padding: '8px 0', textDecoration: 'none',
-                          borderBottom: idx < related.length - 1 ? '1px solid #E2EFE9' : 'none',
-                        }}
-                      >
-                        <span style={{ fontSize: '10px', color: '#8AADA3', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{g.category}</span>
-                        <span style={{ fontSize: '12px', color: '#587066', lineHeight: 1.4 }}>{g.title}</span>
-                      </Link>
-                    ))}
+                    <p style={{ fontSize: '13px', color: '#587066', lineHeight: 1.6, fontWeight: 300, margin: 0 }}>
+                      {nextGuide.description}
+                    </p>
                   </div>
-                )}
-              </div>
-
-            </article>
-
-            {/* Desktop Sidebar */}
-            <aside className="hidden lg:flex" style={{ flexDirection: 'column', padding: '2rem 0 3rem 1.5rem', gap: '2rem' }}>
-
-              <div>
-                <h4 style={{ fontSize: '10px', fontWeight: 600, color: '#8AADA3', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
-                  Our services
-                </h4>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {[
-                    { label: 'TFN application', href: '/tfn' },
-                    { label: 'ABN registration', href: '/abn' },
-                    { label: 'Tax return', href: '/tax-return' },
-                    { label: 'Super withdrawal', href: '/superannuation' },
-                  ].map(item => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="btn-primary"
-                      style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '9px 14px', fontSize: '12.5px' }}
-                    >
-                      {item.label}
-                      <span>→</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {related.length > 0 && (
-                <div>
-                  <h4 style={{ fontSize: '10px', fontWeight: 600, color: '#8AADA3', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>
-                    Related guides
-                  </h4>
-                  {related.map((g, idx) => (
-                    <Link
-                      key={g.slug}
-                      href={`/guides/${g.slug}`}
-                      style={{
-                        display: 'flex', flexDirection: 'column', gap: '2px',
-                        padding: '8px 0', textDecoration: 'none',
-                        borderBottom: idx < related.length - 1 ? '1px solid #E2EFE9' : 'none',
-                      }}
-                    >
-                      <span style={{ fontSize: '10px', color: '#8AADA3', fontWeight: 500, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{g.category}</span>
-                      <span style={{ fontSize: '12px', color: '#587066', lineHeight: 1.4 }}>{g.title}</span>
-                    </Link>
-                  ))}
-                </div>
+                </Link>
               )}
 
-              <Link
-                href="/guides"
-                style={{ fontSize: '12px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-              >
-                ← All tax guides
-              </Link>
-
-            </aside>
-          </div>
+            </article>
         </div>
 
       </main>
