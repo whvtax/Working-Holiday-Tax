@@ -132,29 +132,7 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
       </div>
 
       <div ref={articleRef}>
-        {/* Table of Contents */}
-        {headings.length >= 3 && (
-          <div style={{
-            background: '#F7F9F8', border: '1px solid #E2EFE9',
-            borderRadius: '12px', padding: '1rem 1.25rem', marginBottom: '2rem',
-          }}>
-            <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#8AADA3', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '8px' }}>
-              In this guide
-            </p>
-            <ol style={{ margin: 0, padding: '0 0 0 1.1rem' }}>
-              {headings.map(h => (
-                <li key={h.id} style={{ marginBottom: '4px' }}>
-                  <a
-                    href={`#${h.id}`}
-                    style={{ fontSize: '13px', color: '#0B5240', textDecoration: 'none', fontWeight: 400, lineHeight: 1.5 }}
-                  >
-                    {h.text}
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
+
 
         {/* Body */}
         <div style={{ marginBottom: '2.5rem' }}>{parseBody(guide.body)}</div>
@@ -173,19 +151,7 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
           >
             {copied ? '✓ Copied!' : '🔗 Copy link'}
           </button>
-          <a
-            href={waShareUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '5px',
-              padding: '5px 12px', borderRadius: '100px',
-              border: '1px solid #E2EFE9', background: 'transparent',
-              fontSize: '12px', color: '#587066', textDecoration: 'none', fontWeight: 500,
-            }}
-          >
-            💬 WhatsApp
-          </a>
+
         </div>
 
         {/* CTA */}
