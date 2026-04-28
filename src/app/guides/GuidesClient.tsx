@@ -6,13 +6,66 @@ import { type Guide, type Category, categories, getCategoryColor } from './data'
 
 const PER_PAGE = 6
 
-const categoryIcons: Record<string, string> = {
-  'TFN':              '🪪',
-  'ABN':              '🏢',
-  'Tax Return':       '📋',
-  'Super':            '🏦',
-  'Work Rights':      '⚖️',
-  'Medicare & Other': '🏥',
+const guideIcons: Record<string, string> = {
+  'what-is-a-tfn':                          '🪪',
+  'how-to-apply-for-a-tfn':                 '📝',
+  'how-long-does-it-take-to-get-a-tfn':     '⏳',
+  'can-you-start-work-without-a-tfn':        '⚠️',
+  'what-happens-without-your-tfn':           '💸',
+  'tfn-vs-abn-difference':                   '🔀',
+  'apply-for-tfn-before-arriving':           '✈️',
+  'tfn-application-delayed':                 '🔍',
+  'do-you-need-new-tfn-second-visa':         '🔄',
+  'how-to-find-lost-tfn':                    '🔑',
+  'what-is-an-abn':                          '🏢',
+  'how-to-register-for-an-abn':             '📋',
+  'farm-work-and-abns':                      '🌾',
+  'employee-vs-contractor-australia':        '🤝',
+  'can-you-have-tfn-and-abn':               '2️⃣',
+  'how-to-cancel-your-abn':                  '❌',
+  'gst-and-abn-for-working-holiday-makers':  '🧾',
+  'how-does-australian-tax-year-work':       '📅',
+  'backpacker-tax-rate-australia':           '🎒',
+  'how-to-lodge-tax-return-working-holiday': '📤',
+  'what-is-payg-payment-summary':            '📄',
+  'tax-deductions-working-holiday-makers':   '💰',
+  'do-you-need-to-lodge-tax-return-short-stay': '🗓️',
+  'how-to-lodge-tax-return-from-overseas':   '🌏',
+  'what-is-a-tax-agent':                     '👨‍💼',
+  'what-is-mygov':                            '🖥️',
+  'how-does-payg-withholding-work':          '🏦',
+  'australian-financial-year-dates':         '🗓️',
+  'cash-in-hand-tax-return':                 '💵',
+  'what-is-superannuation':                  '🏦',
+  'how-much-super-should-employer-pay':      '📊',
+  'what-is-dasp-super-withdrawal':           '💳',
+  'how-to-apply-for-super-back':             '↩️',
+  'how-long-does-dasp-take':                 '⌛',
+  'tax-on-super-withdrawal-backpacker':      '🧮',
+  'what-happens-to-unclaimed-super':         '❓',
+  'can-you-withdraw-super-in-australia':     '🏧',
+  'how-to-find-lost-superannuation':         '🔎',
+  'how-to-choose-super-fund':                '🎯',
+  'minimum-wage-australia-2024-25':          '💲',
+  'how-many-hours-can-you-work-on-whv':      '🕐',
+  'penalty-rates-australia':                 '📈',
+  'can-your-employer-pay-you-cash-in-hand':  '💴',
+  'fair-work-act-working-holiday-makers':    '⚖️',
+  'employer-not-paying-correctly':           '🚨',
+  'leave-entitlements-working-holiday-visa': '🏖️',
+  'what-is-a-tax-invoice':                   '🧾',
+  'can-you-work-for-multiple-employers':     '👥',
+  'full-time-part-time-casual-australia':    '📆',
+  'what-is-medicare-working-holiday-makers': '🏥',
+  'countries-with-medicare-agreement-australia': '🌍',
+  'medicare-levy-working-holiday-makers':    '📉',
+  'tax-file-number-declaration-form':        '📑',
+  'what-does-tax-withheld-mean-payslip':     '🧾',
+  'what-is-an-income-statement':             '📊',
+  'what-is-the-ato':                         '🏛️',
+  'gross-pay-vs-net-pay-australia':          '💹',
+  'do-working-holiday-makers-pay-tax-on-tips': '🍽️',
+  'tax-obligations-after-leaving-australia': '🛫',
 }
 
 function Pagination({
@@ -176,7 +229,7 @@ export default function GuidesClient({
         }}>
           {paginated.map(guide => {
             const color = getCategoryColor(guide.category)
-            const icon = categoryIcons[guide.category] || '📄'
+            const icon = guideIcons[guide.slug] || '📄'
             return (
               <Link
                 key={guide.slug}
