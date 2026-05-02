@@ -251,15 +251,15 @@ export default function MedicarePage() {
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch', marginBottom: '28px' }}>
               If you&apos;re not eligible for Medicare,<br />you may need a Medicare levy exemption before lodging your tax return
             </p>
-            <div className="reveal delay-1 rounded-2xl flex flex-col items-center justify-center min-h-[220px] sm:min-h-[280px] mx-auto"
-              style={{ background: '#ffffff', border: '1px solid #C8EAE0', width: '100%', maxWidth: '640px' }}>
-              <div className="w-14 h-14 rounded-full flex items-center justify-center mb-4 flex-shrink-0"
-                style={{ background: '#EAF6F1', border: '1.5px solid #C8EAE0' }}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M7 5.5l8 4.5-8 4.5V5.5z" fill="#0B5240" />
-                </svg>
-              </div>
-              <p className="font-medium text-muted" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>Video coming soon</p>
+            <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto"
+              style={{ width: '100%', maxWidth: '360px', aspectRatio: '9/16' }}>
+              <iframe
+                src="https://www.youtube.com/embed/oj7ZSOHAxJk?rel=0&modestbranding=1"
+                title="Medicare levy exemption explained"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+              />
             </div>
           </div>
         </div>
