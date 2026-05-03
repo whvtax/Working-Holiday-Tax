@@ -17,8 +17,8 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       // Images: self, data URIs, blob (object URLs), Vercel Blob CDN, own domain (OG image)
       "img-src 'self' data: blob: https://*.vercel-storage.com https://workingholidaytax.com.au",
-      // PDF preview iframes served through same-origin proxy
-      "frame-src 'self'",
+      // PDF preview iframes + YouTube embeds
+      "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
       // All API calls are same-origin
       "connect-src 'self'",
       "media-src 'self'",
