@@ -251,15 +251,32 @@ export default function MedicarePage() {
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch', marginBottom: '28px' }}>
               If you&apos;re not eligible for Medicare,<br />you may need a Medicare levy exemption before lodging your tax return
             </p>
-            <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto"
-              style={{ width: '100%', maxWidth: '360px', aspectRatio: '9/16' }}>
-              <iframe
-                src="https://www.youtube.com/embed/oj7ZSOHAxJk?rel=0&modestbranding=1"
-                title="Medicare levy exemption explained"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-              />
+            {/* Mobile: portrait 9/16, Desktop: landscape 16/9 */}
+            <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto w-full">
+              {/* Mobile only (portrait) */}
+              <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
+                <iframe
+                  src="https://www.youtube.com/embed/oj7ZSOHAxJk?si=RfNOJpb_73c0OJCI"
+                  title="Medicare levy exemption explained"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                />
+              </div>
+              {/* Desktop (landscape) */}
+              <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
+                <iframe
+                  src="https://www.youtube.com/embed/oj7ZSOHAxJk?si=RfNOJpb_73c0OJCI"
+                  title="Medicare levy exemption explained"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                />
+              </div>
             </div>
           </div>
         </div>
