@@ -101,7 +101,7 @@ export default function MedicarePage() {
                 marginBottom:'0',
               }}>
               
-              Eligibility varies depending on your situation, we help you understand your correct status.
+              We help you determine your correct status.
             
             </p>
 
@@ -146,9 +146,7 @@ export default function MedicarePage() {
                 <p>Eligibility depends on your visa and country of origin — not everyone is required to pay the levy.</p>
                 <p>Most Working Holiday visa holders are not eligible and may qualify for a Medicare levy exemption.</p>
               </div>
-              <div className="info-block">
-                <p>Access to Medicare is generally only available to citizens of countries under a Reciprocal Health Care Agreement (RHCA).</p>
-              </div>
+
             </div>
 
             <div className="grid grid-cols-1 gap-4 reveal delay-1" style={{ alignSelf: 'start' }}>
@@ -207,9 +205,9 @@ export default function MedicarePage() {
               </div>
               <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From an RHCA (Reciprocal Health Care Agreement) country</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
-                If you are eligible for Medicare, we ensure it is correctly applied in your tax return.
+                If you are eligible for Medicare, we ensure it is correctly applied in your tax return so you only pay what you owe.
               </p>
-              <p className="text-[11.5px] font-medium text-forest-500">You may also have access to limited Medicare services in Australia.</p>
+
             </div>
 
             <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>

@@ -31,8 +31,7 @@ export default function ContactPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              <span className="hidden lg:inline">Get clear answers about your tax situation</span>
-              <span className="lg:hidden">Get clear answers about<br />your tax situation</span>
+              <span>Get clear answers about your<br />tax situation</span>
             </h1>
 
             <p className="font-light mx-auto"
@@ -155,9 +154,9 @@ export default function ContactPage() {
             </div>
             <div className="flex flex-col items-center reveal delay-1" style={{ gap: '0', maxWidth:'380px', margin:'0 auto' }}>
               {[
-                { n: '1', label: 'Tell us about your situation', body: 'Share your details - TFN, tax return, super, or ABN' },
+                { n: '1', label: 'Tell us about your situation', body: 'Share your details - TFN, ABN, tax return, or super' },
                 { n: '2', label: 'We review your case',   body: 'One of our experts reviews your case within 24 hours' },
-                { n: '3', label: 'We get back to you with what needs to be done and handle everything on your behalf.', body: "You decide if you'd like to proceed - no commitment." },
+                { n: '3', label: 'We come back to you with solutions.', body: "You decide if you'd like to proceed - no commitment." },
               ].map((item, i, arr) => (
                 <div key={i} className="flex gap-4 w-full" style={{ paddingBottom: i < arr.length - 1 ? '18px' : '0' }}>
                   <div className="flex flex-col items-center flex-shrink-0">

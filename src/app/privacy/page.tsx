@@ -8,10 +8,16 @@ export const metadata: Metadata = {
   alternates: { canonical: '/privacy' },
 }
 
-const sections = [
+type Section = {
+  title: string
+  body?: string
+  items?: string[]
+}
+
+const sections: Section[] = [
   {
     title: '1. Introduction',
-    body: "This Privacy Policy explains how Working Holiday Tax (\"we\", \"us\", \"our\") collects, uses, discloses, and protects your personal information in accordance with the Privacy Act 1988 (Cth), the Australian Privacy Principles (APPs), and the Notifiable Data Breaches (NDB) scheme. We also comply with our obligations as a registered tax agent under the Australian Taxation Office (ATO) and the Tax Practitioners Board (TPB), including strict confidentiality requirements. By using our website or engaging our services, you consent to the collection and use of your information as described in this Privacy Policy.",
+    body: 'This Privacy Policy explains how Working Holiday Tax ("we", "us", "our") collects, uses, discloses, and protects your personal information in accordance with the Privacy Act 1988 (Cth), the Australian Privacy Principles (APPs), and the Notifiable Data Breaches (NDB) scheme. We also comply with our obligations as a registered tax agent under the ATO and the Tax Practitioners Board (TPB), including strict confidentiality requirements. By using our website or engaging our services, you consent to the collection and use of your information as described in this Privacy Policy.',
   },
   {
     title: '2. General Information Disclaimer',
@@ -19,15 +25,38 @@ const sections = [
   },
   {
     title: '3. Information We Collect',
-    body: "We may collect personal information necessary to provide our services, including but not limited to: full name and contact details (email, phone, address); Tax File Number (TFN) and ATO correspondence; income, employment, and financial information; identification documents (such as passport or driver's licence); bank account details (required for refunds); and information provided through forms, email, phone, or website interactions. We may also collect non-identifiable information automatically, including IP address and browser type, pages visited and session activity, and website usage and interaction data. This information is used to operate, maintain, and improve our services.",
+    body: 'We may collect personal information necessary to provide our services, including:',
+    items: [
+      'Full name and contact details (email, phone, address).',
+      'Tax File Number (TFN) and ATO correspondence.',
+      'Income, employment, and financial information.',
+      "Identification documents (such as passport or driver's licence).",
+      'Bank account details (required for refunds).',
+      'Information provided through forms, email, phone, or website interactions.',
+      'Non-identifiable data such as IP address, browser type, and pages visited.',
+    ],
   },
   {
     title: '4. How We Use Your Information',
-    body: 'We use your personal information to prepare and lodge tax returns with the Australian Taxation Office (ATO); verify identity and comply with TPB and legal obligations; provide tax-related services and support; communicate with you regarding your tax matters; improve our services and customer experience; and send service-related updates (you may opt out of marketing communications at any time). We do not sell or trade your personal information. We only disclose information where required by law, regulation, or court order; required by the ATO, TPB, or other regulatory bodies; necessary to provide the requested service; or you have given explicit consent.',
+    body: 'We use your personal information to:',
+    items: [
+      'Prepare and lodge tax returns with the Australian Taxation Office (ATO).',
+      'Verify identity and comply with TPB and legal obligations.',
+      'Provide tax-related services and support.',
+      'Communicate with you regarding your tax matters.',
+      'Improve our services and customer experience.',
+      'Send service-related updates (you may opt out of marketing communications at any time).',
+    ],
   },
   {
     title: '5. Data Security',
-    body: 'We take reasonable steps to protect your personal information from misuse, loss, unauthorised access, modification, or disclosure. This includes encrypted website connections (SSL), secure storage systems with restricted access, access controls limited to authorised personnel, and confidentiality obligations for all staff and contractors. In the event of a data breach likely to result in serious harm, we will act in accordance with the Notifiable Data Breaches (NDB) scheme and notify you and the Office of the Australian Information Commissioner (OAIC) where required.',
+    body: 'We take reasonable steps to protect your personal information from misuse, loss, or unauthorised access. This includes:',
+    items: [
+      'Encrypted website connections (SSL).',
+      'Secure storage systems with restricted access.',
+      'Access controls limited to authorised personnel.',
+      'Confidentiality obligations for all staff and contractors.',
+    ],
   },
   {
     title: '6. Cookies and Website Tracking',
@@ -35,7 +64,11 @@ const sections = [
   },
   {
     title: '7. Third-Party Disclosure',
-    body: 'We do not sell or trade your personal information. We may share limited information with trusted service providers assisting in operations or communications, and regulatory authorities such as the ATO or TPB where required by law. All third parties are required to protect your information and use it only for authorised purposes.',
+    body: 'We do not sell or trade your personal information. We may share limited information with:',
+    items: [
+      'Trusted service providers assisting in operations or communications.',
+      'Regulatory authorities such as the ATO or TPB where required by law.',
+    ],
   },
   {
     title: '8. Data Retention',
@@ -43,7 +76,13 @@ const sections = [
   },
   {
     title: '9. Your Rights',
-    body: 'You have the right to access personal information we hold about you; request correction of inaccurate information; request deletion of information, subject to legal obligations; and opt out of marketing communications at any time. To exercise your rights, contact us using the details below.',
+    body: 'You have the right to:',
+    items: [
+      'Access personal information we hold about you.',
+      'Request correction of inaccurate information.',
+      'Request deletion of information, subject to legal obligations.',
+      'Opt out of marketing communications at any time.',
+    ],
   },
   {
     title: '10. Complaints and Dispute Resolution',
@@ -51,7 +90,11 @@ const sections = [
   },
   {
     title: '11. Contact Us',
-    body: `If you have any questions about this Privacy Policy or how your information is handled, please contact us. Phone: 0424 513 998. Email: ${EMAIL}.`,
+    body: 'If you have any questions about this Privacy Policy or how your information is handled, please contact us:',
+    items: [
+      'Phone: 0424 513 998',
+      `Email: ${EMAIL}`,
+    ],
   },
 ]
 
@@ -76,11 +119,24 @@ export default function PrivacyPage() {
             </p>
 
             {sections.map((s, i) => (
-              <div key={i} className={`mb-7 reveal delay-${(i % 4) + 1}`}>
+              <div key={i} className={`mb-8 reveal delay-${(i % 4) + 1}`}>
                 <h2 className="font-serif text-[16px] font-bold text-ink mb-2">{s.title}</h2>
-                <p className="text-[13px] font-light text-body leading-[1.75]">{s.body}</p>
+                {s.body && (
+                  <p className="text-[13px] font-light text-body leading-[1.75] mb-2">{s.body}</p>
+                )}
+                {s.items && (
+                  <ul className="mt-2 space-y-1.5">
+                    {s.items.map((item, j) => (
+                      <li key={j} className="flex items-start gap-2.5">
+                        <span className="mt-[7px] flex-shrink-0 rounded-full" style={{ width: '5px', height: '5px', minWidth: '5px', background: '#0B5240' }} />
+                        <span className="text-[13px] font-light text-body leading-[1.75]">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             ))}
+
           </div>
         </div>
       </section>

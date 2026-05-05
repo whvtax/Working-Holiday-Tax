@@ -183,7 +183,7 @@ export default function SuperannuationPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">This is your money</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              Your super belongs to you - you just need to claim it.
+              Your super belongs to you. You just need to claim it.
             </h2>
           </div>
 

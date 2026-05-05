@@ -86,10 +86,9 @@ export default function HomePage() {
 
       {/* ── URGENCY STRIP ────────────────────────────────────────────────── */}
       <section style={{ background:'#0B5240' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 py-10 lg:py-14 text-center">
-          {/* Desktop: tighter maxWidth for 2-line break */}
+        <div className="max-w-2xl mx-auto px-5 md:px-8 py-10 lg:py-14 text-center">
           <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'10px', maxWidth:'22ch' }}>
+            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'10px' }}>
             No TFN means the ATO automatically taxes income at 47%, something many backpackers only discover when they receive their first paycheck.
           </p>
           <div style={{ marginTop:'20px' }} className="lg:mt-8">
