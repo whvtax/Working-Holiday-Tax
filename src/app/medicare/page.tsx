@@ -166,25 +166,6 @@ export default function MedicarePage() {
         </div>
       </section>
 
-      {/* ── NOT SURE? - MAIN ENTRY POINT ──────────────────────────────────── */}
-      <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[560px] mx-auto text-center">
-            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
-              Not sure if you&apos;re eligible for Medicare?
-            </p>
-            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              We check your eligibility and apply everything correctly
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-semibold"
-              style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
-              Check your Medicare eligibility →
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
@@ -207,7 +188,6 @@ export default function MedicarePage() {
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
                 If you are eligible for Medicare, we ensure it is correctly applied in your tax return so you only pay what you owe.
               </p>
-
             </div>
 
             <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
@@ -229,6 +209,25 @@ export default function MedicarePage() {
               className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
               style={{ fontSize: '13.5px', color: '#0B5240' }}>
               Not sure what applies to you? We&apos;ll check for you →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── NOT SURE? - MAIN ENTRY POINT ──────────────────────────────────── */}
+      <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[560px] mx-auto text-center">
+            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
+              Not sure if you&apos;re eligible for Medicare?
+            </p>
+            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
+              We check your eligibility and apply everything correctly
+            </p>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center justify-center font-semibold"
+              style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
+              Check your Medicare eligibility →
             </a>
           </div>
         </div>

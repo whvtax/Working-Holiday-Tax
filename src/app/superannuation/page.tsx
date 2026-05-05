@@ -114,7 +114,7 @@ export default function SuperannuationPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              We manage the full Departing Australia Superannuation Payment (DASP) process on your behalf.
+              We manage the full DASP process on your behalf.
             
             </p>
 
@@ -127,7 +127,7 @@ export default function SuperannuationPage() {
                 marginBottom:'0',
               }}>
               
-              Most payments are received within 28 days. Fully online and hassle-free.
+              Most payments are received within 28 days.
             
             </p>
 
@@ -224,6 +224,10 @@ export default function SuperannuationPage() {
               { title: 'Payment method',     body: 'Paid directly to your bank account.' },
             ].map((c, i) => (
               <div key={i} className="bg-white rounded-xl px-4 py-3.5 flex flex-col" style={{ border: '1px solid #C8EAE0' }}>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ marginBottom: '8px', flexShrink: 0 }}>
+                  <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
+                  <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
                 <p className="text-[12px] font-semibold text-ink mb-1">{c.title}</p>
                 <p className="text-[12px] font-light text-muted leading-[1.6]">{c.body}</p>
               </div>
