@@ -168,7 +168,7 @@ export default function ClientAgreementPage() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Client Agreement' }]}
       />
 
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="pt-0 pb-10 lg:pb-14 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
 

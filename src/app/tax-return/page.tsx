@@ -563,7 +563,7 @@ export default function TaxReturnPage() {
               </div>
               <div className="rounded-xl px-4 py-3 text-center" style={{ background: '#FEF2F2', border: '1px solid #FECACA', padding: '12px 16px', borderRadius: '12px' }}>
                 <p className="font-light leading-[1.75]" style={{ fontSize: '12.5px', color: '#991B1B' }}>
-                  Please note! A registered tax agent will never ask for your password, SMS codes, or access to your myGov account.
+                  A registered tax agent will never ask for your password, SMS codes, or access to your myGov account.
                 </p>
               </div>
             </div>

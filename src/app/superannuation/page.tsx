@@ -334,21 +334,27 @@ export default function SuperannuationPage() {
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            <div className="reveal text-center lg:text-left">
+            <div className="reveal">
               <span className="section-label center lg:text-left">Who can claim?</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
+              <h2 className="font-serif font-black text-ink mx-auto lg:mx-0 text-center lg:text-left" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
                 You can claim your super<br />
                 <em className="not-italic font-normal text-forest-400">when you leave Australia</em>
               </h2>
               <div className="space-y-0">
                 {[
-                  { label: '✅ Your visa has expired or been cancelled', body: 'You can apply once you have left Australia, no waiting period required.' },
-                  { label: '✅ You no longer hold an Australian visa',   body: 'You must not hold another active visa in Australia.' },
-                  { label: '✅ You have super contributions',           body: 'Make sure your employer has paid your super.' },
+                  { label: 'Your visa has expired or been cancelled', body: 'You can apply once you have left Australia, no waiting period required.' },
+                  { label: 'You no longer hold an Australian visa',   body: 'You must not hold another active visa in Australia.' },
+                  { label: 'You have super contributions',           body: 'Make sure your employer has paid your super.' },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{item.label}</p>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.65]">{item.body}</p>
+                    <div className="flex items-start gap-2 mb-1">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
+                        <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
+                        <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
+                    </div>
+                    <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ paddingLeft: '22px' }}>{item.body}</p>
                   </div>
                 ))}
                 <div style={{ borderTop: '1px solid #E2EFE9' }} />

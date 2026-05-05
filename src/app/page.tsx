@@ -324,7 +324,7 @@ export default function HomePage() {
         eyebrow="Start here"
         heading="Get your tax sorted"
         headingEm="in Australia or abroad."
-        sub={<>We handle your TFN, tax return, super and ABN, all in one place.</>}
+        sub={<>We handle your TFN, tax return, super and ABN<span className="hidden sm:inline">,</span><br className="sm:hidden" /> all in one place.</>}
         primaryLabel="Send us a message to get started"
         trustLine=""
         clipTop
