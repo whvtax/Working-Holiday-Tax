@@ -77,19 +77,18 @@ export default function MedicarePage() {
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Understand your Medicare status</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>before you lodge your tax return</span>
+                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>before lodging your tax return</span>
               </span>
-              {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
                 <span style={{ display:'block', fontSize:'22px' }}>Understand your Medicare status</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>before you lodge your tax return</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>before lodging your tax return</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              We check your eligibility and apply everything correctly.
+              We assess your eligibility and ensure it is applied correctly in your tax return.
             
             </p>
 
@@ -102,7 +101,7 @@ export default function MedicarePage() {
                 marginBottom:'0',
               }}>
               
-              Not everyone is eligible, we help you understand your status..
+              Eligibility varies depending on your situation, we help you understand your correct status.
             
             </p>
 
@@ -121,7 +120,7 @@ export default function MedicarePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served.','Most replies within 1 hour'].map((t,i) => (
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -132,6 +131,42 @@ export default function MedicarePage() {
         </div>
       </section>
 
+
+      {/* ── WHAT IS MEDICARE (DETAIL) ─────────────────────────────────────── */}
+      <section className="py-9 lg:py-14 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-10 items-start">
+            <div className="reveal text-left">
+              <span className="section-label">What is Medicare?</span>
+              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
+                Medicare is Australia&apos;s public healthcare system.
+              </h2>
+              <div className="prose-wht max-w-[480px]">
+                <p>It provides access to subsidised medical services and is partly funded through a 2% Medicare levy on taxable income.</p>
+                <p>Eligibility depends on your visa and country of origin — not everyone is required to pay the levy.</p>
+                <p>Most Working Holiday visa holders are not eligible and may qualify for a Medicare levy exemption.</p>
+              </div>
+              <div className="info-block">
+                <p>Access to Medicare is generally only available to citizens of countries under a Reciprocal Health Care Agreement (RHCA).</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 reveal delay-1" style={{ alignSelf: 'start' }}>
+              {[
+                { title: 'Administered by',  body: 'Services Australia (Australian Government)' },
+                { title: 'What it covers',   body: 'GP visits, public hospitals, and some specialist services' },
+                { title: 'Medicare levy',    body: '2% of your taxable income (only if applicable)' },
+                { title: 'If not eligible',  body: 'You may be able to apply for a Medicare levy exemption' },
+              ].map((c, i) => (
+                <div key={i} className="bg-white rounded-xl flex flex-col" style={{ padding: '14px 16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
+                  <p className="text-[12.5px] font-semibold text-ink" style={{ marginBottom: '3px' }}>{c.title}</p>
+                  <p className="text-[12px] font-light text-muted leading-[1.6]">{c.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── NOT SURE? - MAIN ENTRY POINT ──────────────────────────────────── */}
       <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
@@ -158,12 +193,8 @@ export default function MedicarePage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Your two scenarios</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px' }}>
-              You either pay the Medicare levy{' '}
-              <em className="not-italic font-normal text-forest-400">or you may be exempt</em>
+              You may either pay the Medicare levy or be exempt, depending on your visa and country of origin.
             </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '36ch' }}>
-              Eligibility depends on your visa and country of origin.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 mb-8 lg:mb-10 reveal delay-1">
@@ -174,11 +205,11 @@ export default function MedicarePage() {
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From an RHCA country</p>
+              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From an RHCA country (Reciprocal Health Care Agreement)</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
-                If you have Medicare, we apply it correctly to your tax return
+                If you are eligible for Medicare, we ensure it is correctly applied in your tax return.
               </p>
-              <p className="text-[11.5px] font-medium text-forest-500">You may be eligible for limited Medicare services</p>
+              <p className="text-[11.5px] font-medium text-forest-500">You may also have access to limited Medicare services in Australia.</p>
             </div>
 
             <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
@@ -190,9 +221,8 @@ export default function MedicarePage() {
               </div>
               <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From a non-RHCA country</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
-                If you&apos;re not eligible, we apply a Medicare levy exemption so you don&apos;t overpay
+                If you are not eligible for Medicare, we ensure your Medicare levy exemption is correctly applied so you don&apos;t overpay tax.
               </p>
-              <p className="text-[11.5px] font-medium" style={{ color: '#C47E10' }}>We apply your Medicare levy exemption correctly</p>
             </div>
           </div>
 
@@ -220,15 +250,15 @@ export default function MedicarePage() {
             {[
               {
                 title: 'We determine your eligibility',
-                body: 'We check your visa and country to confirm your Medicare status',
+                body: 'We assess your visa type and country of origin to determine your Medicare eligibility.',
               },
               {
                 title: 'We apply the correct treatment',
-                body: 'We apply the levy or exemption correctly in your tax return',
+                body: 'We ensure the Medicare levy or exemption is correctly applied in your tax return.',
               },
               {
-                title: 'Avoid paying extra tax',
-                body: "We make sure you don&apos;t pay the Medicare levy if you&apos;re not required to",
+                title: 'We help you avoid paying unnecessary tax',
+                body: "We ensure you are not charged the Medicare levy if you are not required to pay it.",
               },
             ].map((item, i) => (
               <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#EEF7F2', border: '1px solid #C8EAE0' }}>
@@ -244,12 +274,11 @@ export default function MedicarePage() {
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-2xl mx-auto text-center reveal">
-            <span className="section-label center">Medicare levy exemption</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               Medicare levy exemption
             </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch', marginBottom: '28px' }}>
-              If you&apos;re not eligible for Medicare,<br />you may need a Medicare levy exemption before lodging your tax return
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '40ch', marginBottom: '28px' }}>
+              If you are not eligible for Medicare, you may need a Medicare levy exemption before lodging your tax return.
             </p>
             {/* Mobile: portrait 9/16, Desktop: landscape 16/9 */}
             <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto w-full">
@@ -282,47 +311,11 @@ export default function MedicarePage() {
         </div>
       </section>
 
-      {/* ── WHAT IS MEDICARE (DETAIL) ─────────────────────────────────────── */}
-      <section className="py-9 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-10 items-start">
-            <div className="reveal text-left">
-              <span className="section-label">What is Medicare?</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
-                Medicare is Australia&apos;s public health system
-              </h2>
-              <div className="prose-wht max-w-[480px]">
-                <p>Medicare gives access to subsidised healthcare in Australia and is partly funded by a 2% levy on taxable income</p>
-                <p>Eligibility depends on your visa and country - not everyone needs to pay the levy</p>
-                <p>Most Working Holiday visa holders are not eligible and may qualify for a Medicare levy exemption</p>
-              </div>
-              <div className="info-block">
-                <p>You can only access Medicare if you&apos;re from an eligible RHCA country</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-4 reveal delay-1" style={{ alignSelf: 'start' }}>
-              {[
-                { title: 'Administered by',  body: 'Services Australia (Australian Government)' },
-                { title: 'What it covers',   body: 'GP visits, public hospitals, and some specialist services' },
-                { title: 'Medicare levy',    body: '2% of your taxable income (only if applicable)' },
-                { title: 'If not eligible',  body: 'You may be able to apply for a Medicare levy exemption' },
-              ].map((c, i) => (
-                <div key={i} className="bg-white rounded-xl flex flex-col" style={{ padding: '14px 16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
-                  <p className="text-[12.5px] font-semibold text-ink" style={{ marginBottom: '3px' }}>{c.title}</p>
-                  <p className="text-[12px] font-light text-muted leading-[1.6]">{c.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
-            <span className="section-label center">Common confusion</span>
+            <span className="section-label center">FAQs</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '8px', textWrap: 'balance' }}>
               Common questions about Medicare
             </h2>
@@ -332,8 +325,8 @@ export default function MedicarePage() {
               { q: '"Do I need to sign up for Medicare?"', a: "You only need to sign up if you're from an eligible RHCA country. Otherwise, we apply the exemption in your tax return." },
               { q: '"Why is Medicare levy showing on my tax bill?"', a: "If your Medicare status wasn't applied correctly, the levy may appear. We fix this when preparing your tax return." },
               { q: '"I don\'t use Medicare - why am I being charged?"', a: "If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you don't overpay." },
-              { q: '"Does my travel insurance replace Medicare?"', a: "No - travel insurance and Medicare are separate. If you're not eligible, travel insurance covers your medical costs." },
-              { q: '"Does my Working Holiday visa affect my Medicare?"', a: "Yes - most WHV holders are not eligible unless from an RHCA country. We handle this correctly in your tax return." },
+              { q: '"Does travel insurance replace Medicare?"', a: "No. Travel insurance and Medicare are separate systems. If you are not eligible for Medicare, you should rely on your travel insurance for medical coverage." },
+              { q: '"Does my Working Holiday visa affect Medicare?"', a: "Yes. Most Working Holiday visa holders are not eligible for Medicare, unless they are from a Reciprocal Health Care Agreement (RHCA) country. We ensure your Medicare status is correctly applied in your tax return." },
               { q: '"Can I get a Medicare card on a Working Holiday visa?"', a: "Only if you're from an eligible RHCA country. Otherwise, we apply a Medicare levy exemption instead." },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
@@ -348,8 +341,8 @@ export default function MedicarePage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What's next?"
-        heading="Ready to lodge your tax return"
-        body="We apply your Medicare status correctly\nso you don't overpay tax"
+        heading="You're all set to lodge your tax return"
+        body="We ensure your Medicare status is correctly applied so you don't overpay tax."
         cta="Start your tax return →"
         href="/tax-return"
       />

@@ -28,7 +28,7 @@ const STEPS = [
 
 const TESTIMONIALS = [
   { name:"Olivia Rossi", from:'Italy · WHV 417', quote:'I had multiple employers and no idea what to do. They guided me through everything and made the process simple.', amount:'', initials:'O', bgColor:'#DBEAFE', textColor:'#1E40AF' },
-  { name:'Emma Wilson', from:'United Kingdom · WHV 417', quote:'Got my TFN sorted in just two days, and everything was handled clearly from start to finish. No stress, just a smooth and easy process.', amount:'', initials:'E', bgColor:'#FCE7F3', textColor:'#9D174D' },
+  { name:'Sophie Durant', from:'France · WHV 417', quote:'Got my TFN sorted in just two days, and everything was handled clearly from start to finish. No stress, just a smooth and easy process.', amount:'', initials:'S', bgColor:'#FCE7F3', textColor:'#9D174D' },
 ]
 
 const IconStar  = () => (<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)

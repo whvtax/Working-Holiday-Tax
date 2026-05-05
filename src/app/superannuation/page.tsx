@@ -21,8 +21,8 @@ const faqs = [
     answer: 'Super withdrawals for Working Holiday visa holders are taxed at 65%.',
   },
   {
-    question: 'I left Australia years ago - can I still claim?',
-    answer: 'Yes. There is no time limit to claim your super. Even if your balance was transferred to the ATO, you can still claim it.',
+    question: 'I left Australia years ago, can I still claim my super?',
+    answer: 'Yes. There is no time limit to claim your superannuation. Even if your balance has been transferred to the ATO, you can still make a claim.',
   },
   {
     question: 'I worked for multiple employers - do I have multiple super accounts?',
@@ -30,7 +30,7 @@ const faqs = [
   },
   {
     question: 'Do I receive super if I worked under an ABN?',
-    answer: 'Generally no. Super is usually paid only to employees. If you worked under an ABN, clients are not required to pay super.',
+    answer: 'Generally, no. Superannuation is not usually payable for ABN (contractor) work. Super is typically only paid when you are classified as an employee, whereas contractors working under an ABN are generally responsible for their own super arrangements.',
   },
 ]
 
@@ -43,20 +43,20 @@ const STEPS = [
 
 const TESTIMONIALS = [
   {
-    name: "Liam O'Brien",
+    name: "Liam O'Connor",
     from: 'Ireland · WHV 417',
-    quote: 'I had multiple employers and no idea how to claim my super. They handled everything and got it all back for me.',
+    quote: 'I had multiple employers and wasn\'t sure how to claim my super. Working Holiday Tax took care of everything and helped me get it back.',
     amount: '$3,200',
     initials: 'L',
     bgColor: '#DBEAFE',
     textColor: '#1E40AF',
   },
   {
-    name: 'Max Fischer',
+    name: 'Jonas Müller',
     from: 'Germany · WHV 417',
     quote: 'Super easy process. They explained everything clearly and made sure I got all my super back. Highly recommend.',
     amount: '$4,100',
-    initials: 'M',
+    initials: 'J',
     bgColor: '#D1FAE5',
     textColor: '#065F46',
   },
@@ -114,7 +114,7 @@ export default function SuperannuationPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              We handle the full DASP process on your behalf.
+              We manage the full Departing Australia Superannuation Payment (DASP) process on your behalf.
             
             </p>
 
@@ -127,7 +127,7 @@ export default function SuperannuationPage() {
                 marginBottom:'0',
               }}>
               
-              Most payments received within a few weeks. Fully online.
+              Most payments are received within 28 days. Fully online and hassle-free.
             
             </p>
 
@@ -146,7 +146,7 @@ export default function SuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served.','Most replies within 1 hour'].map((t,i) => (
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -166,7 +166,7 @@ export default function SuperannuationPage() {
               Don&apos;t leave your super behind.
             </p>
             <p className="font-light mx-auto text-center" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
-              You can claim it back once you leave. We handle everything for you.
+              You can claim your super back once you leave Australia. We take care of the entire process for you.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 font-semibold transition-all"
@@ -183,7 +183,7 @@ export default function SuperannuationPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">This is your money</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              Your super is already yours<br /><em className="not-italic font-normal text-forest-400">you just need to claim it.</em>
+              Your super belongs to you - you just need to claim it.
             </h2>
           </div>
 
@@ -192,17 +192,17 @@ export default function SuperannuationPage() {
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/><path d="M11 7v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
                 title: 'Employers pay it for you',
-                body: 'Super is paid on top of your wages by your employer - required by law.',
+                body: 'As required by the Australian law, superannuation is paid by your employer on top of your wages.',
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="3" y="6" width="16" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M7 6V5a4 4 0 018 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M9 12l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-                title: 'It belongs to you',
-                body: 'Your super builds up while you work - and you can claim it when you leave Australia.',
+                title: 'This is your money',
+                body: 'Your super builds up while you work in Australia, and you can claim it when you leave the country.',
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3v18M3 11h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/></svg>,
                 title: 'We claim it back for you',
-                body: 'We find your super, prepare everything, and submit your claim - you receive the payment.',
+                body: 'We locate your super, prepare your application, and submit your claim. You receive the payment once it\'s processed.',
               },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex flex-col" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
@@ -220,7 +220,7 @@ export default function SuperannuationPage() {
             {[
               { title: 'Contribution rate',  body: '12% of your wages is paid into your super fund.' },
               { title: 'Who can claim',      body: <><span className="hidden lg:inline">Working Holiday visa holders who have left Australia and their visa has expired.</span><span className="lg:hidden">WHV holders who have left Australia and their visa has expired.</span></> },
-              { title: 'Processing time',    body: 'Usually paid within a few weeks after approval.' },
+              { title: 'Processing time',    body: 'Usually paid within 2-4 weeks after approval.' },
               { title: 'Payment method',     body: 'Paid directly to your bank account.' },
             ].map((c, i) => (
               <div key={i} className="bg-white rounded-xl px-4 py-3.5 flex flex-col" style={{ border: '1px solid #C8EAE0' }}>
@@ -338,9 +338,9 @@ export default function SuperannuationPage() {
               </h2>
               <div className="space-y-0">
                 {[
-                  { label: 'Your visa has expired or been cancelled', body: 'You can apply as soon as you leave Australia - no waiting needed.' },
-                  { label: 'You no longer hold an Australian visa',   body: 'You must not hold another active visa in Australia.' },
-                  { label: 'You have super contributions',           body: 'Make sure your employer has paid your super.' },
+                  { label: '✅ Your visa has expired or been cancelled', body: 'You can apply once you have left Australia, no waiting period required.' },
+                  { label: '✅ You no longer hold an Australian visa',   body: 'You must not hold another active visa in Australia.' },
+                  { label: '✅ You have super contributions',           body: 'Make sure your employer has paid your super.' },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
                     <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{item.label}</p>
@@ -352,7 +352,7 @@ export default function SuperannuationPage() {
             </div>
 
             <div className="reveal delay-1 text-center lg:text-left">
-              <span className="section-label center lg:text-left">What you will need</span>
+              <span className="section-label center lg:text-left">Documents required</span>
               <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
                 What you need to claim your super
               </h2>
@@ -385,10 +385,10 @@ export default function SuperannuationPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">
-              <span className="section-label center">Questions</span>
+              <span className="section-label center">FAQs</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                Super questions, answered.
+                Superannuation questions answered.
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
@@ -413,7 +413,7 @@ export default function SuperannuationPage() {
       <NextStep
         eyebrow="What's next?"
         heading="Check if you're eligible for Medicare"
-        body="Depending on your country, you may be eligible for Medicare or exempt from the Medicare levy."
+        body="Depending on your country of origin, you may be eligible for Medicare or exempt from the Medicare levy."
         cta="Check your Medicare eligibility →"
         href="/medicare"
       />

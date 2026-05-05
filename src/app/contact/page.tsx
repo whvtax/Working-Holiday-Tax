@@ -31,8 +31,8 @@ export default function ContactPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              <span className="hidden lg:inline">Get clear answers about your situation</span>
-              <span className="lg:hidden">Get clear answers about<br />your situation</span>
+              <span className="hidden lg:inline">Get clear answers about your tax situation</span>
+              <span className="lg:hidden">Get clear answers about<br />your tax situation</span>
             </h1>
 
             <p className="font-light mx-auto"
@@ -42,7 +42,7 @@ export default function ContactPage() {
                 color:'rgba(10,15,13,0.6)',
                 maxWidth:'38ch',
               }}>
-              Tell us about your situation - we review it and explain your next steps clearly. No obligation.
+              Share your details with us, we review your situation and clearly explain your next steps. No obligation.
             </p>
           </div>
         </div>
@@ -56,7 +56,7 @@ export default function ContactPage() {
             <h2 className="font-serif font-black text-ink mt-2 mb-3" style={{ fontSize: 'clamp(17px, 1.7vw, 19px)', lineHeight: 1.1, letterSpacing: '-0.025em', textAlign:'center' }}>
               Contact options
             </h2>
-            <p className="font-light text-muted text-center" style={{ fontSize:'14px' }}>We respond quickly - real people, no bots</p>
+            <p className="font-light text-muted text-center" style={{ fontSize:'14px' }}>Fast responses from real advisors. No automated bots</p>
           </div>
 
           <div className="max-w-2xl mx-auto space-y-3 lg:space-y-4 reveal delay-1">
@@ -75,7 +75,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-[15px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>WhatsApp</p>
-                  <p className="text-[13px] font-light text-muted">Replies within the hour - real person, no bots</p>
+                  <p className="text-[13px] font-light text-muted">Average response time under 1 hour.</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 text-forest-500 group-hover:gap-3 transition-all">
@@ -155,9 +155,9 @@ export default function ContactPage() {
             </div>
             <div className="flex flex-col items-center reveal delay-1" style={{ gap: '0', maxWidth:'380px', margin:'0 auto' }}>
               {[
-                { n: '1', label: 'Tell us about your situation', body: 'Share your situation - TFN, tax return, super or ABN' },
-                { n: '2', label: 'We review your case',   body: 'A real person reviews your situation within 24 hours' },
-                { n: '3', label: 'We handle everything for you', body: 'No commitment - you decide how to proceed' },
+                { n: '1', label: 'Tell us about your situation', body: 'Share your details - TFN, tax return, super, or ABN' },
+                { n: '2', label: 'We review your case',   body: 'One of our experts reviews your case within 24 hours' },
+                { n: '3', label: 'We get back to you with what needs to be done and handle everything on your behalf.', body: "You decide if you'd like to proceed - no commitment." },
               ].map((item, i, arr) => (
                 <div key={i} className="flex gap-4 w-full" style={{ paddingBottom: i < arr.length - 1 ? '18px' : '0' }}>
                   <div className="flex flex-col items-center flex-shrink-0">
@@ -182,10 +182,10 @@ export default function ContactPage() {
           <div className="max-w-lg mx-auto text-center reveal">
             <span className="section-label center mb-4 block">Ready?</span>
             <h2 className="font-serif font-black text-ink mt-2 mb-4" style={{ fontSize: 'clamp(17px, 2.12vw, 24px)', lineHeight: 1.08, letterSpacing: '-0.025em' }}>
-              Start with a quick check
+              Start with a quick eligibility check
             </h2>
             <p className="font-light text-muted leading-[1.75] mb-6 mx-auto text-center" style={{ fontSize: '15px', maxWidth: '360px' }}>
-              Tell us your situation - we’ll review it and explain your options clearly
+              Tell us your situation, we'll review it and clearly explain your options.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex items-center justify-center mx-auto"

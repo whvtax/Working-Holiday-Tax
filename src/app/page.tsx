@@ -17,9 +17,9 @@ const IconStar  = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hi
 const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 const TESTIMONIALS = [
-  { name:"Liam O'Brien", from:'Ireland · WHV 417', quote:"I had multiple employers and no idea what to do. They handled everything and made it easy.", amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
-  { name:'Emma T.',      from:'United Kingdom · WHV 417', quote:"They handled my TFN and tax return fast. I didn't have to stress about anything.", amount:'$2,450', initials:'E', bgColor:'#FCE7F3', textColor:'#9D174D' },
-  { name:'Max Fischer',  from:'Germany · WHV 417', quote:"They explained everything simply and helped me claim money I didn't even know about.", amount:'$4,100', initials:'M', bgColor:'#D1FAE5', textColor:'#065F46' },
+  { name:"Liam O'Connor", from:'Ireland · WHV 417', quote:"I had multiple employers and no idea what to do. They handled everything and made it easy.", amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
+  { name:'Anna Larsen',   from:'Norway · WHV 417', quote:"They handled my TFN and tax return fast. I didn't have to stress about anything.", amount:'$2,450', initials:'A', bgColor:'#FCE7F3', textColor:'#9D174D' },
+  { name:'Tobias Bauer',  from:'Germany · WHV 417', quote:"They explained everything simply and helped me claim money I didn't even know about.", amount:'$4,100', initials:'T', bgColor:'#D1FAE5', textColor:'#065F46' },
 ]
 
 const STEPS = [
