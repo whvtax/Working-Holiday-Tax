@@ -285,7 +285,7 @@ export default function MedicarePage() {
               {/* Mobile only (portrait) */}
               <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
                 <iframe
-                  src="https://www.youtube.com/embed/oj7ZSOHAxJk?si=RfNOJpb_73c0OJCI"
+                  src="https://www.youtube.com/embed/oj7ZSOHAxJk"
                   title="Medicare levy exemption explained"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -297,7 +297,7 @@ export default function MedicarePage() {
               {/* Desktop (landscape) */}
               <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
                 <iframe
-                  src="https://www.youtube.com/embed/oj7ZSOHAxJk?si=RfNOJpb_73c0OJCI"
+                  src="https://www.youtube.com/embed/oj7ZSOHAxJk"
                   title="Medicare levy exemption explained"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
