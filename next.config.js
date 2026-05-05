@@ -18,7 +18,7 @@ const securityHeaders = [
       // Images: self, data URIs, blob (object URLs), Vercel Blob CDN, own domain (OG image)
       "img-src 'self' data: blob: https://*.vercel-storage.com https://workingholidaytax.com.au",
       // PDF preview iframes + YouTube embeds
-      "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
+      "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com",
       // All API calls are same-origin
       "connect-src 'self'",
       "media-src 'self'",
