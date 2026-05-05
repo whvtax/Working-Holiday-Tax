@@ -32,7 +32,7 @@ const STEPS = [
 const SERVICES = [
   { n:'01', href:'/tfn',            icon:<IconDoc />,   title:'TFN Application',  desc:'Start working at the correct tax rate from day one.' },
   { n:'02', href:'/abn',            icon:<IconPlus />,  title:'ABN Registration',  desc:'Register your ABN to work as a sole trader and invoice clients correctly.' },
-  { n:'03', href:'/tax-return',     icon:<IconLock />,  title:'Tax Return',        desc:'Lodge your tax return and get the maximum refund you'''re entitled to.' },
+  { n:'03', href:'/tax-return',     icon:<IconLock />,  title:'Tax Return',        desc:"Lodge your tax return and get the maximum refund you're entitled to." },
   { n:'04', href:'/superannuation', icon:<IconClock />, title:'Super Withdrawal',  desc:'Claim your super back when you leave Australia.' },
 ]
 
