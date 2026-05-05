@@ -80,7 +80,7 @@ export default function TFNPage() {
 
             <p className="font-light"
               style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.65, color:'rgba(10,15,13,0.58)', maxWidth:'44ch', marginBottom:'0' }}>
-              Without a TFN, Working Holiday visa holders are taxed at the highest rate.
+              Without a TFN, Working Holiday visa holders are taxed at 47%
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -157,8 +157,8 @@ export default function TFNPage() {
             ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
                 style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
-                <div className="flex items-start justify-center flex-shrink-0 text-forest-500"
-                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px', paddingTop:'9px', paddingLeft:'9px' }}>
+                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
+                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
                   {item.icon}
                 </div>
                 <div style={{ paddingTop:'2px' }}>

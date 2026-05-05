@@ -205,7 +205,7 @@ export default function MedicarePage() {
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From an RHCA country (Reciprocal Health Care Agreement)</p>
+              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From an RHCA (Reciprocal Health Care Agreement) country</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
                 If you are eligible for Medicare, we ensure it is correctly applied in your tax return.
               </p>
@@ -262,8 +262,13 @@ export default function MedicarePage() {
               },
             ].map((item, i) => (
               <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#EEF7F2', border: '1px solid #C8EAE0' }}>
-                <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '6px' }}>{item.title}</p>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch' }}>{item.body}</p>
+                <div className="flex items-center gap-2" style={{ marginBottom: '6px' }}>
+                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </span>
+                  <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.title}</p>
+                </div>
+                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch', paddingLeft:'26px' }}>{item.body}</p>
               </div>
             ))}
           </div>

@@ -47,7 +47,7 @@ const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can guide you correctly.' },
   { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple.' },
   { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your tax return correctly.' },
-  { n: '4', title: 'Receive your refund',           body: 'Your refund is paid directly into your bank account, usually within 7–14 days after ATO processing.' },
+  { n: '4', title: 'Receive your refund',           body: 'Your refund will be paid directly into your bank account within 7-14 days.' },
 ]
 
 const TESTIMONIALS = [
@@ -135,7 +135,7 @@ export default function TaxReturnPage() {
                 maxWidth:'44ch',
                 marginBottom:'0',
               }}>
-              <span className="hidden lg:inline">Most tax returns are lodged within 24 hours - simple, clear, and without delays or confusion.</span>
+              <span className="hidden lg:inline">Most tax returns are lodged within 24 hours.</span>
               <span className="lg:hidden" style={{ fontSize:'12.5px', whiteSpace:'nowrap' }}>Most tax returns are lodged within 24 hours.</span>
             </p>
 
@@ -174,7 +174,7 @@ export default function TaxReturnPage() {
               Most WHV travellers overpay tax.<br />We help you get it back.
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              No matter your situation, we handle your tax return correctly and in line with ATO requirements.
+              No matter your situation, we handle your tax return correctly<br />and in line with ATO requirements.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold transition-all"
@@ -425,15 +425,20 @@ export default function TaxReturnPage() {
               Work-related deductions can increase your refund
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
-              You may be able to claim more than you think - we make sure nothing is missed.
+              You may be able to claim more than you think, we make sure nothing is missed.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 reveal delay-1">
             {DEDUCTIONS.map((d, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px 18px', border: '1px solid #E2EFE9', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
-                <p className="text-[13px] font-semibold text-ink" style={{ marginBottom: '5px' }}>{d.title}</p>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch' }}>{d.body}</p>
+                <div className="flex items-center gap-2" style={{ marginBottom: '5px' }}>
+                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </span>
+                  <p className="text-[13px] font-semibold text-ink">{d.title}</p>
+                </div>
+                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', paddingLeft:'26px' }}>{d.body}</p>
               </div>
             ))}
           </div>

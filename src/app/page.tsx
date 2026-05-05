@@ -59,8 +59,8 @@ export default function HomePage() {
           {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
             style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
-            <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />- we handle everything for you</span>
-            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super<br />- we handle everything for you</span>
+            <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
+            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
           </p>
 
           {/* Mobile: tighter top margin · Desktop: more breathing room */}
@@ -90,13 +90,13 @@ export default function HomePage() {
           {/* Desktop: tighter maxWidth for 2-line break */}
           <p className="font-serif font-black text-white mx-auto"
             style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'10px', maxWidth:'22ch' }}>
-            No TFN? The ATO automatically taxes you 47%. Most backpackers don&apos;t find out until payday.
+            No TFN means the ATO automatically taxes income at 47%, something many backpackers only discover when they receive their first paycheck.
           </p>
           <div style={{ marginTop:'20px' }} className="lg:mt-8">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold transition-all"
-              style={{ height:'48px', padding:'0 28px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'320px', width:'100%' }}>
-              Stop losing money, get your TFN sorted -
+              style={{ height:'56px', padding:'0 32px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'420px', width:'100%', textAlign:'center', lineHeight:1.3 }}>
+              Stop losing money, get your TFN sorted →
             </a>
           </div>
         </div>
@@ -115,7 +115,7 @@ export default function HomePage() {
 
           <p className="font-light text-muted mx-auto"
             style={{ fontSize:'clamp(14px, 1.5vw, 16px)', lineHeight:1.7, maxWidth:'36ch', marginBottom:'32px', textAlign:'center' }}>
-            We have one focus. one goal - To maximise your refund.
+            We have one focus. one goal<br />To maximise your refund.
           </p>
 
           {/* Mobile: 1-col · Desktop: 4-col with bigger padding and gap */}
@@ -126,7 +126,7 @@ export default function HomePage() {
               { title:'Clear, simple support.',     body:'No complicated terms. We guide you through everything, step by step.' },
               { title:'We take care of everything.',    body:'No paperwork, no stress, we handle everything for you from start to finish.' },
             ].map((item,i) => (
-              <div key={i} className="pt-4 lg:pt-6 text-center lg:text-left" style={{ borderTop:'1px solid #E2EFE9' }}>
+              <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
                 <p className="font-light text-muted leading-[1.7]" style={{ fontSize:'clamp(12px, 1.1vw, 13px)' }}>{item.body}</p>
               </div>
@@ -297,7 +297,7 @@ export default function HomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize:'clamp(13px, 1.3vw, 15px)', textAlign:'center', lineHeight:1.7, maxWidth:'36ch' }}>
-              From your first job to your final refund, we've got you covered.
+              From your first job to your final refund<br />we've got you covered.
             </p>
           </div>
 
@@ -326,7 +326,7 @@ export default function HomePage() {
         heading="Get your tax sorted"
         headingEm="in Australia or abroad."
         sub={<>We handle your TFN, tax return, super and ABN, all in one place.</>}
-        primaryLabel="Send us a message to get started →"
+        primaryLabel="Send us a message to get started"
         trustLine=""
         clipTop
       />

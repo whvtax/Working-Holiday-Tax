@@ -21,7 +21,7 @@ const faqs = [
 
 const MISTAKES = [
   { title: 'Working as an employee with an ABN', body: 'If your employer directs how, when, and where you work, an ABN may not be the correct setup for you.' },
-  { title: 'Incorrectly selecting your business activity.', body: 'Your ABN details must accurately reflect the type of work you perform.' },
+  { title: 'Incorrect business activity selection', body: 'Your ABN details must accurately reflect the type of work you perform.' },
   { title: 'Not keeping track of your income',   body: 'You should record your earnings and set aside money for tax to avoid issues later.' },
   { title: 'Not lodging your tax return',         body: 'Your ABN income must be declared to the ATO.' },
 ]
@@ -98,7 +98,7 @@ export default function ABNPage() {
                 marginBottom:'0',
               }}>
               
-              We set up your ABN correctly from the start to avoid delays or rejections.
+              We make sure your ABN is set up correctly from day one.
             
             </p>
 
@@ -138,9 +138,9 @@ export default function ABNPage() {
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'8px' }}>
               Not sure if you need a TFN or ABN?
             </p>
-            <p className="font-light text-center lg:text-left"
+            <p className="font-light text-center"
               style={{ fontSize:'clamp(13px,1.3vw,14.5px)', color:'rgba(255,255,255,0.68)', marginBottom:'0', lineHeight:1.7, maxWidth:'36ch', margin:'0 auto' }}>
-              We help you understand exactly what you need based on your work situation in Australia.
+              Simple, clear, and done properly from the start.
             </p>
             <div style={{ marginTop:'16px' }} className="lg:mt-7">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
@@ -162,7 +162,7 @@ export default function ABNPage() {
             <span className="section-label center">How we help</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
-              We guide you in choosing the correct setup for working in Australia, then take care of the entire process for you.
+              Simple, clear, and done properly from the start.
             </h2>
             <p className="font-semibold mx-auto"
               style={{ fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.4, color:'#0B5240', maxWidth:'28ch', margin:'6px auto 10px', letterSpacing:'-0.01em' }}>
@@ -220,7 +220,7 @@ export default function ABNPage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'32ch' }}>
-              These are common mistakes that may delay your application or create complications down the track.
+              These are common mistakes that can delay your application or lead to complications later.
             </p>
           </div>
 
