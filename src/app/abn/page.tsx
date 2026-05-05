@@ -14,23 +14,23 @@ export const metadata: Metadata = {
 const faqs = [
   { question: 'Can I have both a TFN and an ABN?', answer: 'Yes. You can have both, one for employment and one for contract work.' },
   { question: 'Can I get an ABN without a TFN?', answer: 'No. You must have a TFN before applying for an ABN.' },
-  { question: 'Do I need to register for GST?', answer: 'Only if you earn over $75,000 per year. Most people on a Working Holiday do not need GST.' },
+  { question: 'Do I need to register for GST?', answer: 'GST registration is only required if your annual turnover is over $75,000. Most Working Holiday visa holders do not need to register for GST.' },
   { question: 'What happens to my ABN when I leave Australia?', answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.' },
-  { question: 'Can my ABN be rejected?', answer: 'Yes. If your details do not match your work, your ABN may be rejected.' },
+  { question: 'Can my ABN be rejected?', answer: "Yes. If your details don't accurately reflect your work situation, your ABN application may be delayed or rejected. That's why we recommend using a tax agent to avoid mistakes and ensure everything is set up correctly from the start." },
 ]
 
 const MISTAKES = [
-  { title: 'Working as an employee with an ABN', body: 'If your employer controls your work, you may not actually need an ABN.' },
-  { title: 'Choosing the wrong business activity', body: 'Your ABN setup should match the work you actually do.' },
-  { title: 'Not tracking your income properly',   body: 'You need to track your income and set money aside for tax.' },
-  { title: 'Not lodging your tax return',         body: 'Your ABN income still needs to be reported correctly.' },
+  { title: 'Working as an employee with an ABN', body: 'If your employer directs how, when, and where you work, an ABN may not be the correct setup for you.' },
+  { title: 'Incorrectly selecting your business activity.', body: 'Your ABN details must accurately reflect the type of work you perform.' },
+  { title: 'Not keeping track of your income',   body: 'You should record your earnings and set aside money for tax to avoid issues later.' },
+  { title: 'Not lodging your tax return',         body: 'Your ABN income must be declared to the ATO.' },
 ]
 
 const STEPS = [
   { n: '1', title: 'Tell us about your work',       body: 'Share your work and visa details so we can guide you correctly.' },
   { n: '2', title: 'Send your details in minutes',  body: 'TFN and passport info - quick and simple.' },
-  { n: '3', title: 'We handle everything for you',  body: 'We prepare and submit your ABN correctly.' },
-  { n: '4', title: 'Get your ABN and start working', body: 'Receive your ABN within an hour and start invoicing straight away.' },
+  { n: '3', title: 'We take care of your ABN setup',  body: 'We prepare and lodge your application accurately on your behalf.' },
+  { n: '4', title: 'Get your ABN and start working', body: 'Your ABN is issued within an hour so you can start invoicing and working straight away.' },
 ]
 
 const CheckSVG = () => (
@@ -98,7 +98,7 @@ export default function ABNPage() {
                 marginBottom:'0',
               }}>
               
-              No rejections or delays - set up correctly from the start.
+              We set up your ABN correctly from the start to avoid delays or rejections.
             
             </p>
 
@@ -117,7 +117,7 @@ export default function ABNPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served.','Most replies within 1 hour'].map((t,i) => (
+              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -136,17 +136,17 @@ export default function ABNPage() {
           <div className="mx-auto" style={{ maxWidth:'480px' }}>
             <p className="font-serif font-black text-white"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'8px' }}>
-              Not sure if you need an ABN or TFN?
+              Not sure if you need a TFN or ABN?
             </p>
             <p className="font-light text-center lg:text-left"
               style={{ fontSize:'clamp(13px,1.3vw,14.5px)', color:'rgba(255,255,255,0.68)', marginBottom:'0', lineHeight:1.7, maxWidth:'36ch', margin:'0 auto' }}>
-              We&apos;ll tell you exactly what you need<br />based on your situation
+              We help you understand exactly what you need based on your work situation in Australia.
             </p>
             <div style={{ marginTop:'16px' }} className="lg:mt-7">
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center justify-center font-semibold"
                 style={{ height:'50px', padding:'0 28px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'320px', width:'100%' }}>
-                Get help choosing the right setup →
+                Get guidance on the right setup →
               </a>
             </div>
           </div>
@@ -162,15 +162,14 @@ export default function ABNPage() {
             <span className="section-label center">How we help</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
-              We help you choose the right setup
+              We guide you in choosing the correct setup for working in Australia, then take care of the entire process for you.
             </h2>
             <p className="font-semibold mx-auto"
               style={{ fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.4, color:'#0B5240', maxWidth:'28ch', margin:'6px auto 10px', letterSpacing:'-0.01em' }}>
-              Then we handle everything for you
             </p>
             <p className="font-light text-muted"
               style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'30ch', margin:'0 auto', color:'rgba(10,15,13,0.5)' }}>
-              Simple, clear, and set up correctly
+              Simple, clear, and done properly from the start.
             </p>
           </div>
 
@@ -178,7 +177,7 @@ export default function ABNPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { n:'01', title:'We help you choose the right setup', body:'Not sure if you need an ABN? We check your situation and give you a clear answer.' },
-              { n:'02', title:'We set up your ABN correctly', body:'We handle the registration so your ABN matches your work, no delays or issues.' },
+              { n:'02', title:'We set up your ABN correctly', body:'We manage the registration to ensure your ABN is aligned with your work, avoiding delays or issues.' },
               { n:'03', title:'Set up correctly from day one', body:'Everything is done properly so you can start working without issues.' },
             ].map((item,i) => (
               <div key={i} className="rounded-2xl flex flex-col"
@@ -217,11 +216,11 @@ export default function ABNPage() {
             <span className="section-label center">Common mistakes</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
-              Setting up your ABN incorrectly<br /><em className="not-italic font-normal text-forest-400">can cause problems later</em>
+              Setting up your ABN incorrectly<br /><em className="not-italic font-normal text-forest-400">can cause issues later</em>
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'32ch' }}>
-              These are common mistakes that can delay your setup or create issues later
+              These are common mistakes that may delay your application or create complications down the track.
             </p>
           </div>
 
@@ -313,15 +312,15 @@ export default function ABNPage() {
             <span className="section-label center">What is an ABN?</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'16px', textWrap:'balance' }}>
-              An Australian Business Number (ABN) lets you work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia.</em>
+              An Australian Business Number (ABN) allows you to work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia as a contractor.</em>
             </h2>
             <p className="font-light text-body leading-[1.75] mx-auto"
               style={{ maxWidth:'40ch', marginBottom:'14px', fontSize:'13.5px' }}>
-              An ABN is an 11-digit number that identifies you when working as a contractor or freelancer in Australia. You include it on every invoice you send.
+              An ABN is an 11-digit number that identifies you when working as a contractor or freelancer. You must include it on every invoice you send.
             </p>
             <p className="font-light text-body leading-[1.75] mx-auto"
               style={{ maxWidth:'40ch', fontSize:'13.5px' }}>
-              With an ABN, you get paid the full amount with no tax withheld automatically. You stay in control of your income and manage your own tax.
+              With an ABN, you receive your full payment without automatic tax withholding, giving you more control over your income and tax responsibilities.
             </p>
           </div>
         </div>
@@ -333,10 +332,10 @@ export default function ABNPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">
-              <span className="section-label center">Questions</span>
+              <span className="section-label center">FAQs</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                ABN questions, answered.
+                ABN questions answered.
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
