@@ -33,6 +33,12 @@ function getNextGuide(current: { slug: string; category: string }) {
   return others[Math.floor(Math.random() * others.length)] ?? null
 }
 
+function getRelatedGuides(current: { slug: string; category: string }, count = 3) {
+  const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
+  const shuffled = [...sameCategory].sort(() => 0.5 - Math.random())
+  return shuffled.slice(0, count)
+}
+
 function calcReadTime(body: string) {
   const words = body.trim().split(/\s+/).length
   return Math.max(1, Math.round(words / 200))
@@ -43,6 +49,7 @@ export default function GuidePage({ params }: Props) {
   if (!guide) notFound()
 
   const nextGuide = getNextGuide(guide)
+  const relatedGuides = getRelatedGuides(guide)
   const readTime = calcReadTime(guide.body)
 
   const jsonLd = {
@@ -57,9 +64,20 @@ export default function GuidePage({ params }: Props) {
     mainEntityOfPage: { '@type': 'WebPage', '@id': `https://workingholidaytax.com.au/guides/${guide.slug}` },
   }
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
+      { '@type': 'ListItem', position: 2, name: 'Tax Guides', item: 'https://workingholidaytax.com.au/guides' },
+      { '@type': 'ListItem', position: 3, name: guide.title, item: `https://workingholidaytax.com.au/guides/${guide.slug}` },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100vh' }}>
 
         {/* Hero */}
@@ -99,6 +117,29 @@ export default function GuidePage({ params }: Props) {
           <article style={{ padding: '2rem 0 3rem 0' }}>
             <GuideArticle guide={guide} nextGuide={nextGuide} />
           </article>
+
+          {/* Related Guides */}
+          {relatedGuides.length > 0 && (
+            <div style={{ borderTop: '1px solid #E2EFE9', paddingTop: '2rem', paddingBottom: '3rem' }}>
+              <p style={{ fontSize: '11px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '1rem' }}>
+                Read also
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {relatedGuides.map(g => (
+                  <Link key={g.slug} href={`/guides/${g.slug}`} style={{ textDecoration: 'none' }}>
+                    <div style={{ border: '1px solid #E2EFE9', borderRadius: '12px', padding: '1rem 1.25rem' }}>
+                      <p style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '4px', lineHeight: 1.3 }}>
+                        {g.title}
+                      </p>
+                      <p style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, margin: 0, fontWeight: 300 }}>
+                        {g.description}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
       </main>
