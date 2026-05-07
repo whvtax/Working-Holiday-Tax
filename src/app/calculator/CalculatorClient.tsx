@@ -70,7 +70,7 @@ export function CalculatorClient() {
                 letterSpacing: '-0.03em',
                 marginBottom: '10px',
               }}>
-              Tax Refund Calculator.
+              Tax calculator for Working Holiday Visa.
             </h1>
 
             <p className="font-light mx-auto"
@@ -80,7 +80,7 @@ export function CalculatorClient() {
                 color: 'rgba(10,15,13,0.6)',
                 maxWidth: '38ch',
               }}>
-              Estimate your Australian tax refund instantly. No sign-up, no personal data stored.
+              Estimate your Australian tax return instantly.
             </p>
           </div>
         </div>
@@ -151,8 +151,8 @@ export function CalculatorClient() {
                 Calculate my refund →
               </a>
 
-              <p className="text-[12px] text-subtle mt-4 leading-[1.6]">
-                Based on current ATO rates. This is an estimate only  -  your exact refund is confirmed after we review your documents.
+              <p className="text-[12px] text-subtle mt-4 leading-[1.6] text-center">
+                Based on current ATO rates. This is an estimate only - your exact refund is confirmed after we review your documents.
               </p>
             </div>
 
