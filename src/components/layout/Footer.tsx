@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { WA_URL, EMAIL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, EMAIL } from '@/lib/constants'
 
 export function Footer() {
   return (
@@ -79,7 +79,6 @@ export function Footer() {
               <Link href="/tax-return"     className="footer-link">Tax Return</Link>
               <Link href="/superannuation" className="footer-link">Super Withdrawal</Link>
               <Link href="/medicare"       className="footer-link">Medicare</Link>
-              <Link href="/calculator"     className="footer-link">Tax Calculator</Link>
             </nav>
 
             {/* Learn column */}
@@ -95,7 +94,7 @@ export function Footer() {
             {/* Connect column */}
             <nav aria-label="Contact and social links">
               <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>Connect</p>
-              <Link href="/contact"           className="footer-link">Contact us</Link>
+              <a href="https://www.facebook.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className="footer-link">Facebook</a>
               <a href={`mailto:${EMAIL}`}     className="footer-link">Email</a>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="footer-link">WhatsApp</a>
               <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="footer-link">TikTok</a>
@@ -108,19 +107,15 @@ export function Footer() {
       {/* ─── Bottom bar - DARK GREEN brand layer ──────────────────────────── */}
       <div style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 
-            {/* Left: Legal compliance (REQUIRED in Australia) */}
-            <div style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.7 }}>
-              <span style={{ fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>{AGENT_NAME}</span>
-              <span aria-hidden="true" style={{ margin: '0 8px', color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <span>ABN: {AGENT_ABN}</span>
-              <span aria-hidden="true" style={{ margin: '0 8px', color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <span>Tax Agent No: {AGENT_TPB}</span>
+            {/* Left: Brand name */}
+            <div style={{ fontSize: '12.5px', fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>
+              Working Holiday Tax
             </div>
 
             {/* Right: Legal links + copyright */}
-            <div className="flex items-center gap-5" style={{ fontSize: '11.5px' }}>
+            <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
               <Link href="/client-agreement" className="footer-link-dark">Client Agreement</Link>
               <Link href="/privacy"          className="footer-link-dark">Privacy</Link>
               <span style={{ color: 'rgba(255,255,255,0.55)' }} suppressHydrationWarning>

@@ -38,7 +38,6 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
@@ -202,35 +201,23 @@ export function Nav() {
       {/* Mobile Menu */}
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
 
-        {/* Services - expandable */}
-        <button
-          type="button"
-          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-          className="flex items-center justify-between w-full font-sans text-[17px] font-medium text-ink py-4 bg-transparent border-none cursor-pointer"
-          style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}
-          aria-expanded={mobileServicesOpen}
-        >
-          Services
-          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style={{ transform: mobileServicesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
-            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
-
-        {mobileServicesOpen && (
-          <div style={{ paddingLeft: '16px', borderBottom: '1px solid #F0F5F2' }}>
-            {SERVICES_LINKS.map(s => (
-              <Link
-                key={s.href}
-                href={s.href}
-                onClick={close}
-                className="block font-sans text-[15px] text-muted py-3 transition-colors hover:text-forest-500"
-                style={{ letterSpacing: '-0.01em' }}
-              >
-                {s.label}
-              </Link>
-            ))}
-          </div>
-        )}
+        {/* Services - always visible on mobile */}
+        <div style={{ borderBottom: '1px solid #F0F5F2', paddingTop: '12px', paddingBottom: '8px' }}>
+          <p className="font-semibold uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.14em', color: '#2FA880', marginBottom: '4px' }}>
+            Services
+          </p>
+          {SERVICES_LINKS.map(s => (
+            <Link
+              key={s.href}
+              href={s.href}
+              onClick={close}
+              className="block font-sans text-[16px] font-medium text-ink py-3 transition-colors hover:text-forest-500"
+              style={{ letterSpacing: '-0.01em' }}
+            >
+              {s.label}
+            </Link>
+          ))}
+        </div>
 
         {/* Top-level links */}
         {TOP_LINKS.map(l => (
