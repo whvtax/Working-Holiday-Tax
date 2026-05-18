@@ -17,10 +17,6 @@ const routes = [
   { url: '/contact',                   priority: 0.7,  changeFrequency: 'monthly' },
   // Informational pages
   { url: '/tax-residency',             priority: 0.6,  changeFrequency: 'yearly'  },
-  { url: '/tax-residency-explained',   priority: 0.6,  changeFrequency: 'yearly'  },
-  { url: '/payslip',                   priority: 0.5,  changeFrequency: 'yearly'  },
-  { url: '/gst',                       priority: 0.5,  changeFrequency: 'yearly'  },
-  { url: '/permanent-vs-casual',       priority: 0.5,  changeFrequency: 'yearly'  },
   // Legal
   { url: '/client-agreement',          priority: 0.4,  changeFrequency: 'yearly'  },
   { url: '/privacy',                   priority: 0.4,  changeFrequency: 'yearly'  },

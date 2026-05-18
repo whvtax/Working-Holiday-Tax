@@ -37,10 +37,10 @@ export function Footer() {
 
               {/* Mini CTA */}
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-medium footer-link"
-                style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, marginBottom: 0 }}>
+                className="font-medium"
+                style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, marginBottom: 0, display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}>
                 Ask us anything
-                <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
 
               {/* Partner badges */}
@@ -109,19 +109,18 @@ export function Footer() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 
-            {/* Left: Brand name */}
-            <div style={{ fontSize: '12.5px', fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>
-              Working Holiday Tax
+            {/* Left: Brand name + copyright */}
+            <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }} suppressHydrationWarning>
+              <span style={{ fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>Working Holiday Tax</span>
+              <span aria-hidden="true" style={{ margin: '0 8px', color: 'rgba(255,255,255,0.3)' }}>·</span>
+              <span>© {new Date().getFullYear()} All rights reserved</span>
             </div>
 
-            {/* Right: Legal links + copyright */}
+            {/* Right: Legal links */}
             <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
               <Link href="/client-agreement" className="footer-link-dark">Terms of Service</Link>
               <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
               <Link href="/privacy"          className="footer-link-dark">Privacy Policy</Link>
-              <span style={{ color: 'rgba(255,255,255,0.55)' }} suppressHydrationWarning>
-                © {new Date().getFullYear()}
-              </span>
             </div>
           </div>
         </div>

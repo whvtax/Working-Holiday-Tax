@@ -198,29 +198,20 @@ export function Nav() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - flat list, no categorization */}
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
 
-        {/* Services - always visible on mobile */}
-        <div style={{ borderBottom: '1px solid #F0F5F2', paddingTop: '12px', paddingBottom: '8px' }}>
-          <p className="font-semibold uppercase" style={{ fontSize: '10.5px', letterSpacing: '0.14em', color: '#2FA880', marginBottom: '4px' }}>
-            Services
-          </p>
-          {SERVICES_LINKS.map(s => (
-            <Link
-              key={s.href}
-              href={s.href}
-              onClick={close}
-              className="block font-sans text-[16px] font-medium text-ink py-3 transition-colors hover:text-forest-500"
-              style={{ letterSpacing: '-0.01em' }}
-            >
-              {s.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* Top-level links */}
-        {TOP_LINKS.map(l => (
+        {/* All links - flat list */}
+        {[
+          { label: 'TFN',         href: '/tfn' },
+          { label: 'ABN',         href: '/abn' },
+          { label: 'Tax Return',  href: '/tax-return' },
+          { label: 'Super',       href: '/superannuation' },
+          { label: 'Medicare',    href: '/medicare' },
+          { label: 'Calculator',  href: '/calculator' },
+          { label: 'Blog',        href: '/blog' },
+          { label: 'Contact',     href: '/contact' },
+        ].map(l => (
           <Link key={l.href} href={l.href} onClick={close}
             className="block font-sans text-[17px] font-medium text-ink py-4 transition-colors hover:text-forest-500"
             style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
