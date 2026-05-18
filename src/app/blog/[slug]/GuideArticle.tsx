@@ -2,9 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
-import { WA_URL } from '@/lib/constants'
 import MobileTOC from './MobileTOC'
-import HelpfulWidget from './HelpfulWidget'
 import ReadingProgress from './ReadingProgress'
 import { trackEvent } from './../analytics'
 
@@ -16,15 +14,6 @@ interface Guide {
   date: string
   readTime: number
   category: string
-  ctaHeading: string
-  ctaBody: string
-  ctaLabel: string
-}
-
-interface NextGuide {
-  slug: string
-  title: string
-  description: string
 }
 
 function slugify(text: string) {
@@ -193,7 +182,7 @@ function calcReadTime(body: string) {
   return Math.max(1, Math.round(words / 200))
 }
 
-export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextGuide: NextGuide | null }) {
+export default function GuideArticle({ guide }: { guide: Guide }) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [copied, setCopied] = useState(false)
   const [activeHeading, setActiveHeading] = useState<string>('')
@@ -314,48 +303,6 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
               WhatsApp
             </a>
           </div>
-
-          {/* CTA */}
-          <div style={{ background: '#0B5240', borderRadius: '16px', padding: '1.75rem 2rem', backgroundImage: 'linear-gradient(135deg, #0B5240 0%, #134B3E 100%)' }}>
-            <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
-              Need help?
-            </p>
-            <h3 className="font-serif" style={{ fontSize: '21px', fontWeight: 700, color: '#fff', marginBottom: '10px', letterSpacing: '-0.022em', lineHeight: 1.25 }}>
-              {guide.ctaHeading}
-            </h3>
-            <p style={{ fontSize: '14.5px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '1.4rem', fontWeight: 300 }}>
-              {guide.ctaBody}
-            </p>
-            <a
-              href={WA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-primary cta-btn"
-              style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
-            >
-              {guide.ctaLabel} →
-            </a>
-          </div>
-
-          {/* Helpful feedback widget */}
-          <HelpfulWidget articleSlug={guide.slug} />
-
-          {/* Next article */}
-          {nextGuide && (
-            <Link href={`/blog/${nextGuide.slug}`} style={{ display: 'block', textDecoration: 'none', marginTop: '2rem' }}>
-              <div className="next-card" style={{ border: '1px solid #E2EFE9', borderRadius: '16px', padding: '1.4rem 1.6rem', cursor: 'pointer' }}>
-                <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
-                  Keep reading <span className="next-arrow">→</span>
-                </p>
-                <h4 className="font-serif" style={{ fontSize: '18px', fontWeight: 700, color: '#080F0D', marginBottom: '8px', letterSpacing: '-0.02em', lineHeight: 1.3 }}>
-                  {nextGuide.title}
-                </h4>
-                <p style={{ fontSize: '13.5px', color: '#587066', lineHeight: 1.65, fontWeight: 300, margin: 0 }}>
-                  {nextGuide.description}
-                </p>
-              </div>
-            </Link>
-          )}
 
           {/* Back */}
           <div style={{ marginTop: '2.5rem', paddingBottom: '1rem' }}>

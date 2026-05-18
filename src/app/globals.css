@@ -440,13 +440,14 @@
 }
 
 /* Mobile TOC drawer (floating button + slide-up panel) */
+/* Positioned ABOVE the global ScrollToTop button (which sits at bottom: 24px, right: 20px on mobile) */
 .mobile-toc-button {
   display: none;
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
+  bottom: 84px;
+  right: 20px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #0B5240;
   color: #fff;
@@ -519,23 +520,6 @@
   color: #0B5240 !important;
 }
 
-/* Next card */
-.next-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-.next-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px -8px rgba(11, 82, 64, 0.18);
-  border-color: #0B5240;
-}
-.next-card .next-arrow {
-  transition: transform 0.25s ease;
-  display: inline-block;
-}
-.next-card:hover .next-arrow {
-  transform: translateX(4px);
-}
-
 /* Back link */
 .back-link {
   transition: gap 0.2s ease;
@@ -546,15 +530,6 @@
 .back-arrow {
   transition: transform 0.2s ease;
   display: inline-block;
-}
-
-/* CTA button */
-.cta-btn {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.cta-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.2);
 }
 
 /* Category grid (category pages) */
@@ -662,37 +637,6 @@
   }
 }
 
-/* Helpful feedback widget */
-.helpful-widget {
-  border-top: 1px solid #E2EFE9;
-  padding: 24px 0;
-  margin-top: 32px;
-}
-.helpful-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 100px;
-  border: 1px solid #E2EFE9;
-  background: transparent;
-  font-size: 13px;
-  color: #587066;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-.helpful-btn:hover {
-  background: #F7F9F8;
-  border-color: #0B5240;
-  color: #0B5240;
-}
-.helpful-btn.selected {
-  background: #EAF6F1;
-  border-color: #2FA880;
-  color: #0B5240;
-}
-
 /* Print styles - clean printable article */
 @media print {
   .sticky-breadcrumbs,
@@ -701,13 +645,10 @@
   .mobile-toc-panel,
   .reading-progress-badge,
   .toc-sidebar,
-  .helpful-widget,
-  .next-card,
   .back-link,
   nav,
   footer,
-  .share-btn,
-  .cta-btn {
+  .share-btn {
     display: none !important;
   }
   body {
@@ -733,18 +674,6 @@
 /* Article body typography improvements */
 .guide-lead {
   font-feature-settings: "kern" 1, "liga" 1;
-}
-
-/* Skeleton loader (optional, for any async states) */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.skeleton {
-  background: linear-gradient(90deg, #F7F9F8 25%, #EAF6F1 50%, #F7F9F8 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 8px;
 }
 
 /* Article hero layout (text + decorative image) */

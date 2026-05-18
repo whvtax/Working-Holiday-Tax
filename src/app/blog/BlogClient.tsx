@@ -190,7 +190,7 @@ export default function BlogClient({
 
             <p className="font-light"
               style={{ fontSize: 'clamp(13px,1.2vw,16px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '52ch', marginBottom: '24px' }}>
-              Clear, honest blog articles for working holiday makers. No jargon, no confusing forms - just the information you need, explained simply.
+              Practical articles on TFN, tax returns, super, and ABN - written for working holiday makers, explained simply.
             </p>
 
             {/* Stats grid - credibility signals at the top, focused on what working holiday makers care about */}
@@ -201,15 +201,15 @@ export default function BlogClient({
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #E2EFE9' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{categories.length}</div>
-                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Topics</div>
+                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Categories</div>
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#EAF6F1', borderRadius: '12px', border: '1px solid #C8EAE0' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>2025-26</div>
-                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Updated</div>
+                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Tax year</div>
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#FDF0D5', borderRadius: '12px', border: '1px solid #E9A020' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>Free</div>
-                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>To read</div>
+                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>No sign-up</div>
               </div>
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function BlogClient({
               type="text"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Search articles by title, topic, or category..."
+              placeholder="Search articles..."
               className="search-input"
               style={{
                 width: '100%',
@@ -407,7 +407,7 @@ export default function BlogClient({
 
                     {/* CTA */}
                     <span style={{ fontSize: '12.5px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      Read article <span className="read-arrow">→</span>
+                      Read more <span className="read-arrow">→</span>
                     </span>
                   </div>
                 </Link>

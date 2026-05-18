@@ -4,7 +4,7 @@ import BlogClient from './BlogClient'
 
 export const metadata: Metadata = {
   title: 'Blog | Working Holiday Tax',
-  description: 'Clear, honest blog articles covering TFN, ABN, tax returns, superannuation, work rights and more - written for working holiday visa holders in Australia.',
+  description: 'Practical articles covering TFN, ABN, tax returns, superannuation, work rights and more - written for working holiday visa holders in Australia.',
   keywords: [
     'working holiday tax Australia',
     'working holiday visa blog',

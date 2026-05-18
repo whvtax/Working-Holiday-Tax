@@ -197,7 +197,7 @@ Processing typically takes up to 28 days, so the earlier you apply, the less tim
 
 ## What about cash in hand work?
 
-If you are being paid cash in hand, the TFN question is handled differently because no formal payroll exists. For more on how that works and the tax implications, see our blog article on [cash in hand work in Australia](/blog/can-your-employer-pay-you-cash-in-hand).
+If you are being paid cash in hand, the TFN question is handled differently because no formal payroll exists. For more on how that works and the tax implications, see our article on [cash in hand work in Australia](/blog/can-your-employer-pay-you-cash-in-hand).
 
 ---
 
@@ -290,7 +290,7 @@ The key question is whether the business paying you is treating you as an employ
 - **Employee**: They put you on the payroll, deduct PAYG tax, pay super on top of your wages, and direct how you work. You need a TFN.
 - **Contractor**: They ask you to invoice them, you set aside your own tax and super, and you control how the work is done. You need an [ABN](/abn).
 
-If you are unsure which situation applies, our blog article on [the difference between employees and contractors in Australia](/blog/employee-vs-contractor-australia) goes into the legal tests in more detail.
+If you are unsure which situation applies, our article on [the difference between employees and contractors in Australia](/blog/employee-vs-contractor-australia) goes into the legal tests in more detail.
 
 ---
 
@@ -418,7 +418,7 @@ Each employer needs their own declaration form on file to apply the correct 15% 
 
 If you had super contributions made during your first visit and withdrew them using the Departing Australia Superannuation Payment (DASP) process, that account was effectively closed. Any new super contributions from your second visit will go into a new fund.
 
-If you did not withdraw your super from your first visit, those funds may still be sitting in the original fund or with the ATO as unclaimed money. See our blog article on [finding lost or unclaimed super](/blog/how-to-find-lost-superannuation) for how to locate it.
+If you did not withdraw your super from your first visit, those funds may still be sitting in the original fund or with the ATO as unclaimed money. See our article on [finding lost or unclaimed super](/blog/how-to-find-lost-superannuation) for how to locate it.
 
 ## How do tax returns work on your return visit?
 
@@ -772,7 +772,7 @@ Keep a record of every invoice you issue and every payment you receive under you
 
 ## When and how to cancel your ABN
 
-When you finish your business activity in Australia, you should cancel your ABN. We handle the cancellation as part of wrapping up your Australian tax position before you leave. See our blog article on [cancelling your ABN when you leave Australia](/blog/how-to-cancel-your-abn) for what to think about before you go.
+When you finish your business activity in Australia, you should cancel your ABN. We handle the cancellation as part of wrapping up your Australian tax position before you leave. See our article on [cancelling your ABN when you leave Australia](/blog/how-to-cancel-your-abn) for what to think about before you go.
 
 ---
 
@@ -929,7 +929,7 @@ A frequent error is quoting an ABN to an employer who should be treating you as 
 - You receive no leave entitlements
 - You face a larger tax bill at year end than you expected
 
-Only use your ABN when the work genuinely is contracting (see our blog article on [employee vs contractor](/blog/employee-vs-contractor-australia) for how to tell the difference). Otherwise, your TFN and a Tax File Number Declaration form are what you should provide.
+Only use your ABN when the work genuinely is contracting (see our article on [employee vs contractor](/blog/employee-vs-contractor-australia) for how to tell the difference). Otherwise, your TFN and a Tax File Number Declaration form are what you should provide.
 
 ## What are your tax obligations when you have both?
 
@@ -988,7 +988,7 @@ If the financial year has not yet ended when you leave, we can lodge your tax re
 
 ## Do not forget to claim your super
 
-If superannuation contributions were made in connection with employment work (separate from your ABN contracting), claim them back through the Departing Australia Superannuation Payment (DASP) process. See our blog article on [claiming your super when you leave Australia](/superannuation) for the steps.
+If superannuation contributions were made in connection with employment work (separate from your ABN contracting), claim them back through the Departing Australia Superannuation Payment (DASP) process. See our article on [claiming your super when you leave Australia](/superannuation) for the steps.
 
 ABN contractor work typically does not generate super contributions, but employment work in parallel often does.
 
@@ -1499,7 +1499,7 @@ To lodge your return, our team needs:
 - Any work-related expenses you want to claim as deductions
 - Your passport details for identification
 
-We can access your income statements directly through our tax agent portal, so you do not need to collect payslips from each employer yourself. See our blog article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas) for more detail on what we need.
+We can access your income statements directly through our tax agent portal, so you do not need to collect payslips from each employer yourself. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas) for more detail on what we need.
 
 ---
 
@@ -2139,7 +2139,7 @@ Regardless of residency classification:
 - This is set by working holiday maker legislation
 - Selecting "No" to the tax-free threshold on your Tax File Number Declaration form is always correct for working holiday makers
 
-If you incorrectly claimed the tax-free threshold, you may face a tax debt at year-end because too little tax was withheld. See our blog article on [the tax-free threshold for working holiday makers](/blog/tax-free-threshold-working-holiday-visa).
+If you incorrectly claimed the tax-free threshold, you may face a tax debt at year-end because too little tax was withheld. See our article on [the tax-free threshold for working holiday makers](/blog/tax-free-threshold-working-holiday-visa).
 
 ## What should you select at tax time?
 
@@ -2647,7 +2647,7 @@ Yes. The ATO can also initiate amendments:
 - No time limit for fraud or evasion
 - Notifies you of the amendment via assessment notice
 
-If the ATO amends your return and you disagree, you can lodge an objection through the formal appeal process. See our blog article on [appealing ATO decisions](/blog/appealing-ato-decision-australia).
+If the ATO amends your return and you disagree, you can lodge an objection through the formal appeal process. See our article on [appealing ATO decisions](/blog/appealing-ato-decision-australia).
 
 ## What if you have already left Australia?
 
@@ -2872,7 +2872,7 @@ The 2017 changes also affected super withdrawal:
 - This was retained even after the UK legal challenge
 - Most working holiday makers we help still consider DASP worthwhile because the net amount is meaningful
 
-See our blog article on [tax on super withdrawal](/blog/tax-on-super-withdrawal-backpacker) for more.
+See our article on [tax on super withdrawal](/blog/tax-on-super-withdrawal-backpacker) for more.
 
 ## How does our team help with backpacker tax?
 
@@ -2941,7 +2941,7 @@ The process is called Departing Australia Superannuation Payment (DASP). The ste
 
 Important: DASP withdrawals are taxed at 65% of the taxable component for working holiday makers. This is higher than the 35% that applied before 2017. Despite the tax, claiming the super is still worthwhile because the alternative is leaving it behind permanently.
 
-See our detailed blog article on [how the DASP process works](/blog/what-is-dasp-super-withdrawal) for a step-by-step explanation.
+See our detailed article on [how the DASP process works](/blog/what-is-dasp-super-withdrawal) for a step-by-step explanation.
 
 ---
 
@@ -3064,7 +3064,7 @@ Your DASP payout depends on:
 
 The 65% tax rate is high, but the alternative is leaving the super behind permanently. The net amount, even after tax, is usually still a meaningful sum (often several thousand dollars depending on how long you worked).
 
-See our blog article on [what tax is taken from your DASP](/blog/tax-on-super-withdrawal-backpacker) for a detailed breakdown of how the tax is calculated.
+See our article on [what tax is taken from your DASP](/blog/tax-on-super-withdrawal-backpacker) for a detailed breakdown of how the tax is calculated.
 
 ---
 
@@ -3130,7 +3130,7 @@ If you suspect super was paid for you but cannot find the account, we can invest
 - Check ATO records for transferred unclaimed super balances
 - Identify any employers who may have failed to pay super and pursue the unpaid amounts
 
-See our blog article on [finding lost superannuation](/blog/how-to-find-lost-superannuation) for more detail. We do this search as part of every DASP application we handle, to make sure no super is left behind.
+See our article on [finding lost superannuation](/blog/how-to-find-lost-superannuation) for more detail. We do this search as part of every DASP application we handle, to make sure no super is left behind.
 
 ---
 
@@ -3366,7 +3366,7 @@ For working holiday visas, this typically means:
 - After visa expiry date (one year after grant, plus any extensions)
 - After visa cancellation (if you cancel it early on departure)
 
-See our detailed blog article on [how to apply for DASP](/blog/how-to-apply-for-super-back) for everything you need to do once you have left Australia.
+See our detailed article on [how to apply for DASP](/blog/how-to-apply-for-super-back) for everything you need to do once you have left Australia.
 
 ---
 
@@ -3546,7 +3546,7 @@ Yes. Through the Departing Australia Superannuation Payment (DASP) process:
 - 65% withholding tax applies to the taxable component
 - Net amount paid to your nominated bank account
 
-Even small super balances from short stints of casual work are worth claiming. We aggregate balances from multiple funds in one DASP package. See our blog article on [how to apply for DASP](/blog/how-to-apply-for-super-back).
+Even small super balances from short stints of casual work are worth claiming. We aggregate balances from multiple funds in one DASP package. See our article on [how to apply for DASP](/blog/how-to-apply-for-super-back).
 
 ## What records help track your super?
 
@@ -3736,7 +3736,7 @@ In many industries, working outside ordinary hours attracts penalty rates:
 - Public holiday rates (often 225-250% of base)
 - Overtime rates after a certain number of hours
 
-See our blog article on [penalty rates in Australia](/blog/penalty-rates-australia) for the full breakdown.
+See our article on [penalty rates in Australia](/blog/penalty-rates-australia) for the full breakdown.
 
 ## What should you do if you are being paid less than the minimum?
 
@@ -3943,7 +3943,7 @@ All cash income is taxable in Australia. You must:
 - Pay tax at the 15% working holiday maker rate (or 45% if no TFN was on file)
 - Keep your own records of dates worked, hours, rates, and amounts received
 
-The ATO has multiple ways of identifying undeclared income (bank deposits, third-party reports, audits). Penalties for tax evasion are serious. The right approach is to keep records and declare honestly. See our blog article on [cash in hand tax returns](/blog/cash-in-hand-tax-return) for detail.
+The ATO has multiple ways of identifying undeclared income (bank deposits, third-party reports, audits). Penalties for tax evasion are serious. The right approach is to keep records and declare honestly. See our article on [cash in hand tax returns](/blog/cash-in-hand-tax-return) for detail.
 
 ## What about missing super on cash work?
 
@@ -4241,7 +4241,7 @@ ABN contractor work typically does not generate super contributions from the cli
 - Employees: client pays 12% super on top of wages
 - Contractors: client pays only what the invoice says
 
-If you are doing employee-like work but invoicing as a contractor, you may be a victim of sham contracting and entitled to super. See our blog article on [employee vs contractor](/blog/employee-vs-contractor-australia) for how to tell the difference.
+If you are doing employee-like work but invoicing as a contractor, you may be a victim of sham contracting and entitled to super. See our article on [employee vs contractor](/blog/employee-vs-contractor-australia) for how to tell the difference.
 
 ---
 
@@ -4283,7 +4283,7 @@ Each employer is independently required to pay super:
 - Paid into a super fund (often the same one if you nominate it, otherwise different funds)
 - All contributions must appear in your super accounts within the quarterly deadlines
 
-Working multiple jobs means super may end up in multiple funds. Before you leave Australia, our team consolidates these or lodges separate DASP applications for each fund. See our blog article on [finding lost superannuation](/blog/how-to-find-lost-superannuation) for more.
+Working multiple jobs means super may end up in multiple funds. Before you leave Australia, our team consolidates these or lodges separate DASP applications for each fund. See our article on [finding lost superannuation](/blog/how-to-find-lost-superannuation) for more.
 
 ## What records should you keep across multiple jobs?
 
@@ -4571,7 +4571,7 @@ If you are an employee (not contractor) on a farm:
 - Super is paid quarterly into your nominated fund
 - Can be claimed back through DASP when you leave Australia
 
-Many farm employers skip super for working holiday makers. Our team can recover unpaid super through the formal Superannuation Guarantee Charge process. See our blog article on [farm work and ABNs](/blog/farm-work-and-abns) if you are unsure whether you are an employee or contractor.
+Many farm employers skip super for working holiday makers. Our team can recover unpaid super through the formal Superannuation Guarantee Charge process. See our article on [farm work and ABNs](/blog/farm-work-and-abns) if you are unsure whether you are an employee or contractor.
 
 ---
 
@@ -5102,7 +5102,7 @@ Working under the 6-month rule (or an exemption):
 - All wages combine on your annual [tax return](/tax-return)
 - Super from each employer accumulates in their nominated fund
 
-For super accumulation, working for one employer for longer (where allowed) is helpful because it consolidates contributions into fewer funds. See our blog article on [finding lost superannuation](/blog/how-to-find-lost-superannuation).
+For super accumulation, working for one employer for longer (where allowed) is helpful because it consolidates contributions into fewer funds. See our article on [finding lost superannuation](/blog/how-to-find-lost-superannuation).
 
 ## What practical steps should you take?
 
@@ -5497,7 +5497,7 @@ Unpaid super is a specific category we handle frequently:
 - If contributions never appear, your employer is in breach
 - Recovery is through the Superannuation Guarantee Charge (SGC) process
 
-We have helped working holiday makers recover thousands in unpaid super. The SGC system protects workers even when employers fail to pay. See our blog article on [the Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge) for more.
+We have helped working holiday makers recover thousands in unpaid super. The SGC system protects workers even when employers fail to pay. See our article on [the Superannuation Guarantee Charge](/blog/what-is-superannuation-guarantee-charge) for more.
 
 ## Will it affect your visa?
 
@@ -5558,7 +5558,7 @@ Generally, no:
 - Without coverage, you are treated as a private patient
 - You pay the full cost of GP visits, specialist appointments, prescriptions, and hospital treatment
 
-The 11 countries with an RHCA covering working holiday makers are listed in our blog article on [Medicare agreements with Australia](/blog/countries-with-medicare-agreement-australia).
+The 11 countries with an RHCA covering working holiday makers are listed in our article on [Medicare agreements with Australia](/blog/countries-with-medicare-agreement-australia).
 
 ## What does no Medicare coverage cost you in practice?
 
@@ -5594,7 +5594,7 @@ Options for healthcare coverage:
 
 Our team can apply the Medicare Levy exemption regardless of whether you took out private insurance. The exemption is based on your Medicare eligibility, not on whether you bought private cover.
 
-For more on RHCA countries and what they cover, see our blog article on [Medicare agreements with Australia](/blog/countries-with-medicare-agreement-australia).
+For more on RHCA countries and what they cover, see our article on [Medicare agreements with Australia](/blog/countries-with-medicare-agreement-australia).
 
 ---
 
@@ -5793,7 +5793,7 @@ You can still start work without your TFN, but the temporary setup needs adjusti
 3. Complete the Tax File Number Declaration form with the reference number
 4. Update the form with your actual TFN once it arrives (within 28 days)
 
-Until your TFN is on file, the 45% rate may apply. See our blog article on [TFN reference numbers](/blog/tfn-reference-number-before-tfn-arrives) for what to do in the interim.
+Until your TFN is on file, the 45% rate may apply. See our article on [TFN reference numbers](/blog/tfn-reference-number-before-tfn-arrives) for what to do in the interim.
 
 ## What about a new job?
 
@@ -6176,7 +6176,7 @@ Through our service, the process is fully remote:
 
 The standard deadline is 31 October following the financial year. Through our service as your registered tax agent, the deadline is typically extended to May the following year.
 
-Failing to lodge when required can result in penalties. The ATO has your income records from your employers and expects a return. See our blog article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas).
+Failing to lodge when required can result in penalties. The ATO has your income records from your employers and expects a return. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas).
 
 ## How do you claim your superannuation?
 
@@ -6187,7 +6187,7 @@ If super contributions were made on your behalf, you can claim them through the 
 - 65% withholding tax applies to the taxable component
 - Net amount is paid to your nominated bank account (Australian or overseas)
 
-See our detailed blog article on [how to apply for DASP](/blog/how-to-apply-for-super-back) for the full process.
+See our detailed article on [how to apply for DASP](/blog/how-to-apply-for-super-back) for the full process.
 
 ## How do you cancel your ABN?
 
@@ -6198,7 +6198,7 @@ If you registered for an [ABN](/abn):
 - Keeps your business records tidy
 - Prevents administrative issues if you ever return to Australia
 
-See our blog article on [cancelling your ABN](/blog/how-to-cancel-your-abn) for what to wrap up before cancellation.
+See our article on [cancelling your ABN](/blog/how-to-cancel-your-abn) for what to wrap up before cancellation.
 
 ## What contact details should you update?
 

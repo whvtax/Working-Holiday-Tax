@@ -142,7 +142,7 @@ export default function CategoryPage({ params }: Props) {
             <div className="inline-flex items-center gap-2" style={{ marginBottom: '12px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: colors.text, display: 'inline-block' }} aria-hidden="true" />
               <span style={{ fontSize: '10px', letterSpacing: '0.16em', color: colors.text, textTransform: 'uppercase', fontWeight: 600 }}>
-                Topic · {articles.length} {articles.length === 1 ? 'article' : 'articles'}
+                {articles.length} {articles.length === 1 ? 'article' : 'articles'}
               </span>
             </div>
 
@@ -211,7 +211,7 @@ export default function CategoryPage({ params }: Props) {
                     {article.description}
                   </p>
                   <span style={{ fontSize: '12.5px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                    Read article <span className="read-arrow">→</span>
+                    Read more <span className="read-arrow">→</span>
                   </span>
                 </div>
               </Link>
@@ -223,7 +223,7 @@ export default function CategoryPage({ params }: Props) {
         <section style={{ maxWidth: '780px', margin: '0 auto', padding: '48px 20px 60px', borderTop: '1px solid #E2EFE9', marginTop: '48px' }}>
           <div style={{ marginBottom: '24px' }}>
             <p style={{ fontSize: '11px', fontWeight: 600, color: colors.text, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
-              FAQ
+              Common questions
             </p>
             <h2 className="font-serif" style={{ fontSize: 'clamp(22px, 2.5vw, 28px)', fontWeight: 700, color: '#0B5240', marginBottom: '0', letterSpacing: '-0.025em' }}>
               Frequently asked questions
@@ -245,10 +245,10 @@ export default function CategoryPage({ params }: Props) {
           </div>
         </section>
 
-        {/* Other topics */}
+        {/* Other categories */}
         <section style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px 80px' }}>
           <h2 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', marginBottom: '16px', letterSpacing: '-0.015em' }}>
-            Browse other topics
+            Other categories
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {categoryMeta

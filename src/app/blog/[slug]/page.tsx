@@ -59,13 +59,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function getNextGuide(current: { slug: string; category: string }) {
-  const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
-  if (sameCategory.length > 0) return sameCategory[Math.floor(Math.random() * sameCategory.length)]
-  const others = guides.filter(g => g.slug !== current.slug)
-  return others[Math.floor(Math.random() * others.length)] ?? null
-}
-
 function getRelatedGuides(current: { slug: string; category: string }, count = 3) {
   const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
   const shuffled = [...sameCategory].sort(() => 0.5 - Math.random())
@@ -139,7 +132,6 @@ export default function GuidePage({ params }: Props) {
 
   const categoryInfo = getCategoryMeta(guide.category)
   const categoryColors = getCategoryColor(guide.category)
-  const nextGuide = getNextGuide(guide)
   const relatedGuides = getRelatedGuides(guide)
   const readTime = calcReadTime(guide.body)
   const wordCount = calcWordCount(guide.body)
@@ -348,7 +340,7 @@ export default function GuidePage({ params }: Props) {
             <meta itemProp="headline" content={guide.title} />
             <meta itemProp="datePublished" content={guide.date} />
             <meta itemProp="author" content="Working Holiday Tax" />
-            <GuideArticle guide={guide} nextGuide={nextGuide} />
+            <GuideArticle guide={guide} />
           </article>
 
           {/* Related articles - now with category-colored badges */}
