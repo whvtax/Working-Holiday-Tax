@@ -426,7 +426,7 @@ export default function BlogClient({
         {/* Count */}
         {filtered.length > 0 && (
           <p style={{ textAlign: 'center', fontSize: '12px', color: '#8AADA3', marginTop: '16px' }}>
-            Showing {(page - 1) * PER_PAGE + 1}–{Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
+            Showing {(page - 1) * PER_PAGE + 1}-{Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
           </p>
         )}
       </section>

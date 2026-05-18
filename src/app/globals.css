@@ -78,15 +78,6 @@
   .section-label.light  { @apply text-forest-300; }
   .section-label.center { @apply justify-center; }
 
-  /* ── Prose (guide pages) ── */
-  .prose-wht p  { @apply text-[15px] font-light text-body leading-[1.8] mb-5; }
-  .prose-wht p:last-child { margin-bottom: 0; }
-  .prose-wht h3 {
-    font-family: var(--font-serif, Georgia, serif);
-    @apply text-[20px] font-bold text-ink leading-[1.2] mt-8 mb-3;
-    letter-spacing: -0.02em;
-  }
-
   /* ── Info callout ── */
   .info-block { @apply pl-4 my-6; border-left: 2px solid #E9A020; }
   .info-block p { @apply text-[13.5px] text-body leading-[1.75]; }
@@ -318,6 +309,911 @@
     }
   }
 
+}
+
+/* ============================================
+   SERVICE PAGE INTRO STYLES (What is X?)
+   ============================================ */
+
+/* ─── Shared CTA strip - used on all redesigned service intros ─── */
+.service-cta-strip {
+  margin-top: 32px;
+  padding: 24px;
+  background: #fff;
+  border: 1.5px solid #C8EAE0;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: stretch;
+}
+@media (min-width: 768px) {
+  .service-cta-strip {
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    padding: 26px 28px;
+  }
+}
+.service-cta-text {
+  flex: 1;
+}
+.service-cta-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(16px, 1.7vw, 19px);
+  font-weight: 700;
+  color: #080F0D;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin: 0 0 6px 0;
+}
+.service-cta-sub {
+  font-size: 13.5px;
+  color: #587066;
+  line-height: 1.65;
+  font-weight: 300;
+  margin: 0;
+}
+.service-cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 24px;
+  background: #0B5240;
+  color: #fff;
+  border-radius: 100px;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.service-cta-button:hover {
+  background: #16775C;
+  transform: translateY(-1px);
+}
+.service-cta-button:active {
+  transform: scale(0.98);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TFN INTRO - "Your first step" / Step 01 motif
+   ───────────────────────────────────────────────────────────────── */
+.tfn-intro-section {
+  background: #F5F9F7;
+  border-top: 1px solid #E2EFE9;
+  border-bottom: 1px solid #E2EFE9;
+  padding: 44px 0 48px;
+}
+@media (min-width: 1024px) {
+  .tfn-intro-section { padding: 60px 0 64px; }
+}
+.tfn-intro-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 1024px) {
+  .tfn-intro-container { padding: 0 24px; }
+}
+.tfn-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .tfn-intro-grid {
+    grid-template-columns: 1.3fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+}
+.tfn-intro-content {
+  order: 2;
+}
+@media (min-width: 900px) {
+  .tfn-intro-content { order: 1; }
+}
+.tfn-intro-visual {
+  order: 1;
+}
+@media (min-width: 900px) {
+  .tfn-intro-visual { order: 2; }
+}
+.tfn-intro-step-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 8px;
+  background: #fff;
+  border: 1.5px solid #C8EAE0;
+  border-radius: 100px;
+  margin-bottom: 14px;
+}
+.tfn-intro-step-num {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0B5240;
+  background: #EAF6F1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.04em;
+}
+.tfn-intro-step-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #0B5240;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.tfn-intro-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 900;
+  color: #080F0D;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+}
+.tfn-intro-body {
+  font-size: clamp(14.5px, 1.4vw, 16px);
+  color: #2A3C34;
+  line-height: 1.75;
+  font-weight: 300;
+  margin: 0 0 12px 0;
+}
+.tfn-intro-body strong {
+  color: #0B5240;
+  font-weight: 700;
+}
+.tfn-intro-note {
+  display: flex;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #fff;
+  border-left: 3px solid #2FA880;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+/* Comparison visual */
+.tfn-comparison-card {
+  padding: 20px 22px;
+  border-radius: 16px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.tfn-comparison-bad {
+  background: #FEF3F0;
+  border: 1.5px solid #FBD0BB;
+}
+.tfn-comparison-good {
+  background: #EAF6F1;
+  border: 1.5px solid #C8EAE0;
+}
+.tfn-comparison-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #587066;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 8px 0;
+}
+.tfn-comparison-bad .tfn-comparison-label { color: #9A3412; }
+.tfn-comparison-good .tfn-comparison-label { color: #0B5240; }
+.tfn-comparison-rate {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  margin: 0 0 4px 0;
+  line-height: 1;
+}
+@media (min-width: 1024px) {
+  .tfn-comparison-rate { font-size: 56px; }
+}
+.tfn-comparison-bad .tfn-comparison-rate { color: #9A3412; }
+.tfn-comparison-good .tfn-comparison-rate { color: #0B5240; }
+.tfn-comparison-detail {
+  font-size: 12px;
+  color: #587066;
+  font-weight: 300;
+  margin: 0;
+  line-height: 1.4;
+}
+.tfn-comparison-divider {
+  text-align: center;
+  padding: 12px 0;
+}
+.tfn-comparison-arrow {
+  font-size: 22px;
+  color: #2FA880;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.tfn-comparison-savings {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2FA880;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TAX RETURN INTRO - Money/refund motif
+   ───────────────────────────────────────────────────────────────── */
+.taxret-intro-section {
+  background: #F5F9F7;
+  border-top: 1px solid #E2EFE9;
+  border-bottom: 1px solid #E2EFE9;
+  padding: 44px 0 48px;
+}
+@media (min-width: 1024px) {
+  .taxret-intro-section { padding: 60px 0 64px; }
+}
+.taxret-intro-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 1024px) {
+  .taxret-intro-container { padding: 0 24px; }
+}
+.taxret-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .taxret-intro-grid {
+    grid-template-columns: 1fr 1.3fr;
+    gap: 56px;
+  }
+}
+.taxret-intro-content {
+  order: 2;
+}
+.taxret-intro-visual {
+  order: 1;
+}
+.taxret-intro-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: #E9A020;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 10px 0;
+}
+.taxret-intro-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 900;
+  color: #080F0D;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+}
+.taxret-intro-body {
+  font-size: clamp(14.5px, 1.4vw, 16px);
+  color: #2A3C34;
+  line-height: 1.75;
+  font-weight: 300;
+  margin: 0 0 12px 0;
+}
+.taxret-intro-body strong {
+  color: #0B5240;
+  font-weight: 700;
+}
+
+/* Refund card */
+.taxret-refund-card {
+  background: linear-gradient(135deg, #0B5240 0%, #134B3E 100%);
+  border-radius: 20px;
+  padding: 28px 24px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 20px 40px -12px rgba(11, 82, 64, 0.25);
+}
+.taxret-refund-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 8px 0;
+}
+.taxret-refund-amount {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #E9A020;
+  margin: 0 0 6px 0;
+  line-height: 1;
+}
+.taxret-refund-detail {
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  font-weight: 300;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+.taxret-refund-stars {
+  display: inline-flex;
+  gap: 3px;
+  padding: 6px 14px;
+  background: rgba(233, 160, 32, 0.15);
+  border-radius: 100px;
+}
+
+/* Money flow arrows */
+.taxret-arrows {
+  margin-top: 16px;
+  padding: 14px 18px;
+  background: #fff;
+  border: 1px solid #E2EFE9;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.taxret-arrow-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  color: #587066;
+}
+.taxret-arrow-item span:first-child { color: #2FA880; }
+.taxret-arrow-back span:last-child { color: #587066; }
+.taxret-arrow-back span:first-child { color: #0B5240; font-size: 14px; }
+
+/* ─────────────────────────────────────────────────────────────────
+   SUPER INTRO - "Don't leave it behind" / boarding pass motif
+   ───────────────────────────────────────────────────────────────── */
+.super-intro-section {
+  background: #F5F9F7;
+  border-top: 1px solid #E2EFE9;
+  border-bottom: 1px solid #E2EFE9;
+  padding: 44px 0 48px;
+}
+@media (min-width: 1024px) {
+  .super-intro-section { padding: 60px 0 64px; }
+}
+.super-intro-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 1024px) {
+  .super-intro-container { padding: 0 24px; }
+}
+.super-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .super-intro-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+  }
+}
+.super-intro-content {
+  order: 2;
+}
+@media (min-width: 900px) {
+  .super-intro-content { order: 1; }
+}
+.super-intro-visual {
+  order: 1;
+}
+@media (min-width: 900px) {
+  .super-intro-visual { order: 2; }
+}
+.super-intro-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: #E9A020;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 10px 0;
+}
+.super-intro-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 900;
+  color: #080F0D;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+}
+.super-intro-body {
+  font-size: clamp(14.5px, 1.4vw, 16px);
+  color: #2A3C34;
+  line-height: 1.75;
+  font-weight: 300;
+  margin: 0 0 12px 0;
+}
+.super-intro-body strong {
+  color: #0B5240;
+  font-weight: 700;
+}
+
+/* Boarding pass visual */
+.super-boarding-card {
+  background: #fff;
+  border: 1.5px solid #E2EFE9;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 12px 28px -10px rgba(11, 82, 64, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+.super-boarding-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0B5240 0%, #2FA880 50%, #E9A020 100%);
+}
+.super-boarding-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.super-boarding-from, .super-boarding-to {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: #0B5240;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.super-boarding-divider {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, #E2EFE9 0, #E2EFE9 4px, transparent 4px, transparent 8px);
+  margin-bottom: 16px;
+}
+.super-boarding-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.super-boarding-meta-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #8AADA3;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 3px 0;
+}
+.super-boarding-meta-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #080F0D;
+  margin: 0;
+}
+.super-boarding-status-warn {
+  color: #9A3412 !important;
+}
+.super-boarding-amount-block {
+  padding: 14px 16px;
+  background: #EAF6F1;
+  border-radius: 10px;
+  text-align: center;
+}
+.super-boarding-amount-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #0B5240;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 4px 0;
+}
+.super-boarding-amount {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(20px, 2.6vw, 26px);
+  font-weight: 900;
+  color: #0B5240;
+  letter-spacing: -0.025em;
+  margin: 0;
+  line-height: 1.1;
+}
+.super-boarding-warning {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #FFFBEB;
+  border-left: 3px solid #E9A020;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: #2A3C34;
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   ABN INTRO - Employee vs Contractor motif
+   ───────────────────────────────────────────────────────────────── */
+.abn-intro-section {
+  background: #F5F9F7;
+  border-top: 1px solid #E2EFE9;
+  border-bottom: 1px solid #E2EFE9;
+  padding: 44px 0 48px;
+}
+@media (min-width: 1024px) {
+  .abn-intro-section { padding: 60px 0 64px; }
+}
+.abn-intro-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 1024px) {
+  .abn-intro-container { padding: 0 24px; }
+}
+.abn-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .abn-intro-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+  }
+}
+.abn-intro-content {
+  order: 2;
+}
+@media (min-width: 900px) {
+  .abn-intro-content { order: 1; }
+}
+.abn-intro-visual {
+  order: 1;
+}
+@media (min-width: 900px) {
+  .abn-intro-visual { order: 2; }
+}
+.abn-intro-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2FA880;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 10px 0;
+}
+.abn-intro-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 900;
+  color: #080F0D;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+}
+.abn-intro-body {
+  font-size: clamp(14.5px, 1.4vw, 16px);
+  color: #2A3C34;
+  line-height: 1.75;
+  font-weight: 300;
+  margin: 0 0 12px 0;
+}
+.abn-intro-body strong {
+  color: #0B5240;
+  font-weight: 700;
+}
+
+/* Employee vs Contractor compare grid */
+.abn-compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (min-width: 400px) {
+  .abn-compare-grid { gap: 12px; }
+}
+.abn-compare-card {
+  padding: 18px 16px;
+  background: #fff;
+  border-radius: 14px;
+  border: 1.5px solid #E2EFE9;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+.abn-compare-employee {
+  opacity: 0.7;
+}
+.abn-compare-contractor {
+  border-color: #0B5240;
+  box-shadow: 0 12px 24px -10px rgba(11, 82, 64, 0.18);
+}
+.abn-compare-badge {
+  position: absolute;
+  top: -8px;
+  right: 14px;
+  background: #0B5240;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.abn-compare-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #F5F9F7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+.abn-compare-icon-active {
+  background: #EAF6F1;
+}
+.abn-compare-title {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: #080F0D;
+  letter-spacing: -0.02em;
+  margin: 0 0 2px 0;
+  line-height: 1.2;
+}
+.abn-compare-contractor .abn-compare-title { color: #0B5240; }
+.abn-compare-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2FA880;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 12px 0;
+}
+.abn-compare-employee .abn-compare-subtitle { color: #8AADA3; }
+.abn-compare-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.abn-compare-list li {
+  font-size: 11.5px;
+  color: #587066;
+  line-height: 1.45;
+  padding-left: 12px;
+  position: relative;
+}
+.abn-compare-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #2FA880;
+}
+.abn-compare-employee .abn-compare-list li::before {
+  background: #C8EAE0;
+}
+.abn-compare-footer {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #587066;
+  font-weight: 500;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MEDICARE INTRO - 2% levy / exemption motif
+   ───────────────────────────────────────────────────────────────── */
+.medicare-intro-section {
+  background: #F5F9F7;
+  border-top: 1px solid #E2EFE9;
+  border-bottom: 1px solid #E2EFE9;
+  padding: 44px 0 48px;
+}
+@media (min-width: 1024px) {
+  .medicare-intro-section { padding: 60px 0 64px; }
+}
+.medicare-intro-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+@media (min-width: 1024px) {
+  .medicare-intro-container { padding: 0 24px; }
+}
+.medicare-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .medicare-intro-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+  }
+}
+.medicare-intro-content {
+  order: 2;
+}
+@media (min-width: 900px) {
+  .medicare-intro-content { order: 1; }
+}
+.medicare-intro-visual {
+  order: 1;
+}
+@media (min-width: 900px) {
+  .medicare-intro-visual { order: 2; }
+}
+.medicare-intro-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  color: #E9A020;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 10px 0;
+}
+.medicare-intro-heading {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 900;
+  color: #080F0D;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+}
+.medicare-intro-body {
+  font-size: clamp(14.5px, 1.4vw, 16px);
+  color: #2A3C34;
+  line-height: 1.75;
+  font-weight: 300;
+  margin: 0 0 12px 0;
+}
+.medicare-intro-body strong {
+  color: #0B5240;
+  font-weight: 700;
+}
+
+/* Eligibility check card */
+.medicare-check-card {
+  background: #fff;
+  border: 1.5px solid #E2EFE9;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 12px 28px -10px rgba(11, 82, 64, 0.12);
+}
+.medicare-check-header {
+  text-align: center;
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #E2EFE9;
+}
+.medicare-check-title {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 17px;
+  font-weight: 800;
+  color: #080F0D;
+  letter-spacing: -0.02em;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+.medicare-check-subtitle {
+  font-size: 12px;
+  color: #587066;
+  margin: 0;
+  font-weight: 300;
+}
+.medicare-check-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.medicare-check-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #F5F9F7;
+  border-radius: 10px;
+}
+.medicare-check-result {
+  background: #EAF6F1;
+  border: 1px solid #C8EAE0;
+}
+.medicare-check-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.medicare-check-x {
+  background: #FEF3F0;
+  border: 1.5px solid #FBD0BB;
+}
+.medicare-check-v {
+  background: #fff;
+  border: 1.5px solid #2FA880;
+}
+.medicare-check-arrow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 14px;
+}
+.medicare-check-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #080F0D;
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.3;
+}
+.medicare-check-desc {
+  font-size: 11.5px;
+  color: #587066;
+  margin: 1px 0 0 0;
+  line-height: 1.3;
+  font-weight: 300;
+}
+.medicare-check-savings {
+  background: linear-gradient(135deg, #0B5240 0%, #134B3E 100%);
+  border-radius: 12px;
+  padding: 16px 18px;
+  text-align: center;
+  color: #fff;
+}
+.medicare-check-savings-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin: 0 0 4px 0;
+}
+.medicare-check-savings-amount {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: clamp(22px, 2.8vw, 28px);
+  font-weight: 900;
+  color: #E9A020;
+  letter-spacing: -0.03em;
+  margin: 0 0 3px 0;
+  line-height: 1;
+}
+.medicare-check-savings-detail {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  font-weight: 300;
 }
 
 /* ============================================

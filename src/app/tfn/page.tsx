@@ -119,7 +119,7 @@ export default function TFNPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               <span className="hidden lg:inline">We make sure your TFN is done correctly the first time.</span>
-              <span className="lg:hidden" style={{ fontSize:'13px', whiteSpace:'nowrap' }}>We make sure your TFN is done correctly the first time.</span>
+              <span className="lg:hidden" style={{ fontSize:'13px' }}>We make sure your TFN is done correctly the first time.</span>
             </p>
 
             <p className="font-light"
@@ -149,6 +149,73 @@ export default function TFNPage() {
                 </span>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT IS A TFN? - Unique design: "Step 1 of your Australia journey" ─ */}
+      <section className="tfn-intro-section">
+        <div className="tfn-intro-container">
+          <div className="tfn-intro-grid">
+
+            {/* Left: Explainer */}
+            <div className="tfn-intro-content">
+              <div className="tfn-intro-step-badge">
+                <span className="tfn-intro-step-num">01</span>
+                <span className="tfn-intro-step-label">Your first step</span>
+              </div>
+              <h2 className="tfn-intro-heading">
+                What is a TFN?
+              </h2>
+              <p className="tfn-intro-body">
+                A <strong>Tax File Number (TFN)</strong> is a personal ID issued by the Australian Taxation Office (ATO). It is the first thing you need before starting work in Australia.
+              </p>
+              <p className="tfn-intro-body">
+                Without a TFN, your employer is required by law to withhold the maximum tax rate of <strong>45%</strong> from every paycheck, regardless of how much you earn.
+              </p>
+              <p className="tfn-intro-body">
+                With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference - sometimes hundreds of dollars per week.
+              </p>
+              <div className="tfn-intro-note">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
+                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
+                  <path d="M12 8v5M12 16h.01" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
+                </svg>
+                <p style={{ margin: 0, fontSize: '13.5px', color: '#2A3C34', lineHeight: 1.6 }}>
+                  Your TFN is yours for life - you only need to apply once, even if you leave and return to Australia.
+                </p>
+              </div>
+            </div>
+
+            {/* Right: Visual - tax savings comparison */}
+            <div className="tfn-intro-visual">
+              <div className="tfn-comparison-card tfn-comparison-bad">
+                <p className="tfn-comparison-label">Without TFN</p>
+                <p className="tfn-comparison-rate">45%</p>
+                <p className="tfn-comparison-detail">Withheld from every paycheck</p>
+              </div>
+              <div className="tfn-comparison-divider">
+                <div className="tfn-comparison-arrow">↓</div>
+                <p className="tfn-comparison-savings">Save up to 30%</p>
+              </div>
+              <div className="tfn-comparison-card tfn-comparison-good">
+                <p className="tfn-comparison-label">With TFN</p>
+                <p className="tfn-comparison-rate">15%</p>
+                <p className="tfn-comparison-detail">Standard WHM rate</p>
+              </div>
+            </div>
+
+          </div>
+
+          {/* CTA strip to OUR service */}
+          <div className="service-cta-strip">
+            <div className="service-cta-text">
+              <h3 className="service-cta-heading">We handle the entire TFN application for you</h3>
+              <p className="service-cta-sub">Send us your details on WhatsApp. We submit your application correctly the first time - usually within an hour.</p>
+            </div>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
+              Apply for my TFN →
+            </a>
           </div>
         </div>
       </section>

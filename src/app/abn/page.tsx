@@ -130,7 +130,7 @@ export default function ABNPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               <span className="hidden lg:inline">We set up your ABN correctly from the start.</span>
-              <span className="lg:hidden" style={{ fontSize:'13px', whiteSpace:'nowrap' }}>We set up your ABN correctly from the start.</span>
+              <span className="lg:hidden" style={{ fontSize:'13px' }}>We set up your ABN correctly from the start.</span>
             </p>
 
             <p className="font-light"
@@ -172,6 +172,91 @@ export default function ABNPage() {
         </div>
       </section>
 
+      {/* ── WHAT IS AN ABN? - Unique design: Employee vs Contractor ──── */}
+      <section className="abn-intro-section">
+        <div className="abn-intro-container">
+          <div className="abn-intro-grid">
+
+            {/* Left: Explainer */}
+            <div className="abn-intro-content">
+              <p className="abn-intro-eyebrow">For contractors &amp; sole traders</p>
+              <h2 className="abn-intro-heading">
+                What is an ABN?
+              </h2>
+              <p className="abn-intro-body">
+                An <strong>Australian Business Number (ABN)</strong> is an 11-digit identifier issued by the Australian Business Register. You need one when you work for yourself rather than as a regular employee on a payslip.
+              </p>
+              <p className="abn-intro-body">
+                With an ABN you can <strong>invoice clients directly</strong>, work as a contractor or freelancer, and operate legally as a sole trader. Common ABN jobs for backpackers: farm contracting, content creation, ride-share driving, delivery, and trades.
+              </p>
+              <p className="abn-intro-body">
+                An ABN is not a replacement for a TFN - they serve different purposes. Many working holiday makers have both: a TFN for employment income, an ABN for contract work.
+              </p>
+            </div>
+
+            {/* Right: Visual - Employee vs Contractor comparison */}
+            <div className="abn-intro-visual">
+              <div className="abn-compare-grid">
+
+                {/* Employee card */}
+                <div className="abn-compare-card abn-compare-employee">
+                  <div className="abn-compare-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="7" r="4" stroke="#587066" strokeWidth="1.6"/>
+                      <path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1" stroke="#587066" strokeWidth="1.6" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <p className="abn-compare-title">Employee</p>
+                  <p className="abn-compare-subtitle">Needs TFN</p>
+                  <ul className="abn-compare-list">
+                    <li>Payslip from employer</li>
+                    <li>Tax withheld automatically</li>
+                    <li>Receives super contributions</li>
+                  </ul>
+                </div>
+
+                {/* Contractor card - highlighted */}
+                <div className="abn-compare-card abn-compare-contractor">
+                  <div className="abn-compare-badge">You</div>
+                  <div className="abn-compare-icon abn-compare-icon-active">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M3 9l9-6 9 6v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke="#0B5240" strokeWidth="1.6" strokeLinejoin="round"/>
+                      <path d="M9 21V12h6v9" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <p className="abn-compare-title">Contractor</p>
+                  <p className="abn-compare-subtitle">Needs ABN</p>
+                  <ul className="abn-compare-list">
+                    <li>Invoices clients directly</li>
+                    <li>Manages own tax</li>
+                    <li>No super from clients</li>
+                  </ul>
+                </div>
+
+              </div>
+              <p className="abn-compare-footer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '5px' }}>
+                  <circle cx="12" cy="12" r="9" stroke="#2FA880" strokeWidth="1.6"/>
+                  <path d="M12 8v5M12 16h.01" stroke="#2FA880" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                Not sure which one you are? We will tell you.
+              </p>
+            </div>
+
+          </div>
+
+          {/* CTA strip to OUR service */}
+          <div className="service-cta-strip">
+            <div className="service-cta-text">
+              <h3 className="service-cta-heading">We register your ABN correctly for you</h3>
+              <p className="service-cta-sub">Send us your details on WhatsApp. We register your ABN with the correct setup for your work type - and explain your tax obligations clearly.</p>
+            </div>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
+              Register my ABN →
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* ── URGENCY STRIP ─────────────────────────────────────────────────── */}
       {/* Mobile: py-8 · Desktop: py-12 */}

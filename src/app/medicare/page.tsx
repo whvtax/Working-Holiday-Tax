@@ -177,36 +177,87 @@ export default function MedicarePage() {
       </section>
 
 
-      {/* ── WHAT IS MEDICARE (DETAIL) ─────────────────────────────────────── */}
-      <section className="py-9 lg:py-14 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-8 lg:gap-10 items-start">
-            <div className="reveal text-left">
-              <span className="section-label">What is Medicare?</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '20ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
-                Medicare is Australia&apos;s public healthcare system.
+      {/* ── WHAT IS MEDICARE? - Unique design: 2% Levy / Exemption motif ─ */}
+      <section className="medicare-intro-section">
+        <div className="medicare-intro-container">
+          <div className="medicare-intro-grid">
+
+            {/* Left: Explainer */}
+            <div className="medicare-intro-content">
+              <p className="medicare-intro-eyebrow">Healthcare &amp; the 2% levy</p>
+              <h2 className="medicare-intro-heading">
+                What is Medicare?
               </h2>
-              <div className="prose-wht max-w-[480px]">
-                <p>It provides access to subsidised medical services and is partly funded through a 2% Medicare levy on taxable income.</p>
-                <p>Eligibility depends on your visa and country of origin — not everyone is required to pay the levy.</p>
-                <p>Most Working Holiday visa holders are not eligible and may qualify for a Medicare levy exemption.</p>
-              </div>
-
+              <p className="medicare-intro-body">
+                <strong>Medicare</strong> is Australia&apos;s public healthcare system. It provides access to subsidised medical services and is funded partly through a <strong>2% Medicare levy</strong> automatically deducted from your taxable income.
+              </p>
+              <p className="medicare-intro-body">
+                Most working holiday visa holders are <strong>not eligible</strong> for Medicare benefits. If you are not eligible, you should not be paying the levy - and you can claim it back.
+              </p>
+              <p className="medicare-intro-body">
+                The way to remove the levy is through a <strong>Medicare Levy Exemption Certificate</strong>. This is applied when lodging your tax return, and can save you hundreds to thousands of dollars.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 reveal delay-1" style={{ alignSelf: 'start' }}>
-              {[
-                { title: 'Administered by',  body: 'Services Australia (Australian Government)' },
-                { title: 'What it covers',   body: 'GP visits, public hospitals, and some specialist services' },
-                { title: 'Medicare levy',    body: '2% of your taxable income (only if applicable)' },
-                { title: 'If not eligible',  body: 'You may be able to apply for a Medicare levy exemption' },
-              ].map((c, i) => (
-                <div key={i} className="bg-white rounded-xl flex flex-col" style={{ padding: '14px 16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
-                  <p className="text-[12.5px] font-semibold text-ink" style={{ marginBottom: '3px' }}>{c.title}</p>
-                  <p className="text-[12px] font-light text-muted leading-[1.6]">{c.body}</p>
+            {/* Right: Visual - Eligibility check card */}
+            <div className="medicare-intro-visual">
+              <div className="medicare-check-card">
+                <div className="medicare-check-header">
+                  <p className="medicare-check-title">Are you paying the 2% levy?</p>
+                  <p className="medicare-check-subtitle">Most working holiday makers should not be</p>
                 </div>
-              ))}
+
+                <div className="medicare-check-items">
+                  <div className="medicare-check-item">
+                    <div className="medicare-check-icon medicare-check-x">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M3.5 3.5l7 7M10.5 3.5l-7 7" stroke="#9A3412" strokeWidth="1.8" strokeLinecap="round"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="medicare-check-label">Not eligible for Medicare</p>
+                      <p className="medicare-check-desc">Most 417 / 462 visa holders</p>
+                    </div>
+                  </div>
+
+                  <div className="medicare-check-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12 5v14M5 12l7 7 7-7" stroke="#2FA880" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+
+                  <div className="medicare-check-item medicare-check-result">
+                    <div className="medicare-check-icon medicare-check-v">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                        <path d="M3 7l3 3 5-6" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="medicare-check-label">Claim levy exemption</p>
+                      <p className="medicare-check-desc">Recover the 2% paid during the year</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="medicare-check-savings">
+                  <p className="medicare-check-savings-label">Potential refund</p>
+                  <p className="medicare-check-savings-amount">$500 - $2,000+</p>
+                  <p className="medicare-check-savings-detail">depending on your income</p>
+                </div>
+              </div>
             </div>
+
+          </div>
+
+          {/* CTA strip to OUR service */}
+          <div className="service-cta-strip">
+            <div className="service-cta-text">
+              <h3 className="service-cta-heading">We claim your Medicare levy exemption for you</h3>
+              <p className="service-cta-sub">We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return - so you get back what you should not have paid.</p>
+            </div>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
+              Check my exemption →
+            </a>
           </div>
         </div>
       </section>

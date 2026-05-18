@@ -202,6 +202,80 @@ export default function SuperannuationPage() {
         </div>
       </section>
 
+      {/* ── WHAT IS SUPER? - Unique design: "Don't leave it behind" ───── */}
+      <section className="super-intro-section">
+        <div className="super-intro-container">
+          <div className="super-intro-grid">
+
+            {/* Left: Explainer */}
+            <div className="super-intro-content">
+              <p className="super-intro-eyebrow">Hidden money in your name</p>
+              <h2 className="super-intro-heading">
+                What is superannuation?
+              </h2>
+              <p className="super-intro-body">
+                <strong>Superannuation</strong> (or &quot;super&quot;) is a retirement savings system in Australia. By law, your employer pays <strong>12% of your wages</strong> into a super fund on top of your salary - so you have been earning more than you think.
+              </p>
+              <p className="super-intro-body">
+                As a working holiday maker, you can claim this money back when you leave Australia through a process called <strong>DASP - Departing Australia Superannuation Payment</strong>.
+              </p>
+              <p className="super-intro-body">
+                The withdrawal is taxed at 65%, but the remaining 35% is still real money in your pocket. For most backpackers, this is between <strong>$2,000 and $5,000</strong> they did not know they had.
+              </p>
+            </div>
+
+            {/* Right: Visual - "Don't leave it behind" boarding pass */}
+            <div className="super-intro-visual">
+              <div className="super-boarding-card">
+                <div className="super-boarding-header">
+                  <span className="super-boarding-from">AUS</span>
+                  <svg width="32" height="20" viewBox="0 0 32 20" fill="none" aria-hidden="true">
+                    <path d="M2 10h28M22 4l8 6-8 6" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="super-boarding-to">HOME</span>
+                </div>
+                <div className="super-boarding-divider"></div>
+                <div className="super-boarding-meta">
+                  <div>
+                    <p className="super-boarding-meta-label">Passenger</p>
+                    <p className="super-boarding-meta-value">You</p>
+                  </div>
+                  <div>
+                    <p className="super-boarding-meta-label">Status</p>
+                    <p className="super-boarding-meta-value super-boarding-status-warn">
+                      Leaving super behind
+                    </p>
+                  </div>
+                </div>
+                <div className="super-boarding-amount-block">
+                  <p className="super-boarding-amount-label">Unclaimed super</p>
+                  <p className="super-boarding-amount">$2,000 - $5,000</p>
+                </div>
+              </div>
+              <p className="super-boarding-warning">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }}>
+                  <path d="M12 2L2 22h20L12 2z" stroke="#E9A020" strokeWidth="1.8" strokeLinejoin="round"/>
+                  <line x1="12" y1="10" x2="12" y2="15" stroke="#E9A020" strokeWidth="1.8" strokeLinecap="round"/>
+                  <line x1="12" y1="18" x2="12.01" y2="18" stroke="#E9A020" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+                Each year, millions of dollars in super remain unclaimed by working holiday makers who left Australia.
+              </p>
+            </div>
+
+          </div>
+
+          {/* CTA strip to OUR service */}
+          <div className="service-cta-strip">
+            <div className="service-cta-text">
+              <h3 className="service-cta-heading">We claim your super back for you</h3>
+              <p className="service-cta-sub">From identifying your funds to handling the DASP application - we manage the entire process so you do not leave your money behind in Australia.</p>
+            </div>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
+              Claim my super →
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>

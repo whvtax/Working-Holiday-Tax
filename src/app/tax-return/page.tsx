@@ -181,7 +181,7 @@ export default function TaxReturnPage() {
                 marginBottom:'0',
               }}>
               <span className="hidden lg:inline">Most tax returns are lodged within 24 hours.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px', whiteSpace:'nowrap' }}>Most tax returns are lodged within 24 hours.</span>
+              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>Most tax returns are lodged within 24 hours.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -210,6 +210,74 @@ export default function TaxReturnPage() {
         </div>
       </section>
 
+      {/* ── WHAT IS A TAX RETURN? - Unique design: refund/money motif ─── */}
+      <section className="taxret-intro-section">
+        <div className="taxret-intro-container">
+          <div className="taxret-intro-grid">
+
+            {/* Left: Visual - money refund */}
+            <div className="taxret-intro-visual">
+              <div className="taxret-refund-card">
+                <p className="taxret-refund-label">Average refund</p>
+                <p className="taxret-refund-amount">$2,800</p>
+                <p className="taxret-refund-detail">paid to working holiday makers</p>
+                <div className="taxret-refund-stars">
+                  {Array.from({length:5}).map((_,i) => (
+                    <svg key={i} width="14" height="14" viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/>
+                    </svg>
+                  ))}
+                </div>
+              </div>
+              <div className="taxret-arrows">
+                <div className="taxret-arrow-item">
+                  <span>You</span>
+                  <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+                    <path d="M1 7h18M14 2l5 5-5 5" stroke="#2FA880" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span>ATO</span>
+                </div>
+                <div className="taxret-arrow-item taxret-arrow-back">
+                  <span>You</span>
+                  <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+                    <path d="M19 7H1M6 2L1 7l5 5" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span>ATO</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Explainer */}
+            <div className="taxret-intro-content">
+              <p className="taxret-intro-eyebrow">Most WHM holders are owed money</p>
+              <h2 className="taxret-intro-heading">
+                What is a tax return?
+              </h2>
+              <p className="taxret-intro-body">
+                A <strong>tax return</strong> is the annual settlement between you and the Australian Taxation Office. You declare how much you earned, claim deductions you are entitled to, and reconcile against the tax already withheld from your paychecks.
+              </p>
+              <p className="taxret-intro-body">
+                Most working holiday makers <strong>overpay tax during the year</strong>. When that happens, the ATO refunds the excess back to you - often a few thousand dollars.
+              </p>
+              <p className="taxret-intro-body">
+                You can lodge from anywhere in the world, even after you have left Australia. Your refund can be paid to an Australian or overseas bank account.
+              </p>
+            </div>
+
+          </div>
+
+          {/* CTA strip to OUR service */}
+          <div className="service-cta-strip">
+            <div className="service-cta-text">
+              <h3 className="service-cta-heading">We prepare and lodge your tax return for you</h3>
+              <p className="service-cta-sub">No forms, no ATO portals, no stress. We maximise your refund and handle everything online - even after you leave Australia.</p>
+            </div>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
+              Get my refund →
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
       <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
@@ -329,7 +397,7 @@ export default function TaxReturnPage() {
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">why choose us?</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Don’t risk losing money on your tax return
+              Don&apos;t risk losing money on your tax return
             </h2>
           </div>
 
@@ -470,7 +538,7 @@ export default function TaxReturnPage() {
               Work-related deductions can increase your refund
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
-              You may be able to claim more than you think, we make sure nothing is missed.
+              You may be able to claim more than you think. We make sure nothing is missed.
             </p>
           </div>
 
@@ -568,12 +636,12 @@ export default function TaxReturnPage() {
             <div className="reveal text-center lg:text-left">
               <span className="section-label center lg:text-left">Timing</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                When you’ll get your refund
+                When you&apos;ll get your refund
               </h2>
               <div className="space-y-0">
                 {[
                   { label: 'Our preparation',  body: <><span className="hidden lg:inline">We prepare your return within 24 hours of receiving your details.</span><span className="lg:hidden">We prepare your return within 24 hours<br />of receiving your details.</span></> },
-                  { label: 'ATO processing',   body: 'The ATO usually processes returns within 7–14 business days. This can be longer during busy periods.' },
+                  { label: 'ATO processing',   body: 'The ATO usually processes returns within 7-14 business days. This can be longer during busy periods.' },
                   { label: 'Final outcome',    body: <><span className="hidden lg:inline">Once your return is processed, your refund is paid directly to your Australian bank account.</span><span className="lg:hidden">Once your return is processed, your refund is paid directly<br />to your Australian bank account.</span></> },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
