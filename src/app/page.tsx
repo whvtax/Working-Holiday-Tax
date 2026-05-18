@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
 
 // ─── METADATA - rich SEO + AI optimized ─────────────────────────────────
@@ -98,10 +98,6 @@ const FAQS = [
     answer: 'Yes. We help working holiday makers who have left Australia lodge their tax returns and claim their super (DASP) entirely online. Everything is handled remotely - refunds go to your Australian or overseas account.',
   },
   {
-    question: 'Are you a registered tax agent?',
-    answer: `Yes. We are supervised by ${AGENT_NAME}, a registered tax agent with the Tax Practitioners Board (No: ${AGENT_TPB}, ABN: ${AGENT_ABN}). All work is compliant with ATO rules.`,
-  },
-  {
     question: 'What tax rate do working holiday makers pay?',
     answer: 'Working holiday makers pay a flat 15% on the first $45,000 earned, then 30% up to $135,000, 37% up to $190,000, and 45% above that. There is no tax-free threshold. If you do not provide your TFN to your employer, they must withhold tax at 45%.',
   },
@@ -194,23 +190,6 @@ export default function HomePage() {
                 <CheckIcon />{label}
               </span>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── URGENCY STRIP ────────────────────────────────────────────────── */}
-      <section style={{ background: '#0B5240' }}>
-        <div className="max-w-2xl mx-auto px-5 md:px-8 py-10 lg:py-14 text-center">
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.15, marginBottom: '10px' }}>
-            No TFN means the ATO automatically taxes income at 45%
-          </p>
-          <div style={{ marginTop: '20px' }} className="lg:mt-8">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-semibold transition-all"
-              style={{ height: '56px', padding: '0 32px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '420px', width: '100%', textAlign: 'center', lineHeight: 1.3 }}>
-              Start your tax return →
-            </a>
           </div>
         </div>
       </section>

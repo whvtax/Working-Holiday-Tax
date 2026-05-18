@@ -4,7 +4,7 @@ import { WA_URL, EMAIL } from '@/lib/constants'
 
 export function Footer() {
   return (
-    <footer role="contentinfo">
+    <footer role="contentinfo" style={{ background: '#0B5240' }}>
 
       {/* ─── Main footer section ─ light grey background ──────────────────── */}
       <div style={{ background: '#F5F9F7', borderTop: '1px solid #E2EFE9' }}>

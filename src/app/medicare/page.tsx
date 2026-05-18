@@ -6,8 +6,31 @@ import { NextStep } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
   title: 'Medicare in Australia for Working Holiday Visa Holders',
-  description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder in Australia.',
+  description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder in Australia. Get your levy exemption certificate.',
+  keywords: [
+    'Medicare working holiday',
+    'Medicare levy exemption backpacker',
+    'Medicare 417 visa',
+    'Medicare 462 visa',
+    'RHCA Australia',
+    'Reciprocal Health Care Agreement',
+    'Medicare levy exemption certificate',
+  ],
   alternates: { canonical: '/medicare' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: 'https://workingholidaytax.com.au/medicare',
+    siteName: 'Working Holiday Tax',
+    title: 'Medicare in Australia for Working Holiday Visa Holders',
+    description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Medicare in Australia for Working Holiday Visa Holders',
+    description: 'Understand Medicare eligibility and the Medicare levy.',
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const rhca = [
@@ -43,9 +66,31 @@ const faqs = [
   },
 ]
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.question,
+    acceptedAnswer: { '@type': 'Answer', text: f.answer },
+  })),
+}
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
+    { '@type': 'ListItem', position: 2, name: 'Medicare', item: 'https://workingholidaytax.com.au/medicare' },
+  ],
+}
+
 export default function MedicarePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">

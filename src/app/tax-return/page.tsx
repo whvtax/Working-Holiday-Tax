@@ -7,8 +7,32 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Tax Return in Australia for WHV Holders',
-  description: 'Get your Australian tax refund. We prepare and lodge your tax return for WHV holders - online, fast, and handled for you.',
+  description: 'Get your Australian tax refund. We prepare and lodge your tax return for working holiday makers - online, fast, and handled for you.',
+  keywords: [
+    'tax return Australia working holiday',
+    'WHV tax return',
+    'backpacker tax refund Australia',
+    '417 visa tax return',
+    '462 visa tax return',
+    'lodge tax return Australia',
+    'maximum tax refund WHM',
+    'tax refund after leaving Australia',
+  ],
   alternates: { canonical: '/tax-return' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: 'https://workingholidaytax.com.au/tax-return',
+    siteName: 'Working Holiday Tax',
+    title: 'Tax Return in Australia for WHV Holders',
+    description: 'Get your Australian tax refund. We prepare and lodge your tax return for working holiday makers.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Tax Return in Australia for WHV Holders',
+    description: 'Get your Australian tax refund. We prepare and lodge your tax return.',
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
@@ -57,8 +81,8 @@ const TESTIMONIALS = [
     quote: 'They handled my tax return from start to finish. I had no idea what I could claim, and ended up getting way more back than expected.',
     amount: '$2,450',
     initials: 'A',
-    bgColor: '#FCE7F3',
-    textColor: '#9D174D',
+    bgColor: '#FDF0D5',
+    textColor: '#7A4A00',
   },
   {
     name: 'Tobias Bauer',
@@ -66,8 +90,8 @@ const TESTIMONIALS = [
     quote: 'Super easy process. They explained everything clearly and made sure I got the maximum refund back. Highly recommend.',
     amount: '$4,100',
     initials: 'T',
-    bgColor: '#D1FAE5',
-    textColor: '#065F46',
+    bgColor: '#EAF6F1',
+    textColor: '#0B5240',
   },
 ]
 

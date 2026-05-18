@@ -8,7 +8,30 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   title: 'ABN Registration for Working Holiday Visa Holders',
   description: 'Set up your ABN correctly as a Working Holiday contractor. We handle registration and tax obligations - simple, fast, online.',
+  keywords: [
+    'ABN registration Australia',
+    'ABN working holiday',
+    'Australian Business Number backpacker',
+    'sole trader ABN 417',
+    'sole trader ABN 462',
+    'ABN for contractors WHV',
+    'register ABN online',
+  ],
   alternates: { canonical: '/abn' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: 'https://workingholidaytax.com.au/abn',
+    siteName: 'Working Holiday Tax',
+    title: 'ABN Registration for Working Holiday Visa Holders',
+    description: 'Set up your ABN correctly as a Working Holiday contractor.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ABN Registration for Working Holiday Visa Holders',
+    description: 'Set up your ABN correctly as a Working Holiday contractor.',
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [

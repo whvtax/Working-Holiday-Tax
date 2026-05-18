@@ -8,7 +8,31 @@ import { Accordion } from '@/components/ui/Accordion'
 export const metadata: Metadata = {
   title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
   description: 'Claim your Australian superannuation after leaving. Your employer paid 12% of your wages into super - we help you get it back via DASP.',
+  keywords: [
+    'DASP super withdrawal',
+    'Departing Australia Superannuation Payment',
+    'super refund working holiday',
+    'claim super after leaving Australia',
+    'super withdrawal 417 visa',
+    'super withdrawal 462 visa',
+    'backpacker super refund',
+    'WHM superannuation claim',
+  ],
   alternates: { canonical: '/superannuation' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: 'https://workingholidaytax.com.au/superannuation',
+    siteName: 'Working Holiday Tax',
+    title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
+    description: 'Claim your Australian superannuation after leaving via the DASP process.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
+    description: 'Claim your Australian superannuation after leaving.',
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
@@ -48,8 +72,8 @@ const TESTIMONIALS = [
     quote: 'I had multiple employers and wasn\'t sure how to claim my super. Working Holiday Tax took care of everything and helped me get it back.',
     amount: '$3,200',
     initials: 'L',
-    bgColor: '#DBEAFE',
-    textColor: '#1E40AF',
+    bgColor: '#EAF6F1',
+    textColor: '#0B5240',
   },
   {
     name: 'Jonas Müller',
@@ -57,8 +81,8 @@ const TESTIMONIALS = [
     quote: 'Super easy process. They explained everything clearly and made sure I got all my super back. Highly recommend.',
     amount: '$4,100',
     initials: 'J',
-    bgColor: '#D1FAE5',
-    textColor: '#065F46',
+    bgColor: '#EAF6F1',
+    textColor: '#0B5240',
   },
 ]
 

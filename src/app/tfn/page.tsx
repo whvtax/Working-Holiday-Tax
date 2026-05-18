@@ -7,8 +7,31 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'TFN Application for Working Holiday Visa Holders',
-  description: 'Get your Tax File Number sorted fast. Apply correctly the first time with step-by-step guidance from a registered tax agent.',
+  description: 'Get your Tax File Number sorted fast. Apply correctly the first time with step-by-step guidance from a registered tax agent in Australia.',
+  keywords: [
+    'TFN application Australia',
+    'working holiday TFN',
+    'Tax File Number 417 visa',
+    'Tax File Number 462 visa',
+    'apply for TFN backpacker',
+    'get TFN Australia',
+    'TFN for WHV',
+  ],
   alternates: { canonical: '/tfn' },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: 'https://workingholidaytax.com.au/tfn',
+    siteName: 'Working Holiday Tax',
+    title: 'TFN Application for Working Holiday Visa Holders',
+    description: 'Get your Tax File Number sorted fast. Apply correctly the first time with step-by-step guidance from a registered tax agent.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TFN Application for Working Holiday Visa Holders',
+    description: 'Get your Tax File Number sorted fast.',
+  },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
@@ -27,8 +50,8 @@ const STEPS = [
 ]
 
 const TESTIMONIALS = [
-  { name:"Olivia Rossi", from:'Italy · WHV 417', quote:'I had multiple employers and no idea what to do. They guided me through everything and made the process simple.', amount:'', initials:'O', bgColor:'#DBEAFE', textColor:'#1E40AF' },
-  { name:'Sophie Durant', from:'France · WHV 417', quote:'Got my TFN sorted in just two days, and everything was handled clearly from start to finish. No stress, just a smooth and easy process.', amount:'', initials:'S', bgColor:'#FCE7F3', textColor:'#9D174D' },
+  { name:"Olivia Rossi", from:'Italy · WHV 417', quote:'I had multiple employers and no idea what to do. They guided me through everything and made the process simple.', amount:'', initials:'O', bgColor:'#EAF6F1', textColor:'#0B5240' },
+  { name:'Sophie Durant', from:'France · WHV 417', quote:'Got my TFN sorted in just two days, and everything was handled clearly from start to finish. No stress, just a smooth and easy process.', amount:'', initials:'S', bgColor:'#FDF0D5', textColor:'#7A4A00' },
 ]
 
 const IconStar  = () => (<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
@@ -101,7 +124,7 @@ export default function TFNPage() {
 
             <p className="font-light"
               style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.65, color:'rgba(10,15,13,0.58)', maxWidth:'44ch', marginBottom:'0' }}>
-              Without a TFN, Working Holiday visa holders are taxed at 47%
+              Without a TFN, Working Holiday visa holders are taxed at 45%
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
