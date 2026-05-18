@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { guides, getGuideBySlug } from '../data'
+import { guides, getGuideBySlug, getCategoryMeta } from '../data'
 import GuideArticle from './GuideArticle'
 
 interface Props {
@@ -18,10 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${guide.title} | Working Holiday Tax`,
     description: guide.description,
+    alternates: {
+      canonical: `https://workingholidaytax.com.au/guides/${guide.slug}`,
+    },
     openGraph: {
       title: guide.title,
       description: guide.description,
       url: `https://workingholidaytax.com.au/guides/${guide.slug}`,
+      type: 'article',
     },
   }
 }
@@ -48,6 +52,7 @@ export default function GuidePage({ params }: Props) {
   const guide = getGuideBySlug(params.slug)
   if (!guide) notFound()
 
+  const categoryInfo = getCategoryMeta(guide.category)
   const nextGuide = getNextGuide(guide)
   const relatedGuides = getRelatedGuides(guide)
   const readTime = calcReadTime(guide.body)
@@ -57,6 +62,7 @@ export default function GuidePage({ params }: Props) {
     '@type': 'Article',
     headline: guide.title,
     description: guide.description,
+    articleSection: guide.category,
     datePublished: guide.date,
     dateModified: guide.date,
     author: { '@type': 'Organization', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
@@ -69,8 +75,11 @@ export default function GuidePage({ params }: Props) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
-      { '@type': 'ListItem', position: 2, name: 'Tax Guides', item: 'https://workingholidaytax.com.au/guides' },
-      { '@type': 'ListItem', position: 3, name: guide.title, item: `https://workingholidaytax.com.au/guides/${guide.slug}` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/guides' },
+      ...(categoryInfo
+        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `https://workingholidaytax.com.au/guides/category/${categoryInfo.slug}` }]
+        : []),
+      { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `https://workingholidaytax.com.au/guides/${guide.slug}` },
     ],
   }
 
@@ -86,14 +95,33 @@ export default function GuidePage({ params }: Props) {
             <div style={{ maxWidth: '780px', margin: '0 auto', padding: '0 20px', display: 'flex', gap: '6px', alignItems: 'center', fontSize: '11.5px', color: '#8AADA3', flexWrap: 'wrap' }}>
               <Link href="/" style={{ color: '#587066', textDecoration: 'none' }}>Home</Link>
               <span>/</span>
-              <Link href="/guides" style={{ color: '#587066', textDecoration: 'none' }}>Tax Guides</Link>
+              <Link href="/guides" style={{ color: '#587066', textDecoration: 'none' }}>Blog</Link>
               <span>/</span>
+              {categoryInfo && (
+                <>
+                  <Link href={`/guides/category/${categoryInfo.slug}`} style={{ color: '#587066', textDecoration: 'none' }}>
+                    {categoryInfo.category}
+                  </Link>
+                  <span>/</span>
+                </>
+              )}
               <span style={{ color: '#8AADA3' }}>{guide.title}</span>
             </div>
           </div>
 
           <div style={{ maxWidth: '780px', margin: '0 auto', padding: '1rem 20px 2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+              {categoryInfo && (
+                <>
+                  <Link
+                    href={`/guides/category/${categoryInfo.slug}`}
+                    style={{ fontSize: '11px', padding: '3px 10px', borderRadius: '100px', background: '#EAF6F1', color: '#0B5240', fontWeight: 600, textDecoration: 'none', letterSpacing: '0.02em' }}
+                  >
+                    {guide.category}
+                  </Link>
+                  <span style={{ color: '#CDE3DB' }}>·</span>
+                </>
+              )}
               <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.date}</span>
               <span style={{ color: '#CDE3DB' }}>·</span>
               <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{readTime} min read</span>
@@ -138,6 +166,17 @@ export default function GuidePage({ params }: Props) {
                   </Link>
                 ))}
               </div>
+
+              {categoryInfo && (
+                <div style={{ marginTop: '20px' }}>
+                  <Link
+                    href={`/guides/category/${categoryInfo.slug}`}
+                    style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none' }}
+                  >
+                    View all {categoryInfo.category} guides →
+                  </Link>
+                </div>
+              )}
             </div>
           )}
         </div>

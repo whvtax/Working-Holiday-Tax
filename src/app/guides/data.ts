@@ -28,37 +28,55 @@ export const guides: Guide[] = [
     ctaLabel: 'Start your TFN application',
     ctaHref: '/tfn',
     body: `
-A Tax File Number (TFN) is a unique 9-digit number issued by the Australian Taxation Office (ATO). It is your permanent identifier in the Australian tax system and stays with you for life. Whether you work in Australia once for a few months or return multiple times over the years, your TFN never changes and never expires.
+A Tax File Number (TFN) is a unique 9-digit identifier issued by the Australian Taxation Office (ATO) to every person who earns income in Australia. You need one because, without it, your employer is legally required to withhold tax at 47% instead of the 15% working holiday maker rate. The TFN is permanent, free, and stays with you for life.
 
-Every worker in Australia needs one, regardless of whether they are a citizen, a permanent resident, or an international visitor on a working holiday visa. The ATO uses it to track your income, your tax payments, and any credits or refunds you may be eligible for.
+Every worker in Australia needs a TFN, whether they are a citizen, a permanent resident, or a backpacker on a working holiday visa. The ATO uses it to track your income, your tax payments, and any refunds you may be owed.
 
-## Why your TFN matters from day one
+## Why does a TFN matter from day one?
 
-Without a TFN registered with your employer, they are required by Australian law to withhold tax at the top rate of 47%. That is nearly half of everything you earn, gone before it reaches your bank account. As a working holiday maker with a TFN, the rate that applies to your income is 15%, which is significantly lower.
+The TFN determines how much tax your employer withholds from your pay. As a working holiday maker with a TFN on file, the rate that applies to your wages is 15%. Without one, your employer must withhold at 47%, the top marginal rate.
 
-The difference adds up quickly. On a weekly wage of $1,000, the gap between 47% withholding and 15% withholding is $320 every single week. Over a few months of work, that is thousands of dollars that should be in your pocket.
+The difference adds up fast:
 
-## What the ATO uses your TFN for
+- Weekly wage of $1,000: extra $320 withheld every week without a TFN
+- Weekly wage of $1,500: extra $480 withheld every week without a TFN
+- Over three months of full-time work, that is thousands of dollars sitting with the ATO instead of in your bank account
 
-Your TFN is not just about pay. The ATO links it to every aspect of your financial life while you are in Australia. It is required when you lodge your [annual tax return](/tax-return) at the end of the financial year, when you access your [superannuation](/superannuation) account, and when you open certain Australian bank accounts. It is also used to identify you if the ATO ever needs to contact you about your tax affairs.
+You can recover the excess at tax time, but you lose access to that money in the meantime.
 
-Think of it as the foundation of your financial identity in Australia. Every other obligation, whether that is a tax return, a super claim, or an ABN registration, connects back to it.
+## What does the ATO use your TFN for?
 
-## Who can apply for a TFN
+The ATO uses your TFN as the link between you and every part of your financial life in Australia. It is required to:
 
-Anyone who holds a visa that permits work in Australia can apply. This includes holders of the Working Holiday Visa subclass 417 and the Work and Holiday Visa subclass 462. Our team handles the application on your behalf — get in touch and we will take care of everything.
+- Lodge your [annual tax return](/tax-return) at the end of each financial year
+- Access your [superannuation](/superannuation) account and claim it when you leave
+- Open certain Australian bank accounts at the correct (non-withholding) rate
+- Receive any tax refunds you are entitled to
 
-The application is free. There is no government fee and no cost involved. The process is entirely online and takes around 10 minutes to complete. Most applicants receive their TFN within 28 days, though it sometimes arrives sooner depending on the ATO's processing times.
+Every other tax obligation, including a tax return, a super claim, or an ABN registration, connects back to your TFN.
 
-## Giving your TFN to your employer
+## Who can apply for a TFN in Australia?
 
-Once you receive your TFN, you will need to complete a Tax File Number Declaration form for each employer you work for. This is the document that tells your employer what tax rate to apply to your wages. Make sure you submit it promptly. Until your employer has it on file, they are required to withhold at the highest rate regardless of your visa type.
+Any visa holder with the right to work in Australia can apply for a TFN. This includes:
 
-This applies to every employer, including casual and part-time roles. Even if you are only working a few shifts somewhere, you should still provide your TFN.
+- Working Holiday Visa subclass 417
+- Work and Holiday Visa subclass 462
+- Student visas with work rights
+- Most temporary skilled work visas
 
-## What if you have already started work without a TFN
+The application is free, takes around 10 minutes online, and is processed by the ATO within 28 days. Our team handles the entire application on your behalf if you would prefer not to deal with the ATO portal yourself.
 
-Apply as soon as possible and let your employer know it is on the way. Once your TFN is registered with them, the correct tax rate will apply going forward. Any overpaid tax from the period before your TFN was registered can be reclaimed through your [tax return](/tax-return) at the end of the financial year. You will not permanently lose that money as long as you lodge a return before the deadline.
+## How do you give your TFN to your employer?
+
+Once you receive your TFN, complete a Tax File Number Declaration form for each employer you work for. This form tells your employer what tax rate to apply to your wages and is the legal document that triggers the correct 15% rate.
+
+Submit the form promptly. Until your employer has it on file, they must withhold at the highest rate, regardless of your visa type. This includes every employer you work for, even casual and short-term roles.
+
+## What happens if you have already started work without a TFN?
+
+Apply for your TFN as soon as possible and let your employer know your application is in progress. Show them the confirmation email from the ATO if you have it. Once your TFN is registered with them, the correct tax rate applies to all future pay.
+
+Any tax overpaid before your TFN was on file can be reclaimed when you lodge your [tax return](/tax-return) at the end of the financial year. You do not permanently lose that money, as long as you lodge a return before the deadline.
     `,
   },
   {
@@ -73,33 +91,43 @@ Apply as soon as possible and let your employer know it is on the way. Once your
     ctaLabel: 'Apply for your TFN with us',
     ctaHref: '/tfn',
     body: `
-Applying for a Tax File Number (TFN) in Australia is one of the first things you should do when you arrive. The process is free, entirely online, and takes around 10 minutes. As a working holiday maker, there are a few things worth knowing before you start.
+To apply for a Tax File Number (TFN) as a working holiday maker, you submit an online application directly to the Australian Taxation Office (ATO). The application is free, takes around 10 minutes to complete, and your TFN arrives by post within 28 days. You can apply as soon as your working holiday visa is granted, even before you arrive in Australia, as long as you have a valid Australian postal address.
 
-## Who processes your TFN application
+## Who processes your TFN application?
 
-TFN applications for foreign passport holders are processed by the Australian Taxation Office (ATO). Your TFN is sent to you by post within around 28 days of the application being approved.
+TFN applications for foreign passport holders are processed by the Australian Taxation Office (ATO). After approval, your TFN is sent to you by post within 28 days, often sooner during quiet processing periods.
 
 ## What you need before you apply
 
-Before starting your application, make sure you have your passport available. You will need your passport number, your date of birth, your visa details, and a residential address in Australia where the ATO can send your TFN by letter. If you have not yet found permanent accommodation, a hostel address works fine as long as you are confident you will still be there when the letter arrives.
+To complete your TFN application, you need:
 
-You will also need a valid email address. The ATO will send you a confirmation when your application is received and another when it is processed.
+- Your passport (number, date of birth, and visa details)
+- A valid Australian residential address where the ATO can post your TFN letter
+- A valid email address to receive application confirmations
 
-## The application process step by step
+If you have not yet found permanent accommodation, a hostel address works fine, as long as you are confident you will still be there when the letter arrives. You will receive two emails from the ATO: one confirming receipt of your application and another when it has been processed.
 
-Once an application is submitted, you receive a reference number by email confirming it is in progress.
+## How the TFN application process works step by step
 
-Your TFN itself will arrive as a letter to your Australian address within 28 days. Keep this letter in a safe place. While the ATO can help you retrieve your TFN later if you lose it, it is much easier to have it on hand.
+Once you submit your application, the ATO sends a reference number by email confirming the application is in progress. Keep this reference number, as it is the easiest way to follow up if anything goes wrong.
 
-## Can you start work before your TFN arrives
+Your TFN itself arrives as a letter posted to your Australian address within 28 days. Store this letter somewhere safe. The ATO can help you retrieve a forgotten TFN later, but it is much easier to keep the original on hand.
 
-Yes. You can begin working before your TFN arrives, but you should inform your employer that your application is in progress. If you can, show them the confirmation email from the ATO as evidence. Some employers will use a lower withholding rate in the meantime, though technically they are required to withhold at 47% until they have your TFN on file. Any excess tax withheld during this period can be recovered through your [tax return](/tax-return).
+## Can you start work before your TFN arrives?
 
-## Once your TFN arrives
+Yes. You can start working before your TFN arrives, but inform your employer that your application is in progress and show them the ATO confirmation email if you can. Technically, employers are required to withhold tax at 47% until they have your TFN on file, but some accept the confirmation email and apply a lower rate.
 
-When your TFN letter arrives, fill in a Tax File Number Declaration form for each employer you work for and return it to them promptly. This is what triggers the correct 15% working holiday maker tax rate on your wages. Once your employer has that form, you should see the correct amount being withheld from your next pay.
+Any excess tax withheld during the waiting period can be recovered when you lodge your [tax return](/tax-return) at the end of the financial year.
 
-Your TFN also opens the door to lodging a [tax return](/tax-return) and accessing your [superannuation](/superannuation) when you are ready to leave Australia.
+## What to do once your TFN arrives
+
+When your TFN letter arrives:
+
+1. Complete a Tax File Number Declaration form for each employer you work for
+2. Return the form to your employer promptly
+3. Confirm the correct 15% working holiday maker tax rate is applied on your next payslip
+
+Each employer needs their own Tax File Number Declaration form. Providing your TFN to one employer does not automatically share it with others.
     `,
   },
   {
@@ -114,27 +142,44 @@ Your TFN also opens the door to lodging a [tax return](/tax-return) and accessin
     ctaLabel: 'Get started',
     ctaHref: '/tfn',
     body: `
-After a TFN application is submitted, most people receive their Tax File Number within 28 days. In practice, many applicants receive it sooner, sometimes within two weeks, though this depends on the ATO's current processing times and how busy they are at any given point.
+A TFN application in Australia is processed within 28 days by the Australian Taxation Office (ATO). In practice, many applicants receive their Tax File Number within two weeks, though the exact timing depends on the ATO's current workload. Your TFN arrives as a letter posted to your Australian address. There is no email or SMS delivery.
 
-## How your TFN is delivered
+## How is your TFN delivered?
 
-Your TFN is sent to you by post as a letter to the Australian address you provided in your application. The letter contains your TFN and some basic information about how to use it. It does not arrive by email or SMS. This is why it is important to provide an address where you are confident you will still be staying when the letter arrives.
+Your TFN arrives as a physical letter posted to the Australian address you provided in your application. The letter contains your 9-digit TFN and basic information about how to use it.
 
-If you are moving around a lot or staying in different hostels, try to use the address of somewhere you will be for at least a month. If you miss the letter, it can be difficult to retrieve, though the ATO does have a process to help you find your TFN if you lose it.
+Important points to know about delivery:
 
-## What to do while you are waiting
+- The TFN is never sent by email or SMS, only by post
+- It is mailed to the Australian address listed on your application
+- If you move before the letter arrives, it may be delivered to your old address
+- The ATO can resend the TFN if the letter is lost, but only after verifying your identity
 
-You do not need to wait for your TFN before starting work. You can begin working immediately and inform your employer that your application is in progress. Keep the confirmation email the ATO sent you as evidence. Some employers will accept this and proceed with a lower withholding rate, while others will apply the maximum rate until your TFN is on file. Either way, any excess tax withheld can be recovered through your [tax return](/tax-return) at the end of the financial year.
+If you are moving between hostels, use the address of somewhere you will be for at least four weeks to give the letter time to arrive.
 
-## What if 28 days pass and nothing arrives
+## What can you do while waiting for your TFN?
 
-If more than 28 days have passed since you submitted your application and you have not received a letter, the first step is to check that the address you provided was correct. If the address was correct, you can contact the ATO directly by phone to follow up on your application. Have your reference number from the confirmation email ready.
+You do not need to wait for your TFN before starting work. You can begin working immediately and inform your employer that your application is in progress.
 
-In most cases, delays are caused by incorrect address details or a letter that was lost in the post. The ATO can confirm whether your TFN has been issued and, if necessary, arrange for it to be sent again.
+Until your employer has your TFN on file, the standard rule is that they must withhold tax at 47%. Some employers accept the ATO confirmation email as evidence the application is underway and may apply a lower rate, although this is at their discretion.
 
-## After your TFN arrives
+Any excess tax withheld during the waiting period can be recovered when you lodge your [tax return](/tax-return) at the end of the Australian financial year.
 
-Once you have your TFN, provide it to your employer immediately along with a completed Tax File Number Declaration form. This is what ensures the correct 15% tax rate is applied to your wages going forward. Your TFN is also required for lodging your [tax return](/tax-return) and accessing your [superannuation](/superannuation).
+## What if 28 days pass and your TFN has not arrived?
+
+If more than 28 days have passed and your TFN letter has not arrived, take these steps:
+
+1. Re-check the address you provided was correct (typos in postcode, suburb, or street number are the most common cause of delays)
+2. Confirm the date the ATO acknowledged your application (the 28 days starts from then, not the day you clicked submit)
+3. Contact the ATO by phone with your reference number from the confirmation email
+
+In most cases, delays are caused by incorrect address details or a lost letter. The ATO can confirm whether your TFN has been issued and arrange to resend it if necessary.
+
+## What to do after your TFN arrives
+
+Once you have your TFN, give it to your employer immediately with a completed Tax File Number Declaration form. This is the document that triggers the correct 15% working holiday maker tax rate on your wages going forward.
+
+Your TFN is also required to lodge your [tax return](/tax-return) and access your [superannuation](/superannuation) account when you leave Australia.
     `,
   },
   {
@@ -149,29 +194,34 @@ Once you have your TFN, provide it to your employer immediately along with a com
     ctaLabel: 'Start your TFN application',
     ctaHref: '/tfn',
     body: `
-Yes, you can legally start work in Australia without a TFN. There is no law that prevents you from being employed before you have one. However, there is a significant financial consequence that most working holiday makers do not fully appreciate until they see their first payslip.
+Yes, you can legally start work in Australia without a TFN. There is no law that prevents you from being employed before your Tax File Number is issued. However, your employer is required by law to withhold tax at 47% (the top marginal rate) until you provide both your TFN and a completed Tax File Number Declaration form.
 
-## What happens to your tax without a TFN
+## What happens to your tax without a TFN?
 
-When you do not have a TFN on file with your employer, Australian law requires them to withhold tax at the top marginal rate of 47%. This is not something your employer chooses to do. It is a legal requirement they must follow to remain compliant with the ATO. It applies from your very first shift until the day you provide them with your TFN and a completed Tax File Number Declaration form.
+Without a TFN on file, your employer must withhold tax at the top marginal rate of 47%. This is not optional. It is a legal requirement the employer must follow to remain compliant with the ATO.
 
-For a working holiday maker who would otherwise pay 15% tax on their earnings, this means an extra 32 cents is withheld from every dollar you earn during that period.
+The 47% rate applies from your very first shift and continues until you provide your TFN. For a working holiday maker who would otherwise pay 15% tax, this means an extra 32 cents is withheld from every dollar you earn during the waiting period.
 
-## Does the overpaid tax come back to you
+## Does the overpaid tax come back to you?
 
-Yes, it can. Any tax that was overpaid during the period before your TFN was registered with your employer can be reclaimed when you lodge your [tax return](/tax-return) at the end of the Australian financial year. The ATO reconciles what you actually owed against what was withheld and refunds the difference.
+Yes. The excess tax withheld before your TFN was registered can be reclaimed when you lodge your [tax return](/tax-return) at the end of the Australian financial year. The ATO reconciles what you actually owed against what was withheld, and refunds the difference to your Australian bank account.
 
-This means you do not permanently lose the money, but you do lose access to it for potentially several months while you wait for tax time. For backpackers working on tight budgets, that is a real inconvenience.
+The catch is timing. You do not permanently lose the money, but you lose access to it for months until tax time. For backpackers working on tight budgets, that delay is a real inconvenience.
 
-## The practical advice
+## What is the practical advice?
 
-Apply for your TFN as early as possible, ideally before you start your first job. If you are already working without one, apply immediately and inform your employer that your application is in progress. Show them the confirmation email from the ATO as evidence. Processing typically takes up to 28 days, so the sooner you apply, the less time you spend losing that extra 32%.
+To minimise the period of higher withholding:
 
-Once your TFN arrives, give it to your employer immediately along with a Tax File Number Declaration form. From that point forward, the correct 15% rate will apply to your wages.
+- Apply for your TFN as early as possible, ideally before your first day of work
+- If you have already started without one, apply immediately and tell your employer the application is in progress
+- Show your employer the ATO confirmation email as evidence
+- Provide your TFN and a Tax File Number Declaration form to your employer the moment your TFN arrives
 
-## What about cash in hand work
+Processing typically takes up to 28 days, so the earlier you apply, the less time you spend losing the extra 32%.
 
-If you are being paid cash in hand, the TFN question is handled differently. For more on how that works and the tax implications, see our guide on [cash in hand work in Australia](/guides/can-your-employer-pay-you-cash-in-hand).
+## What about cash in hand work?
+
+If you are being paid cash in hand, the TFN question is handled differently because no formal payroll exists. For more on how that works and the tax implications, see our guide on [cash in hand work in Australia](/guides/can-your-employer-pay-you-cash-in-hand).
     `,
   },
   {
@@ -186,27 +236,40 @@ If you are being paid cash in hand, the TFN question is handled differently. For
     ctaLabel: 'Apply for your TFN',
     ctaHref: '/tfn',
     body: `
-When your employer does not have your Tax File Number on file, Australian tax law requires them to withhold tax at the top rate of 47%. This is not discretionary. Your employer has no choice in the matter. The obligation to withhold at the highest rate applies from your very first shift and continues until you provide your TFN along with a completed Tax File Number Declaration form.
+If your employer does not have your Tax File Number on file, they must withhold tax at 47% under Australian tax law. This is the highest marginal tax rate and applies from your first shift until you provide your TFN along with a completed Tax File Number Declaration form. Your employer has no discretion on this. The obligation comes from the ATO.
 
-## How this affects your take-home pay
+## How does this affect your take-home pay?
 
-The standard working holiday maker tax rate is 15%. When your employer withholds at 47% instead, the difference comes directly out of your pocket in the short term. On weekly earnings of $1,000, that is an extra $320 per week being held back. On $1,500 per week, it is nearly $500.
+The standard working holiday maker tax rate is 15%. When your employer withholds at 47% instead, the difference comes straight out of your pocket in the short term.
 
-Over a few weeks, that gap becomes significant. It does not mean you lose that money permanently, but it does mean you will not see it until you lodge your [tax return](/tax-return) and the ATO refunds the excess.
+Example impact at different weekly wages:
 
-## What to do if this is happening to you right now
+- Weekly wage of $1,000: extra $320 withheld each week
+- Weekly wage of $1,500: extra $480 withheld each week
+- Weekly wage of $2,000: extra $640 withheld each week
 
-The fix is straightforward. Apply for your TFN as soon as possible if you have not already done so. Once you receive it, complete a Tax File Number Declaration form and give it to your employer immediately. From that point forward, the correct rate will apply to your wages.
+Over a few weeks, that gap becomes significant. You do not permanently lose the money, but you will not see it again until you lodge your [tax return](/tax-return) and the ATO refunds the excess.
 
-If your application is still in progress, show your employer the confirmation email you received from the ATO when you submitted your application. Some employers will adjust the withholding rate once they can see the application is underway, though technically they are not required to do so.
+## What should you do right now?
 
-## Will you get the overpaid tax back
+The fix is straightforward and time-sensitive:
 
-Yes. The excess tax withheld during the period before your TFN was on file will be credited against your tax liability when you lodge your [annual tax return](/tax-return). The ATO calculates the difference between what you actually owed and what was withheld, and refunds that amount to your bank account. You simply need to make sure you lodge a return before the deadline, which is 31 October following the end of each financial year.
+1. Apply for your TFN if you have not already done so
+2. Once you receive it, complete a Tax File Number Declaration form
+3. Give the form to your employer immediately
+4. The correct 15% rate then applies to all future pay
+
+If your application is still in progress, show your employer the ATO confirmation email. Some employers will adjust the withholding rate once they see the application is underway, though they are not legally required to.
+
+## Will you get the overpaid tax back?
+
+Yes. The excess tax withheld during the period before your TFN was on file is credited against your tax liability when you lodge your [annual tax return](/tax-return). The ATO calculates the difference between what you actually owed and what was withheld, then refunds the amount to your Australian bank account.
+
+The deadline is 31 October following the end of each financial year (1 July to 30 June). If you lodge through a registered tax agent, the deadline can be extended.
 
 ## Giving your TFN to multiple employers
 
-If you work for more than one employer during your time in Australia, each one needs your TFN separately. Providing it to one employer does not automatically share it with the others. Submit a Tax File Number Declaration form to every employer you work for, including casual and short-term roles.
+If you work for more than one employer during your time in Australia, each one needs your TFN separately. Providing it to one employer does not automatically share it with others. Submit a Tax File Number Declaration form to every employer you work for, including casual and short-term roles.
     `,
   },
   {
@@ -221,29 +284,47 @@ If you work for more than one employer during your time in Australia, each one n
     ctaLabel: 'Ask us what you need',
     ctaHref: '/contact',
     body: `
-A Tax File Number and an Australian Business Number are two entirely different things that serve different purposes in the Australian tax system. Many working holiday makers confuse them or assume they need one when they actually need the other. The simplest way to understand the difference is to think about how you are being paid and what kind of work you are doing.
+A Tax File Number (TFN) is your personal tax identifier used when you are employed and earning wages. An Australian Business Number (ABN) is a business identifier used when you operate as a sole trader or independent contractor and invoice clients for your work. Most working holiday makers in standard employment need only a TFN. You need an ABN only if you are running your own business or contracting independently. Many backpackers end up holding both.
 
-## What a TFN is for
+## What is a TFN used for?
 
-A Tax File Number is your personal tax identifier. Every individual in Australia who earns income needs one, regardless of whether they are employed or self-employed. It is the number that links your income to you in the ATO's system and determines how much tax is withheld from your wages.
+A TFN is your personal tax identifier. Every individual in Australia who earns income needs one, regardless of whether they are employed or self-employed. The ATO uses your TFN to link your income to you and determine the correct tax rate.
 
-If you are working as an employee, meaning your employer pays you a regular wage, deducts tax before paying you, and pays superannuation on your behalf, then a TFN is what you need. This covers the vast majority of working holiday makers working in hospitality, retail, farm work as employees, warehouses, and similar roles.
+You need a TFN when:
 
-## What an ABN is for
+- You are working as an employee on a payroll
+- Your employer is deducting PAYG tax from your wages
+- Your employer is paying superannuation contributions on your behalf
+- You are lodging a tax return at the end of the financial year
 
-An Australian Business Number is an 11-digit number issued to businesses and sole traders. It is used when you are operating as an independent contractor rather than an employee. If you are invoicing clients for your work, setting your own hours, using your own equipment, and taking on financial risk, you are likely operating as a contractor and you will need an [ABN](/abn) to do that correctly.
+This covers the vast majority of working holiday makers in hospitality, retail, farm work as an employee, warehouses, and similar roles.
 
-ABNs are common among working holiday makers doing gig economy work, freelance work, piece-rate farm work under a labour hire arrangement, or any work where the business paying you asks you to invoice them rather than putting you on the payroll.
+## What is an ABN used for?
 
-## Can you have both at the same time
+An ABN is an 11-digit number issued to businesses and sole traders. It is used when you are operating as an independent contractor rather than an employee.
 
-Yes. Many working holiday makers hold both a TFN and an ABN simultaneously. Your TFN is always required because it is your personal tax identifier. You then use your ABN when invoicing for contractor work. The two numbers are used in different contexts and having both is entirely normal if your situation involves both employment and contracting.
+You need an [ABN](/abn) when:
 
-## How to work out which one applies to you
+- You are invoicing clients for your services
+- You set your own hours and methods of work
+- You use your own equipment and tools
+- You take on financial risk for the work
+- You are responsible for setting aside your own tax and super
 
-The key question is whether the business paying you is treating you as an employee or a contractor. If they are putting you on their payroll, deducting PAYG tax from your wages, and paying superannuation on top of your wage, you are an employee and your TFN is the relevant number. If they are asking you to invoice them and you are responsible for setting aside your own tax, you need an [ABN](/abn).
+ABNs are common among working holiday makers doing gig economy work, freelance work, certain piece-rate farm arrangements, and any work where the business asks you to invoice them rather than putting you on the payroll.
 
-If you are unsure which situation you are in, our guide on [the difference between employees and contractors in Australia](/guides/employee-vs-contractor-australia) goes into more detail.
+## Can you have a TFN and an ABN at the same time?
+
+Yes. Many working holiday makers hold both simultaneously. Your TFN is always required because it is your personal tax identifier. You use your ABN only when invoicing for contractor work. The two numbers serve different purposes, and holding both is normal if your situation involves both employment and contracting.
+
+## How do you work out which one applies to you?
+
+The key question is whether the business paying you is treating you as an employee or a contractor:
+
+- **Employee**: They put you on the payroll, deduct PAYG tax, pay super on top of your wages, and direct how you work. You need a TFN.
+- **Contractor**: They ask you to invoice them, you set aside your own tax and super, and you control how the work is done. You need an [ABN](/abn).
+
+If you are unsure which situation applies, our guide on [the difference between employees and contractors in Australia](/guides/employee-vs-contractor-australia) goes into the legal tests in more detail.
     `,
   },
   {
@@ -258,29 +339,45 @@ If you are unsure which situation you are in, our guide on [the difference betwe
     ctaLabel: 'Start your TFN application',
     ctaHref: '/tfn',
     body: `
-Yes, if you have already been granted your working holiday visa, you can apply for a Tax File Number before you arrive in Australia. The ATO allows foreign passport holders to submit a TFN application online as long as they have a valid visa that permits work in Australia.
+Yes, you can apply for an Australian Tax File Number (TFN) before you arrive in Australia, as long as your working holiday visa has already been granted. The ATO allows foreign passport holders to submit a TFN application online from overseas, provided they have a valid Australian postal address where the TFN letter can be sent. Applying early means your TFN may arrive around the same time you do, avoiding the period of 47% tax withholding that applies before your TFN is registered with your employer.
 
-## Why applying early is worth it
+## Why is applying for a TFN early worth it?
 
-Applying before you arrive gives your TFN time to be processed while you are still travelling or preparing for your trip. By the time you start your first job, your TFN may already be waiting for you, which means you can give it to your employer immediately and avoid any period of higher tax withholding.
+Applying for your TFN before arriving means it can be processed while you are still travelling or preparing for your trip. By the time you start your first job, your TFN may already be waiting for you, allowing your employer to apply the correct 15% working holiday maker tax rate from day one.
 
-The application takes around 10 minutes and processing typically takes up to 28 days. If you apply a month before you arrive, there is a good chance your TFN will arrive around the same time you do.
+The benefits in numbers:
 
-## What you need to apply from overseas
+- Application takes around 10 minutes online
+- Processing time is up to 28 days
+- Apply one month before arrival and your TFN may be there when you land
+- Avoids weeks of 47% withholding that would otherwise be reclaimed only at tax time
 
-You need a valid Australian working holiday visa that has already been granted, not just applied for. You also need your passport number, your visa details, and a valid Australian address where the ATO can send your TFN by post.
+## What do you need to apply from overseas?
 
-The address requirement is the main complication for people applying from overseas. The ATO sends your TFN as a physical letter to an Australian address. If you have already booked accommodation for your first weeks in Australia, you can use that address. A hostel address works fine as long as you can receive mail there.
+To apply for an Australian TFN from outside Australia, you need:
 
-If you do not yet have a confirmed Australian address, it may be easier to wait until you arrive and have somewhere to stay before submitting your application.
+- A valid Australian working holiday visa that has already been granted (not just applied for)
+- Your passport number, visa details, and date of birth
+- A valid Australian postal address where the ATO can send your TFN letter
+- A valid email address for application confirmations
 
-## What happens if your visa changes or is cancelled
+The address requirement is the main complication. The ATO sends your TFN as a physical letter to an Australian address. If you have booked accommodation for your first weeks in Australia, you can use that address. A hostel address works fine if you can reliably receive mail there.
 
-If your visa situation changes between when you apply for your TFN and when you arrive in Australia, contact the ATO to update your details. Your TFN itself is permanent and does not expire even if your visa does, but the information on file with the ATO should reflect your current situation.
+If you do not yet have a confirmed Australian address, it may be easier to wait until you arrive and have somewhere to stay before applying.
 
-## After you arrive
+## What if your visa changes or is cancelled?
 
-Once you are in Australia and have started work, provide your TFN to each employer you work for along with a completed Tax File Number Declaration form. This is what triggers the correct working holiday maker tax rate on your wages. Your TFN is also what you will need later to lodge your [tax return](/tax-return) and access your [superannuation](/superannuation).
+If your visa situation changes between applying for your TFN and arriving in Australia, contact the ATO to update your details. Your TFN itself is permanent and does not expire even if your visa does. However, the records on file with the ATO should reflect your current visa status.
+
+## What to do after you arrive in Australia
+
+Once you are in Australia and have started work:
+
+1. Provide your TFN to each employer you work for
+2. Complete a Tax File Number Declaration form for each employer
+3. Confirm the correct 15% rate appears on your next payslip
+
+Your TFN is also required to lodge your [tax return](/tax-return) at the end of the financial year and to access your [superannuation](/superannuation) when you leave Australia.
     `,
   },
   {
@@ -295,27 +392,39 @@ Once you are in Australia and have started work, provide your TFN to each employ
     ctaLabel: 'Get in touch',
     ctaHref: '/contact',
     body: `
-Most TFN applications are processed within 28 days. If that time has passed and your letter has not arrived, there are a few things to check before contacting the ATO.
+If your TFN has not arrived after 28 days, the most common causes are an address error in your application or a letter lost in the post. Before contacting the ATO, check the address you submitted, confirm the 28 days have actually passed (counted from when the ATO received your application, not when you clicked submit), and look for the letter at any older addresses if you have moved.
 
-## Check your address first
+## What is the first thing to check?
 
-The most common reason for a delayed TFN is a problem with the Australian address provided in the application. If there was a typo in the street name, postcode, or unit number, the letter may have been sent to the wrong address or returned to the ATO as undeliverable. Go back to the confirmation email you received when you submitted your application and double-check the address that was recorded.
+Address issues are the most common cause of delayed TFN delivery. Start there:
 
-If the address was correct and you have simply moved since submitting the application, the letter may have been delivered to your old address. In that case, contact whoever is currently at that address to see if the letter arrived there.
+- Pull up the confirmation email you received when you submitted your application
+- Compare the address it shows against where you are currently staying
+- Check for typos in street name, postcode, suburb, or unit number
+- If you have moved since applying, ask anyone at your previous address whether the letter arrived there
 
-## Check that 28 days have actually passed
+A single character error (a wrong postcode digit, for example) is enough to send the letter to the wrong area or have it returned to the ATO as undeliverable.
 
-The 28-day processing window starts from the date your application was received by the ATO, not the date you submitted it. Online applications are generally received the same day, but it is worth confirming the date on your confirmation email before assuming there is a problem.
+## Have 28 days actually passed?
 
-## Contact the ATO directly
+The 28-day processing window starts from the date the ATO received your application, not the date you submitted it. Online applications are usually received the same day, but it is worth confirming on your confirmation email before assuming there is a problem.
 
-If 28 days have passed, the address was correct, and no letter has arrived, contact the ATO by phone. Have your reference number from the confirmation email ready, along with your passport number and visa details. The ATO can check the status of your application and tell you whether your TFN has been issued.
+If you applied less than 28 days ago, the application is still within the normal processing window.
 
-If your TFN has already been issued but the letter was lost, the ATO can arrange for your TFN to be provided to you through a verified process. They will not simply read it out over the phone to an unverified caller, so be prepared to verify your identity.
+## How to contact the ATO about a delayed TFN
 
-## Continuing to work during the delay
+If 28 days have passed, your address was correct, and no letter has arrived:
 
-While you are waiting, you can continue working. Let your employer know your TFN is on the way and show them your application confirmation email. Once your TFN is resolved, give it to your employer immediately with a completed Tax File Number Declaration form, and any overpaid tax from the waiting period can be reclaimed through your [tax return](/tax-return).
+1. Call the ATO directly (the number is listed on ato.gov.au)
+2. Have your reference number from the confirmation email ready
+3. Have your passport number and visa details on hand
+4. Be prepared to verify your identity
+
+The ATO can check the status of your application and confirm whether your TFN has been issued. If your TFN was issued but the letter was lost, the ATO can arrange for your TFN to be provided through a verified process. They will not read it out to an unverified caller.
+
+## Can you continue working during the delay?
+
+Yes. While you are waiting, you can continue working. Let your employer know your TFN is on the way and show them the ATO confirmation email. Once your TFN is resolved, give it to your employer immediately with a completed Tax File Number Declaration form. Any overpaid tax from the waiting period can be reclaimed through your [tax return](/tax-return).
     `,
   },
   {
@@ -330,25 +439,44 @@ While you are waiting, you can continue working. Let your employer know your TFN
     ctaLabel: 'Get in touch',
     ctaHref: '/contact',
     body: `
-No. Your Tax File Number is permanent. It does not expire, it does not change when your visa changes, and you do not need to apply for a new one when you return to Australia on a second working holiday visa. The same TFN you were issued the first time is the one you use for every subsequent visit.
+No, you do not need a new Tax File Number when you return to Australia on a second working holiday visa. Your TFN is permanent. It does not expire when your visa expires and it does not change when your visa changes. The same 9-digit TFN you were issued the first time is the one you use on every subsequent visit to Australia.
 
-## Where to find your TFN if you cannot remember it
+## Where can you find your TFN if you cannot remember it?
 
-If you kept the original letter the ATO sent you, your TFN will be on it. You can also check any payslips, group certificates, or tax return documents from your first visit, as your TFN is usually printed on those.
+The TFN you were issued during your first visit is recorded in several places:
 
-If none of those options work, you can contact the ATO directly by phone and request your TFN. You will need to verify your identity using your passport details and other personal information.
+- The original letter the ATO posted to you when your application was approved
+- Any payslips or income statements from your first Australian employer
+- Group certificates or PAYG summaries from previous years
+- Past Australian [tax returns](/tax-return) you lodged
+- Correspondence from the ATO
 
-## What you do need to do when you start work again
+If none of those options work, contact the ATO by phone and request your TFN. You will need to verify your identity using your passport details and other personal information.
 
-Even though your TFN is the same, you still need to provide it to each new employer you work for along with a completed Tax File Number Declaration form. Your TFN being on record with a previous employer does not carry over to a new one. Each employer needs their own declaration form on file to apply the correct tax rate to your wages.
+## What do you need to do when you start work again?
 
-## What about your superannuation from your first visit
+Even though your TFN is the same, each new employer needs their own copy:
 
-If you had superannuation contributions made during your first visit and you withdrew them when you left Australia using the DASP process, that account was effectively closed. Any new super contributions from your second visit will go into a new fund. If you did not withdraw your super from your first visit, those funds may still be sitting there. See our guide on [finding lost or unclaimed super](/guides/how-to-find-lost-superannuation) for more on how to locate them.
+- Provide your TFN to every new employer
+- Complete a fresh Tax File Number Declaration form for each employer
+- A previous employer holding your TFN does not carry over to the next one
 
-## Lodging a tax return for your return visit
+Each employer needs their own declaration form on file to apply the correct 15% working holiday maker tax rate to your wages.
 
-Your tax obligations work exactly the same way on your second visit. At the end of the financial year, you need to lodge a [tax return](/tax-return) with the ATO covering any income earned during that year. The same 15% working holiday maker rate applies to your earnings, provided you have provided your TFN to your employers.
+## What about your superannuation from your first visit?
+
+If you had super contributions made during your first visit and withdrew them using the Departing Australia Superannuation Payment (DASP) process, that account was effectively closed. Any new super contributions from your second visit will go into a new fund.
+
+If you did not withdraw your super from your first visit, those funds may still be sitting in the original fund or with the ATO as unclaimed money. See our guide on [finding lost or unclaimed super](/guides/how-to-find-lost-superannuation) for how to locate it.
+
+## How do tax returns work on your return visit?
+
+Your tax obligations on your second visit work exactly the same way as the first:
+
+- The financial year runs from 1 July to 30 June
+- You must lodge a [tax return](/tax-return) for any year you earned income in Australia
+- The 15% working holiday maker rate applies to your earnings, provided your employers have your TFN on file
+- The standard deadline is 31 October, or later if you use a registered tax agent
     `,
   },
   {
@@ -363,25 +491,41 @@ Your tax obligations work exactly the same way on your second visit. At the end 
     ctaLabel: 'Get in touch',
     ctaHref: '/contact',
     body: `
-Losing track of your Tax File Number is more common than you might think, especially for working holiday makers who have been in Australia a while and moved around a lot. The good news is there are several ways to find it without too much trouble.
+To find a lost Tax File Number, check your original ATO letter, your payslips, your previous tax returns, or contact the ATO directly to retrieve it. Your TFN is permanent and does not change, so the same number you were issued originally is the one you still hold. There are several ways to locate it without too much trouble.
 
-## Check your original TFN letter
+## How to find your TFN at home
 
-The ATO sent your TFN to you by post when your application was approved. If you kept that letter, it will have your TFN printed on it. Check any folders, emails, or documents from when you first arrived in Australia.
+Start with documents you already have:
 
-## Check your payslips or payment summaries
+- The original TFN letter posted to you by the ATO when your application was approved
+- Payslips, payment summaries, or income statements from any Australian employer
+- Past [tax return](/tax-return) documents (your TFN appears on every return)
+- Any letters or notices from the ATO
 
-Your TFN is often printed on payslips, payment summaries, and income statements from your Australian employers. If you have any of those documents saved, check them for your TFN.
+If you saved emails, scanned documents, or kept paperwork from previous work in Australia, your TFN is almost certainly in one of those records.
 
-## Check your tax return documents
+## How to contact the ATO for a lost TFN
 
-If you lodged a tax return during your time in Australia, your TFN will appear on the return itself and on any correspondence from the ATO related to that return. Check any saved PDFs or printed copies of past returns.
+If you cannot find your TFN in any of your records, contact the ATO directly by phone. You will need to verify your identity, which typically means providing:
 
-## Contact the ATO
+- Your full legal name
+- Your date of birth
+- Your passport number (and the passport you held when you first applied, if different)
+- Your residential address history in Australia
+- Any other personal identification details the ATO operator requests
 
-If none of the above options work, you can contact the ATO directly by phone and request your TFN. You will need to verify your identity, which typically means providing your full name, date of birth, address history, and passport number. The ATO will not provide your TFN to someone who cannot be verified as the account holder, so have those details ready.
+The ATO will not give your TFN to anyone who cannot be verified as the account holder, so have these details ready before you call.
 
-Once you have your TFN again, store it somewhere secure. A password manager, a locked notes app, or a scanned copy stored in cloud storage are all good options that will save you the trouble of searching for it again in the future.
+## How to keep your TFN safe in future
+
+Once you have your TFN back, store it somewhere secure to avoid this happening again:
+
+- Save it in a password manager
+- Store a scanned copy in encrypted cloud storage
+- Save it in a locked notes app on your phone
+- Keep a paper copy in a secure location separate from your passport
+
+Avoid emailing your TFN to yourself in plain text or storing it in unsecured documents. Your TFN is a sensitive piece of personal identification, and protecting it is important even after you leave Australia.
     `,
   },
 
@@ -398,29 +542,55 @@ Once you have your TFN again, store it somewhere secure. A password manager, a l
     ctaLabel: 'Register your ABN',
     ctaHref: '/abn',
     body: `
-An Australian Business Number (ABN) is an 11-digit identifier issued to businesses and sole traders operating in Australia. It is used when you are working as an independent contractor rather than as an employee. Whether or not you need one as a working holiday maker depends entirely on how the businesses paying you have structured the arrangement.
+An Australian Business Number (ABN) is an 11-digit identifier issued to businesses and sole traders operating in Australia. As a working holiday maker, you need an ABN if you are working as an independent contractor (invoicing the business for your services) rather than as an employee (on a payroll). Most working holiday makers in standard employment do not need an ABN. The ABN registration is free, takes around 15 minutes online, and most applications are processed immediately.
 
-## The difference between employment and contracting
+## What is the difference between an employee and a contractor?
 
-If a business pays you a regular hourly or daily wage, deducts tax from your pay before it reaches you, and makes superannuation contributions on your behalf, you are an employee. You do not need an ABN in this situation. Your [TFN](/tfn) is the relevant number and your employer handles your tax obligations on your behalf.
+The need for an ABN comes down to whether you are an employee or a contractor:
 
-If a business asks you to invoice them for your work, does not deduct tax before paying you, and does not contribute to your super, you are likely being treated as a contractor. In that case, you need an [ABN](/abn) to invoice correctly and to meet your own tax obligations.
+- **Employee**: The business pays you a regular wage, deducts PAYG tax from your pay, and pays superannuation on top of your wages. You need a [TFN](/tfn), not an ABN.
+- **Contractor**: The business asks you to invoice them for your work, does not deduct tax, and does not pay super on your behalf. You need an ABN.
 
-## Why ABNs are common among working holiday makers
+The label your employer uses does not necessarily reflect the legal reality. The substance of the arrangement (how you are paid, who controls your hours, who provides equipment) is what determines whether you are legally an employee or a contractor.
 
-Certain types of work that are popular among backpackers are commonly structured as contracting arrangements rather than employment. Piece-rate fruit picking and harvest work through labour hire companies, gig economy work through platforms that operate in Australia, freelance creative or technical work, and some hospitality and cleaning roles are all examples where an ABN may be required.
+## Why are ABNs common among working holiday makers?
 
-## What happens if you work without an ABN when you need one
+Several types of work that backpackers commonly do are structured as contracting arrangements rather than employment:
 
-If you invoice a business without quoting an ABN, that business is required by law to withhold 47% of the payment before remitting the rest to you. This is similar to what happens when you work as an employee without a TFN. The money is not lost permanently, but you will not see it until you can sort out the administrative situation.
+- Piece-rate fruit picking and harvest work through labour hire companies
+- Gig economy work through platforms like Uber Eats, DoorDash, and Hireup
+- Freelance creative, technical, or trade work
+- Some hospitality and cleaning roles where the worker is contracted, not employed
+- Tour guide work, photography, content creation
 
-## How to get an ABN
+In each case, the business pays you against an invoice rather than a payslip, and an ABN is required.
 
-ABN applications are made through the Australian Business Register website. The process is free and takes around 15 minutes. You will need your TFN, your contact details, and information about the type of work you will be doing. Most applications are processed immediately.
+## What happens if you work without an ABN when you need one?
 
-## Tax obligations when you have an ABN
+If you invoice a business without quoting a valid ABN, the business is legally required to withhold 47% from your payment before sending you the rest. This is similar to what happens to an employee without a TFN. The withheld amount can be reclaimed when you lodge your [tax return](/tax-return), but you do not see it until then.
 
-When you are working as a sole trader with an ABN, you are responsible for setting aside your own tax. No one withholds it for you automatically. You will need to include all income earned under your ABN in your [tax return](/tax-return) at the end of the financial year. Depending on your income level, you may also need to consider registering for GST.
+## How do you get an ABN?
+
+ABN applications are made through the Australian Business Register website:
+
+1. Have your [TFN](/tfn) ready
+2. Prepare your contact details and Australian address
+3. Describe the type of work you will be doing
+4. Submit online (most applications are processed immediately)
+
+The registration is free directly through the Australian Business Register. Any service that charges you for the registration itself is marking up a free government process. We register your ABN at no cost beyond our standard tax service fees.
+
+## What are your tax obligations under an ABN?
+
+When you are working as a sole trader with an ABN, you are responsible for managing your own tax:
+
+- No tax is automatically withheld from your invoices
+- You must set aside enough money to cover your tax bill
+- All ABN income must be included in your annual [tax return](/tax-return)
+- You may need to register for GST if your turnover exceeds $75,000 per year
+- You may not receive superannuation contributions from your clients (you can pay your own if you choose)
+
+The standard working holiday maker tax rate of 15% on the first $45,000 of earnings applies to your ABN income as well, but you must self-assess and pay it at tax time rather than having it deducted upfront.
     `,
   },
   {
@@ -435,27 +605,50 @@ When you are working as a sole trader with an ABN, you are responsible for setti
     ctaLabel: 'Register your ABN with us',
     ctaHref: '/abn',
     body: `
-Registering for an Australian Business Number (ABN) is straightforward and there is no government fee involved. The application is made through the Australian Business Register (ABR) website and most applications are processed on the spot or within a few days.
+To register for an Australian Business Number (ABN) as a working holiday maker, apply online through the Australian Business Register (ABR) at abr.gov.au. The registration is free, takes around 15 minutes, and most applications are approved immediately. You need a [Tax File Number (TFN)](/tfn) before you can apply.
 
-## What you need before you apply
+## What do you need before you apply for an ABN?
 
-You will need your Tax File Number (TFN) before you can apply for an ABN. If you do not have one yet, you will need to [apply for your TFN](/tfn) first and wait for it to arrive. You will also need your contact details, your Australian address, and a description of the business activity you will be carrying out. For most working holiday makers, this will be something like seasonal harvest work, freelance services, or gig economy work.
+To complete an ABN registration, you need:
 
-## The application process
+- Your Tax File Number (apply for your [TFN](/tfn) first if you do not have one)
+- Your full legal name as it appears on your passport
+- Your contact details, including an Australian phone number and email
+- An Australian address
+- A description of your business activity (for example, "fruit picking", "ride share driving", "freelance graphic design")
+- The date you started or intend to start the business activity
 
-Go to the ABR website and select the option to apply for a new ABN as a sole trader. Work through the form, entering your personal details, your TFN, your business activity, and the date you started or intend to start your business activities. The form is straightforward and takes around 15 minutes.
+If you do not have a TFN yet, apply for it first. ABN applications without a TFN are processed more slowly and may be put into a manual review queue.
 
-Once submitted, most applications are approved immediately and your ABN is displayed on screen. You will also receive a confirmation by email. Some applications are put into a review queue and take a few business days, but this is less common.
+## How does the ABN application process work?
 
-## Using your ABN correctly
+The process is straightforward:
 
-Once you have your ABN, you need to quote it on every invoice you issue. An invoice without an ABN allows the business paying you to legally withhold 47% of the payment. Make sure every invoice you send includes your ABN, your name, the services provided, the date, and the amount.
+1. Go to the Australian Business Register at abr.gov.au
+2. Choose "Apply for an ABN" and select sole trader as your structure
+3. Enter your personal details, TFN, business activity, and start date
+4. Submit the application
 
-Keep a record of all income you earn under your ABN. You are responsible for declaring it all in your [tax return](/tax-return) at the end of the financial year and for setting aside enough to cover your tax liability throughout the year.
+Most applications are approved immediately and your ABN is displayed on screen. You also receive a confirmation by email. Some applications are routed into a review queue and take a few business days, but immediate approval is the norm.
 
-## Cancelling your ABN when you leave
+## How do you use your ABN correctly on invoices?
 
-When you are finished working in Australia and no longer carrying on a business, you should cancel your ABN through the ABR website. This is a simple process and ensures the ABR's records stay accurate. See our guide on [cancelling your ABN when you leave Australia](/guides/how-to-cancel-your-abn) for more detail.
+Once you have your ABN, quote it on every invoice you issue. An invoice without a valid ABN allows the business paying you to legally withhold 47% of the payment.
+
+Every invoice you send should include:
+
+- Your name (and business name, if you trade under one)
+- Your ABN
+- The date of issue
+- A description of the services provided
+- The amount payable
+- Your contact details
+
+Keep a record of every invoice you issue and every payment you receive under your ABN. You are responsible for declaring all of it in your [tax return](/tax-return) at the end of the financial year.
+
+## When and how to cancel your ABN
+
+When you finish your business activity in Australia, you should cancel your ABN. The process is simple and takes a few minutes through the ABR website. See our guide on [cancelling your ABN when you leave Australia](/guides/how-to-cancel-your-abn) for the steps.
     `,
   },
   {
@@ -470,27 +663,53 @@ When you are finished working in Australia and no longer carrying on a business,
     ctaLabel: 'Register your ABN',
     ctaHref: '/abn',
     body: `
-Farm work is one of the most popular types of work for working holiday makers in Australia, particularly for those seeking to complete the 88 days of specified work required for a second or third visa. It is also one of the areas where the question of ABNs and employment arrangements comes up most frequently.
+You usually need an Australian Business Number (ABN) for farm work in Australia if you are working through a labour hire company or being paid on a piece-rate basis as a contractor. You do not need an ABN if the farm is employing you directly on a payroll. Always confirm the arrangement before you start work, because the answer determines what tax, super, and entitlements apply to you.
 
-## Why farm work often involves an ABN
+## Why does farm work often involve an ABN?
 
-Many farms and agricultural operations do not employ pickers, packers, and harvest workers directly. Instead, they contract with labour hire companies who supply workers on a contractor basis. If you are working through a labour hire company and being asked to invoice for your hours or paid on a piece-rate basis per kilogram picked, you are likely being treated as a contractor and will need an [ABN](/abn).
+Many Australian farms do not employ pickers, packers, and harvest workers directly. Instead, they use labour hire companies who supply workers on a contractor basis. In that arrangement:
 
-In other situations, farms do employ workers directly as employees. In that case, you do not need an ABN and your [TFN](/tfn) is the relevant number. The key is to ask the farm or labour hire company directly how the arrangement is structured before you start work.
+- The labour hire company asks you to invoice for your hours or pieces picked
+- No tax is withheld from your payment
+- No superannuation is paid on top of your wages
+- You need an [ABN](/abn) to invoice correctly
 
-## The piece-rate arrangement
+If the farm employs you directly, you are an employee and your [TFN](/tfn) is all you need.
 
-Piece-rate work is common in fruit picking, where you are paid per bin, per kilogram, or per unit picked rather than per hour. This type of arrangement is often structured as contracting work. If the arrangement requires you to have an ABN and issue invoices, then you need to register for one before you start.
+Ask the farm or labour hire company directly how the arrangement is structured before your first shift. The answer determines everything that follows.
 
-Do not assume that because you are being paid per piece you automatically need an ABN. Some farms run piece-rate arrangements as employment. Ask before you assume.
+## How does piece-rate work?
 
-## What to watch out for
+Piece-rate work is common in fruit picking, where you are paid:
 
-Be cautious of arrangements where the farm or labour hire company is vague about whether you are an employee or a contractor, or where they pressure you to get an ABN quickly without explaining why. Sham contracting, where a business treats someone as a contractor to avoid employment obligations when they are actually an employee, is illegal in Australia. If something does not feel right about how the arrangement is being explained to you, seek advice before proceeding.
+- Per bin filled
+- Per kilogram harvested
+- Per unit picked or packed
 
-## Tax when you have an ABN for farm work
+Piece-rate arrangements are often structured as contracting work, in which case you need an ABN. However, not all piece-rate work is contracting. Some farms run piece-rate as employment, where you are paid per piece but still on a payroll with tax and super handled by the farm. Do not assume piece-rate automatically means contractor. Ask the farm.
 
-When you work under an ABN, no tax is withheld from your payments automatically. You are responsible for setting aside money to cover your tax liability and declaring all income in your [tax return](/tax-return) at the end of the financial year. Make sure you keep records of every payment you receive and every invoice you issue.
+## What should you watch out for with farm work?
+
+Be cautious if any of the following happen:
+
+- The farm or labour hire company is vague about whether you are an employee or contractor
+- You are pressured to get an ABN quickly without it being explained
+- You are told you are a contractor but the work looks identical to that of employees who get super and leave
+- Your hours are dictated, your tools are supplied, and you work exclusively for that business
+
+These are signs of sham contracting, where a business misclassifies an employee as a contractor to avoid employment obligations. Sham contracting is illegal under Australian law. The Fair Work Ombudsman can investigate complaints.
+
+## Tax obligations when you have an ABN for farm work
+
+When you work under an ABN, you handle your own tax:
+
+- No tax is withheld automatically from your payments
+- You must set aside enough to cover your tax liability at the end of the year
+- All ABN income must be declared in your [tax return](/tax-return)
+- You may not receive superannuation contributions from labour hire companies
+- The same 15% working holiday maker rate on the first $45,000 still applies
+
+Keep records of every payment received and every invoice issued. Good record-keeping makes tax time much simpler.
     `,
   },
   {
@@ -505,25 +724,56 @@ When you work under an ABN, no tax is withheld from your payments automatically.
     ctaLabel: 'Get in touch',
     ctaHref: '/contact',
     body: `
-Whether you are classified as an employee or an independent contractor in Australia has significant implications for your tax obligations, your right to superannuation, and your workplace protections. The distinction is not always obvious, and it is not determined simply by what a business calls you or what you agree to. It is determined by the actual nature of the working arrangement.
+The difference between an employee and a contractor in Australia comes down to the substance of the working arrangement, not the label. An employee works under the direction of an employer who deducts tax, pays superannuation, and provides leave. A contractor runs their own business, invoices clients, sets aside their own tax, and is generally not entitled to super from clients. The classification affects your tax, your super, your workplace rights, and whether you need an ABN.
 
-## The key differences
+## What are the key differences between employee and contractor?
 
-An employee works under the direction and control of their employer. The employer tells them when to work, how to do the work, and where to do it. The employer deducts tax from wages before paying the employee, makes superannuation contributions on top of the wage, and provides entitlements such as leave. The employee uses their [TFN](/tfn) and does not need an [ABN](/abn).
+The main practical differences:
 
-A contractor operates their own business, takes on work from clients, sets their own methods, and often works for multiple clients at the same time. They invoice clients for their work, receive the full amount without tax deducted, and are responsible for setting aside their own tax. They need an [ABN](/abn) to operate correctly and are generally not entitled to super from the businesses they work for, though there are exceptions.
+- **Employee**: Paid wages by the hour or day, tax deducted by employer, super paid by employer on top, entitled to leave, uses a [TFN](/tfn), works under direction
+- **Contractor**: Paid by invoice per task or project, no tax deducted, no super from clients (usually), no leave, needs an [ABN](/abn), works independently
 
-## How to tell which one you are
+The label your employer uses ("contractor", "subbie", "self-employed") does not determine your status. What matters is how the work actually operates.
 
-The ATO looks at several factors rather than just the label applied to the arrangement. Indicators of employment include being paid by the hour or day, being required to do the work personally, working exclusively for one business for an extended period, and having the business provide your tools and equipment.
+## How can you tell which one you are?
 
-Indicators of contracting include being paid per task or project, being free to subcontract the work to someone else, providing your own equipment, and being able to work for multiple clients at the same time.
+The ATO and Fair Work Ombudsman look at multiple factors rather than any single test:
 
-## Why this matters for working holiday makers
+Indicators of employment:
 
-If you are being treated as a contractor when the arrangement actually looks more like employment, the business may be avoiding their obligation to pay your [superannuation](/superannuation) and employment entitlements. This is called sham contracting and it is illegal. If you suspect this is happening, you can seek advice from the Fair Work Ombudsman.
+- Paid hourly or daily
+- Required to do the work personally
+- Working exclusively for one business over an extended period
+- Business provides your tools, equipment, and workspace
+- Business directs when, where, and how you work
+- You receive regular pay (weekly or fortnightly)
 
-On the other hand, if you genuinely are a contractor and you are not quoting your ABN on invoices, the businesses paying you will withhold 47% of every payment. Getting your classification right matters for your take-home pay and for your tax obligations at the end of the year.
+Indicators of contracting:
+
+- Paid per task, project, or piece
+- Free to subcontract or delegate the work
+- Provide your own equipment
+- Free to work for multiple clients at the same time
+- Set your own hours and methods
+- Issue invoices for completed work
+
+No single factor is decisive. The overall picture is what matters.
+
+## Why does this matter for working holiday makers?
+
+The classification affects:
+
+- **Tax**: Employees have tax withheld; contractors must set aside their own
+- **Super**: Employees get 11.5% super on top of wages; contractors usually do not
+- **Leave**: Employees accrue paid annual and sick leave; contractors do not
+- **Workplace protections**: Employees are covered by Fair Work; contractors have fewer protections
+- **Income at risk**: Contractors without a valid [ABN](/abn) have 47% withheld from invoices
+
+If you are being treated as a contractor when the arrangement looks like employment, the business may be avoiding their obligation to pay you super and leave entitlements. This is called sham contracting, and it is illegal. You can report it to the Fair Work Ombudsman.
+
+## Can you be both an employee and a contractor?
+
+Yes. Many working holiday makers are employees at one job and contractors elsewhere. You use your [TFN](/tfn) for employment income and your [ABN](/abn) for contracting income, and you declare both on the same [tax return](/tax-return) at the end of the financial year.
     `,
   },
   {
@@ -538,25 +788,50 @@ On the other hand, if you genuinely are a contractor and you are not quoting you
     ctaLabel: 'Register your ABN',
     ctaHref: '/abn',
     body: `
-Yes, you can absolutely hold both a Tax File Number and an Australian Business Number at the same time. In fact, you need a TFN before you can even apply for an ABN, so by definition, anyone with an ABN also has a TFN.
+Yes, you can hold a Tax File Number (TFN) and an Australian Business Number (ABN) at the same time, and many working holiday makers do. In fact, you must have a TFN before you can apply for an ABN. The TFN is your personal tax identifier used for employment, and the ABN is your business identifier used for contractor or sole trader work. Holding both is normal if you do both kinds of work.
 
-## How the two numbers work together
+## How do the TFN and ABN work together?
 
-Your TFN is your personal tax identifier. It is used for your employment income, your tax return, and your superannuation. Your ABN is your business identifier. It is used when you are operating as a sole trader or contractor and invoicing clients for your work.
+The two numbers serve different purposes and are used in different situations:
 
-If you are working as an employee at one job and contracting on the side, you use your TFN for the employment income and your ABN for the contracting income. Both are declared in the same [tax return](/tax-return) at the end of the financial year.
+- Your **TFN** is for: employment income, tax returns, accessing your superannuation, opening certain bank accounts
+- Your **ABN** is for: invoicing clients for contracted work, sole trader business income, claiming business expenses
+
+You use them in parallel. Your employer uses your TFN to deduct PAYG tax from your wages. Your clients use your ABN on the invoices you issue.
+
+Both income streams are declared in the same [tax return](/tax-return) at the end of the financial year.
 
 ## A common scenario for working holiday makers
 
-Many working holiday makers end up with both. You might work in a cafe as an employee, using your TFN and being paid through the payroll, and also do some freelance photography, graphic design, or seasonal farm work as a contractor, invoicing under your ABN. This is entirely normal and legal.
+Many working holiday makers end up with both. A typical example:
 
-## Do not use your ABN where your TFN should be used
+- You work part-time in a cafe as an employee, using your TFN, paid through the payroll
+- On the side, you do some freelance photography, graphic design, or seasonal farm work as a contractor, invoicing under your ABN
+- At tax time, both incomes are declared on the same return
 
-One common mistake is quoting an ABN to an employer who should be treating you as an employee. This can create complications because the employer may then pay you without deducting tax, leaving you with a tax liability you were not expecting at the end of the year. Make sure you understand whether each work arrangement is employment or contracting before deciding which number to use.
+This is entirely normal and legal. Most backpackers who do any contractor work alongside regular employment will be in this situation.
 
-## Tax obligations when you have both
+## Common mistake: using your ABN where your TFN belongs
 
-All income from both sources must be declared in your [tax return](/tax-return). Your employer will report your employment income to the ATO through their payroll system, and you are responsible for tracking and declaring any income earned under your ABN. Keep clear records of both throughout the year so that lodging your return is straightforward.
+A frequent error is quoting an ABN to an employer who should be treating you as an employee. This causes problems because:
+
+- The employer pays you without deducting tax
+- No superannuation is paid on your behalf
+- You receive no leave entitlements
+- You face a larger tax bill at year end than you expected
+
+Only use your ABN when the work genuinely is contracting (see our guide on [employee vs contractor](/guides/employee-vs-contractor-australia) for how to tell the difference). Otherwise, your TFN and a Tax File Number Declaration form are what you should provide.
+
+## What are your tax obligations when you have both?
+
+Holding both numbers means tracking both income streams:
+
+- Your employer reports your employment income to the ATO through their payroll
+- You are responsible for tracking and declaring all income earned under your ABN
+- All income, from both sources, must be included in your [tax return](/tax-return)
+- The 15% working holiday maker rate applies to combined earnings up to $45,000
+
+Keep clear records of both throughout the year. Save your payslips, copy every invoice you send, and record every payment received. Tax time is much simpler when records are complete.
     `,
   },
   {
@@ -571,29 +846,50 @@ All income from both sources must be declared in your [tax return](/tax-return).
     ctaLabel: 'Get everything sorted before you go',
     ctaHref: '/contact',
     body: `
-When you finish working in Australia and are no longer carrying on a business or contracting activity, you should cancel your Australian Business Number (ABN). This is a simple process and helps keep the Australian Business Register accurate. It also ensures you are not left with any administrative obligations after you have left the country.
+You should cancel your Australian Business Number (ABN) when you leave Australia and are no longer carrying on a business or contracting activity. Cancellation can be done online through the Australian Business Register (ABR) website at abr.gov.au, takes a few minutes, and is free. Cancelling keeps your business records tidy and avoids any administrative complications down the line.
 
-## How to cancel your ABN
+## How do you cancel your ABN?
 
-Cancelling your ABN is a straightforward process that our team can handle for you. Contact us before you leave Australia and we will make sure your ABN is properly closed along with all other tax obligations.
+Cancelling your ABN is straightforward:
 
-The cancellation takes effect from the date you provide and your ABN will be listed as cancelled from that point forward.
+1. Go to the Australian Business Register at abr.gov.au
+2. Log in using your ABN and credentials
+3. Select "Cancel ABN"
+4. Provide the date your business activity ended
+5. Submit the request
 
-## Why you should cancel it
+The cancellation takes effect from the date you provide. Your ABN will then be listed as cancelled in the ABR.
 
-Leaving an ABN active when you are no longer using it is not a major legal risk, but it can cause administrative complications. If the ABR sends correspondence to your Australian address after you have left, you may miss important notices. There is also a risk of confusion if you ever return to Australia, as you would need to reactivate the same ABN or apply for a new one depending on your circumstances.
+Our team can also handle the cancellation for you as part of wrapping up your Australian tax position before you leave.
 
-Cancelling it cleanly when you leave keeps everything tidy.
+## Why should you cancel your ABN?
 
-## Before you cancel
+Leaving an ABN active when you are no longer using it is not a major legal risk, but it does cause issues:
 
-Make sure you have lodged your [tax return](/tax-return) for any financial years in which you earned income under your ABN. If the financial year has not yet ended when you leave, you will need to lodge a return after the year closes on 30 June. This can be done from overseas and is something we help with regularly.
+- The ABR may send correspondence to your old Australian address after you leave
+- You may miss important notices about reporting obligations
+- If you return to Australia later, you may need to reactivate the ABN or apply for a new one
+- An open ABN can be a target for identity fraud if your details become known
 
-Also check whether you have any outstanding invoices to issue or payments to collect before cancelling. Once your ABN is cancelled, issuing invoices under it is no longer correct.
+Cancelling cleanly when you leave keeps your administrative life simple.
 
-## Claiming your super before you go
+## What to do before cancelling your ABN
 
-If you had superannuation contributions made in connection with your contracting work, do not forget to [apply for your super back](/superannuation) using the DASP process before or after leaving Australia.
+Before you cancel, make sure you have wrapped up everything tied to your ABN:
+
+- Lodge your [tax return](/tax-return) for any year you earned ABN income
+- Issue any outstanding invoices to clients
+- Collect any pending payments
+- Lodge any required BAS statements if you were registered for GST
+- Settle any final tax owed
+
+If the financial year has not yet ended when you leave, you can lodge your tax return after 1 July from overseas. We help working holiday makers do this regularly.
+
+## Do not forget to claim your super
+
+If superannuation contributions were made in connection with employment work (separate from your ABN contracting), claim them back through the Departing Australia Superannuation Payment (DASP) process. See our guide on [claiming your super when you leave Australia](/superannuation) for the steps.
+
+ABN contractor work typically does not generate super contributions, but employment work in parallel often does.
     `,
   },
   {
@@ -608,25 +904,58 @@ If you had superannuation contributions made in connection with your contracting
     ctaLabel: 'Ask us about GST',
     ctaHref: '/contact',
     body: `
-GST, or Goods and Services Tax, is a 10% tax applied to most goods and services sold in Australia. Businesses that earn more than $75,000 per year from their business activities are required to register for GST. For the vast majority of working holiday makers, this threshold is unlikely to be reached during a single visit, which means GST registration is generally not required.
+Most working holiday makers with an ABN do not need to register for GST. The Goods and Services Tax (GST) registration threshold is $75,000 in annual turnover from business activities, and the vast majority of backpackers earn well below this during a single visit. The exception is rideshare and food delivery drivers, who must register for GST regardless of income level. If your ABN turnover stays under $75,000 and you are not in rideshare or delivery, you can ignore GST entirely.
 
-## The $75,000 threshold
+## What is the GST registration threshold?
 
-The GST registration threshold is based on your annual turnover from business activities, not your total income. If you earn under $75,000 per year from your contracting or freelance work, you are not required to register for GST. You can choose to register voluntarily, but there is rarely a good reason to do so at income levels typical of working holiday makers.
+The GST registration threshold is based on annual turnover from your business activities, not your total income. The key numbers:
 
-## What happens if you are not registered for GST
+- Under $75,000 per year of ABN turnover: GST registration is **not required** for most activities
+- $75,000 or more per year: GST registration is **mandatory** within 21 days of crossing the threshold
+- Voluntary registration is available below the threshold, but rarely worthwhile for working holiday makers
 
-If you are not registered for GST, you simply do not charge it on your invoices and you do not need to lodge BAS (Business Activity Statements) with the ATO. Your tax obligations are limited to declaring your income in your [annual tax return](/tax-return) and paying income tax on your net earnings.
+Turnover means gross income from your business, before expenses. Employment income (paid via your TFN) does not count toward the threshold.
 
-## When GST might apply
+## What happens if you are not registered for GST?
 
-If you are doing high-volume contracting work that pushes your earnings toward or above $75,000 in a year, you will need to register for GST. In that case, you add 10% to your invoices, collect it from your clients, and remit it to the ATO quarterly through a BAS.
+If your ABN turnover stays below $75,000 and you are not in a rideshare or delivery role:
 
-Rideshare and food delivery drivers who use platforms operating in Australia are an exception. These drivers are required to register for GST regardless of their income level, even if they earn well under the $75,000 threshold. If you are doing rideshare or delivery work, check the specific rules that apply to your platform.
+- You do not charge GST on your invoices
+- You do not have to lodge BAS (Business Activity Statements) with the ATO
+- Your only tax obligation under the ABN is to declare your income on your [annual tax return](/tax-return) and pay income tax on the net earnings
+- You do not need to worry about quarterly GST reporting
 
-## Your main tax obligation as a contractor
+This is the normal situation for almost all working holiday makers with an ABN.
 
-For most working holiday makers with an [ABN](/abn), the primary tax obligation is straightforward. Keep records of your income throughout the year, set aside enough to cover your income tax, and declare everything in your [tax return](/tax-return) at the end of the financial year. GST is an additional layer that most will not need to think about.
+## When does GST registration apply to you?
+
+GST registration is required when:
+
+- Your business turnover reaches or exceeds $75,000 in any 12-month period
+- You drive for rideshare platforms (Uber, DiDi, Ola) regardless of income level
+- You drive for food delivery platforms (Uber Eats, DoorDash, Menulog) regardless of income level
+- You provide taxi services
+
+If you are in rideshare or delivery, register for GST from day one, even if you only do a few trips. The platforms typically remind drivers about this, but the obligation sits with you.
+
+## What if you have to register for GST?
+
+If GST applies to you:
+
+- Add 10% to your invoices and collect it from clients
+- Lodge a BAS quarterly (or monthly for higher turnover)
+- Remit the collected GST to the ATO
+- You can claim back GST you paid on business expenses
+
+A registered tax agent can handle BAS lodgement and make this straightforward.
+
+## What is the main tax obligation for most contractors?
+
+For most working holiday makers with an [ABN](/abn), GST is not a concern. Your real obligations are simpler:
+
+- Keep records of all income throughout the year
+- Set aside enough to cover income tax (around 15-20% of net earnings is a safe starting point)
+- Declare everything in your [tax return](/tax-return) at financial year end
     `,
   },
 
@@ -1282,13 +1611,13 @@ It is surprisingly easy for working holiday makers to accumulate super across mu
 
 ## Why super goes missing
 
-Super becomes classified as lost when a fund cannot contact a member — because they have changed address, left the country, or moved between jobs without updating their details. The fund will eventually transfer the balance to the ATO, where it sits as unclaimed money. It does not disappear, but it does require action to retrieve.
+Super becomes classified as lost when a fund cannot contact a member - because they have changed address, left the country, or moved between jobs without updating their details. The fund will eventually transfer the balance to the ATO, where it sits as unclaimed money. It does not disappear, but it does require action to retrieve.
 
 For working holiday makers who move around frequently, this is a genuine risk. Catching it before you leave Australia is far simpler than trying to recover it from overseas.
 
 ## Tracking down your accounts
 
-If you have worked for multiple employers in Australia, there is a good chance super has been paid into more than one fund. The key is having your TFN linked to each account — this is what allows a registered tax agent to identify all super held in your name across all funds and with the ATO.
+If you have worked for multiple employers in Australia, there is a good chance super has been paid into more than one fund. The key is having your TFN linked to each account - this is what allows a registered tax agent to identify all super held in your name across all funds and with the ATO.
 
 Before you leave Australia, it is worth having a tax agent run a comprehensive check to make sure nothing has been missed. Submitting a [DASP withdrawal](/guides/what-is-dasp-super-withdrawal) without knowing all your accounts means leaving money behind.
 
@@ -2027,7 +2356,7 @@ If you have been in Australia for an extended period, have significant ties to A
     date: '18 August 2025',
     readTime: 3,
     ctaHeading: 'Need help with your TFN or tax return?',
-    ctaBody: 'We handle everything for working holiday makers — from TFN applications to tax returns — supervised by a registered tax agent.',
+    ctaBody: 'We handle everything for working holiday makers - from TFN applications to tax returns - supervised by a registered tax agent.',
     ctaLabel: 'Get help from our team',
     ctaHref: '/tfn',
     body: `
@@ -2045,7 +2374,7 @@ A registered tax agent can also update your address with the ATO on your behalf 
 
 ## What address to use if you move frequently
 
-If you are travelling between hostels or work placements, consider using a reliable address — such as a friend's place, a long-term hostel, or a postal address — rather than a temporary one. This reduces the risk of missing important correspondence.
+If you are travelling between hostels or work placements, consider using a reliable address - such as a friend's place, a long-term hostel, or a postal address - rather than a temporary one. This reduces the risk of missing important correspondence.
 
 ## Does this affect your tax return?
 
@@ -2066,11 +2395,11 @@ Not directly. Your tax return is lodged electronically and your refund is paid i
     ctaLabel: 'Start your tax return',
     ctaHref: '/tax-return',
     body: `
-A tax refund is the money the [Australian Taxation Office (ATO)](https://www.ato.gov.au) pays back to you when the tax withheld from your wages during the year was more than your actual tax liability. In simple terms — if your employer took out too much tax, you get the difference back.
+A tax refund is the money the [Australian Taxation Office (ATO)](https://www.ato.gov.au) pays back to you when the tax withheld from your wages during the year was more than your actual tax liability. In simple terms - if your employer took out too much tax, you get the difference back.
 
 ## Why most working holiday makers get a refund
 
-Your employer withholds tax from every pay based on an estimate of what you will earn over a full year. But many working holiday makers do not work the full financial year, earn varying amounts across different jobs, or stop working partway through. This means the estimate is usually higher than your actual tax obligation — and you end up overpaying throughout the year.
+Your employer withholds tax from every pay based on an estimate of what you will earn over a full year. But many working holiday makers do not work the full financial year, earn varying amounts across different jobs, or stop working partway through. This means the estimate is usually higher than your actual tax obligation - and you end up overpaying throughout the year.
 
 When you lodge your [tax return](/tax-return), the ATO calculates what you actually owed and compares it to what was withheld. If you paid more than you owed, the difference is refunded to your bank account.
 
@@ -2101,7 +2430,7 @@ Yes. You can lodge an Australian tax return from overseas and receive your refun
     ctaLabel: 'Start your tax return',
     ctaHref: '/tax-return',
     body: `
-Once you lodge your Australian tax return electronically, the [ATO](https://www.ato.gov.au) typically processes it and issues your refund within two weeks. In many cases it is faster — sometimes within a few days. However, several factors can affect this timeline.
+Once you lodge your Australian tax return electronically, the [ATO](https://www.ato.gov.au) typically processes it and issues your refund within two weeks. In many cases it is faster - sometimes within a few days. However, several factors can affect this timeline.
 
 ## What affects how quickly you get your refund
 
@@ -2109,7 +2438,7 @@ The main factor is how you lodge. Lodging through a registered tax agent is the 
 
 The time of year also matters. The ATO receives a large volume of returns shortly after 1 July when the new financial year begins. Lodging early in July or waiting until later in the year tends to result in faster processing than lodging during the peak period in August and September.
 
-If your return is selected for a manual review or if there are discrepancies between your return and information the ATO holds — such as income that does not match your employer's records — processing will take longer.
+If your return is selected for a manual review or if there are discrepancies between your return and information the ATO holds - such as income that does not match your employer's records - processing will take longer.
 
 ## How to check your refund status
 
@@ -2210,17 +2539,17 @@ In some circumstances, you can apply to the Department of Home Affairs for permi
     ctaLabel: 'Start your tax return',
     ctaHref: '/tax-return',
     body: `
-Farm work — including fruit picking, harvesting, and other agricultural work — is one of the most common types of employment for working holiday makers in Australia. It also has a history of wage theft and poor conditions. Understanding your legal rights before you start is essential.
+Farm work - including fruit picking, harvesting, and other agricultural work - is one of the most common types of employment for working holiday makers in Australia. It also has a history of wage theft and poor conditions. Understanding your legal rights before you start is essential.
 
 ## What are you entitled to as a farm worker?
 
 All workers in Australia, including those on working holiday visas, are covered by the [Fair Work Act](https://www.fairwork.gov.au/about-us/legislation). This means you are entitled to at least the national minimum wage, safe working conditions, and protection from exploitation.
 
-For most farm work, the relevant award is the [Horticulture Award](https://www.fairwork.gov.au/employment-conditions/awards/awards-list), which sets minimum pay rates for piece work (paid per bin or kilogram) and hourly work. Your employer must pay whichever is higher — the piece rate or the minimum hourly rate.
+For most farm work, the relevant award is the [Horticulture Award](https://www.fairwork.gov.au/employment-conditions/awards/awards-list), which sets minimum pay rates for piece work (paid per bin or kilogram) and hourly work. Your employer must pay whichever is higher - the piece rate or the minimum hourly rate.
 
 ## Piece rates and minimum pay
 
-Many farms pay by piece rate — per bin picked, per kilogram harvested. This is legal, but your total pay for any hour must equal at least the minimum hourly rate under the Horticulture Award. If you are picking slowly on a bad day and your piece rate earnings fall below minimum wage for that hour, your employer must top up your pay.
+Many farms pay by piece rate - per bin picked, per kilogram harvested. This is legal, but your total pay for any hour must equal at least the minimum hourly rate under the Horticulture Award. If you are picking slowly on a bad day and your piece rate earnings fall below minimum wage for that hour, your employer must top up your pay.
 
 If you are unsure what rates apply to your work, check the [Fair Work Ombudsman's pay calculator](https://calculate.fairwork.gov.au) or call them on 13 13 94.
 
@@ -2253,7 +2582,7 @@ The Superannuation Guarantee Charge (SGC) is a penalty the [Australian Taxation 
 
 ## What triggers the SGC?
 
-The SGC applies when an employer does not pay the required super contributions — currently 11.5% of ordinary time earnings — by the quarterly due date. The charge is more expensive than simply paying the super on time, which is designed to discourage non-payment.
+The SGC applies when an employer does not pay the required super contributions - currently 11.5% of ordinary time earnings - by the quarterly due date. The charge is more expensive than simply paying the super on time, which is designed to discourage non-payment.
 
 The SGC includes the unpaid super amount, an interest component of 10% per year, and an administration fee. Unlike regular super contributions, SGC payments are not tax-deductible for the employer, making it a costly penalty.
 
@@ -2273,7 +2602,7 @@ If your employer owes you super that has not yet been paid, it may not appear in
     `,
   },
 
-  // ─── TFN – NEW ─────────────────────────────────────────────────────────────
+  // ─── TFN - NEW ─────────────────────────────────────────────────────────────
   {
     slug: 'tfn-reference-number-before-tfn-arrives',
     title: 'What is a TFN reference number and can you work before your TFN arrives?',
@@ -2363,7 +2692,7 @@ Do not claim the tax-free threshold on a working holiday visa. It is not a benef
     `,
   },
 
-  // ─── WORK RIGHTS – NEW ─────────────────────────────────────────────────────
+  // ─── WORK RIGHTS - NEW ─────────────────────────────────────────────────────
   {
     slug: 'white-card-australia-working-holiday',
     title: 'What is a White Card and do you need one on a working holiday visa?',
@@ -2382,7 +2711,7 @@ If you are planning to work on a construction site in Australia, whether that is
 
 The White Card, officially called the Construction Induction Training card, is a certification that proves you have completed workplace health and safety training relevant to the construction industry. It was introduced to reduce the rate of injuries and fatalities on Australian construction sites, which historically have been among the most dangerous work environments in the country.
 
-The card confirms that you understand on-site hazards, emergency procedures, your rights and responsibilities as a worker, and how to identify and report unsafe conditions. It does not qualify you to perform any specific trade — it is purely a safety credential that is required of everyone working on a construction site.
+The card confirms that you understand on-site hazards, emergency procedures, your rights and responsibilities as a worker, and how to identify and report unsafe conditions. It does not qualify you to perform any specific trade - it is purely a safety credential that is required of everyone working on a construction site.
 
 ## Who needs one?
 
@@ -2462,7 +2791,7 @@ Yes. If you completed the RSA course to obtain or maintain employment in hospita
     ctaLabel: 'Talk to our team on WhatsApp',
     ctaHref: '/contact',
     body: `
-If you are planning to work with children in Australia — whether in childcare, education, tutoring, sports coaching, or youth programmes — you will almost certainly need a Working With Children Check before you start. It is a background screening process designed to protect children, and it is a legal requirement across all Australian states and territories.
+If you are planning to work with children in Australia - whether in childcare, education, tutoring, sports coaching, or youth programmes - you will almost certainly need a Working With Children Check before you start. It is a background screening process designed to protect children, and it is a legal requirement across all Australian states and territories.
 
 ## What is a Working With Children Check?
 
@@ -2523,7 +2852,7 @@ As a working holiday maker moving between states, check the specific public holi
 
 ## What pay rate applies on public holidays?
 
-If you work on a public holiday, you are generally entitled to a penalty rate on top of your normal hourly wage. The exact rate depends on your award, but in most industries the public holiday rate is 225% of your ordinary rate — double time and a quarter. This applies to both full-time and casual employees.
+If you work on a public holiday, you are generally entitled to a penalty rate on top of your normal hourly wage. The exact rate depends on your award, but in most industries the public holiday rate is 225% of your ordinary rate - double time and a quarter. This applies to both full-time and casual employees.
 
 ## What if you are asked not to work on a public holiday?
 
@@ -2572,7 +2901,7 @@ If you are mid-shift and your employer asks you to leave early, the same minimum
 
 ## Are you entitled to sick pay if you cannot come in?
 
-No. Casual employees in Australia are not entitled to paid sick leave. You receive a higher hourly rate than permanent employees — the casual loading — which compensates for the absence of leave entitlements. If you cannot attend a shift due to illness, you are not paid for that shift.
+No. Casual employees in Australia are not entitled to paid sick leave. You receive a higher hourly rate than permanent employees - the casual loading - which compensates for the absence of leave entitlements. If you cannot attend a shift due to illness, you are not paid for that shift.
 
 ## No minimum number of shifts per week
 
@@ -2625,7 +2954,7 @@ Keep a record of the dates you start and finish with each employer. A simple not
     `,
   },
 
-  // ─── GENERAL / PRACTICAL – NEW ────────────────────────────────────────────
+  // ─── GENERAL / PRACTICAL - NEW ────────────────────────────────────────────
   {
     slug: 'opening-bank-account-australia-working-holiday',
     title: 'How to open a bank account in Australia as a working holiday maker',
@@ -2679,7 +3008,7 @@ The ATO will never ask you to update your bank details via a text message or ema
     ctaLabel: 'Talk to our team on WhatsApp',
     ctaHref: '/contact',
     body: `
-Most working holiday makers spend a significant amount on goods during their time in Australia. Electronics, outdoor gear, clothing, cameras — these purchases often include GST, which is the 10% goods and services tax applied to most products sold in Australia. What many backpackers do not realise is that you may be able to claim that GST back before you leave the country through the Tourist Refund Scheme.
+Most working holiday makers spend a significant amount on goods during their time in Australia. Electronics, outdoor gear, clothing, cameras - these purchases often include GST, which is the 10% goods and services tax applied to most products sold in Australia. What many backpackers do not realise is that you may be able to claim that GST back before you leave the country through the Tourist Refund Scheme.
 
 ## What is the Tourist Refund Scheme?
 
@@ -2752,7 +3081,7 @@ Sort out your Australian tax affairs before you transfer everything home and clo
     `,
   },
 
-  // ─── ABN ADVANCED – NEW ────────────────────────────────────────────────────
+  // ─── ABN ADVANCED - NEW ────────────────────────────────────────────────────
   {
     slug: 'vehicle-logbook-abn-working-holiday',
     title: 'Vehicle expenses and logbooks for working holiday makers with an ABN',
@@ -2775,7 +3104,7 @@ Yes, provided the vehicle is used for genuine business purposes. Driving from yo
 
 The simplest method is the cents per kilometre approach. You claim a set rate for each kilometre driven for business purposes. The current ATO rate is 88 cents per kilometre. You can claim up to 5,000 kilometres per year using this method without needing a detailed logbook.
 
-To use this method, keep a record showing how you calculated the kilometres claimed — a note recording each work trip, the distance, and the purpose is sufficient.
+To use this method, keep a record showing how you calculated the kilometres claimed - a note recording each work trip, the distance, and the purpose is sufficient.
 
 ## The logbook method
 
@@ -2797,7 +3126,7 @@ Many backpackers buy a car to travel and work around Australia. If that car is a
   {
     slug: 'small-business-tax-offset-working-holiday-abn',
     title: 'What is the small business tax offset and can working holiday makers claim it?',
-    description: 'If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset — a tax reduction of up to $1,000. Here is how it works.',
+    description: 'If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset - a tax reduction of up to $1,000. Here is how it works.',
     category: 'ABN' as const,
     date: '29 December 2025',
     readTime: 4,
@@ -2857,7 +3186,7 @@ As a working holiday maker registering for an ABN to work as a subcontractor, yo
 
 A company is a separate legal entity. It has its own ABN and its own tax obligations, separate from the individuals who own it. A company pays company tax at a flat rate (currently 25% for small businesses), and the owners pay income tax on any salary or dividends they receive from it.
 
-Companies involve significantly more administrative overhead — registration with ASIC, ongoing annual fees, separate financial accounts, and in most cases a dedicated accountant.
+Companies involve significantly more administrative overhead - registration with ASIC, ongoing annual fees, separate financial accounts, and in most cases a dedicated accountant.
 
 ## Why almost all working holiday makers are sole traders
 
@@ -2902,17 +3231,17 @@ For example, if you work as a carpenter under an ABN and a construction company 
 
 A genuine profit and loss business earns income through the production of goods, the use of assets, or by employing other people to do the work. The business itself generates income independently of the owner's personal involvement.
 
-A bakery selling bread, a company manufacturing products, or a labour hire business — these earn income that is not primarily tied to the owner's personal effort.
+A bakery selling bread, a company manufacturing products, or a labour hire business - these earn income that is not primarily tied to the owner's personal effort.
 
 ## Why does the distinction matter?
 
-The PSI rules affect which deductions you can claim. Under PSI rules, some deductions that would otherwise be available to a business — such as certain rent and salary deductions — may not be claimable. The rules exist to prevent individuals from reducing their tax by structuring personal employment-like arrangements as businesses.
+The PSI rules affect which deductions you can claim. Under PSI rules, some deductions that would otherwise be available to a business - such as certain rent and salary deductions - may not be claimable. The rules exist to prevent individuals from reducing their tax by structuring personal employment-like arrangements as businesses.
 
 If more than 50% of your income comes from your personal efforts and skills, your income is likely PSI and the PSI rules will apply.
 
 ## How does this apply to working holiday makers?
 
-Most working holiday makers earning income under an ABN are earning PSI. Farm work, hospitality, trade work, cleaning, and most freelance services are all PSI. This is not a problem — it simply means certain business deductions are not available, while the standard deductions for tools, equipment, and work-related expenses still are.
+Most working holiday makers earning income under an ABN are earning PSI. Farm work, hospitality, trade work, cleaning, and most freelance services are all PSI. This is not a problem - it simply means certain business deductions are not available, while the standard deductions for tools, equipment, and work-related expenses still are.
 
 ## What to do with this information
 
@@ -2920,7 +3249,7 @@ When you lodge your [tax return](/tax-return) with a [tax agent](/guides/what-is
     `,
   },
 
-  // ─── TAX RETURN ADVANCED – NEW ────────────────────────────────────────────
+  // ─── TAX RETURN ADVANCED - NEW ────────────────────────────────────────────
   {
     slug: 'low-income-tax-offset-working-holiday',
     title: 'What is the low income tax offset and can working holiday makers claim it?',
@@ -2984,13 +3313,13 @@ Appeals must be based on facts, documents, and arguments grounded in the relevan
 
 ## The objection process
 
-The first step is to lodge a formal objection — a written submission to the ATO explaining why you believe the decision is wrong, with supporting documentation. You must lodge your objection within a set time limit, usually 60 days from the date of the assessment, though extensions can be requested.
+The first step is to lodge a formal objection - a written submission to the ATO explaining why you believe the decision is wrong, with supporting documentation. You must lodge your objection within a set time limit, usually 60 days from the date of the assessment, though extensions can be requested.
 
 The ATO will review your objection and issue a formal response, either allowing it in full, in part, or disallowing it. This process can take up to 60 business days.
 
 ## If the objection is unsuccessful
 
-If your objection is disallowed, you can escalate to the Administrative Appeals Tribunal or the Federal Court. These are independent bodies that can review the ATO's decision. For most working holiday makers, the objection process at the ATO level is the appropriate step — tribunal and court proceedings involve more complexity and cost.
+If your objection is disallowed, you can escalate to the Administrative Appeals Tribunal or the Federal Court. These are independent bodies that can review the ATO's decision. For most working holiday makers, the objection process at the ATO level is the appropriate step - tribunal and court proceedings involve more complexity and cost.
 
 ## Penalties and interest during a dispute
 
@@ -3015,7 +3344,7 @@ If you receive correspondence from the ATO that you are unsure about, do not ign
     ctaLabel: 'Talk to our team on WhatsApp',
     ctaHref: '/tax-return',
     body: `
-Making a mistake on a tax return is more common than people realise. You might have forgotten to include a deduction, entered an income figure incorrectly, or missed a relevant offset. Lodging a return is not final — Australian tax law allows you to amend a return after it has been submitted, and doing so proactively is far better than waiting for the ATO to find a problem.
+Making a mistake on a tax return is more common than people realise. You might have forgotten to include a deduction, entered an income figure incorrectly, or missed a relevant offset. Lodging a return is not final - Australian tax law allows you to amend a return after it has been submitted, and doing so proactively is far better than waiting for the ATO to find a problem.
 
 ## Can you amend a lodged return?
 
@@ -3025,7 +3354,7 @@ The general time limit for requesting an amendment is two years from the date th
 
 ## How to lodge an amendment
 
-If you lodged your original return through a registered tax agent, the agent can lodge the amendment on your behalf — usually the simplest approach, as they already have your records.
+If you lodged your original return through a registered tax agent, the agent can lodge the amendment on your behalf - usually the simplest approach, as they already have your records.
 
 Amendments must be lodged in writing and cannot be submitted verbally or by phone.
 
@@ -3041,7 +3370,7 @@ Yes. The ATO has the right to amend a tax assessment for up to two years after t
 
 ## Practical advice for working holiday makers
 
-If you have already lodged your return but later realise an error — even if you have left Australia — you can still request an amendment. Your tax agent can manage the process remotely. Keep your Australian bank account open until all tax matters are finalised, as any additional refund will be paid to that account.
+If you have already lodged your return but later realise an error - even if you have left Australia - you can still request an amendment. Your tax agent can manage the process remotely. Keep your Australian bank account open until all tax matters are finalised, as any additional refund will be paid to that account.
     `,
   },
   {
@@ -3056,7 +3385,7 @@ If you have already lodged your return but later realise an error — even if yo
     ctaLabel: 'Talk to our team on WhatsApp',
     ctaHref: '/tax-return',
     body: `
-Not everyone gets a tax refund at the end of the financial year. If you underpaid tax during the year — perhaps because your employer withheld at the wrong rate or because you had unwithheld ABN income — you may end up owing money to the ATO. If the amount is more than you can pay immediately, there are options available.
+Not everyone gets a tax refund at the end of the financial year. If you underpaid tax during the year - perhaps because your employer withheld at the wrong rate or because you had unwithheld ABN income - you may end up owing money to the ATO. If the amount is more than you can pay immediately, there are options available.
 
 ## What is an ATO payment arrangement?
 
@@ -3082,7 +3411,7 @@ If you are planning to leave before your tax return is finalised, ensure you hav
 
 ## Penalties for late payment
 
-The ATO charges a general interest charge on unpaid tax, compounding daily. If a tax return is lodged late, a failure-to-lodge penalty may also apply — currently $313 for every 28 days the return is overdue, up to a maximum of $1,565.
+The ATO charges a general interest charge on unpaid tax, compounding daily. If a tax return is lodged late, a failure-to-lodge penalty may also apply - currently $313 for every 28 days the return is overdue, up to a maximum of $1,565.
 
 These penalties can be reduced or waived in certain circumstances. A tax agent can assist with applying for penalty remission if your situation warrants it.
 
@@ -3092,7 +3421,7 @@ Do not ignore a tax debt. The ATO has broad powers to recover amounts owed, and 
     `,
   },
 
-  // ─── WORK RIGHTS – BATCH 2 ─────────────────────────────────────────────────
+  // ─── WORK RIGHTS - BATCH 2 ─────────────────────────────────────────────────
   {
     slug: 'piece-rates-farm-work-working-holiday',
     title: 'Piece rates in farm work: how are working holiday makers paid for harvest work?',
@@ -3111,13 +3440,13 @@ Farm work and harvest work are among the most common jobs taken on by working ho
 
 A piece rate is a payment system where you are paid per unit of work completed rather than per hour worked. In fruit picking, for example, you might be paid per kilogram of strawberries picked, per bin of apples filled, or per tray of blueberries harvested. The faster and more efficiently you work, the more you earn.
 
-Piece rates are legal in Australia and are used across the horticulture industry. They are designed to reflect productivity — experienced pickers can earn significantly more than the hourly minimum because they can move faster through the crop.
+Piece rates are legal in Australia and are used across the horticulture industry. They are designed to reflect productivity - experienced pickers can earn significantly more than the hourly minimum because they can move faster through the crop.
 
 ## Is there a minimum wage guarantee?
 
 Yes, and this is critical to understand. Under Australian law, a piece rate arrangement must still result in the worker earning at least the minimum casual hourly rate for every hour worked. This is known as the piece rate minimum.
 
-The way it works in practice: at the end of each pay period, your employer calculates your total earnings from piece rates and divides by your total hours worked. If the result is below the minimum casual rate — currently $30.12 per hour for adults — the employer is required to top up your pay to reach that minimum.
+The way it works in practice: at the end of each pay period, your employer calculates your total earnings from piece rates and divides by your total hours worked. If the result is below the minimum casual rate - currently $30.12 per hour for adults - the employer is required to top up your pay to reach that minimum.
 
 If your employer is not doing this top-up, they are in breach of the Fair Work Act and underpaying you.
 
@@ -3186,7 +3515,7 @@ You are also entitled to be told clearly what your hourly rate is before you sta
 
 ## Tax and super through a labour hire agency
 
-Because you are an employee of the agency, your tax is withheld under PAYG and your super is paid by the agency into whichever super fund you nominate. Make sure you give the agency your correct TFN and select Working Holiday Maker on your TFN declaration form — the same rules apply as with any other employer.
+Because you are an employee of the agency, your tax is withheld under PAYG and your super is paid by the agency into whichever super fund you nominate. Make sure you give the agency your correct TFN and select Working Holiday Maker on your TFN declaration form - the same rules apply as with any other employer.
 
 Check your payslips to confirm that the correct 15% working holiday maker tax rate is being applied and that super is being paid. If something looks wrong, contact us or reach out to [Fair Work Australia](https://www.fairwork.gov.au).
     `,
@@ -3203,13 +3532,13 @@ Check your payslips to confirm that the correct 15% working holiday maker tax ra
     ctaLabel: 'Talk to our team on WhatsApp',
     ctaHref: '/contact',
     body: `
-Every employer in Australia is legally required to issue a payslip within 24 hours of paying your wages. Your payslip is not just a receipt — it is a record of your pay, tax, and super for every single pay period, and it is one of the most important documents you will receive while working in Australia. Knowing how to read it means you can spot errors before they become serious problems.
+Every employer in Australia is legally required to issue a payslip within 24 hours of paying your wages. Your payslip is not just a receipt - it is a record of your pay, tax, and super for every single pay period, and it is one of the most important documents you will receive while working in Australia. Knowing how to read it means you can spot errors before they become serious problems.
 
 ## Why payslips matter for working holiday makers
 
 Working holiday makers are in a specific tax situation that differs from Australian residents and regular employees. Your tax rate, your super entitlements, and the way your income is reported all have their own rules. A payslip lets you verify that your employer is applying those rules correctly. If they are not, the consequences can include underpaid super, incorrect tax withholding, and complications at tax return time.
 
-Keep every payslip you receive. Store them somewhere safe — email them to yourself or save them to cloud storage. You will need them when you lodge your [tax return](/tax-return) and when you apply for your [superannuation withdrawal](/guides/what-is-dasp-super-withdrawal) before leaving Australia.
+Keep every payslip you receive. Store them somewhere safe - email them to yourself or save them to cloud storage. You will need them when you lodge your [tax return](/tax-return) and when you apply for your [superannuation withdrawal](/guides/what-is-dasp-super-withdrawal) before leaving Australia.
 
 ## Gross pay
 
@@ -3225,13 +3554,13 @@ If your payslip shows a tax amount that is significantly higher or lower than 15
 
 ## Superannuation
 
-Super should appear on your payslip as a separate line item. Your employer is required to pay 11.5% of your gross earnings into your nominated super fund. Critically, super is paid on top of your wages — it is not deducted from your pay. It is an additional cost to the employer.
+Super should appear on your payslip as a separate line item. Your employer is required to pay 11.5% of your gross earnings into your nominated super fund. Critically, super is paid on top of your wages - it is not deducted from your pay. It is an additional cost to the employer.
 
 If super does not appear on your payslip at all, or if the amount looks low, raise it with your employer immediately. Unpaid super is unfortunately common, particularly in industries like hospitality and agriculture.
 
 ## Net pay
 
-Net pay is what actually lands in your bank account after tax has been withheld. It is your gross pay minus PAYG withholding. Super does not reduce your net pay — it is paid separately to your fund.
+Net pay is what actually lands in your bank account after tax has been withheld. It is your gross pay minus PAYG withholding. Super does not reduce your net pay - it is paid separately to your fund.
 
 ## Year to date figures
 
@@ -3254,7 +3583,7 @@ Each time you receive a payslip, check the following: the hours worked match wha
     ctaLabel: 'Talk to our team on WhatsApp',
     ctaHref: '/contact',
     body: `
-Wage theft — being paid less than you are legally entitled to — is one of the most common issues faced by working holiday makers in Australia. It occurs across many industries but is particularly prevalent in hospitality, agriculture, cleaning, and retail. Knowing how to recognise it and what to do about it is essential knowledge for anyone working in Australia on a WHV.
+Wage theft - being paid less than you are legally entitled to - is one of the most common issues faced by working holiday makers in Australia. It occurs across many industries but is particularly prevalent in hospitality, agriculture, cleaning, and retail. Knowing how to recognise it and what to do about it is essential knowledge for anyone working in Australia on a WHV.
 
 ## What counts as wage theft?
 
@@ -3272,7 +3601,7 @@ If you are not receiving payslips at all, that is itself a breach of the law and
 
 ## What you can do
 
-The first step is to raise the issue directly with your employer. Sometimes underpayment is a genuine error and can be corrected quickly. Keep the conversation calm and factual — refer to your records of hours worked and the applicable minimum rates.
+The first step is to raise the issue directly with your employer. Sometimes underpayment is a genuine error and can be corrected quickly. Keep the conversation calm and factual - refer to your records of hours worked and the applicable minimum rates.
 
 If the employer does not respond appropriately, you can lodge a complaint with [Fair Work Australia](https://www.fairwork.gov.au). This is free, confidential, and available to all workers in Australia regardless of visa status. Fair Work has the power to investigate, recover unpaid wages, and impose penalties on employers who have done the wrong thing.
 
@@ -3290,7 +3619,7 @@ Wage theft is not a grey area. If you were not paid what you were legally owed, 
     `,
   },
 
-  // ─── TAX – BATCH 2 ─────────────────────────────────────────────────────────
+  // ─── TAX - BATCH 2 ─────────────────────────────────────────────────────────
   {
     slug: 'backpacker-tax-history-australia',
     title: 'The backpacker tax in Australia: what it is and how it has changed',
@@ -3317,7 +3646,7 @@ Before 2017, working holiday makers who were considered tax residents of Austral
 
 In 2016, the Australian government proposed introducing a flat 32.5% tax on all working holiday maker income from the first dollar, treating all backpackers as non-residents regardless of their actual residency circumstances. The announcement triggered significant backlash from the agricultural industry, which relies heavily on working holiday labour during harvest season. Farming groups warned that the rate would deter backpackers from coming to Australia and devastate regional economies dependent on that workforce.
 
-After extensive lobbying and debate, the rate was legislated at 15% from 1 January 2017. The compromise also included changes to the superannuation tax applied to departing working holiday makers, which was set at 65% for backpackers and 35% for students — a separate and still controversial measure.
+After extensive lobbying and debate, the rate was legislated at 15% from 1 January 2017. The compromise also included changes to the superannuation tax applied to departing working holiday makers, which was set at 65% for backpackers and 35% for students - a separate and still controversial measure.
 
 ## A legal challenge from the UK
 
@@ -3341,7 +3670,7 @@ The average tax refund for working holiday makers who lodge through a registered
   {
     slug: 'how-to-check-super-balance-working-holiday',
     title: 'How to check your superannuation balance as a working holiday maker',
-    description: 'Knowing how much super you have accumulated is important — especially before you leave Australia. Here is how to track your balance and make sure your employer is paying correctly.',
+    description: 'Knowing how much super you have accumulated is important - especially before you leave Australia. Here is how to track your balance and make sure your employer is paying correctly.',
     category: 'Super' as const,
     date: '23 March 2026',
     readTime: 4,
@@ -3350,21 +3679,21 @@ The average tax refund for working holiday makers who lodge through a registered
     ctaLabel: 'Talk to our team on WhatsApp',
     ctaHref: '/superannuation',
     body: `
-Every working holiday maker who has been employed in Australia is entitled to superannuation contributions from their employer. That money accumulates in a super fund account throughout your time in the country, and when you leave Australia, you can apply to withdraw it. Before you do, you need to know how much is there — and checking your balance is simpler than most people expect.
+Every working holiday maker who has been employed in Australia is entitled to superannuation contributions from their employer. That money accumulates in a super fund account throughout your time in the country, and when you leave Australia, you can apply to withdraw it. Before you do, you need to know how much is there - and checking your balance is simpler than most people expect.
 
 ## Why checking your super matters
 
-Superannuation is paid by your employer in addition to your wages. You do not see it on your bank statement — it goes directly into your super fund account. This means it is easy to lose track of how much has been paid, or even whether it has been paid at all.
+Superannuation is paid by your employer in addition to your wages. You do not see it on your bank statement - it goes directly into your super fund account. This means it is easy to lose track of how much has been paid, or even whether it has been paid at all.
 
 Employers are required to pay super on a quarterly basis. The payment dates are 28 January, 28 April, 28 July, and 28 October. Contributions made on those dates will typically appear in your super account within a few days. If months pass without any contributions appearing, your employer may not be paying what they owe.
 
-Checking your balance regularly means you can catch problems early — while you are still in the country and can take action.
+Checking your balance regularly means you can catch problems early - while you are still in the country and can take action.
 
 ## Your super fund account
 
 When you started work in Australia, your employer should have asked you for your super fund details. If you had an existing fund, contributions went there. If you did not nominate a fund, your employer was required to open a default fund account on your behalf.
 
-Your super fund will have sent you a member number and login details when your account was opened, either by email or post. If you did not receive these, contact your fund directly — they can verify your identity and provide your account details.
+Your super fund will have sent you a member number and login details when your account was opened, either by email or post. If you did not receive these, contact your fund directly - they can verify your identity and provide your account details.
 
 Once you have your login, you can view your current balance, see a history of contributions, and confirm that payments have been arriving at the expected intervals.
 
@@ -3382,12 +3711,196 @@ Unpaid super is unfortunately common in industries like hospitality and agricult
 
 ## Before you apply for DASP
 
-Before submitting your [Departing Australia Superannuation Payment](/guides/what-is-dasp-super-withdrawal) application, make sure all contributions have arrived in your account. Super is paid quarterly, so if you leave shortly after a quarter ends, the final contribution from that quarter may not yet appear in your account. Submit your DASP application only once all expected contributions are showing — otherwise, you may leave money behind that is difficult to recover later.
+Before submitting your [Departing Australia Superannuation Payment](/guides/what-is-dasp-super-withdrawal) application, make sure all contributions have arrived in your account. Super is paid quarterly, so if you leave shortly after a quarter ends, the final contribution from that quarter may not yet appear in your account. Submit your DASP application only once all expected contributions are showing - otherwise, you may leave money behind that is difficult to recover later.
     `,
   },
 ]
 
 export const categories: Category[] = ['TFN', 'ABN', 'Tax Return', 'Super', 'Work Rights', 'Medicare & Other']
+
+// ─── Category metadata for SEO hub pages ────────────────────────────────────
+
+export interface CategoryMeta {
+  category: Category
+  slug: string
+  title: string
+  description: string
+  intro: string
+  faq: { question: string; answer: string }[]
+  relatedServicePath?: string
+  relatedServiceLabel?: string
+}
+
+export const categoryMeta: CategoryMeta[] = [
+  {
+    category: 'TFN',
+    slug: 'tfn',
+    title: 'TFN Guides for Working Holiday Makers in Australia',
+    description: 'Everything you need to know about the Tax File Number (TFN) as a working holiday maker. How to apply, processing times, and what to do if things go wrong.',
+    intro: `A Tax File Number (TFN) is the 9-digit identifier issued by the Australian Taxation Office (ATO) to every person who earns income in Australia. As a working holiday maker, you need a TFN before you start work, otherwise your employer must withhold tax at 47% instead of the 15% working holiday rate. These guides cover everything from applying for your first TFN to handling delays, lost numbers, and second-visa returns.`,
+    faq: [
+      {
+        question: 'Do working holiday makers need a TFN in Australia?',
+        answer: 'Yes. Every working holiday maker who earns income in Australia needs a Tax File Number. Without a TFN registered with your employer, they are legally required to withhold tax at the top rate of 47%, instead of the 15% working holiday maker rate.',
+      },
+      {
+        question: 'How long does it take to get a TFN?',
+        answer: 'The Australian Taxation Office processes TFN applications within 28 days. Your TFN is sent to your Australian postal address as a letter. Many applicants receive it within two weeks.',
+      },
+      {
+        question: 'Is the TFN application free?',
+        answer: 'Yes. Applying for a TFN is free. There is no government fee. The online application takes around 10 minutes.',
+      },
+      {
+        question: 'Can you start working in Australia without a TFN?',
+        answer: 'Yes, you can start work without a TFN, but your employer must withhold tax at 47% until you provide one. The excess tax can be claimed back when you lodge your annual tax return.',
+      },
+    ],
+    relatedServicePath: '/tfn',
+    relatedServiceLabel: 'Apply for your TFN',
+  },
+  {
+    category: 'ABN',
+    slug: 'abn',
+    title: 'ABN Guides for Working Holiday Makers in Australia',
+    description: 'Everything you need to know about the Australian Business Number (ABN) for backpackers. When you need one, how to register, and what it means for your tax.',
+    intro: `An Australian Business Number (ABN) is an 11-digit identifier used when you operate as a sole trader or independent contractor in Australia. You need an ABN if a business is paying you to invoice them rather than putting you on the payroll. These guides cover registration, when an ABN is the right choice, and how working under an ABN affects your tax, super, and entitlements.`,
+    faq: [
+      {
+        question: 'Do working holiday makers need an ABN in Australia?',
+        answer: 'You need an ABN if you are working as an independent contractor or sole trader, meaning you invoice for your work rather than being on a payroll. Most working holiday makers in standard employment do not need an ABN.',
+      },
+      {
+        question: 'How much does it cost to get an ABN?',
+        answer: 'Registering for an ABN through the Australian Business Register is free. Any service that charges you for the registration itself is marking up a free government process.',
+      },
+      {
+        question: 'What is the difference between a TFN and an ABN?',
+        answer: 'A TFN is your personal tax identifier required for all workers. An ABN is required only if you are operating as a contractor or sole trader. Many working holiday makers hold both.',
+      },
+      {
+        question: 'Can you have a TFN and an ABN at the same time?',
+        answer: 'Yes. Many working holiday makers hold both simultaneously, using the TFN for employment income and the ABN for contractor work.',
+      },
+    ],
+    relatedServicePath: '/abn',
+    relatedServiceLabel: 'Register for your ABN',
+  },
+  {
+    category: 'Tax Return',
+    slug: 'tax-return',
+    title: 'Tax Return Guides for Working Holiday Makers',
+    description: 'Everything you need to know about lodging your Australian tax return as a working holiday maker. Refunds, deductions, deadlines, and what to claim.',
+    intro: `The Australian financial year runs from 1 July to 30 June, and every working holiday maker who earned income during that period is required to lodge a tax return. Most backpackers get a refund because their employer withheld more tax than required. These guides cover deadlines, deductions, what to do when you have left Australia, and how to handle complications.`,
+    faq: [
+      {
+        question: 'When do working holiday makers need to lodge a tax return?',
+        answer: 'The Australian financial year ends on 30 June. You must lodge your tax return between 1 July and 31 October that year. If you lodge through a registered tax agent, the deadline can be extended.',
+      },
+      {
+        question: 'Do working holiday makers get a tax refund?',
+        answer: 'Most working holiday makers receive a tax refund because their employer withheld more tax than was actually owed. The refund is paid to your Australian bank account, usually within two weeks of lodging.',
+      },
+      {
+        question: 'Can you lodge an Australian tax return after leaving the country?',
+        answer: 'Yes. You can lodge your tax return from anywhere in the world. A registered tax agent can manage the process remotely. Keep your Australian bank account open until the refund is paid.',
+      },
+      {
+        question: 'What can working holiday makers claim as deductions?',
+        answer: 'Common deductions include work-related travel, tools, uniforms, work boots, sun protection for outdoor workers, phone use for work, and tax agent fees. Each deduction requires a record showing the expense and its connection to your work.',
+      },
+    ],
+    relatedServicePath: '/tax-return',
+    relatedServiceLabel: 'Lodge your tax return',
+  },
+  {
+    category: 'Super',
+    slug: 'super',
+    title: 'Superannuation Guides for Working Holiday Makers',
+    description: 'Everything you need to know about Australian superannuation as a backpacker. How super works, how to claim it when you leave, and how to find lost super.',
+    intro: `Superannuation (super) is Australia's compulsory retirement savings system. Your employer pays 11.5% of your wages into a super fund on top of your pay. When you leave Australia at the end of your working holiday, you can withdraw your super through the Departing Australia Superannuation Payment (DASP) process. These guides cover how super works, how to track it, and how to claim it.`,
+    faq: [
+      {
+        question: 'Do working holiday makers get superannuation in Australia?',
+        answer: 'Yes. Every working holiday maker is entitled to superannuation contributions from their employer. The current rate is 11.5% of your ordinary time earnings, paid on top of your wages directly into a super fund.',
+      },
+      {
+        question: 'How do working holiday makers claim their super when leaving Australia?',
+        answer: 'You claim your super through the Departing Australia Superannuation Payment (DASP) process, available once your visa has expired or been cancelled and you have left the country. The payment is taxed at 65% for working holiday makers.',
+      },
+      {
+        question: 'How much tax is taken from super withdrawals?',
+        answer: 'The DASP tax rate for working holiday makers is 65% of the taxable component of your super balance. This is higher than the 35% rate that applied before 2017.',
+      },
+      {
+        question: 'How do you find lost or unclaimed super?',
+        answer: 'You can find lost super by linking your TFN to your myGov account, contacting the Australian Taxation Office, or working with a registered tax agent who can search across all funds.',
+      },
+    ],
+    relatedServicePath: '/superannuation',
+    relatedServiceLabel: 'Claim your super',
+  },
+  {
+    category: 'Work Rights',
+    slug: 'work-rights',
+    title: 'Work Rights Guides for Working Holiday Makers',
+    description: 'Everything you need to know about your work rights in Australia as a backpacker. Minimum wage, awards, payslips, public holidays, and what to do about wage theft.',
+    intro: `Working holiday makers in Australia have the same legal rights at work as Australian citizens. The Fair Work Ombudsman enforces minimum wages, conditions, and protections under industry awards. These guides cover what you are entitled to, how to read your payslip, how to spot underpayment, and what to do if your employer breaks the rules.`,
+    faq: [
+      {
+        question: 'What is the minimum wage for working holiday makers in Australia?',
+        answer: 'The national minimum wage in Australia is $24.10 per hour for full-time and part-time employees. Casual employees receive a 25% loading on top, bringing the casual minimum to $30.13 per hour. Most workers are covered by industry awards that set higher rates.',
+      },
+      {
+        question: 'Are working holiday makers entitled to public holiday pay?',
+        answer: 'Yes. If you work on a public holiday, you are entitled to penalty rates, usually 225% of your ordinary rate (double time and a quarter). If you do not work, you may be entitled to your base rate, depending on your employment type.',
+      },
+      {
+        question: 'What should you do if your employer underpays you?',
+        answer: 'First, raise the issue calmly with your employer and present your records. If the issue is not resolved, you can lodge a complaint with the Fair Work Ombudsman. Working holiday makers have the same protections as Australian workers.',
+      },
+      {
+        question: 'Do casual workers get paid sick leave in Australia?',
+        answer: 'No. Casual employees in Australia are not entitled to paid sick leave. The casual loading (a 25% premium on the base hourly rate) is intended to compensate for the absence of leave entitlements.',
+      },
+    ],
+  },
+  {
+    category: 'Medicare & Other',
+    slug: 'medicare-and-other',
+    title: 'Medicare and General Tax Guides for Working Holiday Makers',
+    description: 'Medicare, the Medicare Levy, tourist refund scheme, and other general guides for working holiday makers navigating tax and benefits in Australia.',
+    intro: `Working holiday makers face a range of tax and administrative questions outside the core areas of TFN, ABN, tax returns, and super. These guides cover Medicare access, the Medicare Levy and Medicare Levy Surcharge, claiming GST back on goods you take home, and other general topics that affect backpackers living and working in Australia.`,
+    faq: [
+      {
+        question: 'Do working holiday makers pay the Medicare Levy?',
+        answer: 'No. Working holiday makers are not eligible for Medicare and are not required to pay the 2% Medicare Levy. You can apply for a Medicare Levy Exemption Certificate to confirm this on your tax return.',
+      },
+      {
+        question: 'Can working holiday makers use Medicare?',
+        answer: 'Only nationals of countries with a Reciprocal Health Care Agreement with Australia (including the UK, Ireland, Italy, Belgium, the Netherlands, Sweden, Norway, Finland, Malta, Slovenia, and New Zealand) can enrol in Medicare for limited cover. All other working holiday makers should hold private health insurance.',
+      },
+      {
+        question: 'Can working holiday makers claim GST back on goods they take home?',
+        answer: 'Yes. The Tourist Refund Scheme allows you to claim back the 10% GST on goods over $300 (per supplier) that you purchased within 60 days of departure and carry out of Australia. Claims are made at the airport before you fly.',
+      },
+      {
+        question: 'Do working holiday makers need private health insurance?',
+        answer: 'Yes for most. Private health insurance is a visa condition for many working holiday visas and is essential for backpackers who are not covered by a Reciprocal Health Care Agreement with Australia.',
+      },
+    ],
+    relatedServicePath: '/medicare',
+    relatedServiceLabel: 'Sort your Medicare position',
+  },
+]
+
+export function getCategoryMeta(category: Category): CategoryMeta | undefined {
+  return categoryMeta.find(c => c.category === category)
+}
+
+export function getCategoryBySlug(slug: string): CategoryMeta | undefined {
+  return categoryMeta.find(c => c.slug === slug)
+}
 
 export function getGuideBySlug(slug: string): Guide | undefined {
   return guides.find(g => g.slug === slug)
@@ -3399,11 +3912,11 @@ export function getGuidesByCategory(category: Category): Guide[] {
 
 export function getCategoryColor(category: Category): { bg: string; text: string; border: string } {
   switch (category) {
-    case 'TFN':          return { bg: '#EAF6F1', text: '#0B5240', border: '#C8EAE0' }
-    case 'ABN':          return { bg: '#FDF0D5', text: '#7A4A00', border: '#E9A020' }
-    case 'Tax Return':   return { bg: '#F0F4FF', text: '#2D3A8C', border: '#A5B4FC' }
-    case 'Super':        return { bg: '#F5F0FF', text: '#5B21B6', border: '#C4B5FD' }
-    case 'Work Rights':  return { bg: '#FFF0F0', text: '#991B1B', border: '#FCA5A5' }
+    case 'TFN': return { bg: '#EAF6F1', text: '#0B5240', border: '#C8EAE0' }
+    case 'ABN': return { bg: '#FDF0D5', text: '#7A4A00', border: '#E9A020' }
+    case 'Tax Return': return { bg: '#F0F4FF', text: '#2D3A8C', border: '#A5B4FC' }
+    case 'Super': return { bg: '#F5F0FF', text: '#5B21B6', border: '#C4B5FD' }
+    case 'Work Rights': return { bg: '#FFF0F0', text: '#991B1B', border: '#FCA5A5' }
     case 'Medicare & Other': return { bg: '#F0FAFA', text: '#0E7490', border: '#67E8F9' }
   }
 }

@@ -32,6 +32,11 @@ function parseBody(body: string) {
   let key = 0
   let i = 0
 
+  const renderInline = (raw: string) =>
+    raw.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string, href: string) =>
+      `<a href="${href}" style="color:#0B5240;text-decoration:none;border-bottom:1px solid #C8EAE0;">${text}</a>`
+    )
+
   while (i < lines.length) {
     const line = lines[i].trim()
 
@@ -48,6 +53,7 @@ function parseBody(body: string) {
           {text}
         </h2>
       )
+      i++
     } else if (line.startsWith('### ')) {
       elements.push(
         <h3
@@ -58,19 +64,61 @@ function parseBody(body: string) {
           {line.replace('### ', '')}
         </h3>
       )
-    } else if (line.length > 0) {
-      const withLinks = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string, href: string) =>
-        `<a href="${href}" style="color:#0B5240;text-decoration:none;border-bottom:1px solid #C8EAE0;">${text}</a>`
+      i++
+    } else if (line.startsWith('- ')) {
+      // Collect consecutive bullet lines into one <ul>
+      const items: string[] = []
+      while (i < lines.length && lines[i].trim().startsWith('- ')) {
+        items.push(lines[i].trim().substring(2))
+        i++
+      }
+      elements.push(
+        <ul
+          key={key++}
+          style={{ marginBottom: '0.9rem', paddingLeft: '1.4rem', listStyleType: 'disc' }}
+        >
+          {items.map((item, idx) => (
+            <li
+              key={idx}
+              style={{ fontSize: '14.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.35rem', fontWeight: 300 }}
+              dangerouslySetInnerHTML={{ __html: renderInline(item) }}
+            />
+          ))}
+        </ul>
       )
+    } else if (/^\d+\.\s/.test(line)) {
+      // Collect consecutive numbered list lines into one <ol>
+      const items: string[] = []
+      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+\.\s/, ''))
+        i++
+      }
+      elements.push(
+        <ol
+          key={key++}
+          style={{ marginBottom: '0.9rem', paddingLeft: '1.4rem', listStyleType: 'decimal' }}
+        >
+          {items.map((item, idx) => (
+            <li
+              key={idx}
+              style={{ fontSize: '14.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.35rem', fontWeight: 300 }}
+              dangerouslySetInnerHTML={{ __html: renderInline(item) }}
+            />
+          ))}
+        </ol>
+      )
+    } else if (line.length > 0) {
       elements.push(
         <p
           key={key++}
           style={{ fontSize: '14.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.9rem', fontWeight: 300 }}
-          dangerouslySetInnerHTML={{ __html: withLinks }}
+          dangerouslySetInnerHTML={{ __html: renderInline(line) }}
         />
       )
+      i++
+    } else {
+      i++
     }
-    i++
   }
   return elements
 }
@@ -149,7 +197,7 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
               fontSize: '12px', color: '#587066', cursor: 'pointer', fontWeight: 500,
             }}
           >
-            {copied ? '✓ Copied!' : '🔗 Copy link'}
+            {copied ? '✓ Copied!' : 'Copy link'}
           </button>
 
         </div>
@@ -196,7 +244,7 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
         {/* Back */}
         <div style={{ marginTop: '2rem', paddingBottom: '1rem' }}>
           <Link href="/guides" style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            ← Back to all guides
+            ← Back to Blog
           </Link>
         </div>
       </div>

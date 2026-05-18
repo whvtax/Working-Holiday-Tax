@@ -2,78 +2,11 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { type Guide, type Category, categories, getCategoryColor } from './data'
+import { type Guide, type Category, categories, getCategoryColor, categoryMeta } from './data'
 
 const PER_PAGE = 6
 
-const guideIcons: Record<string, string> = {
-  'what-is-a-tfn':                          '🪪',
-  'how-to-apply-for-a-tfn':                 '📝',
-  'how-long-does-it-take-to-get-a-tfn':     '⏳',
-  'can-you-start-work-without-a-tfn':        '⚠️',
-  'what-happens-without-your-tfn':           '💸',
-  'tfn-vs-abn-difference':                   '🔀',
-  'apply-for-tfn-before-arriving':           '✈️',
-  'tfn-application-delayed':                 '🔍',
-  'do-you-need-new-tfn-second-visa':         '🔄',
-  'how-to-find-lost-tfn':                    '🔑',
-  'what-is-an-abn':                          '🏢',
-  'how-to-register-for-an-abn':             '📋',
-  'farm-work-and-abns':                      '🌾',
-  'employee-vs-contractor-australia':        '🤝',
-  'can-you-have-tfn-and-abn':               '2️⃣',
-  'how-to-cancel-your-abn':                  '❌',
-  'gst-and-abn-for-working-holiday-makers':  '🧾',
-  'how-does-australian-tax-year-work':       '📅',
-  'backpacker-tax-rate-australia':           '🎒',
-  'how-to-lodge-tax-return-working-holiday': '📤',
-  'what-is-payg-payment-summary':            '📄',
-  'tax-deductions-working-holiday-makers':   '💰',
-  'do-you-need-to-lodge-tax-return-short-stay': '🗓️',
-  'how-to-lodge-tax-return-from-overseas':   '🌏',
-  'what-is-a-tax-agent':                     '👨‍💼',
-  'what-is-mygov':                            '🖥️',
-  'how-does-payg-withholding-work':          '🏦',
-  'australian-financial-year-dates':         '🗓️',
-  'cash-in-hand-tax-return':                 '💵',
-  'what-is-superannuation':                  '🏦',
-  'how-much-super-should-employer-pay':      '📊',
-  'what-is-dasp-super-withdrawal':           '💳',
-  'how-to-apply-for-super-back':             '↩️',
-  'how-long-does-dasp-take':                 '⌛',
-  'tax-on-super-withdrawal-backpacker':      '🧮',
-  'what-happens-to-unclaimed-super':         '❓',
-  'can-you-withdraw-super-in-australia':     '🏧',
-  'how-to-find-lost-superannuation':         '🔎',
-  'how-to-choose-super-fund':                '🎯',
-  'minimum-wage-australia-2024-25':          '💲',
-  'how-many-hours-can-you-work-on-whv':      '🕐',
-  'penalty-rates-australia':                 '📈',
-  'can-your-employer-pay-you-cash-in-hand':  '💴',
-  'fair-work-act-working-holiday-makers':    '⚖️',
-  'employer-not-paying-correctly':           '🚨',
-  'leave-entitlements-working-holiday-visa': '🏖️',
-  'what-is-a-tax-invoice':                   '🧾',
-  'can-you-work-for-multiple-employers':     '👥',
-  'full-time-part-time-casual-australia':    '📆',
-  'what-is-medicare-working-holiday-makers': '🏥',
-  'countries-with-medicare-agreement-australia': '🌍',
-  'medicare-levy-working-holiday-makers':    '📉',
-  'tax-file-number-declaration-form':        '📑',
-  'what-does-tax-withheld-mean-payslip':     '🧾',
-  'what-is-an-income-statement':             '📊',
-  'what-is-the-ato':                         '🏛️',
-  'gross-pay-vs-net-pay-australia':          '💹',
-  'do-working-holiday-makers-pay-tax-on-tips': '🍽️',
-  'tax-obligations-after-leaving-australia': '🛫',
-  'how-to-update-address-with-ato':           '📬',
-  'what-is-a-tax-refund-australia':           '💰',
-  'how-long-does-tax-refund-take-australia':  '⏱️',
-  'super-for-casual-and-part-time-workers':   '👷',
-  'employer-asking-you-to-work-more-than-visa-allows': '⚠️',
-  'farm-work-rights-working-holiday-australia': '🌾',
-  'what-is-superannuation-guarantee-charge':  '🏛️',
-}
+
 
 function Pagination({
   total,
@@ -158,6 +91,11 @@ function Pagination({
   )
 }
 
+function getCategorySlug(cat: Category): string {
+  const meta = categoryMeta.find(c => c.category === cat)
+  return meta?.slug ?? ''
+}
+
 export default function GuidesClient({
   guides,
   initialCategory,
@@ -165,23 +103,20 @@ export default function GuidesClient({
   guides: Guide[]
   initialCategory?: Category
 }) {
-  const [activeCategory, setActiveCategory] = useState<Category | undefined>(initialCategory)
   const [page, setPage] = useState(1)
 
-  const filtered = activeCategory
-    ? guides.filter(g => g.category === activeCategory)
+  // The hub page (/guides) shows all guides. Category filtering moved to /guides/category/[slug]
+  // for SEO. We keep initialCategory only as a defensive fallback; in practice this client is
+  // always rendered without one on the main hub page.
+  const filtered = initialCategory
+    ? guides.filter(g => g.category === initialCategory)
     : guides
 
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
-  const handleCategory = (cat: Category | undefined) => {
-    setActiveCategory(cat)
-    setPage(1)
-  }
-
   return (
     <>
-      {/* Hero with filters */}
+      {/* Hero with category links */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-12">
 
@@ -189,7 +124,7 @@ export default function GuidesClient({
             style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
             <a href="/" className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none' }}>Home</a>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
-            <span aria-current="page">Tax Guides</span>
+            <span aria-current="page">Blog</span>
           </nav>
 
           <div className="max-w-[560px] lg:max-w-[700px]">
@@ -198,7 +133,7 @@ export default function GuidesClient({
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase"
                 style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                Tax Guides
+                Blog
               </span>
             </div>
 
@@ -216,26 +151,26 @@ export default function GuidesClient({
 
             <p className="font-light"
               style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '44ch', marginBottom: '20px' }}>
-              Clear, honest guides for working holiday makers. No jargon, no confusing forms — just the information you need, explained simply.
+              Clear, honest guides for working holiday makers. No jargon, no confusing forms - just the information you need, explained simply.
             </p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              <button
-                onClick={() => handleCategory(undefined)}
-                style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${!activeCategory ? '#E9A020' : '#E2EFE9'}`, background: !activeCategory ? '#E9A020' : 'transparent', color: !activeCategory ? '#1A2822' : '#587066', fontSize: '13px', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}
+              <Link
+                href="/guides"
+                style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid #E9A020`, background: '#E9A020', color: '#1A2822', fontSize: '13px', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}
               >
                 All guides
-              </button>
+              </Link>
               {categories.map(cat => {
-                const isActive = activeCategory === cat
+                const slug = getCategorySlug(cat)
                 return (
-                  <button
+                  <Link
                     key={cat}
-                    onClick={() => handleCategory(cat)}
-                    style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid ${isActive ? '#E9A020' : '#E2EFE9'}`, background: isActive ? '#E9A020' : 'transparent', color: isActive ? '#1A2822' : '#587066', fontSize: '13px', fontWeight: isActive ? 600 : 500, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                    href={`/guides/category/${slug}`}
+                    style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid #E2EFE9`, background: 'transparent', color: '#587066', fontSize: '13px', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }}
                   >
                     {cat}
-                  </button>
+                  </Link>
                 )
               })}
             </div>
@@ -253,7 +188,6 @@ export default function GuidesClient({
         }}>
           {paginated.map(guide => {
             const color = getCategoryColor(guide.category)
-            const icon = guideIcons[guide.slug] || '📄'
             return (
               <Link
                 key={guide.slug}
@@ -271,22 +205,6 @@ export default function GuidesClient({
                 }}
                 className="guide-card"
               >
-                {/* Icon */}
-                <div className="guide-card-icon" style={{
-                  width: '52px',
-                  height: '52px',
-                  borderRadius: '14px',
-                  background: color.bg,
-                  border: `1px solid ${color.border}`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  flexShrink: 0,
-                }}>
-                  {icon}
-                </div>
-
                 {/* Body */}
                 <div className="guide-card-body" style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
                   {/* Meta */}
