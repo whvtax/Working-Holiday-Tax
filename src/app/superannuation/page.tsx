@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
@@ -54,7 +53,7 @@ const faqs = [
   },
   {
     question: 'Do I receive super if I worked under an ABN?',
-    answer: 'Generally, no. Superannuation is not usually payable for ABN (contractor) work. Super is typically only paid when you are classified as an employee, whereas contractors working under an ABN are generally responsible for their own super arrangements.',
+    answer: 'Generally, no. Superannuation is not usually paid for ABN (contractor) work. Super is typically only paid when you are classified as an employee. As a contractor working under an ABN, you are responsible for arranging your own super if you want it.',
   },
 ]
 
@@ -146,8 +145,8 @@ export default function SuperannuationPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block', whiteSpace:'nowrap' }}>Claim your super back</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>when you leave Australia</span>
+                <span style={{ display:'block' }}>Claim your super back</span>
+                <span style={{ display:'block', color:'#0B5240' }}>when you leave Australia</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
@@ -540,8 +539,8 @@ export default function SuperannuationPage() {
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What's next?"
-        heading="Check if you're eligible for Medicare"
+        eyebrow="What is next?"
+        heading="Check if you are eligible for Medicare"
         body="Depending on your country of origin, you may be eligible for Medicare or exempt from the Medicare levy."
         cta="Check your Medicare eligibility →"
         href="/medicare"

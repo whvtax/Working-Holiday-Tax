@@ -60,6 +60,8 @@ const IconABN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill=
 const IconReturn  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
 const IconSuper   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 5.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
+const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.5s-6-3.5-6-8.5a3 3 0 016-2 3 3 0 016 2c0 5-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><line x1="10" y1="7" x2="10" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="7.5" y1="9.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
+
 const IconStar  = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
 const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
@@ -71,17 +73,18 @@ const TESTIMONIALS = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Tell us about your situation', body: "TFN, ABN, tax return, super, we will guide you from the start." },
+  { n: '1', title: 'Tell us about your situation', body: "TFN, ABN, tax return, super - we will guide you from the start." },
   { n: '2', title: 'Send your details in minutes',  body: 'Quick checklist, no complicated forms.' },
   { n: '3', title: 'We handle everything for you',  body: 'We prepare, lodge, and manage it all.' },
   { n: '4', title: 'Get your money back',           body: 'Refund goes straight to your account.' },
 ]
 
 const SERVICES = [
-  { n: '01', href: '/tfn',            icon: <IconTFN />,    title: 'TFN Application',  desc: 'Start working at the correct tax rate from day one.' },
-  { n: '02', href: '/abn',            icon: <IconABN />,    title: 'ABN Registration', desc: 'Register your ABN to work as a sole trader and invoice clients correctly.' },
-  { n: '03', href: '/tax-return',     icon: <IconReturn />, title: 'Tax Return',       desc: "Lodge your tax return and get the maximum refund you are entitled to." },
-  { n: '04', href: '/superannuation', icon: <IconSuper />,  title: 'Super Withdrawal', desc: 'Claim your super back when you leave Australia.' },
+  { n: '01', href: '/tfn',            icon: <IconTFN />,      title: 'TFN Application',  desc: 'Start working at the correct tax rate from day one.' },
+  { n: '02', href: '/abn',            icon: <IconABN />,      title: 'ABN Registration', desc: 'Register your ABN to work as a sole trader and invoice clients correctly.' },
+  { n: '03', href: '/tax-return',     icon: <IconReturn />,   title: 'Tax Return',       desc: 'Lodge your tax return and get the maximum refund you are entitled to.' },
+  { n: '04', href: '/superannuation', icon: <IconSuper />,    title: 'Super Withdrawal', desc: 'Claim your super back when you leave Australia.' },
+  { n: '05', href: '/medicare',       icon: <IconMedicare />, title: 'Medicare Levy',    desc: 'Apply for a Medicare levy exemption when you are not eligible.' },
 ]
 
 const FAQS = [
@@ -172,7 +175,7 @@ export default function HomePage() {
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '34ch', marginBottom: '10px' }}>
-            TFN, ABN, Tax Return &amp; Super<br />we handle everything for you
+            TFN, ABN, Tax Return &amp; Super.<br />We handle everything for you.
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
@@ -215,7 +218,7 @@ export default function HomePage() {
               { title: 'Backpacker tax specialists.',   body: 'We handle working holiday tax exclusively, so we know exactly how to get you the most back.' },
               { title: 'ATO compliant.',                body: 'Fully compliant with ATO rules, supervised by a registered tax agent.' },
               { title: 'Clear, simple support.',        body: 'No complicated terms. We guide you through everything, step by step.' },
-              { title: 'We take care of everything.',   body: 'No paperwork, no stress, we handle everything for you from start to finish.' },
+              { title: 'We take care of everything.',   body: 'No paperwork, no stress. We handle everything for you from start to finish.' },
             ].map((item, i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>
@@ -377,11 +380,11 @@ export default function HomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', textAlign: 'center', lineHeight: 1.7, maxWidth: '36ch' }}>
-              From your first job to your final refund<br />we have got you covered.
+              From your first job to your final refund.<br />We have got you covered.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-4">
             {SERVICES.map((s) => (
               <Link key={s.href} href={s.href}
                 className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"

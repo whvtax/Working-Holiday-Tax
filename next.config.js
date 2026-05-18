@@ -4,7 +4,11 @@ const securityHeaders = [
   { key: 'X-Frame-Options',         value: 'DENY' },
   { key: 'X-XSS-Protection',        value: '1; mode=block' },
   { key: 'Referrer-Policy',         value: 'strict-origin-when-cross-origin' },
-  { key: 'Permissions-Policy',      value: 'camera=(), microphone=(), geolocation=()' },
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+  { key: 'Permissions-Policy',      value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()' },
+  { key: 'Cross-Origin-Opener-Policy',   value: 'same-origin' },
+  { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+  { key: 'X-DNS-Prefetch-Control',       value: 'on' },
   {
     key: 'Content-Security-Policy',
     value: [
@@ -59,6 +63,19 @@ const nextConfig = {
         headers: [
           { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
           { key: 'Cache-Control', value: 'public, max-age=3600, must-revalidate' },
+        ],
+      },
+      // Static assets - long cache (immutable file content)
+      {
+        source: '/assets/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+        ],
+      },
+      {
+        source: '/:path(favicon\\.svg|icon-192\\.png|icon-512\\.png|apple-touch-icon\\.png|og-image\\.png|manifest\\.json)',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=2592000' },
         ],
       },
     ]

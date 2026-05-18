@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
@@ -38,15 +37,15 @@ const faqs = [
   { question:'Can I start work before I receive my TFN?', answer:'Yes. You can start working, but you must provide your TFN within 28 days. Until then, your employer may withhold tax at a higher rate.' },
   { question:'Where will my TFN be sent?', answer:'Your TFN is issued by the ATO and sent by mail to your Australian address. Make sure you provide an address where you can reliably receive post.' },
   { question:'Can I get a TFN on a tourist visa?', answer:'No. You must hold a valid work visa, such as a Working Holiday visa (Subclass 417 or 462), to apply for a TFN.' },
-  { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, previous tax documents, or by asking your tax agent.' },
+  { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
   { question:'What is a TFN Declaration Form?', answer:'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.' },
 ]
 
 const STEPS = [
   { n:'1', title:'Tell us about your situation', body:'Share your visa details so we can guide you correctly.' },
-  { n:'2', title:'Submit your documents in minutes',  body:'Just your passport and key details - quick and simple.' },
+  { n:'2', title:'Submit your documents in minutes',  body:'Just your passport and a few personal details - quick and simple.' },
   { n:'3', title:'We process your TFN application',  body:'We prepare and submit everything accurately on your behalf.' },
-  { n:'4', title:'Receive your TFN',             body:'Your TFN is issued by the ATO and sent to you by mail or phone within a week.' },
+  { n:'4', title:'Receive your TFN',             body:'Your TFN is issued by the ATO and sent to your Australian address within 28 days.' },
 ]
 
 const TESTIMONIALS = [
@@ -106,8 +105,8 @@ export default function TFNPage() {
               style={{ fontSize:'clamp(24px,3.2vw,44px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'10px' }}>
               {/* Desktop: 2 lines - line 1 black, line 2 green */}
               <span className="hidden lg:block">
-                <span style={{ display:'block', whiteSpace:'nowrap' }}>Apply for your TFN to start working</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>legally in Australia.</span>
+                <span style={{ display:'block' }}>Apply for your TFN to start working</span>
+                <span style={{ display:'block', color:'#0B5240' }}>legally in Australia.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
@@ -117,14 +116,13 @@ export default function TFNPage() {
             </h1>
 
             <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              <span className="hidden lg:inline">We make sure your TFN is done correctly the first time.</span>
-              <span className="lg:hidden" style={{ fontSize:'13px' }}>We make sure your TFN is done correctly the first time.</span>
+              style={{ fontSize:'clamp(13px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
+              We make sure your TFN is done correctly the first time.
             </p>
 
             <p className="font-light"
               style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.65, color:'rgba(10,15,13,0.58)', maxWidth:'44ch', marginBottom:'0' }}>
-              Without a TFN, Working Holiday visa holders are taxed at 45%
+              Without a TFN, Working Holiday visa holders are taxed at 45%.
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -226,7 +224,7 @@ export default function TFNPage() {
           <div className="mx-auto" style={{ maxWidth:'460px' }}>
             <p className="font-serif font-black text-white"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'12px' }}>
-              Without a TFN, you could be taxed<br className="hidden lg:block" /> at a much higher rate
+              Without a TFN, you could be taxed<br className="hidden lg:block" /> at a much higher rate.
             </p>
             <p className="font-light"
               style={{ fontSize:'clamp(13px, 1.3vw, 15px)', color:'rgba(255,255,255,0.68)', maxWidth:'34ch', margin:'0 auto', lineHeight:1.75 }}>
@@ -252,19 +250,14 @@ export default function TFNPage() {
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
               We manage your TFN application from start to finish, accurately and without delays.
             </h2>
-            <p className="font-light text-muted"
-              style={{ fontSize:'clamp(13px, 1.3vw, 15px)', lineHeight:1.7 }}>
-              <span className="hidden lg:inline"></span>
-              <span className="lg:hidden"></span>
-            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Submitted correctly the first time.', body:'Every application is checked before submission to prevent errors or processing delays.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Start working at the correct tax rate', body:'Apply early to avoid being taxed at the highest rate as a Working Holiday visa holder.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Avoid ATO systems and confusing forms.', body:"No need to deal with government portals or paperwork, we handle it for you." },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Fast, simple, and fully online', body:'Provide your details and we take care of the entire TFN application process.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Start working at the correct tax rate.', body:'Apply early to avoid being taxed at the highest rate as a Working Holiday visa holder.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Avoid ATO systems and confusing forms.', body:'No need to deal with government portals or paperwork. We handle it for you.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Fast, simple, and fully online.', body:'Provide your details and we take care of the entire TFN application process.' },
             ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
                 style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
@@ -339,7 +332,7 @@ export default function TFNPage() {
             <span className="section-label center">TFN APPLICATION PROCESS</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              There&apos;s a simpler way to get your TFN sorted
+              There is a simpler way to get your TFN sorted
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
@@ -348,9 +341,9 @@ export default function TFNPage() {
                 Applying through the ATO can seem simple, but it often leads to confusion and delays.
               </p>
               <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-                {['Complex government forms and unclear steps','Small errors can slow down your TFN approval','No support if anything goes wrong',"You're left to figure it out alone"].map((item,i) => (
+                {['Complex government forms and unclear steps','Small errors can slow down your TFN approval','No support if anything goes wrong','You are left to figure it out alone'].map((item,i) => (
                   <div key={i} className="flex items-start gap-2.5">
-                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF2F2" stroke="#FECACA" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#DC2626" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
                     <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
                   </div>
                 ))}
@@ -387,7 +380,7 @@ export default function TFNPage() {
               How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted" style={{ fontSize:'clamp(13px, 1.3vw, 15px)', lineHeight:1.7 }}>
-              Simple, guided process from start to finish
+              Simple, guided process from start to finish.
             </p>
           </div>
 
@@ -473,9 +466,9 @@ export default function TFNPage() {
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What's next?"
+        eyebrow="What is next?"
         heading="Already have your TFN?"
-        body="If you're working as a contractor or freelancer, you may also need an ABN to invoice correctly"
+        body="If you are working as a contractor or freelancer, you may also need an ABN to invoice correctly."
         cta="Check your ABN eligibility →"
         href="/abn"
       />

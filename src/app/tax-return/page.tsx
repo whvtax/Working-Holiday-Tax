@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
@@ -155,8 +154,8 @@ export default function TaxReturnPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block', whiteSpace:'nowrap' }}>Get your tax refund</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>fast &amp; stress-free.</span>
+                <span style={{ display:'block' }}>Get your tax refund</span>
+                <span style={{ display:'block', color:'#0B5240' }}>fast &amp; stress-free.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
@@ -413,8 +412,8 @@ export default function TaxReturnPage() {
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="8" cy="8" r="7.5" fill="#FEF2F2" stroke="#FECACA" strokeWidth="0.5"/>
-                      <path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#DC2626" strokeWidth="1.3" strokeLinecap="round"/>
+                      <circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/>
+                      <path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/>
                     </svg>
                     <p className="text-[13px] font-light text-muted leading-[1.65]">{item}</p>
                   </div>
@@ -502,7 +501,7 @@ export default function TaxReturnPage() {
                       </thead>
                       <tbody>
                         {table.rows.map(([income, rate], i) => (
-                          <tr key={i} style={{ borderTop: '1px solid #E2EFE9', background: i % 2 === 0 ? '#ffffff' : '#F7FCF9' }}>
+                          <tr key={i} style={{ borderTop: '1px solid #E2EFE9', background: i % 2 === 0 ? '#ffffff' : '#F5F9F7' }}>
                             <td className="font-light text-body" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{income}</td>
                             <td className="font-medium text-ink" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{rate}</td>
                           </tr>
@@ -523,7 +522,7 @@ export default function TaxReturnPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center justify-center font-medium transition-all"
                 style={{ fontSize: '14px', color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                <span className="hidden lg:inline">Not sure if you've overpaid tax? Check your refund now →</span><span className="lg:hidden">Not sure if you've overpaid tax?<br />Check your refund now →</span>
+                <span className="hidden lg:inline">Not sure if you have overpaid tax? Check your refund now →</span><span className="lg:hidden">Not sure if you have overpaid tax?<br />Check your refund now →</span>
               </a>
             </div>
         </div>
@@ -674,8 +673,8 @@ export default function TaxReturnPage() {
                   </div>
                 ))}
               </div>
-              <div className="rounded-xl px-4 py-3 text-center" style={{ background: '#FEF2F2', border: '1px solid #FECACA', padding: '12px 16px', borderRadius: '12px' }}>
-                <p className="font-light leading-[1.75]" style={{ fontSize: '12.5px', color: '#991B1B' }}>
+              <div className="rounded-xl px-4 py-3 text-center" style={{ background: '#FEF3F0', border: '1px solid #FBD0BB', padding: '12px 16px', borderRadius: '12px' }}>
+                <p className="font-light leading-[1.75]" style={{ fontSize: '12.5px', color: '#9A3412' }}>
                   A registered tax agent will never ask for your password, SMS codes, or access to your myGov account.
                 </p>
               </div>
@@ -726,7 +725,7 @@ export default function TaxReturnPage() {
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What's next?"
+        eyebrow="What is next?"
         heading="Don't leave your super behind"
         body="Your employer contributed super on top of your wages while you worked in Australia. When you leave, you can claim it back."
         cta="Check your super eligibility →"

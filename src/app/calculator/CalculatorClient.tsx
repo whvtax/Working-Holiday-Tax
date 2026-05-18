@@ -1,9 +1,14 @@
 'use client'
 import { useState } from 'react'
-import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 
 type Result = { label: string; amount: string; sub: string; pct: number; owing: boolean }
+
+type FAQ = { question: string; answer: string }
+
+type Props = {
+  faqs?: FAQ[]
+}
 
 function calc(inc: number, wit: number, visa: 'whm' | 'res'): Result {
   let tax = 0
@@ -23,7 +28,7 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res'): Result {
   return             { label: 'Balanced',         amount: '$0', sub: 'No refund or tax owing.', pct: 50, owing: false }
 }
 
-export function CalculatorClient() {
+export function CalculatorClient({ faqs = [] }: Props) {
   const [income,   setIncome]   = useState('')
   const [withheld, setWithheld] = useState('')
   const [visa,     setVisa]     = useState('')
@@ -158,6 +163,56 @@ export function CalculatorClient() {
 
 
           </div>
+        </div>
+      </section>
+
+      {/* FAQ section */}
+      {faqs.length > 0 && (
+        <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '50px' }}>
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
+            <div className="text-center mb-8">
+              <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+                Frequently asked
+              </p>
+              <h2 className="font-serif font-black text-ink mx-auto"
+                style={{ fontSize: 'clamp(24px, 2.6vw, 32px)', lineHeight: 1.15, letterSpacing: '-0.025em' }}>
+                About the calculator
+              </h2>
+            </div>
+
+            <div className="flex flex-col" style={{ gap: '4px' }}>
+              {faqs.map((f, i) => (
+                <details key={i} name="calculator-faq" className="contact-faq-item">
+                  <summary className="contact-faq-summary">
+                    <span style={{ flex: 1 }}>{f.question}</span>
+                    <span className="contact-faq-plus" aria-hidden="true">+</span>
+                  </summary>
+                  <p className="contact-faq-answer">{f.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Final CTA */}
+      <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '60px' }}>
+        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+          <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+            Ready to lodge?
+          </p>
+          <h2 className="font-serif font-black text-ink mx-auto"
+            style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '20ch' }}>
+            We will get you the maximum refund
+          </h2>
+          <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
+            This calculator gives you an estimate. We often find deductions and offsets that push your refund higher.
+          </p>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+            className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"
+            style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
+            Start your tax return →
+          </a>
         </div>
       </section>
     </>

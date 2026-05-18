@@ -3330,7 +3330,7 @@ If your income statement still shows "Year-to-date" or "In Progress" past 31 Jul
 
 Errors do happen. Common issues:
 
-- Total wages don't match your payslips
+- Total wages do not match your payslips
 - Tax withheld figure is incorrect
 - Missing employer (worked there but no record exists)
 - Wrong residency status applied (30% instead of 15%)

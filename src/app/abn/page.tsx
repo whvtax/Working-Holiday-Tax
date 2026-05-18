@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
@@ -39,7 +38,7 @@ const faqs = [
   { question: 'Can I get an ABN without a TFN?', answer: 'No. You must have a TFN before applying for an ABN.' },
   { question: 'Do I need to register for GST?', answer: 'GST registration is only required if your annual turnover is over $75,000. Most Working Holiday visa holders do not need to register for GST.' },
   { question: 'What happens to my ABN when I leave Australia?', answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.' },
-  { question: 'Can my ABN be rejected?', answer: "Yes. If your details don't accurately reflect your work situation, your ABN application may be delayed or rejected. That's why we recommend using a tax agent to avoid mistakes and ensure everything is set up correctly from the start." },
+  { question: 'Can my ABN be rejected?', answer: 'Yes. If your details do not accurately reflect your work situation, your ABN application may be delayed or rejected. That is why we recommend using a tax agent to avoid mistakes and ensure everything is set up correctly from the start.' },
 ]
 
 const MISTAKES = [
@@ -117,8 +116,8 @@ export default function ABNPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block', whiteSpace:'nowrap' }}>Set up your ABN and</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>start working as a contractor</span>
+                <span style={{ display:'block' }}>Set up your ABN and</span>
+                <span style={{ display:'block', color:'#0B5240' }}>start working as a contractor</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
@@ -310,7 +309,7 @@ export default function ABNPage() {
               { n:'03', title:'Set up correctly from day one', body:'Everything is done properly so you can start working without issues.' },
             ].map((item,i) => (
               <div key={i} className="rounded-2xl flex flex-col"
-                style={{ padding:'18px', background:'#F7FCF9', border:'1px solid #C8EAE0' }}
+                style={{ padding:'18px', background:'#F5F9F7', border:'1px solid #C8EAE0' }}
                 /* Desktop: larger padding */>
                 <span className="text-[10px] font-medium tracking-[0.12em] uppercase text-subtle block"
                   style={{ marginBottom:'10px' }}>{item.n}</span>
@@ -487,9 +486,9 @@ export default function ABNPage() {
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What's next?"
+        eyebrow="What is next?"
         heading="Next step: your tax return"
-        body="When the financial year ends, you'll need to lodge your tax return and declare your ABN income."
+        body="When the financial year ends, you will need to lodge your tax return and declare your ABN income."
         cta="Start your tax return →"
         href="/tax-return"
       />

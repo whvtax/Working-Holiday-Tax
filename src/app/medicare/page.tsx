@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
 import { NextStep } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
@@ -420,15 +419,15 @@ export default function MedicarePage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal delay-1">
             {[
-              { q: '"Do I need to sign up for Medicare?"', a: "You only need to sign up if you're from an eligible RHCA country. Otherwise, we apply the exemption in your tax return." },
-              { q: '"Why is Medicare levy showing on my tax bill?"', a: "If your Medicare status wasn't applied correctly, the levy may appear. We fix this when preparing your tax return." },
-              { q: '"I don\'t use Medicare - why am I being charged?"', a: "If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you don't overpay." },
-              { q: '"Does travel insurance replace Medicare?"', a: "No. Travel insurance and Medicare are separate systems. If you are not eligible for Medicare, you should rely on your travel insurance for medical coverage." },
-              { q: '"Does my Working Holiday visa affect Medicare?"', a: "Yes. Most Working Holiday visa holders are not eligible for Medicare, unless they are from a Reciprocal Health Care Agreement (RHCA) country. We ensure your Medicare status is correctly applied in your tax return." },
-              { q: '"Can I get a Medicare card on a Working Holiday visa?"', a: "Only if you're from an eligible RHCA country. Otherwise, we apply a Medicare levy exemption instead." },
+              { q: 'Do I need to sign up for Medicare?', a: 'You only need to sign up if you are from an eligible RHCA country. Otherwise, we apply the exemption in your tax return.' },
+              { q: 'Why is the Medicare levy showing on my tax bill?', a: 'If your Medicare status was not applied correctly, the levy may appear. We fix this when preparing your tax return.' },
+              { q: 'I do not use Medicare - why am I being charged?', a: 'If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you do not overpay.' },
+              { q: 'Does travel insurance replace Medicare?', a: 'No. Travel insurance and Medicare are separate systems. If you are not eligible for Medicare, you should rely on your travel insurance for medical coverage.' },
+              { q: 'Does my Working Holiday visa affect Medicare?', a: 'Yes. Most Working Holiday visa holders are not eligible for Medicare, unless they are from a Reciprocal Health Care Agreement (RHCA) country. We ensure your Medicare status is correctly applied in your tax return.' },
+              { q: 'Can I get a Medicare card on a Working Holiday visa?', a: 'Only if you are from an eligible RHCA country. Otherwise, we apply a Medicare levy exemption instead.' },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
-                <p className="text-[13px] font-semibold text-ink italic" style={{ marginBottom: '6px' }}>{item.q}</p>
+                <p className="text-[13px] font-semibold text-ink" style={{ marginBottom: '6px' }}>{item.q}</p>
                 <p className="text-[12.5px] font-light text-muted leading-[1.65]">{item.a}</p>
               </div>
             ))}
@@ -438,9 +437,9 @@ export default function MedicarePage() {
 
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
-        eyebrow="What's next?"
+        eyebrow="What is next?"
         heading="You're all set to lodge your tax return"
-        body="We ensure your Medicare status is correctly applied so you don't overpay tax."
+        body="We ensure your Medicare status is correctly applied so you do not overpay tax."
         cta="Start your tax return →"
         href="/tax-return"
       />
