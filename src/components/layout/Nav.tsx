@@ -1,11 +1,11 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { NAV_LINKS, WA_URL } from '@/lib/constants'
+import { useEffect, useState, useRef } from 'react'
+import { WA_URL } from '@/lib/constants'
 
 const Logo = () => (
-  <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+  <Link href="/" className="flex items-center gap-2.5 flex-shrink-0" aria-label="Working Holiday Tax - Home">
     <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
       <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" strokeWidth="2"/>
       <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>
@@ -18,11 +18,31 @@ const Logo = () => (
   </Link>
 )
 
+// Services that go under the dropdown (5 service pages)
+const SERVICES_LINKS = [
+  { label: 'TFN Application',    href: '/tfn',            desc: 'Get your Tax File Number' },
+  { label: 'ABN Registration',   href: '/abn',            desc: 'Register as a contractor' },
+  { label: 'Tax Return',         href: '/tax-return',     desc: 'Lodge your annual return' },
+  { label: 'Super Withdrawal',   href: '/superannuation', desc: 'Claim DASP after leaving' },
+  { label: 'Medicare',           href: '/medicare',       desc: 'Levy exemption and access' },
+] as const
+
+// Top-level links (Services is a dropdown, others are direct)
+const TOP_LINKS = [
+  { label: 'Calculator', href: '/calculator' },
+  { label: 'Blog',       href: '/blog' },
+  { label: 'Contact',    href: '/contact' },
+] as const
+
 export function Nav() {
   const [scrolled, setScrolled] = useState(false)
-  const [open, setOpen]         = useState(false)
+  const [open, setOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
+  // Sticky background after scroll
   useEffect(() => {
     let rafId = 0
     const fn = () => {
@@ -33,8 +53,35 @@ export function Nav() {
     return () => { window.removeEventListener('scroll', fn); cancelAnimationFrame(rafId) }
   }, [])
 
+  // Lock body scroll when mobile menu open
   useEffect(() => { document.body.style.overflow = open ? 'hidden' : '' }, [open])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!servicesOpen) return
+    const onClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setServicesOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [servicesOpen])
+
+  // Close dropdown on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setServicesOpen(false)
+        setOpen(false)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const close = () => setOpen(false)
+  const isServicePage = SERVICES_LINKS.some(s => pathname === s.href)
 
   return (
     <>
@@ -44,15 +91,83 @@ export function Nav() {
           <div className="h-[68px] flex items-center justify-between gap-5">
             <Logo />
 
-            <div className="hidden lg:flex items-center gap-8">
-              {NAV_LINKS.map(l => {
-                const active = pathname === l.href
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-7">
+
+              {/* Services Dropdown */}
+              <div ref={dropdownRef} style={{ position: 'relative' }}>
+                <button
+                  type="button"
+                  onClick={() => setServicesOpen(!servicesOpen)}
+                  onMouseEnter={() => setServicesOpen(true)}
+                  className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
+                  style={{ color: isServicePage ? '#0B5240' : '#587066', fontWeight: isServicePage ? 600 : 400 }}
+                  aria-expanded={servicesOpen}
+                  aria-haspopup="true"
+                >
+                  Services
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {isServicePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
+                </button>
+
+                {/* Dropdown Panel */}
+                {servicesOpen && (
+                  <div
+                    onMouseLeave={() => setServicesOpen(false)}
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 16px)',
+                      left: '-16px',
+                      minWidth: '320px',
+                      background: '#fff',
+                      borderRadius: '14px',
+                      boxShadow: '0 12px 32px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
+                      border: '1px solid #E2EFE9',
+                      padding: '8px',
+                      zIndex: 60,
+                    }}
+                  >
+                    {SERVICES_LINKS.map(s => {
+                      const active = pathname === s.href
+                      return (
+                        <Link
+                          key={s.href}
+                          href={s.href}
+                          onClick={() => setServicesOpen(false)}
+                          className="services-dropdown-item"
+                          style={{
+                            display: 'block',
+                            padding: '12px 14px',
+                            borderRadius: '10px',
+                            textDecoration: 'none',
+                            background: active ? '#F7F9F8' : 'transparent',
+                          }}
+                        >
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '2px' }}>
+                            {s.label}
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#587066', fontWeight: 400, lineHeight: 1.4 }}>
+                            {s.desc}
+                          </div>
+                        </Link>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Top-level direct links */}
+              {TOP_LINKS.map(l => {
+                const active = pathname === l.href || (l.href === '/blog' && pathname.startsWith('/blog'))
                 return (
-                  <Link key={l.href} href={l.href}
-                    className="relative text-[13.5px] transition-colors"
-                    style={{ color: active ? '#0B5240' : '#587066' }}
-                    onMouseEnter={e => { if (!active) (e.currentTarget as HTMLElement).style.color = '#0B5240' }}
-                    onMouseLeave={e => { if (!active) (e.currentTarget as HTMLElement).style.color = '#587066' }}>
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className="nav-link relative text-[13.5px]"
+                    style={{ color: active ? '#0B5240' : '#587066', fontWeight: active ? 600 : 400 }}
+                  >
                     {l.label}
                     {active && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
                   </Link>
@@ -60,16 +175,20 @@ export function Nav() {
               })}
             </div>
 
+            {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-3">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-semibold text-white transition-all"
+              <a
+                href={WA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-cta inline-flex items-center gap-2 font-semibold text-white"
                 style={{ height: '40px', padding: '0 18px', background: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(11,82,64,0.18)' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#16775C' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0B5240' }}>
-                Free Eligibility Check
+              >
+                Start your tax return
               </a>
             </div>
 
+            {/* Mobile menu button */}
             <button type="button" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}
               className="flex flex-col justify-center gap-[5px] w-10 h-10 bg-transparent border-none p-2 lg:hidden">
               <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
@@ -80,23 +199,57 @@ export function Nav() {
         </div>
       </nav>
 
+      {/* Mobile Menu */}
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
-        {NAV_LINKS.map(l => (
+
+        {/* Services - expandable */}
+        <button
+          type="button"
+          onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+          className="flex items-center justify-between w-full font-sans text-[17px] font-medium text-ink py-4 bg-transparent border-none cursor-pointer"
+          style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}
+          aria-expanded={mobileServicesOpen}
+        >
+          Services
+          <svg width="14" height="14" viewBox="0 0 12 12" fill="none" style={{ transform: mobileServicesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
+            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+
+        {mobileServicesOpen && (
+          <div style={{ paddingLeft: '16px', borderBottom: '1px solid #F0F5F2' }}>
+            {SERVICES_LINKS.map(s => (
+              <Link
+                key={s.href}
+                href={s.href}
+                onClick={close}
+                className="block font-sans text-[15px] text-muted py-3 transition-colors hover:text-forest-500"
+                style={{ letterSpacing: '-0.01em' }}
+              >
+                {s.label}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Top-level links */}
+        {TOP_LINKS.map(l => (
           <Link key={l.href} href={l.href} onClick={close}
             className="block font-sans text-[17px] font-medium text-ink py-4 transition-colors hover:text-forest-500"
             style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
             {l.label}
           </Link>
         ))}
+
+        {/* CTA */}
         <div className="mt-6">
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '54px', borderRadius: '100px', fontSize: '15px' }}>
-              Free Eligibility Check →
+            Start your tax return →
           </a>
         </div>
 
         {/* Trust badges */}
         <div className="flex items-center justify-center gap-3 mt-5 pb-2">
-          {/* Xero */}
           <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
             aria-label="Xero"
             className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70"
@@ -105,8 +258,6 @@ export function Nav() {
               <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
             </svg>
           </a>
-
-          {/* Security / SSL */}
           <div className="flex items-center justify-center rounded-full"
             style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}
             title="Secure & encrypted">
@@ -115,8 +266,6 @@ export function Nav() {
               <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-
-          {/* TPB */}
           <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
             aria-label="Registered Tax Practitioners Board"
             className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
@@ -125,7 +274,6 @@ export function Nav() {
             <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={24} height={24} style={{ objectFit: 'contain' }} />
           </a>
         </div>
-
       </div>
     </>
   )

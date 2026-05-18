@@ -3,18 +3,27 @@ import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
 
 const routes = [
-  { url: '/',                  priority: 1.0,  changeFrequency: 'monthly' },
-  { url: '/tfn',               priority: 0.9,  changeFrequency: 'monthly' },
-  { url: '/tax-return',        priority: 0.9,  changeFrequency: 'monthly' },
-  { url: '/superannuation',    priority: 0.9,  changeFrequency: 'monthly' },
-  { url: '/abn',               priority: 0.8,  changeFrequency: 'monthly' },
-  { url: '/calculator',        priority: 0.8,  changeFrequency: 'monthly' },
-  { url: '/medicare',          priority: 0.7,  changeFrequency: 'monthly' },
-  { url: '/blog',            priority: 0.85, changeFrequency: 'weekly'  },
-  { url: '/contact',           priority: 0.7,  changeFrequency: 'monthly' },
-  { url: '/tax-residency',      priority: 0.6,  changeFrequency: 'yearly'  },
-  { url: '/client-agreement',  priority: 0.4,  changeFrequency: 'yearly'  },
-  { url: '/privacy',           priority: 0.4,  changeFrequency: 'yearly'  },
+  { url: '/',                          priority: 1.0,  changeFrequency: 'monthly' },
+  // Primary services (high priority)
+  { url: '/tfn',                       priority: 0.9,  changeFrequency: 'monthly' },
+  { url: '/tax-return',                priority: 0.9,  changeFrequency: 'monthly' },
+  { url: '/superannuation',            priority: 0.9,  changeFrequency: 'monthly' },
+  { url: '/abn',                       priority: 0.8,  changeFrequency: 'monthly' },
+  { url: '/calculator',                priority: 0.8,  changeFrequency: 'monthly' },
+  { url: '/medicare',                  priority: 0.7,  changeFrequency: 'monthly' },
+  // Blog hub
+  { url: '/blog',                      priority: 0.85, changeFrequency: 'weekly'  },
+  // Contact and supporting pages
+  { url: '/contact',                   priority: 0.7,  changeFrequency: 'monthly' },
+  // Informational pages
+  { url: '/tax-residency',             priority: 0.6,  changeFrequency: 'yearly'  },
+  { url: '/tax-residency-explained',   priority: 0.6,  changeFrequency: 'yearly'  },
+  { url: '/payslip',                   priority: 0.5,  changeFrequency: 'yearly'  },
+  { url: '/gst',                       priority: 0.5,  changeFrequency: 'yearly'  },
+  { url: '/permanent-vs-casual',       priority: 0.5,  changeFrequency: 'yearly'  },
+  // Legal
+  { url: '/client-agreement',          priority: 0.4,  changeFrequency: 'yearly'  },
+  { url: '/privacy',                   priority: 0.4,  changeFrequency: 'yearly'  },
 ] as const
 
 export default function sitemap(): MetadataRoute.Sitemap {

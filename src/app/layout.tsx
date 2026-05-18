@@ -5,7 +5,7 @@ import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { SITE_URL } from '@/lib/constants'
+import { SITE_URL, AGENT_NAME } from '@/lib/constants'
 import PublicShellClient from '@/components/layout/PublicShellClient'
 
 const playfair = Playfair_Display({
@@ -35,23 +35,61 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Working Holiday Tax',
-    template: '%s  -  Working Holiday Tax',
+    default: 'Working Holiday Tax - Australian Tax for WHV Holders',
+    template: '%s | Working Holiday Tax',
   },
   description:
-    'Tax refund for a Working Holiday visa in Australia. workingholidaytax.com.au',
-  keywords: ['working holiday tax', 'WHV tax return', 'TFN application Australia', 'backpacker tax', 'superannuation Australia'],
+    'Registered tax agent for Working Holiday Visa holders (subclass 417 and 462) in Australia. TFN, tax returns, super withdrawal (DASP) and ABN - all handled for you.',
+  keywords: [
+    'working holiday tax',
+    'WHV tax return',
+    'TFN application Australia',
+    'backpacker tax',
+    'superannuation Australia',
+    'DASP super refund',
+    '417 visa tax',
+    '462 visa tax',
+    'ABN registration Australia',
+    'Australian tax for backpackers',
+    'working holiday maker tax rate',
+    'Medicare levy exemption',
+    'registered tax agent Australia',
+  ],
+  authors: [{ name: AGENT_NAME }],
+  creator: AGENT_NAME,
+  publisher: AGENT_NAME,
+  category: 'Tax Services',
   openGraph: {
     type: 'website',
     locale: 'en_AU',
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax',
-    description: 'Tax return for a Working Holiday visa in Australia. workingholidaytax.com.au',
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Tax return for a Working Holiday visa in Australia' }],
+    title: 'Working Holiday Tax - Australian Tax for WHV Holders',
+    description: 'Registered tax agent for Working Holiday Visa holders in Australia. TFN, tax returns, super withdrawal (DASP) and ABN - all handled for you.',
+    images: [{
+      url: `${SITE_URL}/og-image.png`,
+      width: 1200,
+      height: 630,
+      alt: 'Working Holiday Tax - Australian tax services for backpackers',
+    }],
   },
-  twitter: { card: 'summary_large_image' },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Working Holiday Tax - Australian Tax for WHV Holders',
+    description: 'Registered tax agent for Working Holiday Visa holders in Australia.',
+    images: [`${SITE_URL}/og-image.png`],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  },
   other: { 'facebook-domain-verification': '0omgb6quah0z1m44eiqboc87rsnhu1' },
 }
 
@@ -65,20 +103,94 @@ export const viewport: Viewport = {
 const schemaOrg = {
   '@context': 'https://schema.org',
   '@graph': [
+    // Organization - the legal entity
     {
-      '@type': 'ProfessionalService',
+      '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
       '@id': 'https://workingholidaytax.com.au/#business',
       name: 'Working Holiday Tax',
+      legalName: 'The Accounting Academy Pty Ltd',
+      alternateName: ['WHT', 'WorkingHolidayTax'],
       url: 'https://workingholidaytax.com.au',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://workingholidaytax.com.au/icon-192.png',
+        width: 192,
+        height: 192,
+      },
+      image: 'https://workingholidaytax.com.au/og-image.png',
       telephone: '+61424513998',
       email: 'info@workingholidaytax.com.au',
-      description: 'TFN, tax return, super withdrawal and ABN for Working Holiday Visa holders in Australia. Registered tax agent.',
-      areaServed: 'AU',
+      description: 'Registered tax agent specialising in TFN applications, tax returns, superannuation (DASP) and ABN registrations for working holiday visa holders (subclass 417 and 462) in Australia.',
+      slogan: 'Australian tax, sorted.',
+      foundingDate: '2020',
+      // ABN of the business (Australian Business Number)
+      taxID: '26 669 927 959',
+      // Tax Agent Number (TPB registration)
+      identifier: [
+        {
+          '@type': 'PropertyValue',
+          name: 'ABN',
+          value: '26 669 927 959',
+        },
+        {
+          '@type': 'PropertyValue',
+          name: 'Tax Agent Number',
+          value: '26233096',
+        },
+      ],
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'AU',
+        addressRegion: 'Australia',
+      },
+      areaServed: {
+        '@type': 'Country',
+        name: 'Australia',
+      },
       priceRange: '$$',
-      image: 'https://workingholidaytax.com.au/og-image.png',
+      currenciesAccepted: 'AUD',
+      paymentAccepted: ['Cash', 'Credit Card', 'Bank Transfer'],
       sameAs: [
         'https://www.tiktok.com/@workingholidaytax',
         'https://instagram.com/workingholidaytax',
+      ],
+      knowsAbout: [
+        'Australian taxation',
+        'Working Holiday Visa tax',
+        'Tax File Number (TFN) applications',
+        'Australian Business Number (ABN) registration',
+        'Departing Australia Superannuation Payment (DASP)',
+        'Backpacker tax',
+        'Medicare Levy exemption',
+        'Working Holiday Maker tax rates',
+        '417 visa tax',
+        '462 visa tax',
+      ],
+      audience: {
+        '@type': 'Audience',
+        audienceType: 'Working Holiday Visa holders in Australia (subclass 417 and 462)',
+        geographicArea: {
+          '@type': 'Country',
+          name: 'Australia',
+        },
+      },
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          contactType: 'customer service',
+          telephone: '+61424513998',
+          email: 'info@workingholidaytax.com.au',
+          areaServed: 'AU',
+          availableLanguage: ['en', 'English'],
+          contactOption: 'TollFree',
+        },
+        {
+          '@type': 'ContactPoint',
+          contactType: 'WhatsApp',
+          telephone: '+61424513998',
+          areaServed: 'AU',
+          availableLanguage: ['en', 'English'],
+        },
       ],
       aggregateRating: {
         '@type': 'AggregateRating',
@@ -93,21 +205,78 @@ const schemaOrg = {
         itemListElement: [
           {
             '@type': 'Offer',
-            itemOffered: { '@type': 'Service', name: 'TFN Application', url: 'https://workingholidaytax.com.au/tfn' },
+            itemOffered: {
+              '@type': 'Service',
+              name: 'TFN Application',
+              description: 'Apply for your Australian Tax File Number as a working holiday maker.',
+              url: 'https://workingholidaytax.com.au/tfn',
+              provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+              areaServed: 'AU',
+            },
           },
           {
             '@type': 'Offer',
-            itemOffered: { '@type': 'Service', name: 'Tax Return', url: 'https://workingholidaytax.com.au/tax-return' },
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Tax Return Lodgement',
+              description: 'Lodge your Australian tax return and claim your refund as a working holiday maker.',
+              url: 'https://workingholidaytax.com.au/tax-return',
+              provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+              areaServed: 'AU',
+            },
           },
           {
             '@type': 'Offer',
-            itemOffered: { '@type': 'Service', name: 'Super Withdrawal', url: 'https://workingholidaytax.com.au/superannuation' },
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Super Withdrawal (DASP)',
+              description: 'Claim your Australian superannuation through the Departing Australia Superannuation Payment process.',
+              url: 'https://workingholidaytax.com.au/superannuation',
+              provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+              areaServed: 'AU',
+            },
           },
           {
             '@type': 'Offer',
-            itemOffered: { '@type': 'Service', name: 'ABN Registration', url: 'https://workingholidaytax.com.au/abn' },
+            itemOffered: {
+              '@type': 'Service',
+              name: 'ABN Registration',
+              description: 'Register your Australian Business Number to work as a contractor or sole trader.',
+              url: 'https://workingholidaytax.com.au/abn',
+              provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+              areaServed: 'AU',
+            },
+          },
+          {
+            '@type': 'Offer',
+            itemOffered: {
+              '@type': 'Service',
+              name: 'Medicare Levy Exemption',
+              description: 'Apply for a Medicare Levy Exemption Certificate to remove the 2% levy from your tax return.',
+              url: 'https://workingholidaytax.com.au/medicare',
+              provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+              areaServed: 'AU',
+            },
           },
         ],
+      },
+    },
+    // Website - for sitelinks search box
+    {
+      '@type': 'WebSite',
+      '@id': 'https://workingholidaytax.com.au/#website',
+      url: 'https://workingholidaytax.com.au',
+      name: 'Working Holiday Tax',
+      description: 'Australian tax, sorted. For working holiday makers.',
+      publisher: { '@id': 'https://workingholidaytax.com.au/#business' },
+      inLanguage: 'en-AU',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://workingholidaytax.com.au/blog?q={search_term_string}',
+        },
+        'query-input': 'required name=search_term_string',
       },
     },
   ],
