@@ -1,317 +1,346 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { WA_URL } from '@/lib/constants'
-import { CtaBand } from '@/components/ui/CtaBand'
+import { WA_URL, SITE_URL, EMAIL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
+// ─── METADATA - rich SEO + AI optimized ─────────────────────────────────
 export const metadata: Metadata = {
   title: 'Working Holiday Tax - Australian Tax Help for WHV Holders',
-  description: 'TFN, tax return, super withdrawal and ABN for Working Holiday Visa holders in Australia. Registered tax agent. Ask us anything - free.',
-  alternates: { canonical: '/' },
+  description: 'Registered tax agent specialising in TFN applications, tax returns, super withdrawal (DASP) and ABN for working holiday visa holders (subclass 417 and 462) in Australia.',
+  keywords: [
+    'working holiday tax',
+    'working holiday visa tax',
+    'WHV tax return Australia',
+    'TFN application working holiday',
+    'backpacker tax Australia',
+    'DASP super refund',
+    '417 visa tax return',
+    '462 visa tax return',
+    'ABN registration backpacker',
+    'Australian tax for working holiday makers',
+    'WHM tax rate 2025-26',
+    'registered tax agent Australia',
+    'super withdrawal Australia',
+    'Medicare levy exemption backpacker',
+  ],
+  authors: [{ name: AGENT_NAME }],
+  creator: AGENT_NAME,
+  publisher: AGENT_NAME,
+  category: 'Tax Services',
+  alternates: { canonical: SITE_URL },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: SITE_URL,
+    siteName: 'Working Holiday Tax',
+    title: 'Working Holiday Tax - Australian Tax Help for WHV Holders',
+    description: 'Registered tax agent for working holiday makers in Australia. TFN, tax returns, super withdrawal and ABN - all handled for you.',
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax - Australian tax services for backpackers' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Working Holiday Tax - Australian Tax Help',
+    description: 'Registered tax agent for working holiday makers in Australia.',
+    images: [`${SITE_URL}/og-image.png`],
+  },
+  robots: {
+    index: true, follow: true,
+    googleBot: {
+      index: true, follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  },
 }
 
-const IconDoc   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="7.5" x2="14" y2="7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="10.5" x2="11" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="13.5" x2="9" y2="13.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>)
-const IconLock  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="6" width="16" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M6.5 6V5a3.5 3.5 0 017 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M7.5 11l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
-const IconClock = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
-const IconPlus  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6.5v7M7 10h6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
-const IconStar  = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
-const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
-
-const TESTIMONIALS = [
-  { name:"Liam O'Connor", from:'Ireland · WHV 417', quote:"I had multiple employers and no idea what to do. They handled everything and made it easy.", amount:'$3,200', initials:'L', bgColor:'#DBEAFE', textColor:'#1E40AF' },
-  { name:'Anna Larsen',   from:'Norway · WHV 417', quote:"They handled my TFN and tax return fast. I didn't have to stress about anything.", amount:'$2,450', initials:'A', bgColor:'#FCE7F3', textColor:'#9D174D' },
-  { name:'Tobias Bauer',  from:'Germany · WHV 417', quote:"They explained everything simply and helped me claim money I didn't even know about.", amount:'$4,100', initials:'T', bgColor:'#D1FAE5', textColor:'#065F46' },
-]
-
-const STEPS = [
-  { n:'1', title:'Tell us about your situation', body:"TFN, ABN, tax return, super, we'll guide you from the start." },
-  { n:'2', title:'Send your details in minutes',  body:'Quick checklist, no complicated forms.' },
-  { n:'3', title:'We handle everything for you',  body:'We prepare, lodge, and manage it all.' },
-  { n:'4', title:'Get your money back',           body:'Refund goes straight to your account.' },
-]
+// ─── DATA ────────────────────────────────────────────────────────────────
 
 const SERVICES = [
-  { n:'01', href:'/tfn',            icon:<IconDoc />,   title:'TFN Application',  desc:'Start working at the correct tax rate from day one.' },
-  { n:'02', href:'/abn',            icon:<IconPlus />,  title:'ABN Registration',  desc:'Register your ABN to work as a sole trader and invoice clients correctly.' },
-  { n:'03', href:'/tax-return',     icon:<IconLock />,  title:'Tax Return',        desc:"Lodge your tax return and get the maximum refund you're entitled to." },
-  { n:'04', href:'/superannuation', icon:<IconClock />, title:'Super Withdrawal',  desc:'Claim your super back when you leave Australia.' },
+  {
+    href: '/tfn',
+    title: 'TFN Application',
+    desc: 'Get your Tax File Number issued so you can start working at the correct 15% rate from day one.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.6"/>
+        <line x1="7" y1="9" x2="17" y2="9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <line x1="7" y1="13" x2="14" y2="13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        <line x1="7" y1="17" x2="11" y2="17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    href: '/abn',
+    title: 'ABN Registration',
+    desc: 'Register an Australian Business Number to invoice clients legally as a contractor or sole trader.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M3 9l9-6 9 6v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+        <path d="M9 21V12h6v9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    href: '/tax-return',
+    title: 'Tax Return',
+    desc: 'Lodge your annual return and claim the maximum refund you are entitled to under WHM rules.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2v15M7 12l5 5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M3 19v2a1 1 0 001 1h16a1 1 0 001-1v-2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    href: '/superannuation',
+    title: 'Super Withdrawal',
+    desc: 'Claim your superannuation through the DASP process when you leave Australia for good.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6"/>
+        <path d="M12 6v6l4 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
+  {
+    href: '/medicare',
+    title: 'Medicare Levy',
+    desc: 'Get your Medicare Levy Exemption Certificate and remove the 2% levy from your tax return.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 21s-7-4.5-7-10a4 4 0 017-2.65A4 4 0 0119 11c0 5.5-7 10-7 10z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+        <line x1="12" y1="9" x2="12" y2="15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+        <line x1="9" y1="12" x2="15" y2="12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+] as const
+
+const STEPS = [
+  { n: '1', title: 'Tell us your situation', body: 'Send a quick WhatsApp with what you need - TFN, ABN, return, or super.' },
+  { n: '2', title: 'Send your details',     body: 'We will tell you exactly what to send. Quick checklist, no complicated forms.' },
+  { n: '3', title: 'We handle everything',  body: 'We prepare and lodge with the ATO. Usually within 24 hours.' },
+  { n: '4', title: 'Get your money back',   body: 'Refund goes straight to your account, in Australia or overseas.' },
+]
+
+const WHY_US = [
+  {
+    title: 'Backpacker tax specialists',
+    body: 'We work exclusively with working holiday visa holders. WHM tax is all we do, so we know every rule and every deduction.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M5 7h14a1 1 0 011 1v11a2 2 0 01-2 2H6a2 2 0 01-2-2V8a1 1 0 011-1z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="12" cy="14" r="2.5" stroke="currentColor" strokeWidth="1.6"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Registered tax agent',
+    body: 'Fully compliant with ATO rules and supervised by a Tax Practitioners Board registered agent (Tax Agent No: 26233096).',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2L4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+        <path d="M8.5 12l2.5 2.5L16 9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Fully online',
+    body: 'No appointments, no offices, no paperwork. Everything happens through WhatsApp and email, even after you leave Australia.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="5" y="2" width="14" height="20" rx="2.5" stroke="currentColor" strokeWidth="1.6"/>
+        <line x1="11" y1="18" x2="13" y2="18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+      </svg>
+    ),
+  },
+  {
+    title: 'Fast, real humans',
+    body: 'Average reply under one hour during business hours. No bots, no scripts - real advisors who speak plainly.',
+    icon: (
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
+]
+
+const TESTIMONIALS = [
+  {
+    name: "Liam O'Connor",
+    from: 'Ireland · 417 visa',
+    quote: 'I had multiple employers and no idea what to do. They handled everything and made it easy.',
+    amount: '$3,200',
+    initials: 'L',
+  },
+  {
+    name: 'Anna Larsen',
+    from: 'Norway · 417 visa',
+    quote: "They handled my TFN and tax return fast. I didn't have to stress about anything.",
+    amount: '$2,450',
+    initials: 'A',
+  },
+  {
+    name: 'Tobias Bauer',
+    from: 'Germany · 417 visa',
+    quote: "They explained everything simply and helped me claim money I didn't even know about.",
+    amount: '$4,100',
+    initials: 'T',
+  },
+]
+
+const FAQS = [
+  {
+    question: 'What tax rate do working holiday makers pay in Australia?',
+    answer: 'Working holiday makers pay a flat 15% on the first $45,000 earned, then 30% from $45,001 to $135,000, 37% from $135,001 to $190,000, and 45% above $190,000. There is no tax-free threshold for WHM holders. If you do not provide your TFN to your employer, they must withhold tax at 45%.',
+  },
+  {
+    question: 'How long does a TFN application take?',
+    answer: 'A TFN application is processed within 28 days by the ATO. In practice, many applicants receive their Tax File Number within two weeks. Your TFN is posted to your Australian address, so make sure your address is current and your post is being checked.',
+  },
+  {
+    question: 'Can you help me if I have already left Australia?',
+    answer: 'Yes. We help working holiday makers who have left Australia lodge their tax returns and claim their super (DASP) entirely online. Everything is handled remotely - we collect documents through WhatsApp or email and refunds go to your Australian bank account or overseas account.',
+  },
+  {
+    question: 'When can I claim my super back?',
+    answer: 'You can claim your super through the Departing Australia Superannuation Payment (DASP) process once you have left Australia and your visa has expired or been cancelled. DASP for working holiday makers is taxed at 65%, so the timing matters. We handle the entire claim for you.',
+  },
+  {
+    question: 'How much do your services cost?',
+    answer: 'Initial enquiries and quotes are free. Our fees vary by service - tax returns start from a flat fee that is deducted from your refund. No upfront payment is required. We confirm pricing before any work begins.',
+  },
+  {
+    question: 'Is there a deadline for lodging my tax return?',
+    answer: 'The standard deadline for self-lodgement is 31 October following the tax year (which ends 30 June). When you lodge through a registered tax agent like us, you qualify for an extended deadline, typically into the following May. This applies even if you have already left Australia.',
+  },
 ]
 
 export default function HomePage() {
+
+  // ─── Schema.org - rich, AI-friendly ───
+  const webPageLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}/#webpage`,
+    url: SITE_URL,
+    name: 'Working Holiday Tax - Australian Tax for WHV Holders',
+    description: 'Registered tax agent specialising in TFN, tax returns, super withdrawal and ABN for working holiday visa holders in Australia.',
+    inLanguage: 'en-AU',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    about: { '@id': `${SITE_URL}/#business` },
+    primaryImageOfPage: { '@id': `${SITE_URL}/#logo` },
+  }
+
+  const faqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQS.map(f => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
-        {/* Mobile: compact padding · Desktop: generous padding */}
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-14 lg:pb-12 text-center">
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 lg:px-12 pt-10 pb-8 lg:pt-16 lg:pb-12 text-center">
 
-          <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
+          <div className="inline-flex items-center gap-2 mb-4 lg:mb-5">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize:'10px', letterSpacing:'0.18em', color:'rgba(11,82,64,0.65)' }}>Working Holiday Visa Specialist</span>
+            <span className="font-medium uppercase" style={{ fontSize: '11px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.7)' }}>
+              Working Holiday Visa Tax Specialists
+            </span>
           </div>
 
-          {/* Unified heading — clamp handles mobile→desktop sizing */}
           <h1 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(24px, 3.06vw, 42px)', lineHeight:1.15, letterSpacing:'-0.025em', marginBottom:'14px' }}>
-              <span className="lg:whitespace-nowrap" style={{ display:'block' }}>Confused about tax in Australia?</span>
-              <span className="lg:whitespace-nowrap" style={{ display:'block', color:'#0B5240' }}>We’ve got you covered.</span>
-            </h1>
+            style={{
+              fontSize: 'clamp(30px, 5.2vw, 52px)',
+              lineHeight: 1.06,
+              letterSpacing: '-0.03em',
+              marginBottom: '16px',
+              maxWidth: '14ch',
+            }}>
+            Australian tax,<br />
+            <span style={{ color: '#0B5240' }}>sorted.</span>
+          </h1>
 
-          {/* Mobile: shorter maxWidth to keep 2-3 lines · Desktop: wider */}
           <p className="font-light mx-auto"
-            style={{ fontSize:'16px', lineHeight:1.7, color:'rgba(10,15,13,0.55)', maxWidth:'34ch', marginBottom:'10px' }}>
-            <span className="hidden lg:block">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
-            <span className="lg:hidden">TFN, ABN, Tax Return &amp; Super<br />we handle everything for you</span>
+            style={{
+              fontSize: 'clamp(15px, 1.4vw, 17px)',
+              lineHeight: 1.6,
+              color: 'rgba(10,15,13,0.65)',
+              maxWidth: '36ch',
+              marginBottom: '28px',
+            }}>
+            Registered tax agents who handle TFN, returns, super and ABN for working holiday makers - all online.
           </p>
 
-          {/* Mobile: tighter top margin · Desktop: more breathing room */}
-          <div style={{ marginTop:'24px', marginBottom:'16px' }} className="lg:mt-8 lg:mb-4">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height:'52px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Start your tax return →
-            </a>
-          </div>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+            className="btn-primary inline-flex items-center justify-center"
+            style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100%' }}>
+            Start your tax return →
+          </a>
 
-          {/* Mobile: 2×2 grid · Desktop: single row */}
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served','~1 hour response time'].map((label,i) => (
-              <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                style={{ fontSize:'12px', color:'rgba(10,15,13,0.5)' }}>
-                <CheckIcon />{label}
-              </span>
-            ))}
-          </div>
+          <p className="mx-auto" style={{ marginTop: '14px', fontSize: '12.5px', color: '#587066' }}>
+            Free quote · No upfront fees · Reply within 1 hour
+          </p>
         </div>
       </section>
 
-      {/* ── URGENCY STRIP ────────────────────────────────────────────────── */}
-      <section style={{ background:'#0B5240' }}>
-        <div className="max-w-2xl mx-auto px-5 md:px-8 py-10 lg:py-14 text-center">
-          <p className="font-serif font-black text-white mx-auto"
-            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'10px' }}>
-            No TFN means the ATO automatically taxes income at 47%
-          </p>
-          <div style={{ marginTop:'20px' }} className="lg:mt-8">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-semibold transition-all"
-              style={{ height:'56px', padding:'0 32px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'420px', width:'100%', textAlign:'center', lineHeight:1.3 }}>
-              Stop losing money, get your TFN sorted →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
-
-          <span className="section-label center">Why us?</span>
-
-          <h2 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.12, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'10px', marginBottom:'10px' }}>
-            Built for backpackers on a Working Holiday visa.
-          </h2>
-
-          <p className="font-light text-muted mx-auto"
-            style={{ fontSize:'clamp(14px, 1.5vw, 16px)', lineHeight:1.7, maxWidth:'36ch', marginBottom:'32px', textAlign:'center' }}>
-            We have one focus. one goal<br />To maximise your refund.
-          </p>
-
-          {/* Mobile: 1-col · Desktop: 4-col with bigger padding and gap */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom:'36px' }}>
+      {/* ── TRUST STRIP ──────────────────────────────────────────────────── */}
+      <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
+        <div className="max-w-[1100px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { title:'Backpacker tax specialists.',   body:'We handle working holiday tax exclusively, so we know exactly how to get you the most back.' },
-              { title:'ATO compliant.',           body:'Fully compliant with ATO rules, supervised by a registered tax agent.' },
-              { title:'Clear, simple support.',     body:'No complicated terms. We guide you through everything, step by step.' },
-              { title:'We take care of everything.',    body:'No paperwork, no stress, we handle everything for you from start to finish.' },
-            ].map((item,i) => (
-              <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop:'1px solid #E2EFE9' }}>
-                <h3 className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 13.5px)', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</h3>
-                <p className="font-light text-muted leading-[1.7]" style={{ fontSize:'clamp(12px, 1.1vw, 13px)' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ marginTop:'8px' }} className="lg:mt-4">
-            <Link href="#how-it-works" className="btn-ghost-dark inline-flex" style={{ height:'44px', padding:'0 24px', fontSize:'13.5px' }}>
-              Start your tax return →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background:'#F4F9F6' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
-
-          <div className="text-center" style={{ marginBottom:'28px' }}>
-            <span className="section-label center">Client results</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'26ch' }}>
-              See how much backpackers like you are getting back.
-            </h2>
-          </div>
-
-          {/* Mobile: 1-col · Desktop: 3-col with bigger padding and gap */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            {TESTIMONIALS.map((t,i) => (
-              <div key={i} className="bg-white rounded-2xl flex flex-col"
-                style={{ padding:'18px', boxShadow:'0 1px 4px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}
-                /* Desktop inline override for bigger padding */
-              >
-                <div style={{ padding:'0', boxShadow:'none' }} className="hidden lg:block" />
-                <div className="flex gap-0.5" style={{ marginBottom:'10px' }}>
-                  {Array.from({length:5}).map((_,si) => <IconStar key={si} />)}
+              { stat: '1,200+', label: 'Backpackers helped' },
+              { stat: '4.9★',   label: '300+ reviews' },
+              { stat: '45+',    label: 'Countries served' },
+              { stat: '~1 hr',  label: 'Average response' },
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="font-serif" style={{ fontSize: 'clamp(22px, 4vw, 28px)', fontWeight: 800, color: '#0B5240', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '4px' }}>
+                  {item.stat}
                 </div>
-                {/* Mobile: short text, max ~2 lines via line-clamp */}
-                <p className="font-light text-body flex-1 line-clamp-3 lg:line-clamp-none"
-                  style={{ fontSize:'13px', lineHeight:1.7, marginBottom:'12px' }}>
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center justify-between" style={{ paddingTop:'10px', borderTop:'1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                      style={{ width:'30px', height:'30px', fontSize:'11px', background:t.bgColor, color:t.textColor }}>{t.initials}</div>
-                    <div>
-                      <p className="font-semibold text-ink" style={{ fontSize:'12px', lineHeight:1.2 }}>{t.name}</p>
-                      <p className="text-subtle" style={{ fontSize:'10.5px', marginTop:'1px' }}>{t.from}</p>
-                    </div>
-                  </div>
-                  {/* Mobile: larger amount · Desktop: even larger */}
-                  <span className="font-serif font-black text-forest-500 flex-shrink-0"
-                    style={{ fontSize:'clamp(18px, 2vw, 22px)', letterSpacing:'-0.03em' }}>{t.amount}</span>
+                <div style={{ fontSize: '11.5px', color: '#587066', letterSpacing: '0.02em' }}>
+                  {item.label}
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Stats - mobile 2×2 grid, desktop 4-col, bigger numbers on desktop */}
-          <div style={{ marginTop:'28px', paddingTop:'24px', borderTop:'1px solid #E2EFE9' }}>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
-              {[
-                {n:'4.9★', l:'from 300+ reviews'},
-                {n:'1,200+', l:'backpackers helped'},
-                {n:'< 1 hr', l:'~1 hour response time'},
-                {n:'100%', l:'Fully online, no paperwork'},
-              ].map((s,i) => (
-                <div key={i} className="text-center py-2 lg:py-3">
-                  <p className="font-serif font-black text-forest-500"
-                    style={{ fontSize:'clamp(18px, 2.8vw, 28px)', letterSpacing:'-0.03em', lineHeight:1 }}>{s.n}</p>
-                  <p className="text-subtle"
-                    style={{ fontSize:'clamp(11px, 1.1vw, 12.5px)', marginTop:'5px', lineHeight:1.4 }}>{s.l}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
-
-          <div className="text-center" style={{ marginBottom:'36px' }}>
-            <span className="section-label center">How it works</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'24ch' }}>
-              How it works in 4 simple steps
-            </h2>
-            <p className="font-light text-muted mx-auto"
-              style={{ fontSize:'clamp(14px, 1.4vw, 16px)', lineHeight:1.7, maxWidth:'32ch', marginBottom:'4px' }}>
-              <em className="not-italic text-forest-400">Simple process, maximum refund.</em>
-            </p>
-
-          </div>
-
-          {/* Desktop 4-step horizontal - bigger circles, thicker connector */}
-          <div className="hidden lg:block" style={{ marginBottom:'56px' }}>
-            <div className="relative flex items-start">
-              {/* Thicker, darker connector line */}
-              <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
-                style={{ background:'linear-gradient(90deg, #C8EAE0 0%, #0B5240 25%, #0B5240 75%, #C8EAE0 100%)' }}
-                aria-hidden="true" />
-              {STEPS.map((s,i) => (
-                <div key={i} className="flex-1 flex flex-col items-center px-4" style={{ zIndex:1 }}>
-                  {/* Bigger step circles on desktop */}
-                  <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width:'40px', height:'40px', background:'#0B5240', fontSize:'15px', marginBottom:'20px', boxShadow:'0 0 0 5px #fff, 0 0 0 6px #C8EAE0' }}>
-                    {s.n}
-                  </div>
-                  <p className="font-semibold text-ink text-center"
-                    style={{ fontSize:'14px', marginBottom:'8px', lineHeight:1.3 }}>{s.title}</p>
-                  <p className="font-light text-muted text-center"
-                    style={{ fontSize:'12.5px', lineHeight:1.7 }}>{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile vertical steps - bigger circles, more spacing */}
-          <div className="lg:hidden flex flex-col" style={{ marginBottom:'32px' }}>
-            {STEPS.map((s,i) => (
-              <div key={i} className="flex gap-4" style={{ paddingBottom: i < STEPS.length-1 ? '24px':'0' }}>
-                <div className="flex flex-col items-center flex-shrink-0">
-                  {/* Slightly bigger on mobile too */}
-                  <div className="rounded-full flex items-center justify-center font-bold text-white"
-                    style={{ width:'30px', height:'30px', background:'#0B5240', fontSize:'13px', flexShrink:0 }}>
-                    {s.n}
-                  </div>
-                  {i < STEPS.length-1 && (
-                    <div className="flex-1 w-px mt-2"
-                      style={{ minHeight:'22px', background:'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }}
-                      aria-hidden="true" />
-                  )}
-                </div>
-                <div style={{ paddingTop:'3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'14px', marginBottom:'4px' }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'13px', lineHeight:1.7 }}>{s.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center" style={{ marginTop:'8px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'300px', width:'100%', marginLeft:'auto', marginRight:'auto' }}>
-              Start your tax return →
-            </a>
-            <p style={{ marginTop:'10px', fontSize:'12px', color:'#2FA880' }}>
-              Free to start&nbsp;&bull;&nbsp;No upfront fees&nbsp;&bull;&nbsp;Personal support throughout
-            </p>
           </div>
         </div>
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background:'#EEF7F2' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+      <section style={{ background: '#F5F9F7', paddingTop: '60px', paddingBottom: '60px' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 lg:px-12">
 
-          <div className="text-center" style={{ marginBottom:'28px' }}>
-            <span className="section-label center">What we help with</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px', maxWidth:'22ch' }}>
-              Full tax support for working holiday makers<br />
-              <em className="not-italic font-normal text-forest-400">in Australia.</em>
+          <div className="text-center mb-8 lg:mb-10">
+            <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+              What we help with
+            </p>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(26px, 3.4vw, 38px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '20ch' }}>
+              Full tax support for working holiday makers
             </h2>
-            <p className="font-light text-muted mx-auto"
-              style={{ fontSize:'clamp(13px, 1.3vw, 15px)', textAlign:'center', lineHeight:1.7, maxWidth:'36ch' }}>
-              From your first job to your final refund<br />we've got you covered.
+            <p className="font-light mx-auto" style={{ fontSize: 'clamp(14px, 1.3vw, 16px)', color: '#587066', lineHeight: 1.65, maxWidth: '44ch' }}>
+              From your first job to your final refund. Everything handled by registered tax agents.
             </p>
           </div>
 
-          {/* Desktop: bigger padding inside cards, larger gap between cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-            {SERVICES.map((s) => (
-              <Link key={s.href} href={s.href}
-                className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
-                style={{ padding:'18px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <span className="font-medium uppercase text-subtle" style={{ fontSize:'10px', letterSpacing:'0.1em', marginBottom:'10px' }}>{s.n}</span>
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
-                  style={{ marginBottom:'10px' }}>{s.icon}</span>
-                <h3 className="font-semibold text-ink" style={{ fontSize:'13.5px', marginBottom:'5px' }}>{s.title}</h3>
-                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize:'12px', marginBottom:'12px' }}>{s.desc}</p>
-                <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize:'12px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4">
+            {SERVICES.map(s => (
+              <Link key={s.href} href={s.href} className="home-service-card">
+                <div className="home-service-icon">
+                  {s.icon}
+                </div>
+                <h3 className="home-service-title">{s.title}</h3>
+                <p className="home-service-desc">{s.desc}</p>
+                <span className="home-service-link">
                   Learn more →
                 </span>
               </Link>
@@ -320,15 +349,181 @@ export default function HomePage() {
         </div>
       </section>
 
-      <CtaBand
-        eyebrow="Start here"
-        heading="Get your tax sorted"
-        headingEm="in Australia or abroad."
-        sub={<>We handle your TFN, tax return, super and ABN<span className="hidden sm:inline">,</span><br className="sm:hidden" /> all in one place.</>}
-        primaryLabel="Send us a message to get started"
-        trustLine=""
-        clipTop
-      />
+      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
+      <section style={{ background: '#F5F9F7', paddingTop: '60px', paddingBottom: '60px' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 lg:px-12">
+
+          <div className="text-center mb-10">
+            <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+              How it works
+            </p>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(26px, 3.4vw, 38px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '20ch' }}>
+              Four steps to your refund
+            </h2>
+            <p className="font-light mx-auto" style={{ fontSize: 'clamp(14px, 1.3vw, 16px)', color: '#587066', lineHeight: 1.65, maxWidth: '40ch' }}>
+              Most clients are done in under 30 minutes of their time. We do the rest.
+            </p>
+          </div>
+
+          {/* Desktop horizontal */}
+          <div className="hidden lg:block">
+            <div className="grid grid-cols-4 gap-6">
+              {STEPS.map(s => (
+                <div key={s.n} className="home-step-card">
+                  <div className="home-step-number">{s.n}</div>
+                  <h3 className="home-step-title">{s.title}</h3>
+                  <p className="home-step-body">{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile vertical */}
+          <div className="lg:hidden flex flex-col gap-4 max-w-[480px] mx-auto">
+            {STEPS.map((s, i) => (
+              <div key={s.n} className="home-step-card-mobile">
+                <div className="flex items-start gap-4">
+                  <div className="home-step-number-mobile">{s.n}</div>
+                  <div style={{ flex: 1, paddingTop: '2px' }}>
+                    <h3 className="home-step-title">{s.title}</h3>
+                    <p className="home-step-body">{s.body}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center" style={{ marginTop: '36px' }}>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center justify-center"
+              style={{ minHeight: '52px', padding: '0 32px', fontSize: '14.5px', borderRadius: '100px', maxWidth: '300px', width: '100%' }}>
+              Start your tax return →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY US ───────────────────────────────────────────────────────── */}
+      <section className="bg-white" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 lg:px-12">
+
+          <div className="text-center mb-8 lg:mb-10">
+            <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+              Why us
+            </p>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(26px, 3.4vw, 38px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '20ch' }}>
+              Built for backpackers, not businesses
+            </h2>
+            <p className="font-light mx-auto" style={{ fontSize: 'clamp(14px, 1.3vw, 16px)', color: '#587066', lineHeight: 1.65, maxWidth: '46ch' }}>
+              We do one thing - working holiday tax in Australia - and we do it really well.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+            {WHY_US.map((item, i) => (
+              <div key={i} className="home-why-card">
+                <div className="home-why-icon">
+                  {item.icon}
+                </div>
+                <h3 className="home-why-title">{item.title}</h3>
+                <p className="home-why-body">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
+      <section style={{ background: '#F5F9F7', paddingTop: '60px', paddingBottom: '60px' }}>
+        <div className="max-w-[1100px] mx-auto px-5 md:px-8 lg:px-12">
+
+          <div className="text-center mb-8 lg:mb-10">
+            <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+              Real refunds
+            </p>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(26px, 3.4vw, 38px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '22ch' }}>
+              Backpackers like you, sorted
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+            {TESTIMONIALS.map((t, i) => (
+              <div key={i} className="home-testimonial-card">
+                <div className="flex gap-0.5 mb-3" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, si) => (
+                    <svg key={si} width="14" height="14" viewBox="0 0 12 12">
+                      <path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/>
+                    </svg>
+                  ))}
+                </div>
+                <p className="home-testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
+                <div className="home-testimonial-footer">
+                  <div className="home-testimonial-avatar">{t.initials}</div>
+                  <div style={{ flex: 1 }}>
+                    <p className="home-testimonial-name">{t.name}</p>
+                    <p className="home-testimonial-from">{t.from}</p>
+                  </div>
+                  <span className="home-testimonial-amount">{t.amount}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      <section className="bg-white" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
+
+          <div className="text-center mb-8">
+            <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+              Frequently asked
+            </p>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(26px, 3.4vw, 38px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '10px' }}>
+              Quick answers
+            </h2>
+            <p className="font-light mx-auto" style={{ fontSize: 'clamp(14px, 1.3vw, 16px)', color: '#587066', lineHeight: 1.65, maxWidth: '40ch' }}>
+              The most common things working holiday makers ask us.
+            </p>
+          </div>
+
+          <div className="flex flex-col" style={{ gap: '4px' }}>
+            {FAQS.map((f, i) => (
+              <details key={i} name="home-faq" className="contact-faq-item">
+                <summary className="contact-faq-summary">
+                  <span style={{ flex: 1 }}>{f.question}</span>
+                  <span className="contact-faq-plus" aria-hidden="true">+</span>
+                </summary>
+                <p className="contact-faq-answer">{f.answer}</p>
+              </details>
+            ))}
+          </div>
+
+          <p className="text-center" style={{ marginTop: '32px', fontSize: '14px', color: '#587066' }}>
+            More questions? <Link href="/contact" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Get in touch</Link>
+          </p>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
+      <section style={{ background: '#0B5240', paddingTop: '60px', paddingBottom: '60px' }}>
+        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+          <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+            Ready when you are
+          </p>
+          <h2 className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(26px, 3.6vw, 38px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '20ch' }}>
+            Start your tax return today
+          </h2>
+          <p className="font-light mx-auto" style={{ fontSize: 'clamp(14px, 1.3vw, 16px)', color: 'rgba(255,255,255,0.7)', lineHeight: 1.7, marginBottom: '28px', maxWidth: '40ch' }}>
+            We will get back to you within an hour. Free quote, no upfront fees.
+          </p>
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center justify-center font-semibold"
+            style={{ minHeight: '54px', padding: '0 36px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '15px', maxWidth: '300px', width: '100%' }}>
+            Start your tax return →
+          </a>
+        </div>
+      </section>
     </>
   )
 }

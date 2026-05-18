@@ -116,8 +116,9 @@ export function Footer() {
 
             {/* Right: Legal links + copyright */}
             <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
-              <Link href="/client-agreement" className="footer-link-dark">Client Agreement</Link>
-              <Link href="/privacy"          className="footer-link-dark">Privacy</Link>
+              <Link href="/client-agreement" className="footer-link-dark">Terms of Service</Link>
+              <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
+              <Link href="/privacy"          className="footer-link-dark">Privacy Policy</Link>
               <span style={{ color: 'rgba(255,255,255,0.55)' }} suppressHydrationWarning>
                 © {new Date().getFullYear()}
               </span>

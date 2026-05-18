@@ -321,6 +321,260 @@
 }
 
 /* ============================================
+   HOMEPAGE STYLES - MOBILE FIRST
+   ============================================ */
+
+/* ─── Service cards ─── */
+.home-service-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #E2EFE9;
+  border-radius: 16px;
+  padding: 24px 22px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  min-height: 200px;
+  -webkit-tap-highlight-color: rgba(11, 82, 64, 0.06);
+}
+@media (min-width: 1024px) {
+  .home-service-card {
+    padding: 26px 24px;
+  }
+}
+.home-service-card:active {
+  transform: scale(0.99);
+}
+.home-service-card:hover {
+  border-color: #0B5240;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(11, 82, 64, 0.18);
+}
+.home-service-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #EAF6F1;
+  color: #0B5240;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: all 0.25s ease;
+}
+.home-service-card:hover .home-service-icon {
+  background: #0B5240;
+  color: #fff;
+}
+.home-service-title {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #080F0D;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px 0;
+  line-height: 1.25;
+}
+.home-service-desc {
+  font-size: 13.5px;
+  color: #587066;
+  line-height: 1.6;
+  font-weight: 300;
+  margin: 0 0 16px 0;
+  flex: 1;
+}
+.home-service-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #0B5240;
+  transition: gap 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.home-service-card:hover .home-service-link {
+  gap: 8px;
+}
+
+/* ─── Step cards ─── */
+.home-step-card {
+  text-align: center;
+  position: relative;
+}
+.home-step-number {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #0B5240;
+  color: #fff;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0;
+}
+.home-step-card-mobile {
+  background: #fff;
+  border: 1px solid #E2EFE9;
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.home-step-number-mobile {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #0B5240;
+  color: #fff;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 14.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.home-step-title {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #080F0D;
+  letter-spacing: -0.015em;
+  margin: 0 0 6px 0;
+  line-height: 1.3;
+}
+.home-step-body {
+  font-size: 13px;
+  color: #587066;
+  line-height: 1.6;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ─── Why us cards ─── */
+.home-why-card {
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #E2EFE9;
+  border-radius: 16px;
+  transition: border-color 0.2s ease;
+}
+@media (min-width: 1024px) {
+  .home-why-card {
+    padding: 24px;
+  }
+}
+.home-why-card:hover {
+  border-color: #C8EAE0;
+}
+.home-why-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #EAF6F1;
+  color: #0B5240;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+.home-why-title {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #080F0D;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+.home-why-body {
+  font-size: 13px;
+  color: #587066;
+  line-height: 1.65;
+  font-weight: 300;
+  margin: 0;
+}
+
+/* ─── Testimonials ─── */
+.home-testimonial-card {
+  padding: 22px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #E2EFE9;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+@media (min-width: 1024px) {
+  .home-testimonial-card {
+    padding: 24px;
+  }
+}
+.home-testimonial-card:hover {
+  border-color: #C8EAE0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -8px rgba(11, 82, 64, 0.12);
+}
+.home-testimonial-quote {
+  font-size: 14px;
+  color: #2A3C34;
+  line-height: 1.7;
+  font-weight: 300;
+  flex: 1;
+  margin: 0 0 16px 0;
+}
+.home-testimonial-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid #E2EFE9;
+}
+.home-testimonial-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #EAF6F1;
+  color: #0B5240;
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.home-testimonial-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #080F0D;
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.3;
+}
+.home-testimonial-from {
+  font-size: 11.5px;
+  color: #8AADA3;
+  margin: 1px 0 0 0;
+  line-height: 1.3;
+}
+.home-testimonial-amount {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0B5240;
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+@media (min-width: 1024px) {
+  .home-testimonial-amount {
+    font-size: 22px;
+  }
+}
+
+/* ============================================
    CONTACT PAGE STYLES - MOBILE FIRST
    ============================================ */
 
