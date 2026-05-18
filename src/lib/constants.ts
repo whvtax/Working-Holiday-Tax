@@ -14,6 +14,6 @@ export const NAV_LINKS = [
   { label: 'Super',       href: '/superannuation' },
   { label: 'Medicare',    href: '/medicare' },
   { label: 'Calculator',  href: '/calculator' },
-  { label: 'Blog',        href: '/guides' },
+  { label: 'Blog',        href: '/blog' },
   { label: 'Contact',     href: '/contact' },
 ] as const

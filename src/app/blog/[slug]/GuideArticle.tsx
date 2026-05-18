@@ -226,7 +226,7 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
 
         {/* Next Guide */}
         {nextGuide && (
-          <Link href={`/guides/${nextGuide.slug}`} style={{ display: 'block', textDecoration: 'none', marginTop: '2rem' }}>
+          <Link href={`/blog/${nextGuide.slug}`} style={{ display: 'block', textDecoration: 'none', marginTop: '2rem' }}>
             <div style={{ border: '1px solid #E2EFE9', borderRadius: '16px', padding: '1.25rem 1.5rem', cursor: 'pointer' }}>
               <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>
                 Keep reading →
@@ -243,7 +243,7 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
 
         {/* Back */}
         <div style={{ marginTop: '2rem', paddingBottom: '1rem' }}>
-          <Link href="/guides" style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+          <Link href="/blog" style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
             ← Back to Blog
           </Link>
         </div>

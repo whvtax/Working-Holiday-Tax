@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { guides } from './data'
-import GuidesClient from './GuidesClient'
+import BlogClient from './BlogClient'
 
 export const metadata: Metadata = {
   title: 'Blog | Working Holiday Tax',
@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Blog | Working Holiday Tax',
     description: 'Everything you need to know about tax in Australia, explained simply.',
-    url: 'https://workingholidaytax.com.au/guides',
+    url: 'https://workingholidaytax.com.au/blog',
   },
 }
 
-export default function GuidesPage() {
+export default function BlogPage() {
   return (
     <main style={{ background: '#fff', minHeight: '100vh' }}>
-      <GuidesClient guides={guides} />
+      <BlogClient guides={guides} />
     </main>
   )
 }

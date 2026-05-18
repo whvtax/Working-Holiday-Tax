@@ -45,6 +45,22 @@ const nextConfig = {
   async headers() {
     return [{ source: '/(.*)', headers: securityHeaders }]
   },
+  async redirects() {
+    return [
+      // Permanent 301 redirects: old /guides URLs → new /blog URLs
+      // Preserves SEO authority of any external links pointing to the old paths.
+      {
+        source: '/guides',
+        destination: '/blog',
+        permanent: true,
+      },
+      {
+        source: '/guides/:path*',
+        destination: '/blog/:path*',
+        permanent: true,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

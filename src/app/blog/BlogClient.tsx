@@ -96,7 +96,7 @@ function getCategorySlug(cat: Category): string {
   return meta?.slug ?? ''
 }
 
-export default function GuidesClient({
+export default function BlogClient({
   guides,
   initialCategory,
 }: {
@@ -105,7 +105,7 @@ export default function GuidesClient({
 }) {
   const [page, setPage] = useState(1)
 
-  // The hub page (/guides) shows all guides. Category filtering moved to /guides/category/[slug]
+  // The hub page (/blog) shows all guides. Category filtering moved to /blog/category/[slug]
   // for SEO. We keep initialCategory only as a defensive fallback; in practice this client is
   // always rendered without one on the main hub page.
   const filtered = initialCategory
@@ -156,7 +156,7 @@ export default function GuidesClient({
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               <Link
-                href="/guides"
+                href="/blog"
                 style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid #E9A020`, background: '#E9A020', color: '#1A2822', fontSize: '13px', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}
               >
                 All guides
@@ -166,7 +166,7 @@ export default function GuidesClient({
                 return (
                   <Link
                     key={cat}
-                    href={`/guides/category/${slug}`}
+                    href={`/blog/category/${slug}`}
                     style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid #E2EFE9`, background: 'transparent', color: '#587066', fontSize: '13px', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }}
                   >
                     {cat}
@@ -191,7 +191,7 @@ export default function GuidesClient({
             return (
               <Link
                 key={guide.slug}
-                href={`/guides/${guide.slug}`}
+                href={`/blog/${guide.slug}`}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',

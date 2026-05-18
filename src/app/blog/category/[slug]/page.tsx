@@ -18,12 +18,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${meta.title} | Working Holiday Tax`,
     description: meta.description,
     alternates: {
-      canonical: `https://workingholidaytax.com.au/guides/category/${meta.slug}`,
+      canonical: `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
     },
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `https://workingholidaytax.com.au/guides/category/${meta.slug}`,
+      url: `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
     },
   }
 }
@@ -39,7 +39,7 @@ export default function CategoryPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: meta.title,
     description: meta.description,
-    url: `https://workingholidaytax.com.au/guides/category/${meta.slug}`,
+    url: `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
     isPartOf: {
       '@type': 'WebSite',
       name: 'Working Holiday Tax',
@@ -54,7 +54,7 @@ export default function CategoryPage({ params }: Props) {
       itemListElement: articles.map((g, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `https://workingholidaytax.com.au/guides/${g.slug}`,
+        url: `https://workingholidaytax.com.au/blog/${g.slug}`,
         name: g.title,
       })),
     },
@@ -65,8 +65,8 @@ export default function CategoryPage({ params }: Props) {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/guides' },
-      { '@type': 'ListItem', position: 3, name: meta.category, item: `https://workingholidaytax.com.au/guides/category/${meta.slug}` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/blog' },
+      { '@type': 'ListItem', position: 3, name: meta.category, item: `https://workingholidaytax.com.au/blog/category/${meta.slug}` },
     ],
   }
 
@@ -98,7 +98,7 @@ export default function CategoryPage({ params }: Props) {
             <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'rgba(10,15,13,0.45)', marginBottom: '16px' }}>
               <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Home</Link>
               <span aria-hidden="true">/</span>
-              <Link href="/guides" style={{ color: 'inherit', textDecoration: 'none' }}>Blog</Link>
+              <Link href="/blog" style={{ color: 'inherit', textDecoration: 'none' }}>Blog</Link>
               <span aria-hidden="true">/</span>
               <span aria-current="page" style={{ color: '#587066' }}>{meta.category}</span>
             </nav>
@@ -141,7 +141,7 @@ export default function CategoryPage({ params }: Props) {
             {articles.map(g => (
               <Link
                 key={g.slug}
-                href={`/guides/${g.slug}`}
+                href={`/blog/${g.slug}`}
                 style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '24px', background: '#fff', textDecoration: 'none', borderRadius: '16px', border: '1px solid #E2EFE9' }}
                 className="guide-card"
               >
@@ -191,14 +191,14 @@ export default function CategoryPage({ params }: Props) {
               .map(c => (
                 <Link
                   key={c.slug}
-                  href={`/guides/category/${c.slug}`}
+                  href={`/blog/category/${c.slug}`}
                   style={{ padding: '6px 14px', borderRadius: '100px', border: '1px solid #E2EFE9', fontSize: '13px', color: '#587066', textDecoration: 'none', fontWeight: 500 }}
                 >
                   {c.category}
                 </Link>
               ))}
             <Link
-              href="/guides"
+              href="/blog"
               style={{ padding: '6px 14px', borderRadius: '100px', border: '1px solid #0B5240', background: '#0B5240', fontSize: '13px', color: '#fff', textDecoration: 'none', fontWeight: 600 }}
             >
               All guides →

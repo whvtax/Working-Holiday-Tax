@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/constants'
-import { guides, categoryMeta } from './guides/data'
+import { guides, categoryMeta } from './blog/data'
 
 const routes = [
   { url: '/',                  priority: 1.0,  changeFrequency: 'monthly' },
@@ -10,7 +10,7 @@ const routes = [
   { url: '/abn',               priority: 0.8,  changeFrequency: 'monthly' },
   { url: '/calculator',        priority: 0.8,  changeFrequency: 'monthly' },
   { url: '/medicare',          priority: 0.7,  changeFrequency: 'monthly' },
-  { url: '/guides',            priority: 0.85, changeFrequency: 'weekly'  },
+  { url: '/blog',            priority: 0.85, changeFrequency: 'weekly'  },
   { url: '/contact',           priority: 0.7,  changeFrequency: 'monthly' },
   { url: '/tax-residency',      priority: 0.6,  changeFrequency: 'yearly'  },
   { url: '/client-agreement',  priority: 0.4,  changeFrequency: 'yearly'  },
@@ -26,14 +26,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }))
 
   const categoryPages: MetadataRoute.Sitemap = categoryMeta.map(c => ({
-    url: `${SITE_URL}/guides/category/${c.slug}`,
+    url: `${SITE_URL}/blog/category/${c.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }))
 
   const guidePages: MetadataRoute.Sitemap = guides.map(g => ({
-    url: `${SITE_URL}/guides/${g.slug}`,
+    url: `${SITE_URL}/blog/${g.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
