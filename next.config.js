@@ -43,7 +43,25 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
   },
   async headers() {
-    return [{ source: '/(.*)', headers: securityHeaders }]
+    return [
+      { source: '/(.*)', headers: securityHeaders },
+      // Serve llms.txt and llms-full.txt as plain text with cache headers
+      // so AI crawlers can ingest the structured content map.
+      {
+        source: '/llms.txt',
+        headers: [
+          { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
+          { key: 'Cache-Control', value: 'public, max-age=3600, must-revalidate' },
+        ],
+      },
+      {
+        source: '/llms-full.txt',
+        headers: [
+          { key: 'Content-Type', value: 'text/plain; charset=utf-8' },
+          { key: 'Cache-Control', value: 'public, max-age=3600, must-revalidate' },
+        ],
+      },
+    ]
   },
   async redirects() {
     return [
@@ -57,6 +75,12 @@ const nextConfig = {
       {
         source: '/guides/:path*',
         destination: '/blog/:path*',
+        permanent: true,
+      },
+      // Slug update: minimum-wage-australia-2024-25 → 2025-26 (kept old URL working)
+      {
+        source: '/blog/minimum-wage-australia-2024-25',
+        destination: '/blog/minimum-wage-australia-2025-26',
         permanent: true,
       },
     ]

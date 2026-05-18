@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { type Guide, type Category, categories, getCategoryColor, categoryMeta } from './data'
+import CategoryHero from './[slug]/CategoryHero'
+import { fuzzySearch } from './search'
+import { trackEvent, trackSearchDebounced } from './analytics'
 
-const PER_PAGE = 6
-
-
+const PER_PAGE = 9
 
 function Pagination({
   total,
@@ -37,27 +38,29 @@ function Pagination({
   }
 
   const btnBase: React.CSSProperties = {
-    width: '36px',
-    height: '36px',
+    minWidth: '40px',
+    height: '40px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: '8px',
+    borderRadius: '10px',
     border: '1px solid #E2EFE9',
     background: 'transparent',
     cursor: 'pointer',
     fontSize: '13px',
     fontWeight: 500,
     color: '#587066',
-    transition: 'all 0.15s',
+    transition: 'all 0.2s ease',
+    padding: '0 12px',
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '48px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', marginTop: '48px', flexWrap: 'wrap' }}>
       <button
         onClick={() => onPage(page - 1)}
         disabled={page === 1}
         style={{ ...btnBase, opacity: page === 1 ? 0.3 : 1 }}
+        className="pagination-btn"
       >
         ‹
       </button>
@@ -75,6 +78,7 @@ function Pagination({
               border: `1px solid ${page === p ? '#0B5240' : '#E2EFE9'}`,
               fontWeight: page === p ? 700 : 500,
             }}
+            className="pagination-btn"
           >
             {p}
           </button>
@@ -84,6 +88,7 @@ function Pagination({
         onClick={() => onPage(page + 1)}
         disabled={page === Math.ceil(total / PER_PAGE)}
         style={{ ...btnBase, opacity: page === Math.ceil(total / PER_PAGE) ? 0.3 : 1 }}
+        className="pagination-btn"
       >
         ›
       </button>
@@ -104,19 +109,59 @@ export default function BlogClient({
   initialCategory?: Category
 }) {
   const [page, setPage] = useState(1)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeCategory, setActiveCategory] = useState<Category | 'All'>(initialCategory ?? 'All')
 
-  // The hub page (/blog) shows all guides. Category filtering moved to /blog/category/[slug]
-  // for SEO. We keep initialCategory only as a defensive fallback; in practice this client is
-  // always rendered without one on the main hub page.
-  const filtered = initialCategory
-    ? guides.filter(g => g.category === initialCategory)
-    : guides
+  // Filter by category and search
+  const filtered = useMemo(() => {
+    let result = guides
+    if (activeCategory !== 'All') {
+      result = result.filter(g => g.category === activeCategory)
+    }
+    if (searchQuery.trim()) {
+      // Fuzzy search handles typos, synonyms (super → superannuation, etc.), and partial matches.
+      // Results are also re-sorted by relevance score.
+      result = fuzzySearch(result, searchQuery)
+    }
+    return result
+  }, [guides, activeCategory, searchQuery])
 
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
 
+  // Count articles per category for badge counts in the filter pills.
+  const countsByCategory = useMemo(() => {
+    const counts: Record<string, number> = { All: guides.length }
+    for (const g of guides) {
+      counts[g.category] = (counts[g.category] ?? 0) + 1
+    }
+    return counts
+  }, [guides])
+
+  // Reset to page 1 when filters change
+  const handleCategoryChange = (cat: Category | 'All') => {
+    setActiveCategory(cat)
+    setPage(1)
+    trackEvent('blog_category_filter', { category: cat })
+  }
+
+  const handleSearchChange = (q: string) => {
+    setSearchQuery(q)
+    setPage(1)
+    if (q.trim()) {
+      // Compute result count for the analytics event (so we can see no-results queries)
+      const filteredForCount = activeCategory !== 'All'
+        ? guides.filter(g => g.category === activeCategory)
+        : guides
+      const resultCount = fuzzySearch(filteredForCount, q).length
+      trackSearchDebounced(q, resultCount)
+    }
+  }
+
   return (
     <>
-      {/* Hero with category links */}
+      {/* All blog styles are in globals.css for cleanliness and proper SSR */}
+
+      {/* Hero */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-12">
 
@@ -127,7 +172,7 @@ export default function BlogClient({
             <span aria-current="page">Blog</span>
           </nav>
 
-          <div className="max-w-[560px] lg:max-w-[700px]">
+          <div style={{ maxWidth: '720px', marginBottom: '32px' }}>
 
             <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
@@ -138,102 +183,238 @@ export default function BlogClient({
             </div>
 
             <h1 className="font-serif font-black text-ink"
-              style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
-              <span className="hidden lg:block">
-                <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Everything you need to know</span>
-                <span style={{ display: 'block', whiteSpace: 'nowrap', color: '#0B5240' }}>about tax in Australia</span>
-              </span>
-              <span className="lg:hidden">
-                <span style={{ display: 'block', fontSize: '22px' }}>Everything you need to know</span>
-                <span style={{ display: 'block', color: '#0B5240', fontSize: '22px' }}>about tax in Australia</span>
-              </span>
+              style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '12px' }}>
+              <span style={{ display: 'block' }}>Everything you need to know</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>about tax in Australia</span>
             </h1>
 
             <p className="font-light"
-              style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '44ch', marginBottom: '20px' }}>
-              Clear, honest guides for working holiday makers. No jargon, no confusing forms - just the information you need, explained simply.
+              style={{ fontSize: 'clamp(13px,1.2vw,16px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '52ch', marginBottom: '24px' }}>
+              Clear, honest blog articles for working holiday makers. No jargon, no confusing forms - just the information you need, explained simply.
             </p>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-              <Link
-                href="/blog"
-                style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid #E9A020`, background: '#E9A020', color: '#1A2822', fontSize: '13px', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap' }}
-              >
-                All guides
-              </Link>
-              {categories.map(cat => {
-                const slug = getCategorySlug(cat)
-                return (
-                  <Link
-                    key={cat}
-                    href={`/blog/category/${slug}`}
-                    style={{ padding: '6px 16px', borderRadius: '100px', border: `1px solid #E2EFE9`, background: 'transparent', color: '#587066', fontSize: '13px', fontWeight: 500, textDecoration: 'none', whiteSpace: 'nowrap' }}
-                  >
-                    {cat}
-                  </Link>
-                )
-              })}
+            {/* Stats grid - credibility signals at the top, focused on what working holiday makers care about */}
+            <div className="hero-stats">
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #E2EFE9' }}>
+                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{guides.length}</div>
+                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Articles</div>
+              </div>
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #E2EFE9' }}>
+                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{categories.length}</div>
+                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Topics</div>
+              </div>
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#EAF6F1', borderRadius: '12px', border: '1px solid #C8EAE0' }}>
+                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>2025-26</div>
+                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Updated</div>
+              </div>
+              <div className="stat-card" style={{ padding: '16px 18px', background: '#FDF0D5', borderRadius: '12px', border: '1px solid #E9A020' }}>
+                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>Free</div>
+                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>To read</div>
+              </div>
             </div>
-
           </div>
+
+          {/* Search input */}
+          <div style={{ maxWidth: '560px', marginBottom: '24px', position: 'relative' }}>
+            <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: '#8AADA3' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder="Search articles by title, topic, or category..."
+              className="search-input"
+              style={{
+                width: '100%',
+                padding: '12px 16px 12px 44px',
+                paddingRight: searchQuery ? '40px' : '16px',
+                borderRadius: '12px',
+                border: '1px solid #E2EFE9',
+                background: '#fff',
+                fontSize: '14px',
+                color: '#2A3C34',
+                fontWeight: 400,
+                transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+              }}
+              aria-label="Search blog articles"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => handleSearchChange('')}
+                className="clear-search-btn"
+                style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#8AADA3', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                aria-label="Clear search"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            )}
+          </div>
+
+          {/* Category filter pills */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            <button
+              onClick={() => handleCategoryChange('All')}
+              className="category-pill"
+              style={{
+                padding: '8px 16px',
+                borderRadius: '100px',
+                border: `1px solid ${activeCategory === 'All' ? '#E9A020' : '#E2EFE9'}`,
+                background: activeCategory === 'All' ? '#E9A020' : 'transparent',
+                color: activeCategory === 'All' ? '#1A2822' : '#587066',
+                fontSize: '13px',
+                fontWeight: activeCategory === 'All' ? 700 : 500,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              All articles
+              <span style={{
+                fontSize: '11px',
+                padding: '1px 6px',
+                borderRadius: '100px',
+                background: activeCategory === 'All' ? 'rgba(26,40,34,0.15)' : '#E2EFE9',
+                color: activeCategory === 'All' ? '#1A2822' : '#587066',
+                fontWeight: 600,
+              }}>
+                {countsByCategory.All}
+              </span>
+            </button>
+            {categories.map(cat => {
+              const colors = getCategoryColor(cat)
+              const isActive = activeCategory === cat
+              return (
+                <button
+                  key={cat}
+                  onClick={() => handleCategoryChange(cat)}
+                  className="category-pill"
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '100px',
+                    border: `1px solid ${isActive ? colors.border : '#E2EFE9'}`,
+                    background: isActive ? colors.bg : 'transparent',
+                    color: isActive ? colors.text : '#587066',
+                    fontSize: '13px',
+                    fontWeight: isActive ? 700 : 500,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  {cat}
+                  <span style={{
+                    fontSize: '11px',
+                    padding: '1px 6px',
+                    borderRadius: '100px',
+                    background: isActive ? 'rgba(0,0,0,0.08)' : '#E2EFE9',
+                    color: isActive ? colors.text : '#587066',
+                    fontWeight: 600,
+                  }}>
+                    {countsByCategory[cat] ?? 0}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
         </div>
       </section>
 
       {/* Grid */}
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 20px 80px', borderTop: '1px solid #E2EFE9' }}>
-        <div className="guides-grid" style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '20px',
-        }}>
-          {paginated.map(guide => {
-            const color = getCategoryColor(guide.category)
-            return (
-              <Link
-                key={guide.slug}
-                href={`/blog/${guide.slug}`}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '14px',
-                  padding: '28px',
-                  background: '#fff',
-                  textDecoration: 'none',
-                  borderRadius: '16px',
-                  border: '1px solid #E2EFE9',
-                  transition: 'box-shadow 0.15s, border-color 0.15s',
-                }}
-                className="guide-card"
-              >
-                {/* Body */}
-                <div className="guide-card-body" style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
-                  {/* Meta */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{guide.readTime} min read</span>
+
+        {/* Result count + search context */}
+        {searchQuery && (
+          <div style={{ marginBottom: '24px', padding: '12px 16px', background: '#F7F9F8', borderRadius: '10px', fontSize: '13px', color: '#587066' }}>
+            {filtered.length === 0
+              ? <>No articles found for <strong style={{ color: '#0B5240' }}>"{searchQuery}"</strong>. Try a different search term or browse all articles.</>
+              : <>Showing <strong style={{ color: '#0B5240' }}>{filtered.length}</strong> {filtered.length === 1 ? 'article' : 'articles'} matching <strong style={{ color: '#0B5240' }}>"{searchQuery}"</strong></>
+            }
+          </div>
+        )}
+
+        {filtered.length === 0 && !searchQuery ? (
+          <div style={{ textAlign: 'center', padding: '60px 20px', color: '#587066' }}>
+            <p style={{ fontSize: '14px' }}>No articles in this category yet.</p>
+          </div>
+        ) : (
+          <div className="blog-grid">
+            {paginated.map(article => {
+              const colors = getCategoryColor(article.category)
+              return (
+                <Link
+                  key={article.slug}
+                  href={`/blog/${article.slug}`}
+                  className="blog-card"
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '14px',
+                    padding: '0',
+                    background: '#fff',
+                    textDecoration: 'none',
+                    borderRadius: '16px',
+                    border: '1px solid #E2EFE9',
+                  }}
+                >
+                  {/* Decorative category illustration at the top of the card */}
+                  <div className="blog-card-hero" style={{ aspectRatio: '16/9', overflow: 'hidden', borderRadius: '15px 15px 0 0' }}>
+                    <CategoryHero category={article.category} title={article.title} />
                   </div>
 
-                  {/* Title */}
-                  <h2
-                    className="font-serif"
-                    style={{ fontSize: '15.5px', fontWeight: 700, color: '#080F0D', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}
-                  >
-                    {guide.title}
-                  </h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 22px 22px', flex: 1 }}>
+                    {/* Category badge + meta */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                      <span style={{
+                        fontSize: '10.5px',
+                        padding: '3px 10px',
+                        borderRadius: '100px',
+                        background: colors.bg,
+                        color: colors.text,
+                        fontWeight: 600,
+                        letterSpacing: '0.02em',
+                        border: `1px solid ${colors.border}`,
+                      }}>
+                        {article.category}
+                      </span>
+                      <span style={{ color: '#CDE3DB' }}>·</span>
+                      <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{article.readTime} min read</span>
+                    </div>
 
-                  {/* Description */}
-                  <p className="guide-card-desc" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.65, margin: 0, fontWeight: 300 }}>
-                    {guide.description}
-                  </p>
+                    {/* Title */}
+                    <h2
+                      className="font-serif"
+                      style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}
+                    >
+                      {article.title}
+                    </h2>
 
-                  {/* CTA */}
-                  <span style={{ fontSize: '12.5px', color: '#0B5240', fontWeight: 600, marginTop: '4px' }}>
-                    Read guide →
-                  </span>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
+                    {/* Description */}
+                    <p style={{ fontSize: '13px', color: '#587066', lineHeight: 1.65, margin: 0, fontWeight: 300, flex: 1 }}>
+                      {article.description}
+                    </p>
+
+                    {/* CTA */}
+                    <span style={{ fontSize: '12.5px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                      Read article <span className="read-arrow">→</span>
+                    </span>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        )}
 
         {/* Pagination */}
         <Pagination
@@ -243,9 +424,11 @@ export default function BlogClient({
         />
 
         {/* Count */}
-        <p style={{ textAlign: 'center', fontSize: '12px', color: '#8AADA3', marginTop: '16px' }}>
-          Showing {(page - 1) * PER_PAGE + 1}–{Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} guides
-        </p>
+        {filtered.length > 0 && (
+          <p style={{ textAlign: 'center', fontSize: '12px', color: '#8AADA3', marginTop: '16px' }}>
+            Showing {(page - 1) * PER_PAGE + 1}–{Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
+          </p>
+        )}
       </section>
     </>
   )

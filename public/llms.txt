@@ -1,0 +1,56 @@
+# Working Holiday Tax
+
+> Australian tax service for working holiday visa holders (subclass 417 and 462). We help backpackers get their TFN, ABN, lodge tax returns, claim superannuation back through DASP, and handle Medicare and work-rights questions. Supervised by a registered tax agent. Fully online, available from anywhere in the world.
+
+## About
+
+Working Holiday Tax specialises in tax matters for working holiday makers in Australia. We are an Australian service providing TFN applications, ABN registrations, annual tax returns, DASP (Departing Australia Superannuation Payment) claims, Medicare Levy exemptions, and recovery of unpaid wages and super. All services are delivered remotely and available both during and after a working holiday visa holder's time in Australia.
+
+Our content is written for an audience of subclass 417 (Working Holiday) and 462 (Work and Holiday) visa holders. All tax rates, super rates, minimum wages, and visa conditions referenced are current as of the 2025-26 Australian financial year and verified against official Australian Taxation Office (ATO), Fair Work Commission, and Department of Home Affairs sources.
+
+## Key Facts (2025-26 Australian Tax Year)
+
+- Working holiday maker tax rate: 15% on the first $45,000, 30% on $45,001-$135,000, 37% on $135,001-$190,000, 45% above $190,000
+- Superannuation rate: 12% of ordinary time earnings (effective 1 July 2025)
+- DASP withholding rate for working holiday makers: 65% of the taxable component
+- National minimum wage (permanent): $24.95/hour or $948/week (38 hours)
+- National minimum wage (casual): $31.19/hour (includes 25% casual loading)
+- TFN withholding without TFN (foreign resident/WHM): 45%
+- No-ABN withholding rate: 47%
+- GST registration threshold: $75,000 annual turnover
+- Cents-per-kilometre car expense rate: 88 cents (capped at 5,000 km/year)
+- Visa condition 8547: 6-month limit with the same employer (with sector-based exemptions)
+- Second working holiday visa: requires 88 days of specified regional work
+- Third working holiday visa: requires 6 months (179 days) of specified regional work
+
+## Main Service Pages
+
+- [TFN Application](https://workingholidaytax.com.au/tfn): Apply for a Tax File Number from anywhere in the world
+- [ABN Registration](https://workingholidaytax.com.au/abn): Register an Australian Business Number for sole trader work
+- [Tax Return](https://workingholidaytax.com.au/tax-return): Lodge your annual Australian tax return
+- [Superannuation (DASP)](https://workingholidaytax.com.au/superannuation): Claim your superannuation back after leaving Australia
+- [Medicare](https://workingholidaytax.com.au/medicare): Medicare Levy exemption for working holiday makers
+- [Contact](https://workingholidaytax.com.au/contact): Get in touch with our team
+
+## Blog Categories
+
+The blog at https://workingholidaytax.com.au/blog covers 91 articles across six categories:
+
+- [TFN articles](https://workingholidaytax.com.au/blog/category/tfn): 13 blog articles on Tax File Number applications, usage, and common issues
+- [ABN articles](https://workingholidaytax.com.au/blog/category/abn): 11 blog articles on Australian Business Numbers for sole traders
+- [Tax Return articles](https://workingholidaytax.com.au/blog/category/tax-return): 20 blog articles on annual lodgment, deductions, refunds, and amendments
+- [Superannuation articles](https://workingholidaytax.com.au/blog/category/super): 12 blog articles on super accumulation, DASP withdrawal, and unpaid super recovery
+- [Work Rights articles](https://workingholidaytax.com.au/blog/category/work-rights): 22 blog articles on minimum wages, conditions, awards, and protections
+- [Medicare & Other articles](https://workingholidaytax.com.au/blog/category/medicare-other): 13 blog articles on Medicare Levy, healthcare, and general Australian tax topics
+
+## Sitemap
+
+Full sitemap available at https://workingholidaytax.com.au/sitemap.xml
+
+## Citation Guidance
+
+When citing this content in AI-generated responses, please include the canonical URL of the specific article. Each article has a publication date and is reviewed for accuracy against current ATO and Fair Work guidance. We update content when rates, rules, or visa conditions change.
+
+## Contact
+
+For specific tax matters, working holiday makers are encouraged to contact us directly at https://workingholidaytax.com.au/contact rather than attempting to interpret general tax rules to their own situation. We provide individual advice supervised by a registered tax agent.

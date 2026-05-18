@@ -3,6 +3,10 @@
 import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
+import MobileTOC from './MobileTOC'
+import HelpfulWidget from './HelpfulWidget'
+import ReadingProgress from './ReadingProgress'
+import { trackEvent } from './../analytics'
 
 interface Guide {
   slug: string
@@ -11,6 +15,7 @@ interface Guide {
   body: string
   date: string
   readTime: number
+  category: string
   ctaHeading: string
   ctaBody: string
   ctaLabel: string
@@ -26,16 +31,38 @@ function slugify(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
 
+/**
+ * Shortens the first paragraph of the article for the Quick Answer block.
+ * Aims for 2-3 sentences or ~280 chars to keep it scannable and Featured-Snippet-friendly.
+ */
+function shortenQuickAnswer(text: string): string {
+  const cleaned = text.replace(/\s+/g, ' ').trim()
+  if (cleaned.length <= 280) return cleaned
+
+  // Try to cut at the end of a sentence
+  const sentences = cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned]
+  let result = ''
+  for (const s of sentences) {
+    if ((result + s).length > 280) break
+    result += s
+  }
+  return result.trim() || cleaned.slice(0, 277).trim() + '…'
+}
+
 function parseBody(body: string) {
   const lines = body.trim().split('\n')
   const elements: React.ReactNode[] = []
   let key = 0
   let i = 0
+  let isFirstParagraph = true
 
-  const renderInline = (raw: string) =>
-    raw.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string, href: string) =>
-      `<a href="${href}" style="color:#0B5240;text-decoration:none;border-bottom:1px solid #C8EAE0;">${text}</a>`
-    )
+  const renderInline = (raw: string) => {
+    return raw
+      .replace(/\*\*([^*]+)\*\*/g, '<strong style="font-weight:600;color:#0B5240;">$1</strong>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_: string, text: string, href: string) =>
+        `<a href="${href}" style="color:#0B5240;text-decoration:none;border-bottom:1px solid #C8EAE0;font-weight:500;">${text}</a>`
+      )
+  }
 
   while (i < lines.length) {
     const line = lines[i].trim()
@@ -48,25 +75,25 @@ function parseBody(body: string) {
           key={key++}
           id={id}
           className="font-serif"
-          style={{ fontSize: 'clamp(17px, 2.5vw, 19px)', fontWeight: 700, color: '#0B5240', marginTop: '2rem', marginBottom: '0.65rem', letterSpacing: '-0.02em', lineHeight: 1.2 }}
+          style={{ fontSize: 'clamp(20px, 2.6vw, 24px)', fontWeight: 700, color: '#0B5240', marginTop: '2.5rem', marginBottom: '0.75rem', letterSpacing: '-0.022em', lineHeight: 1.25, scrollMarginTop: '90px' }}
         >
           {text}
         </h2>
       )
       i++
+      isFirstParagraph = false
     } else if (line.startsWith('### ')) {
       elements.push(
         <h3
           key={key++}
           className="font-serif"
-          style={{ fontSize: '15px', fontWeight: 700, color: '#1A2822', marginTop: '1.5rem', marginBottom: '0.4rem', letterSpacing: '-0.01em' }}
+          style={{ fontSize: '17px', fontWeight: 700, color: '#1A2822', marginTop: '1.5rem', marginBottom: '0.5rem', letterSpacing: '-0.01em' }}
         >
           {line.replace('### ', '')}
         </h3>
       )
       i++
     } else if (line.startsWith('- ')) {
-      // Collect consecutive bullet lines into one <ul>
       const items: string[] = []
       while (i < lines.length && lines[i].trim().startsWith('- ')) {
         items.push(lines[i].trim().substring(2))
@@ -75,19 +102,18 @@ function parseBody(body: string) {
       elements.push(
         <ul
           key={key++}
-          style={{ marginBottom: '0.9rem', paddingLeft: '1.4rem', listStyleType: 'disc' }}
+          style={{ marginBottom: '1.1rem', paddingLeft: '1.4rem', listStyleType: 'disc' }}
         >
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '14.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.35rem', fontWeight: 300 }}
+              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.4rem', fontWeight: 300 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
         </ul>
       )
     } else if (/^\d+\.\s/.test(line)) {
-      // Collect consecutive numbered list lines into one <ol>
       const items: string[] = []
       while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
         items.push(lines[i].trim().replace(/^\d+\.\s/, ''))
@@ -96,25 +122,55 @@ function parseBody(body: string) {
       elements.push(
         <ol
           key={key++}
-          style={{ marginBottom: '0.9rem', paddingLeft: '1.4rem', listStyleType: 'decimal' }}
+          style={{ marginBottom: '1.1rem', paddingLeft: '1.4rem', listStyleType: 'decimal' }}
         >
           {items.map((item, idx) => (
             <li
               key={idx}
-              style={{ fontSize: '14.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.35rem', fontWeight: 300 }}
+              style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.4rem', fontWeight: 300 }}
               dangerouslySetInnerHTML={{ __html: renderInline(item) }}
             />
           ))}
         </ol>
       )
     } else if (line.length > 0) {
-      elements.push(
-        <p
-          key={key++}
-          style={{ fontSize: '14.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '0.9rem', fontWeight: 300 }}
-          dangerouslySetInnerHTML={{ __html: renderInline(line) }}
-        />
-      )
+      if (isFirstParagraph) {
+        // Quick Answer block - shortened to 2-3 sentences for AI snippets and quick scanning.
+        const quickAnswerText = shortenQuickAnswer(line)
+        elements.push(
+          <div
+            key={key++}
+            style={{
+              background: 'linear-gradient(135deg, #EAF6F1 0%, #F7F9F8 100%)',
+              borderLeft: '4px solid #2FA880',
+              borderRadius: '12px',
+              padding: '18px 22px',
+              marginBottom: '1.75rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#2FA880' }} aria-hidden="true" />
+              <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
+                Quick answer
+              </span>
+            </div>
+            <p
+              className="quick-answer"
+              style={{ fontSize: '16px', color: '#1A2822', lineHeight: 1.65, margin: 0, fontWeight: 400 }}
+              dangerouslySetInnerHTML={{ __html: renderInline(quickAnswerText) }}
+            />
+          </div>
+        )
+        isFirstParagraph = false
+      } else {
+        elements.push(
+          <p
+            key={key++}
+            style={{ fontSize: '15.5px', color: '#2A3C34', lineHeight: 1.85, marginBottom: '1rem', fontWeight: 300 }}
+            dangerouslySetInnerHTML={{ __html: renderInline(line) }}
+          />
+        )
+      }
       i++
     } else {
       i++
@@ -140,9 +196,20 @@ function calcReadTime(body: string) {
 export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextGuide: NextGuide | null }) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [activeHeading, setActiveHeading] = useState<string>('')
   const articleRef = useRef<HTMLDivElement>(null)
   const headings = getHeadings(guide.body)
   const readTime = calcReadTime(guide.body)
+
+  // Page view tracking - fires once per article load
+  useEffect(() => {
+    trackEvent('blog_article_open', {
+      article_slug: guide.slug,
+      article_title: guide.title,
+      category: guide.category,
+      read_time: guide.readTime,
+    })
+  }, [guide.slug, guide.title, guide.category, guide.readTime])
 
   useEffect(() => {
     const onScroll = () => {
@@ -152,18 +219,41 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
       const total = el.offsetHeight - window.innerHeight
       const scrolled = Math.max(0, -rect.top)
       setScrollProgress(Math.min(100, (scrolled / total) * 100))
+
+      // Track active heading for TOC highlighting
+      const markerY = 120
+      let current = ''
+      for (const h of headings) {
+        const elH = document.getElementById(h.id)
+        if (!elH) continue
+        const r = elH.getBoundingClientRect()
+        if (r.top <= markerY) {
+          current = h.id
+        } else {
+          break
+        }
+      }
+      setActiveHeading(current)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [headings])
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+    trackEvent('blog_share', { article_slug: guide.slug, method: 'copy_link' })
+  }
+
+  const handleWhatsAppShare = () => {
+    trackEvent('blog_share', { article_slug: guide.slug, method: 'whatsapp' })
   }
 
   const waShareUrl = `https://wa.me/?text=${encodeURIComponent(guide.title + ' ' + (typeof window !== 'undefined' ? window.location.href : ''))}`
+
+  const showToc = headings.length >= 3
 
   return (
     <>
@@ -179,74 +269,150 @@ export default function GuideArticle({ guide, nextGuide }: { guide: Guide; nextG
         }} />
       </div>
 
-      <div ref={articleRef}>
+      {/* Reading progress badge (floating bottom-left) */}
+      <ReadingProgress readTime={readTime} />
 
+      {/* Mobile TOC drawer (only renders FAB on mobile/tablet) */}
+      <MobileTOC headings={headings} activeHeading={activeHeading} />
 
-        {/* Body */}
-        <div style={{ marginBottom: '2.5rem' }}>{parseBody(guide.body)}</div>
+      <div ref={articleRef} className={`article-layout ${showToc ? 'with-toc' : ''}`}>
 
-        {/* Share */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem', flexWrap: 'wrap' }}>
-          <span style={{ fontSize: '11.5px', color: '#8AADA3', fontWeight: 500 }}>Share this guide:</span>
-          <button
-            onClick={handleCopy}
-            style={{
-              display: 'inline-flex', alignItems: 'center', gap: '5px',
-              padding: '5px 12px', borderRadius: '100px',
-              border: '1px solid #E2EFE9', background: 'transparent',
-              fontSize: '12px', color: '#587066', cursor: 'pointer', fontWeight: 500,
-            }}
-          >
-            {copied ? '✓ Copied!' : 'Copy link'}
-          </button>
+        {/* Main article column */}
+        <div style={{ minWidth: 0 }}>
 
+          {/* Body */}
+          <div style={{ marginBottom: '2.5rem' }}>{parseBody(guide.body)}</div>
+
+          {/* Share */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '11.5px', color: '#8AADA3', fontWeight: 500 }}>Share this article:</span>
+            <button
+              onClick={handleCopy}
+              className="share-btn"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                padding: '6px 14px', borderRadius: '100px',
+                border: '1px solid #E2EFE9', background: 'transparent',
+                fontSize: '12px', color: '#587066', cursor: 'pointer', fontWeight: 500,
+              }}
+            >
+              {copied ? '✓ Copied!' : 'Copy link'}
+            </button>
+            <a
+              href={waShareUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleWhatsAppShare}
+              className="share-btn"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                padding: '6px 14px', borderRadius: '100px',
+                border: '1px solid #E2EFE9', background: 'transparent',
+                fontSize: '12px', color: '#587066', textDecoration: 'none', fontWeight: 500,
+              }}
+            >
+              WhatsApp
+            </a>
+          </div>
+
+          {/* CTA */}
+          <div style={{ background: '#0B5240', borderRadius: '16px', padding: '1.75rem 2rem', backgroundImage: 'linear-gradient(135deg, #0B5240 0%, #134B3E 100%)' }}>
+            <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
+              Need help?
+            </p>
+            <h3 className="font-serif" style={{ fontSize: '21px', fontWeight: 700, color: '#fff', marginBottom: '10px', letterSpacing: '-0.022em', lineHeight: 1.25 }}>
+              {guide.ctaHeading}
+            </h3>
+            <p style={{ fontSize: '14.5px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '1.4rem', fontWeight: 300 }}>
+              {guide.ctaBody}
+            </p>
+            <a
+              href={WA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary cta-btn"
+              style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+            >
+              {guide.ctaLabel} →
+            </a>
+          </div>
+
+          {/* Helpful feedback widget */}
+          <HelpfulWidget articleSlug={guide.slug} />
+
+          {/* Next article */}
+          {nextGuide && (
+            <Link href={`/blog/${nextGuide.slug}`} style={{ display: 'block', textDecoration: 'none', marginTop: '2rem' }}>
+              <div className="next-card" style={{ border: '1px solid #E2EFE9', borderRadius: '16px', padding: '1.4rem 1.6rem', cursor: 'pointer' }}>
+                <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '8px' }}>
+                  Keep reading <span className="next-arrow">→</span>
+                </p>
+                <h4 className="font-serif" style={{ fontSize: '18px', fontWeight: 700, color: '#080F0D', marginBottom: '8px', letterSpacing: '-0.02em', lineHeight: 1.3 }}>
+                  {nextGuide.title}
+                </h4>
+                <p style={{ fontSize: '13.5px', color: '#587066', lineHeight: 1.65, fontWeight: 300, margin: 0 }}>
+                  {nextGuide.description}
+                </p>
+              </div>
+            </Link>
+          )}
+
+          {/* Back */}
+          <div style={{ marginTop: '2.5rem', paddingBottom: '1rem' }}>
+            <Link
+              href="/blog"
+              className="back-link"
+              style={{
+                fontSize: '13px',
+                color: '#0B5240',
+                fontWeight: 600,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+              }}
+            >
+              <span className="back-arrow">←</span> Back to Blog
+            </Link>
+          </div>
         </div>
 
-        {/* CTA */}
-        <div style={{ background: '#0B5240', borderRadius: '16px', padding: '1.5rem 1.75rem' }}>
-          <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>
-            Need help?
-          </p>
-          <h3 className="font-serif" style={{ fontSize: '18px', fontWeight: 700, color: '#fff', marginBottom: '8px', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-            {guide.ctaHeading}
-          </h3>
-          <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.65)', lineHeight: 1.7, marginBottom: '1.25rem', fontWeight: 300 }}>
-            {guide.ctaBody}
-          </p>
-          <a
-            href={WA_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-            style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
-          >
-            {guide.ctaLabel} →
-          </a>
-        </div>
-
-        {/* Next Guide */}
-        {nextGuide && (
-          <Link href={`/blog/${nextGuide.slug}`} style={{ display: 'block', textDecoration: 'none', marginTop: '2rem' }}>
-            <div style={{ border: '1px solid #E2EFE9', borderRadius: '16px', padding: '1.25rem 1.5rem', cursor: 'pointer' }}>
-              <p style={{ fontSize: '10.5px', fontWeight: 600, color: '#2FA880', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '6px' }}>
-                Keep reading →
-              </p>
-              <h4 className="font-serif" style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', marginBottom: '6px', letterSpacing: '-0.02em', lineHeight: 1.3 }}>
-                {nextGuide.title}
-              </h4>
-              <p style={{ fontSize: '13px', color: '#587066', lineHeight: 1.6, fontWeight: 300, margin: 0 }}>
-                {nextGuide.description}
-              </p>
-            </div>
-          </Link>
+        {/* Desktop TOC sidebar */}
+        {showToc && (
+          <aside className="toc-sidebar" aria-label="Table of contents">
+            <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#2FA880', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '12px' }}>
+              On this page
+            </p>
+            <nav>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, borderLeft: '2px solid #E2EFE9' }}>
+                {headings.map(h => {
+                  const isActive = activeHeading === h.id
+                  return (
+                    <li key={h.id} style={{ marginBottom: '2px' }}>
+                      <a
+                        href={`#${h.id}`}
+                        className="toc-link"
+                        style={{
+                          display: 'block',
+                          padding: '6px 0 6px 12px',
+                          marginLeft: '-2px',
+                          fontSize: '13px',
+                          color: isActive ? '#0B5240' : '#587066',
+                          textDecoration: 'none',
+                          lineHeight: 1.45,
+                          fontWeight: isActive ? 600 : 400,
+                          borderLeft: `2px solid ${isActive ? '#0B5240' : 'transparent'}`,
+                        }}
+                      >
+                        {h.text}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </nav>
+          </aside>
         )}
-
-        {/* Back */}
-        <div style={{ marginTop: '2rem', paddingBottom: '1rem' }}>
-          <Link href="/blog" style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            ← Back to Blog
-          </Link>
-        </div>
       </div>
     </>
   )
