@@ -673,11 +673,6 @@ export default function TaxReturnPage() {
                   </div>
                 ))}
               </div>
-              <div className="rounded-xl px-4 py-3 text-center" style={{ background: '#FEF3F0', border: '1px solid #FBD0BB', padding: '12px 16px', borderRadius: '12px' }}>
-                <p className="font-light leading-[1.75]" style={{ fontSize: '12.5px', color: '#9A3412' }}>
-                  A registered tax agent will never ask for your password, SMS codes, or access to your myGov account.
-                </p>
-              </div>
             </div>
           </div>
           <div className="text-center mt-10 reveal">
@@ -694,7 +689,7 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 

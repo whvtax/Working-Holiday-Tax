@@ -314,10 +314,10 @@ export default function MedicarePage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[560px] mx-auto text-center">
             <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
-              Not sure if you&apos;re eligible for Medicare?
+              Not sure if you are eligible for Medicare?
             </p>
             <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              We check your eligibility and apply everything correctly
+              We check your eligibility and apply everything correctly.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
@@ -409,7 +409,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
             <span className="section-label center">FAQs</span>

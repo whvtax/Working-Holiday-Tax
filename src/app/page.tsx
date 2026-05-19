@@ -198,7 +198,7 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
+      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
 
           <span className="section-label center">Why us?</span>
@@ -236,7 +236,7 @@ export default function HomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F4F9F6' }}>
+      <section className="py-12 lg:py-24 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -295,7 +295,7 @@ export default function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24 bg-white">
+      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F4F9F6' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>

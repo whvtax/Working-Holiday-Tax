@@ -186,7 +186,7 @@ export default function TaxResidencyPage() {
         </section>
 
         {/* ── TAX TABLES COMPARISON ─────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '20px', paddingBottom: '50px' }}>
+        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12">
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
@@ -212,7 +212,7 @@ export default function TaxResidencyPage() {
         </section>
 
         {/* ── RESIDENCY CONDITIONS ──────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '50px' }}>
+        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12">
 
             <div className="text-center mb-8">
@@ -259,7 +259,7 @@ export default function TaxResidencyPage() {
         </section>
 
         {/* ── CTA TO OUR SERVICE ────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '20px' }}>
+        <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '50px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12">
             <div className="taxres-cta-card">
               <div className="taxres-cta-text">

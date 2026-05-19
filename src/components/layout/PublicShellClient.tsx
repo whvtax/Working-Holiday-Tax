@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
+import { SecurityNotice } from '@/components/ui/SecurityNotice'
 
 export default function PublicShellClient({
   children,
@@ -25,6 +26,7 @@ export default function PublicShellClient({
       {!isCrm && nav}
       {children}
       {!isCrm && footer}
+      {!isCrm && <SecurityNotice />}
     </>
   )
 }

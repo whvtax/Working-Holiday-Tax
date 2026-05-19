@@ -158,10 +158,6 @@ export default function TFNPage() {
 
             {/* Left: Explainer */}
             <div className="tfn-intro-content">
-              <div className="tfn-intro-step-badge">
-                <span className="tfn-intro-step-num">01</span>
-                <span className="tfn-intro-step-label">Your first step</span>
-              </div>
               <h2 className="tfn-intro-heading">
                 What is a TFN?
               </h2>
