@@ -111,9 +111,7 @@ export function Footer() {
 
             {/* Left: Brand name + copyright */}
             <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }} suppressHydrationWarning>
-              <span style={{ fontWeight: 600, color: 'rgba(255,255,255,0.92)' }}>Working Holiday Tax</span>
-              <span aria-hidden="true" style={{ margin: '0 8px', color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <span>© {new Date().getFullYear()} All rights reserved</span>
+              <span>© {new Date().getFullYear()} Working Holiday Tax. All rights reserved.</span>
             </div>
 
             {/* Right: Legal links */}

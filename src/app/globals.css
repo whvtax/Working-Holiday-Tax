@@ -837,17 +837,6 @@
   margin: 0;
   line-height: 1.1;
 }
-.super-boarding-warning {
-  margin-top: 14px;
-  padding: 12px 14px;
-  background: #FFFBEB;
-  border-left: 3px solid #E9A020;
-  border-radius: 6px;
-  font-size: 12.5px;
-  color: #2A3C34;
-  line-height: 1.55;
-  font-weight: 300;
-}
 
 /* ─────────────────────────────────────────────────────────────────
    ABN INTRO - Employee vs Contractor motif

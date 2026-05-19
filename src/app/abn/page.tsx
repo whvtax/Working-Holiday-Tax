@@ -233,13 +233,7 @@ export default function ABNPage() {
                 </div>
 
               </div>
-              <p className="abn-compare-footer">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '5px' }}>
-                  <circle cx="12" cy="12" r="9" stroke="#2FA880" strokeWidth="1.6"/>
-                  <path d="M12 8v5M12 16h.01" stroke="#2FA880" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-                Not sure which one you are? We will tell you.
-              </p>
+
             </div>
 
           </div>
@@ -253,30 +247,6 @@ export default function ABNPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Register my ABN →
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── URGENCY STRIP ─────────────────────────────────────────────────── */}
-      {/* Mobile: py-8 · Desktop: py-12 */}
-      <section style={{ background:'#0B5240' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-8 lg:py-12 text-center">
-          <div className="mx-auto" style={{ maxWidth:'480px' }}>
-            <p className="font-serif font-black text-white"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'8px' }}>
-              Not sure if you need a TFN or ABN?
-            </p>
-            <p className="font-light text-center"
-              style={{ fontSize:'clamp(13px,1.3vw,14.5px)', color:'rgba(255,255,255,0.68)', marginBottom:'0', lineHeight:1.7, maxWidth:'36ch', margin:'0 auto' }}>
-              Simple, clear, and done properly from the start.
-            </p>
-            <div style={{ marginTop:'16px' }} className="lg:mt-7">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center font-semibold"
-                style={{ height:'50px', padding:'0 28px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'14px', maxWidth:'320px', width:'100%' }}>
-                Get guidance on the right setup →
-              </a>
-            </div>
           </div>
         </div>
       </section>
@@ -429,27 +399,6 @@ export default function ABNPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── WHAT IS AN ABN ────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center">
-            <span className="section-label center">What is an ABN?</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'16px', textWrap:'balance' }}>
-              An Australian Business Number (ABN) allows you to work<br /><em className="not-italic font-normal text-forest-400">and invoice legally in Australia as a contractor.</em>
-            </h2>
-            <p className="font-light text-body leading-[1.75] mx-auto"
-              style={{ maxWidth:'40ch', marginBottom:'14px', fontSize:'13.5px' }}>
-              An ABN is an 11-digit number that identifies you when working as a contractor or freelancer. You must include it on every invoice you send.
-            </p>
-            <p className="font-light text-body leading-[1.75] mx-auto"
-              style={{ maxWidth:'40ch', fontSize:'13.5px' }}>
-              With an ABN, you receive your full payment without automatic tax withholding, giving you more control over your income and tax responsibilities.
-            </p>
           </div>
         </div>
       </section>

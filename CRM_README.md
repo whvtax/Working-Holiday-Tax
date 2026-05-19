@@ -85,12 +85,10 @@ PASSWORD_SALT=whvtax-salt-2024
 
 ---
 
-## Upgrade לproduction
+## Storage in Production
 
-הstore הנוכחי הוא **in-memory** — הנתונים נאבדים בכל restart.
-
-**לproduction — החלף ב:**
-- **Vercel Postgres** / **Supabase** / **PlanetScale**
-- **Vercel Blob** לאחסון קבצים
+ה-CRM משתמש ב-**Supabase** עבור:
+- **PostgreSQL Database** - נתוני לקוחות ומשימות
+- **Supabase Storage** - קבצים שמועלים על ידי לקוחות
 - **bcrypt** במקום PBKDF2 (npm install bcryptjs)
 

@@ -1,4 +1,10 @@
-import { put, del } from '@vercel/blob'
+// src/lib/upload.ts
+// ──────────────────────────────────────────────────────────────────────────
+// File upload utilities - Supabase Storage implementation
+// All security checks (magic bytes, dangerous patterns) preserved.
+// ──────────────────────────────────────────────────────────────────────────
+
+import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
 
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg', 'image/png', 'image/webp', 'image/gif',
@@ -23,13 +29,12 @@ const MAGIC_SIGNATURES: { mime: string; offset: number; bytes: number[] }[] = [
 const DANGEROUS_PATTERNS = [
   // PHP tags
   [0x3C, 0x3F, 0x70, 0x68, 0x70],  // <?php
-  // HTML script tags (case-insensitive check done separately)
+  // HTML script tags
   [0x3C, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74], // <script
   // ELF (Linux executable)
   [0x7F, 0x45, 0x4C, 0x46],
   // PE (Windows .exe / .dll)
   [0x4D, 0x5A],
-  // ZIP (could contain malicious files)
 ]
 
 async function readMagicBytes(file: File, length = 1024): Promise<Uint8Array> {
@@ -46,7 +51,7 @@ function matchesMagicBytes(bytes: Uint8Array, signature: { offset: number; bytes
 }
 
 function containsDangerousPattern(bytes: Uint8Array): boolean {
-  outer: for (const pattern of DANGEROUS_PATTERNS) {
+  for (const pattern of DANGEROUS_PATTERNS) {
     for (let i = 0; i <= bytes.length - pattern.length; i++) {
       let match = true
       for (let j = 0; j < pattern.length; j++) {
@@ -69,7 +74,6 @@ async function validateFileContents(file: File): Promise<void> {
 
   const signatures = MAGIC_SIGNATURES.filter(s => s.mime === file.type)
   if (signatures.length === 0) {
-    // No signature defined for this type — already blocked by ALLOWED_MIME_TYPES check
     throw new Error(`File type not allowed: ${file.type}`)
   }
 
@@ -90,6 +94,10 @@ async function validateFileContents(file: File): Promise<void> {
   }
 }
 
+/**
+ * Upload a single file to Supabase Storage.
+ * Returns a public URL on success, null if no file provided.
+ */
 export async function uploadFile(
   file: File | null,
   folder: string,
@@ -115,12 +123,27 @@ export async function uploadFile(
     .slice(0, 80)
   const pathname = `${folder}/${Date.now()}_${safeName}`
 
-  const blob = await put(pathname, file, {
-    access: 'public',
-    contentType: file.type,
-  })
+  const sb = getSupabase()
+  const arrayBuffer = await file.arrayBuffer()
 
-  return blob.url
+  const { error: uploadError } = await sb.storage
+    .from(STORAGE_BUCKETS.uploads)
+    .upload(pathname, arrayBuffer, {
+      contentType: file.type,
+      cacheControl: '3600',
+      upsert: false,
+    })
+
+  if (uploadError) {
+    throw new Error(`Upload failed: ${uploadError.message}`)
+  }
+
+  // Get the public URL
+  const { data: { publicUrl } } = sb.storage
+    .from(STORAGE_BUCKETS.uploads)
+    .getPublicUrl(pathname)
+
+  return publicUrl
 }
 
 /**
@@ -134,12 +157,31 @@ export async function uploadFiles(
   return results.filter((u): u is string => u !== null)
 }
 
+/**
+ * Delete files from Supabase Storage by their public URLs.
+ * Extracts the storage path from URLs and removes them.
+ */
 export async function deleteFiles(urls: string[]): Promise<void> {
   const validUrls = urls.filter(u => typeof u === 'string' && u.startsWith('https://'))
   if (validUrls.length === 0) return
+
+  const sb = getSupabase()
+  // Extract storage paths from Supabase public URLs
+  // Format: https://xxx.supabase.co/storage/v1/object/public/uploads/folder/file.jpg
+  const paths = validUrls
+    .map(url => {
+      const marker = `/storage/v1/object/public/${STORAGE_BUCKETS.uploads}/`
+      const idx = url.indexOf(marker)
+      if (idx === -1) return null
+      return url.slice(idx + marker.length)
+    })
+    .filter((p): p is string => p !== null)
+
+  if (paths.length === 0) return
+
   try {
-    await del(validUrls)
+    await sb.storage.from(STORAGE_BUCKETS.uploads).remove(paths)
   } catch (err) {
-    console.error('[deleteFiles] Failed to delete blobs:', err)
+    console.error('[deleteFiles] Failed to delete files:', err)
   }
 }

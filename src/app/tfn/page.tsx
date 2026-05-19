@@ -218,29 +218,6 @@ export default function TFNPage() {
         </div>
       </section>
 
-      {/* ── URGENCY ───────────────────────────────────────────────────────── */}
-      <section style={{ background:'#0B5240' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-10 lg:py-16 text-center">
-          <div className="mx-auto" style={{ maxWidth:'460px' }}>
-            <p className="font-serif font-black text-white"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', letterSpacing:'-0.025em', lineHeight:1.15, marginBottom:'12px' }}>
-              Without a TFN, you could be taxed<br className="hidden lg:block" /> at a much higher rate.
-            </p>
-            <p className="font-light"
-              style={{ fontSize:'clamp(13px, 1.3vw, 15px)', color:'rgba(255,255,255,0.68)', maxWidth:'34ch', margin:'0 auto', lineHeight:1.75 }}>
-              Apply early to avoid overpaying tax and delays.
-            </p>
-            <div style={{ marginTop:'22px' }} className="lg:mt-8">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center font-semibold"
-                style={{ height:'50px', padding:'0 32px', background:'#E9A020', color:'#1A2822', borderRadius:'100px', fontSize:'15px', maxWidth:'320px', width:'100%' }}>
-                Apply for a TFN →
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-20" style={{ background:'#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">

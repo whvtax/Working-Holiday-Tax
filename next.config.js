@@ -19,12 +19,12 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Google Fonts files
       "font-src 'self' https://fonts.gstatic.com",
-      // Images: self, data URIs, blob (object URLs), Vercel Blob CDN, own domain (OG image)
-      "img-src 'self' data: blob: https://*.vercel-storage.com https://workingholidaytax.com.au",
+      // Images: self, data URIs, blob (object URLs), Supabase Storage, own domain (OG image)
+      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au",
       // PDF preview iframes + YouTube embeds
       "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com",
-      // All API calls are same-origin
-      "connect-src 'self'",
+      // Supabase API calls + same-origin
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in",
       "media-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",
@@ -43,7 +43,10 @@ const nextConfig = {
     serverActions: { bodySizeLimit: '15mb' },
   },
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: '**.vercel-storage.com' }],
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.supabase.co' },
+      { protocol: 'https', hostname: '**.supabase.in' },
+    ],
     formats: ['image/avif', 'image/webp'],
   },
   async headers() {

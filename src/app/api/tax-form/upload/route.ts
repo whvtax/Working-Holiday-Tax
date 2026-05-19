@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { put } from '@vercel/blob'
+import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
@@ -20,7 +20,7 @@ function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
       bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return true
   // GIF: GIF8
   if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) return true
-  // HEIC/HEIF (iOS photos): ftyp box — bytes 4-7 are 'ftyp'
+  // HEIC/HEIF (iOS photos): ftyp box - bytes 4-7 are 'ftyp'
   if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return true
   return false
 }
@@ -43,13 +43,29 @@ export async function POST(req: NextRequest) {
     if (!validateMagicBytes(body, contentType)) {
       return NextResponse.json({ ok: false, error: 'File content does not match declared type' }, { status: 400 })
     }
+
     const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
-    const blob = await put(
-      `tax-form/invoices/${Date.now()}_${Math.random().toString(36).slice(2,7)}_${safeName}`,
-      body,
-      { access: 'public', contentType }
-    )
-    return NextResponse.json({ ok: true, url: blob.url })
+    const pathname = `tax-form/invoices/${Date.now()}_${Math.random().toString(36).slice(2,7)}_${safeName}`
+
+    const sb = getSupabase()
+    const { error: uploadError } = await sb.storage
+      .from(STORAGE_BUCKETS.uploads)
+      .upload(pathname, body, {
+        contentType,
+        cacheControl: '3600',
+        upsert: false,
+      })
+
+    if (uploadError) {
+      console.error('[invoice-upload supabase]', uploadError)
+      return NextResponse.json({ ok: false, error: 'Upload failed' }, { status: 500 })
+    }
+
+    const { data: { publicUrl } } = sb.storage
+      .from(STORAGE_BUCKETS.uploads)
+      .getPublicUrl(pathname)
+
+    return NextResponse.json({ ok: true, url: publicUrl })
   } catch (err) {
     console.error('[invoice-upload]', err)
     return NextResponse.json({ ok: false, error: 'Upload failed' }, { status: 500 })

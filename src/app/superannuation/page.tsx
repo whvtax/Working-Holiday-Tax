@@ -52,6 +52,18 @@ const faqs = [
     answer: 'You may have multiple super accounts from different employers. We help you find and combine everything before submitting your claim.',
   },
   {
+    question: 'How long does it take to receive my super?',
+    answer: 'Super withdrawals (DASP) are usually paid within 2-4 weeks after the application is approved. The payment goes directly to your bank account.',
+  },
+  {
+    question: 'Where is my super paid - Australian or overseas bank account?',
+    answer: 'Your super is paid directly to your bank account. We can arrange payment to either an Australian or overseas account based on your preference.',
+  },
+  {
+    question: 'How much super does my employer contribute?',
+    answer: 'By Australian law, employers must contribute 12% of your wages into your super fund (rate as of 1 July 2025). This is on top of your salary.',
+  },
+  {
     question: 'Do I receive super if I worked under an ABN?',
     answer: 'Generally, no. Superannuation is not usually paid for ABN (contractor) work. Super is typically only paid when you are classified as an employee. As a contractor working under an ABN, you are responsible for arranging your own super if you want it.',
   },
@@ -251,14 +263,6 @@ export default function SuperannuationPage() {
                   <p className="super-boarding-amount">$2,000 - $5,000</p>
                 </div>
               </div>
-              <p className="super-boarding-warning">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ display: 'inline-block', verticalAlign: 'middle', marginRight: '6px' }}>
-                  <path d="M12 2L2 22h20L12 2z" stroke="#E9A020" strokeWidth="1.8" strokeLinejoin="round"/>
-                  <line x1="12" y1="10" x2="12" y2="15" stroke="#E9A020" strokeWidth="1.8" strokeLinecap="round"/>
-                  <line x1="12" y1="18" x2="12.01" y2="18" stroke="#E9A020" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-                Each year, millions of dollars in super remain unclaimed by working holiday makers who left Australia.
-              </p>
             </div>
 
           </div>
@@ -329,25 +333,6 @@ export default function SuperannuationPage() {
                 </div>
                 <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '6px' }}>{item.title}</p>
                 <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch' }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Key facts strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 lg:gap-5 reveal delay-2">
-            {[
-              { title: 'Contribution rate',  body: '12% of your wages is paid into your super fund.' },
-              { title: 'Who can claim',      body: <><span className="hidden lg:inline">Working Holiday visa holders who have left Australia and their visa has expired.</span><span className="lg:hidden">WHV holders who have left Australia and their visa has expired.</span></> },
-              { title: 'Processing time',    body: 'Usually paid within 2-4 weeks after approval.' },
-              { title: 'Payment method',     body: 'Paid directly to your bank account.' },
-            ].map((c, i) => (
-              <div key={i} className="bg-white rounded-xl px-4 py-3.5 flex flex-col" style={{ border: '1px solid #C8EAE0' }}>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ marginBottom: '8px', flexShrink: 0 }}>
-                  <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                  <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <p className="text-[12px] font-semibold text-ink mb-1">{c.title}</p>
-                <p className="text-[12px] font-light text-muted leading-[1.6]">{c.body}</p>
               </div>
             ))}
           </div>

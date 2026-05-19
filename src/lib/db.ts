@@ -1,4 +1,9 @@
-import { sql } from '@vercel/postgres'
+// src/lib/db.ts
+// ──────────────────────────────────────────────────────────────────────────
+// CRM data access layer - Supabase (PostgreSQL) implementation
+// ──────────────────────────────────────────────────────────────────────────
+
+import { getSupabase } from '@/lib/supabase'
 import { deleteFiles } from '@/lib/upload'
 import crypto from 'crypto'
 
@@ -28,122 +33,32 @@ export type Task = {
 }
 
 // ── DB init ────────────────────────────────────────────────────────────────
-// Global symbol survives Next.js hot-module replacement in dev.
-// In production each Vercel instance runs initDb() once per cold start.
-
-const INIT_KEY = Symbol.for('crm_db_initialised')
-declare const globalThis: Record<symbol, boolean | undefined>
-
-let _initPromise: Promise<void> | null = null
-
-const DB_TIMEOUT = 8000
-
-async function withTimeout<T>(p: Promise<T>, label: string): Promise<T> {
-  return Promise.race([
-    p,
-    new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error(`DB timeout: ${label}`)), DB_TIMEOUT)
-    ),
-  ])
-}
+// With Supabase, tables are pre-created via SQL migrations.
+// initDb() is a no-op kept for backwards compatibility.
 
 export async function initDb(): Promise<void> {
-  if (globalThis[INIT_KEY]) return   // fast path — already done
-  if (_initPromise) return _initPromise  // in progress — wait
-
-  _initPromise = (async () => {
-    try {
-      await withTimeout(sql`
-        CREATE TABLE IF NOT EXISTS crm_clients (
-          id              TEXT PRIMARY KEY,
-          full_name       TEXT NOT NULL DEFAULT '',
-          dob             TEXT NOT NULL DEFAULT '',
-          whatsapp        TEXT NOT NULL DEFAULT '',
-          email           TEXT NOT NULL DEFAULT '',
-          country         TEXT NOT NULL DEFAULT '',
-          how_heard       TEXT NOT NULL DEFAULT '',
-          notes           TEXT NOT NULL DEFAULT '',
-          tax_returns     TEXT NOT NULL DEFAULT '[]',
-          super_returns   TEXT NOT NULL DEFAULT '[]',
-          tfn_service     TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
-          abn_service     TEXT NOT NULL DEFAULT '{"done":false,"completedAt":"","notes":""}',
-          created_at      TEXT NOT NULL DEFAULT '',
-          archived        BOOLEAN NOT NULL DEFAULT FALSE,
-          yearly_checkins TEXT NOT NULL DEFAULT '{}'
-        )
-      `, 'CREATE crm_clients')
-
-      await withTimeout(sql`
-        CREATE TABLE IF NOT EXISTS crm_tasks (
-          id           TEXT PRIMARY KEY,
-          client_id    TEXT NOT NULL DEFAULT '',
-          client_name  TEXT NOT NULL DEFAULT '',
-          task_type    TEXT NOT NULL DEFAULT 'tax-return',
-          whatsapp     TEXT NOT NULL DEFAULT '',
-          email        TEXT NOT NULL DEFAULT '',
-          country      TEXT NOT NULL DEFAULT '',
-          dob          TEXT NOT NULL DEFAULT '',
-          tax_year     TEXT NOT NULL DEFAULT '',
-          submitted_at TEXT NOT NULL DEFAULT '',
-          done         BOOLEAN NOT NULL DEFAULT FALSE,
-          address      TEXT NOT NULL DEFAULT '',
-          tfn          TEXT NOT NULL DEFAULT '',
-          bank_details TEXT NOT NULL DEFAULT '',
-          primary_job  TEXT NOT NULL DEFAULT '',
-          marital      TEXT NOT NULL DEFAULT '',
-          tax_status   TEXT NOT NULL DEFAULT '',
-          how_heard    TEXT NOT NULL DEFAULT '',
-          au_phone     TEXT NOT NULL DEFAULT '',
-          notes        TEXT NOT NULL DEFAULT '',
-          file_urls    TEXT NOT NULL DEFAULT '[]'
-        )
-      `, 'CREATE crm_tasks')
-
-      // Idempotent column additions (safe to run on existing DBs)
-      await Promise.all([
-        withTimeout(sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS file_urls TEXT NOT NULL DEFAULT '[]'`, 'ALT file_urls'),
-        withTimeout(sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS au_phone TEXT NOT NULL DEFAULT ''`, 'ALT au_phone'),
-        withTimeout(sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS review_status TEXT NOT NULL DEFAULT 'pending'`, 'ALT review_status'),
-        withTimeout(sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewer_note TEXT NOT NULL DEFAULT ''`, 'ALT reviewer_note'),
-        withTimeout(sql`ALTER TABLE crm_tasks ADD COLUMN IF NOT EXISTS reviewed_at TEXT NOT NULL DEFAULT ''`, 'ALT reviewed_at'),
-        withTimeout(sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`, 'ALT archived'),
-        withTimeout(sql`ALTER TABLE crm_clients ADD COLUMN IF NOT EXISTS yearly_checkins TEXT NOT NULL DEFAULT '{}'`, 'ALT yearly_checkins'),
-      ])
-
-      // Indexes
-      await Promise.all([
-        withTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_submitted ON crm_tasks(submitted_at DESC)`, 'IDX submitted'),
-        withTimeout(sql`CREATE INDEX IF NOT EXISTS idx_tasks_done ON crm_tasks(done)`, 'IDX done'),
-        withTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_created ON crm_clients(created_at DESC)`, 'IDX created'),
-        withTimeout(sql`CREATE INDEX IF NOT EXISTS idx_clients_archived ON crm_clients(archived)`, 'IDX archived'),
-      ])
-
-      globalThis[INIT_KEY] = true
-    } finally {
-      _initPromise = null  // reset so future calls use the fast path
-    }
-  })()
-
-  return _initPromise
+  return
 }
 
 // ── Row mappers ────────────────────────────────────────────────────────────
 
 function parse<T>(s: unknown, fallback: T): T {
+  if (s === null || s === undefined) return fallback
+  if (typeof s === 'object') return s as T
   try { return JSON.parse(s as string) as T } catch { return fallback }
 }
 
 function toClient(r: Record<string, unknown>): ClientRecord {
   return {
     id:             r.id as string,
-    fullName:       r.full_name as string,
-    dob:            r.dob as string,
-    whatsapp:       r.whatsapp as string,
-    email:          r.email as string,
-    country:        r.country as string,
+    fullName:       (r.full_name as string) ?? '',
+    dob:            (r.dob as string) ?? '',
+    whatsapp:       (r.whatsapp as string) ?? '',
+    email:          (r.email as string) ?? '',
+    country:        (r.country as string) ?? '',
     howHeard:       (r.how_heard as string) ?? '',
     notes:          (r.notes as string) ?? '',
-    createdAt:      r.created_at as string,
+    createdAt:      (r.created_at as string) ?? '',
     taxReturns:     parse(r.tax_returns, []),
     superReturns:   parse(r.super_returns, []),
     tfnService:     parse(r.tfn_service, { done: false, completedAt: '', notes: '' }),
@@ -156,25 +71,25 @@ function toClient(r: Record<string, unknown>): ClientRecord {
 function toTask(r: Record<string, unknown>): Task {
   return {
     id:           r.id as string,
-    clientId:     r.client_id as string,
-    clientName:   r.client_name as string,
-    taskType:     (r.task_type as TaskType) ?? 'tax-return',
-    whatsapp:     r.whatsapp as string,
-    email:        r.email as string,
-    country:      r.country as string,
-    dob:          r.dob as string,
-    taxYear:      r.tax_year as string,
-    submittedAt:  r.submitted_at as string,
-    done:         r.done as boolean,
-    address:      r.address as string,
-    tfn:          r.tfn as string,
-    bankDetails:  r.bank_details as string,
-    primaryJob:   r.primary_job as string,
-    marital:      r.marital as string,
-    taxStatus:    r.tax_status as string,
-    howHeard:     r.how_heard as string,
-    auPhone:      r.au_phone as string,
-    notes:        r.notes as string,
+    clientId:     (r.client_id as string) ?? '',
+    clientName:   (r.client_name as string) ?? '',
+    taskType:     ((r.task_type as TaskType) ?? 'tax-return'),
+    whatsapp:     (r.whatsapp as string) ?? '',
+    email:        (r.email as string) ?? '',
+    country:      (r.country as string) ?? '',
+    dob:          (r.dob as string) ?? '',
+    taxYear:      (r.tax_year as string) ?? '',
+    submittedAt:  (r.submitted_at as string) ?? '',
+    done:         (r.done as boolean) ?? false,
+    address:      (r.address as string) ?? '',
+    tfn:          (r.tfn as string) ?? '',
+    bankDetails:  (r.bank_details as string) ?? '',
+    primaryJob:   (r.primary_job as string) ?? '',
+    marital:      (r.marital as string) ?? '',
+    taxStatus:    (r.tax_status as string) ?? '',
+    howHeard:     (r.how_heard as string) ?? '',
+    auPhone:      (r.au_phone as string) ?? '',
+    notes:        (r.notes as string) ?? '',
     fileUrls:     parse(r.file_urls ?? '[]', []),
     reviewStatus: ((r.review_status as string) ?? 'pending') as ReviewStatus,
     reviewerNote: (r.reviewer_note as string) ?? '',
@@ -185,91 +100,125 @@ function toTask(r: Record<string, unknown>): Task {
 // ── Returning client lookup ────────────────────────────────────────────────
 
 export async function findExistingClient(email: string, whatsapp: string): Promise<{ id: string } | null> {
-  await initDb()
+  const sb = getSupabase()
   const norm = (s: string) => (s ?? '').trim().toLowerCase().replace(/\s+/g, '')
   const e = norm(email)
   const w = norm(whatsapp)
   if (!e && !w) return null
 
-  const { rows: cr } = await sql`
-    SELECT id FROM crm_clients
-    WHERE (${e} != '' AND LOWER(TRIM(email)) = ${e})
-       OR (${w} != '' AND LOWER(TRIM(whatsapp)) = ${w})
-    ORDER BY created_at DESC LIMIT 1
-  `
-  if (cr[0]) return { id: cr[0].id }
+  // Search crm_clients (case-insensitive)
+  const { data: clients } = await sb.from('crm_clients')
+    .select('id, email, whatsapp, created_at')
+    .order('created_at', { ascending: false })
+    .limit(50)
+  if (clients) {
+    const match = clients.find((c: Record<string, unknown>) => {
+      const ce = norm((c.email as string) ?? '')
+      const cw = norm((c.whatsapp as string) ?? '')
+      return (e && ce === e) || (w && cw === w)
+    })
+    if (match) return { id: match.id as string }
+  }
 
-  const { rows: tr } = await sql`
-    SELECT client_id FROM crm_tasks
-    WHERE done = false AND (
-      (${e} != '' AND LOWER(TRIM(email)) = ${e}) OR
-      (${w} != '' AND LOWER(TRIM(whatsapp)) = ${w})
-    )
-    ORDER BY submitted_at DESC LIMIT 1
-  `
-  if (tr[0]) return { id: tr[0].client_id }
+  // Search crm_tasks (active only)
+  const { data: tasks } = await sb.from('crm_tasks')
+    .select('client_id, email, whatsapp, submitted_at')
+    .eq('done', false)
+    .order('submitted_at', { ascending: false })
+    .limit(50)
+  if (tasks) {
+    const match = tasks.find((t: Record<string, unknown>) => {
+      const te = norm((t.email as string) ?? '')
+      const tw = norm((t.whatsapp as string) ?? '')
+      return (e && te === e) || (w && tw === w)
+    })
+    if (match) return { id: match.client_id as string }
+  }
+
   return null
 }
 
 // ── Tasks ──────────────────────────────────────────────────────────────────
 
 export async function getAllTasks(limit = 100, offset = 0): Promise<Task[]> {
-  await initDb()
-  const { rows } = await sql`SELECT * FROM crm_tasks ORDER BY submitted_at DESC LIMIT ${limit} OFFSET ${offset}`
-  return rows.map(toTask)
+  const sb = getSupabase()
+  const { data, error } = await sb.from('crm_tasks')
+    .select('*')
+    .order('submitted_at', { ascending: false })
+    .range(offset, offset + limit - 1)
+  if (error) throw error
+  return (data ?? []).map(toTask)
 }
 
 export async function countTasks(): Promise<number> {
-  await initDb()
-  const { rows } = await sql`SELECT COUNT(*)::int AS count FROM crm_tasks`
-  return rows[0]?.count ?? 0
+  const sb = getSupabase()
+  const { count, error } = await sb.from('crm_tasks').select('*', { count: 'exact', head: true })
+  if (error) throw error
+  return count ?? 0
 }
 
 export async function getTask(id: string): Promise<Task | null> {
-  await initDb()
-  const { rows } = await sql`SELECT * FROM crm_tasks WHERE id = ${id}`
-  return rows[0] ? toTask(rows[0]) : null
+  const sb = getSupabase()
+  const { data, error } = await sb.from('crm_tasks').select('*').eq('id', id).maybeSingle()
+  if (error) throw error
+  return data ? toTask(data) : null
 }
 
 export async function createTask(data: Omit<Task, 'id' | 'done'>): Promise<Task> {
-  await initDb()
+  const sb = getSupabase()
   const id = `TASK-${crypto.randomUUID()}`
-  await withTimeout(sql`
-    INSERT INTO crm_tasks
-      (id,client_id,client_name,task_type,whatsapp,email,country,dob,tax_year,submitted_at,
-       done,address,tfn,bank_details,primary_job,marital,tax_status,how_heard,au_phone,notes,file_urls,
-       review_status,reviewer_note,reviewed_at)
-    VALUES
-      (${id},${data.clientId},${data.clientName},${data.taskType ?? 'tax-return'},
-       ${data.whatsapp},${data.email},${data.country},${data.dob},${data.taxYear},
-       ${data.submittedAt},false,${data.address},${data.tfn},${data.bankDetails},
-       ${data.primaryJob},${data.marital},${data.taxStatus},${data.howHeard},${data.auPhone},
-       ${data.notes},${JSON.stringify(data.fileUrls ?? [])},
-       ${'pending'},${''},${''})
-  `, 'INSERT crm_tasks')
+  const row = {
+    id,
+    client_id: data.clientId,
+    client_name: data.clientName,
+    task_type: data.taskType ?? 'tax-return',
+    whatsapp: data.whatsapp,
+    email: data.email,
+    country: data.country,
+    dob: data.dob,
+    tax_year: data.taxYear,
+    submitted_at: data.submittedAt,
+    done: false,
+    address: data.address,
+    tfn: data.tfn,
+    bank_details: data.bankDetails,
+    primary_job: data.primaryJob,
+    marital: data.marital,
+    tax_status: data.taxStatus,
+    how_heard: data.howHeard,
+    au_phone: data.auPhone,
+    notes: data.notes,
+    file_urls: JSON.stringify(data.fileUrls ?? []),
+    review_status: 'pending',
+    reviewer_note: '',
+    reviewed_at: '',
+  }
+  const { error } = await sb.from('crm_tasks').insert(row)
+  if (error) throw error
   return { ...data, id, done: false }
 }
 
 export async function markTaskDone(id: string): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const task = await getTask(id)
   if (!task) return
   if (task.fileUrls?.length) await deleteFiles(task.fileUrls)
-  await sql`
-    UPDATE crm_tasks SET
-      done = TRUE, address = '', tfn = '', bank_details = '',
-      primary_job = '', marital = '', au_phone = '', file_urls = '[]'
-    WHERE id = ${id}
-  `
+  const { error } = await sb.from('crm_tasks').update({
+    done: true,
+    address: '', tfn: '', bank_details: '',
+    primary_job: '', marital: '', au_phone: '', file_urls: '[]',
+  }).eq('id', id)
+  if (error) throw error
 }
 
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
-  await initDb()
-  await sql`UPDATE crm_tasks SET notes = ${notes} WHERE id = ${id}`
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_tasks').update({ notes }).eq('id', id)
+  if (error) throw error
 }
 
 export async function deleteTaskAndArchive(taskId: string): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const task = await getTask(taskId)
   if (!task) return
 
@@ -284,129 +233,171 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
     .join('\n')
     .trim()
 
-  await sql`
-    INSERT INTO crm_clients
-      (id,full_name,dob,whatsapp,email,country,how_heard,notes,tax_returns,super_returns,tfn_service,abn_service,created_at)
-    VALUES
-      (${task.clientId},${task.clientName},${task.dob},${task.whatsapp},${task.email},
-       ${task.country},${task.howHeard},${cleanedNotes},'[]','[]',
-       '{"done":false,"completedAt":"","notes":""}',
-       '{"done":false,"completedAt":"","notes":""}',
-       ${new Date().toISOString()})
-    ON CONFLICT (id) DO UPDATE SET
-      how_heard = CASE WHEN crm_clients.how_heard = '' AND EXCLUDED.how_heard != '' THEN EXCLUDED.how_heard ELSE crm_clients.how_heard END,
-      notes = CASE
-        WHEN EXCLUDED.notes != '' AND crm_clients.notes NOT LIKE '%' || EXCLUDED.notes || '%'
-        THEN TRIM(crm_clients.notes || E'\n' || EXCLUDED.notes)
-        ELSE crm_clients.notes
-      END
-  `
-  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
+  // Upsert client (merge behavior preserved from old code)
+  const existing = await getClientById(task.clientId)
+  if (existing) {
+    const newHowHeard = existing.howHeard === '' && task.howHeard !== '' ? task.howHeard : existing.howHeard
+    const newNotes = cleanedNotes !== '' && !existing.notes.includes(cleanedNotes)
+      ? `${existing.notes}\n${cleanedNotes}`.trim()
+      : existing.notes
+    await sb.from('crm_clients').update({
+      how_heard: newHowHeard,
+      notes: newNotes,
+    }).eq('id', task.clientId)
+  } else {
+    await sb.from('crm_clients').insert({
+      id: task.clientId,
+      full_name: task.clientName,
+      dob: task.dob,
+      whatsapp: task.whatsapp,
+      email: task.email,
+      country: task.country,
+      how_heard: task.howHeard,
+      notes: cleanedNotes,
+      tax_returns: '[]',
+      super_returns: '[]',
+      tfn_service: '{"done":false,"completedAt":"","notes":""}',
+      abn_service: '{"done":false,"completedAt":"","notes":""}',
+      created_at: new Date().toISOString(),
+      archived: false,
+      yearly_checkins: '{}',
+    })
+  }
+
+  const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)
+  if (error) throw error
 }
 
 export async function deleteTaskPermanent(taskId: string): Promise<void> {
-  await initDb()
-  await sql`DELETE FROM crm_tasks WHERE id = ${taskId}`
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)
+  if (error) throw error
 }
 
 // ── Clients ────────────────────────────────────────────────────────────────
 
 /** @deprecated Use getAllActiveClients() or getAllArchivedClients() instead. */
 export async function getAllClients(): Promise<ClientRecord[]> {
-  await initDb()
-  const { rows } = await sql`SELECT * FROM crm_clients ORDER BY created_at DESC`
-  return rows.map(toClient)
+  const sb = getSupabase()
+  const { data, error } = await sb.from('crm_clients').select('*').order('created_at', { ascending: false })
+  if (error) throw error
+  return (data ?? []).map(toClient)
 }
 
 export async function getAllActiveClients(limit = 100, offset = 0): Promise<ClientRecord[]> {
-  await initDb()
-  const { rows } = await sql`
-    SELECT * FROM crm_clients WHERE (archived = FALSE OR archived IS NULL)
-    ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}
-  `
-  return rows.map(toClient)
+  const sb = getSupabase()
+  const { data, error } = await sb.from('crm_clients')
+    .select('*')
+    .or('archived.eq.false,archived.is.null')
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1)
+  if (error) throw error
+  return (data ?? []).map(toClient)
 }
 
 export async function countActiveClients(): Promise<number> {
-  await initDb()
-  const { rows } = await sql`SELECT COUNT(*)::int AS count FROM crm_clients WHERE (archived = FALSE OR archived IS NULL)`
-  return rows[0]?.count ?? 0
+  const sb = getSupabase()
+  const { count, error } = await sb.from('crm_clients')
+    .select('*', { count: 'exact', head: true })
+    .or('archived.eq.false,archived.is.null')
+  if (error) throw error
+  return count ?? 0
 }
 
 export async function getAllArchivedClients(limit = 100, offset = 0): Promise<ClientRecord[]> {
-  await initDb()
-  const { rows } = await sql`
-    SELECT * FROM crm_clients WHERE archived = TRUE
-    ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}
-  `
-  return rows.map(toClient)
+  const sb = getSupabase()
+  const { data, error } = await sb.from('crm_clients')
+    .select('*')
+    .eq('archived', true)
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1)
+  if (error) throw error
+  return (data ?? []).map(toClient)
 }
 
 export async function countArchivedClients(): Promise<number> {
-  await initDb()
-  const { rows } = await sql`SELECT COUNT(*)::int AS count FROM crm_clients WHERE archived = TRUE`
-  return rows[0]?.count ?? 0
+  const sb = getSupabase()
+  const { count, error } = await sb.from('crm_clients')
+    .select('*', { count: 'exact', head: true })
+    .eq('archived', true)
+  if (error) throw error
+  return count ?? 0
 }
 
 export async function getClientById(id: string): Promise<ClientRecord | null> {
-  await initDb()
-  const { rows } = await sql`SELECT * FROM crm_clients WHERE id = ${id}`
-  return rows[0] ? toClient(rows[0]) : null
+  const sb = getSupabase()
+  const { data, error } = await sb.from('crm_clients').select('*').eq('id', id).maybeSingle()
+  if (error) throw error
+  return data ? toClient(data) : null
 }
 
 export async function deleteClient(id: string): Promise<void> {
-  await initDb()
-  await sql`DELETE FROM crm_clients WHERE id = ${id}`
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_clients').delete().eq('id', id)
+  if (error) throw error
 }
 
 export async function updateClientNotes(id: string, notes: string): Promise<void> {
-  await initDb()
-  await sql`UPDATE crm_clients SET notes = ${notes} WHERE id = ${id}`
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_clients').update({ notes }).eq('id', id)
+  if (error) throw error
 }
 
 // ── Tax / Super returns ────────────────────────────────────────────────────
 
 export async function addTaxReturn(clientId: string, r: TaxReturn): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(clientId)
   if (!client) return
   const updated = [...client.taxReturns.filter(x => x.year !== r.year), r]
-  await sql`UPDATE crm_clients SET tax_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  const { error } = await sb.from('crm_clients')
+    .update({ tax_returns: JSON.stringify(updated) })
+    .eq('id', clientId)
+  if (error) throw error
 }
 
 export async function removeTaxReturn(clientId: string, year: string): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(clientId)
   if (!client) return
   const updated = client.taxReturns.filter(x => x.year !== year)
-  await sql`UPDATE crm_clients SET tax_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  const { error } = await sb.from('crm_clients')
+    .update({ tax_returns: JSON.stringify(updated) })
+    .eq('id', clientId)
+  if (error) throw error
 }
 
 export async function addSuperReturn(clientId: string, r: SuperReturn): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(clientId)
   if (!client) return
   const updated = [...client.superReturns.filter(x => x.year !== r.year), r]
-  await sql`UPDATE crm_clients SET super_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  const { error } = await sb.from('crm_clients')
+    .update({ super_returns: JSON.stringify(updated) })
+    .eq('id', clientId)
+  if (error) throw error
 }
 
 export async function removeSuperReturn(clientId: string, year: string): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(clientId)
   if (!client) return
   const updated = client.superReturns.filter(x => x.year !== year)
-  await sql`UPDATE crm_clients SET super_returns = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  const { error } = await sb.from('crm_clients')
+    .update({ super_returns: JSON.stringify(updated) })
+    .eq('id', clientId)
+  if (error) throw error
 }
 
 // ── TFN / ABN services ────────────────────────────────────────────────────
 
 export async function updateService(clientId: string, service: 'tfn' | 'abn', data: ServiceRecord): Promise<void> {
-  await initDb()
-  if (service === 'tfn') {
-    await sql`UPDATE crm_clients SET tfn_service = ${JSON.stringify(data)} WHERE id = ${clientId}`
-  } else {
-    await sql`UPDATE crm_clients SET abn_service = ${JSON.stringify(data)} WHERE id = ${clientId}`
-  }
+  const sb = getSupabase()
+  const col = service === 'tfn' ? 'tfn_service' : 'abn_service'
+  const { error } = await sb.from('crm_clients')
+    .update({ [col]: JSON.stringify(data) })
+    .eq('id', clientId)
+  if (error) throw error
 }
 
 // ── Full client update ────────────────────────────────────────────────────
@@ -416,7 +407,7 @@ export async function updateClient(id: string, data: Partial<ClientRecord> & {
   primaryJob?: string; marital?: string; taxStatus?: string;
   howHeard?: string; auPhone?: string; taxYear?: string; handled?: boolean;
 }): Promise<ClientRecord | null> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(id)
   if (!client) return null
 
@@ -428,72 +419,87 @@ export async function updateClient(id: string, data: Partial<ClientRecord> & {
   const howHeard = (data.howHeard  ?? client.howHeard ?? '').slice(0, 100)
   const notes    = (data.notes     ?? client.notes    ?? '').slice(0, 10_000)
 
-  await sql`
-    UPDATE crm_clients SET
-      full_name = ${fullName}, dob = ${dob}, whatsapp = ${whatsapp},
-      email = ${email}, country = ${country}, how_heard = ${howHeard}, notes = ${notes}
-    WHERE id = ${id}
-  `
+  const { error } = await sb.from('crm_clients').update({
+    full_name: fullName,
+    dob,
+    whatsapp,
+    email,
+    country,
+    how_heard: howHeard,
+    notes,
+  }).eq('id', id)
+  if (error) throw error
+
   return getClientById(id)
 }
 
 export async function clearClientSensitiveData(id: string): Promise<ClientRecord | null> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(id)
   if (!client) return null
-  await sql`
-    UPDATE crm_tasks SET
-      address = '', tfn = '', bank_details = '', primary_job = '',
-      marital = '', au_phone = '', file_urls = '[]'
-    WHERE client_id = ${id}
-  `
+
+  await sb.from('crm_tasks').update({
+    address: '', tfn: '', bank_details: '', primary_job: '',
+    marital: '', au_phone: '', file_urls: '[]',
+  }).eq('client_id', id)
+
   const clearedNote = client.notes.includes('[PII CLEARED]')
     ? client.notes
     : `[PII CLEARED ${new Date().toISOString().slice(0, 10)}] ${client.notes}`.trim()
-  await sql`UPDATE crm_clients SET notes = ${clearedNote} WHERE id = ${id}`
+
+  await sb.from('crm_clients').update({ notes: clearedNote }).eq('id', id)
   return getClientById(id)
 }
 
 export async function markClientHandled(id: string): Promise<ClientRecord | null> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(id)
   if (!client) return null
   const note = client.notes.includes('[HANDLED]') ? client.notes : `[HANDLED] ${client.notes}`.trim()
-  await sql`UPDATE crm_clients SET notes = ${note} WHERE id = ${id}`
+  await sb.from('crm_clients').update({ notes: note }).eq('id', id)
   return getClientById(id)
 }
 
 // ── Archive ────────────────────────────────────────────────────────────────
 
 export async function archiveClient(id: string): Promise<void> {
-  await initDb()
-  await sql`UPDATE crm_clients SET archived = TRUE WHERE id = ${id}`
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_clients').update({ archived: true }).eq('id', id)
+  if (error) throw error
 }
 
 export async function unarchiveClient(id: string): Promise<void> {
-  await initDb()
-  await sql`UPDATE crm_clients SET archived = FALSE WHERE id = ${id}`
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_clients').update({ archived: false }).eq('id', id)
+  if (error) throw error
 }
 
 // ── Yearly checkins ────────────────────────────────────────────────────────
 
 export async function setYearlyCheckin(clientId: string, year: string, done: boolean): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const client = await getClientById(clientId)
   if (!client) return
   const updated = { ...client.yearlyCheckins, [year]: done }
-  await sql`UPDATE crm_clients SET yearly_checkins = ${JSON.stringify(updated)} WHERE id = ${clientId}`
+  const { error } = await sb.from('crm_clients')
+    .update({ yearly_checkins: JSON.stringify(updated) })
+    .eq('id', clientId)
+  if (error) throw error
 }
 
 // ── Reviewer ──────────────────────────────────────────────────────────────
 
 export async function setReviewerNote(taskId: string, note: string): Promise<void> {
-  await initDb()
-  await sql`UPDATE crm_tasks SET reviewer_note = ${note} WHERE id = ${taskId}`
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_tasks').update({ reviewer_note: note }).eq('id', taskId)
+  if (error) throw error
 }
 
 export async function setReviewStatus(taskId: string, status: ReviewStatus): Promise<void> {
-  await initDb()
+  const sb = getSupabase()
   const reviewedAt = status === 'pending' ? '' : new Date().toISOString()
-  await sql`UPDATE crm_tasks SET review_status = ${status}, reviewed_at = ${reviewedAt} WHERE id = ${taskId}`
+  const { error } = await sb.from('crm_tasks')
+    .update({ review_status: status, reviewed_at: reviewedAt })
+    .eq('id', taskId)
+  if (error) throw error
 }
