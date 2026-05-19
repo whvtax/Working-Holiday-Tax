@@ -271,29 +271,10 @@ export default function SuperannuationPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We claim your super back for you</h3>
-              <p className="service-cta-sub">From identifying your funds to handling the DASP application - we manage the entire process so you do not leave your money behind in Australia.</p>
+              <p className="service-cta-sub">Free initial consultation. From identifying your funds to handling the DASP application - we manage the entire process so you do not leave your money behind in Australia.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Claim my super →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
-      <section className="py-8 lg:py-12" style={{ background: '#0B5240' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[560px] mx-auto text-center">
-            <p className="font-serif font-black text-white mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.02em', lineHeight: 1.15, maxWidth: '22ch', marginBottom: '10px', textWrap: 'balance' }}>
-              Don&apos;t leave your super behind.
-            </p>
-            <p className="font-light mx-auto text-center" style={{ fontSize: '13.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.6)', maxWidth: '28ch', marginBottom: '20px' }}>
-              You can claim your super back once you leave Australia. We take care of the entire process for you.
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-semibold transition-all"
-              style={{ height: '48px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px', maxWidth: '300px', width: '100%', justifyContent: 'center' }}>
-              Check your super eligibility →
             </a>
           </div>
         </div>

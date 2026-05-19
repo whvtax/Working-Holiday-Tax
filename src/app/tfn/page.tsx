@@ -205,7 +205,7 @@ export default function TFNPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We handle the entire TFN application for you</h3>
-              <p className="service-cta-sub">Send us your details on WhatsApp. We submit your application correctly the first time - usually within an hour.</p>
+              <p className="service-cta-sub">Free initial consultation on WhatsApp. We submit your application correctly the first time - usually within an hour.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Apply for my TFN →

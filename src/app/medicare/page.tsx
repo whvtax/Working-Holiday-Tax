@@ -252,7 +252,7 @@ export default function MedicarePage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We claim your Medicare levy exemption for you</h3>
-              <p className="service-cta-sub">We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return - so you get back what you should not have paid.</p>
+              <p className="service-cta-sub">Free initial consultation. We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return - so you get back what you should not have paid.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Check my exemption →

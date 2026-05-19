@@ -47,7 +47,7 @@ export function SecurityNotice() {
           <path d="M9 12l2 2 4-4" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
         <p className="security-notice-text">
-          We will never ask for your <strong>myGov password</strong> or SMS codes. Stay safe online.
+          A registered tax agent will never ask for your <strong>myGov login details</strong>.
         </p>
         <button
           type="button"

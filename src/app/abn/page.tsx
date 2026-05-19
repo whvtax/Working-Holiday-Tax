@@ -242,7 +242,7 @@ export default function ABNPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We register your ABN correctly for you</h3>
-              <p className="service-cta-sub">Send us your details on WhatsApp. We register your ABN with the correct setup for your work type - and explain your tax obligations clearly.</p>
+              <p className="service-cta-sub">Free initial consultation on WhatsApp. We register your ABN with the correct setup for your work type - and explain your tax obligations clearly.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Register my ABN →

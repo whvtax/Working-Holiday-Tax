@@ -269,29 +269,10 @@ export default function TaxReturnPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We prepare and lodge your tax return for you</h3>
-              <p className="service-cta-sub">No forms, no ATO portals, no stress. We maximise your refund and handle everything online - even after you leave Australia.</p>
+              <p className="service-cta-sub">Free initial consultation. No forms, no ATO portals, no stress. We maximise your refund and handle everything online - even after you leave Australia.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Get my refund →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── MONEY TRIGGER ─────────────────────────────────────────────────── */}
-      <section style={{ background: '#0B5240', height: 'auto', paddingTop: '48px', paddingBottom: '48px' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[560px] mx-auto text-center">
-            <p className="font-serif font-black text-white" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', letterSpacing: '-0.025em', lineHeight: 1.1, marginBottom: '10px' }}>
-              Most WHV travellers overpay tax.<br />We help you get it back.
-            </p>
-            <p className="font-light" style={{ fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginBottom: '20px' }}>
-              No matter your situation, we handle your tax return correctly<br />and in line with ATO requirements.
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-semibold transition-all"
-              style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
-              See your estimated refund →
             </a>
           </div>
         </div>

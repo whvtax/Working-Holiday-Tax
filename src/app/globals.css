@@ -2164,6 +2164,7 @@
     left: 12px;
     right: 12px;
     transform: translateY(20px);
+    max-width: none;
   }
   .security-notice[data-visible="true"] {
     transform: translateY(0);
