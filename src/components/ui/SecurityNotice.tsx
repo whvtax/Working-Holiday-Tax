@@ -43,8 +43,9 @@ export function SecurityNotice() {
     >
       <div className="security-notice-inner">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
-          <path d="M12 2L3 7v5c0 5 3.5 9 9 10 5.5-1 9-5 9-10V7l-9-5z" stroke="#0B5240" strokeWidth="1.6" strokeLinejoin="round"/>
-          <path d="M9 12l2 2 4-4" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M12 2L2 22h20L12 2z" stroke="#9A3412" strokeWidth="1.8" strokeLinejoin="round"/>
+          <line x1="12" y1="10" x2="12" y2="15" stroke="#9A3412" strokeWidth="1.8" strokeLinecap="round"/>
+          <line x1="12" y1="18" x2="12.01" y2="18" stroke="#9A3412" strokeWidth="2" strokeLinecap="round"/>
         </svg>
         <p className="security-notice-text">
           A registered tax agent will never ask for your <strong>myGov login details</strong>.

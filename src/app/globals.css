@@ -2119,23 +2119,23 @@
   align-items: flex-start;
   gap: 10px;
   padding: 14px 16px 14px 14px;
-  background: #fff;
-  border: 1.5px solid #C8EAE0;
+  background: #FEF3F0;
+  border: 1.5px solid #FBD0BB;
   border-radius: 14px;
-  box-shadow: 0 12px 32px -10px rgba(11, 82, 64, 0.25),
-              0 4px 12px -4px rgba(11, 82, 64, 0.1);
+  box-shadow: 0 12px 32px -10px rgba(154, 52, 18, 0.18),
+              0 4px 12px -4px rgba(154, 52, 18, 0.08);
 }
 .security-notice-text {
   flex: 1;
   margin: 0;
   font-size: 13px;
   line-height: 1.55;
-  color: #2A3C34;
+  color: #9A3412;
   font-weight: 400;
 }
 .security-notice-text strong {
-  color: #0B5240;
-  font-weight: 600;
+  color: #9A3412;
+  font-weight: 700;
 }
 .security-notice-close {
   flex-shrink: 0;
@@ -2148,13 +2148,13 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  color: #587066;
+  color: #9A3412;
   transition: background 0.15s ease, color 0.15s ease;
   -webkit-tap-highlight-color: transparent;
 }
 .security-notice-close:hover {
-  background: #F5F9F7;
-  color: #0B5240;
+  background: #FBD0BB;
+  color: #9A3412;
 }
 
 @media (max-width: 480px) {

@@ -36,14 +36,6 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: 'When can I claim my super?',
-    answer: 'You can claim your super once you have left Australia and your visa has expired or been cancelled.',
-  },
-  {
-    question: 'How much tax is taken from my super withdrawal?',
-    answer: 'Super withdrawals for Working Holiday visa holders are taxed at 65%.',
-  },
-  {
     question: 'I left Australia years ago, can I still claim my super?',
     answer: 'Yes. There is no time limit to claim your superannuation. Even if your balance has been transferred to the ATO, you can still make a claim.',
   },
@@ -58,10 +50,6 @@ const faqs = [
   {
     question: 'Where is my super paid - Australian or overseas bank account?',
     answer: 'Your super is paid directly to your bank account. We can arrange payment to either an Australian or overseas account based on your preference.',
-  },
-  {
-    question: 'How much super does my employer contribute?',
-    answer: 'By Australian law, employers must contribute 12% of your wages into your super fund (rate as of 1 July 2025). This is on top of your salary.',
   },
   {
     question: 'Do I receive super if I worked under an ABN?',
