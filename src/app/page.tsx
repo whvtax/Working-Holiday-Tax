@@ -168,9 +168,9 @@ export default function HomePage() {
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto"
-            style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-            <span className="lg:whitespace-nowrap" style={{ display: 'block' }}>Confused about tax in Australia?</span>
-            <span className="lg:whitespace-nowrap" style={{ display: 'block', color: '#0B5240' }}>We have got you covered.</span>
+            style={{ fontSize: 'clamp(22px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
+            <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Confused about tax in Australia?</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>We have got you covered.</span>
           </h1>
 
           <p className="font-light mx-auto"

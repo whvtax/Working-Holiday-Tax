@@ -303,7 +303,11 @@ export default function MedicarePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
               style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              Not sure what applies to you? We&apos;ll check for you →
+              <span className="hidden lg:inline">Not sure what applies to you? We will check for you →</span>
+              <span className="lg:hidden" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                <span>Not sure what applies to you?</span>
+                <span>We will check for you →</span>
+              </span>
             </a>
           </div>
         </div>

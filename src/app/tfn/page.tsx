@@ -122,7 +122,8 @@ export default function TFNPage() {
 
             <p className="font-light"
               style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.65, color:'rgba(10,15,13,0.58)', maxWidth:'44ch', marginBottom:'0' }}>
-              Without a TFN, Working Holiday visa holders are taxed at 45%.
+              <span className="lg:hidden">Without a TFN, WHV holders are taxed at 45%.</span>
+              <span className="hidden lg:inline">Without a TFN, Working Holiday visa holders are taxed at 45%.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"

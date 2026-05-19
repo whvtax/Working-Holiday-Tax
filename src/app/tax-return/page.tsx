@@ -635,36 +635,29 @@ export default function TaxReturnPage() {
 
             <div className="reveal delay-1 text-center lg:text-left">
               <span className="section-label center lg:text-left">What to have ready</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-5" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
+              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
                 What you need to get started
               </h2>
-              <div className="flex flex-col mb-5" style={{ gap: '12px' }}>
+              <div className="space-y-0">
                 {[
-                  'Tax File Number (TFN)',
-                  'Australian Bank Account details',
-                  'Receipts for any work-related expenses you want to claim',
-                  'Your personal details (address and contact number)',
+                  { n: '01', label: 'Tax File Number (TFN)',     hint: 'Your unique tax ID' },
+                  { n: '02', label: 'Personal details',           hint: 'Address & contact number' },
+                  { n: '03', label: 'Australian Bank Account',    hint: 'Where to send your refund' },
+                  { n: '04', label: 'Work expense receipts',      hint: 'For deductions you want to claim' },
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                      <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <p className="text-[13.5px] font-light text-body leading-[1.65]">{item}</p>
+                  <div key={i} className="flex items-center gap-3" style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
+                    <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#EAF6F1', color: '#0B5240', fontSize: '13px', letterSpacing: '-0.02em' }}>
+                      {item.n}
+                    </div>
+                    <div className="flex-1 text-left">
+                      <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.005em', lineHeight: 1.35 }}>{item.label}</p>
+                      <p className="text-[12px] font-light text-muted" style={{ lineHeight: 1.4, marginTop: '1px' }}>{item.hint}</p>
+                    </div>
                   </div>
                 ))}
+                <div style={{ borderTop: '1px solid #E2EFE9' }} />
               </div>
             </div>
-          </div>
-          <div className="text-center mt-10 reveal">
-            <p className="font-light text-muted" style={{ fontSize: '15px', lineHeight: 1.65, marginBottom: '16px' }}>
-              <span className="hidden lg:inline">Ready to get your refund? Start your tax return today.</span><span className="lg:hidden">Ready to get your refund?</span>
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 32px', fontSize: '15px', maxWidth: '300px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
-              Start your tax return →
-            </a>
           </div>
         </div>
       </section>
