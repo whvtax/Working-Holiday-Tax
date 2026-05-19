@@ -442,7 +442,7 @@ export default function MedicarePage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What is next?"
-        heading="You're all set to lodge your tax return"
+        heading="You are all set to lodge your tax return"
         body="We ensure your Medicare status is correctly applied so you do not overpay tax."
         cta="Start your tax return →"
         href="/tax-return"

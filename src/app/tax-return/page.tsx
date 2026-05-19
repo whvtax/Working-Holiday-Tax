@@ -695,7 +695,7 @@ export default function TaxReturnPage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What is next?"
-        heading="Don't leave your super behind"
+        heading="Do not leave your super behind"
         body="Your employer contributed super on top of your wages while you worked in Australia. When you leave, you can claim it back."
         cta="Check your super eligibility →"
         trustLine="Takes just a few minutes to check"

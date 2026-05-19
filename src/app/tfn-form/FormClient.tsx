@@ -286,28 +286,28 @@ export function FormClient() {
           <div className="form-section-title">Personal details</div>
 
           <Field label="First name (including middle name)" required error={errors.firstName}>
-            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" value={firstName} onChange={e=>{ setFirstName(e.target.value); setErrors(p=>({...p,firstName:''})) }}/>
+            <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" autoComplete="given-name" maxLength={60} value={firstName} onChange={e=>{ setFirstName(e.target.value); setErrors(p=>({...p,firstName:''})) }}/>
           </Field>
           <Field label="Last name" required error={errors.lastName}>
-            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" value={lastName} onChange={e=>{ setLastName(e.target.value); setErrors(p=>({...p,lastName:''})) }}/>
+            <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" autoComplete="family-name" maxLength={60} value={lastName} onChange={e=>{ setLastName(e.target.value); setErrors(p=>({...p,lastName:''})) }}/>
           </Field>
           <Field label="Country of passport" required error={errors.country}>
-            <input className={`form-input${errors.country?' input-error':''}`} placeholder="e.g. France" value={country} onChange={e=>{ setCountry(e.target.value); setErrors(p=>({...p,country:''})) }}/>
+            <input className={`form-input${errors.country?' input-error':''}`} placeholder="e.g. France" autoComplete="country-name" maxLength={60} value={country} onChange={e=>{ setCountry(e.target.value); setErrors(p=>({...p,country:''})) }}/>
           </Field>
           <Field label="Passport number" required error={errors.passport}>
-            <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>
+            <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" autoComplete="off" maxLength={30} value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>
           </Field>
           <Field label="Email address" required error={errors.email}>
-            <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
+            <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" autoComplete="email" inputMode="email" maxLength={200} value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
           </Field>
           <Field label="Date of birth" required error={errors.dob}>
-            <input type="date" className={`form-input${errors.dob?' input-error':''}`} value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
+            <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
           </Field>
           <Field label="WhatsApp Number" required error={errors.whatsapp}>
-            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+33 6 12 34 56 78" value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value); setErrors(p=>({...p,whatsapp:''})) }}/>
+            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+33 6 12 34 56 78" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value); setErrors(p=>({...p,whatsapp:''})) }}/>
           </Field>
           <Field label="Australian phone number" required error={errors.auPhone}>
-            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" value={auPhone} onChange={e=>{ setAuPhone(e.target.value); setErrors(p=>({...p,auPhone:''})) }}/>
+            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={auPhone} onChange={e=>{ setAuPhone(e.target.value); setErrors(p=>({...p,auPhone:''})) }}/>
           </Field>
 
           <Field label="Gender as shown in passport" required error={errors.gender}>
@@ -333,7 +333,7 @@ export function FormClient() {
           </Field>
 
           <Field label="Full Australian address (street, suburb, state, postcode)" required error={errors.address}>
-            <textarea className={`form-input form-textarea${errors.address?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" value={address} onChange={e=>{ setAddress(e.target.value); setErrors(p=>({...p,address:''})) }}/>
+            <textarea className={`form-input form-textarea${errors.address?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" autoComplete="street-address" maxLength={300} value={address} onChange={e=>{ setAddress(e.target.value); setErrors(p=>({...p,address:''})) }}/>
           </Field>
 
           <div className="form-section-title">Documents</div>

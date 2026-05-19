@@ -977,13 +977,6 @@
 .abn-compare-employee .abn-compare-list li::before {
   background: #C8EAE0;
 }
-.abn-compare-footer {
-  margin-top: 14px;
-  text-align: center;
-  font-size: 12.5px;
-  color: #587066;
-  font-weight: 500;
-}
 
 /* ─────────────────────────────────────────────────────────────────
    MEDICARE INTRO - 2% levy / exemption motif
@@ -1340,69 +1333,6 @@
 .taxres-notes strong {
   color: #0B5240;
   font-weight: 600;
-}
-
-/* CTA card */
-.taxres-cta-card {
-  padding: 24px;
-  background: #fff;
-  border: 1.5px solid #C8EAE0;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  align-items: stretch;
-}
-@media (min-width: 768px) {
-  .taxres-cta-card {
-    flex-direction: row;
-    align-items: center;
-    gap: 24px;
-    padding: 26px 28px;
-  }
-}
-.taxres-cta-text {
-  flex: 1;
-}
-.taxres-cta-heading {
-  font-family: var(--font-serif), Georgia, serif;
-  font-size: clamp(16px, 1.7vw, 19px);
-  font-weight: 700;
-  color: #080F0D;
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  margin: 0 0 6px 0;
-}
-.taxres-cta-sub {
-  font-size: 13.5px;
-  color: #587066;
-  line-height: 1.65;
-  font-weight: 300;
-  margin: 0;
-}
-.taxres-cta-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 0 24px;
-  background: #0B5240;
-  color: #fff;
-  border-radius: 100px;
-  font-size: 14.5px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-}
-.taxres-cta-button:hover {
-  background: #16775C;
-  transform: translateY(-1px);
-}
-.taxres-cta-button:active {
-  transform: scale(0.98);
 }
 
 

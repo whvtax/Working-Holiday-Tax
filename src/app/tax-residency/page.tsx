@@ -77,10 +77,6 @@ const FAQS = [
     question: 'What about student visa (500) holders?',
     answer: 'Student visa (500) holders are generally treated as Australian residents for tax purposes, meaning they benefit from the $18,200 tax-free threshold and lower marginal rates.',
   },
-  {
-    question: 'How do I know which classification applies to me?',
-    answer: 'The rules are complex and depend on your nationality, visa, time in Australia, and intent. We assess your specific situation when preparing your tax return to ensure you are classified correctly - and you pay the lowest legal amount of tax.',
-  },
 ]
 
 const faqSchema = {
@@ -254,21 +250,6 @@ export default function TaxResidencyPage() {
                 <p>📅 The Australian tax year runs from <strong>1 July to 30 June</strong>.</p>
                 <p>🎓 Student visa (500) holders are generally treated as residents for tax purposes.</p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── CTA TO OUR SERVICE ────────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '50px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12">
-            <div className="taxres-cta-card">
-              <div className="taxres-cta-text">
-                <h3 className="taxres-cta-heading">Not sure which status applies to you?</h3>
-                <p className="taxres-cta-sub">We assess your residency status as part of every tax return we prepare - ensuring you pay the lowest legal amount of tax and claim the maximum refund.</p>
-              </div>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="taxres-cta-button">
-                Check my status →
-              </a>
             </div>
           </div>
         </section>
