@@ -339,14 +339,13 @@ export function FormClient() {
             <textarea className={`form-input form-textarea${errors.address?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" autoComplete="street-address" maxLength={300} value={address} onChange={e=>{ setAddress(e.target.value); setErrors(p=>({...p,address:''})) }}/>
           </Field>
 
-          <div className="form-section-title">How did you hear about us?</div>
-          <Field label="How did you hear about us?" required error={errors.howHeard}>
-            <input className={`form-input${errors.howHeard?' input-error':''}`} placeholder="e.g. Instagram, TikTok, friend's name..." maxLength={80} value={howHeard} onChange={e=>{ setHowHeard(e.target.value); setErrors(p=>({...p,howHeard:''})) }}/>
-          </Field>
-
           <div className="form-section-title">Documents</div>
           <Field label="Selfie with passport" required error={errors.selfie}>
             <FileUpload id="selfie" label="Upload selfie with passport" accept=".jpg,.jpeg,.png,.webp,.pdf" value={selfie} onChange={v=>{ setSelfie(v); setErrors(p=>({...p,selfie:''})) }}/>
+          </Field>
+
+          <Field label="How did you hear about us?" required error={errors.howHeard}>
+            <input className={`form-input${errors.howHeard?' input-error':''}`} placeholder="e.g. Instagram, TikTok, friend's name..." maxLength={80} value={howHeard} onChange={e=>{ setHowHeard(e.target.value); setErrors(p=>({...p,howHeard:''})) }}/>
           </Field>
 
           <div className="form-section-title">Declaration</div>

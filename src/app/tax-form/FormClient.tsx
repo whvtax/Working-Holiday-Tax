@@ -897,7 +897,6 @@ export function FormClient() {
             </Field>
           </div>
 
-          <div className="form-section-title">How did you hear about us?</div>
           <div>
             <Field label="How did you hear about us?" required error={errors.howHeard}>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."

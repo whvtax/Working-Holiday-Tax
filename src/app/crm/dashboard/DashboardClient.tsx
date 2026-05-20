@@ -389,7 +389,7 @@ export default function DashboardClient() {
     setNewArchiveCount(n => n + 1)
     await Promise.all([loadClients(), loadArchived()])
     setActiveClient(null)
-    setView('tasks')
+    setView('clients')
   }
   async function unarchiveClient(id: string) {
       setArchivedClients(prev => prev.filter(c => c.id !== id))
