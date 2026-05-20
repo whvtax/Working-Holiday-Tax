@@ -875,17 +875,17 @@ export default function DashboardClient() {
 
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
-    sb:{width:220,background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh',boxShadow:'2px 0 8px rgba(0,0,0,0.05)'},
-    sbLogo:{display:'flex',alignItems:'center',gap:11,padding:'20px 14px 14px'},
-    sbIcon:{width:36,height:36,borderRadius:10,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,backdropFilter:'blur(8px)'},
-    sbTitle:{fontSize:13,fontWeight:700,color:'#fff',letterSpacing:'-0.2px'},
-    sbSub:{fontSize:10,color:'rgba(255,255,255,0.45)',marginTop:2,letterSpacing:'0.04em'},
-    sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'0 12px 8px'},
-    sbNav:{display:'flex',flexDirection:'column',gap:3,padding:'0 8px'},
-    sbBtn:{display:'flex',alignItems:'center',gap:10,padding:'9px 11px',borderRadius:8,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.55)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.18s ease'},
+    sb:{width:260,background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh',boxShadow:'2px 0 8px rgba(0,0,0,0.05)'},
+    sbLogo:{display:'flex',alignItems:'center',gap:12,padding:'22px 16px 16px'},
+    sbIcon:{width:40,height:40,borderRadius:11,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,backdropFilter:'blur(8px)'},
+    sbTitle:{fontSize:14,fontWeight:700,color:'#fff',letterSpacing:'-0.2px'},
+    sbSub:{fontSize:11,color:'rgba(255,255,255,0.5)',marginTop:2,letterSpacing:'0.04em'},
+    sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'4px 16px 10px'},
+    sbNav:{display:'flex',flexDirection:'column',gap:4,padding:'0 10px'},
+    sbBtn:{display:'flex',alignItems:'center',gap:11,padding:'11px 13px',borderRadius:9,fontSize:13,fontWeight:500,color:'rgba(255,255,255,0.65)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.18s ease'},
     sbBtnOn:{background:'rgba(255,255,255,0.18)',color:'#fff',fontWeight:600,boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.08)'},
-    sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'1px 6px',fontSize:10,fontWeight:700},
-    sbLock:{display:'flex',alignItems:'center',gap:7,padding:'9px 11px 16px',fontSize:11,color:'rgba(255,255,255,0.4)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
+    sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
+    sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
     main:{flex:1,background:'#f0f4f1',overflowY:'auto'},
     page:{padding:'26px 26px 32px'},
     pgTitle:{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.5px'},
@@ -967,11 +967,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
             <div style={S.sbDiv}/>
 
             {/* Global search */}
-            <div style={{padding:'0 10px 10px',position:'relative'}}>
+            <div style={{padding:'0 12px 12px',position:'relative'}}>
               <div style={{position:'relative'}}>
-                <svg style={{position:'absolute',left:8,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.5)" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                <svg style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,0.55)" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.55)" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 <input
-                  style={{width:'100%',padding:'7px 10px 7px 28px',background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.15)',borderRadius:8,fontSize:12,color:'#fff',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
+                  style={{width:'100%',padding:'9px 12px 9px 34px',background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:9,fontSize:13,color:'#fff',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
                   placeholder="Search clients & tasks…"
                   value={globalSearch}
                   onChange={e=>setGlobalSearch(e.target.value)}
@@ -1031,9 +1031,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <div style={{padding:'12px 14px 18px'}}>
-            <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:40,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:10,cursor:'pointer',color:'rgba(255,255,255,0.85)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
+          <div style={{padding:'14px 16px 20px'}}>
+            <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:11,cursor:'pointer',color:'rgba(255,255,255,0.9)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock & Exit
             </button>
           </div>
