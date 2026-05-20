@@ -1223,6 +1223,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={S.page}>
+              <div data-tasks-sticky-top style={{position:'sticky',top:0,zIndex:50,background:'#f0f4f1',paddingBottom:8,marginLeft:-26,marginRight:-26,paddingLeft:26,paddingRight:26,marginTop:-26,paddingTop:26}}>
               <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18}}>
                 <div>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
@@ -1502,6 +1503,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 )
               })()}
 
+              </div>{/* end sticky top */}
+
               {pendingTasks.length>0 && <>
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
                   <span style={{color:'#d97706',fontSize:8}}>●</span> Pending — {pendingTasks.length}
@@ -1662,7 +1665,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </div>
                 </div>
               )}
-              <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14}}>
+              <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,position:'sticky',top:0,zIndex:50,background:'#fff'}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{activeTask.clientName}</div>
