@@ -31,11 +31,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json()
     const { createTask } = await import('@/lib/db')
     const { randomUUID } = await import('crypto')
+    const { isValidSupabaseStorageUrl } = await import('@/lib/supabase')
     const VALID_TASK_TYPES = new Set(['tax-return','super','tfn','abn'])
-    // Validate fileUrls: only allow strings that look like https:// URLs, max 50 items
+    // Validate fileUrls: only allow URLs from our Supabase Storage (prevent SSRF/tracking), max 50 items
     const rawUrls: unknown[] = Array.isArray(body.fileUrls) ? body.fileUrls.slice(0, 50) : []
     const safeFileUrls = rawUrls.filter(
-      (u): u is string => typeof u === 'string' && u.startsWith('https://')
+      (u): u is string => typeof u === 'string' && isValidSupabaseStorageUrl(u)
     )
     const task = await createTask({
       clientId:    `CLT-${randomUUID()}`,

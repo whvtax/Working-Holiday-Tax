@@ -29,6 +29,18 @@
 6. **Run** (כפתור ירוק בפינה ימנית למטה, או `Ctrl+Enter`)
 7. ✅ אמור להופיע: "Success. No rows returned"
 
+### 1.2.1: Migration 002 - Stats RPC (חובה לסקלה!)
+
+⚠️ **חובה להריץ גם את ה-migration השני** - בלי זה ה-Dashboard לא יסקלה ל-5,000+ לקוחות:
+
+1. SQL Editor → **"New query"**
+2. פותח את `supabase/migrations/002_dashboard_stats.sql`
+3. **העתק והדבק**
+4. **Run**
+5. ✅ "Success. No rows returned"
+6. בדיקה (אופציונלי): `SELECT get_dashboard_stats('2024-25', '2023-24');`
+   - אמור להחזיר JSON עם כל הסטטיסטיקות
+
 ## שלב 1.3: יצירת Storage Bucket
 
 1. בDashboard לחיצה על **Storage** (אייקון תיקייה)

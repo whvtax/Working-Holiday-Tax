@@ -349,6 +349,15 @@ export function FormClient() {
     if (declared === 'no')    e.declared       = 'You must agree to submit'
     if (!declaredIncome)      e.declaredIncome = 'You must confirm this declaration to proceed'
     if (!howHeard.trim())     e.howHeard       = 'Required'
+    if (!hasExpenses)         e.hasExpenses    = 'Required'
+    if (hasExpenses === 'yes') {
+      const validInvoices = [...tfnInvoices, ...abnInvoices].filter(inv =>
+        inv.file && parseFloat(inv.amount) > 0 && inv.description.trim()
+      )
+      if (validInvoices.length === 0) {
+        e.hasExpenses = 'Please add at least one expense with amount, description, and receipt'
+      }
+    }
     if (taxYears.length === 0) e.taxYear       = 'Please select at least one tax year'
     return e
   }
@@ -461,12 +470,17 @@ export function FormClient() {
           await new Promise(r => setTimeout(r, 300))
         }
       }
-      const failed = results.filter(r => !r).length
-      if (failed > 0) {
+      const failedFiles = results
+        .map((r, idx) => r ? null : allInvoiceFiles[idx]?.name)
+        .filter((n): n is string => !!n)
+      if (failedFiles.length > 0) {
         setLoading(false)
-        alert(`${failed} invoice file(s) failed to upload. Please check they are images or PDFs under 10MB and try again.`)
+        const list = failedFiles.slice(0, 5).join('\n• ')
+        const more = failedFiles.length > 5 ? `\n• ... and ${failedFiles.length - 5} more` : ''
+        alert(`Failed to upload ${failedFiles.length} invoice file(s):\n\n• ${list}${more}\n\nPlease check they are images or PDFs under 10MB and try again.`)
         return
       }
+      // Preserve order: invoiceUrls[i] matches allInvoiceFiles[i]
       results.forEach(url => { if (url) invoiceUrls.push(url) })
     }
 
@@ -820,7 +834,7 @@ export function FormClient() {
             </Field>
 
 
-            <Field label="Do you have work-related or ABN expenses?" error={errors.hasExpenses}>
+            <Field label="Do you have work-related or ABN expenses?" required error={errors.hasExpenses}>
               <div className="radio-group">
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>

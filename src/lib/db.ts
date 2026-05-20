@@ -106,33 +106,24 @@ export async function findExistingClient(email: string, whatsapp: string): Promi
   const w = norm(whatsapp)
   if (!e && !w) return null
 
-  // Search crm_clients (case-insensitive)
-  const { data: clients } = await sb.from('crm_clients')
-    .select('id, email, whatsapp, created_at')
-    .order('created_at', { ascending: false })
-    .limit(50)
-  if (clients) {
-    const match = clients.find((c: Record<string, unknown>) => {
-      const ce = norm((c.email as string) ?? '')
-      const cw = norm((c.whatsapp as string) ?? '')
-      return (e && ce === e) || (w && cw === w)
-    })
-    if (match) return { id: match.id as string }
+  // Search crm_clients - case-insensitive match via ilike on each field separately.
+  // Run parallel queries; the first match wins. This avoids PostgREST `or()`
+  // syntax issues with special characters in emails (e.g. '+').
+  const queries: Promise<{ data: { id: string }[] | null }>[] = []
+  if (e) queries.push(sb.from('crm_clients').select('id').ilike('email', e).limit(1))
+  if (w) queries.push(sb.from('crm_clients').select('id').ilike('whatsapp', w).limit(1))
+  for (const q of queries) {
+    const { data } = await q
+    if (data && data.length > 0) return { id: data[0].id }
   }
 
-  // Search crm_tasks (active only)
-  const { data: tasks } = await sb.from('crm_tasks')
-    .select('client_id, email, whatsapp, submitted_at')
-    .eq('done', false)
-    .order('submitted_at', { ascending: false })
-    .limit(50)
-  if (tasks) {
-    const match = tasks.find((t: Record<string, unknown>) => {
-      const te = norm((t.email as string) ?? '')
-      const tw = norm((t.whatsapp as string) ?? '')
-      return (e && te === e) || (w && tw === w)
-    })
-    if (match) return { id: match.client_id as string }
+  // Search crm_tasks (active only) — same strategy
+  const taskQueries: Promise<{ data: { client_id: string }[] | null }>[] = []
+  if (e) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('email', e).limit(1))
+  if (w) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('whatsapp', w).limit(1))
+  for (const q of taskQueries) {
+    const { data } = await q
+    if (data && data.length > 0) return { id: data[0].client_id }
   }
 
   return null
@@ -284,21 +275,26 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
         taxReturns.push(...filtered)
         taxReturns.push({
           year,
-          type: refundAmount > 0 ? 'refund' as const : 'no-refund' as const,
-          refundAmount,
-          notes: '',
-          date: today,
+          type: refundAmount >= 0 ? 'refund' as const : 'owed' as const,
+          refundAmount: Math.abs(refundAmount),
+          completedAt: today,
         })
         checkins[year] = true
       })
       updates.tax_returns = JSON.stringify(taxReturns)
       updates.yearly_checkins = JSON.stringify(checkins)
     } else if (task.taskType === 'super') {
+      const years = task.taxYear ? task.taxYear.split(',').map(y => y.trim()).filter(Boolean) : [today.slice(0,4)]
       const superReturns = existing.superReturns || []
-      superReturns.push({
-        amount: refundAmount,
-        notes: '',
-        date: today,
+      years.forEach(year => {
+        const filtered = superReturns.filter(x => x.year !== year)
+        superReturns.length = 0
+        superReturns.push(...filtered)
+        superReturns.push({
+          year,
+          amount: refundAmount,
+          completedAt: today,
+        })
       })
       updates.super_returns = JSON.stringify(superReturns)
     }
@@ -332,21 +328,21 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       const years = task.taxYear.split(',').map(y => y.trim()).filter(Boolean)
       const newReturns = years.map(year => ({
         year,
-        type: refundAmount > 0 ? 'refund' : 'no-refund',
-        refundAmount,
-        notes: '',
-        date: today,
+        type: refundAmount >= 0 ? 'refund' as const : 'owed' as const,
+        refundAmount: Math.abs(refundAmount),
+        completedAt: today,
       }))
       const newCheckins: Record<string, boolean> = {}
       years.forEach(y => { newCheckins[y] = true })
       initialUpdates.tax_returns = JSON.stringify(newReturns)
       initialUpdates.yearly_checkins = JSON.stringify(newCheckins)
     } else if (task.taskType === 'super') {
-      initialUpdates.super_returns = JSON.stringify([{
+      const years = task.taxYear ? task.taxYear.split(',').map(y => y.trim()).filter(Boolean) : [today.slice(0,4)]
+      initialUpdates.super_returns = JSON.stringify(years.map(year => ({
+        year,
         amount: refundAmount,
-        notes: '',
-        date: today,
-      }])
+        completedAt: today,
+      })))
     }
 
     await sb.from('crm_clients').insert(initialUpdates)
@@ -574,3 +570,197 @@ export async function setYearlyCheckin(clientId: string, year: string, done: boo
     .eq('id', clientId)
   if (error) throw error
 }
+
+// ── Dashboard Stats ────────────────────────────────────────────────────────
+// Computes aggregate stats from DB without loading all clients into memory.
+// Scales to 10k+ clients. Fetches only the JSON fields needed for aggregation.
+
+export type DashboardStats = {
+  totalActiveClients: number
+  totalArchivedClients: number
+  totalTasksPending: number
+  totalTasksDone: number
+  seasonClientsCount: number          // Clients with tax return in current FY
+  lastYearClientsCount: number        // Clients with tax return in previous FY
+  returnedThisYearCount: number       // Of last year's clients, who returned this year
+  totalRefundsThisYear: number        // Sum of refund amounts for current FY
+  eligibleSuperCount: number          // Clients with >=1 tax return
+  noSuperCount: number                // Of eligible, who never had super
+  followUpCount: number               // Clients needing yearly follow-up
+  currentTaxYear: string              // e.g. "2024-25"
+  lastTaxYear: string                 // e.g. "2023-24"
+}
+
+function getCurrentTaxYear(): string {
+  // AU tax year: 1 Jul - 30 Jun. Computed in Australia/Sydney timezone.
+  const sydney = new Date(new Date().toLocaleString('en-US', { timeZone: 'Australia/Sydney' }))
+  const y = sydney.getFullYear()
+  return sydney.getMonth() >= 6
+    ? `${y}-${String(y + 1).slice(2)}`
+    : `${y - 1}-${String(y).slice(2)}`
+}
+
+function getPreviousTaxYear(currentYear: string): string {
+  const start = parseInt(currentYear.split('-')[0]) - 1
+  return `${start}-${String(start + 1).slice(2)}`
+}
+
+export async function getDashboardStats(): Promise<DashboardStats> {
+  const sb = getSupabase()
+  const currentTaxYear = getCurrentTaxYear()
+  const lastTaxYear = getPreviousTaxYear(currentTaxYear)
+
+  // Try Supabase RPC function (fast, scales to 1M+ clients).
+  // Falls back to in-memory aggregation if function not installed yet.
+  const rpcResult = await sb.rpc('get_dashboard_stats', {
+    current_year: currentTaxYear,
+    last_year: lastTaxYear,
+  })
+
+  if (!rpcResult.error && rpcResult.data) {
+    const d = rpcResult.data as Record<string, unknown>
+    return {
+      totalActiveClients:    Number(d.totalActiveClients   ?? 0),
+      totalArchivedClients:  Number(d.totalArchivedClients ?? 0),
+      totalTasksPending:     Number(d.totalTasksPending    ?? 0),
+      totalTasksDone:        Number(d.totalTasksDone       ?? 0),
+      seasonClientsCount:    Number(d.seasonClientsCount   ?? 0),
+      lastYearClientsCount:  Number(d.lastYearClientsCount ?? 0),
+      returnedThisYearCount: Number(d.returnedThisYearCount?? 0),
+      totalRefundsThisYear:  Number(d.totalRefundsThisYear ?? 0),
+      eligibleSuperCount:    Number(d.eligibleSuperCount   ?? 0),
+      noSuperCount:          Number(d.noSuperCount         ?? 0),
+      followUpCount:         Number(d.followUpCount        ?? 0),
+      currentTaxYear,
+      lastTaxYear,
+    }
+  }
+
+  // Fallback: in-memory aggregation (works for small DBs without migration 002).
+  // WARNING: not suitable for >5,000 active clients — run migration 002 in Supabase.
+  console.warn('[getDashboardStats] RPC unavailable, falling back to in-memory. Run migration 002 in Supabase to scale.')
+
+  const [
+    activeCountRes,
+    archivedCountRes,
+    pendingTasksRes,
+    doneTasksRes,
+    aggregationRes,
+  ] = await Promise.all([
+    sb.from('crm_clients').select('*', { count: 'exact', head: true }).eq('archived', false),
+    sb.from('crm_clients').select('*', { count: 'exact', head: true }).eq('archived', true),
+    sb.from('crm_tasks').select('*', { count: 'exact', head: true }).eq('done', false),
+    sb.from('crm_tasks').select('*', { count: 'exact', head: true }).eq('done', true),
+    sb.from('crm_clients')
+      .select('tax_returns, super_returns, yearly_checkins')
+      .eq('archived', false)
+      .limit(5000), // hard cap on fallback path
+  ])
+
+  const totalActiveClients = activeCountRes.count ?? 0
+  const totalArchivedClients = archivedCountRes.count ?? 0
+  const totalTasksPending = pendingTasksRes.count ?? 0
+  const totalTasksDone = doneTasksRes.count ?? 0
+
+  let seasonClientsCount = 0
+  let lastYearClientsCount = 0
+  let returnedThisYearCount = 0
+  let totalRefundsThisYear = 0
+  let eligibleSuperCount = 0
+  let noSuperCount = 0
+  let followUpCount = 0
+
+  type Row = { tax_returns: string | null; super_returns: string | null; yearly_checkins: string | null }
+  const rows: Row[] = (aggregationRes.data ?? []) as Row[]
+
+  for (const row of rows) {
+    let taxReturns: TaxReturn[] = []
+    let superReturns: SuperReturn[] = []
+    let checkins: Record<string, boolean> = {}
+    try { taxReturns = JSON.parse(row.tax_returns ?? '[]') } catch {}
+    try { superReturns = JSON.parse(row.super_returns ?? '[]') } catch {}
+    try { checkins = JSON.parse(row.yearly_checkins ?? '{}') } catch {}
+
+    const hasThisYear = taxReturns.some(r => r.year === currentTaxYear)
+    const hasLastYear = taxReturns.some(r => r.year === lastTaxYear)
+    if (hasThisYear) seasonClientsCount++
+    if (hasLastYear) {
+      lastYearClientsCount++
+      if (hasThisYear) returnedThisYearCount++
+    }
+
+    for (const r of taxReturns) {
+      if (r.year === currentTaxYear) {
+        if (r.type === 'refund') totalRefundsThisYear += r.refundAmount
+        else if (r.type === 'owed') totalRefundsThisYear -= r.refundAmount
+      }
+    }
+
+    if (taxReturns.length > 0) {
+      eligibleSuperCount++
+      if (superReturns.length === 0) noSuperCount++
+    }
+
+    const checkinDone = checkins[currentTaxYear] === true
+    if (!checkinDone && !hasThisYear && taxReturns.length > 0) followUpCount++
+  }
+
+  return {
+    totalActiveClients,
+    totalArchivedClients,
+    totalTasksPending,
+    totalTasksDone,
+    seasonClientsCount,
+    lastYearClientsCount,
+    returnedThisYearCount,
+    totalRefundsThisYear: Math.max(0, totalRefundsThisYear),
+    eligibleSuperCount,
+    noSuperCount,
+    followUpCount,
+    currentTaxYear,
+    lastTaxYear,
+  }
+}
+
+// ── Server-side search ─────────────────────────────────────────────────────
+// Searches clients in DB by name/email/whatsapp (case-insensitive).
+// Used by Dashboard global search to support 5,000+ clients without loading all.
+
+export async function searchClients(
+  query: string,
+  limit = 50,
+  archived = false,
+): Promise<ClientRecord[]> {
+  const sb = getSupabase()
+  const q = query.trim()
+  if (q.length < 2) return []
+  // Escape % and _ to prevent ILIKE injection
+  const safe = q.replace(/[\\%_]/g, ch => '\\' + ch)
+  const pattern = `%${safe}%`
+
+  // Search in parallel across name, email, whatsapp — merge & dedupe
+  const fields: ('full_name' | 'email' | 'whatsapp')[] = ['full_name', 'email', 'whatsapp']
+  const results = await Promise.all(fields.map(f =>
+    sb.from('crm_clients')
+      .select('*')
+      .eq('archived', archived)
+      .ilike(f, pattern)
+      .limit(limit)
+  ))
+
+  const seen = new Set<string>()
+  const merged: ClientRecord[] = []
+  for (const res of results) {
+    if (!res.data) continue
+    for (const row of res.data) {
+      const id = (row as { id: string }).id
+      if (seen.has(id)) continue
+      seen.add(id)
+      merged.push(toClient(row))
+      if (merged.length >= limit) break
+    }
+    if (merged.length >= limit) break
+  }
+  return merged
+}
+

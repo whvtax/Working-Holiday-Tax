@@ -7,7 +7,8 @@
 import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
 
 const ALLOWED_MIME_TYPES = new Set([
-  'image/jpeg', 'image/png', 'image/webp', 'image/gif',
+  'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif',
+  'image/heic', 'image/heif',
   'application/pdf',
 ])
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024 // 10 MB per file
@@ -16,6 +17,7 @@ const MAX_FILENAME_LENGTH = 200
 const MAGIC_SIGNATURES: { mime: string; offset: number; bytes: number[] }[] = [
   // JPEG: FF D8 FF
   { mime: 'image/jpeg',       offset: 0, bytes: [0xFF, 0xD8, 0xFF] },
+  { mime: 'image/jpg',        offset: 0, bytes: [0xFF, 0xD8, 0xFF] },
   // PNG: 89 50 4E 47 0D 0A 1A 0A
   { mime: 'image/png',        offset: 0, bytes: [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A] },
   // WEBP: 52 49 46 46 ?? ?? ?? ?? 57 45 42 50 (RIFF....WEBP)
@@ -24,6 +26,9 @@ const MAGIC_SIGNATURES: { mime: string; offset: number; bytes: number[] }[] = [
   { mime: 'image/gif',        offset: 0, bytes: [0x47, 0x49, 0x46, 0x38] },
   // PDF: %PDF
   { mime: 'application/pdf',  offset: 0, bytes: [0x25, 0x50, 0x44, 0x46] },
+  // HEIC/HEIF: bytes 4-7 contain 'ftyp' box marker (offset 4)
+  { mime: 'image/heic',       offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] },
+  { mime: 'image/heif',       offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] },
 ]
 
 const DANGEROUS_PATTERNS = [

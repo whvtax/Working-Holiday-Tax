@@ -25,7 +25,18 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
 
     // Actions from DashboardClient
     if (body.action === 'notes')        { const notes = typeof body.notes === 'string' ? body.notes.slice(0, 10_000) : ''; await db.updateClientNotes(params.id, notes); return NextResponse.json({ ok:true }) }
-    if (body.action === 'service')      { const svc = body.service === 'tfn' || body.service === 'abn' ? body.service : null; if (!svc) return NextResponse.json({ ok:false, error:'invalid_service' }, { status:400 }); await db.updateService(params.id, svc, body.data); return NextResponse.json({ ok:true }) }
+    if (body.action === 'service')      {
+      const svc = body.service === 'tfn' || body.service === 'abn' ? body.service : null
+      if (!svc) return NextResponse.json({ ok:false, error:'invalid_service' }, { status:400 })
+      const rawData = body.data ?? {}
+      const safeData = {
+        done: rawData.done === true,
+        completedAt: typeof rawData.completedAt === 'string' ? rawData.completedAt.slice(0, 50) : '',
+        notes: typeof rawData.notes === 'string' ? rawData.notes.slice(0, 2000) : '',
+      }
+      await db.updateService(params.id, svc, safeData)
+      return NextResponse.json({ ok:true })
+    }
     if (body.action === 'add-tax') {
       const d = body.data ?? {}
       const year = typeof d.year === 'string' ? d.year.slice(0,10) : ''

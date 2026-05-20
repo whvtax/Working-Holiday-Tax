@@ -225,11 +225,23 @@ export default function DashboardClient() {
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
 
   // Pagination
-  const PAGE_SIZE = 100
+  const PAGE_SIZE = 200  // Increased from 100 to reduce round-trips
   const [tasksTotal, setTasksTotal]     = useState(0)
   const [clientsTotal, setClientsTotal] = useState(0)
   const [tasksLoadingMore, setTasksLoadingMore]     = useState(false)
   const [clientsLoadingMore, setClientsLoadingMore] = useState(false)
+
+  // Dashboard stats - computed server-side, scales to 10k+ clients
+  type Stats = {
+    totalActiveClients: number; totalArchivedClients: number
+    totalTasksPending: number; totalTasksDone: number
+    seasonClientsCount: number; lastYearClientsCount: number
+    returnedThisYearCount: number; totalRefundsThisYear: number
+    eligibleSuperCount: number; noSuperCount: number
+    followUpCount: number
+    currentTaxYear: string; lastTaxYear: string
+  }
+  const [stats, setStats] = useState<Stats|null>(null)
   const [captureRefund, setCaptureRefund] = useState<{taskId:string;taskType:string;taxYear:string;clientId:string}|null>(null)
   const [captureRefundAmt, setCaptureRefundAmt] = useState('')
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
@@ -248,6 +260,12 @@ export default function DashboardClient() {
     return now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
   })()
   const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:_currentTaxYear as string})
+
+  // Server-side client search (for 5k+ clients where local filter isn't enough)
+  const [searchResults, setSearchResults] = useState<Client[]|null>(null)
+  const [searchingServer, setSearchingServer] = useState(false)
+  // Same, but for archive view (which can grow to 500k+)
+  const [archiveSearchResults, setArchiveSearchResults] = useState<Client[]|null>(null)
 
   const loadTasks   = useCallback(async()=>{
     try {
@@ -311,13 +329,23 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadArchived]',e) }
   },[])
 
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients()]).finally(()=>setLoading(false)) },[loadTasks,loadClients])
+  // Load server-computed dashboard stats (scales to 10k+ clients)
+  const loadStats = useCallback(async()=>{
+    try {
+      const r = await fetch('/api/crm/stats', { cache: 'no-store' })
+      if (r.status === 401) { window.location.replace('/crm'); return }
+      const d = await r.json()
+      if (d.ok && d.stats) setStats(d.stats as Stats)
+    } catch(e){ console.error('[loadStats]', e) }
+  },[])
 
-  // Auto-poll every 20s — keeps all open sessions in sync
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadStats])
+
+  // Auto-poll every 60s — keeps all open sessions in sync
   useEffect(()=>{
-    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived()]) }, 60_000)
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()]) }, 60_000)
     return ()=> clearInterval(id)
-  },[loadTasks, loadClients])
+  },[loadTasks, loadClients, loadArchived, loadStats])
 
   // Sync taskNotes when activeTask updates from auto-refresh (e.g. reviewer added a note)
   useEffect(()=>{
@@ -327,6 +355,42 @@ export default function DashboardClient() {
       if (live) setTaskNotes(extractUserNotes(live.notes))
     }
   }, [activeTask?.id, tasks]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Server-side search: only triggers if we have more clients than loaded
+  // AND the local results look incomplete. Keeps small DBs snappy, scales to 5k+.
+  useEffect(() => {
+    const query = (search.trim() || globalSearch.trim())
+    // Skip if search is empty or if we already have all clients loaded
+    if (query.length < 2 || clients.length >= clientsTotal) {
+      setSearchResults(null)
+      return
+    }
+    // Debounce: wait 350ms after last keystroke
+    setSearchingServer(true)
+    const handle = setTimeout(async () => {
+      try {
+        const r = await fetch(`/api/crm/clients/search?q=${encodeURIComponent(query)}&limit=100`, { cache: 'no-store' })
+        const d = await r.json()
+        if (d.ok && Array.isArray(d.clients)) setSearchResults(d.clients as Client[])
+      } catch (e) { console.error('[search]', e) }
+      finally { setSearchingServer(false) }
+    }, 350)
+    return () => { clearTimeout(handle); setSearchingServer(false) }
+  }, [search, globalSearch, clients.length, clientsTotal])
+
+  // Server-side search for archived clients (archive can grow to 500k+)
+  useEffect(() => {
+    const query = archiveSearch.trim()
+    if (query.length < 2) { setArchiveSearchResults(null); return }
+    const handle = setTimeout(async () => {
+      try {
+        const r = await fetch(`/api/crm/clients/search?q=${encodeURIComponent(query)}&archived=true&limit=100`, { cache: 'no-store' })
+        const d = await r.json()
+        if (d.ok && Array.isArray(d.clients)) setArchiveSearchResults(d.clients as Client[])
+      } catch (e) { console.error('[archive-search]', e) }
+    }, 350)
+    return () => clearTimeout(handle)
+  }, [archiveSearch])
 
   // Update browser tab title with pending count (so you see updates even when tab is in background)
   useEffect(() => {
@@ -402,11 +466,20 @@ export default function DashboardClient() {
   }
 
   async function markDone(id:string) {
+    const prevTasks = tasks
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
     setConfirmComplete(null)
     setActiveTask(null)
     setTaskView('list')
-    fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
+    try {
+      const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
+      if (!res.ok) throw new Error('server_error')
+    } catch (err) {
+      console.error('[markDone]', err)
+      // Restore state on failure so admin knows it didn't save
+      setTasks(prevTasks)
+      alert('Failed to mark as done. Please try again.')
+    }
   }
 
   async function transferToClients(task: Task) {
@@ -853,7 +926,16 @@ export default function DashboardClient() {
 
   const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()), [tasks])
   const doneTasks      = useMemo(()=>tasks.filter(t=>t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()),  [tasks])
-  const visibleClients = useMemo(()=>clients.filter(c=>{
+  const visibleClients = useMemo(()=>{
+    // If user is searching and we have server-side results (more clients than loaded),
+    // use the merged set so they can find clients beyond the first page.
+    const sourceClients = (search.trim().length >= 2 && searchResults && clients.length < clientsTotal)
+      ? (() => {
+          const seen = new Set(clients.map(c => c.id))
+          return [...clients, ...searchResults.filter(c => !seen.has(c.id))]
+        })()
+      : clients
+    return sourceClients.filter(c=>{
     const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
     const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
@@ -877,7 +959,8 @@ export default function DashboardClient() {
     const hasThisYear = c.taxReturns.some(r => r.year === thisYearStr)
     const mNoReturn = noReturnFilter==='all' || (noReturnFilter==='didnt-return' && hadLastYear && !hasThisYear)
     return ms && my && mc && mh && mcountry && mcom && msuper && mNoReturn
-  }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()), [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter, superFilter, noReturnFilter])
+  }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime())
+  }, [clients, clientsTotal, searchResults, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter, superFilter, noReturnFilter])
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
@@ -904,28 +987,48 @@ export default function DashboardClient() {
     )
   }
 
-  const globalResults = useMemo(()=>globalSearch.trim().length > 1 ? {
-    tasks: tasks.filter(t=>
-      t.clientName.toLowerCase().includes(globalSearch.toLowerCase()) ||
-      t.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
-      t.whatsapp?.includes(globalSearch)
-    ).slice(0,5),
-    clients: clients.filter(c=>
-      c.fullName.toLowerCase().includes(globalSearch.toLowerCase()) ||
-      c.email?.toLowerCase().includes(globalSearch.toLowerCase()) ||
-      c.whatsapp?.includes(globalSearch)
-    ).slice(0,5),
-  } : null, [globalSearch, tasks, clients])
+  const globalResults = useMemo(()=>{
+    const q = globalSearch.trim()
+    if (q.length <= 1) return null
+    // Merge local clients with any server-side search results
+    const sourceClients = (searchResults && clients.length < clientsTotal)
+      ? (() => {
+          const seen = new Set(clients.map(c => c.id))
+          return [...clients, ...searchResults.filter(c => !seen.has(c.id))]
+        })()
+      : clients
+    return {
+      tasks: tasks.filter(t=>
+        t.clientName.toLowerCase().includes(q.toLowerCase()) ||
+        t.email?.toLowerCase().includes(q.toLowerCase()) ||
+        t.whatsapp?.includes(q)
+      ).slice(0,5),
+      clients: sourceClients.filter(c=>
+        c.fullName.toLowerCase().includes(q.toLowerCase()) ||
+        c.email?.toLowerCase().includes(q.toLowerCase()) ||
+        c.whatsapp?.includes(q)
+      ).slice(0,5),
+    }
+  }, [globalSearch, tasks, clients, clientsTotal, searchResults])
 
   const howHeardStats = useMemo(()=>clients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [clients])
   const archiveHowHeardStats = useMemo(()=>archivedClients.reduce((acc:Record<string,number>,c)=>{ const k=c.howHeard||'Unknown'; acc[k]=(acc[k]||0)+1; return acc },{}), [archivedClients])
-  const visibleArchived = useMemo(()=>archivedClients.filter(c=>{
+  const visibleArchived = useMemo(()=>{
+    // Merge with server-side search results if user is searching
+    const source = (archiveSearch.trim().length >= 2 && archiveSearchResults)
+      ? (() => {
+          const seen = new Set(archivedClients.map(c => c.id))
+          return [...archivedClients, ...archiveSearchResults.filter(c => !seen.has(c.id))]
+        })()
+      : archivedClients
+    return source.filter(c=>{
     const ms = !archiveSearch || c.fullName.toLowerCase().includes(archiveSearch.toLowerCase()) || c.whatsapp?.includes(archiveSearch) || c.email?.includes(archiveSearch)
     const my = archiveYearFilter.size===0 || c.taxReturns?.some(r=>archiveYearFilter.has(r.year)) || c.superReturns?.some(r=>archiveYearFilter.has(r.year))
     const mh = archiveHowHeardFilter.size===0 || archiveHowHeardFilter.has(c.howHeard||'Unknown')
     const mc = archiveCountryFilter.size===0 || archiveCountryFilter.has(c.country||'')
     return ms && my && mh && mc
-  }), [archivedClients, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
+  })
+  }, [archivedClients, archiveSearchResults, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
@@ -1139,40 +1242,47 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               {/* Season stats */}
               {(()=>{
-                // Get current AU tax year (Jul-Jun cycle)
+                // Use server-computed stats for accurate values at any scale.
+                // Falls back to local computation only on first render before stats load.
                 const now = new Date()
                 const y = now.getFullYear()
-                const thisYear = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
-                const lastYear = (() => {
-                  const start = parseInt(thisYear.split('-')[0]) - 1
+                const thisYearLocal = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
+                const lastYearLocal = (() => {
+                  const start = parseInt(thisYearLocal.split('-')[0]) - 1
                   return `${start}-${String(start+1).slice(2)}`
                 })()
                 void tasks // unused but kept for context
                 const allClients = clients.filter(c => !c.archived)
 
+                // Prefer server-computed stats (correct for 5k+ clients)
+                const thisYear = stats?.currentTaxYear ?? thisYearLocal
+                const lastYear = stats?.lastTaxYear ?? lastYearLocal
                 const seasonClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
                 const lastYearClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===lastYear))
-                // Of last year's clients - how many returned this year?
                 const returnedThisYear = lastYearClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
-                const returnRate = lastYearClients.length > 0
-                  ? Math.round((returnedThisYear.length / lastYearClients.length) * 100)
+
+                const seasonCount = stats?.seasonClientsCount ?? seasonClients.length
+                const lastYearCount = stats?.lastYearClientsCount ?? lastYearClients.length
+                const returnedCount = stats?.returnedThisYearCount ?? returnedThisYear.length
+                const returnRate = lastYearCount > 0
+                  ? Math.round((returnedCount / lastYearCount) * 100)
                   : 0
 
-                const totalRefunds = allClients.reduce((s,c)=>
+                const totalRefunds = stats?.totalRefundsThisYear ?? allClients.reduce((s,c)=>
                   s + c.taxReturns.filter(r=>r.year===thisYear && r.type==='refund')
                     .reduce((x,r)=>x+r.refundAmount,0), 0)
-                const pendingCount = pendingTasks.length
-                const doneCount = doneTasks.length
+                const pendingCount = stats?.totalTasksPending ?? pendingTasks.length
+                const doneCount = stats?.totalTasksDone ?? doneTasks.length
                 // Always show stats - even if no tasks yet (provides motivation + overview)
-                const totalClients = allClients.length
-                const avgRefund = seasonClients.length > 0 ? totalRefunds/seasonClients.length : 0
+                const totalClients = stats?.totalActiveClients ?? allClients.length
+                const avgRefund = seasonCount > 0 ? totalRefunds/seasonCount : 0
                 return (<>
                   <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:12}}>
                     {[
                       {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
                       {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✓'},
                       {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
-                      {label:'Season',value:seasonClients.length,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
+                      {label:'Season',value:seasonCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
                     ].map(stat=>(
                       <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'12px 14px',transition:'transform 0.15s'}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:5}}>
@@ -1187,21 +1297,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {/* 2 circles side-by-side: Returning + No-Super - always shown */}
                   {(() => {
                     // No-super clients: have at least 1 tax return but never had super refund
-                    const eligibleClients = allClients.filter(c => c.taxReturns.length > 0)
-                    const noSuperClients = eligibleClients.filter(c => c.superReturns.length === 0)
-                    const noSuperRate = eligibleClients.length > 0
-                      ? Math.round((noSuperClients.length / eligibleClients.length) * 100)
+                    // Use server-computed stats for accuracy at scale; fallback to local
+                    const eligibleClientsLocal = allClients.filter(c => c.taxReturns.length > 0)
+                    const noSuperClientsLocal = eligibleClientsLocal.filter(c => c.superReturns.length === 0)
+                    const eligibleCount = stats?.eligibleSuperCount ?? eligibleClientsLocal.length
+                    const noSuperCount = stats?.noSuperCount ?? noSuperClientsLocal.length
+                    // Keep local arrays for the click handlers (filter UI)
+                    const eligibleClients = eligibleClientsLocal
+                    const noSuperClients = noSuperClientsLocal
+                    const noSuperRate = eligibleCount > 0
+                      ? Math.round((noSuperCount / eligibleCount) * 100)
                       : 0
 
                     return (
                       <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:8,marginBottom:12}}>
                         {/* Return Rate Circle - clickable */}
                         <button onClick={() => {
-                          if (lastYearClients.length === 0) return
+                          if (lastYearCount === 0) return
                           setView('clients')
                           setNoReturnFilter(noReturnFilter === 'didnt-return' ? 'all' : 'didnt-return')
-                        }} disabled={lastYearClients.length === 0}
-                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:lastYearClients.length === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearClients.length === 0 ? 0.7 : 1}}>
+                        }} disabled={lastYearCount === 0}
+                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:lastYearCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearCount === 0 ? 0.7 : 1}}>
                           <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
                             <svg width="54" height="54" viewBox="0 0 54 54">
                               <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(146,64,14,0.15)" strokeWidth="5"/>
@@ -1216,13 +1332,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{fontSize:12,fontWeight:700,color:'#92400e',marginBottom:2}}>🔁 Returning Rate ({thisYear})</div>
                             <div style={{fontSize:11,color:'#78350f',lineHeight:1.5}}>
-                              {lastYearClients.length === 0
+                              {lastYearCount === 0
                                 ? `No clients from ${lastYear} yet`
-                                : <>{returnedThisYear.length} of {lastYearClients.length} from {lastYear} returned</>
+                                : <>{returnedCount} of {lastYearCount} from {lastYear} returned</>
                               }
-                              {lastYearClients.length - returnedThisYear.length > 0 && (
+                              {lastYearCount - returnedCount > 0 && (
                                 <span style={{display:'block',marginTop:2,fontWeight:600,color:'#b45309'}}>
-                                  👆 Click to {noReturnFilter==='didnt-return' ? 'clear filter' : `see ${lastYearClients.length - returnedThisYear.length} not returned`}
+                                  👆 Click to {noReturnFilter==='didnt-return' ? 'clear filter' : `see ${lastYearCount - returnedCount} not returned`}
                                 </span>
                               )}
                             </div>
@@ -1231,11 +1347,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
                         {/* No-Super Circle (clickable filter) */}
                         <button onClick={() => {
-                          if (eligibleClients.length === 0) return
+                          if (eligibleCount === 0) return
                           setView('clients')
                           setSuperFilter(superFilter === 'no-super' ? 'all' : 'no-super')
-                        }} disabled={eligibleClients.length === 0}
-                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:eligibleClients.length === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleClients.length === 0 ? 0.7 : 1}}>
+                        }} disabled={eligibleCount === 0}
+                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:eligibleCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleCount === 0 ? 0.7 : 1}}>
                           <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
                             <svg width="54" height="54" viewBox="0 0 54 54">
                               <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(29,78,216,0.15)" strokeWidth="5"/>
@@ -1250,11 +1366,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           <div style={{flex:1,minWidth:0}}>
                             <div style={{fontSize:12,fontWeight:700,color:'#1d4ed8',marginBottom:2}}>💼 No Super Yet</div>
                             <div style={{fontSize:11,color:'#1e3a8a',lineHeight:1.5}}>
-                              {eligibleClients.length === 0
+                              {eligibleCount === 0
                                 ? 'No clients with tax returns yet'
-                                : <>{noSuperClients.length} of {eligibleClients.length} have no super refund</>
+                                : <>{noSuperCount} of {eligibleCount} have no super refund</>
                               }
-                              {noSuperClients.length > 0 && (
+                              {noSuperCount > 0 && (
                                 <span style={{display:'block',marginTop:2,fontWeight:600,color:'#1d4ed8'}}>
                                   👆 Click to {superFilter==='no-super' ? 'clear filter' : 'filter clients'}
                                 </span>
@@ -1274,7 +1390,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           <div style={{fontSize:9.5,fontWeight:700,color:'#059669',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>💵 Refunds {thisYear}</div>
                         </div>
                         <div style={{fontSize:24,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalRefunds)}</div>
-                        <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:3}}>{seasonClients.length} client{seasonClients.length!==1?'s':''}</div>
+                        <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:3}}>{seasonCount} client{seasonCount!==1?'s':''}</div>
                       </div>
                       <div style={{background:'linear-gradient(135deg,#eff6ff,#dbeafe)',border:'1px solid #bfdbfe',borderRadius:11,padding:'14px 16px'}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
@@ -1296,12 +1412,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   const hasReturnThisYear = c.taxReturns.some(r=>r.year===thisYear)
                   return !checkinDone && !hasReturnThisYear && c.taxReturns.length > 0
                 })
-                if (needsFollowUp.length === 0) return null
+                // Total count from server-computed stats (accurate at any scale)
+                const totalFollowUp = stats?.followUpCount ?? needsFollowUp.length
+                if (totalFollowUp === 0) return null
                 return (
                   <div style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:'1px solid #fcd34d',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
                     <div style={{fontSize:22,flexShrink:0}}>🔔</div>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>{needsFollowUp.length} client{needsFollowUp.length!==1?'s':''} need yearly follow-up for {thisYear}</div>
+                      <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>{totalFollowUp} client{totalFollowUp!==1?'s':''} need yearly follow-up for {thisYear}</div>
                       <div style={{fontSize:12,color:'#78350f',marginBottom:8,lineHeight:1.5}}>These clients had returns in previous years but haven&apos;t been processed for {thisYear} yet.</div>
                       <div style={{display:'flex',gap:6,flexWrap:'wrap' as const}}>
                         {needsFollowUp.slice(0,5).map(c=>(
@@ -1310,10 +1428,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                             {c.fullName}
                           </button>
                         ))}
-                        {needsFollowUp.length > 5 && (
+                        {totalFollowUp > 5 && (
                           <button onClick={()=>{setView('clients');setCheckinFilter('pending')}}
                             style={{padding:'4px 10px',background:'transparent',border:'1px dashed #fcd34d',borderRadius:7,fontSize:11,fontWeight:600,color:'#92400e',cursor:'pointer',fontFamily:'inherit'}}>
-                            + {needsFollowUp.length-5} more
+                            + {totalFollowUp-5} more
                           </button>
                         )}
                       </div>
