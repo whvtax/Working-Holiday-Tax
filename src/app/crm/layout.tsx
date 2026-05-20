@@ -46,9 +46,9 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
         .grain { display: none !important; }
         #main-content { margin: 0 !important; padding: 0 !important; display: block !important; }
         body { margin: 0 !important; padding: 0 !important; }
-        /* Scale entire CRM 20% larger on desktop for better readability (mobile stays unchanged) */
+        /* Scale entire CRM 10% larger on desktop for better readability (mobile stays unchanged) */
         @media (min-width: 769px) {
-          html { zoom: 1.2; }
+          html { zoom: 1.1; }
         }
       `}</style>
       <ChunkErrorHandler />
