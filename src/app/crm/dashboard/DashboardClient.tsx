@@ -2226,15 +2226,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {/* ── ARCHIVE ── */}
           {view==='archive' && (
             <div style={{...S.page, background:'linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%)', minHeight:'100vh'}}>
-              {/* Archive warning banner */}
-              <div style={{background:'linear-gradient(135deg,#a78bfa,#8b5cf6)',color:'#fff',borderRadius:12,padding:'12px 18px',marginBottom:18,display:'flex',alignItems:'center',gap:12,boxShadow:'0 4px 12px rgba(139,92,246,0.25)'}}>
-                <div style={{fontSize:24,flexShrink:0}}>📦</div>
-                <div style={{flex:1}}>
-                  <div style={{fontSize:14,fontWeight:700,marginBottom:2}}>Archive — Inactive Clients</div>
-                  <div style={{fontSize:12,opacity:0.92,lineHeight:1.5}}>These clients have left Australia or are no longer active. They won&apos;t appear in your main Clients list, reports, or analytics.</div>
-                </div>
-              </div>
-
               {/* Header */}
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>

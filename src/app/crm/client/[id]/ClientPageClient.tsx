@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
-type TaxYear = '2019-20'|'2020-21'|'2021-22'|'2022-23'|'2023-24'|'2024-25'
+type TaxYear = string
 type Client = {
   id:string; fullName:string; dob:string; whatsapp:string; email:string; country:string
   address:string; tfn:string; bankDetails:string; primaryJob:string; marital:string
@@ -11,7 +11,14 @@ type Client = {
   submittedAt:string; handled:boolean; notes:string
   files:{bankStatement:string|null;selfiePassport:string|null;invoices:string|null}
 }
-const TAX_YEARS:TaxYear[] = ['2024-25','2023-24','2022-23','2021-22','2020-21','2019-20']
+// Calculate tax years dynamically: 5 back + current + 5 forward
+const _now = new Date()
+const _cy = _now.getFullYear()
+const _currentTaxStart = _now.getMonth() >= 6 ? _cy : _cy - 1
+const TAX_YEARS: TaxYear[] = Array.from({length:11},(_,i)=>{
+  const y = _currentTaxStart + 5 - i  // newest first
+  return `${y}-${String(y+1).slice(2)}`
+})
 
 export default function ClientPageClient({ id }: { id: string }) {
   const router  = useRouter()
