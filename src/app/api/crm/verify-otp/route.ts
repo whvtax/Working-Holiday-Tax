@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     }
 
     // One-time use — delete OTP and attempt counter immediately
-    await redis.del('crm_otp', OTP_ATTEMPT_KEY)
+    await redis.del(['crm_otp', OTP_ATTEMPT_KEY])
 
     const token = createSession()
     const res = NextResponse.json({ ok: true })

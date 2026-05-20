@@ -58,7 +58,7 @@ export async function getRedis(): Promise<ReturnType<typeof createClient> | null
   return _connecting
 }
 
-export async function isRateLimited(ip: string, formName: string): Promise<boolean> {
+export async function isRateLimited(ip: string, formName: string, maxRequests: number = MAX_REQUESTS): Promise<boolean> {
   try {
     const result = await Promise.race<boolean>([
       (async () => {
@@ -70,7 +70,7 @@ export async function isRateLimited(ip: string, formName: string): Promise<boole
           .incr(key)
           .expire(key, WINDOW_SECS, 'NX')
           .exec() as [number, number]
-        return count > MAX_REQUESTS
+        return count > maxRequests
       })(),
       new Promise<false>((resolve) =>
         setTimeout(() => { console.warn('[rate-limit] timed out — failing open'); resolve(false) }, TOTAL_TIMEOUT_MS)

@@ -90,7 +90,7 @@ export async function recordFailedAttemptRedis(redis: import('redis').RedisClien
 }
 
 export async function resetFailedAttemptsRedis(redis: import('redis').RedisClientType): Promise<void> {
-  await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
+  await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
 }
 
 export async function isLockedOutRedis(redis: import('redis').RedisClientType): Promise<boolean> {
@@ -98,7 +98,7 @@ export async function isLockedOutRedis(redis: import('redis').RedisClientType): 
   if (!locked) return false
   const ts = await redis.get(KEY_TS)
   if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
-    await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
+    await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
     return false
   }
   return true

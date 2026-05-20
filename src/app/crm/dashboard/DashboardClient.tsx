@@ -833,7 +833,7 @@ export default function DashboardClient() {
     const isPaid = (c.notes||'').includes('💰 Commission paid')
     const mcom = commissionFilter==='all' || (commissionFilter==='unpaid' && isReferral && !isPaid) || (commissionFilter==='paid' && isReferral && isPaid)
     return ms && my && mc && mh && mcountry && mcom
-  }, [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter]).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()))
+  }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()), [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter])
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (

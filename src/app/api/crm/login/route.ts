@@ -7,8 +7,7 @@ import {
 } from '@/lib/crm-store'
 import { getRedis } from '@/lib/rate-limit'
 import crypto from 'crypto'
-import type { createClient } from 'redis'
-type RedisClient = ReturnType<typeof createClient>
+type RedisClient = import('redis').RedisClientType
 
 let _cachedPasswordHash: string | null = null
 function getPasswordHash(): string {

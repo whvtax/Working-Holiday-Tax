@@ -131,7 +131,6 @@ export default function CategoryHero({ category, title }: { category: Category; 
           fontWeight="700"
           fill={colors.text}
           letterSpacing="2"
-          textTransform="uppercase"
           fontFamily="system-ui, -apple-system, sans-serif"
         >
           {category.toUpperCase()}
