@@ -294,7 +294,13 @@ export function FormClient() {
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
   const [declared, setDeclared]       = useState<'yes'|'no'|''>('')
   const [declaredIncome, setDeclaredIncome] = useState(false)
-  const [taxYear, setTaxYear]         = useState('2024-25')
+  // Default to current AU tax year (Jul-Jun cycle). User can select multiple years.
+  const [taxYears, setTaxYears] = useState<string[]>(() => {
+    const now = new Date()
+    const y = now.getFullYear()
+    const current = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
+    return [current]
+  })
   const [terms, setTerms]             = useState(false)
   // ABN
   const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
@@ -343,6 +349,7 @@ export function FormClient() {
     if (declared === 'no')    e.declared       = 'You must agree to submit'
     if (!declaredIncome)      e.declaredIncome = 'You must confirm this declaration to proceed'
     if (!howHeard.trim())     e.howHeard       = 'Required'
+    if (taxYears.length === 0) e.taxYear       = 'Please select at least one tax year'
     return e
   }
 
@@ -426,7 +433,7 @@ export function FormClient() {
     }
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
-    fd.append('taxYear',     taxYear)
+    fd.append('taxYear',     taxYears.join(', '))
     fd.append('howHeard',    howHeard)
     fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
@@ -842,6 +849,52 @@ export function FormClient() {
                 />
               )}
             </>)}
+          </div>
+
+          <div className="form-section-title">Tax year</div>
+          <div>
+            <Field label="Please select the tax year(s) you want to file" required error={(errors as any).taxYear}>
+              <div style={{fontSize:12,color:'#587066',marginBottom:10,lineHeight:1.55,background:'#f7fbf9',border:'1px solid #d4eae2',borderRadius:8,padding:'10px 12px'}}>
+                💡 In Australia, the tax year runs from <strong>1 July to 30 June</strong>.<br/>
+                You can select <strong>more than one year</strong> if you haven&apos;t filed in previous years.
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:8}}>
+                {(() => {
+                  const now = new Date()
+                  const y = now.getFullYear()
+                  const currentYear = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
+                  const startYear = parseInt(currentYear.split('-')[0])
+                  const years = Array.from({length: 4}, (_, i) => {
+                    const yy = startYear - i
+                    return { code: `${yy}-${String(yy+1).slice(2)}`, range: `1.7.${yy} – 30.6.${yy+1}` }
+                  })
+                  return years.map(({code, range}) => {
+                    const isSelected = taxYears.includes(code)
+                    return (
+                      <label key={code} className={`radio-card ${isSelected ? 'radio-card-active' : ''}`} style={{flexDirection:'column',alignItems:'flex-start',gap:4,padding:'10px 12px'}}>
+                        <input type="checkbox" name="taxYear" value={code} checked={isSelected}
+                          onChange={() => {
+                            setTaxYears(prev => isSelected ? prev.filter(y => y !== code) : [...prev, code])
+                            setErrors(p => ({...p, taxYear: ''}))
+                          }} className="hidden" />
+                        <div style={{display:'flex',alignItems:'center',gap:8,width:'100%'}}>
+                          <div className={`check-box${isSelected ? ' checked' : ''}`} style={{flexShrink:0}}>
+                            {isSelected && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                          </div>
+                          <span style={{fontWeight:600,fontSize:13}}>FY {code}{code === currentYear ? ' (current)' : ''}</span>
+                        </div>
+                        <span style={{fontSize:10.5,color:'#587066',marginLeft:24}}>{range}</span>
+                      </label>
+                    )
+                  })
+                })()}
+              </div>
+              {taxYears.length > 1 && (
+                <div style={{fontSize:11,color:'#0E5C42',marginTop:8,fontWeight:500}}>
+                  ✓ {taxYears.length} tax years selected: {taxYears.sort().join(', ')}
+                </div>
+              )}
+            </Field>
           </div>
 
           <div className="form-section-title">How did you hear about us?</div>

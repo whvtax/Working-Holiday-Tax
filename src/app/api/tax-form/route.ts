@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       email,
       country:     sanitiseShort(formData.get('country')),
       dob:         sanitiseShort(formData.get('dob')),
-      taxYear:     sanitiseShort(formData.get('taxYear')) || '2024-25',
+      taxYear:     sanitiseShort(formData.get('taxYear')),
       address:     sanitiseField(formData.get('address')),
       tfn:         sanitiseShort(formData.get('tfn')),
       bankDetails: sanitiseField(formData.get('bankDetails')),

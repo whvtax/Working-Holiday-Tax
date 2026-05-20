@@ -26,7 +26,13 @@ type Client = {
 type View = 'tasks'|'clients'|'client-detail'|'archive'
 
 const CY = new Date().getFullYear()
-const TAX_YEARS = Array.from({length:9},(_,i)=>`${CY-2+i}-${String(CY-1+i).slice(2)}`)
+// Current AU tax year start (Jul-Jun cycle)
+const CURRENT_TAX_START = new Date().getMonth() >= 6 ? CY : CY - 1
+// 5 years back + current + 5 years forward = 11 years total
+const TAX_YEARS = Array.from({length:11},(_,i)=>{
+  const y = CURRENT_TAX_START - 5 + i
+  return `${y}-${String(y+1).slice(2)}`
+})
 const TASK_LABELS: Record<TaskType,string> = {
   'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application'
 }
@@ -174,7 +180,12 @@ function CopyFieldBtn({ text }: { text: string }) {
 export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
-  const [checkinYear, setCheckinYear] = useState('2024-25')
+  const [checkinYear, setCheckinYear] = useState(() => {
+    // Auto-select current AU tax year (Jul-Jun cycle)
+    const now = new Date()
+    const y = now.getFullYear()
+    return now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
+  })
   const [checkinFilter, setCheckinFilter] = useState<'all'|'done'|'pending'>('all')
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
   const [tasks, setTasks]         = useState<Task[]>([])
@@ -190,6 +201,8 @@ export default function DashboardClient() {
   const [yearFilter, setYearFilter] = useState<Set<string>>(new Set())
   const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
   const [commissionFilter, setCommissionFilter] = useState<'all'|'unpaid'|'paid'>('all')
+  const [superFilter, setSuperFilter] = useState<'all'|'no-super'>('all')
+  const [noReturnFilter, setNoReturnFilter] = useState<'all'|'didnt-return'>('all')
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
@@ -229,7 +242,12 @@ export default function DashboardClient() {
   const [newTaxType, setNewTaxType]     = useState<'refund'|'owed'>('refund')
   const [newSuperYear, setNewSuperYear] = useState('')
   const [newSuperAmt, setNewSuperAmt]   = useState('')
-  const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25' as string})
+  const _currentTaxYear = (() => {
+    const now = new Date()
+    const y = now.getFullYear()
+    return now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
+  })()
+  const [newClient, setNewClient]       = useState({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:_currentTaxYear as string})
 
   const loadTasks   = useCallback(async()=>{
     try {
@@ -355,7 +373,17 @@ export default function DashboardClient() {
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
   async function archiveClient(id: string) {
-      setClients(prev => prev.filter(c => c.id !== id))
+    const client = clients.find(c => c.id === id)
+    const name = client?.fullName || 'this client'
+    const confirmed = window.confirm(
+      `Archive ${name}?\n\n` +
+      `This client will be hidden from your active Clients list, reports, and analytics. ` +
+      `They will only appear in the Archive section.\n\n` +
+      `Use this when the client has left Australia or is no longer active.\n\n` +
+      `You can unarchive them anytime.`
+    )
+    if (!confirmed) return
+    setClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
     // Trigger archive badge — client moved to archive
     setNewArchiveCount(n => n + 1)
@@ -497,7 +525,7 @@ export default function DashboardClient() {
         address:'',tfn:'',bankDetails:'',primaryJob:'',marital:'',taxStatus:'Working Holiday Maker',
         howHeard:'',auPhone:'',notes:'',fileUrls:[],
       })})
-    setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:'2024-25'})
+    setNewClient({fullName:'',whatsapp:'',email:'',country:'',dob:'',taxYear:_currentTaxYear})
     setShowAddModal(false); await loadTasks()
   }
 
@@ -795,7 +823,9 @@ export default function DashboardClient() {
     const a = document.createElement('a')
     a.href = url
     // Build filename: ClientName_TaskType_Date.html (e.g., "John_Doe_Tax_Return_2026-05-20.html")
-    const safeName = (task.clientName || 'form').trim().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '')
+    // Allow Unicode letters (Hebrew, Spanish accents, etc) — only strip filesystem-unsafe chars
+    let safeName = (task.clientName || 'form').trim().replace(/\s+/g, '_').replace(/[<>:"/\\|?*\x00-\x1f]/g, '')
+    if (!safeName || safeName === '_') safeName = 'client'
     const typeLabels: Record<string, string> = {
       'tfn': 'TFN_Application',
       'abn': 'ABN_Application',
@@ -832,8 +862,18 @@ export default function DashboardClient() {
     const isReferral = !isSocial && src.length > 1
     const isPaid = (c.notes||'').includes('💰 Commission paid')
     const mcom = commissionFilter==='all' || (commissionFilter==='unpaid' && isReferral && !isPaid) || (commissionFilter==='paid' && isReferral && isPaid)
-    return ms && my && mc && mh && mcountry && mcom
-  }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()), [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter])
+    // Super filter: no-super = clients with tax returns but no super refund
+    const msuper = superFilter==='all' || (superFilter==='no-super' && c.taxReturns.length > 0 && c.superReturns.length === 0)
+    // No-return filter: clients who had tax return last year but didn't return this year
+    const now = new Date()
+    const yy = now.getFullYear()
+    const thisYearStr = now.getMonth() >= 6 ? `${yy}-${String(yy+1).slice(2)}` : `${yy-1}-${String(yy).slice(2)}`
+    const lastYearStr = (() => { const s = parseInt(thisYearStr.split('-')[0]) - 1; return `${s}-${String(s+1).slice(2)}` })()
+    const hadLastYear = c.taxReturns.some(r => r.year === lastYearStr)
+    const hasThisYear = c.taxReturns.some(r => r.year === thisYearStr)
+    const mNoReturn = noReturnFilter==='all' || (noReturnFilter==='didnt-return' && hadLastYear && !hasThisYear)
+    return ms && my && mc && mh && mcountry && mcom && msuper && mNoReturn
+  }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()), [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter, superFilter, noReturnFilter])
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
@@ -1095,16 +1135,31 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               {/* Season stats */}
               {(()=>{
-                const thisYear = TAX_YEARS[TAX_YEARS.length-1]
+                // Get current AU tax year (Jul-Jun cycle)
+                const now = new Date()
+                const y = now.getFullYear()
+                const thisYear = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
+                const lastYear = (() => {
+                  const start = parseInt(thisYear.split('-')[0]) - 1
+                  return `${start}-${String(start+1).slice(2)}`
+                })()
                 void tasks // unused but kept for context
-                const allClients = clients
+                const allClients = clients.filter(c => !c.archived)
+
                 const seasonClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
+                const lastYearClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===lastYear))
+                // Of last year's clients - how many returned this year?
+                const returnedThisYear = lastYearClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
+                const returnRate = lastYearClients.length > 0
+                  ? Math.round((returnedThisYear.length / lastYearClients.length) * 100)
+                  : 0
+
                 const totalRefunds = allClients.reduce((s,c)=>
                   s + c.taxReturns.filter(r=>r.year===thisYear && r.type==='refund')
                     .reduce((x,r)=>x+r.refundAmount,0), 0)
                 const pendingCount = pendingTasks.length
                 const doneCount = doneTasks.length
-                if (pendingCount===0 && doneCount===0) return null
+                // Always show stats - even if no tasks yet (provides motivation + overview)
                 const totalClients = allClients.length
                 const avgRefund = seasonClients.length > 0 ? totalRefunds/seasonClients.length : 0
                 return (<>
@@ -1124,6 +1179,89 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       </div>
                     ))}
                   </div>
+
+                  {/* 2 circles side-by-side: Returning + No-Super - always shown */}
+                  {(() => {
+                    // No-super clients: have at least 1 tax return but never had super refund
+                    const eligibleClients = allClients.filter(c => c.taxReturns.length > 0)
+                    const noSuperClients = eligibleClients.filter(c => c.superReturns.length === 0)
+                    const noSuperRate = eligibleClients.length > 0
+                      ? Math.round((noSuperClients.length / eligibleClients.length) * 100)
+                      : 0
+
+                    return (
+                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:8,marginBottom:12}}>
+                        {/* Return Rate Circle - clickable */}
+                        <button onClick={() => {
+                          if (lastYearClients.length === 0) return
+                          setView('clients')
+                          setNoReturnFilter(noReturnFilter === 'didnt-return' ? 'all' : 'didnt-return')
+                        }} disabled={lastYearClients.length === 0}
+                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:lastYearClients.length === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearClients.length === 0 ? 0.7 : 1}}>
+                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
+                            <svg width="54" height="54" viewBox="0 0 54 54">
+                              <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(146,64,14,0.15)" strokeWidth="5"/>
+                              <circle cx="27" cy="27" r="22" fill="none" stroke="#92400e" strokeWidth="5" strokeLinecap="round"
+                                strokeDasharray={`${(returnRate/100)*138.23} 138.23`}
+                                transform="rotate(-90 27 27)"/>
+                            </svg>
+                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#92400e'}}>
+                              {returnRate}%
+                            </div>
+                          </div>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{fontSize:12,fontWeight:700,color:'#92400e',marginBottom:2}}>🔁 Returning Rate ({thisYear})</div>
+                            <div style={{fontSize:11,color:'#78350f',lineHeight:1.5}}>
+                              {lastYearClients.length === 0
+                                ? `No clients from ${lastYear} yet`
+                                : <>{returnedThisYear.length} of {lastYearClients.length} from {lastYear} returned</>
+                              }
+                              {lastYearClients.length - returnedThisYear.length > 0 && (
+                                <span style={{display:'block',marginTop:2,fontWeight:600,color:'#b45309'}}>
+                                  👆 Click to {noReturnFilter==='didnt-return' ? 'clear filter' : `see ${lastYearClients.length - returnedThisYear.length} not returned`}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </button>
+
+                        {/* No-Super Circle (clickable filter) */}
+                        <button onClick={() => {
+                          if (eligibleClients.length === 0) return
+                          setView('clients')
+                          setSuperFilter(superFilter === 'no-super' ? 'all' : 'no-super')
+                        }} disabled={eligibleClients.length === 0}
+                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:eligibleClients.length === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleClients.length === 0 ? 0.7 : 1}}>
+                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
+                            <svg width="54" height="54" viewBox="0 0 54 54">
+                              <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(29,78,216,0.15)" strokeWidth="5"/>
+                              <circle cx="27" cy="27" r="22" fill="none" stroke="#1d4ed8" strokeWidth="5" strokeLinecap="round"
+                                strokeDasharray={`${(noSuperRate/100)*138.23} 138.23`}
+                                transform="rotate(-90 27 27)"/>
+                            </svg>
+                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#1d4ed8'}}>
+                              {noSuperRate}%
+                            </div>
+                          </div>
+                          <div style={{flex:1,minWidth:0}}>
+                            <div style={{fontSize:12,fontWeight:700,color:'#1d4ed8',marginBottom:2}}>💼 No Super Yet</div>
+                            <div style={{fontSize:11,color:'#1e3a8a',lineHeight:1.5}}>
+                              {eligibleClients.length === 0
+                                ? 'No clients with tax returns yet'
+                                : <>{noSuperClients.length} of {eligibleClients.length} have no super refund</>
+                              }
+                              {noSuperClients.length > 0 && (
+                                <span style={{display:'block',marginTop:2,fontWeight:600,color:'#1d4ed8'}}>
+                                  👆 Click to {superFilter==='no-super' ? 'clear filter' : 'filter clients'}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </button>
+                      </div>
+                    )
+                  })()}
+
                   {/* Money Analytics */}
                   {totalRefunds > 0 && (
                     <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:20}}>
@@ -1183,6 +1321,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               {/* Birthday Reminders - clients with birthdays in next 7 days */}
               {(()=>{
                 const today = new Date()
+                // Normalize to start of day to avoid timezone issues
+                today.setHours(0, 0, 0, 0)
                 const upcoming = clients.map(c => {
                   if (!c.dob) return null
                   const parts = c.dob.includes('/') ? c.dob.split('/') : c.dob.split('-')
@@ -1190,13 +1330,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   let day, month
                   if (c.dob.includes('/')) { day = parseInt(parts[0]); month = parseInt(parts[1]) }
                   else { day = parseInt(parts[2]); month = parseInt(parts[1]) }
-                  if (!day || !month) return null
+                  if (!day || !month || month < 1 || month > 12 || day < 1 || day > 31) return null
                   const thisYear = today.getFullYear()
                   let bday = new Date(thisYear, month-1, day)
-                  if (bday < today && (today.getTime() - bday.getTime()) > 86400000) {
+                  bday.setHours(0, 0, 0, 0)
+                  // If birthday already passed this year (more than 1 day ago), move to next year
+                  const daysSincePassed = Math.floor((today.getTime() - bday.getTime()) / 86400000)
+                  if (daysSincePassed > 1) {
                     bday = new Date(thisYear+1, month-1, day)
+                    bday.setHours(0, 0, 0, 0)
                   }
-                  const days = Math.floor((bday.getTime() - today.getTime()) / 86400000)
+                  const days = Math.round((bday.getTime() - today.getTime()) / 86400000)
                   if (days < -1 || days > 7) return null
                   return { client: c, days }
                 }).filter((x): x is {client: Client, days: number} => x !== null)
@@ -1237,13 +1381,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <span style={{color:'#d97706',fontSize:8}}>●</span> Pending — {pendingTasks.length}
                 </div>
                 {pendingTasks.map(t=>{
-                  const isWhv = (t.taskType !== 'tax-return') || (t.notes||'').includes('Working holiday maker')
+                  const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
                   const isMarried = (t.marital||'').toLowerCase() === 'married'
+                  const isReturning = (t.notes||'').includes('🔄 Returning client')
                   return (
                   <div key={t.id} data-task-card style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
+                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:6}}>
+                        {t.clientName}
+                        {isReturning && (
+                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ECFDF5',color:'#047857',border:'1px solid #A7F3D0'}} title="This client has been with you before">
+                            🔄 Returning
+                          </span>
+                        )}
+                      </div>
                       <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
                         <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
                         {isWhv && (
@@ -1271,7 +1423,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <span style={{color:'#059669',fontSize:8}}>●</span> Done — {doneTasks.length}
                 </div>
                 {doneTasks.map(t=>{
-                  const isWhv = (t.taskType !== 'tax-return') || (t.notes||'').includes('Working holiday maker')
+                  const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
                   const isMarried = (t.marital||'').toLowerCase() === 'married'
                   return (
                   <div key={t.id} style={{...S.taskCard,opacity:0.82,cursor:'default'}}>
@@ -1358,7 +1510,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               {!activeTask.done && (<>
               {/* WHV Alert Banner - shown when client filled as Working Holiday Visa */}
               {(()=>{
-                const isWhv = (activeTask.taskType !== 'tax-return') || (activeTask.notes||'').includes('Working holiday maker')
+                const isWhv = activeTask.taskType === 'tax-return' && (activeTask.notes||'').includes('Working holiday maker')
                 if (!isWhv) return null
                 return (
                   <div style={{background:'#fffbeb',border:'1.5px solid #fde68a',borderLeft:'4px solid #d97706',borderRadius:10,padding:'12px 16px',marginBottom:14,display:'flex',alignItems:'flex-start',gap:10}}>
@@ -1773,15 +1925,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   })()}
                 </div>
                 <div style={{display:'flex',gap:8,alignItems:'center'}}>
+                  {noReturnFilter==='didnt-return' && (
+                    <button onClick={()=>setNoReturnFilter('all')} style={{display:'flex',alignItems:'center',gap:6,background:'#fef3c7',border:'1px solid #fcd34d',borderRadius:9,padding:'5px 10px',cursor:'pointer',fontFamily:'inherit'}}>
+                      <span style={{fontSize:11,color:'#92400e',fontWeight:600}}>🔁 Didn&apos;t return filter</span>
+                      <span style={{fontSize:14,color:'#92400e',fontWeight:700,lineHeight:1}}>×</span>
+                    </button>
+                  )}
+                  {superFilter==='no-super' && (
+                    <button onClick={()=>setSuperFilter('all')} style={{display:'flex',alignItems:'center',gap:6,background:'#dbeafe',border:'1px solid #93c5fd',borderRadius:9,padding:'5px 10px',cursor:'pointer',fontFamily:'inherit'}}>
+                      <span style={{fontSize:11,color:'#1d4ed8',fontWeight:600}}>💼 No Super filter</span>
+                      <span style={{fontSize:14,color:'#1d4ed8',fontWeight:700,lineHeight:1}}>×</span>
+                    </button>
+                  )}
                   <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:9,padding:'5px 10px'}}>
                     <span style={{fontSize:11,color:'#7a8a82',fontWeight:500}}>✓ Year:</span>
                     <select value={checkinYear} onChange={e=>setCheckinYear(e.target.value)} style={{border:'none',background:'none',fontSize:12,fontWeight:600,color:'#0E5C42',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
                       {TAX_YEARS.map(y=><option key={y} value={y}>{y}</option>)}
-                    </select>
-                    <select value={checkinFilter} onChange={e=>setCheckinFilter(e.target.value as 'all'|'done'|'pending')} style={{border:'none',background:'none',fontSize:11,color:'#555',cursor:'pointer',outline:'none',fontFamily:'inherit'}}>
-                      <option value="all">All</option>
-                      <option value="done">✓ Done</option>
-                      <option value="pending">⏳ Pending</option>
                     </select>
                   </div>
                   <button
@@ -1951,7 +2110,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','WhatsApp','Email','Country','Source','💰','Last refund','✓',''].map(h=>(
+                        {['Name','WhatsApp','Email','Country','Source','💰','Last refund',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -2034,14 +2193,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                 )
                               })()}
                             </td>
-                            <td style={{padding:'6px 10px',borderBottom:'1px solid #f0f4f1',textAlign:'center'}} onClick={e=>e.stopPropagation()}>
-                              {(()=>{const done=cl.yearlyCheckins?.[checkinYear]??false; return (
-                                <button onClick={()=>toggleCheckin(cl.id,checkinYear,done)}
-                                  style={{width:22,height:22,borderRadius:5,border:`2px solid ${done?'#0E5C42':'#d8e4dc'}`,background:done?'#0E5C42':'#fff',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',transition:'all 0.15s'}}>
-                                  {done && <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                                </button>
-                              )})()}
-                            </td>
                             <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
                               <div style={{display:'flex',gap:4}}>
                                 <button style={{padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'}} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
@@ -2074,12 +2225,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
           {/* ── ARCHIVE ── */}
           {view==='archive' && (
-            <div style={S.page}>
+            <div style={{...S.page, background:'linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%)', minHeight:'100vh'}}>
+              {/* Archive warning banner */}
+              <div style={{background:'linear-gradient(135deg,#a78bfa,#8b5cf6)',color:'#fff',borderRadius:12,padding:'12px 18px',marginBottom:18,display:'flex',alignItems:'center',gap:12,boxShadow:'0 4px 12px rgba(139,92,246,0.25)'}}>
+                <div style={{fontSize:24,flexShrink:0}}>📦</div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:14,fontWeight:700,marginBottom:2}}>Archive — Inactive Clients</div>
+                  <div style={{fontSize:12,opacity:0.92,lineHeight:1.5}}>These clients have left Australia or are no longer active. They won&apos;t appear in your main Clients list, reports, or analytics.</div>
+                </div>
+              </div>
+
               {/* Header */}
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>
-                  <h1 style={S.pgTitle as React.CSSProperties}>Archive</h1>
-                  <span style={{background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
+                  <h1 style={{...S.pgTitle as React.CSSProperties, color:'#7c3aed'}}>📦 Archive</h1>
+                  <span style={{background:'#ede9fe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
                     {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
                   </span>
                   {(()=>{
@@ -2089,7 +2249,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         - c.taxReturns.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + c.superReturns.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
+                    return <span style={{background:'#fff',color:'#7c3aed',border:'1px solid #ddd6fe',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} historical</span>
                   })()}
                 </div>
               </div>
@@ -2161,10 +2321,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
-                              <div style={{display:'flex',alignItems:'center',gap:6}}>
-                                {cl.whatsapp&&<a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{flexShrink:0,color:'#25D366',display:'flex',alignItems:'center'}}><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg></a>}
-                                <span>{cl.whatsapp||'—'}</span>
-                              </div>
+                              {cl.whatsapp
+                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none'}}>{cl.whatsapp}</a>
+                                : '—'}
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'—'}</td>
@@ -2437,7 +2596,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
             <div style={S.mTitle}>Add new client task</div>
             <div style={S.mSub}>Creates a new task in the Tasks tab</div>
             <form onSubmit={addClient}>
-              {[['Full name *','text','e.g. Sophie Lambert','fullName'],['WhatsApp','text','+33612345678','whatsapp'],['Email','email','sophie@email.com','email'],['Country','text','e.g. France','country'],['Date of birth','date','','dob']].map(([l,t,p,k])=>(
+              {[['Full name *','text','e.g. John Smith','fullName'],['WhatsApp','text','+61412345678','whatsapp'],['Email','email','john@email.com','email'],['Country','text','e.g. Australia','country'],['Date of birth','date','','dob']].map(([l,t,p,k])=>(
                 <div key={k} style={{marginBottom:10}}>
                   <label style={{fontSize:12,fontWeight:500,color:'#555',display:'block',marginBottom:4}}>{l}</label>
                   <input type={t} style={S.mInput} placeholder={p} value={(newClient as Record<string,string>)[k]} onChange={e=>setNewClient({...newClient,[k]:e.target.value})} required={k==='fullName'}/>

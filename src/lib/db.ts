@@ -249,17 +249,64 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
 
   // Upsert client (merge behavior preserved from old code)
   const existing = await getClientById(task.clientId)
+
+  // Determine which service this task represents and update history accordingly
+  const today = new Date().toISOString().slice(0, 10)
+  const refundMatch = (task.notes||'').match(/\$\s*([\d,]+(?:\.\d+)?)/);
+  const refundAmount = refundMatch ? parseFloat(refundMatch[1].replace(/,/g,'')) : 0
+
   if (existing) {
     const newHowHeard = existing.howHeard === '' && task.howHeard !== '' ? task.howHeard : existing.howHeard
     const newNotes = cleanedNotes !== '' && !existing.notes.includes(cleanedNotes)
       ? `${existing.notes}\n${cleanedNotes}`.trim()
       : existing.notes
-    await sb.from('crm_clients').update({
+
+    // Build update object based on task type
+    const updates: Record<string, unknown> = {
       how_heard: newHowHeard,
       notes: newNotes,
-    }).eq('id', task.clientId)
+    }
+
+    // Add task to appropriate service history
+    if (task.taskType === 'tfn') {
+      updates.tfn_service = JSON.stringify({ done: true, completedAt: today, notes: '' })
+    } else if (task.taskType === 'abn') {
+      updates.abn_service = JSON.stringify({ done: true, completedAt: today, notes: '' })
+    } else if (task.taskType === 'tax-return' && task.taxYear) {
+      // Support multiple years (comma-separated)
+      const years = task.taxYear.split(',').map(y => y.trim()).filter(Boolean)
+      const taxReturns = existing.taxReturns || []
+      const checkins = existing.yearlyCheckins || {}
+      years.forEach(year => {
+        // Avoid duplicates for same year
+        const filtered = taxReturns.filter(r => r.year !== year)
+        taxReturns.length = 0
+        taxReturns.push(...filtered)
+        taxReturns.push({
+          year,
+          type: refundAmount > 0 ? 'refund' as const : 'no-refund' as const,
+          refundAmount,
+          notes: '',
+          date: today,
+        })
+        checkins[year] = true
+      })
+      updates.tax_returns = JSON.stringify(taxReturns)
+      updates.yearly_checkins = JSON.stringify(checkins)
+    } else if (task.taskType === 'super') {
+      const superReturns = existing.superReturns || []
+      superReturns.push({
+        amount: refundAmount,
+        notes: '',
+        date: today,
+      })
+      updates.super_returns = JSON.stringify(superReturns)
+    }
+
+    await sb.from('crm_clients').update(updates).eq('id', task.clientId)
   } else {
-    await sb.from('crm_clients').insert({
+    // New client - create with this task as first service
+    const initialUpdates: Record<string, unknown> = {
       id: task.clientId,
       full_name: task.clientName,
       dob: task.dob,
@@ -275,7 +322,34 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       created_at: new Date().toISOString(),
       archived: false,
       yearly_checkins: '{}',
-    })
+    }
+
+    if (task.taskType === 'tfn') {
+      initialUpdates.tfn_service = JSON.stringify({ done: true, completedAt: today, notes: '' })
+    } else if (task.taskType === 'abn') {
+      initialUpdates.abn_service = JSON.stringify({ done: true, completedAt: today, notes: '' })
+    } else if (task.taskType === 'tax-return' && task.taxYear) {
+      const years = task.taxYear.split(',').map(y => y.trim()).filter(Boolean)
+      const newReturns = years.map(year => ({
+        year,
+        type: refundAmount > 0 ? 'refund' : 'no-refund',
+        refundAmount,
+        notes: '',
+        date: today,
+      }))
+      const newCheckins: Record<string, boolean> = {}
+      years.forEach(y => { newCheckins[y] = true })
+      initialUpdates.tax_returns = JSON.stringify(newReturns)
+      initialUpdates.yearly_checkins = JSON.stringify(newCheckins)
+    } else if (task.taskType === 'super') {
+      initialUpdates.super_returns = JSON.stringify([{
+        amount: refundAmount,
+        notes: '',
+        date: today,
+      }])
+    }
+
+    await sb.from('crm_clients').insert(initialUpdates)
   }
 
   const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)
