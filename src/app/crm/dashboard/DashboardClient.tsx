@@ -431,7 +431,7 @@ export default function DashboardClient() {
     const allParts = (activeTask.notes||'').split(' | ')
     // Keep ALL structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
+      p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
       || p === '🔄 Returning client'
     )
@@ -538,7 +538,7 @@ export default function DashboardClient() {
     const userParts = parts
       .filter(p =>
         // Strip ALL auto-generated form data — only keep human-written admin notes
-        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
+        !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
         && !p.startsWith('📝 ')
         && p !== '🔄 Returning client'
       )
@@ -686,7 +686,9 @@ export default function DashboardClient() {
 
     else if (task.taskType === 'super') {
       const passport    = getNote('Passport No')
-      const superFunds  = getNote('Super Funds')
+      const superFundName = getNote('Super Fund Name') || getNote('Super Funds')
+      const superMemberNumber = getNote('Super Member Number')
+      const superOpeningDate = getNote('Super Opening Date')
       const homeAddress = getNote('Home Country Address')
       const declVal     = findDecl(['→ ✓ I have read','→ ✓ I agree','→ ✓'])
 
@@ -704,7 +706,9 @@ export default function DashboardClient() {
         + field('Full home country address', homeAddress)
         + sec('Tax & super fund details')
         + field('TFN (Tax File Number)', task.tfn)
-        + field('Super fund details (fund name, member number, account opening date)', superFunds)
+        + field('Super fund name', superFundName)
+        + field('Member number', superMemberNumber)
+        + field('Account opening date', superOpeningDate)
         + sec('Bank account details')
         + field('Bank name', bkName)
         + field('Account holder full name', bkHolder)
@@ -1677,7 +1681,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </>}
                   {activeTask.taskType==='super' && <>
                     <div style={S.secHead}><span>Super details</span></div>
-                    {(()=>{const superFunds=(activeTask.notes||'').match(/Super Funds: ([^|]+)/)?.[1]?.trim()||'—';return([['TFN 🔒',activeTask.tfn],['Super fund(s)',superFunds]] as [string,string][])})().map(([l,v])=>(
+                    {(()=>{
+                      const notes = activeTask.notes||''
+                      const sfName = notes.match(/Super Fund Name: ([^|]+)/)?.[1]?.trim()
+                        || notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
+                      const sfMember = notes.match(/Super Member Number: ([^|]+)/)?.[1]?.trim() || '—'
+                      const sfDate = notes.match(/Super Opening Date: ([^|]+)/)?.[1]?.trim() || '—'
+                      return([
+                        ['TFN 🔒',activeTask.tfn],
+                        ['Super fund name',sfName],
+                        ['Member number',sfMember],
+                        ['Account opening date',sfDate],
+                      ] as [string,string][])
+                    })().map(([l,v])=>(
                       <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
                     ))}
                     {(()=>{

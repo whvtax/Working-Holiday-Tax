@@ -52,7 +52,9 @@ export async function POST(req: NextRequest) {
       notes:       [
         isReturning ? '🔄 Returning client' : '',
         formData.get('passport') ? `Passport No: ${sanitiseShort(formData.get('passport'))}` : '',
-        formData.get('superFunds') ? `Super Funds: ${sanitiseField(formData.get('superFunds'))}` : '',
+        formData.get('superFundName') ? `Super Fund Name: ${sanitiseShort(formData.get('superFundName'))}` : '',
+        formData.get('superMemberNumber') ? `Super Member Number: ${sanitiseShort(formData.get('superMemberNumber'))}` : '',
+        formData.get('superOpeningDate') ? `Super Opening Date: ${sanitiseShort(formData.get('superOpeningDate'))}` : '',
         formData.get('homeAddress') ? `Home Country Address: ${sanitiseField(formData.get('homeAddress'))}` : '',
         formData.get('declared')     ? `→ ${sanitiseField(formData.get('declared'))}` : '',
       ].filter(Boolean).join(' | '),

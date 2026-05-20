@@ -57,7 +57,9 @@ export function FormClient() {
   const [auAddress, setAuAddress]   = useState('')
   const [homeAddress, setHomeAddress] = useState('')
   const [tfn, setTfn]               = useState('')
-  const [superFunds, setSuperFunds] = useState('')
+  const [superFundName, setSuperFundName]       = useState('')
+  const [superMemberNumber, setSuperMemberNumber] = useState('')
+  const [superOpeningDate, setSuperOpeningDate]   = useState('')
   const [bankName, setBankName]       = useState('')
   const [bankHolder, setBankHolder]   = useState('')
   const [bankAccount, setBankAccount] = useState('')
@@ -81,7 +83,9 @@ export function FormClient() {
     if (!auAddress.trim())      e.auAddress      = 'Required'
     if (!homeAddress.trim())    e.homeAddress    = 'Required'
     if (!tfn.trim())            e.tfn            = 'Required'
-    if (!superFunds.trim())     e.superFunds     = 'Required'
+    if (!superFundName.trim())   e.superFundName   = 'Required'
+    if (!superMemberNumber.trim()) e.superMemberNumber = 'Required'
+    if (!superOpeningDate.trim()) e.superOpeningDate = 'Required'
     if (!bankName.trim())    e.bankName    = 'Required'
     if (!bankHolder.trim())  e.bankHolder  = 'Required'
     if (!bankAccount.trim()) e.bankAccount = 'Required'
@@ -104,7 +108,9 @@ export function FormClient() {
     fd.append('passportCountry', passportCountry); fd.append('smsPhone', smsPhone)
     fd.append('email', email); fd.append('auAddress', auAddress)
     fd.append('homeAddress', homeAddress); fd.append('tfn', tfn)
-    fd.append('superFunds', superFunds)
+    fd.append('superFundName', superFundName)
+    fd.append('superMemberNumber', superMemberNumber)
+    fd.append('superOpeningDate', superOpeningDate)
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('howHeard', howHeard)
     fd.append('declared',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
@@ -318,8 +324,14 @@ export function FormClient() {
           <Field label="TFN (Tax File Number)" required error={errors.tfn}>
             <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" autoComplete="off" inputMode="numeric" maxLength={20} value={tfn} onChange={e=>{ setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,tfn:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
-          <Field label="Super fund details (fund name, member number, account opening date)" required error={errors.superFunds}>
-            <textarea className={`form-input form-textarea${errors.superFunds?' input-error':''}`} style={{minHeight:100}} placeholder={"e.g. AustralianSuper — Member No: 123456789 — Opened: 01/03/2023\nHostPlus — Member No: 987654321 — Opened: 15/06/2022"} value={superFunds} onChange={e=>{ setSuperFunds(e.target.value); setErrors(p=>({...p,superFunds:''})) }}/>
+          <Field label="Super fund name" required error={errors.superFundName}>
+            <input className={`form-input${errors.superFundName?' input-error':''}`} type="text" placeholder="e.g. AustralianSuper, HostPlus, Rest Super" autoComplete="off" maxLength={100} value={superFundName} onChange={e=>{ setSuperFundName(e.target.value); setErrors(p=>({...p,superFundName:''})) }}/>
+          </Field>
+          <Field label="Member number" required error={errors.superMemberNumber}>
+            <input className={`form-input${errors.superMemberNumber?' input-error':''}`} type="text" placeholder="e.g. 123456789" autoComplete="off" maxLength={50} value={superMemberNumber} onChange={e=>{ setSuperMemberNumber(e.target.value); setErrors(p=>({...p,superMemberNumber:''})) }}/>
+          </Field>
+          <Field label="Account opening date" required error={errors.superOpeningDate}>
+            <input className={`form-input${errors.superOpeningDate?' input-error':''}`} type="date" autoComplete="off" value={superOpeningDate} onChange={e=>{ setSuperOpeningDate(e.target.value); setErrors(p=>({...p,superOpeningDate:''})) }}/>
           </Field>
           <div className="form-section-title">Bank account details</div>
           <Field label="Bank name" required error={errors.bankName}>
@@ -366,7 +378,8 @@ export function FormClient() {
                     firstName:'First Name',lastName:'Last Name',dob:'Date of Birth',
                     passport:'Passport Number',passportCountry:'Passport Country',
                     smsPhone:'Phone Number',email:'Email Address',auAddress:'Australian Address',
-                    homeAddress:'Home Country Address',tfn:'TFN',superFunds:'Super Fund Details',
+                    homeAddress:'Home Country Address',tfn:'TFN',
+                    superFundName:'Super Fund Name',superMemberNumber:'Member Number',superOpeningDate:'Account Opening Date',
                     bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',selfie:'Selfie with Passport'
                   } as Record<string,string>)[k] || k} is required` : v}</li>
                 ))}
