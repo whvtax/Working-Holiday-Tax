@@ -1,3 +1,4 @@
+export const runtime = 'nodejs'
 // /api/crm/file?url=<supabase-url>
 // Serves Supabase Storage files only to authenticated CRM sessions.
 // Prevents direct public access to client identity documents.

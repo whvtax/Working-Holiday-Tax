@@ -108,7 +108,7 @@ export function FormClient() {
     fd.append('marital',   marital)
     fd.append('address',   address)
     fd.append('howHeard',  howHeard)
-    fd.append('declared',     declared ? '✓ I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.' : '')
+    fd.append('declared',     declared ? '✓ I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.' : '')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
@@ -282,7 +282,7 @@ export function FormClient() {
           <div className="form-brand">Working Holiday Tax</div>
           
           <h1 className="form-title">TFN Application</h1>
-          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.</p>
+          <p className="form-intro">Please fill out the form in English only.</p>
         </div>
 
         <form onSubmit={handleSubmit} noValidate>
@@ -351,7 +351,7 @@ export function FormClient() {
 
           <div className="form-section-title">Declaration</div>
           <div className={`declaration-box${errors.declared?' decl-error':''}`}>
-            <p className="decl-text">I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</p>
+            <p className="decl-text">I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.</p>
             <label className="check-row">
               <input type="checkbox" checked={declared} onChange={e=>{ setDeclared(e.target.checked); setErrors(p=>({...p,declared:''})) }} className="hidden"/>
               <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>

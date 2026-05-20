@@ -280,7 +280,7 @@ export function FormClient() {
           <div className="form-brand">Working Holiday Tax</div>
           
           <h1 className="form-title">Superannuation Refund</h1>
-          <p className="form-intro">Please fill out the form in English exactly as it appears on your passport.</p>
+          <p className="form-intro">Please fill out the form in English only.</p>
         </div>
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-section-title">Personal details</div>

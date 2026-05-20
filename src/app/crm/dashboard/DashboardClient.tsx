@@ -611,7 +611,7 @@ export default function DashboardClient() {
         + sec('Declaration')
         + declBox(
             '',
-            decl1Val !== '—' ? decl1Val.replace('✓ ','') : 'I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.',
+            decl1Val !== '—' ? decl1Val.replace('✓ ','') : 'I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.',
             decl1Val !== '—'
           )
         + declBox(
@@ -1228,6 +1228,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 </div>
                 {pendingTasks.map(t=>{
                   const isWhv = (t.taskType !== 'tax-return') || (t.notes||'').includes('Working holiday maker')
+                  const isMarried = (t.marital||'').toLowerCase() === 'married'
                   return (
                   <div key={t.id} data-task-card style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
@@ -1238,6 +1239,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         {isWhv && (
                           <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A'}} title="Client filled as Working Holiday Visa - verify residency status">
                             ⚠️ WHV — Verify Residency
+                          </span>
+                        )}
+                        {isMarried && (
+                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FCE7F3',color:'#9D174D',border:'1px solid #F9A8D4'}} title="Client marked as Married - may affect tax processing">
+                            💑 Married — Verify
                           </span>
                         )}
                       </div>
@@ -1256,6 +1262,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 </div>
                 {doneTasks.map(t=>{
                   const isWhv = (t.taskType !== 'tax-return') || (t.notes||'').includes('Working holiday maker')
+                  const isMarried = (t.marital||'').toLowerCase() === 'married'
                   return (
                   <div key={t.id} style={{...S.taskCard,opacity:0.82,cursor:'default'}}>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0,animation:'donePulse 2s ease-in-out infinite'}}/>
@@ -1266,6 +1273,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         {isWhv && (
                           <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A'}} title="Client filled as Working Holiday Visa">
                             ⚠️ WHV
+                          </span>
+                        )}
+                        {isMarried && (
+                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FCE7F3',color:'#9D174D',border:'1px solid #F9A8D4'}} title="Client marked as Married">
+                            💑 Married
                           </span>
                         )}
                       </div>
@@ -1350,6 +1362,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </div>
                 )
               })()}
+              {/* Married Alert Banner */}
+              {(activeTask.marital||'').toLowerCase() === 'married' && (
+                <div style={{background:'#fdf2f8',border:'1.5px solid #f9a8d4',borderLeft:'4px solid #db2777',borderRadius:10,padding:'12px 16px',marginBottom:14,display:'flex',alignItems:'flex-start',gap:10}}>
+                  <div style={{fontSize:18,flexShrink:0,marginTop:1}}>💑</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:13,fontWeight:700,color:'#9d174d',marginBottom:3}}>Married — Verify Status</div>
+                    <div style={{fontSize:12,color:'#831843',lineHeight:1.5}}>
+                      Client marked as <strong>Married</strong>. This may affect tax processing — spouse income may need to be considered. Confirm before submitting.
+                    </div>
+                  </div>
+                </div>
+              )}
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
@@ -1619,7 +1643,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
                       return <>
                         <div style={S.secHead}><span>Personal Declaration</span></div>
-                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.</div>
+                        <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.</div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           <div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}>
                             <svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
