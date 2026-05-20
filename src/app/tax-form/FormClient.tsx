@@ -375,18 +375,27 @@ export function FormClient() {
       for (let i = 0; i < 3; i++) {
         try { const res = await attempt(); return res?.url ?? null }
         catch (e) {
-          if (i === 2) return null
+          console.error('[uploadOne]', f.name, 'attempt', i+1, 'error:', e)
+          if (i === 2) {
+            alert(`Upload failed for "${f.name}": ${e instanceof Error ? e.message : 'Unknown error'}`)
+            return null
+          }
           await new Promise(r => setTimeout(r, 800 * (i + 1)))
         }
       }
       return null
     }
 
-    // Upload bankStatement + selfiePassport client-side too
+    // Upload bankStatement + selfiePassport sequentially to avoid rate-limiting
     const coreUploads: { label: string; file: File }[] = []
     if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
     if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
-    const coreResults = await Promise.all(coreUploads.map(({ file: f }) => uploadOne(f)))
+    const coreResults: (string | null)[] = []
+    for (const { file: f } of coreUploads) {
+      const result = await uploadOne(f)
+      coreResults.push(result)
+      await new Promise(r => setTimeout(r, 300))
+    }
     const coreFailed = coreResults.filter(r => !r).length
     if (coreFailed > 0) {
       setLoading(false)
