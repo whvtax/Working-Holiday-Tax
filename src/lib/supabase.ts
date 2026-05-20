@@ -41,3 +41,18 @@ export function getSupabase(): SupabaseClient {
 export const STORAGE_BUCKETS = {
   uploads: 'uploads', // form submissions: TFN, ABN, tax, super
 } as const
+
+/**
+ * Returns true if URL is from our Supabase Storage public bucket.
+ * Used to validate URLs received from clients before storing in DB.
+ */
+export function isValidSupabaseStorageUrl(url: string): boolean {
+  if (typeof url !== 'string' || !url.startsWith('https://')) return false
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  if (!supabaseUrl) return false
+  try {
+    const u = new URL(url)
+    const allowed = new URL(supabaseUrl)
+    return u.hostname === allowed.hostname && u.pathname.startsWith('/storage/v1/object/public/uploads/')
+  } catch { return false }
+}

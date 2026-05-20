@@ -51,12 +51,73 @@ function CopyBtn({ text }: { text: string }) {
         flexShrink: 0, lineHeight: 1, transition: 'color 0.2s',
       }}
       title="Copy"
+      aria-label={copied ? 'Copied' : 'Copy to clipboard'}
     >
       {copied
         ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
       }
     </button>
+  )
+}
+
+
+// ── WhatsApp Quick Send ──────────────────────────────────────────────────
+const WA_TEMPLATES = [
+  { id: 'received', icon: '📨', label: 'Received', text: (n:string) => `Hi ${n}! Just letting you know I received your form and started processing it. I'll get back to you soon with updates 👍` },
+  { id: 'docs', icon: '📋', label: 'Docs submitted', text: (n:string) => `Hi ${n}! Your documents have been submitted to the ATO ✅ I'll let you know once they're processed.` },
+  { id: 'refund', icon: '💰', label: 'Refund processed', text: (n:string) => `Great news ${n}! Your refund has been processed and should arrive in your bank account within 1-2 weeks 🎉` },
+  { id: 'followup', icon: '🔔', label: 'Yearly follow-up', text: (n:string) => `Hi ${n}! Hope you're well. Just a reminder — it's tax season again. If you'd like to file this year's return, send me a message and I'll send you the link 🙂` },
+  { id: 'super', icon: '💼', label: 'Super reminder', text: (n:string) => `Hi ${n}! Are you planning to leave Australia soon? You may be eligible to claim back your superannuation. Let me know if you'd like help with this!` },
+]
+
+function WhatsAppQuick({ name, whatsapp }: { name: string; whatsapp: string }) {
+  const [open, setOpen] = React.useState(false)
+  const firstName = (name||'').split(' ')[0] || 'there'
+  if (!whatsapp) return null
+  const sanitized = whatsapp.replace(/[^0-9+]/g, '')
+  return (
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <button
+        onClick={(e) => { e.stopPropagation(); setOpen(!open) }}
+        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '6px 12px', background: '#25D366', color: '#fff', border: 'none', borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', transition: 'opacity 0.15s' }}
+        title="Send WhatsApp message"
+        aria-label={`Send WhatsApp message to ${name || 'client'}`}
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
+        WhatsApp
+      </button>
+      {open && (
+        <>
+          <div onClick={() => setOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 100 }}/>
+          <div style={{ position: 'absolute', top: 'calc(100% + 6px)', right: 0, zIndex: 101, background: '#fff', border: '1px solid #e4ede8', borderRadius: 12, boxShadow: '0 10px 30px rgba(0,0,0,0.15)', minWidth: 260, padding: 6, animation: 'fadeIn 0.15s ease' }}>
+            <div style={{ padding: '8px 10px', borderBottom: '1px solid #f0f4f1', marginBottom: 4 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#7a8a82', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Quick Templates</div>
+            </div>
+            {WA_TEMPLATES.map(t => (
+              <a key={t.id}
+                href={`https://wa.me/${sanitized}?text=${encodeURIComponent(t.text(firstName))}`}
+                target="_blank" rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: '#0a1410', fontSize: 12, transition: 'background 0.1s' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = '#f7fbf9'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+              >
+                <span style={{ fontSize: 14 }}>{t.icon}</span>
+                <span style={{ fontWeight: 500 }}>{t.label}</span>
+              </a>
+            ))}
+            <div style={{ borderTop: '1px solid #f0f4f1', marginTop: 4, paddingTop: 4 }}>
+              <a href={`https://wa.me/${sanitized}`} target="_blank" rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 7, textDecoration: 'none', color: '#0E5C42', fontSize: 12, fontWeight: 600 }}>
+                ✏️ Open empty chat
+              </a>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
   )
 }
 
@@ -128,6 +189,7 @@ export default function DashboardClient() {
   const [globalSearch, setGlobalSearch] = useState('')
   const [yearFilter, setYearFilter] = useState<Set<string>>(new Set())
   const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
+  const [commissionFilter, setCommissionFilter] = useState<'all'|'unpaid'|'paid'>('all')
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
@@ -142,6 +204,7 @@ export default function DashboardClient() {
   const prevClientsCountRef = React.useRef(0)
   const [newArchiveCount, setNewArchiveCount] = useState(0)
   const prevArchiveCountRef = React.useRef(0)
+  const prevPendingTasksRef = React.useRef(0)
   const [previewUrl, setPreviewUrl] = useState<string|null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
@@ -234,7 +297,7 @@ export default function DashboardClient() {
 
   // Auto-poll every 20s — keeps all open sessions in sync
   useEffect(()=>{
-    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived()]) }, 30_000)
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived()]) }, 60_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients])
 
@@ -246,6 +309,46 @@ export default function DashboardClient() {
       if (live) setTaskNotes(extractUserNotes(live.notes))
     }
   }, [activeTask?.id, tasks]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Update browser tab title with pending count (so you see updates even when tab is in background)
+  useEffect(() => {
+    const pending = tasks.filter(t => !t.done).length
+    if (typeof document !== 'undefined') {
+      document.title = pending > 0 ? `(${pending}) WHV Tax CRM` : 'WHV Tax CRM'
+    }
+    // Play notification sound when new task arrives (not on initial load)
+    if (prevPendingTasksRef.current > 0 && pending > prevPendingTasksRef.current) {
+      try {
+        // Web Audio API beep — works without external file
+        const ctx = new (window.AudioContext || (window as unknown as {webkitAudioContext: typeof AudioContext}).webkitAudioContext)()
+        const osc = ctx.createOscillator()
+        const gain = ctx.createGain()
+        osc.connect(gain); gain.connect(ctx.destination)
+        osc.frequency.value = 880  // A5 note
+        gain.gain.setValueAtTime(0.15, ctx.currentTime)
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3)
+        osc.start(); osc.stop(ctx.currentTime + 0.3)
+      } catch {/* sound failed, ignore */}
+    }
+    prevPendingTasksRef.current = pending
+  }, [tasks])
+
+  // Autosave task notes after 1.5s of inactivity
+  useEffect(() => {
+    if (!activeTask) return
+    const current = extractUserNotes(activeTask.notes)
+    if (taskNotes === current) return
+    const timer = setTimeout(() => { saveTaskNotes() }, 1500)
+    return () => clearTimeout(timer)
+  }, [taskNotes, activeTask?.id]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Autosave client notes after 1.5s of inactivity
+  useEffect(() => {
+    if (!activeClient) return
+    if (clientNotes === (activeClient.notes || '')) return
+    const timer = setTimeout(() => { saveClientNotes() }, 1500)
+    return () => clearTimeout(timer)
+  }, [clientNotes, activeClient?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const openArchive = useCallback(()=>{ setView('archive'); setNewArchiveCount(0); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
@@ -300,7 +403,7 @@ export default function DashboardClient() {
     const allParts = (activeTask.notes||'').split(' | ')
     // Keep ALL structured form data AND reviewer notes (with 📝 prefix)
     const structuredParts = allParts.filter(p =>
-      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
       || p === '🔄 Returning client'
     )
@@ -407,17 +510,11 @@ export default function DashboardClient() {
     const userParts = parts
       .filter(p =>
         // Strip ALL auto-generated form data — only keep human-written admin notes
-        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|→|I confirm|I declare|I have read|Working Holiday)/i)
+        !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
         && !p.startsWith('📝 ')
         && p !== '🔄 Returning client'
       )
     return userParts.join(' | ').trim()
-  }
-
-  const extractReviewerNote = (raw:string) => {
-    if (!raw) return ''
-    const rp = (raw||'').split(' | ').find(p => p.startsWith('📝 '))
-    return rp ? rp.slice(3).trim() : ''
   }
 
   const downloadTaskPdf = (task: Task) => {
@@ -719,8 +816,14 @@ export default function DashboardClient() {
     const mc = checkinFilter==='all' || (checkinFilter==='done' && checkinDone) || (checkinFilter==='pending' && !checkinDone)
     const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
     const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
-    return ms && my && mc && mh && mcountry
-  }, [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter]).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()))
+    // Commission filter (only applies to referrals)
+    const src = (c.howHeard||'').trim().toLowerCase()
+    const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(src)
+    const isReferral = !isSocial && src.length > 1
+    const isPaid = (c.notes||'').includes('💰 Commission paid')
+    const mcom = commissionFilter==='all' || (commissionFilter==='unpaid' && isReferral && !isPaid) || (commissionFilter==='paid' && isReferral && isPaid)
+    return ms && my && mc && mh && mcountry && mcom
+  }, [clients, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter]).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime()))
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
@@ -772,31 +875,31 @@ export default function DashboardClient() {
 
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
-    sb:{width:212,background:'#0E5C42',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh'},
-    sbLogo:{display:'flex',alignItems:'center',gap:10,padding:'18px 14px 14px'},
-    sbIcon:{width:34,height:34,borderRadius:9,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0},
-    sbTitle:{fontSize:13,fontWeight:600,color:'#fff'},
-    sbSub:{fontSize:10,color:'rgba(255,255,255,0.38)',marginTop:1},
+    sb:{width:220,background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh',boxShadow:'2px 0 8px rgba(0,0,0,0.05)'},
+    sbLogo:{display:'flex',alignItems:'center',gap:11,padding:'20px 14px 14px'},
+    sbIcon:{width:36,height:36,borderRadius:10,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,backdropFilter:'blur(8px)'},
+    sbTitle:{fontSize:13,fontWeight:700,color:'#fff',letterSpacing:'-0.2px'},
+    sbSub:{fontSize:10,color:'rgba(255,255,255,0.45)',marginTop:2,letterSpacing:'0.04em'},
     sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'0 12px 8px'},
-    sbNav:{display:'flex',flexDirection:'column',gap:2,padding:'0 7px'},
-    sbBtn:{display:'flex',alignItems:'center',gap:9,padding:'9px 11px',borderRadius:8,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.15s'},
-    sbBtnOn:{background:'rgba(255,255,255,0.16)',color:'#fff',fontWeight:600},
+    sbNav:{display:'flex',flexDirection:'column',gap:3,padding:'0 8px'},
+    sbBtn:{display:'flex',alignItems:'center',gap:10,padding:'9px 11px',borderRadius:8,fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.55)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.18s ease'},
+    sbBtnOn:{background:'rgba(255,255,255,0.18)',color:'#fff',fontWeight:600,boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.08)'},
     sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'1px 6px',fontSize:10,fontWeight:700},
     sbLock:{display:'flex',alignItems:'center',gap:7,padding:'9px 11px 16px',fontSize:11,color:'rgba(255,255,255,0.4)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
     main:{flex:1,background:'#f0f4f1',overflowY:'auto'},
     page:{padding:'26px 26px 32px'},
-    pgTitle:{fontSize:19,fontWeight:600,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
+    pgTitle:{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.5px'},
     pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
-    card:{background:'#fff',borderRadius:13,border:'1px solid #e4ede8'},
-    secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'10px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'13px 13px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between'},
+    card:{background:'#fff',borderRadius:14,border:'1px solid #e4ede8',boxShadow:'0 1px 3px rgba(11,82,64,0.04)'},
+    secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'11px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'14px 14px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between',letterSpacing:'0.02em'},
     row:{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10,alignItems:'center'},
     lbl:{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0},
     val:{fontSize:12,color:'#0a1410',flex:1},
-    taskCard:{background:'#fff',borderRadius:12,padding:'12px 14px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:11,cursor:'pointer',transition:'border-color 0.15s,box-shadow 0.15s',marginBottom:6},
+    taskCard:{background:'#fff',borderRadius:11,padding:'13px 16px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:12,cursor:'pointer',transition:'all 0.18s ease',marginBottom:7,boxShadow:'0 1px 2px rgba(11,82,64,0.03)'},
     returnRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 13px',background:'#f7fbf9',borderRadius:9,marginBottom:6,border:'1px solid #e4ede8'},
     totalRow:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 13px',background:'#e8f5f0',borderRadius:9,border:'1px solid #b0d8c8'},
     addForm:{background:'#f7fbf9',borderRadius:10,padding:'12px',border:'1px solid #e4ede8',marginTop:8,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const},
-    addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 11px',background:'#0E5C42',border:'none',borderRadius:7,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit'},
+    addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 12px',background:'#0E5C42',border:'none',borderRadius:8,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit',transition:'all 0.15s'},
     backBtn:{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',fontSize:12,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500,marginBottom:18,padding:0},
     checkRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px'},
     checkbox:{width:20,height:20,borderRadius:6,border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0},
@@ -820,12 +923,32 @@ export default function DashboardClient() {
 
   return (
     <>
-      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes donePulse{0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,0.55)}60%{box-shadow:0 0 0 6px rgba(5,150,105,0)}} .grain{display:none!important}`}</style>
+      <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes donePulse{0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,0.55)}60%{box-shadow:0 0 0 6px rgba(5,150,105,0)}} @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}} .grain{display:none!important} [data-task-card]:hover{border-color:#0E5C42!important;box-shadow:0 4px 14px rgba(11,82,64,0.08)!important;transform:translateY(-1px)}
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid #0E5C42 !important;
+  outline-offset: 2px !important;
+}
+@media (max-width: 768px) {
+  [data-sidebar] { display: none !important; }
+  [data-mobile-nav] { display: flex !important; }
+  [data-main] { padding-top: 56px !important; }
+  [data-page] { padding: 16px !important; }
+  [data-stats-grid] { grid-template-columns: 1fr 1fr !important; }
+  [data-detail-grid] { grid-template-columns: 1fr !important; }
+  [data-table-wrap] { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  [data-clients-table] { font-size: 11px !important; min-width: 600px !important; }
+  [data-filters-row] { flex-wrap: wrap !important; gap: 6px !important; }
+  [data-filters-row] > * { flex: 1 1 auto !important; min-width: 100px !important; }
+  [data-actions-row] { flex-wrap: wrap !important; }
+  [data-actions-row] > button { flex: 1 1 100% !important; min-height: 44px !important; }
+  [data-task-card] { padding: 13px 15px !important; min-height: 56px !important; }
+  button, a[role="button"] { min-height: 40px !important; }
+}`}</style>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;}`}</style>
 
       <div style={S.shell}>
         {/* Sidebar */}
-        <aside style={S.sb}>
+        <aside data-sidebar style={S.sb}>
           <div>
             <div style={S.sbLogo}>
               <div style={{width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'}}><svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -839,7 +962,7 @@ export default function DashboardClient() {
                   <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>
               </svg></div>
-              <div><div style={S.sbTitle}>WHV Tax CRM</div><div style={S.sbSub}>Admin Portal</div></div>
+              <div><div style={S.sbTitle}>Working Holiday Tax</div><div style={S.sbSub}>Admin Console</div></div>
             </div>
             <div style={S.sbDiv}/>
 
@@ -916,14 +1039,35 @@ export default function DashboardClient() {
           </div>
         </aside>
 
-        <main style={S.main}>
+        <main data-main style={S.main}>
+
+          {/* Mobile top nav - hidden on desktop */}
+          <div data-mobile-nav style={{display:'none',position:'fixed',top:0,left:0,right:0,zIndex:90,background:'#0E5C42',height:56,alignItems:'center',padding:'0 14px',boxShadow:'0 2px 8px rgba(0,0,0,0.1)'}}>
+            <div style={{display:'flex',alignItems:'center',gap:8,flex:1}}>
+              <div style={{width:30,height:30,borderRadius:8,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:14}}>🏢</div>
+              <div style={{color:'#fff',fontSize:13,fontWeight:700}}>WHV Tax</div>
+            </div>
+            <div style={{display:'flex',gap:4}}>
+              {([
+                ['tasks','📋',pendingTasks.length],
+                ['clients','👥',newClientsCount],
+                ['archive','📦',newArchiveCount]
+              ] as const).map(([v,icon,badge])=>(
+                <button key={v} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v as View);setTaskView('list');setActiveTask(null);setActiveClient(null); if(v==='clients') setNewClientsCount(0) } }}
+                  style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:view===v?'rgba(255,255,255,0.18)':'transparent',color:'#fff',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                  {icon}
+                  {badge > 0 && <span style={{position:'absolute',top:2,right:2,minWidth:16,height:16,borderRadius:8,background:'#f59e0b',color:'#78350f',fontSize:9,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 4px'}}>{badge}</span>}
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={S.page}>
               <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18}}>
                 <div>
-                  <div style={S.pgTitle}>Tasks</div>
+                  <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
                   <div style={{...S.pgSub,marginBottom:0}}>Tax return submissions awaiting processing</div>
                 </div>
                 <button
@@ -942,7 +1086,7 @@ export default function DashboardClient() {
               {/* Season stats */}
               {(()=>{
                 const thisYear = TAX_YEARS[TAX_YEARS.length-1]
-                const seasonTasks = tasks
+                void tasks // unused but kept for context
                 const allClients = clients
                 const seasonClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
                 const totalRefunds = allClients.reduce((s,c)=>
@@ -951,17 +1095,129 @@ export default function DashboardClient() {
                 const pendingCount = pendingTasks.length
                 const doneCount = doneTasks.length
                 if (pendingCount===0 && doneCount===0) return null
-                return (
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:20}}>
+                const totalClients = allClients.length
+                const avgRefund = seasonClients.length > 0 ? totalRefunds/seasonClients.length : 0
+                return (<>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:12}}>
                     {[
-                      {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a'},
-                      {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0'},
+                      {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
+                      {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✓'},
+                      {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
+                      {label:'Season',value:seasonClients.length,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
                     ].map(stat=>(
-                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:10,padding:'12px 14px'}}>
-                        <div style={{fontSize:10,fontWeight:600,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:4}}>{stat.label}</div>
-                        <div style={{fontSize:20,fontWeight:700,color:stat.color}}>{stat.value}</div>
+                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'12px 14px',transition:'transform 0.15s'}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:5}}>
+                          <div style={{fontSize:9.5,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
+                          <div style={{fontSize:12,opacity:0.65}}>{stat.icon}</div>
+                        </div>
+                        <div style={{fontSize:22,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
                       </div>
                     ))}
+                  </div>
+                  {/* Money Analytics */}
+                  {totalRefunds > 0 && (
+                    <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:20}}>
+                      <div style={{background:'linear-gradient(135deg,#ecfdf5,#d1fae5)',border:'1px solid #a7f3d0',borderRadius:11,padding:'14px 16px'}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                          <div style={{fontSize:9.5,fontWeight:700,color:'#059669',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>💵 Refunds {thisYear}</div>
+                        </div>
+                        <div style={{fontSize:24,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalRefunds)}</div>
+                        <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:3}}>{seasonClients.length} client{seasonClients.length!==1?'s':''}</div>
+                      </div>
+                      <div style={{background:'linear-gradient(135deg,#eff6ff,#dbeafe)',border:'1px solid #bfdbfe',borderRadius:11,padding:'14px 16px'}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                          <div style={{fontSize:9.5,fontWeight:700,color:'#1d4ed8',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>📊 Avg Refund</div>
+                        </div>
+                        <div style={{fontSize:24,fontWeight:700,color:'#1d4ed8',letterSpacing:'-0.5px'}}>{fmtCur(avgRefund)}</div>
+                        <div style={{fontSize:10,color:'#1d4ed8',opacity:0.7,marginTop:3}}>per client this year</div>
+                      </div>
+                    </div>
+                  )}
+                </>)
+              })()}
+
+              {/* Reminders Panel - clients who haven't been processed this year */}
+              {(()=>{
+                const thisYear = TAX_YEARS[TAX_YEARS.length-1]
+                const needsFollowUp = clients.filter(c=>{
+                  const checkinDone = c.yearlyCheckins?.[thisYear] ?? false
+                  const hasReturnThisYear = c.taxReturns.some(r=>r.year===thisYear)
+                  return !checkinDone && !hasReturnThisYear && c.taxReturns.length > 0
+                })
+                if (needsFollowUp.length === 0) return null
+                return (
+                  <div style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:'1px solid #fcd34d',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
+                    <div style={{fontSize:22,flexShrink:0}}>🔔</div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>{needsFollowUp.length} client{needsFollowUp.length!==1?'s':''} need yearly follow-up for {thisYear}</div>
+                      <div style={{fontSize:12,color:'#78350f',marginBottom:8,lineHeight:1.5}}>These clients had returns in previous years but haven&apos;t been processed for {thisYear} yet.</div>
+                      <div style={{display:'flex',gap:6,flexWrap:'wrap' as const}}>
+                        {needsFollowUp.slice(0,5).map(c=>(
+                          <button key={c.id} onClick={()=>{setActiveClient(c);setView('clients');setClientNotes(c.notes||'')}}
+                            style={{padding:'4px 10px',background:'#fff',border:'1px solid #fcd34d',borderRadius:7,fontSize:11,fontWeight:600,color:'#92400e',cursor:'pointer',fontFamily:'inherit'}}>
+                            {c.fullName}
+                          </button>
+                        ))}
+                        {needsFollowUp.length > 5 && (
+                          <button onClick={()=>{setView('clients');setCheckinFilter('pending')}}
+                            style={{padding:'4px 10px',background:'transparent',border:'1px dashed #fcd34d',borderRadius:7,fontSize:11,fontWeight:600,color:'#92400e',cursor:'pointer',fontFamily:'inherit'}}>
+                            + {needsFollowUp.length-5} more
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
+
+              {/* Birthday Reminders - clients with birthdays in next 7 days */}
+              {(()=>{
+                const today = new Date()
+                const upcoming = clients.map(c => {
+                  if (!c.dob) return null
+                  const parts = c.dob.includes('/') ? c.dob.split('/') : c.dob.split('-')
+                  if (parts.length !== 3) return null
+                  let day, month
+                  if (c.dob.includes('/')) { day = parseInt(parts[0]); month = parseInt(parts[1]) }
+                  else { day = parseInt(parts[2]); month = parseInt(parts[1]) }
+                  if (!day || !month) return null
+                  const thisYear = today.getFullYear()
+                  let bday = new Date(thisYear, month-1, day)
+                  if (bday < today && (today.getTime() - bday.getTime()) > 86400000) {
+                    bday = new Date(thisYear+1, month-1, day)
+                  }
+                  const days = Math.floor((bday.getTime() - today.getTime()) / 86400000)
+                  if (days < -1 || days > 7) return null
+                  return { client: c, days }
+                }).filter((x): x is {client: Client, days: number} => x !== null)
+                  .sort((a,b) => a.days - b.days)
+                if (upcoming.length === 0) return null
+                const fmtDays = (d:number) => d===0 ? 'today! 🎉' : d===1 ? 'tomorrow' : d===-1 ? 'yesterday' : `in ${d} days`
+                return (
+                  <div style={{background:'linear-gradient(135deg,#fdf2f8,#fce7f3)',border:'1px solid #f9a8d4',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
+                    <div style={{fontSize:22,flexShrink:0}}>🎂</div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontSize:13,fontWeight:700,color:'#9d174d',marginBottom:6}}>{upcoming.length} birthday{upcoming.length!==1?'s':''} this week</div>
+                      <div style={{display:'flex',flexDirection:'column' as const,gap:6}}>
+                        {upcoming.map(({client:c,days})=>{
+                          const sanitized = (c.whatsapp||'').replace(/[^0-9+]/g,'')
+                          const firstName = c.fullName.split(' ')[0] || 'there'
+                          const msg = `Happy birthday ${firstName}! 🎉🎂 Wishing you an amazing year ahead — Working Holiday Tax`
+                          return (
+                            <div key={c.id} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.5)',padding:'6px 10px',borderRadius:8}}>
+                              <span style={{fontSize:11,fontWeight:600,color:'#831843',flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis' as const,whiteSpace:'nowrap' as const}}>{c.fullName}</span>
+                              <span style={{fontSize:10,color:'#9d174d',whiteSpace:'nowrap' as const}}>{fmtDays(days)}</span>
+                              {sanitized && (
+                                <a href={`https://wa.me/${sanitized}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"
+                                  style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:600,padding:'3px 8px',background:'#25D366',color:'#fff',borderRadius:6,textDecoration:'none',whiteSpace:'nowrap' as const}}>
+                                  🎁 Send wish
+                                </a>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
                   </div>
                 )
               })()}
@@ -970,56 +1226,51 @@ export default function DashboardClient() {
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
                   <span style={{color:'#d97706',fontSize:8}}>●</span> Pending — {pendingTasks.length}
                 </div>
-                {pendingTasks.map(t=>(
-                  <div key={t.id} style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
+                {pendingTasks.map(t=>{
+                  const isWhv = (t.taskType !== 'tax-return') || (t.notes||'').includes('Working holiday maker')
+                  return (
+                  <div key={t.id} data-task-card style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
-                    <div style={{flex:1}}>
+                    <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
-                      <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
+                      <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                        <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
+                        {isWhv && (
+                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A'}} title="Client filled as Working Holiday Visa - verify residency status">
+                            ⚠️ WHV — Verify Residency
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-                      {t.reviewStatus === 'approved' && (
-                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#EAF6F1',color:'#059669',border:'1px solid #6EE7B7',whiteSpace:'nowrap'}}>
-                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#059669" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          Approved
-                        </span>
-                      )}
-                      {t.reviewStatus === 'rejected' && (
-                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#FEF2F2',color:'#DC2626',border:'1px solid #FCA5A5',whiteSpace:'nowrap'}}>
-                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                          Rejected
-                        </span>
-                      )}
                       <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
+                      <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} style={{padding:'4px 8px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} title="Delete lead permanently" aria-label={`Delete lead for ${t.clientName}`}>🗑️</button>
                     </div>
                   </div>
-                ))}
+                )})}
               </>}
 
               {doneTasks.length>0 && <>
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',margin:'14px 0 8px',display:'flex',alignItems:'center',gap:6}}>
                   <span style={{color:'#059669',fontSize:8}}>●</span> Done — {doneTasks.length}
                 </div>
-                {doneTasks.map(t=>(
+                {doneTasks.map(t=>{
+                  const isWhv = (t.taskType !== 'tax-return') || (t.notes||'').includes('Working holiday maker')
+                  return (
                   <div key={t.id} style={{...S.taskCard,opacity:0.82,cursor:'default'}}>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0,animation:'donePulse 2s ease-in-out infinite'}}/>
-                    <div style={{flex:1}}>
+                    <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
-                      <div style={{fontSize:11,color:'#7a8a82'}}>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></div>
+                      <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
+                        <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
+                        {isWhv && (
+                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A'}} title="Client filled as Working Holiday Visa">
+                            ⚠️ WHV
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
-                      {t.reviewStatus === 'approved' && (
-                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#EAF6F1',color:'#059669',border:'1px solid #6EE7B7',whiteSpace:'nowrap'}}>
-                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#059669" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          Approved
-                        </span>
-                      )}
-                      {t.reviewStatus === 'rejected' && (
-                        <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:700,padding:'3px 8px',borderRadius:100,background:'#FEF2F2',color:'#DC2626',border:'1px solid #FCA5A5',whiteSpace:'nowrap'}}>
-                          <svg width={9} height={9} viewBox="0 0 10 10" fill="none"><path d="M2 2l6 6M8 2L2 8" stroke="#DC2626" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                          Rejected
-                        </span>
-                      )}
                       <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
                     </div>
                     <div style={{display:'flex',gap:6}}>
@@ -1027,7 +1278,7 @@ export default function DashboardClient() {
                       <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} style={{padding:'4px 10px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}>🗑️ Delete</button>
                     </div>
                   </div>
-                ))}
+                )})}
               </>}
 
               {tasks.length===0 && <div style={{background:'#fff',borderRadius:13,padding:48,textAlign:'center',color:'#aabab2',fontSize:14,border:'1px solid #e4ede8'}}>No tasks yet.</div>}
@@ -1056,25 +1307,49 @@ export default function DashboardClient() {
 
               {/* ── DONE: locked view — only name + 2 actions ── */}
               {activeTask.done && (
-                <div style={{...S.card,padding:'28px 24px',textAlign:'center' as const}}>
-                  <div style={{width:56,height:56,borderRadius:16,background:'#ecfdf5',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,margin:'0 auto 14px'}}>✓</div>
-                  <div style={{fontSize:18,fontWeight:700,color:'#0a1410',marginBottom:4}}>{activeTask.clientName}</div>
-                  <div style={{fontSize:12,color:'#7a8a82',marginBottom:6}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
-                  <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 14px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Done</span>
+                <div style={{...S.card,padding:'32px 28px',textAlign:'center' as const}}>
+                  <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#ecfdf5,#a7f3d0)',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,margin:'0 auto 16px',color:'#059669'}}>✓</div>
+                  <div style={{fontSize:20,fontWeight:700,color:'#0a1410',marginBottom:6,letterSpacing:'-0.3px'}}>{activeTask.clientName}</div>
+                  <div style={{fontSize:13,color:'#7a8a82',marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
+                  <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'5px 16px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Completed — sensitive data cleared</span>
+                  <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:10,padding:'10px 14px',marginBottom:20,fontSize:11,color:'#7a8a82',textAlign:'left'}}>
+                    <div style={{fontWeight:600,color:'#0E5C42',marginBottom:4}}>📋 What you have:</div>
+                    <div>• Name, DOB, Email, WhatsApp, Country</div>
+                    <div>• Submission timestamp</div>
+                    <div style={{fontWeight:600,color:'#c0392b',marginTop:6,marginBottom:4}}>🔒 What was wiped:</div>
+                    <div>• TFN, Bank details, Address</div>
+                    <div>• Passport, Job info, Uploaded files</div>
+                  </div>
                   <div style={{display:'flex',gap:10}}>
-                    <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#e8f5f0',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>transferToClients(activeTask)}>
-                      👤 Move to clients
+                    <button style={{flex:1,padding:'13px',border:'none',borderRadius:11,fontSize:14,fontWeight:600,background:'#0E5C42',color:'#fff',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>transferToClients(activeTask)}>
+                      👤 Move to Clients
                     </button>
-                    <button style={{flex:1,padding:'12px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
-                      🗑️ Delete permanently
+                    <button style={{flex:1,padding:'13px',border:'1px solid #fca5a5',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setConfirmPermDelete(activeTask.id)}>
+                      🗑️ Delete forever
                     </button>
                   </div>
-                  <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:10}}>Move to clients creates a client card. Delete permanently removes all data.</div>
+                  <div style={{fontSize:11,color:'#aabab2',textAlign:'center',marginTop:12}}>Move creates a client card for tracking. Delete removes everything permanently.</div>
                 </div>
               )}
 
               {/* ── PENDING: full detail view ── */}
               {!activeTask.done && (<>
+              {/* WHV Alert Banner - shown when client filled as Working Holiday Visa */}
+              {(()=>{
+                const isWhv = (activeTask.taskType !== 'tax-return') || (activeTask.notes||'').includes('Working holiday maker')
+                if (!isWhv) return null
+                return (
+                  <div style={{background:'#fffbeb',border:'1.5px solid #fde68a',borderLeft:'4px solid #d97706',borderRadius:10,padding:'12px 16px',marginBottom:14,display:'flex',alignItems:'flex-start',gap:10}}>
+                    <div style={{fontSize:18,flexShrink:0,marginTop:1}}>⚠️</div>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>WHV — Verify Tax Residency</div>
+                      <div style={{fontSize:12,color:'#78350f',lineHeight:1.5}}>
+                        Client filled as Working Holiday Visa. If they were in Australia &gt;6 months with stable work/address, they may qualify as <strong>Australian Resident for tax purposes</strong> — and overpay tax as WHV. Verify before processing.
+                      </div>
+                    </div>
+                  </div>
+                )
+              })()}
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
@@ -1107,10 +1382,13 @@ export default function DashboardClient() {
                     )}
                   </div>
                 </div>
-                {activeTask.done
-                  ? <span style={{background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Done</span>
-                  : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
-                }
+                <div style={{display:'flex',alignItems:'center',gap:8}}>
+                  <WhatsAppQuick name={activeTask.clientName} whatsapp={activeTask.whatsapp}/>
+                  {activeTask.done
+                    ? <span style={{background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>✓ Done</span>
+                    : <span style={{background:'#fffbeb',color:'#b45309',border:'1px solid #fde68a',borderRadius:8,padding:'4px 12px',fontSize:12,fontWeight:600}}>⏳ Pending</span>
+                  }
+                </div>
               </div>
 
               {/* 4 sections — adapted per taskType */}
@@ -1392,29 +1670,50 @@ export default function DashboardClient() {
                 <div style={{...S.card,display:'flex',flexDirection:'column' as const,minWidth:0}}>
                   <div style={S.secHead}><span>Internal notes</span></div>
 
-                  {extractReviewerNote(activeTask.notes) && (
-                    <div style={{margin:'0 0 8px',padding:'8px 10px',background:'#fffbeb',border:'1.5px solid #fde68a',borderRadius:8,fontSize:12,color:'#92400e',lineHeight:1.5}}>
-                      <span style={{fontWeight:700,fontSize:10,textTransform:'uppercase' as const,letterSpacing:'0.05em',display:'block',marginBottom:3,color:'#b45309'}}>📝 Reviewer note</span>
-                      {extractReviewerNote(activeTask.notes)}
-                    </div>
-                  )}
+                  <div style={{display:'flex',gap:4,padding:'6px 10px 0',flexWrap:'wrap' as const}}>
+                    {[
+                      '📞 Called - left voicemail',
+                      '✉️ Emailed - awaiting reply',
+                      '⏳ Waiting for documents',
+                      '⚠️ Missing payslip',
+                      '✅ Submitted to ATO',
+                      '💰 Refund received',
+                    ].map(template => (
+                      <button key={template} onClick={()=>{
+                        const newNotes = taskNotes ? `${taskNotes}\n${template} (${new Date().toLocaleDateString('en-AU')})` : `${template} (${new Date().toLocaleDateString('en-AU')})`
+                        setTaskNotes(newNotes)
+                      }} style={{padding:'3px 8px',border:'1px solid #e4ede8',borderRadius:6,fontSize:10,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500}}>
+                        + {template}
+                      </button>
+                    ))}
+                  </div>
 
-                  <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const}}
+                  <textarea style={{flex:1,width:'100%',border:'1.5px solid #e4ede8',borderRadius:8,padding:'8px 10px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'none',minHeight:80,lineHeight:1.5,boxSizing:'border-box' as const,marginTop:8}}
                     placeholder="Add notes..." value={taskNotes} onChange={e=>{setTaskNotes(e.target.value);setNotesSaved(false)}}/>
                   <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6,padding:'0 2px'}}>
-                    {notesSaved?<span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span>:<span/>}
-                    <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===extractUserNotes(activeTask.notes)?0.4:1}} disabled={taskNotes===extractUserNotes(activeTask.notes)} onClick={saveTaskNotes}>Save notes</button>
+                    {notesSaved
+                      ? <span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Auto-saved</span>
+                      : taskNotes !== extractUserNotes(activeTask.notes)
+                        ? <span style={{fontSize:11,color:'#aabab2'}}>Saving in 1.5s...</span>
+                        : <span/>}
+                    <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:taskNotes===extractUserNotes(activeTask.notes)?0.4:1}} disabled={taskNotes===extractUserNotes(activeTask.notes)} onClick={saveTaskNotes}>Save now</button>
                   </div>
                 </div>
               </div>
 
               {/* Actions */}
-              <div style={{display:'flex',gap:10,marginBottom:8}}>
-                <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
+              <div style={{display:'flex',gap:8,marginBottom:8}}>
+                <button style={{flex:1,padding:'12px',border:'1.5px solid #0E5C42',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',display:'flex',alignItems:'center',justifyContent:'center',gap:6}} onClick={()=>downloadTaskPdf(activeTask)}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
                 </button>
-                <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:14,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
+                <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
+                <button
+                  style={{padding:'12px 16px',border:'1px solid #fca5a5',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}
+                  onClick={()=>setConfirmPermDelete(activeTask.id)}
+                  title="Delete this lead - useful if client filled the form incorrectly (e.g. marked as WHV when actually a Resident). You can then send them a new link manually.">
+                  🗑️ Delete lead
+                </button>
               </div>
               </>) /* end !activeTask.done */}
             </div>
@@ -1425,7 +1724,7 @@ export default function DashboardClient() {
             <div style={S.page}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>
-                  <div style={S.pgTitle}>Clients</div>
+                  <h1 style={S.pgTitle as React.CSSProperties}>Clients</h1>
                   <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{visibleClients.length}{clients.length!==visibleClients.length?` of ${clients.length}`:''} total</span>
                   {(()=>{
                     const tot = visibleClients.reduce((sum,c)=>{
@@ -1451,6 +1750,37 @@ export default function DashboardClient() {
                       <option value="pending">⏳ Pending</option>
                     </select>
                   </div>
+                  <button
+                    style={{padding:'8px 14px',fontSize:13,background:'#fff',color:'#0E5C42',border:'1.5px solid #d4eae2',borderRadius:9,fontWeight:600,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:6}}
+                    onClick={()=>{
+                      const headers = ['Name','DOB','Country','WhatsApp','Email','Source','Commission','Created','Last Tax Year','Total Refunds','Total Super','TFN','ABN','Notes']
+                      const rows = visibleClients.map(c=>{
+                        const lastTax = c.taxReturns?.length ? [...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0] : null
+                        const totalRefunds = c.taxReturns.filter(r=>r.type==='refund').reduce((s,r)=>s+r.refundAmount,0)
+                        const totalSuper = c.superReturns.reduce((s,r)=>s+r.amount,0)
+                        const isPaid = (c.notes||'').includes('💰 Commission paid')
+                        return [
+                          c.fullName, c.dob, c.country, c.whatsapp, c.email, c.howHeard,
+                          isPaid?'Paid':'',
+                          c.createdAt?.slice(0,10), lastTax?.year||'',
+                          totalRefunds||'', totalSuper||'',
+                          c.tfnService?.done?'✓':'', c.abnService?.done?'✓':'',
+                          (c.notes||'').replace(/[\r\n]+/g,' ').slice(0,200)
+                        ].map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(',')
+                      })
+                      const csv = [headers.join(','), ...rows].join('\n')
+                      const blob = new Blob(['\ufeff'+csv], {type:'text/csv;charset=utf-8'})
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a')
+                      a.href = url
+                      a.download = `whvtax-clients-${new Date().toISOString().slice(0,10)}.csv`
+                      a.click()
+                      URL.revokeObjectURL(url)
+                    }}
+                    title="Download as CSV (opens in Excel)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+                    Export CSV
+                  </button>
                   <button style={{...S.addBtn,padding:'8px 14px',fontSize:13}} onClick={()=>setShowAddModal(true)}>
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
                     Add Client
@@ -1496,8 +1826,18 @@ export default function DashboardClient() {
                     )})}
                     {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
-                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search) && (
-                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('')}}>
+                {/* Commission filter */}
+                <div style={{display:'inline-flex',alignItems:'center',gap:0,height:'38px',background:'#fff',border:'1px solid #e4ede8',borderRadius:9,padding:'0 4px',flexShrink:0}}>
+                  <span style={{fontSize:11,color:'#7a8a82',fontWeight:600,padding:'0 8px',borderRight:'1px solid #f0f4f1'}}>💰</span>
+                  {([['all','All'],['unpaid','Unpaid'],['paid','Paid']] as const).map(([val,label])=>(
+                    <button key={val} onClick={()=>setCommissionFilter(val)}
+                      style={{background:commissionFilter===val?'#0E5C42':'transparent',color:commissionFilter===val?'#fff':'#7a8a82',border:'none',borderRadius:7,padding:'6px 10px',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',margin:'0 2px'}}>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||commissionFilter!=='all') && (
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setCommissionFilter('all')}}>
                     ✕ Clear
                   </button>
                 )}
@@ -1577,7 +1917,7 @@ export default function DashboardClient() {
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','WhatsApp','Email','Country','Last refund','✓',''].map(h=>(
+                        {['Name','WhatsApp','Email','Country','Source','💰','Last refund','✓',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -1607,6 +1947,45 @@ export default function DashboardClient() {
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'}}>{cl.country||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11}}>
+                              {(()=>{
+                                const src = (cl.howHeard||'').trim()
+                                if (!src) return <span style={{color:'#aabab2'}}>—</span>
+                                const lower = src.toLowerCase()
+                                const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(lower)
+                                const isReferral = !isSocial && src.length > 1
+                                return (
+                                  <div style={{display:'flex',alignItems:'center',gap:5}}>
+                                    {isReferral && <span style={{fontSize:10}} title="Referral - someone referred this client">👤</span>}
+                                    <span style={{color:isReferral?'#9333ea':'#555',fontWeight:isReferral?600:400}}>{src}</span>
+                                  </div>
+                                )
+                              })()}
+                            </td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
+                              {(()=>{
+                                const src = (cl.howHeard||'').trim()
+                                const lower = src.toLowerCase()
+                                const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(lower)
+                                const isReferral = !isSocial && src.length > 1
+                                if (!isReferral) return <span style={{color:'#d1d5d3',fontSize:10}}>—</span>
+                                const paid = (cl.notes||'').includes('💰 Commission paid')
+                                return (
+                                  <button
+                                    onClick={()=>{
+                                      const newNotes = paid
+                                        ? (cl.notes||'').replace(/\s*💰 Commission paid\s*\|?/g,'').trim().replace(/^\|\s*/,'').replace(/\s*\|$/,'')
+                                        : ((cl.notes||'').trim() ? `${(cl.notes||'').trim()} | 💰 Commission paid` : '💰 Commission paid')
+                                      setClients(prev=>prev.map(c=>c.id===cl.id?{...c,notes:newNotes}:c))
+                                      fetch(`/api/crm/clients/${cl.id}/notes`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({notes:newNotes})})
+                                    }}
+                                    style={{width:24,height:24,borderRadius:6,border:`1.5px solid ${paid?'#16a34a':'#e4ede8'}`,background:paid?'#16a34a':'#fff',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:10,padding:0,transition:'all 0.15s'}}
+                                    title={paid?'Commission paid - click to undo':'Click to mark commission paid'}>
+                                    {paid && <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+                                  </button>
+                                )
+                              })()}
+                            </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
                               {(()=>{
                                 const lastTax = cl.taxReturns?.length
@@ -1665,7 +2044,7 @@ export default function DashboardClient() {
               {/* Header */}
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>
-                  <div style={S.pgTitle}>Archive</div>
+                  <h1 style={S.pgTitle as React.CSSProperties}>Archive</h1>
                   <span style={{background:'#f0f4f1',color:'#7a8a82',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
                     {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
                   </span>
@@ -1787,23 +2166,72 @@ export default function DashboardClient() {
               </button>
 
               {/* Profile */}
-              <div style={{...S.card,padding:'18px 20px',marginBottom:14}}>
-                <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:14}}>
-                  <div style={{width:50,height:50,borderRadius:14,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:17,fontWeight:700,flexShrink:0}}>{initials(activeClient.fullName)}</div>
-                  <div>
-                    <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{activeClient.fullName}</div>
-                    <div style={{fontSize:12,color:'#7a8a82',marginTop:3}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
+              <div style={{...S.card,padding:'20px 22px',marginBottom:14}}>
+                <div style={{display:'flex',alignItems:'center',gap:14,marginBottom:16}}>
+                  <div style={{width:56,height:56,borderRadius:16,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:19,fontWeight:700,flexShrink:0,boxShadow:'0 4px 12px rgba(14,92,66,0.18)'}}>{initials(activeClient.fullName)}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap' as const}}>
+                      <div style={{fontSize:20,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px'}}>{activeClient.fullName}</div>
+                      {(()=>{
+                        const src = (activeClient.howHeard||'').trim().toLowerCase()
+                        const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(src)
+                        const isReferral = !isSocial && src.length > 1
+                        const isPaid = (activeClient.notes||'').includes('💰 Commission paid')
+                        if (!isReferral) return null
+                        return (
+                          <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:11,fontWeight:600,padding:'3px 9px',borderRadius:100,background:isPaid?'#ecfdf5':'#fef3c7',color:isPaid?'#059669':'#92400e',border:`1px solid ${isPaid?'#a7f3d0':'#fde68a'}`}}>
+                            {isPaid ? '✓ Commission Paid' : '⏳ Commission Owed'}
+                          </span>
+                        )
+                      })()}
+                    </div>
+                    <div style={{fontSize:12,color:'#7a8a82',marginTop:4}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>
+                  <WhatsAppQuick name={activeClient.fullName} whatsapp={activeClient.whatsapp}/>
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
                   {[['Date of birth',activeClient.dob],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
-                    <div key={l} style={{display:'flex',padding:'7px 0',borderBottom:'1px solid #f5f5f5',gap:12}}>
+                    <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
                       <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:120}}>{l}</span>
-                      <span style={{fontSize:12,color:'#0a1410'}}>{v||'—'}</span>
+                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{v||'—'}</span>
+                      {v && v!=='—' && <CopyBtn text={v}/>}
                     </div>
                   ))}
                 </div>
               </div>
+
+              {/* Quick Stats Summary */}
+              {(()=>{
+                const totalTaxRefunds = activeClient.taxReturns.filter((r:TaxReturn)=>r.type==='refund').reduce((s:number,r:TaxReturn)=>s+r.refundAmount,0)
+                const totalSuperRefunds = activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0)
+                const totalReturns = activeClient.taxReturns.length
+                const totalSuper = activeClient.superReturns.length
+                const tfnDone = activeClient.tfnService?.done
+                const abnDone = activeClient.abnService?.done
+                if (totalReturns===0 && totalSuper===0 && !tfnDone && !abnDone) return null
+                return (
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:12}}>
+                    <div style={{background:'linear-gradient(135deg,#ecfdf5,#d1fae5)',border:'1px solid #a7f3d0',borderRadius:11,padding:'12px 14px'}}>
+                      <div style={{fontSize:9.5,fontWeight:700,color:'#059669',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💵 Total Refunds</div>
+                      <div style={{fontSize:18,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalTaxRefunds)}</div>
+                      <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:2}}>{totalReturns} return{totalReturns!==1?'s':''}</div>
+                    </div>
+                    <div style={{background:'linear-gradient(135deg,#eff6ff,#dbeafe)',border:'1px solid #bfdbfe',borderRadius:11,padding:'12px 14px'}}>
+                      <div style={{fontSize:9.5,fontWeight:700,color:'#1d4ed8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💰 Super Total</div>
+                      <div style={{fontSize:18,fontWeight:700,color:'#1d4ed8',letterSpacing:'-0.5px'}}>{fmtCur(totalSuperRefunds)}</div>
+                      <div style={{fontSize:10,color:'#1d4ed8',opacity:0.7,marginTop:2}}>{totalSuper} withdrawal{totalSuper!==1?'s':''}</div>
+                    </div>
+                    <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
+                      <div style={{fontSize:9.5,fontWeight:700,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>🆔 TFN</div>
+                      <div style={{fontSize:14,fontWeight:600,color:tfnDone?'#059669':'#aabab2',marginTop:6}}>{tfnDone?'✓ Done':'—'}</div>
+                    </div>
+                    <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
+                      <div style={{fontSize:9.5,fontWeight:700,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>🏢 ABN</div>
+                      <div style={{fontSize:14,fontWeight:600,color:abnDone?'#059669':'#aabab2',marginTop:6}}>{abnDone?'✓ Done':'—'}</div>
+                    </div>
+                  </div>
+                )
+              })()}
 
               {/* 1+2. Unified Year Timeline */}
               <div style={{...S.card,marginBottom:12}}>
@@ -1950,10 +2378,17 @@ export default function DashboardClient() {
               </div>
 
               {/* Move to archive */}
-              <div style={{background:'#fff',borderRadius:13,padding:'14px 18px',border:'1px dashed #d8e4dc'}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#0E5C42',marginBottom:4}}>📦 Archive client</div>
-                <div style={{fontSize:12,color:'#7a8a82',marginBottom:10}}>Moves this client to the archive. Cannot be deleted from the Clients tab.</div>
-                <button style={{padding:'7px 14px',border:'1px solid #b0d8c8',borderRadius:8,background:'#e8f5f0',color:'#0E5C42',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>archiveClient(activeClient.id)}>Move to archive →</button>
+              <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',borderRadius:14,padding:'18px 20px',border:'1px solid #d4eae2'}}>
+                <div style={{display:'flex',alignItems:'flex-start',gap:14}}>
+                  <div style={{width:36,height:36,borderRadius:10,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0,border:'1px solid #d4eae2'}}>📦</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:13,fontWeight:700,color:'#0E5C42',marginBottom:3}}>Client left Australia?</div>
+                    <div style={{fontSize:12,color:'#587066',marginBottom:12,lineHeight:1.5}}>Move them to Archive when they have completed all services (Tax Returns, Super Refund). You can always restore them later.</div>
+                    <button style={{padding:'8px 16px',border:'none',borderRadius:9,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:6}} onClick={()=>archiveClient(activeClient.id)}>
+                      📦 Move to Archive
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}

@@ -6,6 +6,28 @@ import { getClientIp } from '@/lib/get-ip'
 const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
 const MAX_SIZE = 10 * 1024 * 1024
 
+// Block files containing executable/script signatures (defense in depth)
+const DANGEROUS_PATTERNS = [
+  [0x3C, 0x3F, 0x70, 0x68, 0x70],              // <?php
+  [0x3C, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74],  // <script
+  [0x7F, 0x45, 0x4C, 0x46],                    // ELF (Linux exe)
+  [0x4D, 0x5A],                                // MZ (Windows exe/dll)
+]
+
+function containsDangerous(buf: ArrayBuffer): boolean {
+  const bytes = new Uint8Array(buf, 0, Math.min(8192, buf.byteLength))
+  for (const pattern of DANGEROUS_PATTERNS) {
+    for (let i = 0; i <= bytes.length - pattern.length; i++) {
+      let match = true
+      for (let j = 0; j < pattern.length; j++) {
+        if (bytes[i + j] !== pattern[j]) { match = false; break }
+      }
+      if (match) return true
+    }
+  }
+  return false
+}
+
 // Magic bytes for basic validation (lenient - accept if ANY image/pdf signature found)
 function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
   const bytes = new Uint8Array(buf, 0, Math.min(12, buf.byteLength))
@@ -42,6 +64,9 @@ export async function POST(req: NextRequest) {
     }
     if (!validateMagicBytes(body, contentType)) {
       return NextResponse.json({ ok: false, error: 'File content does not match declared type' }, { status: 400 })
+    }
+    if (containsDangerous(body)) {
+      return NextResponse.json({ ok: false, error: 'File contains potentially dangerous content' }, { status: 400 })
     }
 
     const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)

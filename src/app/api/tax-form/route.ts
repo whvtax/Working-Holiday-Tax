@@ -5,6 +5,7 @@ import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import { isValidSupabaseStorageUrl } from '@/lib/supabase'
 import crypto from 'crypto'
 
 export async function POST(req: NextRequest) {
@@ -22,9 +23,10 @@ export async function POST(req: NextRequest) {
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
     // All files are pre-uploaded client-side; server receives URLs only
+    // SECURITY: only accept URLs from our Supabase Storage (prevent SSRF/tracking)
     const allFileUrls: string[] = (() => {
       try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
-    })().filter((u: unknown): u is string => typeof u === 'string' && u.startsWith('https://'))
+    })().filter(isValidSupabaseStorageUrl)
 
     const fileUrls: string[] = allFileUrls
 
@@ -56,6 +58,26 @@ export async function POST(req: NextRequest) {
         formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
         formData.get('abnWork')   ? `ABN Work: ${sanitiseShort(formData.get('abnWork'))}`   : '',
         formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
+        (()=>{
+          const raw = formData.get('invoiceDetails')
+          if (!raw || typeof raw !== 'string') return ''
+          try {
+            const arr = JSON.parse(raw) as Array<{type:string;amount:string;description:string;url?:string}>
+            if (!Array.isArray(arr) || arr.length === 0) return ''
+            const tfn = arr.filter(i => i.type === 'tfn')
+            const abn = arr.filter(i => i.type === 'abn')
+            const parts = []
+            if (tfn.length > 0) {
+              const total = tfn.reduce((s,i)=>s+(parseFloat(i.amount)||0),0)
+              parts.push(`💼 TFN Invoices (${tfn.length}): $${total.toFixed(2)} — ${tfn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
+            }
+            if (abn.length > 0) {
+              const total = abn.reduce((s,i)=>s+(parseFloat(i.amount)||0),0)
+              parts.push(`🏢 ABN Invoices (${abn.length}): $${total.toFixed(2)} — ${abn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
+            }
+            return parts.join(' | ')
+          } catch { return '' }
+        })(),
       ].filter(Boolean).join(' | '),
       fileUrls,
       reviewStatus: 'pending',

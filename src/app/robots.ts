@@ -6,8 +6,6 @@ import { SITE_URL } from '@/lib/constants'
 const DISALLOWED_PATHS = [
   '/crm',
   '/crm/',
-  '/crm/reviewer',
-  '/crm/reviewer/',
   '/api/',
   '/tax-form',
   '/tfn-form',

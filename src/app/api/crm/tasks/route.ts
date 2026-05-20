@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession, validateReviewerSession } from '@/lib/crm-store'
+import { validateSession } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 
 function authRead(req: NextRequest) {
   return validateSession(req.cookies.get('crm_session')?.value)
-    || validateReviewerSession(req.cookies.get('crm_reviewer_session')?.value)
 }
 
 function authWrite(req: NextRequest) {

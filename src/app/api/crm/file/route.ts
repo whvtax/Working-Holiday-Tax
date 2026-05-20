@@ -2,7 +2,7 @@
 // Serves Supabase Storage files only to authenticated CRM sessions.
 // Prevents direct public access to client identity documents.
 import { NextRequest, NextResponse } from 'next/server'
-import { validateSession, validateReviewerSession } from '@/lib/crm-store'
+import { validateSession } from '@/lib/crm-store'
 
 const ALLOWED_CONTENT_TYPES = new Set([
   'image/jpeg', 'image/png', 'image/webp', 'image/gif',
@@ -10,11 +10,7 @@ const ALLOWED_CONTENT_TYPES = new Set([
 ])
 
 function auth(req: NextRequest): boolean {
-  const cookies = req.cookies
-  return (
-    validateSession(cookies.get('crm_session')?.value) ||
-    validateReviewerSession(cookies.get('crm_reviewer_session')?.value)
-  )
+  return validateSession(req.cookies.get('crm_session')?.value)
 }
 
 /**

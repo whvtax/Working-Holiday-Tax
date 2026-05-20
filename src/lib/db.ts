@@ -203,10 +203,24 @@ export async function markTaskDone(id: string): Promise<void> {
   const task = await getTask(id)
   if (!task) return
   if (task.fileUrls?.length) await deleteFiles(task.fileUrls)
+
+  // Strip sensitive PII from notes - keep only admin notes (📞 Called, ✉️ Emailed, etc.)
+  // Remove: Passport No, Bank details, Home Country Address, Gender, ABN numbers, Expenses, Declarations, Returning client
+  const cleanedNotes = (task.notes ?? '')
+    .split(' | ')
+    .filter(p =>
+      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
+      && p !== '🔄 Returning client'
+    )
+    .filter(Boolean)
+    .join(' | ')
+    .trim()
+
   const { error } = await sb.from('crm_tasks').update({
     done: true,
     address: '', tfn: '', bank_details: '',
     primary_job: '', marital: '', au_phone: '', file_urls: '[]',
+    notes: cleanedNotes,
   }).eq('id', id)
   if (error) throw error
 }
@@ -225,10 +239,10 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
   const cleanedNotes = (task.notes ?? '')
     .split(' | ')
     .filter(p =>
-      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|→|I confirm|I declare|I have read|Working Holiday)/i)
+      !p.match(/^(Passport No:|Super Funds:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
       && p !== '🔄 Returning client'
+      && !p.startsWith('📝 ')
     )
-    .map(p => p.startsWith('📝 ') ? `Reviewer: ${p.slice(3)}` : p)
     .filter(Boolean)
     .join('\n')
     .trim()
@@ -484,22 +498,5 @@ export async function setYearlyCheckin(clientId: string, year: string, done: boo
   const { error } = await sb.from('crm_clients')
     .update({ yearly_checkins: JSON.stringify(updated) })
     .eq('id', clientId)
-  if (error) throw error
-}
-
-// ── Reviewer ──────────────────────────────────────────────────────────────
-
-export async function setReviewerNote(taskId: string, note: string): Promise<void> {
-  const sb = getSupabase()
-  const { error } = await sb.from('crm_tasks').update({ reviewer_note: note }).eq('id', taskId)
-  if (error) throw error
-}
-
-export async function setReviewStatus(taskId: string, status: ReviewStatus): Promise<void> {
-  const sb = getSupabase()
-  const reviewedAt = status === 'pending' ? '' : new Date().toISOString()
-  const { error } = await sb.from('crm_tasks')
-    .update({ review_status: status, reviewed_at: reviewedAt })
-    .eq('id', taskId)
   if (error) throw error
 }

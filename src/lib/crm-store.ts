@@ -24,7 +24,7 @@ export function generateOtp(): string {
 // ── Session tokens ────────────────────────────────────────────────────────
 
 const ADMIN_SESSION_TTL    = 8 * 60 * 60 * 1000  // 8 hours in ms
-const REVIEWER_SESSION_TTL = 4 * 60 * 60 * 1000  // 4 hours in ms
+
 
 function jwtSecret(): Buffer {
   const s = process.env.JWT_SECRET
@@ -68,30 +68,6 @@ export function validateSession(token: string | undefined): boolean {
 }
 export function destroySession() { /* stateless — cookie cleared client-side */ }
 
-// Reviewer session (4h, role-locked)
-export function createReviewerSession(): string {
-  return makeToken({ exp: Date.now() + REVIEWER_SESSION_TTL, role: 'reviewer' })
-}
-export function validateReviewerSession(token: string | undefined): boolean {
-  return checkToken(token, REVIEWER_SESSION_TTL, 'reviewer')
-}
-
-// ── Reviewer password ─────────────────────────────────────────────────────
-
-export function hashReviewerPassword(password: string): string {
-  const salt = process.env.PASSWORD_SALT
-  if (!salt) throw new Error('Missing env var: PASSWORD_SALT')
-  const reviewerSalt = process.env.REVIEWER_SALT || (salt + '_reviewer')
-  return crypto.pbkdf2Sync(password, reviewerSalt, 100_000, 64, 'sha512').toString('hex')
-}
-
-export function verifyReviewerPassword(password: string, hash: string): boolean {
-  try {
-    const attempt = hashReviewerPassword(password)
-    return crypto.timingSafeEqual(Buffer.from(attempt, 'hex'), Buffer.from(hash, 'hex'))
-  } catch { return false }
-}
-
 // ── Brute-force protection (Redis) ───────────────────────────────────────
 
 const MAX_ATTEMPTS = 3
@@ -123,36 +99,6 @@ export async function isLockedOutRedis(redis: import('redis').RedisClientType): 
   const ts = await redis.get(KEY_TS)
   if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
     await redis.del(KEY_COUNT, KEY_TS, KEY_LOCKED)
-    return false
-  }
-  return true
-}
-
-// Reviewer login (separate keys)
-const RV_KEY_COUNT  = 'rv_fail_count'
-const RV_KEY_TS     = 'rv_fail_ts'
-const RV_KEY_LOCKED = 'rv_locked'
-
-export async function recordReviewerFailRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
-  const now = Date.now()
-  const count = await redis.incr(RV_KEY_COUNT)
-  await redis.set(RV_KEY_TS, String(now), { EX: TTL_SECS })
-  await redis.expire(RV_KEY_COUNT, TTL_SECS)
-  const locked = count >= MAX_ATTEMPTS
-  if (locked) await redis.set(RV_KEY_LOCKED, '1', { EX: TTL_SECS })
-  return { count, lastAttempt: now, locked }
-}
-
-export async function resetReviewerFailRedis(redis: import('redis').RedisClientType): Promise<void> {
-  await redis.del(RV_KEY_COUNT, RV_KEY_TS, RV_KEY_LOCKED)
-}
-
-export async function isReviewerLockedRedis(redis: import('redis').RedisClientType): Promise<boolean> {
-  const locked = await redis.get(RV_KEY_LOCKED)
-  if (!locked) return false
-  const ts = await redis.get(RV_KEY_TS)
-  if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
-    await redis.del(RV_KEY_COUNT, RV_KEY_TS, RV_KEY_LOCKED)
     return false
   }
   return true

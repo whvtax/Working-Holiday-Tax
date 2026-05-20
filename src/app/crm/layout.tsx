@@ -20,6 +20,23 @@ function ChunkErrorHandler() {
 }
 
 export default function CrmLayout({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    // Set browser tab title for CRM
+    if (typeof document !== 'undefined') {
+      document.title = 'WHV Tax CRM'
+    }
+    // Add noindex meta tag dynamically (in case bot ignores robots.txt)
+    if (typeof document !== 'undefined') {
+      let meta = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null
+      if (!meta) {
+        meta = document.createElement('meta')
+        meta.name = 'robots'
+        document.head.appendChild(meta)
+      }
+      meta.content = 'noindex, nofollow, noarchive, nosnippet'
+    }
+  }, [])
+
   return (
     <>
       <style>{`

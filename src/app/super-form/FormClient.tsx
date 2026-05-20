@@ -62,6 +62,7 @@ export function FormClient() {
   const [bankHolder, setBankHolder]   = useState('')
   const [bankAccount, setBankAccount] = useState('')
   const [bankBsb, setBankBsb]         = useState('')
+  const [howHeard, setHowHeard]       = useState('')
   const [terms, setTerms]           = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
   const [submitted, setSubmitted]   = useState(false)
@@ -85,6 +86,7 @@ export function FormClient() {
     if (!bankHolder.trim())  e.bankHolder  = 'Required'
     if (!bankAccount.trim()) e.bankAccount = 'Required'
     if (!bankBsb.trim())     e.bankBsb     = 'Required'
+    if (!howHeard.trim())       e.howHeard       = 'Required'
     if (!selfie.file)           e.selfie         = 'Required'
     if (!terms)                 e.terms          = 'You must confirm this declaration to proceed'
     return e
@@ -104,6 +106,7 @@ export function FormClient() {
     fd.append('homeAddress', homeAddress); fd.append('tfn', tfn)
     fd.append('superFunds', superFunds)
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
+    fd.append('howHeard', howHeard)
     fd.append('declared',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
     if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
@@ -330,6 +333,11 @@ export function FormClient() {
           </Field>
           <Field label="BSB" required error={errors.bankBsb}>
             <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value); setErrors(p=>({...p,bankBsb:''})) }}/>
+          </Field>
+
+          <div className="form-section-title">How did you hear about us?</div>
+          <Field label="How did you hear about us?" required error={errors.howHeard}>
+            <input className={`form-input${errors.howHeard?' input-error':''}`} placeholder="e.g. Instagram, TikTok, friend's name..." maxLength={80} value={howHeard} onChange={e=>{ setHowHeard(e.target.value); setErrors(p=>({...p,howHeard:''})) }}/>
           </Field>
 
           <div className="form-section-title">Documents</div>

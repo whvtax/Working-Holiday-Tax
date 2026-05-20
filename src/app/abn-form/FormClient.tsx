@@ -57,6 +57,7 @@ export function FormClient() {
   const [address, setAddress]       = useState('')
   const [tfn, setTfn]               = useState('')
   const [business, setBusiness]     = useState('')
+  const [howHeard, setHowHeard]     = useState('')
   const [declared, setDeclared]     = useState(false)
   const [terms, setTerms]           = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
@@ -74,6 +75,7 @@ export function FormClient() {
     if (!auPhone.trim())   e.auPhone   = 'Required'
     if (!email.trim())     e.email     = 'Required'
     if (!address.trim())   e.address   = 'Required'
+    if (!howHeard.trim())  e.howHeard  = 'Required'
     if (!tfn.trim())       e.tfn       = 'Required'
     if (!business.trim())  e.business  = 'Required'
     if (!selfie.file)      e.selfie    = 'Required'
@@ -92,7 +94,7 @@ export function FormClient() {
     fd.append('firstName', firstName); fd.append('lastName', lastName)
     fd.append('dob', dob); fd.append('gender', gender)
     fd.append('whatsapp', whatsapp); fd.append('auPhone', auPhone)
-    fd.append('email', email); fd.append('address', address)
+    fd.append('email', email); fd.append('address', address); fd.append('howHeard', howHeard)
     fd.append('tfn', tfn); fd.append('business', business)
     fd.append('declared',     declared ? '✓ I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.' : '')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
@@ -307,6 +309,11 @@ export function FormClient() {
           </Field>
           <Field label="Brief description of business activity" required error={errors.business}>
             <textarea className={`form-input form-textarea${errors.business?' input-error':''}`} placeholder="e.g. Freelance photographer, providing photography services to clients" value={business} onChange={e=>{ setBusiness(e.target.value); setErrors(p=>({...p,business:''})) }}/>
+          </Field>
+
+          <div className="form-section-title">How did you hear about us?</div>
+          <Field label="How did you hear about us?" required error={errors.howHeard}>
+            <input className={`form-input${errors.howHeard?' input-error':''}`} placeholder="e.g. Instagram, TikTok, friend's name..." maxLength={80} value={howHeard} onChange={e=>{ setHowHeard(e.target.value); setErrors(p=>({...p,howHeard:''})) }}/>
           </Field>
 
           <div className="form-section-title">Documents</div>

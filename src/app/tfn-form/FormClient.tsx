@@ -61,6 +61,7 @@ export function FormClient() {
   const [gender, setGender]         = useState<'Female'|'Male'|''>('')
   const [marital, setMarital]       = useState<'Single'|'Married'|''>('')
   const [address, setAddress]       = useState('')
+  const [howHeard, setHowHeard]     = useState('')
   const [declared, setDeclared]     = useState(false)
   const [terms, setTerms]           = useState(false)
   const [selfie, setSelfie]         = useState<UploadState>({ file: null, preview: null })
@@ -81,6 +82,7 @@ export function FormClient() {
     if (!gender)           e.gender    = 'Required'
     if (!marital)          e.marital   = 'Required'
     if (!address.trim())   e.address   = 'Required'
+    if (!howHeard.trim())  e.howHeard  = 'Required'
     if (!selfie.file)      e.selfie    = 'Required'
     if (!declared)         e.declared  = 'You must confirm this declaration to proceed'
     if (!terms)            e.terms     = 'You must accept the terms'
@@ -105,6 +107,7 @@ export function FormClient() {
     fd.append('gender',    gender)
     fd.append('marital',   marital)
     fd.append('address',   address)
+    fd.append('howHeard',  howHeard)
     fd.append('declared',     declared ? '✓ I confirm I am currently in Australia on my first visit, have never been married or changed my name or gender, do not own assets in Australia, and have not been issued a TFN.' : '')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
@@ -334,6 +337,11 @@ export function FormClient() {
 
           <Field label="Full Australian address (street, suburb, state, postcode)" required error={errors.address}>
             <textarea className={`form-input form-textarea${errors.address?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" autoComplete="street-address" maxLength={300} value={address} onChange={e=>{ setAddress(e.target.value); setErrors(p=>({...p,address:''})) }}/>
+          </Field>
+
+          <div className="form-section-title">How did you hear about us?</div>
+          <Field label="How did you hear about us?" required error={errors.howHeard}>
+            <input className={`form-input${errors.howHeard?' input-error':''}`} placeholder="e.g. Instagram, TikTok, friend's name..." maxLength={80} value={howHeard} onChange={e=>{ setHowHeard(e.target.value); setErrors(p=>({...p,howHeard:''})) }}/>
           </Field>
 
           <div className="form-section-title">Documents</div>

@@ -6,6 +6,7 @@ import { WA_URL } from '@/lib/constants'
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
 type MultiUploadState = { files: File[]; previews: (string | null)[] }
+type InvoiceItem = { amount: string; description: string; file: File | null; preview: string | null }
 
 /* ── Field wrapper ── */
 function Field({ label, required, children, error }: { label: string; required?: boolean; children: React.ReactNode; error?: string }) {
@@ -79,6 +80,114 @@ function FileUpload({
 }
 
 /* ── Multi File Upload (up to 15 files) ── */
+function InvoiceManager({
+  label, invoices, onChange, maxItems = 10
+}: {
+  label: string
+  invoices: InvoiceItem[]
+  onChange: (items: InvoiceItem[]) => void
+  maxItems?: number
+}) {
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
+
+  const addInvoice = () => {
+    if (invoices.length >= maxItems) return
+    onChange([...invoices, { amount: '', description: '', file: null, preview: null }])
+  }
+
+  const removeInvoice = (i: number) => {
+    const inv = invoices[i]
+    if (inv.preview) URL.revokeObjectURL(inv.preview)
+    onChange(invoices.filter((_, idx) => idx !== i))
+  }
+
+  const updateInvoice = (i: number, patch: Partial<InvoiceItem>) => {
+    onChange(invoices.map((inv, idx) => idx === i ? { ...inv, ...patch } : inv))
+  }
+
+  const handleFile = (i: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const oldPreview = invoices[i].preview
+    if (oldPreview) URL.revokeObjectURL(oldPreview)
+    const preview = file.type.startsWith('image/') ? URL.createObjectURL(file) : null
+    updateInvoice(i, { file, preview })
+  }
+
+  const total = invoices.reduce((sum, inv) => sum + (parseFloat(inv.amount) || 0), 0)
+
+  return (
+    <div style={{ marginTop: 10 }}>
+      <div style={{ background: '#EAF6F1', border: '1.5px solid #A7D9C5', borderRadius: 12, padding: '10px 14px', marginBottom: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 13 }}>
+        <span style={{ color: '#0B5240', fontWeight: 600 }}>📋 {label}</span>
+        {invoices.length > 0 && (
+          <span style={{ color: '#0B5240', fontWeight: 700 }}>${total.toFixed(2)} ({invoices.length}/{maxItems})</span>
+        )}
+      </div>
+
+      {invoices.map((inv, i) => (
+        <div key={i} style={{ background: '#fff', border: '1.5px solid #D4EAE2', borderRadius: 12, padding: 12, marginBottom: 10 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: '#0B5240' }}>Invoice #{i + 1}</span>
+            <button type="button" onClick={() => removeInvoice(i)}
+              style={{ background: 'none', border: 'none', color: '#c0392b', cursor: 'pointer', fontSize: 18, padding: 2, lineHeight: 1 }}>
+              ✕
+            </button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 8, marginBottom: 8 }}>
+            <input type="number" step="0.01" placeholder="Amount ($)"
+              value={inv.amount}
+              onChange={e => updateInvoice(i, { amount: e.target.value })}
+              className="form-input" style={{ fontSize: 13, padding: '8px 10px' }} />
+            <input type="text" placeholder="Description (e.g. Tools, uniforms)"
+              value={inv.description}
+              maxLength={100}
+              onChange={e => updateInvoice(i, { description: e.target.value })}
+              className="form-input" style={{ fontSize: 13, padding: '8px 10px' }} />
+          </div>
+          <input
+            ref={el => { fileInputRefs.current[i] = el }}
+            type="file"
+            accept=".pdf,.jpg,.jpeg,.png,.webp,.heic,.heif"
+            style={{ display: 'none' }}
+            onChange={e => handleFile(i, e)}
+          />
+          {inv.file ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', background: '#f7fbf9', border: '1px solid #D4EAE2', borderRadius: 8 }}>
+              {inv.preview ? (
+                <img src={inv.preview} alt="receipt" loading="lazy" style={{ width: 36, height: 36, objectFit: 'cover', borderRadius: 6 }} />
+              ) : (
+                <div style={{ width: 36, height: 36, background: '#EAF6F1', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>📄</div>
+              )}
+              <div style={{ flex: 1, minWidth: 0, fontSize: 12 }}>
+                <div style={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{inv.file.name}</div>
+                <div style={{ fontSize: 11, color: '#7a8a82' }}>{(inv.file.size / 1024).toFixed(0)} KB</div>
+              </div>
+              <button type="button" onClick={() => fileInputRefs.current[i]?.click()}
+                style={{ background: '#fff', border: '1px solid #D4EAE2', borderRadius: 6, padding: '4px 10px', fontSize: 11, color: '#0B5240', cursor: 'pointer', fontWeight: 600 }}>
+                Change
+              </button>
+            </div>
+          ) : (
+            <button type="button" onClick={() => fileInputRefs.current[i]?.click()}
+              style={{ width: '100%', padding: '10px', background: '#f7fbf9', border: '1.5px dashed #A7D9C5', borderRadius: 8, color: '#0B5240', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+              📎 Attach invoice / receipt
+            </button>
+          )}
+        </div>
+      ))}
+
+      {invoices.length < maxItems && (
+        <button type="button" onClick={addInvoice}
+          style={{ width: '100%', padding: '12px', background: '#fff', border: '1.5px dashed #0B5240', borderRadius: 12, color: '#0B5240', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+          Add invoice {invoices.length > 0 ? `(${invoices.length}/${maxItems})` : `(up to ${maxItems})`}
+        </button>
+      )}
+    </div>
+  )
+}
+
 function MultiFileUpload({
   id, label, accept, value, onChange, maxFiles = 15
 }: {
@@ -193,6 +302,10 @@ export function FormClient() {
   const [abnIncome, setAbnIncome]     = useState('')
   const [abnWork, setAbnWork]         = useState('')
   const [howHeard, setHowHeard]       = useState('')
+
+  // Invoices/Expenses
+  const [tfnInvoices, setTfnInvoices] = useState<InvoiceItem[]>([])
+  const [abnInvoices, setAbnInvoices] = useState<InvoiceItem[]>([])
 
   // UI
   const [submitted, setSubmitted]     = useState(false)
@@ -312,8 +425,14 @@ export function FormClient() {
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
     const invoiceUrls: string[] = []
-    const allInvoiceFiles = [
-    ]
+    const invoiceMetadata: { type: 'tfn' | 'abn'; amount: string; description: string; url?: string }[] = []
+    const allInvoiceItems = [
+      ...tfnInvoices.map(inv => ({ ...inv, type: 'tfn' as const })),
+      ...abnInvoices.map(inv => ({ ...inv, type: 'abn' as const })),
+    ].filter(inv => inv.file || inv.amount || inv.description)
+
+    const allInvoiceFiles = allInvoiceItems.filter(inv => inv.file).map(inv => inv.file as File)
+
     if (allInvoiceFiles.length > 0) {
       const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
       const failed = results.filter(r => !r).length
@@ -324,6 +443,21 @@ export function FormClient() {
       }
       results.forEach(url => { if (url) invoiceUrls.push(url) })
     }
+
+    // Build metadata array: each invoice has type/amount/description/url
+    let urlIdx = 0
+    allInvoiceItems.forEach(inv => {
+      invoiceMetadata.push({
+        type: inv.type,
+        amount: inv.amount,
+        description: inv.description,
+        url: inv.file ? invoiceUrls[urlIdx++] : undefined,
+      })
+    })
+    if (invoiceMetadata.length > 0) {
+      fd.append('invoiceDetails', JSON.stringify(invoiceMetadata))
+    }
+
     // Combine all uploaded URLs
     const allFileUrls = [
       ...Object.values(coreUrls),
@@ -673,11 +807,22 @@ export function FormClient() {
               </div>
             </Field>
 
-            {hasExpenses === 'yes' && (
-              <div style={{background:'#EAF6F1',border:'1.5px solid #A7D9C5',borderRadius:12,padding:'12px 16px',fontSize:13,color:'#0B5240',fontWeight:500,lineHeight:1.6}}>
-                Please send us all your invoices / receipts.
-              </div>
-            )}
+            {hasExpenses === 'yes' && (<>
+              <InvoiceManager
+                label="TFN Work-Related Expenses"
+                invoices={tfnInvoices}
+                onChange={setTfnInvoices}
+                maxItems={10}
+              />
+              {hasAbn === 'yes' && (
+                <InvoiceManager
+                  label="ABN Business Expenses"
+                  invoices={abnInvoices}
+                  onChange={setAbnInvoices}
+                  maxItems={10}
+                />
+              )}
+            </>)}
           </div>
 
           <div className="form-section-title">Declaration</div>
