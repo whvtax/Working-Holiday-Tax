@@ -5,13 +5,14 @@ import { createClient } from 'redis'
 const MAX_REQUESTS       = 5
 const WINDOW_SECS        = 15 * 60   // 15 minutes
 const CONNECT_TIMEOUT_MS = 3000
-const TOTAL_TIMEOUT_MS   = 5000
+const TOTAL_TIMEOUT_MS   = 1500
 
 let _client: ReturnType<typeof createClient> | null = null
 let _connecting: Promise<ReturnType<typeof createClient> | null> | null = null
 
 export async function getRedis(): Promise<ReturnType<typeof createClient> | null> {
-  const url = process.env.REDIS_URL
+  // Support both REDIS_URL and KV_URL (Vercel Upstash integration uses KV_URL)
+  const url = process.env.REDIS_URL || process.env.KV_URL
   if (!url) return null
 
   // Reuse healthy connection
