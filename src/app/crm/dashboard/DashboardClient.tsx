@@ -330,16 +330,17 @@ export default function DashboardClient() {
   },[])
 
   // Load server-computed dashboard stats (scales to 10k+ clients)
-  const loadStats = useCallback(async()=>{
+  const loadStats = useCallback(async(opts?: { force?: boolean })=>{
     try {
-      const r = await fetch('/api/crm/stats', { cache: 'no-store' })
+      const url = opts?.force ? '/api/crm/stats?refresh=1' : '/api/crm/stats'
+      const r = await fetch(url, { cache: 'no-store' })
       if (r.status === 401) { window.location.replace('/crm'); return }
       const d = await r.json()
       if (d.ok && d.stats) setStats(d.stats as Stats)
     } catch(e){ console.error('[loadStats]', e) }
   },[])
 
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadStats])
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats({force:true})]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadStats])
 
   // Auto-poll every 60s — keeps all open sessions in sync
   useEffect(()=>{
@@ -1228,7 +1229,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <div style={{...S.pgSub,marginBottom:0}}>Tax return submissions awaiting processing</div>
                 </div>
                 <button
-                  onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients()]);setRefreshing(false)}}
+                  onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients(),loadStats({force:true})]);setRefreshing(false)}}
                   style={{display:'flex',alignItems:'center',gap:6,height:34,padding:'0 14px',background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:100,cursor:refreshing?'default':'pointer',color:'#587066',fontSize:12,fontWeight:600,fontFamily:'inherit',flexShrink:0}}
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style={{animation:refreshing?'spin 0.7s linear infinite':'none',display:'block'}}>
@@ -1261,20 +1262,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const lastYearClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===lastYear))
                 const returnedThisYear = lastYearClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
 
-                const seasonCount = stats?.seasonClientsCount ?? seasonClients.length
-                const lastYearCount = stats?.lastYearClientsCount ?? lastYearClients.length
-                const returnedCount = stats?.returnedThisYearCount ?? returnedThisYear.length
+                const seasonCount = Math.max(stats?.seasonClientsCount ?? 0, seasonClients.length)
+                const lastYearCount = Math.max(stats?.lastYearClientsCount ?? 0, lastYearClients.length)
+                const returnedCount = Math.max(stats?.returnedThisYearCount ?? 0, returnedThisYear.length)
                 const returnRate = lastYearCount > 0
                   ? Math.round((returnedCount / lastYearCount) * 100)
                   : 0
 
-                const totalRefunds = stats?.totalRefundsThisYear ?? allClients.reduce((s,c)=>
+                const localRefunds = allClients.reduce((s,c)=>
                   s + c.taxReturns.filter(r=>r.year===thisYear && r.type==='refund')
                     .reduce((x,r)=>x+r.refundAmount,0), 0)
-                const pendingCount = stats?.totalTasksPending ?? pendingTasks.length
-                const doneCount = stats?.totalTasksDone ?? doneTasks.length
+                const totalRefunds = Math.max(stats?.totalRefundsThisYear ?? 0, localRefunds)
+                // Prefer the larger of (server count, local count) so a stale cache
+                // never shows 0 when local state has real data.
+                const pendingCount = Math.max(stats?.totalTasksPending ?? 0, pendingTasks.length)
+                const doneCount = Math.max(stats?.totalTasksDone ?? 0, doneTasks.length)
                 // Always show stats - even if no tasks yet (provides motivation + overview)
-                const totalClients = stats?.totalActiveClients ?? allClients.length
+                const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
                 const avgRefund = seasonCount > 0 ? totalRefunds/seasonCount : 0
                 return (<>
                   <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:12}}>
@@ -1300,8 +1304,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     // Use server-computed stats for accuracy at scale; fallback to local
                     const eligibleClientsLocal = allClients.filter(c => c.taxReturns.length > 0)
                     const noSuperClientsLocal = eligibleClientsLocal.filter(c => c.superReturns.length === 0)
-                    const eligibleCount = stats?.eligibleSuperCount ?? eligibleClientsLocal.length
-                    const noSuperCount = stats?.noSuperCount ?? noSuperClientsLocal.length
+                    const eligibleCount = Math.max(stats?.eligibleSuperCount ?? 0, eligibleClientsLocal.length)
+                    const noSuperCount = Math.max(stats?.noSuperCount ?? 0, noSuperClientsLocal.length)
                     // Keep local arrays for the click handlers (filter UI)
                     const eligibleClients = eligibleClientsLocal
                     const noSuperClients = noSuperClientsLocal
@@ -1413,7 +1417,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   return !checkinDone && !hasReturnThisYear && c.taxReturns.length > 0
                 })
                 // Total count from server-computed stats (accurate at any scale)
-                const totalFollowUp = stats?.followUpCount ?? needsFollowUp.length
+                const totalFollowUp = Math.max(stats?.followUpCount ?? 0, needsFollowUp.length)
                 if (totalFollowUp === 0) return null
                 return (
                   <div style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:'1px solid #fcd34d',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>

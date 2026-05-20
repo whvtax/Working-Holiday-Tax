@@ -382,6 +382,10 @@ const css = `
   .req-dot { color: #0B5240; margin-left: 3px; }
   .field-error { display: block; font-size: 11px; color: #DC2626; margin-top: 4px; }
   .form-input { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+  /* Prevent iOS auto-zoom on input focus (fires when font-size < 16px) */
+  @media (max-width: 640px) {
+    .form-input, .form-textarea, .form-input[type="date"] { font-size: 16px; }
+  }
   .form-input:focus { border-color: #0B5240; background: #fff; }
   .input-error { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
   .form-textarea { min-height: 80px; resize: vertical; }

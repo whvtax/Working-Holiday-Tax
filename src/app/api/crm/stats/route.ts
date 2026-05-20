@@ -8,9 +8,9 @@ function auth(req: NextRequest) {
 }
 
 // In-memory cache: stats are expensive at scale.
-// 30s TTL is enough to absorb auto-polling from multiple admin tabs.
+// 10s TTL — short enough to feel "live" yet absorbs polling from multiple tabs.
 let _cache: { data: unknown; expiresAt: number } | null = null
-const CACHE_TTL_MS = 30_000
+const CACHE_TTL_MS = 10_000
 
 export async function GET(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })

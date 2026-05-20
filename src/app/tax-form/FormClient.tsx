@@ -1029,6 +1029,10 @@ const styles = `
   .inp:focus { border-color: #0B5240; background: #fff; }
   .inp-err { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
   .form-textarea { min-height: 80px; resize: vertical; }
+  /* Prevent iOS auto-zoom on input focus (fires when font-size < 16px) */
+  @media (max-width: 640px) {
+    .inp, .form-input, .form-textarea, input[type="number"], input[type="text"], input[type="email"], input[type="date"], textarea { font-size: 16px !important; }
+  }
   .radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
   .radio-group-col { flex-direction: column; }
   .radio-card { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 500; color: #587066; cursor: pointer; transition: all .15s; background: #F5F9F7; width: 100%; }
