@@ -302,7 +302,7 @@ export function FormClient() {
 
           <div className="form-section-title">Contact details</div>
           <Field label="WhatsApp Number" required error={errors.smsPhone}>
-            <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={smsPhone} onChange={e=>{ setSmsPhone(e.target.value); setErrors(p=>({...p,smsPhone:''})) }}/>
+            <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={smsPhone} onChange={e=>{ setSmsPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,smsPhone:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label="Email address" required error={errors.email}>
             <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" autoComplete="email" inputMode="email" maxLength={200} value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
@@ -316,7 +316,7 @@ export function FormClient() {
 
           <div className="form-section-title">Tax & super fund details</div>
           <Field label="TFN (Tax File Number)" required error={errors.tfn}>
-            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" autoComplete="off" inputMode="numeric" maxLength={20} value={tfn} onChange={e=>{ setTfn(e.target.value); setErrors(p=>({...p,tfn:''})) }}/>
+            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" autoComplete="off" inputMode="numeric" maxLength={20} value={tfn} onChange={e=>{ setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,tfn:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label="Super fund details (fund name, member number, account opening date)" required error={errors.superFunds}>
             <textarea className={`form-input form-textarea${errors.superFunds?' input-error':''}`} style={{minHeight:100}} placeholder={"e.g. AustralianSuper — Member No: 123456789 — Opened: 01/03/2023\nHostPlus — Member No: 987654321 — Opened: 15/06/2022"} value={superFunds} onChange={e=>{ setSuperFunds(e.target.value); setErrors(p=>({...p,superFunds:''})) }}/>
@@ -329,10 +329,10 @@ export function FormClient() {
             <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder="As it appears on the bank account" value={bankHolder} onChange={e=>{ setBankHolder(e.target.value); setErrors(p=>({...p,bankHolder:''})) }}/>
           </Field>
           <Field label="Account number" required error={errors.bankAccount}>
-            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value); setErrors(p=>({...p,bankAccount:''})) }}/>
+            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankAccount:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label="BSB" required error={errors.bankBsb}>
-            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value); setErrors(p=>({...p,bankBsb:''})) }}/>
+            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankBsb:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
 
           <div className="form-section-title">How did you hear about us?</div>

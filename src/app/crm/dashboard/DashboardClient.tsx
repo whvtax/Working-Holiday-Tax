@@ -646,7 +646,7 @@ export default function DashboardClient() {
         + sec('Declaration')
         + declBox(
             '',
-            decl1Val !== '—' ? decl1Val.replace('→ ✓ ','') : 'I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
+            decl1Val !== '—' ? decl1Val.replace('→ ✓ ','') : 'I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
             decl1Val !== '—'
           )
         + declBox(
@@ -794,7 +794,17 @@ export default function DashboardClient() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = ((task.clientName||'form').replace(/[^a-z0-9]/gi,'_') + '_' + task.taskType + '.html').toLowerCase()
+    // Build filename: ClientName_TaskType_Date.html (e.g., "John_Doe_Tax_Return_2026-05-20.html")
+    const safeName = (task.clientName || 'form').trim().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '')
+    const typeLabels: Record<string, string> = {
+      'tfn': 'TFN_Application',
+      'abn': 'ABN_Application',
+      'tax-return': 'Tax_Return',
+      'super': 'Superannuation_Refund',
+    }
+    const typeLabel = typeLabels[task.taskType] || task.taskType
+    const dateStr = new Date().toISOString().slice(0, 10)
+    a.download = `${safeName}_${typeLabel}_${dateStr}.html`
     a.style.display = 'none'
     document.body.appendChild(a)
     a.click()

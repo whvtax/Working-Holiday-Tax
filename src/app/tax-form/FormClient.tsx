@@ -434,7 +434,17 @@ export function FormClient() {
     const allInvoiceFiles = allInvoiceItems.filter(inv => inv.file).map(inv => inv.file as File)
 
     if (allInvoiceFiles.length > 0) {
-      const results = await Promise.all(allInvoiceFiles.map(f => uploadOne(f)))
+      // Upload in batches of 3 to avoid rate-limiting
+      const results: (string | null)[] = []
+      for (let i = 0; i < allInvoiceFiles.length; i += 3) {
+        const batch = allInvoiceFiles.slice(i, i + 3)
+        const batchResults = await Promise.all(batch.map(f => uploadOne(f)))
+        results.push(...batchResults)
+        // Small delay between batches to ease pressure on Supabase
+        if (i + 3 < allInvoiceFiles.length) {
+          await new Promise(r => setTimeout(r, 300))
+        }
+      }
       const failed = results.filter(r => !r).length
       if (failed > 0) {
         setLoading(false)
@@ -661,12 +671,12 @@ export function FormClient() {
 
             <Field label="WhatsApp Number" required error={errors.waNumber}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30}
-                value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }} />
+                value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
             <Field label="Australian Phone Number" required error={errors.auPhone}>
               <input className={`inp ${errors.auPhone ? 'inp-err' : ''}`} type="tel" placeholder="04XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30}
-                value={auPhone} onChange={e => { setAuPhone(e.target.value); setErrors(p => ({...p, auPhone: ''})) }} />
+                value={auPhone} onChange={e => { setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, auPhone: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
             <Field label="First name (including middle name)" required error={errors.fullName}>
@@ -721,7 +731,7 @@ export function FormClient() {
 
             <Field label="Tax File Number (TFN)" required error={errors.tfn}>
               <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
-                value={tfn} onChange={e => { setTfn(e.target.value); setErrors(p => ({...p, tfn: ''})) }} />
+                value={tfn} onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, tfn: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
             <Field label="Primary job in the past year" required error={errors.primaryJob}>
@@ -747,12 +757,12 @@ export function FormClient() {
             {hasAbn === 'yes' && (<>
               <Field label="ABN number" required error={errors.abnNumber}>
                 <input className={`inp ${errors.abnNumber ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 345 678 901" inputMode="numeric"
-                  value={abnNumber} onChange={e => { setAbnNumber(e.target.value); setErrors(p => ({...p, abnNumber: ''})) }} />
+                  value={abnNumber} onChange={e => { setAbnNumber(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, abnNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
               </Field>
 
               <Field label="Total annual income under ABN (AUD)" required error={errors.abnIncome}>
                 <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
-                  value={abnIncome} onChange={e => { setAbnIncome(e.target.value); setErrors(p => ({...p, abnIncome: ''})) }} />
+                  value={abnIncome} onChange={e => { setAbnIncome(e.target.value.replace(/[^0-9.]/g, '')); setErrors(p => ({...p, abnIncome: ''})) }}  onKeyDown={e=>{if(!/^[0-9.]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
               </Field>
 
               <Field label="What work did you do under your ABN?" required error={errors.abnWork}>
@@ -772,11 +782,11 @@ export function FormClient() {
             </Field>
             <Field label="Account number" required error={errors.bankAccount}>
               <input className={`inp ${errors.bankAccount ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12345678"
-                value={bankAccount} onChange={e => { setBankAccount(e.target.value); setErrors(p => ({...p, bankAccount: ''})) }} />
+                value={bankAccount} onChange={e => { setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankAccount: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
             <Field label="BSB" required error={errors.bankBsb}>
               <input className={`inp ${errors.bankBsb ? 'inp-err' : ''}`} type="text" placeholder="e.g. 062-000"
-                value={bankBsb} onChange={e => { setBankBsb(e.target.value); setErrors(p => ({...p, bankBsb: ''})) }} />
+                value={bankBsb} onChange={e => { setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankBsb: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
           </div>
 
@@ -823,6 +833,14 @@ export function FormClient() {
                 />
               )}
             </>)}
+          </div>
+
+          <div className="form-section-title">How did you hear about us?</div>
+          <div>
+            <Field label="How did you hear about us?" required error={errors.howHeard}>
+              <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
+                value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
+            </Field>
           </div>
 
           <div className="form-section-title">Declaration</div>
@@ -874,14 +892,6 @@ export function FormClient() {
                   <span className="check-label">I confirm this declaration</span>
                 </label>
               </div>
-            </Field>
-          </div>
-
-          <div className="form-section-title">How did you hear about us?</div>
-          <div>
-            <Field label="How did you hear about us?" required error={errors.howHeard}>
-              <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
-                value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
             </Field>
           </div>
 

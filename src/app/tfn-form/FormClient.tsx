@@ -307,10 +307,10 @@ export function FormClient() {
             <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
           </Field>
           <Field label="WhatsApp Number" required error={errors.whatsapp}>
-            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+44 7700 900123" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value); setErrors(p=>({...p,whatsapp:''})) }}/>
+            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+44 7700 900123" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,whatsapp:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label="Australian phone number" required error={errors.auPhone}>
-            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={auPhone} onChange={e=>{ setAuPhone(e.target.value); setErrors(p=>({...p,auPhone:''})) }}/>
+            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={auPhone} onChange={e=>{ setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,auPhone:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
 
           <Field label="Gender as shown in passport" required error={errors.gender}>

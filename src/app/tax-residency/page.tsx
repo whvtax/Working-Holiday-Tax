@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
+import BackButton from './BackButton'
 
 export const metadata: Metadata = {
   title: 'Tax Residency in Australia for WHV Holders',
@@ -281,24 +282,13 @@ export default function TaxResidencyPage() {
           </div>
         </section>
 
-        {/* ── FINAL CTA ─────────────────────────────────────────────────── */}
-        <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
+        {/* ── BACK TO FORM ─────────────────────────────────────────────────── */}
+        <section style={{ background: '#0B5240', paddingTop: '40px', paddingBottom: '40px' }}>
           <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
-              Ready when you are
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '20px', maxWidth: '40ch' }}>
+              Now that you understand your residency, continue filling out your tax return.
             </p>
-            <h2 className="font-serif font-black text-white mx-auto"
-              style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '22ch' }}>
-              Let us handle your tax return
-            </h2>
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.7)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '44ch' }}>
-              We classify your residency correctly and apply every offset and deduction you are entitled to.
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center justify-center font-semibold"
-              style={{ minHeight: '54px', padding: '0 36px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '15px', maxWidth: '300px', width: '100%' }}>
-              Start your tax return →
-            </a>
+            <BackButton />
           </div>
         </section>
 

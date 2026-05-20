@@ -96,7 +96,7 @@ export function FormClient() {
     fd.append('whatsapp', whatsapp); fd.append('auPhone', auPhone)
     fd.append('email', email); fd.append('address', address); fd.append('howHeard', howHeard)
     fd.append('tfn', tfn); fd.append('business', business)
-    fd.append('declared',     declared ? '✓ I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.' : '')
+    fd.append('declared',     declared ? '✓ I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.' : '')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
         if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
@@ -293,10 +293,10 @@ export function FormClient() {
             </div>
           </Field>
           <Field label="WhatsApp Number" required error={errors.whatsapp}>
-            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+44 7700 900123" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value); setErrors(p=>({...p,whatsapp:''})) }}/>
+            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+44 7700 900123" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,whatsapp:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label="Australian phone number" required error={errors.auPhone}>
-            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={auPhone} onChange={e=>{ setAuPhone(e.target.value); setErrors(p=>({...p,auPhone:''})) }}/>
+            <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={auPhone} onChange={e=>{ setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,auPhone:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label="Email address" required error={errors.email}>
             <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" autoComplete="email" inputMode="email" maxLength={200} value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
@@ -305,7 +305,7 @@ export function FormClient() {
             <textarea className={`form-input form-textarea${errors.address?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" autoComplete="street-address" maxLength={300} value={address} onChange={e=>{ setAddress(e.target.value); setErrors(p=>({...p,address:''})) }}/>
           </Field>
           <Field label="TFN (Tax File Number)" required error={errors.tfn}>
-            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" autoComplete="off" inputMode="numeric" maxLength={20} value={tfn} onChange={e=>{ setTfn(e.target.value); setErrors(p=>({...p,tfn:''})) }}/>
+            <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" autoComplete="off" inputMode="numeric" maxLength={20} value={tfn} onChange={e=>{ setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,tfn:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label="Brief description of business activity" required error={errors.business}>
             <textarea className={`form-input form-textarea${errors.business?' input-error':''}`} placeholder="e.g. Freelance photographer, providing photography services to clients" value={business} onChange={e=>{ setBusiness(e.target.value); setErrors(p=>({...p,business:''})) }}/>
@@ -323,7 +323,7 @@ export function FormClient() {
 
           <div className="form-section-title">Declaration</div>
           <div className={`declaration-box${errors.declared?' decl-error':''}`}>
-            <p className="decl-text">I declare that I do not own any assets in Australia and do not have, nor have I ever been issued, an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.</p>
+            <p className="decl-text">I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.</p>
             <label className="check-row">
               <input type="checkbox" checked={declared} onChange={e=>{ setDeclared(e.target.checked); setErrors(p=>({...p,declared:''})) }} className="hidden"/>
               <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
