@@ -31,7 +31,7 @@ function FileUpload({ id, label, accept, value, onChange }: { id: string; label:
       <input ref={inputRef} id={id} type="file" accept={accept} className="hidden" onChange={handleChange} />
       {value.file ? (
         <div className="file-selected">
-          {value.preview ? <img src={value.preview} alt="preview" className="file-img-preview" /> : <div className="file-icon-box">📄</div>}
+          {value.preview ? <img src={value.preview} alt="preview" loading="lazy" decoding="async" className="file-img-preview" /> : <div className="file-icon-box">📄</div>}
           <div className="file-meta"><span className="file-name">{value.file.name}</span><span className="file-size">{(value.file.size/1024).toFixed(0)} KB</span></div>
           <button type="button" className="file-remove" onClick={e=>{e.stopPropagation();handleRemove()}}><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg></button>
         </div>
@@ -294,7 +294,7 @@ export function FormClient() {
             <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" autoComplete="off" maxLength={30} value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>
           </Field>
           <Field label="Country that issued the passport (with visa attached)" required error={errors.passportCountry}>
-            <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. France" autoComplete="country-name" maxLength={60} value={passportCountry} onChange={e=>{ setPassportCountry(e.target.value); setErrors(p=>({...p,passportCountry:''})) }}/>
+            <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60} value={passportCountry} onChange={e=>{ setPassportCountry(e.target.value); setErrors(p=>({...p,passportCountry:''})) }}/>
           </Field>
 
           <div className="form-section-title">Contact details</div>
@@ -308,7 +308,7 @@ export function FormClient() {
             <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" value={auAddress} onChange={e=>{ setAuAddress(e.target.value); setErrors(p=>({...p,auAddress:''})) }}/>
           </Field>
           <Field label="Full home country address" required error={errors.homeAddress}>
-            <textarea className={`form-input form-textarea${errors.homeAddress?' input-error':''}`} placeholder="e.g. 12 Rue de Paris, 75001 Paris, France" value={homeAddress} onChange={e=>{ setHomeAddress(e.target.value); setErrors(p=>({...p,homeAddress:''})) }}/>
+            <textarea className={`form-input form-textarea${errors.homeAddress?' input-error':''}`} placeholder="e.g. 10 Downing Street, London, SW1A 2AA, UK" value={homeAddress} onChange={e=>{ setHomeAddress(e.target.value); setErrors(p=>({...p,homeAddress:''})) }}/>
           </Field>
 
           <div className="form-section-title">Tax & super fund details</div>

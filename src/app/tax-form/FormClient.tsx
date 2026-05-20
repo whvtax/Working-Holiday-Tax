@@ -49,7 +49,7 @@ function FileUpload({
       {value.file ? (
         <div className="file-selected">
           {value.preview
-            ? <img src={value.preview} alt="preview" className="file-img-preview" />
+            ? <img src={value.preview} alt="preview" loading="lazy" decoding="async" className="file-img-preview" />
             : <div className="file-icon-box">📄</div>
           }
           <div className="file-meta">
@@ -118,7 +118,7 @@ function MultiFileUpload({
         <div key={i} className="file-zone" style={{marginBottom: 8, cursor:'default'}}>
           <div className="file-selected">
             {value.previews[i]
-              ? <img src={value.previews[i]!} alt="preview" className="file-img-preview" />
+              ? <img src={value.previews[i]!} alt="preview" loading="lazy" decoding="async" className="file-img-preview" />
               : <div className="file-icon-box">📄</div>
             }
             <div className="file-meta">
@@ -559,7 +559,7 @@ export function FormClient() {
           <div>
 
             <Field label="Home Country" required error={errors.country}>
-              <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. France" autoComplete="country-name" maxLength={60}
+              <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60}
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
             </Field>
 

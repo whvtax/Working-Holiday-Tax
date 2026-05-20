@@ -32,7 +32,7 @@ function FileUpload({ id, label, accept, value, onChange }: { id: string; label:
       <input ref={inputRef} id={id} type="file" accept={accept} className="hidden" onChange={handleChange} />
       {value.file ? (
         <div className="file-selected">
-          {value.preview ? <img src={value.preview} alt="preview" className="file-img-preview" /> : <div className="file-icon-box">📄</div>}
+          {value.preview ? <img src={value.preview} alt="preview" loading="lazy" decoding="async" className="file-img-preview" /> : <div className="file-icon-box">📄</div>}
           <div className="file-meta"><span className="file-name">{value.file.name}</span><span className="file-size">{(value.file.size / 1024).toFixed(0)} KB</span></div>
           <button type="button" className="file-remove" onClick={(e) => { e.stopPropagation(); handleRemove() }}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
@@ -292,7 +292,7 @@ export function FormClient() {
             <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" autoComplete="family-name" maxLength={60} value={lastName} onChange={e=>{ setLastName(e.target.value); setErrors(p=>({...p,lastName:''})) }}/>
           </Field>
           <Field label="Country of passport" required error={errors.country}>
-            <input className={`form-input${errors.country?' input-error':''}`} placeholder="e.g. France" autoComplete="country-name" maxLength={60} value={country} onChange={e=>{ setCountry(e.target.value); setErrors(p=>({...p,country:''})) }}/>
+            <input className={`form-input${errors.country?' input-error':''}`} placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60} value={country} onChange={e=>{ setCountry(e.target.value); setErrors(p=>({...p,country:''})) }}/>
           </Field>
           <Field label="Passport number" required error={errors.passport}>
             <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" autoComplete="off" maxLength={30} value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>
@@ -304,7 +304,7 @@ export function FormClient() {
             <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
           </Field>
           <Field label="WhatsApp Number" required error={errors.whatsapp}>
-            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+33 6 12 34 56 78" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value); setErrors(p=>({...p,whatsapp:''})) }}/>
+            <input type="tel" className={`form-input${errors.whatsapp?' input-error':''}`} placeholder="+44 7700 900123" autoComplete="tel" inputMode="tel" maxLength={30} value={whatsapp} onChange={e=>{ setWhatsapp(e.target.value); setErrors(p=>({...p,whatsapp:''})) }}/>
           </Field>
           <Field label="Australian phone number" required error={errors.auPhone}>
             <input type="tel" className={`form-input${errors.auPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={auPhone} onChange={e=>{ setAuPhone(e.target.value); setErrors(p=>({...p,auPhone:''})) }}/>
