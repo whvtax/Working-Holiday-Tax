@@ -1238,11 +1238,25 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {view==='tasks' && taskView==='list' && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
               <div style={{padding:'26px 26px 8px',background:'#f0f4f1',flexShrink:0}}>
-              <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18}}>
-                <div>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18,gap:14}}>
+                <div style={{flexShrink:0}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
-                  <div style={{...S.pgSub,marginBottom:0}}>Tax return submissions awaiting processing</div>
                 </div>
+
+                {/* Name search */}
+                <div style={{position:'relative',flex:1,maxWidth:'35%'}}>
+                  <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                  <input
+                    style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
+                    placeholder="Search by name…"
+                    value={taskSearch}
+                    onChange={e=>setTaskSearch(e.target.value)}
+                  />
+                  {taskSearch && (
+                    <button onClick={()=>setTaskSearch('')} style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'#7a8a82',fontSize:16,padding:'4px 8px',fontFamily:'inherit'}}>×</button>
+                  )}
+                </div>
+
                 <button
                   onClick={async()=>{setRefreshing(true);await Promise.all([loadTasks(),loadClients(),loadStats({force:true})]);setRefreshing(false)}}
                   style={{display:'flex',alignItems:'center',gap:6,height:34,padding:'0 14px',background:'#fff',border:'1.5px solid #D4EAE2',borderRadius:100,cursor:refreshing?'default':'pointer',color:'#587066',fontSize:12,fontWeight:600,fontFamily:'inherit',flexShrink:0}}
@@ -1254,20 +1268,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   Refresh
                 </button>
 
-              </div>
-
-              {/* Name search */}
-              <div style={{position:'relative',marginBottom:12,maxWidth:'35%'}}>
-                <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                <input
-                  style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
-                  placeholder="Search by name…"
-                  value={taskSearch}
-                  onChange={e=>setTaskSearch(e.target.value)}
-                />
-                {taskSearch && (
-                  <button onClick={()=>setTaskSearch('')} style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'#7a8a82',fontSize:16,padding:'4px 8px',fontFamily:'inherit'}}>×</button>
-                )}
               </div>
 
               {/* Season stats */}
@@ -1536,9 +1536,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 80px'}}>
 
               {pendingTasks.length>0 && <>
-                <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
-                  <span style={{color:'#d97706',fontSize:8}}>●</span> Pending — {pendingTasks.length}
-                </div>
                 {pendingTasks.map(t=>{
                   const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
                   const isMarried = (t.marital||'').toLowerCase() === 'married'
