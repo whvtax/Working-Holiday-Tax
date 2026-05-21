@@ -1303,12 +1303,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
                       {label:'Season',value:seasonCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
                     ].map(stat=>(
-                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:10,padding:'9px 13px',transition:'transform 0.15s'}}>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:3}}>
-                          <div style={{fontSize:9.5,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
-                          <div style={{fontSize:11,opacity:0.65}}>{stat.icon}</div>
+                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'14px 16px',transition:'transform 0.15s'}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                          <div style={{fontSize:10.5,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
+                          <div style={{fontSize:13,opacity:0.65}}>{stat.icon}</div>
                         </div>
-                        <div style={{fontSize:19,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                        <div style={{fontSize:26,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
                       </div>
                     ))}
                   </div>
@@ -1336,21 +1336,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           setView('clients')
                           setNoReturnFilter(noReturnFilter === 'didnt-return' ? 'all' : 'didnt-return')
                         }} disabled={lastYearCount === 0}
-                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:9,padding:'8px 12px',display:'flex',alignItems:'center',gap:10,cursor:lastYearCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearCount === 0 ? 0.7 : 1}}>
-                          <div style={{position:'relative',width:38,height:38,flexShrink:0}}>
-                            <svg width="38" height="38" viewBox="0 0 54 54">
+                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:11,padding:'14px 18px',display:'flex',alignItems:'center',gap:14,cursor:lastYearCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearCount === 0 ? 0.7 : 1}}>
+                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
+                            <svg width="54" height="54" viewBox="0 0 54 54">
                               <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(146,64,14,0.15)" strokeWidth="5"/>
                               <circle cx="27" cy="27" r="22" fill="none" stroke="#92400e" strokeWidth="5" strokeLinecap="round"
                                 strokeDasharray={`${(returnRate/100)*138.23} 138.23`}
                                 transform="rotate(-90 27 27)"/>
                             </svg>
-                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#92400e'}}>
+                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#92400e'}}>
                               {returnRate}%
                             </div>
                           </div>
                           <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:11,fontWeight:700,color:'#92400e',marginBottom:1}}>🔁 Returning Rate ({thisYear})</div>
-                            <div style={{fontSize:10,color:'#78350f',lineHeight:1.4}}>
+                            <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>🔁 Returning Rate ({thisYear})</div>
+                            <div style={{fontSize:11.5,color:'#78350f',lineHeight:1.5}}>
                               {lastYearCount === 0
                                 ? `No clients from ${lastYear} yet`
                                 : <>{returnedCount} of {lastYearCount} from {lastYear} returned</>
@@ -1370,21 +1370,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           setView('clients')
                           setSuperFilter(superFilter === 'no-super' ? 'all' : 'no-super')
                         }} disabled={eligibleCount === 0}
-                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:9,padding:'8px 12px',display:'flex',alignItems:'center',gap:10,cursor:eligibleCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleCount === 0 ? 0.7 : 1}}>
-                          <div style={{position:'relative',width:38,height:38,flexShrink:0}}>
-                            <svg width="38" height="38" viewBox="0 0 54 54">
+                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:11,padding:'14px 18px',display:'flex',alignItems:'center',gap:14,cursor:eligibleCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleCount === 0 ? 0.7 : 1}}>
+                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
+                            <svg width="54" height="54" viewBox="0 0 54 54">
                               <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(29,78,216,0.15)" strokeWidth="5"/>
                               <circle cx="27" cy="27" r="22" fill="none" stroke="#1d4ed8" strokeWidth="5" strokeLinecap="round"
                                 strokeDasharray={`${(noSuperRate/100)*138.23} 138.23`}
                                 transform="rotate(-90 27 27)"/>
                             </svg>
-                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#1d4ed8'}}>
+                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#1d4ed8'}}>
                               {noSuperRate}%
                             </div>
                           </div>
                           <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8',marginBottom:1}}>💼 No Super Yet</div>
-                            <div style={{fontSize:10,color:'#1e3a8a',lineHeight:1.4}}>
+                            <div style={{fontSize:13,fontWeight:700,color:'#1d4ed8',marginBottom:3}}>💼 No Super Yet</div>
+                            <div style={{fontSize:11.5,color:'#1e3a8a',lineHeight:1.5}}>
                               {eligibleCount === 0
                                 ? 'No clients with tax returns yet'
                                 : <>{noSuperCount} of {eligibleCount} have no super refund</>
