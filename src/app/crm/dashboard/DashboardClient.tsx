@@ -1533,7 +1533,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               </div>{/* end fixed header */}
 
-              <div className="tasks-scroll" style={{height:445,overflowY:'scroll',padding:'8px 26px 32px',flexShrink:0}}>
+              <div className="tasks-scroll" style={{height:420,overflowY:'scroll',padding:'8px 26px 32px',flexShrink:0}}>
 
               {pendingTasks.length>0 && <>
                 {pendingTasks.map(t=>{
