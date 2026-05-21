@@ -1237,7 +1237,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'26px 26px 12px',background:'#f0f4f1',flexShrink:0}}>
+              <div style={{padding:'26px 26px 12px',background:'#f0f4f1',flex:1,minHeight:0,display:'flex',flexDirection:'column'}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:14}}>
                 <div style={{flexShrink:0}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
@@ -1296,19 +1296,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
                 const avgRefund = seasonCount > 0 ? totalRefunds/seasonCount : 0
                 return (<>
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:8}}>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:10,flex:1,minHeight:80}}>
                     {[
                       {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
                       {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✓'},
                       {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
                       {label:'Season',value:seasonCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
                     ].map(stat=>(
-                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'14px 16px',transition:'transform 0.15s'}}>
+                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'14px 16px',transition:'transform 0.15s',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
-                          <div style={{fontSize:10.5,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
-                          <div style={{fontSize:13,opacity:0.65}}>{stat.icon}</div>
+                          <div style={{fontSize:11,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
+                          <div style={{fontSize:14,opacity:0.65}}>{stat.icon}</div>
                         </div>
-                        <div style={{fontSize:26,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                        <div style={{fontSize:30,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
                       </div>
                     ))}
                   </div>
@@ -1329,7 +1329,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       : 0
 
                     return (
-                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:8,marginBottom:0}}>
+                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:10,marginBottom:0,flex:1,minHeight:70}}>
                         {/* Return Rate Circle - clickable */}
                         <button onClick={() => {
                           if (lastYearCount === 0) return
@@ -1533,7 +1533,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               </div>{/* end fixed header */}
 
-              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 80px'}}>
+              <div className="tasks-scroll" style={{height:355,overflowY:'scroll',padding:'8px 26px 32px',flexShrink:0}}>
 
               {pendingTasks.length>0 && <>
                 {pendingTasks.map(t=>{
