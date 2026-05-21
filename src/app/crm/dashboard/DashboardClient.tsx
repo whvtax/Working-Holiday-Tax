@@ -1238,7 +1238,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {view==='tasks' && taskView==='list' && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
               <div style={{padding:'26px 26px 12px',background:'#f0f4f1',flex:1,minHeight:0,display:'flex',flexDirection:'column'}}>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:14}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:14,flexShrink:0}}>
                 <div style={{flexShrink:0}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
                 </div>
@@ -1296,7 +1296,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
                 const avgRefund = seasonCount > 0 ? totalRefunds/seasonCount : 0
                 return (<>
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:10,flex:1,minHeight:80}}>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:10,flex:1,minHeight:90}}>
                     {[
                       {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
                       {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✓'},
@@ -1304,11 +1304,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       {label:'Season',value:seasonCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
                     ].map(stat=>(
                       <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'14px 16px',transition:'transform 0.15s',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
                           <div style={{fontSize:11,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
                           <div style={{fontSize:14,opacity:0.65}}>{stat.icon}</div>
                         </div>
-                        <div style={{fontSize:30,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                        <div style={{fontSize:28,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
                       </div>
                     ))}
                   </div>
@@ -1329,7 +1329,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       : 0
 
                     return (
-                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:10,marginBottom:0,flex:1,minHeight:70}}>
+                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:10,marginBottom:0,flex:1,minHeight:80}}>
                         {/* Return Rate Circle - clickable */}
                         <button onClick={() => {
                           if (lastYearCount === 0) return
@@ -1518,7 +1518,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               })()}
 
               {/* Name search */}
-              <div style={{position:'relative',maxWidth:'35%',marginTop:8}}>
+              <div style={{position:'relative',maxWidth:'35%',marginTop:8,flexShrink:0}}>
                 <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 <input
                   style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
@@ -1533,7 +1533,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               </div>{/* end fixed header */}
 
-              <div className="tasks-scroll" style={{height:355,overflowY:'scroll',padding:'8px 26px 32px',flexShrink:0}}>
+              <div className="tasks-scroll" style={{height:365,overflowY:'scroll',padding:'8px 26px 32px',flexShrink:0}}>
 
               {pendingTasks.length>0 && <>
                 {pendingTasks.map(t=>{
