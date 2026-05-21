@@ -1033,7 +1033,7 @@ export default function DashboardClient() {
 
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',minHeight:'100vh',fontFamily:'"DM Sans",system-ui,sans-serif'},
-    sb:{width:260,background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)',display:'flex',flexDirection:'column',justifyContent:'space-between',flexShrink:0,position:'sticky',top:0,height:'100vh',boxShadow:'2px 0 8px rgba(0,0,0,0.05)'},
+    sb:{width:260,background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:'100vh',boxShadow:'2px 0 8px rgba(0,0,0,0.05)',overflowY:'auto',zIndex:50},
     sbLogo:{display:'flex',alignItems:'center',gap:12,padding:'22px 16px 16px'},
     sbIcon:{width:40,height:40,borderRadius:11,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,backdropFilter:'blur(8px)'},
     sbTitle:{fontSize:14,fontWeight:700,color:'#fff',letterSpacing:'-0.2px'},
@@ -1044,7 +1044,7 @@ export default function DashboardClient() {
     sbBtnOn:{background:'rgba(255,255,255,0.18)',color:'#fff',fontWeight:600,boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.08)'},
     sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
     sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
-    main:{flex:1,background:'#f0f4f1',overflowY:'auto'},
+    main:{flex:1,background:'#f0f4f1',overflowY:'auto',marginLeft:260},
     page:{padding:'26px 26px 32px'},
     pgTitle:{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.5px'},
     pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
@@ -1089,7 +1089,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 @media (max-width: 768px) {
   [data-sidebar] { display: none !important; }
   [data-mobile-nav] { display: flex !important; }
-  [data-main] { padding-top: 56px !important; }
+  [data-main] { padding-top: 56px !important; margin-left: 0 !important; }
   [data-page] { padding: 16px !important; }
   [data-stats-grid] { grid-template-columns: 1fr 1fr !important; }
   [data-detail-grid] { grid-template-columns: 1fr !important; }
@@ -1189,7 +1189,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <div style={{padding:'14px 16px 20px'}}>
+          <div style={{padding:'20px 16px 20px',marginTop:24}}>
             <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:11,cursor:'pointer',color:'rgba(255,255,255,0.9)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock & Exit
