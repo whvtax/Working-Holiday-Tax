@@ -205,6 +205,7 @@ export default function DashboardClient() {
   const [noReturnFilter, setNoReturnFilter] = useState<'all'|'didnt-return'>('all')
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
+  const [taskSearch, setTaskSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
   const [yearNotes, setYearNotes] = useState<Record<string,string>>({})
   const [editingYearNote, setEditingYearNote] = useState<string|null>(null)
@@ -925,8 +926,16 @@ export default function DashboardClient() {
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
-  const pendingTasks   = useMemo(()=>tasks.filter(t=>!t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()), [tasks])
-  const doneTasks      = useMemo(()=>tasks.filter(t=>t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()),  [tasks])
+  const pendingTasks   = useMemo(()=>{
+    const q = taskSearch.trim().toLowerCase()
+    const base = tasks.filter(t=>!t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime())
+    return q ? base.filter(t=>t.clientName.toLowerCase().includes(q)) : base
+  }, [tasks, taskSearch])
+  const doneTasks      = useMemo(()=>{
+    const q = taskSearch.trim().toLowerCase()
+    const base = tasks.filter(t=>t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime())
+    return q ? base.filter(t=>t.clientName.toLowerCase().includes(q)) : base
+  }, [tasks, taskSearch])
   const visibleClients = useMemo(()=>{
     // If user is searching and we have server-side results (more clients than loaded),
     // use the merged set so they can find clients beyond the first page.
@@ -1082,6 +1091,11 @@ export default function DashboardClient() {
   return (
     <>
       <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes donePulse{0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,0.55)}60%{box-shadow:0 0 0 6px rgba(5,150,105,0)}} @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}} .grain{display:none!important} [data-task-card]:hover{border-color:#0E5C42!important;box-shadow:0 4px 14px rgba(11,82,64,0.08)!important;transform:translateY(-1px)}
+.tasks-scroll::-webkit-scrollbar { width: 10px; }
+.tasks-scroll::-webkit-scrollbar-track { background: #e4ede8; border-radius: 5px; }
+.tasks-scroll::-webkit-scrollbar-thumb { background: #0E5C42; border-radius: 5px; border: 2px solid #e4ede8; }
+.tasks-scroll::-webkit-scrollbar-thumb:hover { background: #0a4a35; }
+.tasks-scroll { scrollbar-width: thin; scrollbar-color: #0E5C42 #e4ede8; }
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
   outline: 2px solid #0E5C42 !important;
   outline-offset: 2px !important;
@@ -1189,7 +1203,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <div style={{padding:'14px 16px 20px',marginTop:'auto',paddingBottom:'120px'}}>
+          <div style={{padding:'14px 16px 20px',marginTop:'auto',paddingBottom:'80px'}}>
             <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:11,cursor:'pointer',color:'rgba(255,255,255,0.9)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock & Exit
@@ -1240,6 +1254,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   Refresh
                 </button>
 
+              </div>
+
+              {/* Name search */}
+              <div style={{position:'relative',marginBottom:12}}>
+                <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                <input
+                  style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
+                  placeholder="Search by name…"
+                  value={taskSearch}
+                  onChange={e=>setTaskSearch(e.target.value)}
+                />
+                {taskSearch && (
+                  <button onClick={()=>setTaskSearch('')} style={{position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',color:'#7a8a82',fontSize:16,padding:'4px 8px',fontFamily:'inherit'}}>×</button>
+                )}
               </div>
 
               {/* Season stats */}
@@ -1505,7 +1533,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               </div>{/* end fixed header */}
 
-              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 32px'}}>
+              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 80px'}}>
 
               {pendingTasks.length>0 && <>
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
