@@ -1237,8 +1237,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'26px 26px 8px',background:'#f0f4f1',flexShrink:0}}>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:18,gap:14}}>
+              <div style={{padding:'18px 26px 6px',background:'#f0f4f1',flexShrink:0}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10,gap:14}}>
                 <div style={{flexShrink:0}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
                 </div>
@@ -1296,19 +1296,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
                 const avgRefund = seasonCount > 0 ? totalRefunds/seasonCount : 0
                 return (<>
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:12}}>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,marginBottom:8}}>
                     {[
                       {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
                       {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✓'},
                       {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
                       {label:'Season',value:seasonCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
                     ].map(stat=>(
-                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'12px 14px',transition:'transform 0.15s'}}>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:5}}>
-                          <div style={{fontSize:9.5,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
-                          <div style={{fontSize:12,opacity:0.65}}>{stat.icon}</div>
+                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:9,padding:'7px 11px',transition:'transform 0.15s'}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:2}}>
+                          <div style={{fontSize:9,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
+                          <div style={{fontSize:11,opacity:0.65}}>{stat.icon}</div>
                         </div>
-                        <div style={{fontSize:22,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                        <div style={{fontSize:16,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
                       </div>
                     ))}
                   </div>
@@ -1329,34 +1329,34 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       : 0
 
                     return (
-                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:8,marginBottom:12}}>
+                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:8,marginBottom:0}}>
                         {/* Return Rate Circle - clickable */}
                         <button onClick={() => {
                           if (lastYearCount === 0) return
                           setView('clients')
                           setNoReturnFilter(noReturnFilter === 'didnt-return' ? 'all' : 'didnt-return')
                         }} disabled={lastYearCount === 0}
-                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:lastYearCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearCount === 0 ? 0.7 : 1}}>
-                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
-                            <svg width="54" height="54" viewBox="0 0 54 54">
+                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:9,padding:'8px 12px',display:'flex',alignItems:'center',gap:10,cursor:lastYearCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearCount === 0 ? 0.7 : 1}}>
+                          <div style={{position:'relative',width:38,height:38,flexShrink:0}}>
+                            <svg width="38" height="38" viewBox="0 0 54 54">
                               <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(146,64,14,0.15)" strokeWidth="5"/>
                               <circle cx="27" cy="27" r="22" fill="none" stroke="#92400e" strokeWidth="5" strokeLinecap="round"
                                 strokeDasharray={`${(returnRate/100)*138.23} 138.23`}
                                 transform="rotate(-90 27 27)"/>
                             </svg>
-                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#92400e'}}>
+                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#92400e'}}>
                               {returnRate}%
                             </div>
                           </div>
                           <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:12,fontWeight:700,color:'#92400e',marginBottom:2}}>🔁 Returning Rate ({thisYear})</div>
-                            <div style={{fontSize:11,color:'#78350f',lineHeight:1.5}}>
+                            <div style={{fontSize:11,fontWeight:700,color:'#92400e',marginBottom:1}}>🔁 Returning Rate ({thisYear})</div>
+                            <div style={{fontSize:10,color:'#78350f',lineHeight:1.4}}>
                               {lastYearCount === 0
                                 ? `No clients from ${lastYear} yet`
                                 : <>{returnedCount} of {lastYearCount} from {lastYear} returned</>
                               }
                               {lastYearCount - returnedCount > 0 && (
-                                <span style={{display:'block',marginTop:2,fontWeight:600,color:'#b45309'}}>
+                                <span style={{display:'block',fontWeight:600,color:'#b45309'}}>
                                   👆 Click to {noReturnFilter==='didnt-return' ? 'clear filter' : `see ${lastYearCount - returnedCount} not returned`}
                                 </span>
                               )}
@@ -1370,21 +1370,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           setView('clients')
                           setSuperFilter(superFilter === 'no-super' ? 'all' : 'no-super')
                         }} disabled={eligibleCount === 0}
-                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:11,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:eligibleCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleCount === 0 ? 0.7 : 1}}>
-                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
-                            <svg width="54" height="54" viewBox="0 0 54 54">
+                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:9,padding:'8px 12px',display:'flex',alignItems:'center',gap:10,cursor:eligibleCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleCount === 0 ? 0.7 : 1}}>
+                          <div style={{position:'relative',width:38,height:38,flexShrink:0}}>
+                            <svg width="38" height="38" viewBox="0 0 54 54">
                               <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(29,78,216,0.15)" strokeWidth="5"/>
                               <circle cx="27" cy="27" r="22" fill="none" stroke="#1d4ed8" strokeWidth="5" strokeLinecap="round"
                                 strokeDasharray={`${(noSuperRate/100)*138.23} 138.23`}
                                 transform="rotate(-90 27 27)"/>
                             </svg>
-                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#1d4ed8'}}>
+                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:700,color:'#1d4ed8'}}>
                               {noSuperRate}%
                             </div>
                           </div>
                           <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:12,fontWeight:700,color:'#1d4ed8',marginBottom:2}}>💼 No Super Yet</div>
-                            <div style={{fontSize:11,color:'#1e3a8a',lineHeight:1.5}}>
+                            <div style={{fontSize:11,fontWeight:700,color:'#1d4ed8',marginBottom:1}}>💼 No Super Yet</div>
+                            <div style={{fontSize:10,color:'#1e3a8a',lineHeight:1.4}}>
                               {eligibleCount === 0
                                 ? 'No clients with tax returns yet'
                                 : <>{noSuperCount} of {eligibleCount} have no super refund</>
@@ -1518,7 +1518,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               })()}
 
               {/* Name search */}
-              <div style={{position:'relative',maxWidth:'35%',marginTop:12}}>
+              <div style={{position:'relative',maxWidth:'35%',marginTop:8}}>
                 <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 <input
                   style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
