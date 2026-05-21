@@ -1237,7 +1237,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'22px 26px 10px',background:'#f0f4f1',flexShrink:0}}>
+              <div style={{padding:'26px 26px 12px',background:'#f0f4f1',flexShrink:0}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:14}}>
                 <div style={{flexShrink:0}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
