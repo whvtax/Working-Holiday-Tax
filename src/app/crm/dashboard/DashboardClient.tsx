@@ -1189,7 +1189,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <div style={{padding:'14px 16px 20px',marginTop:'auto'}}>
+          <div style={{padding:'14px 16px 20px',marginTop:'auto',paddingBottom:'80px'}}>
             <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:11,cursor:'pointer',color:'rgba(255,255,255,0.9)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock & Exit
@@ -1222,8 +1222,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
-            <div style={S.page}>
-              <div data-tasks-sticky-top style={{position:'sticky',top:0,zIndex:50,background:'#f0f4f1',paddingBottom:8,marginLeft:-26,marginRight:-26,paddingLeft:26,paddingRight:26,marginTop:-26,paddingTop:26}}>
+            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div style={{padding:'26px 26px 8px',background:'#f0f4f1',flexShrink:0}}>
               <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:18}}>
                 <div>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
@@ -1503,7 +1503,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 )
               })()}
 
-              </div>{/* end sticky top */}
+              </div>{/* end fixed header */}
+
+              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 32px'}}>
 
               {pendingTasks.length>0 && <>
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',marginBottom:8,display:'flex',alignItems:'center',gap:6}}>
@@ -1597,16 +1599,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </button>
                 </div>
               )}
+              </div>{/* end scrollable list */}
             </div>
           )}
 
           {/* ── TASK DETAIL ── */}
           {view==='tasks' && taskView==='detail' && activeTask && (
-            <div style={S.page}>
+            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div style={{padding:'26px 26px 0',background:'#f0f4f1',flexShrink:0}}>
               <button style={S.backBtn} onClick={()=>setTaskView('list')}>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 Back to Tasks
               </button>
+              </div>
+
+              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'0 26px 32px'}}>
 
               {/* ── DONE: locked view — only name + 2 actions ── */}
               {activeTask.done && (
@@ -1665,7 +1672,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </div>
                 </div>
               )}
-              <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,position:'sticky',top:0,zIndex:50,background:'#fff'}}>
+              <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,background:'#fff'}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{activeTask.clientName}</div>
@@ -2043,6 +2050,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 </button>
               </div>
               </>) /* end !activeTask.done */}
+              </div>{/* end scrollable body */}
             </div>
           )}
 
