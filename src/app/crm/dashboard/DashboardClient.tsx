@@ -1533,7 +1533,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               </div>{/* end fixed header */}
 
-              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 60px'}}>
+              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 16px'}}>
 
               {pendingTasks.length>0 && <>
                 {pendingTasks.map(t=>{
@@ -1638,7 +1638,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               </button>
               </div>
 
-              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'0 26px 32px'}}>
+              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'0 26px 24px'}}>
 
               {/* ── DONE: locked view — only name + 2 actions ── */}
               {activeTask.done && (
