@@ -1257,7 +1257,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               </div>
 
               {/* Name search */}
-              <div style={{position:'relative',marginBottom:12}}>
+              <div style={{position:'relative',marginBottom:12,maxWidth:'35%'}}>
                 <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 <input
                   style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
