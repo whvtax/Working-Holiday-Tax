@@ -1237,8 +1237,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           {/* ── TASK LIST ── */}
           {view==='tasks' && taskView==='list' && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
-              <div style={{padding:'18px 26px 6px',background:'#f0f4f1',flexShrink:0}}>
-              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10,gap:14}}>
+              <div style={{padding:'22px 26px 10px',background:'#f0f4f1',flexShrink:0}}>
+              <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:14}}>
                 <div style={{flexShrink:0}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Tasks</h1>
                 </div>
@@ -1303,12 +1303,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
                       {label:'Season',value:seasonCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
                     ].map(stat=>(
-                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:9,padding:'7px 11px',transition:'transform 0.15s'}}>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:2}}>
-                          <div style={{fontSize:9,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
+                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:10,padding:'9px 13px',transition:'transform 0.15s'}}>
+                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:3}}>
+                          <div style={{fontSize:9.5,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
                           <div style={{fontSize:11,opacity:0.65}}>{stat.icon}</div>
                         </div>
-                        <div style={{fontSize:16,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                        <div style={{fontSize:19,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
                       </div>
                     ))}
                   </div>
