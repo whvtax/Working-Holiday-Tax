@@ -220,8 +220,6 @@ export default function DashboardClient() {
   const [archiveSearch, setArchiveSearch] = useState('')
   const [taskSearch, setTaskSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
-  const [yearNotes, setYearNotes] = useState<Record<string,string>>({})
-  const [editingYearNote, setEditingYearNote] = useState<string|null>(null)
   const [archiveYearFilter, setArchiveYearFilter] = useState<Set<string>>(new Set())
   const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
   const [archiveCountryFilter, setArchiveCountryFilter] = useState<Set<string>>(new Set())
@@ -237,6 +235,7 @@ export default function DashboardClient() {
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
+  const [confirmArchive, setConfirmArchive] = useState<string|null>(null)
 
   // Reused AudioContext for the new-task notification beep.
   // Creating a new context per beep leaks resources — browsers cap at ~6 concurrent
@@ -473,16 +472,6 @@ export default function DashboardClient() {
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
   async function archiveClient(id: string) {
-    const client = clients.find(c => c.id === id)
-    const name = client?.fullName || 'this client'
-    const confirmed = window.confirm(
-      `Archive ${name}?\n\n` +
-      `This client will be hidden from your active Clients list, reports, and analytics. ` +
-      `They will only appear in the Archive section.\n\n` +
-      `Use this when the client has left Australia or is no longer active.\n\n` +
-      `You can unarchive them anytime.`
-    )
-    if (!confirmed) return
     setClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
     // Trigger archive badge — client moved to archive
@@ -490,6 +479,7 @@ export default function DashboardClient() {
     await Promise.all([loadClients(), loadArchived()])
     setActiveClient(null)
     setView('clients')
+    setConfirmArchive(null)
   }
   async function unarchiveClient(id: string) {
       setArchivedClients(prev => prev.filter(c => c.id !== id))
@@ -583,11 +573,27 @@ export default function DashboardClient() {
   }
 
   async function addTaxReturn() {
-    if(!activeClient||!newTaxYear||!newTaxAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:parseFloat(newTaxAmt),type:newTaxType,completedAt:new Date().toISOString()}})})
-    setNewTaxYear(''); setNewTaxAmt(''); setNewTaxType('refund'); setShowAddTax(false)
-    refreshClient()
+    if(!activeClient) return
+    // Allow $0 (e.g. tax return submitted with no refund). Year must be present
+    // and amount must be a valid non-negative number.
+    if (!newTaxYear) { alert('Please select a tax year.'); return }
+    const amt = parseFloat(newTaxAmt)
+    if (!Number.isFinite(amt) || amt < 0) { alert('Please enter a valid amount (0 or more).'); return }
+    if (amt > 1_000_000) { alert('Amount cannot exceed $1,000,000.'); return }
+    try {
+      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add-tax',data:{year:newTaxYear,refundAmount:amt,type:newTaxType,completedAt:new Date().toISOString()}})})
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        alert(`Failed to save: ${data.error || res.statusText || 'Unknown error'}`)
+        return
+      }
+      setNewTaxYear(''); setNewTaxAmt(''); setNewTaxType('refund'); setShowAddTax(false)
+      refreshClient()
+    } catch (err) {
+      alert('Network error. Please try again.')
+      console.error('[addTaxReturn]', err)
+    }
   }
 
   async function removeTaxReturn(year:string) {
@@ -597,11 +603,25 @@ export default function DashboardClient() {
   }
 
   async function addSuperReturn() {
-    if(!activeClient||!newSuperYear||!newSuperAmt) return
-    await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:parseFloat(newSuperAmt),completedAt:new Date().toISOString()}})})
-    setNewSuperYear(''); setNewSuperAmt(''); setShowAddSuper(false)
-    refreshClient()
+    if(!activeClient) return
+    if (!newSuperYear) { alert('Please select a tax year.'); return }
+    const amt = parseFloat(newSuperAmt)
+    if (!Number.isFinite(amt) || amt < 0) { alert('Please enter a valid amount (0 or more).'); return }
+    if (amt > 1_000_000) { alert('Amount cannot exceed $1,000,000.'); return }
+    try {
+      const res = await fetch(`/api/crm/clients/${activeClient.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add-super',data:{year:newSuperYear,amount:amt,completedAt:new Date().toISOString()}})})
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        alert(`Failed to save: ${data.error || res.statusText || 'Unknown error'}`)
+        return
+      }
+      setNewSuperYear(''); setNewSuperAmt(''); setShowAddSuper(false)
+      refreshClient()
+    } catch (err) {
+      alert('Network error. Please try again.')
+      console.error('[addSuperReturn]', err)
+    }
   }
 
   async function removeSuperReturn(year:string) {
@@ -1258,7 +1278,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <div style={{padding:'14px 16px 20px',marginTop:'auto',paddingBottom:'80px'}}>
+          <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'80px'}}>
             <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:11,cursor:'pointer',color:'rgba(255,255,255,0.9)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock & Exit
@@ -1640,7 +1660,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <div key={t.id} style={{...S.taskCard,opacity:0.82,cursor:'default'}}>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0,animation:'donePulse 2s ease-in-out infinite'}}/>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2}}>{t.clientName}</div>
+                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4}}>
+                        <span>{t.clientName}</span>
+                        <CopyBtn text={t.clientName}/>
+                      </div>
                       <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
                         <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
                         {isWhv && (
@@ -1729,27 +1752,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const isWhv = activeTask.taskType === 'tax-return' && (activeTask.notes||'').includes('Working holiday maker')
                 if (!isWhv) return null
                 return (
-                  <div style={{background:'#fffbeb',border:'1.5px solid #fde68a',borderLeft:'4px solid #d97706',borderRadius:10,padding:'12px 16px',marginBottom:14,display:'flex',alignItems:'flex-start',gap:10}}>
-                    <div style={{fontSize:18,flexShrink:0,marginTop:1}}>⚠️</div>
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>WHV — Verify Tax Residency</div>
-                      <div style={{fontSize:12,color:'#78350f',lineHeight:1.5}}>
-                        Client filled as Working Holiday Visa. If they were in Australia &gt;6 months with stable work/address, they may qualify as <strong>Australian Resident for tax purposes</strong> — and overpay tax as WHV. Verify before processing.
-                      </div>
-                    </div>
+                  <div style={{background:'#fffbeb',border:'1.5px solid #fde68a',borderLeft:'4px solid #d97706',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
+                    <span style={{fontSize:14,flexShrink:0}}>⚠️</span>
+                    <span style={{fontSize:13,fontWeight:600,color:'#92400e'}}>WHV — Verify Tax Residency</span>
                   </div>
                 )
               })()}
               {/* Married Alert Banner */}
               {(activeTask.marital||'').toLowerCase() === 'married' && (
-                <div style={{background:'#fdf2f8',border:'1.5px solid #f9a8d4',borderLeft:'4px solid #db2777',borderRadius:10,padding:'12px 16px',marginBottom:14,display:'flex',alignItems:'flex-start',gap:10}}>
-                  <div style={{fontSize:18,flexShrink:0,marginTop:1}}>💑</div>
-                  <div style={{flex:1}}>
-                    <div style={{fontSize:13,fontWeight:700,color:'#9d174d',marginBottom:3}}>Married — Verify Status</div>
-                    <div style={{fontSize:12,color:'#831843',lineHeight:1.5}}>
-                      Client marked as <strong>Married</strong>. This may affect tax processing — spouse income may need to be considered. Confirm before submitting.
-                    </div>
-                  </div>
+                <div style={{background:'#fdf2f8',border:'1.5px solid #f9a8d4',borderLeft:'4px solid #db2777',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
+                  <span style={{fontSize:14,flexShrink:0}}>💑</span>
+                  <span style={{fontSize:13,fontWeight:600,color:'#9d174d'}}>Married — Verify Status</span>
                 </div>
               )}
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,background:'#fff'}}>
@@ -2352,7 +2365,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       {visibleClients.map(cl=>{
                         const [bg,fg]=avColor(cl.fullName)
                         return (
-                          <tr key={cl.id} style={{cursor:'pointer'}} onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients');setYearNotes({});setEditingYearNote(null)}}>
+                          <tr key={cl.id} style={{cursor:'pointer'}} onClick={()=>{setActiveClient(cl);setClientNotes(cl.notes||'');setView('clients')}}>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
@@ -2429,7 +2442,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                             <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
                               <div style={{display:'flex',gap:4}}>
                                 <button style={{padding:'4px 10px',background:'#f0f4f1',border:'1px solid #d8e4dc',borderRadius:7,fontSize:11,fontWeight:600,color:'#333',cursor:'pointer',fontFamily:'inherit'}} onClick={e=>{e.stopPropagation();setActiveClient(cl);setClientNotes(cl.notes||'')}}>View →</button>
-                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}} title="Move to Archive" onClick={()=>archiveClient(cl.id)}>
+                                <button style={{padding:'4px 8px',background:'#fff',border:'1px solid #e4ede8',borderRadius:7,fontSize:11,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}} title="Move to Archive" onClick={()=>setConfirmArchive(cl.id)}>
                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
                                 </button>
                               </div>
@@ -2606,10 +2619,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </div>
                   <WhatsAppQuick name={activeClient.fullName} whatsapp={activeClient.whatsapp}/>
                 </div>
-                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
-                  {[['Date of birth',activeClient.dob],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
-                    <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
-                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:120}}>{l}</span>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',columnGap:24,rowGap:0}}>
+                  {[['Date of birth',activeClient.dob],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v],i)=>(
+                    <div key={l} style={{display:'flex',padding:'8px 12px',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center',background:i%2===0?'transparent':'#fafbfa',borderRadius:6}}>
+                      <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>{l}</span>
                       <span style={{fontSize:12,color:'#0a1410',flex:1}}>{v||'—'}</span>
                       {v && v!=='—' && <CopyBtn text={v}/>}
                     </div>
@@ -2664,7 +2677,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     <div style={{...S.addForm,marginBottom:10}}>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
-                        <input style={{...S.mInput,padding:'7px 10px'}} placeholder="e.g. 2023-24" value={newTaxYear} onChange={e=>setNewTaxYear(e.target.value)}/>
+                        <select style={{...S.mInput,padding:'7px 10px',cursor:'pointer'}} value={newTaxYear} onChange={e=>setNewTaxYear(e.target.value)}>
+                          <option value="">Select year…</option>
+                          {TAX_YEARS.slice().reverse().map(y=><option key={y} value={y}>{y}</option>)}
+                        </select>
                       </div>
                       <div style={{display:'flex',flexDirection:'column',gap:4,minWidth:130}}>
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Type</label>
@@ -2685,7 +2701,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     <div style={{...S.addForm,marginBottom:10}}>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:100}}>
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Tax year</label>
-                        <input style={{...S.mInput,padding:'7px 10px'}} placeholder="e.g. 2023-24" value={newSuperYear} onChange={e=>setNewSuperYear(e.target.value)}/>
+                        <select style={{...S.mInput,padding:'7px 10px',cursor:'pointer'}} value={newSuperYear} onChange={e=>setNewSuperYear(e.target.value)}>
+                          <option value="">Select year…</option>
+                          {TAX_YEARS.slice().reverse().map(y=><option key={y} value={y}>{y}</option>)}
+                        </select>
                       </div>
                       <div style={{display:'flex',flexDirection:'column',gap:4,flex:1,minWidth:110}}>
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Amount received (AUD)</label>
@@ -2736,27 +2755,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                               </div>
                             )}
                           </div>
-                          {/* Year note */}
-                          {editingYearNote===year ? (
-                            <div style={{display:'flex',gap:6,marginTop:6,alignItems:'center'}}>
-                              <input
-                                autoFocus
-                                style={{flex:1,padding:'4px 8px',border:'1px solid #d8e4dc',borderRadius:6,fontSize:11,fontFamily:'inherit',outline:'none',color:'#0a1410'}}
-                                value={yearNotes[year]||''}
-                                onChange={e=>setYearNotes(n=>({...n,[year]:e.target.value}))}
-                                placeholder="Add note for this year…"
-                                onKeyDown={e=>{if(e.key==='Enter'||e.key==='Escape')setEditingYearNote(null)}}
-                              />
-                              <button style={{padding:'4px 8px',background:'#0E5C42',color:'#fff',border:'none',borderRadius:6,fontSize:11,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setEditingYearNote(null)}>Save</button>
-                            </div>
-                          ) : yearNotes[year] ? (
-                            <div style={{display:'flex',alignItems:'center',gap:6,marginTop:6}}>
-                              <span style={{fontSize:11,color:'#555',flex:1,fontStyle:'italic'}}>📝 {yearNotes[year]}</span>
-                              <button style={{background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0}} onClick={()=>setEditingYearNote(year)}>edit</button>
-                            </div>
-                          ) : (
-                            <button style={{marginTop:4,background:'none',border:'none',color:'#aabab2',cursor:'pointer',fontSize:11,padding:0,textAlign:'left' as const}} onClick={()=>setEditingYearNote(year)}>+ note</button>
-                          )}
                         </div>
                       )
                     })
@@ -2801,7 +2799,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <div style={{flex:1}}>
                     <div style={{fontSize:13,fontWeight:700,color:'#0E5C42',marginBottom:3}}>Client left Australia?</div>
                     <div style={{fontSize:12,color:'#587066',marginBottom:12,lineHeight:1.5}}>Move them to Archive when they have completed all services (Tax Returns, Super Refund). You can always restore them later.</div>
-                    <button style={{padding:'8px 16px',border:'none',borderRadius:9,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:6}} onClick={()=>archiveClient(activeClient.id)}>
+                    <button style={{padding:'8px 16px',border:'none',borderRadius:9,background:'#0E5C42',color:'#fff',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:6}} onClick={()=>setConfirmArchive(activeClient.id)}>
                       📦 Move to Archive
                     </button>
                   </div>
@@ -2925,6 +2923,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
             <div style={S.mFooter}>
               <button style={S.mCancel} onClick={()=>setConfirmPermDelete(null)}>Cancel</button>
               <button style={S.mDel} onClick={()=>deleteTaskPermanently(confirmPermDelete)}>Yes, delete permanently</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm archive client */}
+      {confirmArchive && (
+        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmArchive(null)}}>
+          <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
+            <div style={{fontSize:34,marginBottom:10}}>📦</div>
+            <div style={S.mTitle}>Client removed from ATO portal?</div>
+            <div style={{fontSize:13,color:'#7a8a82',marginBottom:18}}>The client will move to Archive. You can restore them anytime.</div>
+            <div style={S.mFooter}>
+              <button style={S.mCancel} onClick={()=>setConfirmArchive(null)}>Cancel</button>
+              <button style={{...S.mDel,background:'#0E5C42',border:'1px solid #0B5240'}} onClick={()=>archiveClient(confirmArchive)}>Yes, archive</button>
             </div>
           </div>
         </div>
