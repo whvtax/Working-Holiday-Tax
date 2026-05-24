@@ -80,6 +80,44 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs =
   }
 }
 
+// ── Client status (Active / Filed / Needs Super) ──────────────────────────
+// Stored in notes as: `📋 Status: filed-this-year:2025-26` or `📋 Status: needs-super:2025-26`
+// The `:YYYY-YY` suffix is the AU tax year when the status was set; on 1 July of
+// the next tax year, the status auto-resets to Active because the stored year
+// no longer matches the current tax year.
+type ClientStatus = 'active' | 'filed' | 'needs-super'
+
+function getCurrentAuTaxYear(): string {
+  const sydney = new Date(new Date().toLocaleString('en-US', { timeZone: 'Australia/Sydney' }))
+  const y = sydney.getFullYear()
+  return sydney.getMonth() >= 6 ? `${y}-${String(y + 1).slice(2)}` : `${y - 1}-${String(y).slice(2)}`
+}
+
+function getClientStatus(notes: string): ClientStatus {
+  if (!notes) return 'active'
+  const m = notes.match(/📋 Status: (filed-this-year|needs-super):(\d{4}-\d{2})/)
+  if (!m) return 'active'
+  const [, kind, year] = m
+  // Auto-reset on new AU tax year (1 July): stale entries become Active
+  if (year !== getCurrentAuTaxYear()) return 'active'
+  return kind === 'filed-this-year' ? 'filed' : 'needs-super'
+}
+
+function setClientStatusInNotes(notes: string, status: ClientStatus): string {
+  // Remove any existing status marker (from any year) then append new one if not Active
+  const cleaned = (notes || '').split(' | ').filter(p => !p.match(/^📋 Status:/)).join(' | ').trim()
+  if (status === 'active') return cleaned
+  const tag = status === 'filed' ? 'filed-this-year' : 'needs-super'
+  const marker = `📋 Status: ${tag}:${getCurrentAuTaxYear()}`
+  return cleaned ? `${cleaned} | ${marker}` : marker
+}
+
+const STATUS_META: Record<ClientStatus, { label: string; bg: string; fg: string; border: string; emoji: string }> = {
+  'active':      { label: 'Active',      bg: '#eff6ff', fg: '#1d4ed8', border: '#bfdbfe', emoji: '🔵' },
+  'filed':       { label: 'Filed',       bg: '#ecfdf5', fg: '#059669', border: '#a7f3d0', emoji: '🟢' },
+  'needs-super': { label: 'Needs Super', bg: '#fef3c7', fg: '#92400e', border: '#fcd34d', emoji: '🟡' },
+}
+
 
 // ── WhatsApp Quick Send ──────────────────────────────────────────────────
 const WA_TEMPLATES = [
@@ -217,6 +255,7 @@ export default function DashboardClient() {
   const [superFilter, setSuperFilter] = useState<'all'|'no-super'>('all')
   const [noReturnFilter, setNoReturnFilter] = useState<'all'|'didnt-return'>('all')
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
+  const [statusFilter, setStatusFilter] = useState<Set<ClientStatus>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
   const [taskSearch, setTaskSearch] = useState('')
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
@@ -470,6 +509,26 @@ export default function DashboardClient() {
   const openArchive = useCallback(()=>{ setView('archive'); setNewArchiveCount(0); if(!archivedLoaded){ loadArchived(); setArchivedLoaded(true) } },[archivedLoaded,loadArchived])
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
+
+  async function updateClientStatus(clientId: string, status: ClientStatus) {
+    const client = clients.find(c => c.id === clientId)
+    if (!client) return
+    const newNotes = setClientStatusInNotes(client.notes || '', status)
+    // Optimistic update
+    setClients(prev => prev.map(c => c.id === clientId ? { ...c, notes: newNotes } : c))
+    if (activeClient?.id === clientId) {
+      setActiveClient({ ...activeClient, notes: newNotes })
+    }
+    try {
+      await fetch(`/api/crm/clients/${clientId}/notes`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ notes: newNotes }),
+      })
+    } catch (err) {
+      console.error('[updateClientStatus]', err)
+    }
+  }
 
   async function archiveClient(id: string) {
     setClients(prev => prev.filter(c => c.id !== id))
@@ -1043,9 +1102,10 @@ export default function DashboardClient() {
     const hadLastYear = c.taxReturns.some(r => r.year === lastYearStr)
     const hasThisYear = c.taxReturns.some(r => r.year === thisYearStr)
     const mNoReturn = noReturnFilter==='all' || (noReturnFilter==='didnt-return' && hadLastYear && !hasThisYear)
-    return ms && my && mc && mh && mcountry && mcom && msuper && mNoReturn
+    const mStatus = statusFilter.size===0 || statusFilter.has(getClientStatus(c.notes || ''))
+    return ms && my && mc && mh && mcountry && mcom && msuper && mNoReturn && mStatus
   }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime())
-  }, [clients, clientsTotal, searchResults, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter, superFilter, noReturnFilter])
+  }, [clients, clientsTotal, searchResults, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter, superFilter, noReturnFilter, statusFilter])
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
@@ -1338,38 +1398,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const now = new Date()
                 const y = now.getFullYear()
                 const thisYearLocal = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
-                const lastYearLocal = (() => {
-                  const start = parseInt(thisYearLocal.split('-')[0], 10) - 1
-                  return `${start}-${String(start+1).slice(2)}`
-                })()
-                void tasks // unused but kept for context
                 const allClients = clients.filter(c => !c.archived)
 
                 // Prefer server-computed stats (correct for 5k+ clients)
                 const thisYear = stats?.currentTaxYear ?? thisYearLocal
-                const lastYear = stats?.lastTaxYear ?? lastYearLocal
                 const seasonClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
-                const lastYearClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===lastYear))
-                const returnedThisYear = lastYearClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
 
                 const seasonCount = Math.max(stats?.seasonClientsCount ?? 0, seasonClients.length)
-                const lastYearCount = Math.max(stats?.lastYearClientsCount ?? 0, lastYearClients.length)
-                const returnedCount = Math.max(stats?.returnedThisYearCount ?? 0, returnedThisYear.length)
-                const returnRate = lastYearCount > 0
-                  ? Math.round((returnedCount / lastYearCount) * 100)
-                  : 0
 
-                const localRefunds = allClients.reduce((s,c)=>
-                  s + c.taxReturns.filter(r=>r.year===thisYear && r.type==='refund')
-                    .reduce((x,r)=>x+r.refundAmount,0), 0)
-                const totalRefunds = Math.max(stats?.totalRefundsThisYear ?? 0, localRefunds)
                 // Prefer the larger of (server count, local count) so a stale cache
                 // never shows 0 when local state has real data.
                 const pendingCount = Math.max(stats?.totalTasksPending ?? 0, pendingTasks.length)
                 const doneCount = Math.max(stats?.totalTasksDone ?? 0, doneTasks.length)
                 // Always show stats - even if no tasks yet (provides motivation + overview)
                 const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
-                const avgRefund = seasonCount > 0 ? totalRefunds/seasonCount : 0
                 return (<>
                   <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:10}}>
                     {[
@@ -1387,151 +1429,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       </div>
                     ))}
                   </div>
-
-                  {/* 2 circles side-by-side: Returning + No-Super - always shown */}
-                  {(() => {
-                    // No-super clients: have at least 1 tax return but never had super refund
-                    // Use server-computed stats for accuracy at scale; fallback to local
-                    const eligibleClientsLocal = allClients.filter(c => c.taxReturns.length > 0)
-                    const noSuperClientsLocal = eligibleClientsLocal.filter(c => c.superReturns.length === 0)
-                    const eligibleCount = Math.max(stats?.eligibleSuperCount ?? 0, eligibleClientsLocal.length)
-                    const noSuperCount = Math.max(stats?.noSuperCount ?? 0, noSuperClientsLocal.length)
-                    // Keep local arrays for the click handlers (filter UI)
-                    const eligibleClients = eligibleClientsLocal
-                    const noSuperClients = noSuperClientsLocal
-                    const noSuperRate = eligibleCount > 0
-                      ? Math.round((noSuperCount / eligibleCount) * 100)
-                      : 0
-
-                    return (
-                      <div style={{display:'grid',gridTemplateColumns:'repeat(2, 1fr)',gap:10,marginBottom:0}}>
-                        {/* Return Rate Circle - clickable */}
-                        <button onClick={() => {
-                          if (lastYearCount === 0) return
-                          setView('clients')
-                          setNoReturnFilter(noReturnFilter === 'didnt-return' ? 'all' : 'didnt-return')
-                        }} disabled={lastYearCount === 0}
-                        style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:`1px solid ${noReturnFilter==='didnt-return'?'#92400e':'#fcd34d'}`,borderRadius:11,padding:'14px 18px',display:'flex',alignItems:'center',gap:14,cursor:lastYearCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:noReturnFilter==='didnt-return'?'0 0 0 2px rgba(146,64,14,0.15)':'none',opacity:lastYearCount === 0 ? 0.7 : 1}}>
-                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
-                            <svg width="54" height="54" viewBox="0 0 54 54">
-                              <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(146,64,14,0.15)" strokeWidth="5"/>
-                              <circle cx="27" cy="27" r="22" fill="none" stroke="#92400e" strokeWidth="5" strokeLinecap="round"
-                                strokeDasharray={`${(returnRate/100)*138.23} 138.23`}
-                                transform="rotate(-90 27 27)"/>
-                            </svg>
-                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#92400e'}}>
-                              {returnRate}%
-                            </div>
-                          </div>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>🔁 Returning Rate ({thisYear})</div>
-                            <div style={{fontSize:11.5,color:'#78350f',lineHeight:1.5}}>
-                              {lastYearCount === 0
-                                ? `No clients from ${lastYear} yet`
-                                : <>{returnedCount} of {lastYearCount} from {lastYear} returned</>
-                              }
-                              {lastYearCount - returnedCount > 0 && (
-                                <span style={{display:'block',fontWeight:600,color:'#b45309'}}>
-                                  👆 Click to {noReturnFilter==='didnt-return' ? 'clear filter' : `see ${lastYearCount - returnedCount} not returned`}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </button>
-
-                        {/* No-Super Circle (clickable filter) */}
-                        <button onClick={() => {
-                          if (eligibleCount === 0) return
-                          setView('clients')
-                          setSuperFilter(superFilter === 'no-super' ? 'all' : 'no-super')
-                        }} disabled={eligibleCount === 0}
-                        style={{background:'linear-gradient(135deg,#dbeafe,#bfdbfe)',border:`1px solid ${superFilter==='no-super'?'#1d4ed8':'#93c5fd'}`,borderRadius:11,padding:'14px 18px',display:'flex',alignItems:'center',gap:14,cursor:eligibleCount === 0 ? 'default' : 'pointer',textAlign:'left' as const,fontFamily:'inherit',transition:'all 0.15s',boxShadow:superFilter==='no-super'?'0 0 0 2px rgba(29,78,216,0.15)':'none',opacity:eligibleCount === 0 ? 0.7 : 1}}>
-                          <div style={{position:'relative',width:54,height:54,flexShrink:0}}>
-                            <svg width="54" height="54" viewBox="0 0 54 54">
-                              <circle cx="27" cy="27" r="22" fill="none" stroke="rgba(29,78,216,0.15)" strokeWidth="5"/>
-                              <circle cx="27" cy="27" r="22" fill="none" stroke="#1d4ed8" strokeWidth="5" strokeLinecap="round"
-                                strokeDasharray={`${(noSuperRate/100)*138.23} 138.23`}
-                                transform="rotate(-90 27 27)"/>
-                            </svg>
-                            <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:'#1d4ed8'}}>
-                              {noSuperRate}%
-                            </div>
-                          </div>
-                          <div style={{flex:1,minWidth:0}}>
-                            <div style={{fontSize:13,fontWeight:700,color:'#1d4ed8',marginBottom:3}}>💼 No Super Yet</div>
-                            <div style={{fontSize:11.5,color:'#1e3a8a',lineHeight:1.5}}>
-                              {eligibleCount === 0
-                                ? 'No clients with tax returns yet'
-                                : <>{noSuperCount} of {eligibleCount} have no super refund</>
-                              }
-                              {noSuperCount > 0 && (
-                                <span style={{display:'block',marginTop:2,fontWeight:600,color:'#1d4ed8'}}>
-                                  👆 Click to {superFilter==='no-super' ? 'clear filter' : 'filter clients'}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                        </button>
-                      </div>
-                    )
-                  })()}
-
-                  {/* Money Analytics */}
-                  {totalRefunds > 0 && (
-                    <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:20}}>
-                      <div style={{background:'linear-gradient(135deg,#ecfdf5,#d1fae5)',border:'1px solid #a7f3d0',borderRadius:11,padding:'14px 16px'}}>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
-                          <div style={{fontSize:9.5,fontWeight:700,color:'#059669',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>💵 Refunds {thisYear}</div>
-                        </div>
-                        <div style={{fontSize:24,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalRefunds)}</div>
-                        <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:3}}>{seasonCount} client{seasonCount!==1?'s':''}</div>
-                      </div>
-                      <div style={{background:'linear-gradient(135deg,#eff6ff,#dbeafe)',border:'1px solid #bfdbfe',borderRadius:11,padding:'14px 16px'}}>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
-                          <div style={{fontSize:9.5,fontWeight:700,color:'#1d4ed8',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>📊 Avg Refund</div>
-                        </div>
-                        <div style={{fontSize:24,fontWeight:700,color:'#1d4ed8',letterSpacing:'-0.5px'}}>{fmtCur(avgRefund)}</div>
-                        <div style={{fontSize:10,color:'#1d4ed8',opacity:0.7,marginTop:3}}>per client this year</div>
-                      </div>
-                    </div>
-                  )}
                 </>)
-              })()}
-
-              {/* Reminders Panel - clients who haven't been processed this year */}
-              {(()=>{
-                const thisYear = TAX_YEARS[TAX_YEARS.length-1]
-                const needsFollowUp = clients.filter(c=>{
-                  const checkinDone = c.yearlyCheckins?.[thisYear] ?? false
-                  const hasReturnThisYear = c.taxReturns.some(r=>r.year===thisYear)
-                  return !checkinDone && !hasReturnThisYear && c.taxReturns.length > 0
-                })
-                // Total count from server-computed stats (accurate at any scale)
-                const totalFollowUp = Math.max(stats?.followUpCount ?? 0, needsFollowUp.length)
-                if (totalFollowUp === 0) return null
-                return (
-                  <div style={{background:'linear-gradient(135deg,#fef3c7,#fde68a)',border:'1px solid #fcd34d',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
-                    <div style={{fontSize:22,flexShrink:0}}>🔔</div>
-                    <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:700,color:'#92400e',marginBottom:3}}>{totalFollowUp} client{totalFollowUp!==1?'s':''} need yearly follow-up for {thisYear}</div>
-                      <div style={{fontSize:12,color:'#78350f',marginBottom:8,lineHeight:1.5}}>These clients had returns in previous years but haven&apos;t been processed for {thisYear} yet.</div>
-                      <div style={{display:'flex',gap:6,flexWrap:'wrap' as const}}>
-                        {needsFollowUp.slice(0,5).map(c=>(
-                          <button key={c.id} onClick={()=>{setActiveClient(c);setView('clients');setClientNotes(c.notes||'')}}
-                            style={{padding:'4px 10px',background:'#fff',border:'1px solid #fcd34d',borderRadius:7,fontSize:11,fontWeight:600,color:'#92400e',cursor:'pointer',fontFamily:'inherit'}}>
-                            {c.fullName}
-                          </button>
-                        ))}
-                        {totalFollowUp > 5 && (
-                          <button onClick={()=>{setView('clients');setCheckinFilter('pending')}}
-                            style={{padding:'4px 10px',background:'transparent',border:'1px dashed #fcd34d',borderRadius:7,fontSize:11,fontWeight:600,color:'#92400e',cursor:'pointer',fontFamily:'inherit'}}>
-                            + {totalFollowUp-5} more
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )
               })()}
 
               {/* Birthday Reminders - clients with birthdays in next 7 days */}
@@ -2275,8 +2173,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     </button>
                   ))}
                 </div>
-                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||commissionFilter!=='all') && (
-                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setCommissionFilter('all')}}>
+                {/* Status filter */}
+                <div style={{display:'inline-flex',alignItems:'center',gap:0,height:'38px',background:'#fff',border:'1px solid #e4ede8',borderRadius:9,padding:'0 4px',flexShrink:0}}>
+                  <span style={{fontSize:11,color:'#7a8a82',fontWeight:600,padding:'0 8px',borderRight:'1px solid #f0f4f1'}}>📋</span>
+                  {(['active','filed','needs-super'] as const).map(s=>{
+                    const active = statusFilter.has(s)
+                    const m = STATUS_META[s]
+                    return (
+                      <button key={s} onClick={()=>{const ns=new Set(statusFilter);active?ns.delete(s):ns.add(s);setStatusFilter(ns)}}
+                        style={{background:active?m.fg:'transparent',color:active?'#fff':'#7a8a82',border:'none',borderRadius:7,padding:'6px 10px',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',margin:'0 2px'}}>
+                        {m.label}
+                      </button>
+                    )
+                  })}
+                </div>
+                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||commissionFilter!=='all'||statusFilter.size>0) && (
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setCommissionFilter('all');setStatusFilter(new Set())}}>
                     ✕ Clear
                   </button>
                 )}
@@ -2356,7 +2268,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','WhatsApp','Email','Country','Source','💰','Last refund',''].map(h=>(
+                        {['Name','Status','WhatsApp','Email','Country','Source','💰','Last refund',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -2371,6 +2283,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
                                 <div style={{fontSize:12,fontWeight:500,color:'#0a1410'}}>{cl.fullName}</div>
                               </div>
+                            </td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
+                              {(()=>{
+                                const cur = getClientStatus(cl.notes || '')
+                                return (
+                                  <select value={cur} onChange={e=>updateClientStatus(cl.id, e.target.value as ClientStatus)}
+                                    style={{padding:'3px 6px',border:`1px solid ${STATUS_META[cur].border}`,borderRadius:100,background:STATUS_META[cur].bg,color:STATUS_META[cur].fg,fontSize:10,fontWeight:600,cursor:'pointer',fontFamily:'inherit',outline:'none'}}>
+                                    <option value="active">🔵 Active</option>
+                                    <option value="filed">🟢 Filed</option>
+                                    <option value="needs-super">🟡 Needs Super</option>
+                                  </select>
+                                )
+                              })()}
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
                               <div style={{display:'flex',alignItems:'center',gap:6}}>
@@ -2620,8 +2545,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <WhatsAppQuick name={activeClient.fullName} whatsapp={activeClient.whatsapp}/>
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',columnGap:24,rowGap:0}}>
-                  {[['Date of birth',activeClient.dob],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v],i)=>(
-                    <div key={l} style={{display:'flex',padding:'8px 12px',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center',background:i%2===0?'transparent':'#fafbfa',borderRadius:6}}>
+                  {[['Date of birth',activeClient.dob],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
+                    <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
                       <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>{l}</span>
                       <span style={{fontSize:12,color:'#0a1410',flex:1}}>{v||'—'}</span>
                       {v && v!=='—' && <CopyBtn text={v}/>}
@@ -2721,8 +2646,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       ...TAX_YEARS,
                     ])).sort((a:string,b:string)=>b.localeCompare(a))
                     const relevantYears = allYears.filter((y:string)=>{
-                      const hasTax = activeClient.taxReturns.some((r:TaxReturn)=>r.year===y)
-                      const hasSuper = activeClient.superReturns.some((r:SuperReturn)=>r.year===y)
+                      // Only show years that have at least one non-zero entry. A year with
+                      // only $0 super or $0 tax is effectively empty and clutters the view.
+                      const tax = activeClient.taxReturns.find((r:TaxReturn)=>r.year===y)
+                      const sup = activeClient.superReturns.find((r:SuperReturn)=>r.year===y)
+                      const hasTax = !!tax && tax.refundAmount > 0
+                      const hasSuper = !!sup && sup.amount > 0
                       return hasTax || hasSuper
                     })
                     if (relevantYears.length===0) return <div style={{fontSize:13,color:'#aabab2',textAlign:'center',padding:'16px 0'}}>No history yet.</div>
