@@ -1338,7 +1338,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
             </nav>
           </div>
-          <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'80px'}}>
+          <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'20px'}}>
             <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:11,cursor:'pointer',color:'rgba(255,255,255,0.9)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock & Exit
