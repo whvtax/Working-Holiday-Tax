@@ -292,29 +292,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        {/* Skip-to-content link for keyboard users. Visually hidden until focused.
-            Layouts that don't have a "Nav" (tax-form, abn-form, crm, etc.) hide
-            this via `a[href="#main-content"] { display: none }` in their own layout. */}
-        <a
-          href="#main-content"
-          style={{
-            position: 'absolute',
-            left: '12px',
-            top: '12px',
-            zIndex: 100,
-            padding: '10px 16px',
-            background: '#0B5240',
-            color: '#fff',
-            fontSize: '14px',
-            fontWeight: 600,
-            borderRadius: '8px',
-            textDecoration: 'none',
-            transform: 'translateY(-200%)',
-            transition: 'transform 0.2s',
-          }}
-          onFocus={e => { e.currentTarget.style.transform = 'translateY(0)' }}
-          onBlur={e => { e.currentTarget.style.transform = 'translateY(-200%)' }}
-        >
+        {/* Skip-to-content link for keyboard users. CSS-only (no JS event handlers
+            so this works inside a Server Component). Visually hidden until focused. */}
+        <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
         <div className="grain" aria-hidden="true" />
