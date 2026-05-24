@@ -15,8 +15,12 @@ export async function GET(req: NextRequest) {
   if (!authRead(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const { searchParams } = new URL(req.url)
-    const limit  = Math.min(200, Math.max(1, parseInt(searchParams.get('limit')  ?? '100')))
-    const offset = Math.max(0, parseInt(searchParams.get('offset') ?? '0'))
+    const parseNum = (v: string | null, def: number) => {
+      const n = parseInt(v ?? '', 10)
+      return Number.isFinite(n) ? n : def
+    }
+    const limit  = Math.min(200, Math.max(1, parseNum(searchParams.get('limit'),  100)))
+    const offset = Math.max(0, parseNum(searchParams.get('offset'), 0))
     const { getAllTasks, countTasks } = await import('@/lib/db')
     const [tasks, total] = await Promise.all([getAllTasks(limit, offset), countTasks()])
     return NextResponse.json({ ok:true, tasks, total, limit, offset })

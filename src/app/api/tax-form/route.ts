@@ -25,11 +25,16 @@ export async function POST(req: NextRequest) {
 
     // All files are pre-uploaded client-side; server receives URLs only
     // SECURITY: only accept URLs from our Supabase Storage (prevent SSRF/tracking)
-    const allFileUrls: string[] = (() => {
-      try { return JSON.parse(formData.get('invoiceUrls') as string || '[]') } catch { return [] }
+    // Hard cap at 50 items so a malicious client can't ship a giant JSON array.
+    const fileUrls: string[] = (() => {
+      const raw = formData.get('invoiceUrls')
+      if (typeof raw !== 'string') return []
+      try {
+        const parsed: unknown = JSON.parse(raw)
+        if (!Array.isArray(parsed)) return []
+        return parsed.slice(0, 50).filter((u): u is string => typeof u === 'string')
+      } catch { return [] }
     })().filter(isValidSupabaseStorageUrl)
-
-    const fileUrls: string[] = allFileUrls
 
     await createTask({
       clientId,
@@ -63,8 +68,12 @@ export async function POST(req: NextRequest) {
           const raw = formData.get('invoiceDetails')
           if (!raw || typeof raw !== 'string') return ''
           try {
-            const arr = JSON.parse(raw) as Array<{type:string;amount:string;description:string;url?:string}>
-            if (!Array.isArray(arr) || arr.length === 0) return ''
+            const parsed = JSON.parse(raw)
+            if (!Array.isArray(parsed)) return ''
+            // Hard cap: max 10 TFN + 10 ABN = 20 invoices (UI enforces this; server
+            // also caps so a malicious client can't ship a giant payload).
+            const arr = parsed.slice(0, 25) as Array<{type:string;amount:string;description:string;url?:string}>
+            if (arr.length === 0) return ''
             const tfn = arr.filter(i => i.type === 'tfn')
             const abn = arr.filter(i => i.type === 'abn')
             const parts = []

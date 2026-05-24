@@ -22,7 +22,8 @@ export async function POST(req: NextRequest) {
     const isReturning = !!existing
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
-    const selfieFile = formData.get('selfiePassport') as File | null
+    const rawSelfie = formData.get('selfiePassport')
+    const selfieFile = rawSelfie instanceof File ? rawSelfie : null
     let fileUrls: string[]
     try {
       fileUrls = await uploadFiles([selfieFile], `super-form/${clientId}`)

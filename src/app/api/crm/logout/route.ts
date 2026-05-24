@@ -1,8 +1,8 @@
 export const runtime = 'nodejs'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { destroySession } from '@/lib/crm-store'
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   destroySession()
   const res = NextResponse.json({ ok: true })
   // Clear with identical flags to the set — browsers require flag parity to

@@ -201,32 +201,46 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
   }, [guide.slug, guide.title, guide.category, guide.readTime])
 
   useEffect(() => {
-    const onScroll = () => {
+    let rafId = 0
+    let pending = false
+    // Cache heading elements once instead of looking them up on every scroll tick.
+    // For long articles with many H2s this avoids dozens of getElementById calls per frame.
+    const headingEls = headings
+      .map(h => ({ id: h.id, el: document.getElementById(h.id) }))
+      .filter((h): h is { id: string; el: HTMLElement } => h.el !== null)
+
+    const compute = () => {
       const el = articleRef.current
-      if (!el) return
+      if (!el) { pending = false; return }
       const rect = el.getBoundingClientRect()
       const total = el.offsetHeight - window.innerHeight
       const scrolled = Math.max(0, -rect.top)
-      setScrollProgress(Math.min(100, (scrolled / total) * 100))
+      setScrollProgress(total > 0 ? Math.min(100, (scrolled / total) * 100) : 0)
 
       // Track active heading for TOC highlighting
       const markerY = 120
       let current = ''
-      for (const h of headings) {
-        const elH = document.getElementById(h.id)
-        if (!elH) continue
-        const r = elH.getBoundingClientRect()
-        if (r.top <= markerY) {
+      for (const h of headingEls) {
+        if (h.el.getBoundingClientRect().top <= markerY) {
           current = h.id
         } else {
           break
         }
       }
       setActiveHeading(current)
+      pending = false
+    }
+    const onScroll = () => {
+      if (pending) return
+      pending = true
+      rafId = requestAnimationFrame(compute)
     }
     window.addEventListener('scroll', onScroll, { passive: true })
-    onScroll()
-    return () => window.removeEventListener('scroll', onScroll)
+    compute()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rafId)
+    }
   }, [headings])
 
   const handleCopy = () => {

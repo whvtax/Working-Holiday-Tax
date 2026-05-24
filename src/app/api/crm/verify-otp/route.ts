@@ -12,7 +12,9 @@ const OTP_ATTEMPT_TTL  = 600 // 10 min — matches OTP TTL
 export async function POST(req: NextRequest) {
   try {
     const { code } = await req.json()
-    if (!code || typeof code !== 'string') {
+    // OTP is always 8 digits — anything else is invalid. Cap at 32 chars to
+    // prevent attackers wasting CPU on huge string hashing.
+    if (!code || typeof code !== 'string' || code.length > 32) {
       return NextResponse.json({ ok: false, error: 'missing_code' }, { status: 400 })
     }
 

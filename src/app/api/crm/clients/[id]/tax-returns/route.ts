@@ -22,7 +22,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     if (isSuper) {
       const amt = Number(superAmount)
-      if (!isFinite(amt) || amt < 0 || amt > 1_000_000) {
+      if (!Number.isFinite(amt) || amt < 0 || amt > 1_000_000) {
         return NextResponse.json({ ok: false, error: 'invalid_amount' }, { status: 400 })
       }
       await addSuperReturn(params.id, { year, amount: amt, completedAt: new Date().toISOString() })
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
 
     const amount = Number(refundAmount)
-    if (!isFinite(amount) || amount < 0 || amount > 1_000_000) {
+    if (!Number.isFinite(amount) || amount < 0 || amount > 1_000_000) {
       return NextResponse.json({ ok: false, error: 'invalid_amount' }, { status: 400 })
     }
     const safeType = VALID_TYPES.has(type) ? (type as 'refund' | 'owed') : 'refund'

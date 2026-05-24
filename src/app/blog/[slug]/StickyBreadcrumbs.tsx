@@ -17,13 +17,24 @@ export default function StickyBreadcrumbs({ category, categorySlug, title }: Pro
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => {
+    let rafId = 0
+    let pending = false
+    const compute = () => {
       // Show breadcrumbs after scrolling past the typical hero height
       setVisible(window.scrollY > 280)
+      pending = false
     }
-    onScroll()
+    const onScroll = () => {
+      if (pending) return
+      pending = true
+      rafId = requestAnimationFrame(compute)
+    }
+    compute()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rafId)
+    }
   }, [])
 
   // Truncate long titles for the sticky bar

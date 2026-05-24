@@ -13,7 +13,8 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url)
     const q = (searchParams.get('q') ?? '').slice(0, 100)
     const archived = searchParams.get('archived') === 'true'
-    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') ?? '50')))
+    const rawLimit = parseInt(searchParams.get('limit') ?? '', 10)
+    const limit = Math.min(100, Math.max(1, Number.isFinite(rawLimit) ? rawLimit : 50))
     const { searchClients } = await import('@/lib/db')
     const clients = await searchClients(q, limit, archived)
     return NextResponse.json({ ok: true, clients })

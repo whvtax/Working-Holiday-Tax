@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
+import crypto from 'crypto'
 
 const ALLOWED = new Set(['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif','application/pdf'])
 const MAX_SIZE = 10 * 1024 * 1024
@@ -29,23 +30,39 @@ function containsDangerous(buf: ArrayBuffer): boolean {
   return false
 }
 
-// Magic bytes for basic validation (lenient - accept if ANY image/pdf signature found)
+// Magic bytes validation. Confirms the declared MIME type matches the actual
+// file signature so an attacker cannot upload `<?php ...` while declaring image/jpeg.
 function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
   const bytes = new Uint8Array(buf, 0, Math.min(12, buf.byteLength))
-  // JPEG: FF D8 FF
-  if (bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return true
-  // PNG: 89 50 4E 47
-  if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) return true
-  // PDF: 25 50 44 46
-  if (bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46) return true
-  // WEBP: RIFF....WEBP
-  if (bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
-      bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return true
-  // GIF: GIF8
-  if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) return true
+  const isJpeg = bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF
+  const isPng  = bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47
+  const isPdf  = bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46
+  const isWebp = bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 &&
+                 bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50
+  const isGif  = bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38
   // HEIC/HEIF (iOS photos): ftyp box - bytes 4-7 are 'ftyp'
-  if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return true
-  return false
+  const isHeic = bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70
+
+  switch (contentType) {
+    case 'image/jpeg':
+    case 'image/jpg':
+      // iOS clients send HEIC as image/jpeg (the client normalises before upload
+      // since HEIC isn't universally supported); accept either signature here.
+      return isJpeg || isHeic
+    case 'image/png':
+      return isPng
+    case 'application/pdf':
+      return isPdf
+    case 'image/webp':
+      return isWebp
+    case 'image/gif':
+      return isGif
+    case 'image/heic':
+    case 'image/heif':
+      return isHeic
+    default:
+      return false
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -72,7 +89,10 @@ export async function POST(req: NextRequest) {
     }
 
     const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
-    const pathname = `tax-form/invoices/${Date.now()}_${Math.random().toString(36).slice(2,7)}_${safeName}`
+    // Use a UUID for the random portion — Math.random() can collide under
+    // heavy concurrent uploads (the tax form may upload 20+ files in parallel
+    // with retries) since 5 base-36 chars only gives ~60M combinations.
+    const pathname = `tax-form/invoices/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`
 
     const sb = getSupabase()
     const { error: uploadError } = await sb.storage

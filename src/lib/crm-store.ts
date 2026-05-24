@@ -50,8 +50,13 @@ function checkToken(token: string | undefined, maxTtl: number, requiredRole?: st
     const a = Buffer.from(sig)
     const b = Buffer.from(expected)
     if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false
-    const { iat, exp, role } = JSON.parse(Buffer.from(payload, 'base64url').toString())
+    const claims = JSON.parse(Buffer.from(payload, 'base64url').toString())
+    const { iat, exp, role } = claims
     if (requiredRole && role !== requiredRole) return false
+    // Defence-in-depth: refuse anything non-numeric so a malformed token can't slip
+    // through (e.g. exp=NaN would otherwise fail `now >= exp` and grant access).
+    if (typeof exp !== 'number' || !Number.isFinite(exp)) return false
+    if (iat !== undefined && (typeof iat !== 'number' || !Number.isFinite(iat))) return false
     const now = Date.now()
     if (now >= exp) return false
     if (iat && now - iat > maxTtl + 60_000) return false // 1-min grace for clock skew

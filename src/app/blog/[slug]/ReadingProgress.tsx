@@ -12,17 +12,28 @@ export default function ReadingProgress({ readTime }: { readTime: number }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => {
+    let rafId = 0
+    let pending = false
+    const compute = () => {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight
-      if (docHeight <= 0) return
+      if (docHeight <= 0) { pending = false; return }
       const scrolled = window.scrollY
       const pct = Math.max(0, Math.min(100, (scrolled / docHeight) * 100))
       setProgress(pct)
       setVisible(pct > 5 && pct < 95)
+      pending = false
     }
-    onScroll()
+    const onScroll = () => {
+      if (pending) return
+      pending = true
+      rafId = requestAnimationFrame(compute)
+    }
+    compute()
     window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      cancelAnimationFrame(rafId)
+    }
   }, [])
 
   const minutesLeft = Math.max(1, Math.ceil(readTime * (1 - progress / 100)))

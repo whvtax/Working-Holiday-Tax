@@ -61,7 +61,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function getRelatedGuides(current: { slug: string; category: string }, count = 3) {
   const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
-  const shuffled = [...sameCategory].sort(() => 0.5 - Math.random())
+  // Fisher–Yates shuffle. Using `sort(() => 0.5 - Math.random())` produces a biased
+  // distribution because Array.sort assumes a consistent comparator.
+  const shuffled = [...sameCategory]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
   return shuffled.slice(0, count)
 }
 

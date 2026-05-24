@@ -25,7 +25,9 @@ export async function POST(req: NextRequest) {
     catch { return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 }) }
 
     const password = (body as Record<string, unknown>)?.password
-    if (typeof password !== 'string' || password.length === 0) {
+    // Cap password length: PBKDF2 with 100k iterations on a multi-MB string is a
+    // DoS amplification vector. 200 chars is far above any reasonable password.
+    if (typeof password !== 'string' || password.length === 0 || password.length > 200) {
       return NextResponse.json({ ok: false, message: 'Invalid request.' }, { status: 400 })
     }
 

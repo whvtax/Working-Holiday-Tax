@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
 type TaxYear = string
@@ -34,7 +34,7 @@ export default function ClientPageClient({ id }: { id: string }) {
   const [notesSaving, setNotesSaving]     = useState(false)
   const [notesSaved, setNotesSaved]       = useState(false)
 
-  async function load() {
+  const load = useCallback(async () => {
     setLoading(true)
     try {
       const res  = await fetch(`/api/crm/clients/${id}`)
@@ -44,8 +44,8 @@ export default function ClientPageClient({ id }: { id: string }) {
       else router.push('/crm/dashboard')
     } catch { router.push('/crm/dashboard') }
     setLoading(false)
-  }
-  useEffect(() => { load() }, [id])
+  }, [id, router])
+  useEffect(() => { load() }, [load])
 
   function showMsg(msg:string) { setToast(msg); setTimeout(()=>setToast(''),3000) }
 
@@ -86,7 +86,6 @@ export default function ClientPageClient({ id }: { id: string }) {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
         .cp{min-height:100vh;background:#f4f6f5;font-family:'DM Sans',system-ui,sans-serif;padding:24px 28px;max-width:880px;margin:0 auto;}
         .cp-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}

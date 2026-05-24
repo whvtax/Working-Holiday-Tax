@@ -6,7 +6,9 @@ import { WA_URL } from '@/lib/constants'
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
 type MultiUploadState = { files: File[]; previews: (string | null)[] }
-type InvoiceItem = { amount: string; description: string; file: File | null; preview: string | null }
+// `id` is a stable identifier used as React key — using array index as key causes
+// state shuffling when items in the middle are removed.
+type InvoiceItem = { id: string; amount: string; description: string; file: File | null; preview: string | null }
 
 /* ── Field wrapper ── */
 function Field({ label, required, children, error }: { label: string; required?: boolean; children: React.ReactNode; error?: string }) {
@@ -92,7 +94,9 @@ function InvoiceManager({
 
   const addInvoice = () => {
     if (invoices.length >= maxItems) return
-    onChange([...invoices, { amount: '', description: '', file: null, preview: null }])
+    // Stable unique id so React's diff key doesn't drift when middle rows are removed
+    const id = `inv-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    onChange([...invoices, { id, amount: '', description: '', file: null, preview: null }])
   }
 
   const removeInvoice = (i: number) => {
@@ -126,7 +130,7 @@ function InvoiceManager({
       </div>
 
       {invoices.map((inv, i) => (
-        <div key={i} style={{ background: '#fff', border: '1.5px solid #D4EAE2', borderRadius: 12, padding: 12, marginBottom: 10 }}>
+        <div key={inv.id} style={{ background: '#fff', border: '1.5px solid #D4EAE2', borderRadius: 12, padding: 12, marginBottom: 10 }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <span style={{ fontSize: 12, fontWeight: 700, color: '#0B5240' }}>Invoice #{i + 1}</span>
             <button type="button" onClick={() => removeInvoice(i)}
@@ -525,7 +529,6 @@ export function FormClient() {
   /* ── Success screen ── */
   if (submitted) {
     const firstName = fullName.split(' ')[0]
-    const _ = lastName
     return (
       <>
         <style>{styles}</style>
@@ -867,7 +870,7 @@ export function FormClient() {
 
           <div className="form-section-title">Tax year</div>
           <div>
-            <Field label="Please select the tax year(s) you want to file" required error={(errors as any).taxYear}>
+            <Field label="Please select the tax year(s) you want to file" required error={errors.taxYear}>
               <div style={{fontSize:12,color:'#587066',marginBottom:10,lineHeight:1.55,background:'#f7fbf9',border:'1px solid #d4eae2',borderRadius:8,padding:'10px 12px'}}>
                 💡 In Australia, the tax year runs from <strong>1 July to 30 June</strong>.<br/>
                 You can select <strong>more than one year</strong> if you haven&apos;t filed in previous years.
@@ -877,7 +880,7 @@ export function FormClient() {
                   const now = new Date()
                   const y = now.getFullYear()
                   const currentYear = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
-                  const startYear = parseInt(currentYear.split('-')[0])
+                  const startYear = parseInt(currentYear.split('-')[0], 10)
                   const years = Array.from({length: 4}, (_, i) => {
                     const yy = startYear - i
                     return { code: `${yy}-${String(yy+1).slice(2)}`, range: `1.7.${yy} – 30.6.${yy+1}` }
@@ -958,8 +961,8 @@ export function FormClient() {
               </div>
             </Field>
 
-            <Field label="" required error={(errors as any).declaredIncome}>
-              <div className={`declaration-box${(errors as any).declaredIncome ? ' decl-error' : ''}`}>
+            <Field label="" required error={errors.declaredIncome}>
+              <div className={`declaration-box${errors.declaredIncome ? ' decl-error' : ''}`}>
                 <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>

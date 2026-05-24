@@ -5,6 +5,7 @@
 // ──────────────────────────────────────────────────────────────────────────
 
 import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
+import crypto from 'crypto'
 
 const ALLOWED_MIME_TYPES = new Set([
   'image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif',
@@ -126,7 +127,9 @@ export async function uploadFile(
   const safeName = file.name
     .replace(/[^a-zA-Z0-9._-]/g, '_')
     .slice(0, 80)
-  const pathname = `${folder}/${Date.now()}_${safeName}`
+  // Random suffix prevents path collisions if two files arrive in the same
+  // millisecond (e.g. parallel uploads from one form).
+  const pathname = `${folder}/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`
 
   const sb = getSupabase()
   const arrayBuffer = await file.arrayBuffer()

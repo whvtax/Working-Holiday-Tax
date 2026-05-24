@@ -67,6 +67,19 @@ function CopyBtn({ text }: { text: string }) {
   )
 }
 
+// Wrapper around fetch that aborts after `timeoutMs` (default 30s). Prevents the
+// UI from hanging forever if the server stops responding. Failure surfaces as a
+// regular network error to the existing try/catch.
+async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 30_000): Promise<Response> {
+  const ctrl = new AbortController()
+  const id = setTimeout(() => ctrl.abort(), timeoutMs)
+  try {
+    return await fetch(url, { ...init, signal: ctrl.signal })
+  } finally {
+    clearTimeout(id)
+  }
+}
+
 
 // ── WhatsApp Quick Send ──────────────────────────────────────────────────
 const WA_TEMPLATES = [
@@ -225,6 +238,18 @@ export default function DashboardClient() {
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
 
+  // Reused AudioContext for the new-task notification beep.
+  // Creating a new context per beep leaks resources — browsers cap at ~6 concurrent
+  // contexts, after which subsequent creations fail silently.
+  const audioCtxRef = React.useRef<AudioContext | null>(null)
+  useEffect(() => {
+    return () => {
+      // Close the shared context on unmount to release audio hardware promptly
+      audioCtxRef.current?.close().catch(() => {})
+      audioCtxRef.current = null
+    }
+  }, [])
+
   // Pagination
   const PAGE_SIZE = 200  // Increased from 100 to reduce round-trips
   const [tasksTotal, setTasksTotal]     = useState(0)
@@ -270,7 +295,7 @@ export default function DashboardClient() {
 
   const loadTasks   = useCallback(async()=>{
     try {
-      const r=await fetch(`/api/crm/tasks?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
+      const r=await fetchWithTimeout(`/api/crm/tasks?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
       const d=await r.json()
       if(d.ok) { setTasks(d.tasks); setTasksTotal(d.total ?? d.tasks.length) }
@@ -280,7 +305,7 @@ export default function DashboardClient() {
   const loadMoreTasks = useCallback(async()=>{
     setTasksLoadingMore(true)
     try {
-      const r=await fetch(`/api/crm/tasks?limit=${PAGE_SIZE}&offset=${tasks.length}`,{cache:'no-store'})
+      const r=await fetchWithTimeout(`/api/crm/tasks?limit=${PAGE_SIZE}&offset=${tasks.length}`,{cache:'no-store'})
       const d=await r.json()
       if(d.ok) { setTasks(prev=>[...prev,...d.tasks]); setTasksTotal(d.total ?? 0) }
     } catch(e){ console.error('[loadMoreTasks]',e) }
@@ -289,7 +314,7 @@ export default function DashboardClient() {
 
   const loadClients = useCallback(async()=>{
     try {
-      const r=await fetch(`/api/crm/clients?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
+      const r=await fetchWithTimeout(`/api/crm/clients?limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
       if(r.status===401){ window.location.replace('/crm'); return }
       const d=await r.json()
       if(d.ok) {
@@ -307,7 +332,7 @@ export default function DashboardClient() {
   const loadMoreClients = useCallback(async()=>{
     setClientsLoadingMore(true)
     try {
-      const r=await fetch(`/api/crm/clients?limit=${PAGE_SIZE}&offset=${clients.length}`,{cache:'no-store'})
+      const r=await fetchWithTimeout(`/api/crm/clients?limit=${PAGE_SIZE}&offset=${clients.length}`,{cache:'no-store'})
       const d=await r.json()
       if(d.ok) { setClients(prev=>[...prev,...d.clients]); setClientsTotal(d.total ?? 0) }
     } catch(e){ console.error('[loadMoreClients]',e) }
@@ -317,7 +342,7 @@ export default function DashboardClient() {
   const [archivedLoaded, setArchivedLoaded] = useState(false)
   const loadArchived = useCallback(async()=>{
     try {
-      const r=await fetch(`/api/crm/clients?archived=true&limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
+      const r=await fetchWithTimeout(`/api/crm/clients?archived=true&limit=${PAGE_SIZE}&offset=0`,{cache:'no-store'})
       const d=await r.json()
       if(d.ok) {
         const newCount = d.clients.length
@@ -334,7 +359,7 @@ export default function DashboardClient() {
   const loadStats = useCallback(async(opts?: { force?: boolean })=>{
     try {
       const url = opts?.force ? '/api/crm/stats?refresh=1' : '/api/crm/stats'
-      const r = await fetch(url, { cache: 'no-store' })
+      const r = await fetchWithTimeout(url, { cache: 'no-store' })
       if (r.status === 401) { window.location.replace('/crm'); return }
       const d = await r.json()
       if (d.ok && d.stats) setStats(d.stats as Stats)
@@ -403,15 +428,24 @@ export default function DashboardClient() {
     // Play notification sound when new task arrives (not on initial load)
     if (prevPendingTasksRef.current > 0 && pending > prevPendingTasksRef.current) {
       try {
-        // Web Audio API beep — works without external file
-        const ctx = new (window.AudioContext || (window as unknown as {webkitAudioContext: typeof AudioContext}).webkitAudioContext)()
-        const osc = ctx.createOscillator()
-        const gain = ctx.createGain()
-        osc.connect(gain); gain.connect(ctx.destination)
-        osc.frequency.value = 880  // A5 note
-        gain.gain.setValueAtTime(0.15, ctx.currentTime)
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3)
-        osc.start(); osc.stop(ctx.currentTime + 0.3)
+        // Web Audio API beep — works without external file.
+        // Reuse one AudioContext for all beeps (creating a new one per beep leaks).
+        if (!audioCtxRef.current) {
+          const Ctor = window.AudioContext || (window as unknown as {webkitAudioContext: typeof AudioContext}).webkitAudioContext
+          if (Ctor) audioCtxRef.current = new Ctor()
+        }
+        const ctx = audioCtxRef.current
+        if (ctx) {
+          // Auto-resume if suspended (browsers suspend contexts after long idle)
+          if (ctx.state === 'suspended') ctx.resume().catch(() => {})
+          const osc = ctx.createOscillator()
+          const gain = ctx.createGain()
+          osc.connect(gain); gain.connect(ctx.destination)
+          osc.frequency.value = 880  // A5 note
+          gain.gain.setValueAtTime(0.15, ctx.currentTime)
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3)
+          osc.start(); osc.stop(ctx.currentTime + 0.3)
+        }
       } catch {/* sound failed, ignore */}
     }
     prevPendingTasksRef.current = pending
@@ -843,6 +877,27 @@ export default function DashboardClient() {
             const expVal = (task.notes||'').match(/Expenses: ([^|]+)/)?.[1]?.trim()||''
             return radioField('Did you have work-related expenses?', expVal || '', ['Yes','No'])
           })()
+        + (() => {
+            // Parse and display TFN/ABN invoices stored in notes by the tax-form route.
+            // Format: "💼 TFN Invoices (N): $TOTAL — $AMT DESC; $AMT DESC; ..."
+            const notes = task.notes || ''
+            const tfnMatch = notes.match(/💼 TFN Invoices \(\d+\): \$[\d.]+ — ([^|]+)/)
+            const abnMatch = notes.match(/🏢 ABN Invoices \(\d+\): \$[\d.]+ — ([^|]+)/)
+            if (!tfnMatch && !abnMatch) return ''
+            const renderList = (raw: string) => raw.trim().split(';').map(s => s.trim()).filter(Boolean)
+              .map(line => `<div style="padding:8px 12px;background:#F5F9F7;border:1px solid #D4EAE2;border-radius:8px;margin-bottom:6px;font-size:12px;color:#1A2822">${esc(line)}</div>`)
+              .join('')
+            let out = ''
+            if (tfnMatch) {
+              out += `<div style="font-size:12px;font-weight:600;color:${G};margin:14px 0 8px">💼 TFN work-related expenses</div>`
+              out += renderList(tfnMatch[1])
+            }
+            if (abnMatch) {
+              out += `<div style="font-size:12px;font-weight:600;color:${G};margin:14px 0 8px">🏢 ABN business expenses</div>`
+              out += renderList(abnMatch[1])
+            }
+            return out
+          })()
         + sec('Bank account details')
         + field('Bank name', bkName)
         + field('Account holder full name', bkHolder)
@@ -964,7 +1019,7 @@ export default function DashboardClient() {
     const now = new Date()
     const yy = now.getFullYear()
     const thisYearStr = now.getMonth() >= 6 ? `${yy}-${String(yy+1).slice(2)}` : `${yy-1}-${String(yy).slice(2)}`
-    const lastYearStr = (() => { const s = parseInt(thisYearStr.split('-')[0]) - 1; return `${s}-${String(s+1).slice(2)}` })()
+    const lastYearStr = (() => { const s = parseInt(thisYearStr.split('-')[0], 10) - 1; return `${s}-${String(s+1).slice(2)}` })()
     const hadLastYear = c.taxReturns.some(r => r.year === lastYearStr)
     const hasThisYear = c.taxReturns.some(r => r.year === thisYearStr)
     const mNoReturn = noReturnFilter==='all' || (noReturnFilter==='didnt-return' && hadLastYear && !hasThisYear)
@@ -1116,7 +1171,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   [data-task-card] { padding: 13px 15px !important; min-height: 56px !important; }
   button, a[role="button"] { min-height: 40px !important; }
 }`}</style>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap'); *{box-sizing:border-box;margin:0;padding:0;} html,body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;overflow:hidden;height:100%;}`}</style>
+      <style>{`*{box-sizing:border-box;margin:0;padding:0;} html,body{background:#f0f4f1;font-family:'DM Sans',system-ui,sans-serif;overflow:hidden;height:100%;}`}</style>
 
       <div style={S.shell}>
         {/* Sidebar */}
@@ -1264,7 +1319,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const y = now.getFullYear()
                 const thisYearLocal = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
                 const lastYearLocal = (() => {
-                  const start = parseInt(thisYearLocal.split('-')[0]) - 1
+                  const start = parseInt(thisYearLocal.split('-')[0], 10) - 1
                   return `${start}-${String(start+1).slice(2)}`
                 })()
                 void tasks // unused but kept for context
@@ -1469,8 +1524,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   const parts = c.dob.includes('/') ? c.dob.split('/') : c.dob.split('-')
                   if (parts.length !== 3) return null
                   let day, month
-                  if (c.dob.includes('/')) { day = parseInt(parts[0]); month = parseInt(parts[1]) }
-                  else { day = parseInt(parts[2]); month = parseInt(parts[1]) }
+                  if (c.dob.includes('/')) { day = parseInt(parts[0], 10); month = parseInt(parts[1], 10) }
+                  else { day = parseInt(parts[2], 10); month = parseInt(parts[1], 10) }
                   if (!day || !month || month < 1 || month > 12 || day < 1 || day > 31) return null
                   const thisYear = today.getFullYear()
                   let bday = new Date(thisYear, month-1, day)
@@ -1904,7 +1959,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                               a.href = URL.createObjectURL(blob)
                               a.download = name
                               a.click()
-                              URL.revokeObjectURL(a.href)
+                              // Defer revoke so the download can complete
+                              const href = a.href
+                              setTimeout(() => URL.revokeObjectURL(href), 5000)
                             } catch { window.open(proxyUrl,'_blank') }
                           }} style={{fontSize:11,color:'#fff',background:'#0E5C42',border:'1px solid #0B5240',borderRadius:6,padding:'2px 9px',fontWeight:600,whiteSpace:'nowrap',cursor:'pointer',fontFamily:'inherit'}}>Download ↓</button>
                         </div>
@@ -2142,7 +2199,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       a.href = url
                       a.download = `whvtax-clients-${new Date().toISOString().slice(0,10)}.csv`
                       a.click()
-                      URL.revokeObjectURL(url)
+                      // Defer revoke so the browser has time to start the download
+                      // (revoking too quickly can abort the download on some browsers).
+                      setTimeout(() => URL.revokeObjectURL(url), 5000)
                     }}
                     title="Download as CSV (opens in Excel)">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>

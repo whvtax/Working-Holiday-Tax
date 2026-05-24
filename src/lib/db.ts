@@ -107,23 +107,24 @@ export async function findExistingClient(email: string, whatsapp: string): Promi
   if (!e && !w) return null
 
   // Search crm_clients - case-insensitive match via ilike on each field separately.
-  // Run parallel queries; the first match wins. This avoids PostgREST `or()`
-  // syntax issues with special characters in emails (e.g. '+').
-  const queries: Promise<{ data: { id: string }[] | null }>[] = []
-  if (e) queries.push(sb.from('crm_clients').select('id').ilike('email', e).limit(1))
-  if (w) queries.push(sb.from('crm_clients').select('id').ilike('whatsapp', w).limit(1))
-  for (const q of queries) {
-    const { data } = await q
-    if (data && data.length > 0) return { id: data[0].id }
+  // Run all queries in parallel; the first non-empty result wins. This avoids
+  // PostgREST `or()` syntax issues with special characters in emails (e.g. '+'),
+  // and is faster than the previous sequential await loop.
+  const clientQueries: PromiseLike<{ data: { id: string }[] | null }>[] = []
+  if (e) clientQueries.push(sb.from('crm_clients').select('id').ilike('email', e).limit(1))
+  if (w) clientQueries.push(sb.from('crm_clients').select('id').ilike('whatsapp', w).limit(1))
+  const clientResults = await Promise.all(clientQueries)
+  for (const res of clientResults) {
+    if (res.data && res.data.length > 0) return { id: res.data[0].id }
   }
 
-  // Search crm_tasks (active only) — same strategy
-  const taskQueries: Promise<{ data: { client_id: string }[] | null }>[] = []
+  // Search crm_tasks (active only) — same parallel strategy
+  const taskQueries: PromiseLike<{ data: { client_id: string }[] | null }>[] = []
   if (e) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('email', e).limit(1))
   if (w) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('whatsapp', w).limit(1))
-  for (const q of taskQueries) {
-    const { data } = await q
-    if (data && data.length > 0) return { id: data[0].client_id }
+  const taskResults = await Promise.all(taskQueries)
+  for (const res of taskResults) {
+    if (res.data && res.data.length > 0) return { id: res.data[0].client_id }
   }
 
   return null
@@ -266,13 +267,13 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
     } else if (task.taskType === 'tax-return' && task.taxYear) {
       // Support multiple years (comma-separated)
       const years = task.taxYear.split(',').map(y => y.trim()).filter(Boolean)
-      const taxReturns = existing.taxReturns || []
-      const checkins = existing.yearlyCheckins || {}
-      years.forEach(year => {
-        // Avoid duplicates for same year
-        const filtered = taxReturns.filter(r => r.year !== year)
-        taxReturns.length = 0
-        taxReturns.push(...filtered)
+      // Build a new list: keep existing entries whose year is NOT in the incoming set,
+      // then add a fresh entry per incoming year. Fixes a bug where mutating the array
+      // inside the forEach loop caused all but the last entry to be lost.
+      const yearSet = new Set(years)
+      const taxReturns: TaxReturn[] = (existing.taxReturns || []).filter(r => !yearSet.has(r.year))
+      const checkins: Record<string, boolean> = { ...(existing.yearlyCheckins || {}) }
+      for (const year of years) {
         taxReturns.push({
           year,
           type: refundAmount >= 0 ? 'refund' as const : 'owed' as const,
@@ -280,22 +281,21 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
           completedAt: today,
         })
         checkins[year] = true
-      })
+      }
       updates.tax_returns = JSON.stringify(taxReturns)
       updates.yearly_checkins = JSON.stringify(checkins)
     } else if (task.taskType === 'super') {
       const years = task.taxYear ? task.taxYear.split(',').map(y => y.trim()).filter(Boolean) : [today.slice(0,4)]
-      const superReturns = existing.superReturns || []
-      years.forEach(year => {
-        const filtered = superReturns.filter(x => x.year !== year)
-        superReturns.length = 0
-        superReturns.push(...filtered)
+      // Same fix as above: build new list outside the loop so multiple years all persist.
+      const yearSet = new Set(years)
+      const superReturns: SuperReturn[] = (existing.superReturns || []).filter(x => !yearSet.has(x.year))
+      for (const year of years) {
         superReturns.push({
           year,
           amount: refundAmount,
           completedAt: today,
         })
-      })
+      }
       updates.super_returns = JSON.stringify(superReturns)
     }
 
@@ -359,14 +359,6 @@ export async function deleteTaskPermanent(taskId: string): Promise<void> {
 }
 
 // ── Clients ────────────────────────────────────────────────────────────────
-
-/** @deprecated Use getAllActiveClients() or getAllArchivedClients() instead. */
-export async function getAllClients(): Promise<ClientRecord[]> {
-  const sb = getSupabase()
-  const { data, error } = await sb.from('crm_clients').select('*').order('created_at', { ascending: false })
-  if (error) throw error
-  return (data ?? []).map(toClient)
-}
 
 export async function getAllActiveClients(limit = 100, offset = 0): Promise<ClientRecord[]> {
   const sb = getSupabase()
@@ -495,13 +487,17 @@ export async function updateClient(id: string, data: Partial<ClientRecord> & {
   const client = await getClientById(id)
   if (!client) return null
 
-  const fullName = (data.fullName  || client.fullName).slice(0, 100)
-  const dob      = (data.dob       || client.dob).slice(0, 20)
-  const whatsapp = (data.whatsapp  || client.whatsapp).slice(0, 30)
-  const email    = (data.email     || client.email).slice(0, 200)
-  const country  = (data.country   || client.country).slice(0, 60)
-  const howHeard = (data.howHeard  ?? client.howHeard ?? '').slice(0, 100)
-  const notes    = (data.notes     ?? client.notes    ?? '').slice(0, 10_000)
+  // Coerce to string so callers sending arrays/numbers don't corrupt rows
+  const asString = (v: unknown, fallback: string): string =>
+    typeof v === 'string' && v !== '' ? v : fallback
+
+  const fullName = asString(data.fullName, client.fullName).slice(0, 100)
+  const dob      = asString(data.dob,      client.dob).slice(0, 20)
+  const whatsapp = asString(data.whatsapp, client.whatsapp).slice(0, 30)
+  const email    = asString(data.email,    client.email).slice(0, 200)
+  const country  = asString(data.country,  client.country).slice(0, 60)
+  const howHeard = (typeof data.howHeard === 'string' ? data.howHeard : (client.howHeard ?? '')).slice(0, 100)
+  const notes    = (typeof data.notes    === 'string' ? data.notes    : (client.notes    ?? '')).slice(0, 10_000)
 
   const { error } = await sb.from('crm_clients').update({
     full_name: fullName,
@@ -601,7 +597,7 @@ function getCurrentTaxYear(): string {
 }
 
 function getPreviousTaxYear(currentYear: string): string {
-  const start = parseInt(currentYear.split('-')[0]) - 1
+  const start = parseInt(currentYear.split('-')[0], 10) - 1
   return `${start}-${String(start + 1).slice(2)}`
 }
 

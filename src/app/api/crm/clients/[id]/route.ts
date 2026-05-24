@@ -4,6 +4,13 @@ import { validateSession } from '@/lib/crm-store'
 
 function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
 
+// AU tax year format: e.g. "2023-24"
+const YEAR_RE = /^\d{4}-\d{2}$/
+const safeYear = (v: unknown): string => {
+  if (typeof v !== 'string') return ''
+  return YEAR_RE.test(v) ? v : ''
+}
+
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
@@ -39,21 +46,35 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     }
     if (body.action === 'add-tax') {
       const d = body.data ?? {}
-      const year = typeof d.year === 'string' ? d.year.slice(0,10) : ''
-      const refundAmount = Math.max(0, Math.min(1_000_000, Number(d.refundAmount) || 0))
+      const year = safeYear(d.year)
+      if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
+      const rawAmt = Number(d.refundAmount)
+      const refundAmount = Math.max(0, Math.min(1_000_000, Number.isFinite(rawAmt) ? rawAmt : 0))
       const type = d.type === 'owed' ? 'owed' : 'refund'
       await db.addTaxReturn(params.id, { year, refundAmount, type, completedAt: new Date().toISOString() })
       return NextResponse.json({ ok:true })
     }
-    if (body.action === 'remove-tax')   { const year = typeof body.year === 'string' ? body.year.slice(0,10) : ''; await db.removeTaxReturn(params.id, year); return NextResponse.json({ ok:true }) }
+    if (body.action === 'remove-tax')   {
+      const year = safeYear(body.year)
+      if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
+      await db.removeTaxReturn(params.id, year)
+      return NextResponse.json({ ok:true })
+    }
     if (body.action === 'add-super') {
       const d = body.data ?? {}
-      const year = typeof d.year === 'string' ? d.year.slice(0,10) : ''
-      const amount = Math.max(0, Math.min(1_000_000, Number(d.amount) || 0))
+      const year = safeYear(d.year)
+      if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
+      const rawAmt = Number(d.amount)
+      const amount = Math.max(0, Math.min(1_000_000, Number.isFinite(rawAmt) ? rawAmt : 0))
       await db.addSuperReturn(params.id, { year, amount, completedAt: new Date().toISOString() })
       return NextResponse.json({ ok:true })
     }
-    if (body.action === 'remove-super') { const year = typeof body.year === 'string' ? body.year.slice(0,10) : ''; await db.removeSuperReturn(params.id, year); return NextResponse.json({ ok:true }) }
+    if (body.action === 'remove-super') {
+      const year = safeYear(body.year)
+      if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
+      await db.removeSuperReturn(params.id, year)
+      return NextResponse.json({ ok:true })
+    }
 
     // Actions from ClientPageClient (detail page)
     if (body.action === 'update') {
@@ -80,7 +101,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ ok:true })
     }
     if (body.action === 'checkin') {
-      const year = typeof body.year === 'string' ? body.year.slice(0,10) : ''
+      const year = safeYear(body.year)
+      if (!year) return NextResponse.json({ ok:false, error:'invalid_year' }, { status:400 })
       const done = body.done === true
       await db.setYearlyCheckin(params.id, year, done)
       return NextResponse.json({ ok:true })
