@@ -1,8 +1,80 @@
 'use client'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { WA_URL, EMAIL } from '@/lib/constants'
 
 export function Footer() {
+  const pathname = usePathname() || '/'
+  const isGerman = pathname === '/de' || pathname.startsWith('/de/')
+
+  // Localized strings + paths
+  const t = isGerman
+    ? {
+        tagline: 'Australische Steuer, erledigt.',
+        intro: 'Wir kümmern uns um TFN, Steuererklärung, Super-Auszahlung und ABN für Working Holiday Maker in Australien.',
+        askUs: 'Frag uns alles',
+        services: 'Leistungen',
+        serviceLinks: [
+          { label: 'Steuernummer (TFN)',     href: '/de/tfn' },
+          { label: 'ABN-Registrierung',      href: '/de/abn' },
+          { label: 'Steuererklärung',        href: '/de/tax-return' },
+          { label: 'Super-Auszahlung (DASP)', href: '/de/superannuation' },
+          { label: 'Medicare',               href: '/de/medicare' },
+        ],
+        learn: 'Lernen',
+        learnLinks: [
+          { label: 'Blog',                       href: '/de/blog' },
+          { label: 'TFN-Artikel',                href: '/de/blog/category/tfn' },
+          { label: 'Steuererklärung-Artikel',    href: '/de/blog/category/tax-return' },
+          { label: 'Super-Artikel',              href: '/de/blog/category/super' },
+          { label: 'Arbeitsrechte',              href: '/de/blog/category/work-rights' },
+        ],
+        connect: 'Kontakt',
+        connectLinks: [
+          { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
+          { label: 'E-Mail',     href: `mailto:${EMAIL}`, external: false },
+          { label: 'WhatsApp',   href: WA_URL, external: true },
+          { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
+          { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
+        ],
+        copyright: 'Working Holiday Tax. Alle Rechte vorbehalten.',
+        // Client Agreement & Privacy stay in English (legal docs)
+        clientAgreement: 'Client Agreement',
+        privacyPolicy: 'Privacy Policy',
+      }
+    : {
+        tagline: 'Australian tax, sorted.',
+        intro: 'We handle TFN, tax returns, super withdrawal and ABN for working holiday makers in Australia.',
+        askUs: 'Ask us anything',
+        services: 'Services',
+        serviceLinks: [
+          { label: 'TFN Application',  href: '/tfn' },
+          { label: 'ABN Registration', href: '/abn' },
+          { label: 'Tax Return',       href: '/tax-return' },
+          { label: 'Super Withdrawal', href: '/superannuation' },
+          { label: 'Medicare',         href: '/medicare' },
+        ],
+        learn: 'Learn',
+        learnLinks: [
+          { label: 'Blog',                       href: '/blog' },
+          { label: 'TFN Articles',               href: '/blog/category/tfn' },
+          { label: 'Tax Return Articles',        href: '/blog/category/tax-return' },
+          { label: 'Super Articles',             href: '/blog/category/super' },
+          { label: 'Work Rights',                href: '/blog/category/work-rights' },
+        ],
+        connect: 'Connect',
+        connectLinks: [
+          { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
+          { label: 'Email',      href: `mailto:${EMAIL}`, external: false },
+          { label: 'WhatsApp',   href: WA_URL, external: true },
+          { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
+          { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
+        ],
+        copyright: 'Working Holiday Tax. All rights reserved.',
+        clientAgreement: 'Client Agreement',
+        privacyPolicy: 'Privacy Policy',
+      }
+
   return (
     <footer role="contentinfo" style={{ background: '#0B5240' }}>
 
@@ -27,23 +99,20 @@ export function Footer() {
                 <span className="font-serif font-bold text-ink" style={{ fontSize: '15px' }}>Working Holiday Tax</span>
               </div>
 
-              {/* Strong tagline */}
               <p className="font-serif" style={{ fontSize: '17px', color: '#0B5240', fontWeight: 700, lineHeight: 1.3, marginBottom: '8px', letterSpacing: '-0.02em' }}>
-                Australian tax, sorted.
+                {t.tagline}
               </p>
-              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.7, marginBottom: '18px', maxWidth: '280px' }}>
-                We handle TFN, tax returns, super withdrawal and ABN for working holiday makers in Australia.
+              <p className="font-light" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.7, marginBottom: '18px', maxWidth: '300px' }}>
+                {t.intro}
               </p>
 
-              {/* Mini CTA */}
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="font-medium"
                 style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, marginBottom: 0, display: 'inline-flex', alignItems: 'center', gap: '6px', textDecoration: 'none' }}>
-                Ask us anything
+                {t.askUs}
                 <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true" style={{ flexShrink: 0 }}><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </a>
 
-              {/* Partner badges */}
               <div className="flex items-center gap-2.5 mt-6">
                 <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
                   aria-label="Xero partner"
@@ -55,7 +124,7 @@ export function Footer() {
                 </a>
                 <div className="flex items-center justify-center rounded-full"
                   style={{ width: '38px', height: '38px', border: '1.5px solid #C8EAE0', background: '#fff' }}
-                  title="Secure & encrypted">
+                  title={isGerman ? 'Sicher & verschlüsselt' : 'Secure & encrypted'}>
                   <svg width="17" height="19" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
                     <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
@@ -72,33 +141,29 @@ export function Footer() {
             </div>
 
             {/* Services column */}
-            <nav aria-label="Services links">
-              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>Services</p>
-              <Link href="/tfn"            className="footer-link">TFN Application</Link>
-              <Link href="/abn"            className="footer-link">ABN Registration</Link>
-              <Link href="/tax-return"     className="footer-link">Tax Return</Link>
-              <Link href="/superannuation" className="footer-link">Super Withdrawal</Link>
-              <Link href="/medicare"       className="footer-link">Medicare</Link>
+            <nav aria-label={t.services}>
+              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>{t.services}</p>
+              {t.serviceLinks.map(l => (
+                <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
+              ))}
             </nav>
 
             {/* Learn column */}
-            <nav aria-label="Resources links">
-              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>Learn</p>
-              <Link href="/blog"                       className="footer-link">Blog</Link>
-              <Link href="/blog/category/tfn"          className="footer-link">TFN Articles</Link>
-              <Link href="/blog/category/tax-return"   className="footer-link">Tax Return Articles</Link>
-              <Link href="/blog/category/super"        className="footer-link">Super Articles</Link>
-              <Link href="/blog/category/work-rights"  className="footer-link">Work Rights</Link>
+            <nav aria-label={t.learn}>
+              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>{t.learn}</p>
+              {t.learnLinks.map(l => (
+                <Link key={l.href} href={l.href} className="footer-link">{l.label}</Link>
+              ))}
             </nav>
 
             {/* Connect column */}
-            <nav aria-label="Contact and social links">
-              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>Connect</p>
-              <a href="https://www.facebook.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className="footer-link">Facebook</a>
-              <a href={`mailto:${EMAIL}`}     className="footer-link">Email</a>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="footer-link">WhatsApp</a>
-              <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="footer-link">TikTok</a>
-              <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer" className="footer-link">Instagram</a>
+            <nav aria-label={t.connect}>
+              <p className="font-semibold uppercase mb-3.5" style={{ fontSize: '10.5px', color: '#0B5240', letterSpacing: '0.14em' }}>{t.connect}</p>
+              {t.connectLinks.map(l => (
+                l.external
+                  ? <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className="footer-link">{l.label}</a>
+                  : <a key={l.href} href={l.href} className="footer-link">{l.label}</a>
+              ))}
             </nav>
           </div>
         </div>
@@ -109,16 +174,15 @@ export function Footer() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 
-            {/* Left: Brand name + copyright */}
             <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }} suppressHydrationWarning>
-              <span>© {new Date().getFullYear()} Working Holiday Tax. All rights reserved.</span>
+              <span>© {new Date().getFullYear()} {t.copyright}</span>
             </div>
 
-            {/* Right: Legal links */}
+            {/* Legal links stay in English (legal documents) */}
             <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
-              <Link href="/client-agreement" className="footer-link-dark">Terms of Service</Link>
+              <Link href="/client-agreement" className="footer-link-dark">{t.clientAgreement}</Link>
               <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <Link href="/privacy"          className="footer-link-dark">Privacy Policy</Link>
+              <Link href="/privacy"          className="footer-link-dark">{t.privacyPolicy}</Link>
             </div>
           </div>
         </div>

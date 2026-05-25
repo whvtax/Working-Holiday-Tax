@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
 const Logo = () => (
   <Link href="/" className="flex items-center gap-2.5 flex-shrink-0" aria-label="Working Holiday Tax - Home">
@@ -40,6 +41,31 @@ export function Nav() {
   const [servicesOpen, setServicesOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+
+  // Detect German pages - all German URLs start with /de
+  const isGerman = pathname === '/de' || pathname?.startsWith('/de/')
+
+  // Localized link sets
+  const servicesLinks = isGerman
+    ? [
+        { label: 'Steuernummer (TFN)',     href: '/de/tfn',            desc: 'Deine TFN beantragen' },
+        { label: 'ABN-Registrierung',      href: '/de/abn',            desc: 'Als Selbstständiger arbeiten' },
+        { label: 'Steuererklärung',        href: '/de/tax-return',     desc: 'Jahressteuererklärung einreichen' },
+        { label: 'Super auszahlen (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise zurück' },
+        { label: 'Medicare',               href: '/de/medicare',       desc: 'Medicare Levy Befreiung' },
+      ]
+    : SERVICES_LINKS
+
+  const topLinks = isGerman
+    ? [
+        { label: 'Rechner',  href: '/de/calculator' },
+        { label: 'Blog',     href: '/de/blog' },
+        { label: 'Kontakt',  href: '/de/contact' },
+      ]
+    : TOP_LINKS
+
+  const servicesLabel  = isGerman ? 'Leistungen' : 'Services'
+  const ctaLabel       = isGerman ? 'Steuererklärung starten' : 'Start your tax return'
 
   // Sticky background after scroll
   useEffect(() => {
@@ -80,7 +106,7 @@ export function Nav() {
   }, [])
 
   const close = () => setOpen(false)
-  const isServicePage = SERVICES_LINKS.some(s => pathname === s.href)
+  const isServicePage = servicesLinks.some(s => pathname === s.href)
 
   return (
     <>
@@ -104,7 +130,7 @@ export function Nav() {
                   aria-expanded={servicesOpen}
                   aria-haspopup="true"
                 >
-                  Services
+                  {servicesLabel}
                   <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
                     <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
@@ -128,7 +154,7 @@ export function Nav() {
                       zIndex: 60,
                     }}
                   >
-                    {SERVICES_LINKS.map(s => {
+                    {servicesLinks.map(s => {
                       const active = pathname === s.href
                       return (
                         <Link
@@ -158,8 +184,8 @@ export function Nav() {
               </div>
 
               {/* Top-level direct links */}
-              {TOP_LINKS.map(l => {
-                const active = pathname === l.href || (l.href === '/blog' && pathname.startsWith('/blog'))
+              {topLinks.map(l => {
+                const active = pathname === l.href || (l.href.endsWith('/blog') && pathname?.startsWith(l.href))
                 return (
                   <Link
                     key={l.href}
@@ -176,6 +202,7 @@ export function Nav() {
 
             {/* Desktop CTA */}
             <div className="hidden lg:flex items-center gap-3">
+              <LanguageSwitcher variant="desktop" />
               <a
                 href={WA_URL}
                 target="_blank"
@@ -183,7 +210,7 @@ export function Nav() {
                 className="nav-cta inline-flex items-center gap-2 font-semibold text-white"
                 style={{ height: '40px', padding: '0 18px', background: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(11,82,64,0.18)' }}
               >
-                Start your tax return
+                {ctaLabel}
               </a>
             </div>
 
@@ -202,16 +229,28 @@ export function Nav() {
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
 
         {/* All links - flat list */}
-        {[
-          { label: 'TFN',         href: '/tfn' },
-          { label: 'ABN',         href: '/abn' },
-          { label: 'Tax Return',  href: '/tax-return' },
-          { label: 'Super',       href: '/superannuation' },
-          { label: 'Medicare',    href: '/medicare' },
-          { label: 'Calculator',  href: '/calculator' },
-          { label: 'Blog',        href: '/blog' },
-          { label: 'Contact',     href: '/contact' },
-        ].map(l => (
+        {(isGerman
+          ? [
+              { label: 'Steuernummer (TFN)',   href: '/de/tfn' },
+              { label: 'ABN',                  href: '/de/abn' },
+              { label: 'Steuererklärung',      href: '/de/tax-return' },
+              { label: 'Super (DASP)',         href: '/de/superannuation' },
+              { label: 'Medicare',             href: '/de/medicare' },
+              { label: 'Rechner',              href: '/de/calculator' },
+              { label: 'Blog',                 href: '/de/blog' },
+              { label: 'Kontakt',              href: '/de/contact' },
+            ]
+          : [
+              { label: 'TFN',         href: '/tfn' },
+              { label: 'ABN',         href: '/abn' },
+              { label: 'Tax Return',  href: '/tax-return' },
+              { label: 'Super',       href: '/superannuation' },
+              { label: 'Medicare',    href: '/medicare' },
+              { label: 'Calculator',  href: '/calculator' },
+              { label: 'Blog',        href: '/blog' },
+              { label: 'Contact',     href: '/contact' },
+            ]
+        ).map(l => (
           <Link key={l.href} href={l.href} onClick={close}
             className="block font-sans text-[17px] font-medium text-ink py-4 transition-colors hover:text-forest-500"
             style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
@@ -219,10 +258,13 @@ export function Nav() {
           </Link>
         ))}
 
+        {/* Language switcher - mobile */}
+        <LanguageSwitcher variant="mobile" />
+
         {/* CTA */}
         <div className="mt-6">
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '54px', borderRadius: '100px', fontSize: '15px' }}>
-            Start your tax return →
+            {ctaLabel} →
           </a>
         </div>
 

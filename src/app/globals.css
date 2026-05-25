@@ -2127,3 +2127,81 @@
     font-size: 12.5px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GERMAN LANGUAGE ADJUSTMENTS
+   Applied to <html lang="de"> root. Affects German pages only.
+   German words are 30-50% longer than English on average. These rules:
+   - Enable hyphenation (browser-native, locale-aware)
+   - Allow word-wrap on long compound nouns
+   - Tighten letter-spacing slightly on headings
+   - Tweak mobile font sizes where needed
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html[lang="de"] {
+  /* Allow long German compound words to break gracefully */
+  word-break: normal;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  hyphens: auto;
+  -webkit-hyphenate-limit-chars: 6 3 3;
+  hyphenate-limit-chars: 6 3 3;
+}
+
+/* Headings: allow hyphenation but be conservative */
+html[lang="de"] h1,
+html[lang="de"] h2,
+html[lang="de"] h3,
+html[lang="de"] h4 {
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Buttons & CTA - shrink slightly for long German labels */
+html[lang="de"] .btn-primary,
+html[lang="de"] .nav-cta,
+html[lang="de"] .btn-ghost-dark {
+  letter-spacing: -0.01em;
+}
+
+/* Mobile: tighten things further */
+@media (max-width: 640px) {
+  html[lang="de"] h1 {
+    letter-spacing: -0.03em;
+  }
+  html[lang="de"] .nav-cta {
+    font-size: 12px;
+    padding: 0 14px;
+  }
+  /* Service card titles can wrap */
+  html[lang="de"] .service-card-title {
+    font-size: 12.5px;
+  }
+}
+
+/* Service dropdown items - allow longer German service names */
+html[lang="de"] .services-dropdown-item {
+  min-height: 56px;
+}
+
+/* Form labels - German labels are longer than English */
+html[lang="de"] .form-label,
+html[lang="de"] label {
+  line-height: 1.4;
+}
+
+/* Footer columns - more spacing on mobile for long German words */
+@media (max-width: 768px) {
+  html[lang="de"] .footer-link {
+    line-height: 1.5;
+  }
+}
+
+/* Blog cards on German pages - more room for German titles */
+html[lang="de"] .blog-card-title {
+  hyphens: auto;
+  line-height: 1.3;
+}
