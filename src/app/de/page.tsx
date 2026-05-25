@@ -5,9 +5,9 @@ import { CtaBand } from '@/components/ui/CtaBand'
 
 // ─── METADATA - rich SEO + AI optimized for German market ─────────────────
 export const metadata: Metadata = {
-  title: 'Working Holiday Tax – Steuer & Super für Backpacker in Australien',
+  title: 'Working Holiday Tax - Steuer & Super für Backpacker in Australien',
   description:
-    'Registrierter Steueragent für Working Holiday Visa-Inhaber (Subclass 417 und 462) in Australien. TFN, Steuererklärung, Super-Auszahlung (DASP) und ABN – wir kümmern uns um alles.',
+    'Registrierter Steueragent für Working Holiday Visa-Inhaber (Subclass 417 und 462) in Australien. TFN, Steuererklärung, Super-Auszahlung (DASP) und ABN - wir kümmern uns um alles.',
   keywords: [
     'Working Holiday Steuer Australien',
     'Backpacker Steuer Australien',
@@ -49,7 +49,7 @@ const TESTIMONIALS = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Steuererklärung oder Super – wir helfen dir von Anfang an weiter.' },
+  { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Steuererklärung oder Super - wir helfen dir von Anfang an weiter.' },
   { n: '2', title: 'Schick uns deine Daten',         body: 'Kurze Checkliste, keine komplizierten Formulare.' },
   { n: '3', title: 'Wir kümmern uns um alles',       body: 'Wir bereiten alles vor, reichen ein und kümmern uns um den Rest.' },
   { n: '4', title: 'Dein Geld kommt zurück',         body: 'Die Rückzahlung landet direkt auf deinem Konto.' },
@@ -66,15 +66,15 @@ const SERVICES = [
 const FAQS = [
   {
     question: 'Was kosten eure Leistungen?',
-    answer: 'Die erste Anfrage und unser Kostenvoranschlag sind kostenlos. Unsere Gebühren sind pauschal und hängen vom Service ab. Bei Steuererklärungen können die Gebühren direkt von der Rückzahlung abgezogen werden – du musst also nichts im Voraus bezahlen. Wir bestätigen den Preis immer, bevor wir loslegen.',
+    answer: 'Die erste Anfrage und unser Kostenvoranschlag sind kostenlos. Unsere Gebühren sind pauschal und hängen vom Service ab. Bei Steuererklärungen können die Gebühren direkt von der Rückzahlung abgezogen werden - du musst also nichts im Voraus bezahlen. Wir bestätigen den Preis immer, bevor wir loslegen.',
   },
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten (Mo–Fr, 9–18 Uhr AEST) antworten wir meistens innerhalb einer Stunde. Außerhalb der Geschäftszeiten melden wir uns gleich am nächsten Morgen bei dir.',
+    answer: 'Während der Geschäftszeiten (Mo-Fr, 9-18 Uhr AEST) antworten wir meistens innerhalb einer Stunde. Außerhalb der Geschäftszeiten melden wir uns gleich am nächsten Morgen bei dir.',
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Wir helfen Working Holiday Makern, die Australien bereits verlassen haben, bei der Steuererklärung und der Super-Auszahlung (DASP) – alles komplett online. Wir wickeln alles aus der Ferne ab. Deine Rückzahlung kannst du auf ein australisches oder ausländisches Konto erhalten.',
+    answer: 'Ja. Wir helfen Working Holiday Makern, die Australien bereits verlassen haben, bei der Steuererklärung und der Super-Auszahlung (DASP) - alles komplett online. Wir wickeln alles aus der Ferne ab. Deine Rückzahlung kannst du auf ein australisches oder ausländisches Konto erhalten.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker?',
@@ -82,7 +82,7 @@ const FAQS = [
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
-    answer: 'Nein. Wir helfen bei TFN-Anträgen, ABN-Registrierungen, Steuererklärungen, Super-Auszahlungen (DASP) und Medicare Levy-Befreiungen – also bei allem, was du als Working Holiday Maker brauchst.',
+    answer: 'Nein. Wir helfen bei TFN-Anträgen, ABN-Registrierungen, Steuererklärungen, Super-Auszahlungen (DASP) und Medicare Levy-Befreiungen - also bei allem, was du als Working Holiday Maker brauchst.',
   },
 ]
 
@@ -94,8 +94,8 @@ export default function GermanHomePage() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/de/#webpage`,
     url: `${SITE_URL}/de`,
-    name: 'Working Holiday Tax – Steuer & Super für Backpacker in Australien',
-    description: 'Registrierter Steueragent für Working Holiday Maker in Australien. TFN, Steuererklärung, Super und ABN – alles erledigt.',
+    name: 'Working Holiday Tax - Steuer & Super für Backpacker in Australien',
+    description: 'Registrierter Steueragent für Working Holiday Maker in Australien. TFN, Steuererklärung, Super und ABN - alles erledigt.',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -196,7 +196,7 @@ export default function GermanHomePage() {
               { title: 'Backpacker-Steuerexperten.',       body: 'Wir machen nur Working Holiday Steuern. Deshalb wissen wir genau, wie wir das Maximum für dich rausholen.' },
               { title: 'ATO-konform.',                     body: 'Voll konform mit den ATO-Regeln, überwacht von einem registrierten Steueragenten.' },
               { title: 'Klare, einfache Hilfe.',           body: 'Keine komplizierten Begriffe. Wir führen dich Schritt für Schritt durch alles durch.' },
-              { title: 'Wir kümmern uns um alles.',        body: 'Kein Papierkram, kein Stress. Wir machen alles für dich – von Anfang bis Ende.' },
+              { title: 'Wir kümmern uns um alles.',        body: 'Kein Papierkram, kein Stress. Wir machen alles für dich - von Anfang bis Ende.' },
             ].map((item, i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>

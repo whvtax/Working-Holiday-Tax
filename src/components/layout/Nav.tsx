@@ -5,8 +5,8 @@ import { useEffect, useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
-const Logo = () => (
-  <Link href="/" className="flex items-center gap-2.5 flex-shrink-0" aria-label="Working Holiday Tax - Home">
+const Logo = ({ isGerman }: { isGerman: boolean }) => (
+  <Link href={isGerman ? '/de' : '/'} className="flex items-center gap-2.5 flex-shrink-0" aria-label={isGerman ? 'Working Holiday Tax - Startseite' : 'Working Holiday Tax - Home'}>
     <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
       <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" strokeWidth="2"/>
       <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>
@@ -114,7 +114,7 @@ export function Nav() {
         style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-[68px] flex items-center justify-between gap-5">
-            <Logo />
+            <Logo isGerman={isGerman} />
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-7">

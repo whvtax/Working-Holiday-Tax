@@ -7,6 +7,7 @@ import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { SITE_URL, AGENT_NAME } from '@/lib/constants'
 import PublicShellClient from '@/components/layout/PublicShellClient'
+import { MobileLanguageBanner } from '@/components/ui/MobileLanguageBanner'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -328,6 +329,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </PublicShellClient>
         <RevealObserver />
         <ScrollToTop />
+        <MobileLanguageBanner />
       </body>
     </html>
   )

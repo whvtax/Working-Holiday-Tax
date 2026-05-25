@@ -12,11 +12,11 @@ import { SITE_URL, AGENT_NAME } from '@/lib/constants'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Working Holiday Tax Australien – Steuer, Super & TFN für Backpacker',
+    default: 'Working Holiday Tax Australien - Steuer, Super & TFN für Backpacker',
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Registrierter Steueragent für Working Holiday Visa-Inhaber (Subclass 417 und 462) in Australien. TFN, Steuererklärung, Super-Auszahlung (DASP) und ABN – wir erledigen alles für dich.',
+    'Registrierter Steueragent für Working Holiday Visa-Inhaber (Subclass 417 und 462) in Australien. TFN, Steuererklärung, Super-Auszahlung (DASP) und ABN - wir erledigen alles für dich.',
   keywords: [
     'Working Holiday Australien Steuer',
     'Steuererklärung Backpacker Australien',
@@ -53,18 +53,18 @@ export const metadata: Metadata = {
     alternateLocale: ['en_AU'],
     url: `${SITE_URL}/de`,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax Australien – Steuer, Super & TFN für Backpacker',
-    description: 'Registrierter Steueragent für Working Holiday Maker in Australien. TFN, Steuererklärung, Super und ABN – alles erledigt.',
+    title: 'Working Holiday Tax Australien - Steuer, Super & TFN für Backpacker',
+    description: 'Registrierter Steueragent für Working Holiday Maker in Australien. TFN, Steuererklärung, Super und ABN - alles erledigt.',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'Working Holiday Tax – Steuerservice für Backpacker in Australien',
+      alt: 'Working Holiday Tax - Steuerservice für Backpacker in Australien',
     }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Working Holiday Tax Australien – für Backpacker',
+    title: 'Working Holiday Tax Australien - für Backpacker',
     description: 'Registrierter Steueragent für Working Holiday Maker in Australien.',
     images: [`${SITE_URL}/og-image.png`],
   },
