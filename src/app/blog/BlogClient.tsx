@@ -7,6 +7,63 @@ import CategoryHero from './[slug]/CategoryHero'
 import { fuzzySearch } from './search'
 import { trackEvent, trackSearchDebounced } from './analytics'
 
+
+export type BlogUIStrings = {
+  breadcrumbHome: string
+  breadcrumbBlog: string
+  blogLabel: string
+  h1Line1: string
+  h1Line2: string
+  description: string
+  statsArticles: string
+  statsCategories: string
+  statsCountries: string
+  statsBackpackers: string
+  searchPlaceholder: string
+  clearSearch: string
+  allArticles: string
+  noResults: string
+  showingResults: string
+  resultsMatching: string
+  matching: string
+  tryDifferent: string
+  noArticlesCategory: string
+  minRead: string
+  readMore: string
+  showing: string
+  of: string
+  article: string
+  articles: string
+}
+
+const enUI: BlogUIStrings = {
+  breadcrumbHome: 'Home',
+  breadcrumbBlog: 'Blog',
+  blogLabel: 'Blog',
+  h1Line1: 'Everything you need to know',
+  h1Line2: 'about tax in Australia',
+  description: 'Practical articles on TFN, tax returns, super, and ABN - written for working holiday makers, explained simply.',
+  statsArticles: 'Articles',
+  statsCategories: 'Categories',
+  statsCountries: 'Countries',
+  statsBackpackers: 'backpackers helped',
+  searchPlaceholder: 'Search articles...',
+  clearSearch: 'Clear search',
+  allArticles: 'All articles',
+  noResults: 'No articles found for',
+  showingResults: 'Showing',
+  resultsMatching: 'articles matching',
+  matching: 'matching',
+  tryDifferent: 'Try a different search term or browse all articles.',
+  noArticlesCategory: 'No articles in this category yet.',
+  minRead: 'min read',
+  readMore: 'Read more',
+  showing: 'Showing',
+  of: 'of',
+  article: 'article',
+  articles: 'articles',
+}
+
 const PER_PAGE = 9
 
 function Pagination({
@@ -104,9 +161,17 @@ function getCategorySlug(cat: Category): string {
 export default function BlogClient({
   guides,
   initialCategory,
+  lang = 'en',
+  ui = enUI,
+  blogBasePath = '/blog',
+  homePath = '/',
 }: {
   guides: Guide[]
   initialCategory?: Category
+  lang?: 'en' | 'de'
+  ui?: BlogUIStrings
+  blogBasePath?: string
+  homePath?: string
 }) {
   const [page, setPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState('')
@@ -167,9 +232,9 @@ export default function BlogClient({
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
-            <a href="/" className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none' }}>Home</a>
+            <a href={homePath} className="transition-colors hover:text-forest-500" style={{ color: 'inherit', textDecoration: 'none' }}>{ui.breadcrumbHome}</a>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
-            <span aria-current="page">Blog</span>
+            <span aria-current="page">{ui.breadcrumbBlog}</span>
           </nav>
 
           <div style={{ maxWidth: '720px', marginBottom: '32px' }}>
@@ -178,38 +243,38 @@ export default function BlogClient({
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
               <span className="font-medium uppercase"
                 style={{ fontSize: '10px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                Blog
+                {ui.blogLabel}
               </span>
             </div>
 
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '12px' }}>
-              <span style={{ display: 'block' }}>Everything you need to know</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>about tax in Australia</span>
+              <span style={{ display: 'block' }}>{ui.h1Line1}</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>{ui.h1Line2}</span>
             </h1>
 
             <p className="font-light"
               style={{ fontSize: 'clamp(13px,1.2vw,16px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '52ch', marginBottom: '24px' }}>
-              Practical articles on TFN, tax returns, super, and ABN - written for working holiday makers, explained simply.
+              {ui.description}
             </p>
 
             {/* Stats grid - credibility signals at the top, focused on what working holiday makers care about */}
             <div className="hero-stats">
               <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #E2EFE9' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{guides.length}</div>
-                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Articles</div>
+                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsArticles}</div>
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#F7F9F8', borderRadius: '12px', border: '1px solid #E2EFE9' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>{categories.length}</div>
-                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Categories</div>
+                <div style={{ fontSize: '11.5px', color: '#587066', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{ui.statsCategories}</div>
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#EAF6F1', borderRadius: '12px', border: '1px solid #C8EAE0' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>2025-26</div>
-                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>Tax year</div>
+                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Steuerjahr' : 'Tax year'}</div>
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#FDF0D5', borderRadius: '12px', border: '1px solid #E9A020' }}>
-                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>Free</div>
-                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>No sign-up</div>
+                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>{lang === 'de' ? 'Frei' : 'Free'}</div>
+                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Kostenlos' : 'No sign-up'}</div>
               </div>
             </div>
           </div>
@@ -226,7 +291,7 @@ export default function BlogClient({
               type="text"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Search articles..."
+              placeholder={ui.searchPlaceholder}
               className="search-input"
               style={{
                 width: '100%',
@@ -240,14 +305,14 @@ export default function BlogClient({
                 fontWeight: 400,
                 transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
               }}
-              aria-label="Search blog articles"
+              aria-label={ui.searchPlaceholder}
             />
             {searchQuery && (
               <button
                 onClick={() => handleSearchChange('')}
                 className="clear-search-btn"
                 style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', cursor: 'pointer', color: '#8AADA3', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                aria-label="Clear search"
+                aria-label={ui.clearSearch}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18" />
@@ -277,7 +342,7 @@ export default function BlogClient({
                 gap: '6px',
               }}
             >
-              All articles
+              {ui.allArticles}
               <span style={{
                 fontSize: '11px',
                 padding: '1px 6px',
@@ -338,15 +403,15 @@ export default function BlogClient({
         {searchQuery && (
           <div style={{ marginBottom: '24px', padding: '12px 16px', background: '#F7F9F8', borderRadius: '10px', fontSize: '13px', color: '#587066' }}>
             {filtered.length === 0
-              ? <>No articles found for <strong style={{ color: '#0B5240' }}>"{searchQuery}"</strong>. Try a different search term or browse all articles.</>
-              : <>Showing <strong style={{ color: '#0B5240' }}>{filtered.length}</strong> {filtered.length === 1 ? 'article' : 'articles'} matching <strong style={{ color: '#0B5240' }}>"{searchQuery}"</strong></>
+              ? <>{ui.noResults} <strong style={{ color: '#0B5240' }}>&ldquo;{searchQuery}&rdquo;</strong>. {ui.tryDifferent}</>
+              : <>{ui.showingResults} <strong style={{ color: '#0B5240' }}>{filtered.length}</strong> {filtered.length === 1 ? ui.article : ui.articles} {ui.matching} <strong style={{ color: '#0B5240' }}>&ldquo;{searchQuery}&rdquo;</strong></>
             }
           </div>
         )}
 
         {filtered.length === 0 && !searchQuery ? (
           <div style={{ textAlign: 'center', padding: '60px 20px', color: '#587066' }}>
-            <p style={{ fontSize: '14px' }}>No articles in this category yet.</p>
+            <p style={{ fontSize: '14px' }}>{ui.noArticlesCategory}</p>
           </div>
         ) : (
           <div className="blog-grid">
@@ -355,7 +420,7 @@ export default function BlogClient({
               return (
                 <Link
                   key={article.slug}
-                  href={`/blog/${article.slug}`}
+                  href={`${blogBasePath}/${article.slug}`}
                   className="blog-card"
                   style={{
                     display: 'flex',
@@ -389,7 +454,7 @@ export default function BlogClient({
                         {article.category}
                       </span>
                       <span style={{ color: '#CDE3DB' }}>·</span>
-                      <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{article.readTime} min read</span>
+                      <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{article.readTime} {ui.minRead}</span>
                     </div>
 
                     {/* Title */}
@@ -407,7 +472,7 @@ export default function BlogClient({
 
                     {/* CTA */}
                     <span style={{ fontSize: '12.5px', color: '#0B5240', fontWeight: 600, marginTop: '4px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                      Read more <span className="read-arrow">→</span>
+                      {ui.readMore} <span className="read-arrow">→</span>
                     </span>
                   </div>
                 </Link>
@@ -426,7 +491,7 @@ export default function BlogClient({
         {/* Count */}
         {filtered.length > 0 && (
           <p style={{ textAlign: 'center', fontSize: '12px', color: '#8AADA3', marginTop: '16px' }}>
-            Showing {(page - 1) * PER_PAGE + 1}-{Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} {filtered.length === 1 ? 'article' : 'articles'}
+            {ui.showing} {(page - 1) * PER_PAGE + 1}-{Math.min(page * PER_PAGE, filtered.length)} {ui.of} {filtered.length} {filtered.length === 1 ? ui.article : ui.articles}
           </p>
         )}
       </section>

@@ -2,11 +2,13 @@
 
 import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
+import { formStrings, type FormLang } from '@/lib/formStrings'
+import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
 type MultiUploadState = { files: File[]; previews: (string | null)[] }
-// `id` is a stable identifier used as React key — using array index as key causes
+// `id` is a stable identifier used as React key - using array index as key causes
 // state shuffling when items in the middle are removed.
 type InvoiceItem = { id: string; amount: string; description: string; file: File | null; preview: string | null }
 
@@ -26,10 +28,10 @@ function Field({ label, required, children, error }: { label: string; required?:
 
 /* ── File upload button ── */
 function FileUpload({
-  id, label, accept, value, onChange
+  id, label, accept, value, onChange, lang
 }: {
   id: string; label: string; accept: string
-  value: UploadState; onChange: (v: UploadState) => void
+  value: UploadState; onChange: (v: UploadState) => void; lang: FormLang
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -74,7 +76,7 @@ function FileUpload({
             </svg>
           </div>
           <span className="file-upload-label">{label}</span>
-          <span className="file-upload-sub">Tap to choose a file</span>
+          <span className="file-upload-sub">{formStrings.tapToChoose[lang]}</span>
         </div>
       )}
     </div>
@@ -270,7 +272,9 @@ function MultiFileUpload({
 }
 
 /* ── Main Form ── */
-export function FormClient() {
+export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = {}) {
+  const [lang, setLang] = useState<FormLang>(defaultLang)
+  const T = (key: keyof typeof formStrings) => formStrings[key][lang]
   // Personal
   const [waNumber, setWaNumber]       = useState('')
   const [auPhone, setAuPhone]         = useState('')
@@ -325,35 +329,35 @@ export function FormClient() {
   /* ── Validation ── */
   const validate = () => {
     const e: Record<string, string> = {}
-    if (!waNumber.trim())    e.waNumber    = 'Required'
-    if (!auPhone.trim())     e.auPhone     = 'Required'
-    if (!fullName.trim())    e.fullName    = 'Required'
-    if (!lastName.trim())     e.lastName     = 'Required'
-    if (!email.trim())       e.email       = 'Required'
-    if (!address.trim())     e.address     = 'Required'
-    if (!country.trim())     e.country     = 'Required'
-    if (!dob.trim())         e.dob         = 'Required'
-    if (!marital)            e.marital     = 'Required'
-    if (!tfn.trim())         e.tfn         = 'Required'
-    if (!primaryJob.trim())  e.primaryJob  = 'Required'
-    if (!hasAbn)             e.hasAbn      = 'Required'
+    if (!waNumber.trim())    e.waNumber    = T('required')
+    if (!auPhone.trim())     e.auPhone     = T('required')
+    if (!fullName.trim())    e.fullName    = T('required')
+    if (!lastName.trim())     e.lastName     = T('required')
+    if (!email.trim())       e.email       = T('required')
+    if (!address.trim())     e.address     = T('required')
+    if (!country.trim())     e.country     = T('required')
+    if (!dob.trim())         e.dob         = T('required')
+    if (!marital)            e.marital     = T('required')
+    if (!tfn.trim())         e.tfn         = T('required')
+    if (!primaryJob.trim())  e.primaryJob  = T('required')
+    if (!hasAbn)             e.hasAbn      = T('required')
     if (hasAbn === 'yes') {
-      if (!abnNumber.trim()) e.abnNumber   = 'Required'
-      if (!abnIncome.trim()) e.abnIncome   = 'Required'
-      if (!abnWork.trim())   e.abnWork     = 'Required'
+      if (!abnNumber.trim()) e.abnNumber   = T('required')
+      if (!abnIncome.trim()) e.abnIncome   = T('required')
+      if (!abnWork.trim())   e.abnWork     = T('required')
     }
-    if (!bankName.trim())    e.bankName    = 'Required'
-    if (!bankHolder.trim())  e.bankHolder  = 'Required'
-    if (!bankAccount.trim()) e.bankAccount = 'Required'
-    if (!bankBsb.trim())     e.bankBsb     = 'Required'
-    if (!bankStatement.file)  e.bankStatement  = 'Required'
-    if (!selfiePassport.file) e.selfiePassport = 'Required'
-    if (!taxStatus)           e.taxStatus      = 'Required'
-    if (!declared)            e.declared       = 'Required'
+    if (!bankName.trim())    e.bankName    = T('required')
+    if (!bankHolder.trim())  e.bankHolder  = T('required')
+    if (!bankAccount.trim()) e.bankAccount = T('required')
+    if (!bankBsb.trim())     e.bankBsb     = T('required')
+    if (!bankStatement.file)  e.bankStatement  = T('required')
+    if (!selfiePassport.file) e.selfiePassport = T('required')
+    if (!taxStatus)           e.taxStatus      = T('required')
+    if (!declared)            e.declared       = T('required')
     if (declared === 'no')    e.declared       = 'You must agree to submit'
-    if (!declaredIncome)      e.declaredIncome = 'You must confirm this declaration to proceed'
-    if (!howHeard.trim())     e.howHeard       = 'Required'
-    if (!hasExpenses)         e.hasExpenses    = 'Required'
+    if (!declaredIncome)      e.declaredIncome = T('mustConfirmDecl')
+    if (!howHeard.trim())     e.howHeard       = T('required')
+    if (!hasExpenses)         e.hasExpenses    = T('required')
     if (hasExpenses === 'yes') {
       const validInvoices = [...tfnInvoices, ...abnInvoices].filter(inv =>
         inv.file && parseFloat(inv.amount) > 0 && inv.description.trim()
@@ -425,7 +429,7 @@ export function FormClient() {
     const coreUrls: Record<string, string> = {}
     coreUploads.forEach(({ label }, i) => { if (coreResults[i]) coreUrls[label] = coreResults[i]! })
 
-    // Build FormData (no file blobs — URLs only)
+    // Build FormData (no file blobs - URLs only)
     const fd = new FormData()
     fd.append('waNumber',    waNumber)
     fd.append('auPhone',     auPhone)
@@ -515,8 +519,8 @@ export function FormClient() {
         window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
       } else {
         const data = await res.json().catch(() => ({}))
-        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
+        if (res.status === 429) alert(T('tooMany'))
+        else if (data?.error === 'invalid_file') alert(`${T('fileErrorPrefix')}${data.message || T('fileErrorGeneric')}`)
         else alert('Something went wrong. Please try again or contact us directly.')
       }
     } catch {
@@ -663,7 +667,7 @@ export function FormClient() {
 
           <div className="success-divider" />
 
-          <p className="success-follow-label">Tax, Super &amp; Workers' rights<br />Learn one thing every day 🙋<br />Free guides below ⬇️</p>
+          <p className="success-follow-label">{T('followUs')}<br />{T('followSub')}<br />{T('followGuides')}</p>
           <div className="success-socials">
             <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -691,61 +695,62 @@ export function FormClient() {
       <div className="form-page-wrap">
         <div className="form-card">
           <div className="form-header">
+            <FormLanguageToggle lang={lang} onChange={setLang} />
             <div className="form-brand">Working Holiday Tax</div>
-            
-          <h1 className="form-title">Tax Return Form</h1>
-            <p className="form-intro">Please fill out the form in English only.</p>
+
+          <h1 className="form-title">{T('titleTax')}</h1>
+            <p className="form-intro">{T('englishOnlyNotice')}</p>
           </div>
 
         <form onSubmit={handleSubmit} noValidate>
 
-          <div className="form-section-title">Contact details</div>
+          <div className="form-section-title">{lang === 'de' ? 'Kontaktdaten' : 'Contact details'}</div>
           <div>
 
-            <Field label="WhatsApp Number" required error={errors.waNumber}>
+            <Field label={T('whatsapp')} required error={errors.waNumber}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30}
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
-            <Field label="Australian Phone Number" required error={errors.auPhone}>
+            <Field label={T('auPhone')} required error={errors.auPhone}>
               <input className={`inp ${errors.auPhone ? 'inp-err' : ''}`} type="tel" placeholder="04XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30}
                 value={auPhone} onChange={e => { setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, auPhone: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
-            <Field label="First name (including middle name)" required error={errors.fullName}>
+            <Field label={T('firstName')} required error={errors.fullName}>
               <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport" autoComplete="given-name" maxLength={60}
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
             </Field>
-            <Field label="Last name" required error={errors.lastName}>
+            <Field label={T('lastName')} required error={errors.lastName}>
               <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Smith" autoComplete="family-name" maxLength={60}
                 value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 
-            <Field label="Email Address" required error={errors.email}>
+            <Field label={T('email')} required error={errors.email}>
               <input className={`inp ${errors.email ? 'inp-err' : ''}`} type="email" placeholder="your@email.com" autoComplete="email" inputMode="email" maxLength={200}
                 value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ''})) }} />
             </Field>
 
-            <Field label="Full Australian address (street, suburb, state, postcode)" required error={errors.address}>
+            <Field label={T('address')} required error={errors.address}>
               <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="Street, suburb, state, postcode" autoComplete="street-address" maxLength={300}
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
             </Field>
           </div>
 
-          <div className="form-section-title">Personal information</div>
+          <div className="form-section-title">{lang === 'de' ? 'Persönliche Daten' : 'Personal information'}</div>
           <div>
 
-            <Field label="Home Country" required error={errors.country}>
+            <Field label={lang === 'de' ? 'Heimatland' : 'Home Country'} required error={errors.country}>
               <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60}
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
             </Field>
 
-            <Field label="Date of Birth" required error={errors.dob}>
+            <Field label={T('dob')} required error={errors.dob}>
               <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date"
                 value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
             </Field>
 
-            <Field label="Marital Status" required error={errors.marital}>
+            <Field label={T('marital')} required error={errors.marital}>
               <div className="radio-group">
                 {(['Single', 'Married'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${marital === opt ? 'radio-card-active' : ''}`}>
@@ -759,22 +764,22 @@ export function FormClient() {
             </Field>
           </div>
 
-          <div className="form-section-title">Tax information</div>
+          <div className="form-section-title">{lang === 'de' ? 'Steuerdaten' : 'Tax information'}</div>
           <div>
 
-            <Field label="Tax File Number (TFN)" required error={errors.tfn}>
+            <Field label={T('tfn')} required error={errors.tfn}>
               <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
                 value={tfn} onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, tfn: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
-            <Field label="Primary job in the past year" required error={errors.primaryJob}>
+            <Field label={lang === 'de' ? 'Hauptjob im letzten Jahr' : 'Primary job in the past year'} required error={errors.primaryJob}>
               <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
             </Field>
 
           <div className="form-section-title">ABN (Australian Business Number)</div>
 
-            <Field label="Do you have an ABN?" required error={errors.hasAbn}>
+            <Field label={lang === 'de' ? 'Hast du eine ABN?' : 'Do you have an ABN?'} required error={errors.hasAbn}>
               <div className="radio-group">
                 {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${hasAbn === opt.val ? 'radio-card-active' : ''}`}>
@@ -788,56 +793,56 @@ export function FormClient() {
             </Field>
 
             {hasAbn === 'yes' && (<>
-              <Field label="ABN number" required error={errors.abnNumber}>
+              <Field label={lang === 'de' ? 'ABN-Nummer' : 'ABN number'} required error={errors.abnNumber}>
                 <input className={`inp ${errors.abnNumber ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 345 678 901" inputMode="numeric"
                   value={abnNumber} onChange={e => { setAbnNumber(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, abnNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
               </Field>
 
-              <Field label="Total annual income under ABN (AUD)" required error={errors.abnIncome}>
+              <Field label={lang === 'de' ? 'Jahres-Gesamteinkommen unter ABN (AUD)' : 'Total annual income under ABN (AUD)'} required error={errors.abnIncome}>
                 <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
                   value={abnIncome} onChange={e => { setAbnIncome(e.target.value.replace(/[^0-9.]/g, '')); setErrors(p => ({...p, abnIncome: ''})) }}  onKeyDown={e=>{if(!/^[0-9.]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
               </Field>
 
-              <Field label="What work did you do under your ABN?" required error={errors.abnWork}>
+              <Field label={lang === 'de' ? 'Welche Arbeit hast du unter ABN gemacht?' : 'What work did you do under your ABN?'} required error={errors.abnWork}>
                 <input className={`inp ${errors.abnWork ? 'inp-err' : ''}`} type="text" placeholder="e.g. Delivery driver, Freelance photographer"
                   value={abnWork} onChange={e => { setAbnWork(e.target.value); setErrors(p => ({...p, abnWork: ''})) }} />
               </Field>
             </>)}
 
-          <div className="form-section-title">Bank account details</div>
-            <Field label="Bank name" required error={errors.bankName}>
+          <div className="form-section-title">{T('sectionBank')}</div>
+            <Field label={T('bankName')} required error={errors.bankName}>
               <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
                 value={bankName} onChange={e => { setBankName(e.target.value); setErrors(p => ({...p, bankName: ''})) }} />
             </Field>
-            <Field label="Account holder full name" required error={errors.bankHolder}>
+            <Field label={lang === 'de' ? 'Vollständiger Name des Kontoinhabers' : 'Account holder full name'} required error={errors.bankHolder}>
               <input className={`inp ${errors.bankHolder ? 'inp-err' : ''}`} type="text" placeholder="As it appears on the bank account"
                 value={bankHolder} onChange={e => { setBankHolder(e.target.value); setErrors(p => ({...p, bankHolder: ''})) }} />
             </Field>
-            <Field label="Account number" required error={errors.bankAccount}>
+            <Field label={T('bankAccount')} required error={errors.bankAccount}>
               <input className={`inp ${errors.bankAccount ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12345678"
                 value={bankAccount} onChange={e => { setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankAccount: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
-            <Field label="BSB" required error={errors.bankBsb}>
+            <Field label={T('bankBSB')} required error={errors.bankBsb}>
               <input className={`inp ${errors.bankBsb ? 'inp-err' : ''}`} type="text" placeholder="e.g. 062-000"
                 value={bankBsb} onChange={e => { setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankBsb: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
           </div>
 
-          <div className="form-section-title">Documents</div>
+          <div className="form-section-title">{T('sectionDocuments')}</div>
           <div>
 
-            <Field label="Bank statements" required error={errors.bankStatement}>
-              <FileUpload id="bankStatement" label="Upload bank statement" accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
-                value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} />
+            <Field label={lang === 'de' ? 'Bankauszüge' : 'Bank statements'} required error={errors.bankStatement}>
+              <FileUpload id="bankStatement" label={lang === 'de' ? 'Bankauszug hochladen' : 'Upload bank statement'} accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
+                value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} lang={lang} />
             </Field>
 
-            <Field label="Selfie holding your passport" required error={errors.selfiePassport}>
-              <FileUpload id="selfiePassport" label="Upload selfie + passport" accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
-                value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} />
+            <Field label={T('selfieWithPassport')} required error={errors.selfiePassport}>
+              <FileUpload id="selfiePassport" label={T('uploadSelfie')} accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
+                value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} lang={lang} />
             </Field>
 
 
-            <Field label="Do you have work-related or ABN expenses?" required error={errors.hasExpenses}>
+            <Field label={lang === 'de' ? 'Hast du arbeitsbezogene oder ABN-Ausgaben?' : 'Do you have work-related or ABN expenses?'} required error={errors.hasExpenses}>
               <div className="radio-group">
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>
@@ -868,12 +873,11 @@ export function FormClient() {
             </>)}
           </div>
 
-          <div className="form-section-title">Tax year</div>
+          <div className="form-section-title">{lang === 'de' ? 'Steuerjahr' : 'Tax year'}</div>
           <div>
-            <Field label="Please select the tax year(s) you want to file" required error={errors.taxYear}>
+            <Field label={lang === 'de' ? 'Wähle das/die Steuerjahr(e), für die du einreichst' : 'Please select the tax year(s) you want to file'} required error={errors.taxYear}>
               <div style={{fontSize:12,color:'#587066',marginBottom:10,lineHeight:1.55,background:'#f7fbf9',border:'1px solid #d4eae2',borderRadius:8,padding:'10px 12px'}}>
-                💡 In Australia, the tax year runs from <strong>1 July to 30 June</strong>.<br/>
-                You can select <strong>more than one year</strong> if you haven&apos;t filed in previous years.
+                {lang === 'de' ? <>💡 In Australien läuft das Steuerjahr vom <strong>1. Juli bis 30. Juni</strong>.<br/>Du kannst <strong>mehrere Jahre</strong> auswählen, falls du in vorigen Jahren nicht eingereicht hast.</> : <>💡 In Australia, the tax year runs from <strong>1 July to 30 June</strong>.<br/>You can select <strong>more than one year</strong> if you haven&apos;t filed in previous years.</>}
               </div>
               <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:8}}>
                 {(() => {
@@ -883,7 +887,7 @@ export function FormClient() {
                   const startYear = parseInt(currentYear.split('-')[0], 10)
                   const years = Array.from({length: 4}, (_, i) => {
                     const yy = startYear - i
-                    return { code: `${yy}-${String(yy+1).slice(2)}`, range: `1.7.${yy} – 30.6.${yy+1}` }
+                    return { code: `${yy}-${String(yy+1).slice(2)}`, range: `1.7.${yy} - 30.6.${yy+1}` }
                   })
                   return years.map(({code, range}) => {
                     const isSelected = taxYears.includes(code)
@@ -898,7 +902,7 @@ export function FormClient() {
                           <div className={`check-box${isSelected ? ' checked' : ''}`} style={{flexShrink:0}}>
                             {isSelected && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                           </div>
-                          <span style={{fontWeight:600,fontSize:13}}>FY {code}{code === currentYear ? ' (current)' : ''}</span>
+                          <span style={{fontWeight:600,fontSize:13}}>FY {code}{code === currentYear ? (lang === 'de' ? ' (aktuell)' : ' (current)') : ''}</span>
                         </div>
                         <span style={{fontSize:10.5,color:'#587066',marginLeft:24}}>{range}</span>
                       </label>
@@ -908,32 +912,30 @@ export function FormClient() {
               </div>
               {taxYears.length > 1 && (
                 <div style={{fontSize:11,color:'#0E5C42',marginTop:8,fontWeight:500}}>
-                  ✓ {taxYears.length} tax years selected: {taxYears.sort().join(', ')}
+                  ✓ {taxYears.length} {lang === 'de' ? 'Steuerjahre ausgewählt' : 'tax years selected'}: {taxYears.sort().join(', ')}
                 </div>
               )}
             </Field>
           </div>
 
           <div>
-            <Field label="How did you hear about us?" required error={errors.howHeard}>
+            <Field label={T('howHeard')} required error={errors.howHeard}>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
                 value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
             </Field>
           </div>
 
-          <div className="form-section-title">Declaration</div>
+          <div className="form-section-title">{T('sectionDeclaration')}</div>
           <div>
 
             <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
-                I confirm that I have reviewed the{' '}
-                <a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>
-                {' '}section and all relevant ATO information, and I declare that I am:<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
+                {lang === 'de' ? <>Ich bestätige, dass ich den Abschnitt{' '}<a href="/de/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Steuerresidenz erklärt</a>{' '}und alle relevanten ATO-Informationen gelesen habe, und erkläre, dass ich bin:</> : <>I confirm that I have reviewed the{' '}<a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>{' '}section and all relevant ATO information, and I declare that I am:</>}<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
               </label>
               <div className="radio-group radio-group-col">
                 {([
-                  { val: 'resident', label: 'Australian resident for tax purposes' },
-                  { val: 'whm',      label: 'Working holiday maker for tax purposes' },
+                  { val: 'resident', label: lang === 'de' ? 'Australischer Steuerresident' : 'Australian resident for tax purposes' },
+                  { val: 'whm',      label: lang === 'de' ? 'Working Holiday Maker für die Steuer' : 'Working holiday maker for tax purposes' },
                 ] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
@@ -948,26 +950,23 @@ export function FormClient() {
             <Field label="" required error={errors.declared}>
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
                 <p className="decl-text">
-                  I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}
-                  <a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>
-                  {' '}&amp;{' '}
-                  <a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.
+                  {lang === 'de' ? <>Ich erkläre, dass alle Angaben wahr, vollständig und korrekt sind. Ich verstehe, dass falsche Angaben zu Strafen nach australischem Steuerrecht führen können, und bestätige, dass ich die{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen habe und akzeptiere.</> : <>I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}&amp;{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>}
                 </p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-                  <span className="check-label">I confirm this declaration</span>
+                  <span className="check-label">{T('declConfirm')}</span>
                 </label>
               </div>
             </Field>
 
             <Field label="" required error={errors.declaredIncome}>
               <div className={`declaration-box${errors.declaredIncome ? ' decl-error' : ''}`}>
-                <p className="decl-text">I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.</p>
+                <p className="decl-text">{lang === 'de' ? 'Ich erkläre unter meiner vollen rechtlichen Verantwortung, dass alle Einkommen, die im betreffenden Steuerjahr in Australien und im Ausland erzielt wurden, wahrheitsgemäß und vollständig offengelegt sind. Ich verstehe, dass jede falsche, irreführende oder unvollständige Erklärung eine Steuerstraftat nach australischem Recht darstellen kann und dass Working Holiday Tax keine Haftung für Ungenauigkeiten in den von mir bereitgestellten Informationen übernimmt.' : 'I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.'}</p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
                   <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-                  <span className="check-label">I confirm this declaration</span>
+                  <span className="check-label">{T('declConfirm')}</span>
                 </label>
               </div>
             </Field>
@@ -975,10 +974,10 @@ export function FormClient() {
 
           {Object.values(errors).some(v => v) && (
             <div className="errors-banner">
-              <strong>Please fix the following before submitting:</strong>
+              <strong>{T('fixBeforeSubmit')}</strong>
               <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
                 {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
-                  <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === 'Required' ? `${({
+                  <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === T('required') ? `${({
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
@@ -997,12 +996,12 @@ export function FormClient() {
                 <svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeDasharray="40" strokeDashoffset="10"/>
                 </svg>
-                Submitting…
+                {T('submitting')}
               </span>
-            ) : 'Submit Tax Return Form →'}
+            ) : T('submitTax')}
           </button>
 
-          <p className="form-footer-note">Your information is kept secure and private.</p>
+          <p className="form-footer-note">{T('secureNote')}</p>
 
         </form>
         </div>

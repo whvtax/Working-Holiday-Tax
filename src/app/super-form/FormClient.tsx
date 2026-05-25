@@ -1,6 +1,8 @@
 'use client'
 import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
+import { formStrings, type FormLang } from '@/lib/formStrings'
+import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 
 type UploadState = { file: File | null; preview: string | null }
 
@@ -14,7 +16,7 @@ function Field({ label, required, children, error }: { label: string; required?:
   )
 }
 
-function FileUpload({ id, label, accept, value, onChange }: { id: string; label: string; accept: string; value: UploadState; onChange: (v: UploadState) => void }) {
+function FileUpload({ id, label, accept, value, onChange, lang }: { id: string; label: string; accept: string; value: UploadState; onChange: (v: UploadState) => void; lang: FormLang }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null
@@ -39,14 +41,16 @@ function FileUpload({ id, label, accept, value, onChange }: { id: string; label:
         <div className="file-empty">
           <div className="file-upload-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 16V8M8 12l4-4 4 4" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><rect x="3" y="3" width="18" height="18" rx="4" stroke="#C8EAE0" strokeWidth="1.2"/></svg></div>
           <span className="file-upload-label">{label}</span>
-          <span className="file-upload-sub">Tap to choose a file</span>
+          <span className="file-upload-sub">{formStrings.tapToChoose[lang]}</span>
         </div>
       )}
     </div>
   )
 }
 
-export function FormClient() {
+export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = {}) {
+  const [lang, setLang] = useState<FormLang>(defaultLang)
+  const T = (key: keyof typeof formStrings) => formStrings[key][lang]
   const [firstName, setFirstName]   = useState('')
   const [lastName, setLastName]     = useState('')
   const [dob, setDob]               = useState('')
@@ -73,26 +77,26 @@ export function FormClient() {
 
   const validate = () => {
     const e: Record<string, string> = {}
-    if (!firstName.trim())      e.firstName      = 'Required'
-    if (!lastName.trim())       e.lastName       = 'Required'
-    if (!dob.trim())            e.dob            = 'Required'
-    if (!passport.trim())       e.passport       = 'Required'
-    if (!passportCountry.trim()) e.passportCountry = 'Required'
-    if (!smsPhone.trim())       e.smsPhone       = 'Required'
-    if (!email.trim())          e.email          = 'Required'
-    if (!auAddress.trim())      e.auAddress      = 'Required'
-    if (!homeAddress.trim())    e.homeAddress    = 'Required'
-    if (!tfn.trim())            e.tfn            = 'Required'
-    if (!superFundName.trim())   e.superFundName   = 'Required'
-    if (!superMemberNumber.trim()) e.superMemberNumber = 'Required'
-    if (!superOpeningDate.trim()) e.superOpeningDate = 'Required'
-    if (!bankName.trim())    e.bankName    = 'Required'
-    if (!bankHolder.trim())  e.bankHolder  = 'Required'
-    if (!bankAccount.trim()) e.bankAccount = 'Required'
-    if (!bankBsb.trim())     e.bankBsb     = 'Required'
-    if (!howHeard.trim())       e.howHeard       = 'Required'
-    if (!selfie.file)           e.selfie         = 'Required'
-    if (!terms)                 e.terms          = 'You must confirm this declaration to proceed'
+    if (!firstName.trim())      e.firstName      = T('required')
+    if (!lastName.trim())       e.lastName       = T('required')
+    if (!dob.trim())            e.dob            = T('required')
+    if (!passport.trim())       e.passport       = T('required')
+    if (!passportCountry.trim()) e.passportCountry = T('required')
+    if (!smsPhone.trim())       e.smsPhone       = T('required')
+    if (!email.trim())          e.email          = T('required')
+    if (!auAddress.trim())      e.auAddress      = T('required')
+    if (!homeAddress.trim())    e.homeAddress    = T('required')
+    if (!tfn.trim())            e.tfn            = T('required')
+    if (!superFundName.trim())   e.superFundName   = T('required')
+    if (!superMemberNumber.trim()) e.superMemberNumber = T('required')
+    if (!superOpeningDate.trim()) e.superOpeningDate = T('required')
+    if (!bankName.trim())    e.bankName    = T('required')
+    if (!bankHolder.trim())  e.bankHolder  = T('required')
+    if (!bankAccount.trim()) e.bankAccount = T('required')
+    if (!bankBsb.trim())     e.bankBsb     = T('required')
+    if (!howHeard.trim())       e.howHeard       = T('required')
+    if (!selfie.file)           e.selfie         = T('required')
+    if (!terms)                 e.terms          = T('mustConfirmDecl')
     return e
   }
 
@@ -121,11 +125,11 @@ export function FormClient() {
         window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
       } else {
         const data = await res.json().catch(() => ({}))
-        if (res.status === 429) alert('Too many submissions. Please wait 15 minutes and try again.')
-        else if (data?.error === 'invalid_file') alert(`File error: ${data.message || 'Please upload a valid image or PDF under 10MB.'}`)
-        else alert('Something went wrong. Please try again.')
+        if (res.status === 429) alert(T('tooMany'))
+        else if (data?.error === 'invalid_file') alert(`${T('fileErrorPrefix')}${data.message || T('fileErrorGeneric')}`)
+        else alert(T('generic'))
       }
-    } catch { alert('Something went wrong. Please try again.') }
+    } catch { alert(T('generic')) }
     finally { setLoading(false) }
   }
 
@@ -252,17 +256,17 @@ export function FormClient() {
               <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="success-title">Thank you, {displayName}! 🎉</h1>
-          <p className="success-body">We&apos;ve received your details and will be in touch shortly.</p>
+          <h1 className="success-title">{T('thankYou')}, {displayName}! 🎉</h1>
+          <p className="success-body">{T('successBody')}</p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.25)"/>
               <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3l.46 1.35c.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
             </svg>
-            Message us on WhatsApp
+            {T('msgWhatsApp')}
           </a>
           <div className="success-divider" />
-          <p className="success-follow-label">Tax, Super &amp; Workers' rights<br />Learn one thing every day 🙋<br />Free guides below ⬇️</p>
+          <p className="success-follow-label">{T('followUs')}<br />{T('followSub')}<br />{T('followGuides')}</p>
           <div className="success-socials">
             <a href="https://www.tiktok.com/@workingholidaytax" target="_blank" rel="noopener noreferrer" className="success-social-btn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.95a8.16 8.16 0 004.77 1.52V7.03a4.85 4.85 0 01-1-.34z"/></svg>
@@ -283,80 +287,81 @@ export function FormClient() {
     <div className="form-page-wrap">
       <div className="form-card">
         <div className="form-header">
+          <FormLanguageToggle lang={lang} onChange={setLang} />
           <div className="form-brand">Working Holiday Tax</div>
-          
-          <h1 className="form-title">Superannuation Refund</h1>
-          <p className="form-intro">Please fill out the form in English only.</p>
+
+          <h1 className="form-title">{T('titleSuper')}</h1>
+          <p className="form-intro">{T('englishOnlyNotice')}</p>
         </div>
         <form onSubmit={handleSubmit} noValidate>
-          <div className="form-section-title">Personal details</div>
-          <Field label="First name (including middle name)" required error={errors.firstName}>
+          <div className="form-section-title">{T('sectionPersonal')}</div>
+          <Field label={T('firstName')} required error={errors.firstName}>
             <input className={`form-input${errors.firstName?' input-error':''}`} placeholder="e.g. John Michael" autoComplete="given-name" maxLength={60} value={firstName} onChange={e=>{ setFirstName(e.target.value); setErrors(p=>({...p,firstName:''})) }}/>
           </Field>
-          <Field label="Last name" required error={errors.lastName}>
+          <Field label={T('lastName')} required error={errors.lastName}>
             <input className={`form-input${errors.lastName?' input-error':''}`} placeholder="e.g. Smith" autoComplete="family-name" maxLength={60} value={lastName} onChange={e=>{ setLastName(e.target.value); setErrors(p=>({...p,lastName:''})) }}/>
           </Field>
-          <Field label="Date of birth" required error={errors.dob}>
+          <Field label={T('dob')} required error={errors.dob}>
             <input type="date" className={`form-input${errors.dob?' input-error':''}`} autoComplete="bday" value={dob} onChange={e=>{ setDob(e.target.value); setErrors(p=>({...p,dob:''})) }}/>
           </Field>
-          <Field label="Passport number" required error={errors.passport}>
+          <Field label={T('passport')} required error={errors.passport}>
             <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" autoComplete="off" maxLength={30} value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>
           </Field>
-          <Field label="Country that issued the passport (with visa attached)" required error={errors.passportCountry}>
+          <Field label={lang === 'de' ? 'Land, das den Reisepass ausgestellt hat (mit Visum)' : "Country that issued the passport (with visa attached)"} required error={errors.passportCountry}>
             <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60} value={passportCountry} onChange={e=>{ setPassportCountry(e.target.value); setErrors(p=>({...p,passportCountry:''})) }}/>
           </Field>
 
-          <div className="form-section-title">Contact details</div>
-          <Field label="WhatsApp Number" required error={errors.smsPhone}>
+          <div className="form-section-title">{lang === 'de' ? 'Kontaktdaten' : 'Contact details'}</div>
+          <Field label={T('whatsapp')} required error={errors.smsPhone}>
             <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={smsPhone} onChange={e=>{ setSmsPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,smsPhone:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
-          <Field label="Email address" required error={errors.email}>
+          <Field label={T('email')} required error={errors.email}>
             <input type="email" className={`form-input${errors.email?' input-error':''}`} placeholder="e.g. john@email.com" autoComplete="email" inputMode="email" maxLength={200} value={email} onChange={e=>{ setEmail(e.target.value); setErrors(p=>({...p,email:''})) }}/>
           </Field>
-          <Field label="Full Australian address (street, suburb, state, postcode)" required error={errors.auAddress}>
+          <Field label={T('address')} required error={errors.auAddress}>
             <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" value={auAddress} onChange={e=>{ setAuAddress(e.target.value); setErrors(p=>({...p,auAddress:''})) }}/>
           </Field>
-          <Field label="Full home country address" required error={errors.homeAddress}>
+          <Field label={lang === 'de' ? 'Vollständige Adresse in deinem Heimatland' : "Full home country address"} required error={errors.homeAddress}>
             <textarea className={`form-input form-textarea${errors.homeAddress?' input-error':''}`} placeholder="e.g. 10 Downing Street, London, SW1A 2AA, UK" value={homeAddress} onChange={e=>{ setHomeAddress(e.target.value); setErrors(p=>({...p,homeAddress:''})) }}/>
           </Field>
 
-          <div className="form-section-title">Tax & super fund details</div>
-          <Field label="TFN (Tax File Number)" required error={errors.tfn}>
+          <div className="form-section-title">{lang === 'de' ? 'Steuer- und Super-Fonds-Daten' : 'Tax & super fund details'}</div>
+          <Field label={T('tfn')} required error={errors.tfn}>
             <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" autoComplete="off" inputMode="numeric" maxLength={20} value={tfn} onChange={e=>{ setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,tfn:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
-          <Field label="Super fund name" required error={errors.superFundName}>
+          <Field label={T('superFundName')} required error={errors.superFundName}>
             <input className={`form-input${errors.superFundName?' input-error':''}`} type="text" placeholder="e.g. AustralianSuper, HostPlus, Rest Super" autoComplete="off" maxLength={100} value={superFundName} onChange={e=>{ setSuperFundName(e.target.value); setErrors(p=>({...p,superFundName:''})) }}/>
           </Field>
-          <Field label="Member number" required error={errors.superMemberNumber}>
+          <Field label={T('superMemberNumber')} required error={errors.superMemberNumber}>
             <input className={`form-input${errors.superMemberNumber?' input-error':''}`} type="text" placeholder="e.g. 123456789" autoComplete="off" maxLength={50} value={superMemberNumber} onChange={e=>{ setSuperMemberNumber(e.target.value); setErrors(p=>({...p,superMemberNumber:''})) }}/>
           </Field>
-          <Field label="Account opening date" required error={errors.superOpeningDate}>
+          <Field label={T('superStartDate')} required error={errors.superOpeningDate}>
             <input className={`form-input${errors.superOpeningDate?' input-error':''}`} type="date" autoComplete="off" value={superOpeningDate} onChange={e=>{ setSuperOpeningDate(e.target.value); setErrors(p=>({...p,superOpeningDate:''})) }}/>
           </Field>
-          <div className="form-section-title">Bank account details</div>
-          <Field label="Bank name" required error={errors.bankName}>
+          <div className="form-section-title">{T('sectionBank')}</div>
+          <Field label={T('bankName')} required error={errors.bankName}>
             <input className={`form-input${errors.bankName?' input-error':''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ" autoComplete="off" maxLength={100} value={bankName} onChange={e=>{ setBankName(e.target.value); setErrors(p=>({...p,bankName:''})) }}/>
           </Field>
-          <Field label="Account holder full name" required error={errors.bankHolder}>
+          <Field label={lang === 'de' ? 'Vollständiger Name des Kontoinhabers' : "Account holder full name"} required error={errors.bankHolder}>
             <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder="As it appears on the bank account" value={bankHolder} onChange={e=>{ setBankHolder(e.target.value); setErrors(p=>({...p,bankHolder:''})) }}/>
           </Field>
-          <Field label="Account number" required error={errors.bankAccount}>
+          <Field label={T('bankAccount')} required error={errors.bankAccount}>
             <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankAccount:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
-          <Field label="BSB" required error={errors.bankBsb}>
+          <Field label={T('bankBSB')} required error={errors.bankBsb}>
             <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankBsb:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
 
-          <div className="form-section-title">Documents</div>
-          <Field label="Selfie with passport" required error={errors.selfie}>
-            <FileUpload id="selfie" label="Upload selfie with passport" accept=".jpg,.jpeg,.png,.webp,.pdf" value={selfie} onChange={v=>{ setSelfie(v); setErrors(p=>({...p,selfie:''})) }}/>
+          <div className="form-section-title">{T('sectionDocuments')}</div>
+          <Field label={T('selfieWithPassport')} required error={errors.selfie}>
+            <FileUpload id="selfie" label={T('uploadSelfie')} accept=".jpg,.jpeg,.png,.webp,.pdf" value={selfie} onChange={v=>{ setSelfie(v); setErrors(p=>({...p,selfie:''})) }} lang={lang}/>
           </Field>
 
-          <Field label="How did you hear about us?" required error={errors.howHeard}>
+          <Field label={T('howHeard')} required error={errors.howHeard}>
             <input className={`form-input${errors.howHeard?' input-error':''}`} placeholder="e.g. Instagram, TikTok, friend's name..." maxLength={80} value={howHeard} onChange={e=>{ setHowHeard(e.target.value); setErrors(p=>({...p,howHeard:''})) }}/>
           </Field>
 
-          <div className="form-section-title">Declaration</div>
+          <div className="form-section-title">{T('sectionDeclaration')}</div>
 
 
 
@@ -364,17 +369,17 @@ export function FormClient() {
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">I have read and accept the <a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a> &amp; <a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a></span>
+              <span className="check-label">{T('acceptTerms')} <a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">{T('clientAgreement')}</a> {T('and')} <a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">{T('privacyPolicy')}</a></span>
             </label>
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>
 
           {Object.values(errors).some(v => v) && (
             <div className="errors-banner">
-              <strong>Please fix the following before submitting:</strong>
+              <strong>{T('fixBeforeSubmit')}</strong>
               <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
                 {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
-                  <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === 'Required' ? `${({
+                  <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === T('required') ? `${({
                     firstName:'First Name',lastName:'Last Name',dob:'Date of Birth',
                     passport:'Passport Number',passportCountry:'Passport Country',
                     smsPhone:'Phone Number',email:'Email Address',auAddress:'Australian Address',
@@ -389,7 +394,7 @@ export function FormClient() {
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? <span className="btn-loading"><svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2.5" strokeDasharray="40" strokeDashoffset="10"/></svg>Submitting…</span> : 'Submit Super Application →'}
           </button>
-          <p className="form-footer-note">Your information is kept secure and private.</p>
+          <p className="form-footer-note">{T('secureNote')}</p>
         </form>
       </div>
     </div></>
