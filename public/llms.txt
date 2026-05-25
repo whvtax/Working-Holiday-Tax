@@ -43,6 +43,43 @@ The blog at https://workingholidaytax.com.au/blog covers 91 articles across six 
 - [Work Rights articles](https://workingholidaytax.com.au/blog/category/work-rights): 22 blog articles on minimum wages, conditions, awards, and protections
 - [Medicare & Other articles](https://workingholidaytax.com.au/blog/category/medicare-other): 13 blog articles on Medicare Levy, healthcare, and general Australian tax topics
 
+## German-Language Content (Deutsche Inhalte)
+
+A complete German translation is available at https://workingholidaytax.com.au/de for working holiday makers from Germany, Austria, Switzerland, and other German-speaking countries. All 143 blog articles, service pages, FAQs, and forms are professionally translated and use authentic German formatting (e.g., 11,5 % decimal notation, 1.000 $ thousands separator, du-form direct address). The German section mirrors the English content structure with hreflang tags linking corresponding pages.
+
+### Deutsche Service-Seiten
+
+- [TFN-Beantragung](https://workingholidaytax.com.au/de/tfn): Beantrage deine Tax File Number von überall auf der Welt
+- [ABN-Registrierung](https://workingholidaytax.com.au/de/abn): Registriere eine Australian Business Number für Sole-Trader-Arbeit
+- [Steuererklärung](https://workingholidaytax.com.au/de/tax-return): Reiche deine jährliche australische Steuererklärung ein
+- [Superannuation (DASP)](https://workingholidaytax.com.au/de/superannuation): Hole dir deine Super nach Verlassen Australiens zurück
+- [Medicare](https://workingholidaytax.com.au/de/medicare): Medicare Levy-Befreiung für Working Holiday Maker
+- [Steuerresidenz](https://workingholidaytax.com.au/de/tax-residency): Verstehe Steuerresidenz-Kategorien
+- [Steuer-Rechner](https://workingholidaytax.com.au/de/calculator): Berechne deine erwartete Steuerrückzahlung
+- [Kontakt](https://workingholidaytax.com.au/de/contact): Kontaktiere unser Team
+
+### Deutsches Blog
+
+Der Blog auf https://workingholidaytax.com.au/de/blog enthält 143 Artikel in sechs Kategorien:
+
+- [TFN-Artikel](https://workingholidaytax.com.au/de/blog/category/tfn): Tax File Number-Anträge, Nutzung und häufige Probleme
+- [ABN-Artikel](https://workingholidaytax.com.au/de/blog/category/abn): Australian Business Number für Sole Trader
+- [Steuererklärungs-Artikel](https://workingholidaytax.com.au/de/blog/category/tax-return): Jährliche Einreichung, Absetzungen, Rückzahlungen
+- [Superannuation-Artikel](https://workingholidaytax.com.au/de/blog/category/super): Super-Aufbau, DASP-Auszahlung, unbezahlte Super
+- [Arbeitsrechts-Artikel](https://workingholidaytax.com.au/de/blog/category/work-rights): Mindestlöhne, Bedingungen, Awards, Schutz
+- [Medicare & Sonstiges](https://workingholidaytax.com.au/de/blog/category/medicare-other): Medicare Levy, Gesundheitsversorgung, allgemeine Steuerthemen
+
+### Schlüsselfakten (Australisches Steuerjahr 2025-26)
+
+- Working Holiday Maker-Steuersatz: 15 % auf die ersten 45.000 $, 30 % auf 45.001-135.000 $, 37 % auf 135.001-190.000 $, 45 % darüber
+- Superannuation-Satz: 12 % der Ordinary Time Earnings (ab 1. Juli 2025)
+- DASP-Einbehaltungssatz für Working Holiday Maker: 65 % der steuerpflichtigen Komponente
+- Steuereinbehaltung ohne TFN: 45 %
+- No-ABN-Einbehaltungssatz: 47 %
+- GST-Registrierungsschwelle: 75.000 $ Jahresumsatz
+- Zweites Working Holiday Visum: 88 Tage spezifizierte Regionalarbeit erforderlich
+- Drittes Working Holiday Visum: 6 Monate (179 Tage) spezifizierte Regionalarbeit erforderlich
+
 ## Sitemap
 
 Full sitemap available at https://workingholidaytax.com.au/sitemap.xml

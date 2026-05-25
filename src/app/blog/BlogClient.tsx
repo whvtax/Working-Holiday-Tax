@@ -459,7 +459,7 @@ export default function BlogClient({
 
                     {/* Title */}
                     <h2
-                      className="font-serif"
+                      className="font-serif blog-card-title"
                       style={{ fontSize: '16px', fontWeight: 700, color: '#080F0D', lineHeight: 1.35, letterSpacing: '-0.015em', margin: 0 }}
                     >
                       {article.title}

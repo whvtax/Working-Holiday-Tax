@@ -69,7 +69,7 @@ const TESTIMONIALS = [
     name: "Liam O'Connor",
     from: 'Irland · WHV 417',
     quote: 'Ich hatte mehrere Arbeitgeber und wusste nicht, wie ich meine Super zurückbekomme. Working Holiday Tax hat sich um alles gekümmert und mir geholfen, sie zurückzuholen.',
-    amount: '$3,200',
+    amount: '3.200 $',
     initials: 'L',
     bgColor: '#EAF6F1',
     textColor: '#0B5240',
@@ -78,7 +78,7 @@ const TESTIMONIALS = [
     name: 'Jonas Müller',
     from: 'Deutschland · WHV 417',
     quote: 'Mega einfacher Prozess. Sie haben mir alles klar erklärt und dafür gesorgt, dass ich meine komplette Super zurückbekomme. Klare Empfehlung.',
-    amount: '$4,100',
+    amount: '4.100 $',
     initials: 'J',
     bgColor: '#EAF6F1',
     textColor: '#0B5240',
@@ -180,12 +180,12 @@ export default function GermanSuperannuationPage() {
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100 %' }}>
                 Super beantragen →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100 %' }}>
                 So funktioniert es →
               </a>
             </div>
@@ -396,7 +396,7 @@ export default function GermanSuperannuationPage() {
           </div>
 
           <div className="text-center mt-10 reveal delay-2">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100 %' }}>
               Super beantragen →
             </a>
           </div>
@@ -479,7 +479,7 @@ export default function GermanSuperannuationPage() {
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
+                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100 %', maxWidth:'220px' }}>
                 Jetzt Hilfe holen →
               </a>
             </div>

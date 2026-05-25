@@ -43,9 +43,9 @@ const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill=
 
 // ─── TESTIMONIALS - real backpacker reviews ─────────────────────────────
 const TESTIMONIALS = [
-  { name: 'Tobias Bauer',  from: 'Deutschland · WHV 417', quote: 'Sie haben mir alles einfach erklärt und Geld zurückgeholt, von dem ich gar nichts wusste.', amount: '$4.100', initials: 'T' },
-  { name: 'Anna Larsen',   from: 'Norwegen · WHV 417',    quote: 'Meine TFN und Steuererklärung wurden super schnell erledigt. Ich musste mir um nichts Gedanken machen.', amount: '$2.450', initials: 'A' },
-  { name: "Liam O'Connor", from: 'Irland · WHV 417',       quote: 'Ich hatte mehrere Jobs und keine Ahnung, was zu tun ist. Sie haben sich um alles gekümmert.', amount: '$3.200', initials: 'L' },
+  { name: 'Tobias Bauer',  from: 'Deutschland · WHV 417', quote: 'Sie haben mir alles einfach erklärt und Geld zurückgeholt, von dem ich gar nichts wusste.', amount: '4.100 $', initials: 'T' },
+  { name: 'Anna Larsen',   from: 'Norwegen · WHV 417',    quote: 'Meine TFN und Steuererklärung wurden super schnell erledigt. Ich musste mir um nichts Gedanken machen.', amount: '2.450 $', initials: 'A' },
+  { name: "Liam O'Connor", from: 'Irland · WHV 417',       quote: 'Ich hatte mehrere Jobs und keine Ahnung, was zu tun ist. Sie haben sich um alles gekümmert.', amount: '3.200 $', initials: 'L' },
 ]
 
 const STEPS = [
@@ -159,7 +159,7 @@ export default function GermanHomePage() {
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100 %', marginLeft: 'auto', marginRight: 'auto' }}>
               Steuererklärung starten →
             </a>
           </div>
@@ -335,7 +335,7 @@ export default function GermanHomePage() {
           <div className="text-center" style={{ marginTop: '8px' }}>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100 %', marginLeft: 'auto', marginRight: 'auto' }}>
               Steuererklärung starten →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>

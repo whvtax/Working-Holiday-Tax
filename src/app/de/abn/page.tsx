@@ -129,12 +129,12 @@ export default function ABNPageDE() {
               style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
+                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100 %' }}>
                 ABN registrieren →
               </a>
               <a href="#how-to-register"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
+                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100 %' }}>
                 So funktioniert&apos;s →
               </a>
             </div>
@@ -264,7 +264,7 @@ export default function ABNPageDE() {
           <div className="text-center mt-6 lg:mt-8">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100 %' }}>
               ABN registrieren →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(10,15,13,0.4)' }}>
@@ -387,7 +387,7 @@ export default function ABNPageDE() {
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
+                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100 %', maxWidth: '240px' }}>
                 Jetzt Hilfe bekommen →
               </a>
             </div>

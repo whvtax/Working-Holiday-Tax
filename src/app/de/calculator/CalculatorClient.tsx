@@ -25,7 +25,7 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res'): Result {
   const safePct = wit > 0 ? Math.min(100, (Math.abs(d) / wit) * 100) : 50
   if (d > 0) return { label: 'Geschätzte Rückzahlung', amount: `$${Math.round(d).toLocaleString()}`, sub: visa === 'whm' ? 'Working Holiday Maker Steuersatz' : 'Australischer Steuerresidenten-Satz', pct: safePct, owing: false }
   if (d < 0) return { label: 'Steuerschuld',        amount: `$${Math.round(Math.abs(d)).toLocaleString()}`, sub: 'Du musst eventuell Steuer nachzahlen. Schreib uns für eine Beratung.', pct: safePct, owing: true }
-  return             { label: 'Ausgeglichen',         amount: '$0', sub: 'Keine Rückzahlung, keine Steuerschuld.', pct: 50, owing: false }
+  return             { label: 'Ausgeglichen',         amount: '0 $', sub: 'Keine Rückzahlung, keine Steuerschuld.', pct: 50, owing: false }
 }
 
 export function CalculatorClient({ faqs = [] }: Props) {

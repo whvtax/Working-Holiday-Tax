@@ -132,7 +132,7 @@ export default function GermanCategoryPage({ params }: Props) {
             </nav>
 
             <div className="inline-flex items-center gap-2" style={{ marginBottom: '12px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: colors.text, display: 'inline-block' }} aria-hidden="true" />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50 %', background: colors.text, display: 'inline-block' }} aria-hidden="true" />
               <span style={{ fontSize: '10px', letterSpacing: '0.16em', color: colors.text, textTransform: 'uppercase', fontWeight: 600 }}>
                 {articles.length} {articles.length === 1 ? 'Artikel' : 'Artikel'}
               </span>

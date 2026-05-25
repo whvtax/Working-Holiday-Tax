@@ -129,12 +129,12 @@ export default function TFNPageDE() {
               style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
+                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100 %' }}>
                 TFN beantragen →
               </a>
               <a href="#how-to-apply"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
+                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100 %' }}>
                 So funktioniert&apos;s →
               </a>
             </div>
@@ -245,7 +245,7 @@ export default function TFNPageDE() {
 
           <div className="text-center mt-6 lg:mt-10">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100 %', marginLeft: 'auto', marginRight: 'auto' }}>
               TFN beantragen →
             </a>
           </div>
@@ -332,7 +332,7 @@ export default function TFNPageDE() {
                 ))}
               </div>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-                style={{ height: '50px', padding: '0 24px', fontSize: '14px', width: '100%', justifyContent: 'center' }}>
+                style={{ height: '50px', padding: '0 24px', fontSize: '14px', width: '100 %', justifyContent: 'center' }}>
                 TFN beantragen →
               </a>
             </div>
@@ -398,7 +398,7 @@ export default function TFNPageDE() {
 
           <div className="text-center mt-8 lg:mt-12">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary"
-              style={{ height: '52px', padding: '0 40px', fontSize: '15px', maxWidth: '320px', width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              style={{ height: '52px', padding: '0 40px', fontSize: '15px', maxWidth: '320px', width: '100 %', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               TFN beantragen →
             </a>
           </div>
@@ -422,7 +422,7 @@ export default function TFNPageDE() {
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
+                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100 %', maxWidth: '240px' }}>
                 Jetzt Hilfe bekommen →
               </a>
             </div>

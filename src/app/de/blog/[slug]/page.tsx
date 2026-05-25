@@ -264,7 +264,7 @@ export default function GermanGuidePage({ params }: Props) {
                   <span>/</span>
                 </>
               )}
-              <span style={{ color: '#8AADA3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
+              <span style={{ color: '#8AADA3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50 %' }}>{guide.title}</span>
             </div>
           </div>
 

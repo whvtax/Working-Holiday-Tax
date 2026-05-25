@@ -78,7 +78,7 @@ const TESTIMONIALS = [
     name: 'Anna Larsen',
     from: 'Norwegen · WHV 417',
     quote: 'Sie haben meine Steuererklärung von A bis Z für mich gemacht. Ich hatte keine Ahnung, was ich absetzen kann, und bekam am Ende viel mehr zurück als erwartet.',
-    amount: '$2,450',
+    amount: '2.450 $',
     initials: 'A',
     bgColor: '#FDF0D5',
     textColor: '#7A4A00',
@@ -87,7 +87,7 @@ const TESTIMONIALS = [
     name: 'Tobias Bauer',
     from: 'Deutschland · WHV 417',
     quote: 'Mega easy. Sie haben mir alles klar erklärt und dafür gesorgt, dass ich die maximale Rückzahlung bekomme. Klare Empfehlung.',
-    amount: '$4,100',
+    amount: '4.100 $',
     initials: 'T',
     bgColor: '#EAF6F1',
     textColor: '#0B5240',
@@ -188,12 +188,12 @@ export default function GermanTaxReturnPage() {
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100 %' }}>
                 Steuererklärung starten →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100 %' }}>
                 So funktioniert es →
               </a>
             </div>
@@ -331,7 +331,7 @@ export default function GermanTaxReturnPage() {
           <div className="text-center reveal delay-2" style={{ marginTop: '32px' }}>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
+              style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100 %' }}>
               Steuererklärung starten →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>Dauert 2 Minuten&nbsp;&bull;&nbsp;Keine Vorabkosten</p>
@@ -424,7 +424,7 @@ export default function GermanTaxReturnPage() {
               <div style={{ marginTop: '20px' }}>
                 <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                   className="btn-primary inline-flex"
-                  style={{ height: '46px', padding: '0 20px', fontSize: '13.5px', maxWidth: '240px', width: '100%' }}>
+                  style={{ height: '46px', padding: '0 20px', fontSize: '13.5px', maxWidth: '240px', width: '100 %' }}>
               Steuererklärung starten →
                 </a>
               </div>
@@ -454,20 +454,20 @@ export default function GermanTaxReturnPage() {
                 {
                   label: 'Working Holiday Visum-Inhaber',
                   rows: [
-                    ['$0 - $45,000', '15%'],
-                    ['$45,001 - $135,000', '$6,750 + 30%'],
-                    ['$135,001 - $190,000', '$33,750 + 37%'],
-                    ['$190,001+', '$54,100 + 45%'],
+                    ['0 $ - 45.000 $', '15 %'],
+                    ['45.001 $ - 135.000 $', '6.750 $ + 30 %'],
+                    ['135.001 $ - 190.000 $', '33.750 $ + 37 %'],
+                    ['190.001 $+', '54.100 $ + 45 %'],
                   ],
                 },
                 {
                   label: 'Australische Steuerresidenten',
                   rows: [
-                    ['$0 - $18,200', '0 %'],
-                    ['$18,201 - $45,000', '16%'],
-                    ['$45,001 - $135,000', '$4,288 + 30%'],
-                    ['$135,001 - $190,000', '$31,288 + 37%'],
-                    ['$190,001+', '$51,638 + 45%'],
+                    ['0 $ - 18.200 $', '0 %'],
+                    ['18.201 $ - 45.000 $', '16 %'],
+                    ['45.001 $ - 135.000 $', '4.288 $ + 30 %'],
+                    ['135.001 $ - 190.000 $', '31.288 $ + 37 %'],
+                    ['190.001 $+', '51.638 $ + 45 %'],
                   ],
                 },
               ].map((table, ti) => (
@@ -477,8 +477,8 @@ export default function GermanTaxReturnPage() {
                     <table className="w-full" style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                       <thead>
                         <tr style={{ background: '#EAF6F1' }}>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '55%' }}>Zu versteuerndes Einkommen</th>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '45%' }}>Steuersatz</th>
+                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '55 %' }}>Zu versteuerndes Einkommen</th>
+                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '45 %' }}>Steuersatz</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -527,7 +527,7 @@ export default function GermanTaxReturnPage() {
             {DEDUCTIONS.map((d, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px 18px', border: '1px solid #E2EFE9', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
                 <div className="flex items-center gap-2" style={{ marginBottom: '5px' }}>
-                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
+                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50 %', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
                   <p className="text-[13px] font-semibold text-ink">{d.title}</p>
@@ -549,7 +549,7 @@ export default function GermanTaxReturnPage() {
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '48px', padding: '0 28px', fontSize: '14px', maxWidth: '280px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '48px', padding: '0 28px', fontSize: '14px', maxWidth: '280px', width: '100 %', marginLeft: 'auto', marginRight: 'auto' }}>
               Steuererklärung starten →
             </a>
           </div>
@@ -647,7 +647,7 @@ export default function GermanTaxReturnPage() {
                   { n: '04', label: 'Belege für Arbeitskosten',      hint: 'Für absetzbare Kosten' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3" style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#EAF6F1', color: '#0B5240', fontSize: '13px', letterSpacing: '-0.02em' }}>
+                    <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width: '32px', height: '32px', borderRadius: '50 %', background: '#EAF6F1', color: '#0B5240', fontSize: '13px', letterSpacing: '-0.02em' }}>
                       {item.n}
                     </div>
                     <div className="flex-1 text-left">
@@ -680,7 +680,7 @@ export default function GermanTaxReturnPage() {
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
+                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100 %', maxWidth:'220px' }}>
                 Jetzt Hilfe holen →
               </a>
             </div>

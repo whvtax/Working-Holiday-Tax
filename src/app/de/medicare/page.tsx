@@ -154,12 +154,12 @@ export default function GermanMedicarePage() {
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100 %' }}>
                 Medicare-Berechtigung prüfen →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100 %' }}>
                 So funktioniert es →
               </a>
             </div>
@@ -360,7 +360,7 @@ export default function GermanMedicarePage() {
             ].map((item, i) => (
               <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#EEF7F2', border: '1px solid #C8EAE0' }}>
                 <div className="flex items-center gap-2" style={{ marginBottom: '6px' }}>
-                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
+                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50 %', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
                   <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.title}</p>
@@ -393,7 +393,7 @@ export default function GermanMedicarePage() {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                  style={{ width: '100 %', height: '100 %', border: 'none', display: 'block' }}
                 />
               </div>
               {/* Desktop (landscape) */}
@@ -405,7 +405,7 @@ export default function GermanMedicarePage() {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                  style={{ width: '100 %', height: '100 %', border: 'none', display: 'block' }}
                 />
               </div>
             </div>
