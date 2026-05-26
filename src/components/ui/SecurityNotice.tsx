@@ -13,6 +13,7 @@ export function SecurityNotice() {
 
   // Auto-detect language from URL (mirrors Nav.tsx logic)
   const isGerman = pathname === '/de' || pathname.startsWith('/de/')
+  const isJapanese = pathname === '/ja' || pathname.startsWith('/ja/')
 
   useEffect(() => {
     setMounted(true)
@@ -39,13 +40,15 @@ export function SecurityNotice() {
 
   if (!mounted) return null
 
+  const lang = isGerman ? 'de' : isJapanese ? 'ja' : 'en'
+
   return (
     <div
       role="alert"
       aria-live="polite"
       className="security-notice"
       data-visible={visible}
-      lang={isGerman ? 'de' : 'en'}
+      lang={lang}
     >
       <div className="security-notice-inner">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
@@ -56,6 +59,8 @@ export function SecurityNotice() {
         <p className="security-notice-text">
           {isGerman ? (
             <>Ein registrierter Steueragent fragt niemals nach deinen <strong>myGov-Logindaten</strong>.</>
+          ) : isJapanese ? (
+            <>登録税理士が<strong>myGovのログイン情報</strong>を尋ねることは絶対にありません。</>
           ) : (
             <>A registered tax agent will never ask for your <strong>myGov login details</strong>.</>
           )}
@@ -64,7 +69,7 @@ export function SecurityNotice() {
           type="button"
           onClick={handleClose}
           className="security-notice-close"
-          aria-label={isGerman ? 'Hinweis schließen' : 'Dismiss notice'}
+          aria-label={isGerman ? 'Hinweis schließen' : isJapanese ? '通知を閉じる' : 'Dismiss notice'}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
