@@ -168,7 +168,7 @@ export default function BlogClient({
 }: {
   guides: Guide[]
   initialCategory?: Category
-  lang?: 'en' | 'de'
+  lang?: 'en' | 'de' | 'ja'
   ui?: BlogUIStrings
   blogBasePath?: string
   homePath?: string
@@ -270,11 +270,11 @@ export default function BlogClient({
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#EAF6F1', borderRadius: '12px', border: '1px solid #C8EAE0' }}>
                 <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#0B5240', lineHeight: 1 }}>2025-26</div>
-                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Steuerjahr' : 'Tax year'}</div>
+                <div style={{ fontSize: '11.5px', color: '#0B5240', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Steuerjahr' : lang === 'ja' ? '税年度' : 'Tax year'}</div>
               </div>
               <div className="stat-card" style={{ padding: '16px 18px', background: '#FDF0D5', borderRadius: '12px', border: '1px solid #E9A020' }}>
-                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>{lang === 'de' ? 'Frei' : 'Free'}</div>
-                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Kostenlos' : 'No sign-up'}</div>
+                <div className="font-serif" style={{ fontSize: '26px', fontWeight: 800, color: '#7A4A00', lineHeight: 1 }}>{lang === 'de' ? 'Frei' : lang === 'ja' ? '無料' : 'Free'}</div>
+                <div style={{ fontSize: '11.5px', color: '#7A4A00', marginTop: '5px', fontWeight: 500, letterSpacing: '0.02em' }}>{lang === 'de' ? 'Kostenlos' : lang === 'ja' ? '登録不要' : 'No sign-up'}</div>
               </div>
             </div>
           </div>
