@@ -5,10 +5,13 @@ import { WA_URL, EMAIL } from '@/lib/constants'
 
 export function Footer() {
   const pathname = usePathname() || '/'
-  const isGerman = pathname === '/de' || pathname.startsWith('/de/')
+  const isGerman   = pathname === '/de' || pathname.startsWith('/de/')
+  const isJapanese = pathname === '/ja' || pathname.startsWith('/ja/')
+  const locale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
 
   // Localized strings + paths
-  const t = isGerman
+  const t =
+    locale === 'de'
     ? {
         tagline: 'Australische Steuer, erledigt.',
         intro: 'Wir kümmern uns um TFN, Steuererklärung, Super-Auszahlung und ABN für Working Holiday Maker in Australien.',
@@ -41,6 +44,42 @@ export function Footer() {
         // Client Agreement & Privacy stay in English (legal docs)
         clientAgreement: 'Client Agreement',
         privacyPolicy: 'Privacy Policy',
+        secure: 'Sicher & verschlüsselt',
+      }
+    : locale === 'ja'
+    ? {
+        tagline: 'オーストラリアの税金、まるごと対応。',
+        intro: 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー返金、ABN登録をすべて代行します。',
+        askUs: 'お気軽にご相談ください',
+        services: 'サービス',
+        serviceLinks: [
+          { label: 'TFN申請',           href: '/ja/tfn' },
+          { label: 'ABN登録',           href: '/ja/abn' },
+          { label: 'タックスリターン',   href: '/ja/tax-return' },
+          { label: 'スーパー返金（DASP）', href: '/ja/superannuation' },
+          { label: 'メディケア税免除',   href: '/ja/medicare' },
+        ],
+        learn: '記事・ガイド',
+        learnLinks: [
+          { label: 'ブログ',                   href: '/ja/blog' },
+          { label: 'TFNの記事',                href: '/ja/blog/category/tfn' },
+          { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
+          { label: 'スーパー返金の記事',       href: '/ja/blog/category/super' },
+          { label: '労働者の権利',             href: '/ja/blog/category/work-rights' },
+        ],
+        connect: 'お問い合わせ',
+        connectLinks: [
+          { label: 'Facebook',   href: 'https://www.facebook.com/workingholidaytax', external: true },
+          { label: 'メール',     href: `mailto:${EMAIL}`, external: false },
+          { label: 'WhatsApp',   href: WA_URL, external: true },
+          { label: 'TikTok',     href: 'https://www.tiktok.com/@workingholidaytax', external: true },
+          { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
+        ],
+        copyright: 'Working Holiday Tax. All rights reserved.',
+        // Legal docs stay in English
+        clientAgreement: 'Client Agreement',
+        privacyPolicy: 'Privacy Policy',
+        secure: '安全・暗号化通信',
       }
     : {
         tagline: 'Australian tax, sorted.',
@@ -73,6 +112,7 @@ export function Footer() {
         copyright: 'Working Holiday Tax. All rights reserved.',
         clientAgreement: 'Client Agreement',
         privacyPolicy: 'Privacy Policy',
+        secure: 'Secure & encrypted',
       }
 
   return (
@@ -124,7 +164,7 @@ export function Footer() {
                 </a>
                 <div className="flex items-center justify-center rounded-full"
                   style={{ width: '38px', height: '38px', border: '1.5px solid #C8EAE0', background: '#fff' }}
-                  title={isGerman ? 'Sicher & verschlüsselt' : 'Secure & encrypted'}>
+                  title={t.secure}>
                   <svg width="17" height="19" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
                     <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     'オーストラリア 税理士 連絡',
     'ワーキングホリデー 税金 相談',
     'TFN 問い合わせ',
-    'オーストラリア 確定申告 相談 日本語',
+    'オーストラリア タックスリターン 相談 日本語',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/contact`,
@@ -53,11 +53,11 @@ const FAQS = [
   },
   {
     question: '質問するだけで料金はかかりますか？',
-    answer: 'いいえ。初回のご相談やご質問は無料です。確定申告、TFN申請、スーパー受取などのサービスにお申し込みいただいた場合のみ料金が発生します。',
+    answer: 'いいえ。初回のご相談やご質問は無料です。タックスリターン、TFN申請、スーパー受取などのサービスにお申し込みいただいた場合のみ料金が発生します。',
   },
   {
     question: '日本語で対応してもらえますか？',
-    answer: '基本的なやり取りは英語ですが、Google翻訳などを使って日本語でのお問い合わせにも対応しています。毎年45カ国以上のワーキングホリデーメーカーをサポートしているので、言語の壁を感じることなく、わかりやすくご案内します。',
+    answer: 'やり取りは主に英語ですが、日本語でのお問い合わせも歓迎です。毎年45カ国以上のワーキングホリデーメーカーをサポートしており、日本人のお客様にも数多くご利用いただいています。ご質問はお気軽に日本語でお送りください。',
   },
   {
     question: 'すぐに書類を送る必要がありますか？',
@@ -65,7 +65,7 @@ const FAQS = [
   },
   {
     question: 'すでにオーストラリアを離れていますが対応してもらえますか？',
-    answer: 'はい。オーストラリアに滞在中の方、最近帰国された方、数年前に帰国された方など、すべての方に対応しています。確定申告、スーパー受取（DASP）、ABN関連手続きまで、すべてオンラインで完結します。',
+    answer: 'はい。オーストラリアに滞在中の方、最近帰国された方、数年前に帰国された方など、すべての方に対応しています。タックスリターン、スーパー受取（DASP）、ABN関連手続きまで、すべてオンラインで完結します。',
   },
 ]
 
@@ -78,7 +78,7 @@ export default function JapaneseContactPage() {
     '@id': `${SITE_URL}/ja/contact`,
     url: `${SITE_URL}/ja/contact`,
     name: 'お問い合わせ - Working Holiday Tax',
-    description: '登録税理士に直接ご相談ください。TFN、確定申告、スーパー、ABNのご質問に対応します。',
+    description: '登録税理士に直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
     inLanguage: 'ja',
     isPartOf: {
       '@type': 'WebSite',
@@ -362,7 +362,7 @@ export default function JapaneseContactPage() {
               準備ができたら
             </p>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-              今すぐ確定申告を始めましょう
+              今すぐタックスリターンを始めましょう
             </h2>
             <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '440px' }}>
               書類もATOポータルも不要。すべてオンラインで完結、通常24時間以内に対応します。
@@ -370,7 +370,7 @@ export default function JapaneseContactPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"
               style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
-              確定申告を始める →
+              タックスリターンを依頼する →
             </a>
           </div>
         </div>

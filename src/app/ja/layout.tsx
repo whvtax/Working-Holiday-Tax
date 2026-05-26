@@ -24,12 +24,12 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'オーストラリアのワーキングホリデー（サブクラス417・462）専門の登録税理士。TFN申請、確定申告、スーパー受取（DASP）、ABN登録まで、すべてオンラインでサポート。',
+    'オーストラリアのワーキングホリデー（サブクラス417・462）専門の登録税理士。TFN申請、タックスリターン、スーパー受取（DASP）、ABN登録まで、すべてオンラインでサポート。',
   keywords: [
     // Core Japanese keywords - high search volume
     'オーストラリア ワーキングホリデー 税金',
     'ワーホリ オーストラリア 税金',
-    'オーストラリア 確定申告 ワーホリ',
+    'オーストラリア タックスリターン ワーホリ',
     'TFN 申請 オーストラリア',
     'ABN 登録 ワーホリ',
     'スーパーアニュエーション 受取',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     'オーストラリア 税理士 ワーホリ',
     // Medicare / specific topics
     'メディケア レビー 免除',
-    'オーストラリア 確定申告 やり方',
+    'オーストラリア タックスリターン やり方',
     // Long-tail
     'ワーホリ 帰国後 税金',
     'オーストラリア 帰国 スーパー',
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja`,
     siteName: 'Working Holiday Tax',
     title: 'ワーキングホリデー オーストラリア 税金・スーパー・TFN 専門',
-    description: 'オーストラリアのワーキングホリデー専門の登録税理士。TFN、確定申告、スーパー、ABNまで、すべてお任せください。',
+    description: 'オーストラリアのワーキングホリデー専門の登録税理士。TFN、タックスリターン、スーパー、ABNまで、すべてお任せください。',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
