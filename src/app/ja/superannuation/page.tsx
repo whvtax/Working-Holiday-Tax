@@ -45,50 +45,50 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: '数年前にオーストラリアを離れました。今からでもスーパーを申請できますか？',
-    answer: 'はい。スーパー受取に期限はありません。残高がすでにATOに移管されていても、取り戻すことができます。',
+    question: '数年前にオーストラリアを離れました。今からでもDASPを申請できますか？',
+    answer: 'はい、スーパーアニュエーション返金（DASP）の申請に明確な期限はありません。何年経っていても申請可能です。残高がスーパーファンドからATOへ移管されていても、そこから取り戻せます。当社が世界中どこからでも代理申請いたします。',
   },
   {
-    question: '複数の雇用主で働いていました。スーパー口座も複数ありますか？',
-    answer: '複数の雇用主で働いた場合、複数のスーパー口座を持っている可能性があります。すべて見つけて、まとめてから申請をお手伝いします。',
+    question: '複数の雇用主で働きました。スーパー口座は複数ありますか？',
+    answer: 'はい、複数の雇用主で働いた場合、それぞれが異なるスーパーファンドに積み立てている可能性があります。当社が代理ですべての口座を特定し、統合してから一括でDASP申請を行うため、漏れなくスーパー全額を取り戻せます。',
   },
   {
-    question: 'スーパーが受け取れるまでどのくらいかかりますか？',
-    answer: 'スーパー受取（DASP）は通常、申請承認から2〜4週間以内に支払われます。お金は直接あなたの銀行口座に振り込まれます。',
+    question: 'DASP申請から振込までどのくらいかかりますか？',
+    answer: '申請が承認されてから通常2〜4週間以内にお支払いされます。スーパーファンドからご指定の銀行口座（オーストラリアまたは日本）に直接振り込まれます。当社で申請進捗をモニタリングし、ご連絡いたします。',
   },
   {
-    question: 'スーパーはオーストラリアの口座と海外口座、どちらに振り込めますか？',
-    answer: 'スーパーは直接ご指定の銀行口座に振り込まれます。ご希望に応じて、オーストラリアの口座にも海外の口座にも振り込み手配が可能です。',
+    question: 'スーパーは日本の口座にも振り込めますか？',
+    answer: 'はい、ご指定の銀行口座（オーストラリアまたは日本を含む海外口座）に直接振り込まれます。すでに日本に帰国された方も、日本の銀行口座で問題なく受け取れます。',
   },
   {
-    question: 'ABNで働いていた場合もスーパーは受け取れますか？',
-    answer: '通常は受け取れません。ABNでの業務（請負業者・個人事業主）の場合、一般的にスーパーは支払われません。スーパーは従業員として分類された場合にのみ支払われます。ABN請負業者として働く場合、希望すればご自身でスーパー積立を手配する必要があります。',
+    question: 'ABNで請負業務をしていた場合もスーパーは受け取れますか？',
+    answer: 'ABN業務（請負業者・個人事業主）の場合、原則として雇用主からスーパー貢献はありません。スーパーは「従業員（TFNでの雇用）」として働いた期間にのみ積み立てられます。ただしABN業務でも、実態が雇用関係に近い場合はスーパーの対象となることがあるので、当社にご相談ください。',
   },
 ]
 
 const STEPS = [
-  { n: '1', title: '状況を教えてください', body: 'ビザと業務のデータを送信してください。正しくご案内します。' },
-  { n: '2', title: '書類を送信',          body: 'パスポート、TFN、スーパーファンドの情報のみ。素早く簡単です。' },
-  { n: '3', title: 'すべて代行します',     body: 'すべて準備し、正しく申請します。' },
-  { n: '4', title: 'スーパーを受け取り',   body: 'お金は直接ご指定の銀行口座に振り込まれます。' },
+  { n: '1', title: 'ご相談・お問い合わせ',  body: 'ビザの種類と勤務履歴を日本語でお知らせください。ご相談は無料です。' },
+  { n: '2', title: '書類のご送付',          body: 'パスポート、TFN、スーパーファンド情報をお送りいただきます。' },
+  { n: '3', title: 'DASP代理申請',          body: '当社がスーパーファンドとATOへ代理申請。65%課税後の純額を計算します。' },
+  { n: '4', title: 'お振込でお受け取り',    body: '通常28日以内に、ご指定の口座（豪・日本どちらも可）にお振込みされます。' },
 ]
 
 const TESTIMONIALS = [
   {
-    name: "Liam O'Connor",
-    from: 'アイルランド · WHV 417',
-    quote: '複数の雇用主がいて、どうやってスーパーを取り戻すか分かりませんでした。Working Holiday Taxがすべて対応してくれて、無事に受け取れました。',
+    name: '佐藤 由紀子',
+    from: '日本 · WHV 417',
+    quote: '複数の雇用主で働いていてスーパー口座が複数あり、どう取り戻すか分かりませんでした。当社にすべて任せて、無事に全額受け取れました。',
     amount: '$3,200',
-    initials: 'L',
+    initials: '佐',
     bgColor: '#EAF6F1',
     textColor: '#0B5240',
   },
   {
     name: '鈴木 結衣',
-    from: '日本 · WHV 417',
-    quote: 'とても簡単なプロセスでした。すべて分かりやすく説明してくれて、スーパーを全額取り戻せました。日本に帰国後でも対応してくれて助かりました。',
+    from: '日本 · WHV 462',
+    quote: 'とても簡単なプロセスでした。日本語で分かりやすく説明してもらえて、日本に帰国した後も対応してくれて本当に助かりました。',
     amount: '$4,100',
-    initials: 'Y',
+    initials: '鈴',
     bgColor: '#EAF6F1',
     textColor: '#0B5240',
   },
@@ -120,11 +120,49 @@ const breadcrumbSchema = {
   ],
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'スーパー受取（DASP）の申請方法',
+  description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションをDASP（Departing Australia Superannuation Payment）で受け取る手順。登録税理士が日本語で代行します。',
+  inLanguage: 'ja',
+  totalTime: 'P28D',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
+  supply: [
+    { '@type': 'HowToSupply', name: 'パスポート' },
+    { '@type': 'HowToSupply', name: 'TFN（タックスファイルナンバー）' },
+    { '@type': 'HowToSupply', name: 'スーパーファンドの会員番号' },
+    { '@type': 'HowToSupply', name: '銀行口座情報（豪・日本のどちらでも可）' },
+  ],
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+    url: `${SITE_URL}/ja/superannuation#step-${i + 1}`,
+  })),
+}
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${SITE_URL}/ja/superannuation#service`,
+  name: 'スーパー受取（DASP）代行サービス',
+  serviceType: 'Departing Australia Superannuation Payment申請',
+  description: 'オーストラリアのワーキングホリデーメーカー向けスーパー受取（DASP）代行。複数のスーパーファンド特定からATOへの申請、海外口座への振込まで完全対応。',
+  provider: { '@id': `${SITE_URL}/#business` },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) - 帰国予定者・帰国済み' },
+  inLanguage: 'ja',
+}
+
 export default function JapaneseSuperannuationPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
@@ -154,13 +192,13 @@ export default function JapaneseSuperannuationPage() {
                 letterSpacing:'-0.02em',
                 marginBottom:'10px',
               }}>
-              <span style={{ display:'block' }}>スーパーを受け取る</span>
-              <span style={{ display:'block', color:'#0B5240' }}>オーストラリアを離れる際に。</span>
+              <span style={{ display:'block' }}>スーパー受取（DASP）で</span>
+              <span style={{ display:'block', color:'#0B5240' }}>積み立てたお金を取り戻す。</span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.5 }}>
-              DASP申請プロセスをすべて代行します。
+              DASP（Departing Australia Superannuation Payment）をすべて代行いたします。
             </p>
 
             <p className="font-light"
@@ -171,7 +209,7 @@ export default function JapaneseSuperannuationPage() {
                 maxWidth:'44ch',
                 marginBottom:'0',
               }}>
-              ほとんどの場合、28日以内に支払われます。
+              通常28日以内に振込完了。日本帰国後の申請も日本語で完全サポートします。
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -179,17 +217,17 @@ export default function JapaneseSuperannuationPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
                 style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
-                スーパーを申請する →
+                スーパー受取を依頼する →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
                 style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
-                手順を見る →
+                申請の流れを見る →
               </a>
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート','4.9★（300件以上のレビュー）','45カ国以上に対応','返信時間 1時間以内'].map((t,i) => (
+              {['1,200名以上をサポート','4.9★（300件以上の口コミ）','45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -212,13 +250,13 @@ export default function JapaneseSuperannuationPage() {
                 スーパーアニュエーションとは？
               </h2>
               <p className="super-intro-body">
-                <strong>スーパーアニュエーション</strong>（略して&quot;スーパー&quot;）は、オーストラリアの年金制度です。法律により、雇用主は給与とは別に<strong>給与の12%</strong>をスーパーファンドに積み立てる義務があります。あなたが思っているよりも多くを稼いでいるのです。
+                <strong>スーパーアニュエーション</strong>（通称「スーパー」）は、オーストラリアの強制積立年金制度です。法律により、雇用主は給与とは別に<strong>給与の12%</strong>をスーパーファンドに積み立てる義務があります。つまり、給与明細に書かれている金額に加えて、見えないところで12%が積み立てられているのです。
               </p>
               <p className="super-intro-body">
-                ワーキングホリデーメーカーは、オーストラリアを離れる際にこのお金を受け取ることができます。これを<strong>DASP（Departing Australia Superannuation Payment）</strong>と呼びます。
+                ワーキングホリデーメーカーは、オーストラリアを永久に離れる際に、積み立てられたスーパーを返金として受け取れます。この制度を<strong>DASP（Departing Australia Superannuation Payment）</strong>と呼びます。
               </p>
               <p className="super-intro-body">
-                受取金額には65%の税金がかかりますが、残りの35%は確実にあなたの財布に入ります。ほとんどのバックパッカーにとって、これは<strong>$2,000〜$5,000</strong>に相当する、知らなかった収入です。
+                受取時には65%のDASP税が課されますが、税引後の純額（35%）でも、ワーホリのほとんどが<strong>$2,000〜$5,000</strong>を受け取っています。1年間フルタイムで働いた場合は、それ以上になることもあります。
               </p>
             </div>
 
@@ -257,11 +295,11 @@ export default function JapaneseSuperannuationPage() {
           {/* CTA strip to OUR service */}
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">スーパーを取り戻すお手伝いをします</h3>
-              <p className="service-cta-sub">初回相談は無料。スーパーファンドの確認からDASP申請まで、すべてのプロセスを代行。お金をオーストラリアに置いていかないようサポートします。</p>
+              <h3 className="service-cta-heading">DASP申請を当社が代行いたします</h3>
+              <p className="service-cta-sub">複数のスーパーファンドの特定からATOへの申請、海外口座への振込まで。日本帰国後の手続きも日本語で完全サポート。お金を取り残さないようお手伝いします。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              スーパーを申請する →
+              スーパー受取を依頼する →
             </a>
           </div>
         </div>
@@ -273,7 +311,7 @@ export default function JapaneseSuperannuationPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">あなたのお金です</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              スーパーはあなたのものです。申請するだけで受け取れます。
+              スーパーはあなたの財産。申請するだけで取り戻せます
             </h2>
           </div>
 
@@ -281,18 +319,18 @@ export default function JapaneseSuperannuationPage() {
             {[
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/><path d="M11 7v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: '雇用主が積み立てます',
-                body: 'オーストラリアの法律により、雇用主は給与とは別にスーパーを積み立てます。',
+                title: '雇用主が自動で積立',
+                body: '雇用主はオーストラリアの法律により、給与に加えて12%をスーパーファンドに積み立てる義務があります。',
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="3" y="6" width="16" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M7 6V5a4 4 0 018 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M9 12l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-                title: 'これはあなたのお金',
-                body: 'オーストラリアで働いている間にスーパーが積み立てられ、帰国時に受け取ることができます。',
+                title: '帰国時に受け取れる',
+                body: 'ワーホリで働いている間に積み立てられたスーパーは、ビザ失効後にDASPで返金申請できます。',
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3v18M3 11h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: '私たちが代わりに取り戻します',
-                body: 'スーパーを見つけ、申請を準備し、提出します。処理が完了すると、お金が振り込まれます。',
+                title: '当社が代理で取り戻します',
+                body: 'スーパーファンドの特定から申請まで日本語で完全代行。お振込まで責任を持って対応します。',
               },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex flex-col" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
@@ -355,10 +393,10 @@ export default function JapaneseSuperannuationPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">ご利用の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              4ステップで完了
+              4ステップでスーパーを取り戻す
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
-              シンプル、ガイド付き、最初から最後まで
+              ご相談から振込まで、日本語ですべて対応します
             </p>
           </div>
 
@@ -466,19 +504,19 @@ export default function JapaneseSuperannuationPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">
-              <span className="section-label center">よくある質問</span>
+              <span className="section-label center">よくあるご質問</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.2, letterSpacing:'-0.02em', marginTop:'10px', marginBottom:'12px' }}>
                 スーパーに関するご質問
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.75, marginBottom:'24px' }}>
-                その他のご質問はお気軽にお問い合わせください。
+                掲載されていないご質問もお気軽にお問い合わせください。
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
                 style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                今すぐ相談する →
+                今すぐご相談する →
               </a>
             </div>
 

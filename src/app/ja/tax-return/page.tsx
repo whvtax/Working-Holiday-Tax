@@ -46,58 +46,58 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: '短期間しか働いていない場合でもタックスリターンは必要ですか？',
-    answer: 'はい。オーストラリアで収入があった場合、たとえ短期間の労働でもタックスリターンが必要になる可能性があります。',
+    answer: 'はい、たとえ数週間のカジュアル業務でも、会計年度内（7月1日〜翌年6月30日）にオーストラリアで収入があった場合は提出が必要です。短期間でも還付金が出ることが多いので、提出する金銭的メリットは大きいです。',
   },
   {
-    question: 'タックスリターンをしない場合どうなりますか？',
-    answer: '申告義務があるのに提出しない場合、ATO（オーストラリア税務署）から罰金やその他の措置を受ける可能性があります。',
+    question: 'タックスリターンを提出しないとどうなりますか？',
+    answer: '提出義務があるのに怠ると、ATO（オーストラリア税務署）からFailure to Lodgeペナルティ（1件$330、最大$1,650）が課されます。さらに将来のオーストラリアビザ申請に影響したり、スーパー受取（DASP）が相殺されたりすることもあります。',
   },
   {
-    question: 'オーストラリアを離れた後でもタックスリターンできますか？',
-    answer: 'はい。オーストラリアを離れた後、海外からでもタックスリターンを提出できます。',
+    question: '帰国後でもタックスリターンを提出できますか？',
+    answer: 'はい、日本帰国後も世界中どこからでも提出できます。当社の登録税理士サービスを通じてオンラインで完結し、還付金はオーストラリアの口座でも日本の口座でも受け取り可能です。',
   },
   {
     question: '還付金がもらえるか、どうやって分かりますか？',
-    answer: '年間を通じて必要以上に税金を支払った場合、還付金を受け取れます。間違った税率が適用されていた場合や、控除可能な経費がある場合によく起こります。登録税理士に依頼することで、申告が正しく行われ、受け取るべき還付を逃さないようにできます。',
+    answer: '年間で源泉徴収された税金が実際の納税額より多い場合、差額が還付されます。TFNなしの期間があった、間違った税率で源泉徴収された、業務関連の控除可能経費がある、メディケア税免除の対象、などのケースでは大きな還付金になることが多いです。',
   },
   {
     question: 'タックスリターンが完了したことはどうやって分かりますか？',
-    answer: '申告が処理されると、ATOからNotice of Assessment（賦課決定通知書）が送られます。これが最終結果を示す公式な確認書類となります。',
+    answer: 'ATOで申告が処理されると、Notice of Assessment（賦課決定通知書）が発行され、最終的な納税額または還付額が確定します。当社からも処理状況をお知らせいたします。',
   },
 ]
 
 const DEDUCTIONS = [
-  { title: '作業着・ユニフォーム',           body: '安全靴、蛍光ベスト、規定のユニフォームなど、保護具や指定の作業着。' },
-  { title: '工具・機材',                    body: '仕事のために購入し、使用した工具や機材。' },
-  { title: 'ライセンス・資格',              body: 'RSA、White Cardなどの仕事関連のライセンス。' },
-  { title: '洗濯・クリーニング',            body: '作業着の洗濯やクリーニング費用。' },
-  { title: '業務関連の移動',                body: '勤務地間の移動（通勤は除く）。' },
-  { title: '寄付金',                       body: 'オーストラリア登録のチャリティ団体への寄付。' },
+  { title: '作業着・ユニフォーム', body: '安全靴、蛍光ベスト、シェフホワイト、雇用主指定のロゴ入りユニフォームなど。' },
+  { title: '工具・機材',         body: '$300未満は即時控除可能。シェフナイフ、剪定鋏、デリバリーバッグ、職人の工具など。' },
+  { title: 'ライセンス・資格',   body: 'RSA（アルコール提供）、White Card（建設業）、ホワイトワーキングチェックなど業務に必要なもの。' },
+  { title: '洗濯・クリーニング', body: 'ユニフォームや保護用作業着の洗濯費用（自宅で洗う場合も対象）。' },
+  { title: '業務関連の移動',     body: '現場間の移動、業務会議への移動など（自宅と通常職場間の通勤は除く）。' },
+  { title: '電話・通信費',       body: '業務で使う携帯電話・インターネット料金の業務関連割合。' },
 ]
 
 const STEPS = [
-  { n: '1', title: '状況を教えてください', body: '収入と業務内容のデータを送信してください。正しくご案内します。' },
-  { n: '2', title: '書類を送信',          body: '給与明細と基本情報のみ。素早く簡単です。' },
-  { n: '3', title: 'すべて代行します',     body: 'タックスリターンを準備し、正しく提出します。' },
-  { n: '4', title: '還付金を受け取り',     body: '還付金は7〜14営業日以内に、ご指定の銀行口座に直接振り込まれます。' },
+  { n: '1', title: 'ご相談・お問い合わせ',   body: '日本語でご相談ください。必要な情報を簡単にご案内します。' },
+  { n: '2', title: '必要書類のご送付',       body: 'TFN、給与明細、控除関連の領収書などをお送りいただきます。' },
+  { n: '3', title: 'ATOへ代理提出',          body: '当社が登録税理士として、最大の還付額でタックスリターンを提出します。' },
+  { n: '4', title: '還付金をお受け取り',     body: '通常7〜14営業日でご指定の銀行口座（オーストラリアまたは日本）に振り込まれます。' },
 ]
 
 const TESTIMONIALS = [
   {
-    name: 'Anna Larsen',
-    from: 'ノルウェー · WHV 417',
-    quote: 'タックスリターンを最初から最後まで代行してくれました。何が控除できるか全く分からなかったのですが、予想以上に多く戻ってきました。',
+    name: '高橋 由美',
+    from: '日本 · WHV 417',
+    quote: 'ファームジョブで複数の雇用主のもとで働いたので税務が複雑でしたが、すべて整理してくれました。控除も最大限取ってもらえて、想像以上の還付金でした。',
     amount: '$2,450',
-    initials: 'A',
+    initials: '高',
     bgColor: '#FDF0D5',
     textColor: '#7A4A00',
   },
   {
     name: '山田 太郎',
     from: '日本 · WHV 417',
-    quote: 'とても分かりやすく説明してくれて、最大限の還付金を受け取れるようにしてくれました。日本人の方にもおすすめです。',
+    quote: '日本語で丁寧に説明してくれて、何が控除できるかも詳しく教えてもらえました。帰国後も日本からスムーズに手続きできました。',
     amount: '$4,100',
-    initials: 'T',
+    initials: '山',
     bgColor: '#EAF6F1',
     textColor: '#0B5240',
   },
@@ -129,11 +129,55 @@ const breadcrumbSchema = {
   ],
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'オーストラリアのタックスリターン申告方法（ワーキングホリデー）',
+  description: 'オーストラリアのワーキングホリデーメーカーがタックスリターンを提出して還付金を受け取る手順。登録税理士が日本語で代行します。',
+  inLanguage: 'ja',
+  totalTime: 'P1D',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
+  supply: [
+    { '@type': 'HowToSupply', name: 'TFN（タックスファイルナンバー）' },
+    { '@type': 'HowToSupply', name: 'PAYG Payment Summary／Income Statement' },
+    { '@type': 'HowToSupply', name: '業務関連経費の領収書' },
+    { '@type': 'HowToSupply', name: '銀行口座情報（豪・日本のどちらでも可）' },
+  ],
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+    url: `${SITE_URL}/ja/tax-return#step-${i + 1}`,
+  })),
+}
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${SITE_URL}/ja/tax-return#service`,
+  name: 'タックスリターン代行サービス',
+  serviceType: 'タックスリターン申告',
+  description: 'オーストラリアのワーキングホリデーメーカー向けタックスリターン代行。登録税理士が最大の還付金を取り戻します。平均還付額は約$2,800。',
+  provider: { '@id': `${SITE_URL}/#business` },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
+  inLanguage: 'ja',
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'AUD',
+    availability: 'https://schema.org/InStock',
+    areaServed: 'AU',
+  },
+}
+
 export default function JapaneseTaxReturnPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
@@ -169,7 +213,7 @@ export default function JapaneseTaxReturnPage() {
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.5 }}>
-              ATOへの手続きをすべて代行します。
+              登録税理士がATOへの申告をすべて代行いたします。
             </p>
 
             <p className="font-light"
@@ -180,7 +224,7 @@ export default function JapaneseTaxReturnPage() {
                 maxWidth:'44ch',
                 marginBottom:'0',
               }}>
-              ほとんどのタックスリターンは24時間以内に提出します。
+              通常24時間以内に提出。還付金の平均は約$2,800です。
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -193,12 +237,12 @@ export default function JapaneseTaxReturnPage() {
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
                 style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
-                手順を見る →
+                申請の流れを見る →
               </a>
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート','4.9★（300件以上のレビュー）','45カ国以上に対応','返信時間 1時間以内'].map((t,i) => (
+              {['1,200名以上をサポート','4.9★（300件以上の口コミ）','45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -248,18 +292,18 @@ export default function JapaneseTaxReturnPage() {
 
             {/* Right: Explainer */}
             <div className="taxret-intro-content">
-              <p className="taxret-intro-eyebrow">多くのWHM保持者は還付金を受け取れます</p>
+              <p className="taxret-intro-eyebrow">多くのワーホリが還付金を受け取っています</p>
               <h2 className="taxret-intro-heading">
                 タックスリターンとは？
               </h2>
               <p className="taxret-intro-body">
-                <strong>タックスリターン</strong>（日本でいう確定申告）は、あなたとATO（オーストラリア税務署）の間で行う年次の精算です。年間の収入と控除可能な経費を申告し、給与から源泉徴収済みの税金（ペイメント・サマリー/PAYG）と照合します。
+                <strong>タックスリターン</strong>（日本でいう確定申告）は、毎年の所得をATO（オーストラリア税務署）に申告する手続きです。年間の収入、源泉徴収された税金、控除可能な業務関連経費を照合し、最終的な納税額を確定させます。
               </p>
               <p className="taxret-intro-body">
-                ほとんどのワーキングホリデーメーカーは<strong>年間で税金を払い過ぎています</strong>。その場合、ATOから差額が還付されます。数千ドルになることも珍しくありません。
+                ワーキングホリデーメーカーの多くは<strong>年間で税金を払い過ぎている</strong>ため、差額が還付金として戻ってきます。当社で対応したワーホリの平均還付額は約<strong>$2,800</strong>。$1,000〜$5,000の還付になることも珍しくありません。
               </p>
               <p className="taxret-intro-body">
-                オーストラリアの会計年度は<strong>7月1日〜6月30日</strong>。タックスリターンは毎年7月1日〜10月31日に提出します。オーストラリアを離れた後でも、世界のどこからでも申請可能です。還付金はオーストラリアの口座にも海外の口座にも振り込み可能です。
+                オーストラリアの会計年度は<strong>7月1日〜翌年6月30日</strong>。提出期限は10月31日ですが、当社のような登録税理士経由なら翌年5月まで延長されます。日本帰国後でも世界中どこからでも申請可能で、還付金はオーストラリア・日本どちらの口座でも受け取れます。
               </p>
             </div>
 
@@ -268,11 +312,11 @@ export default function JapaneseTaxReturnPage() {
           {/* CTA strip to OUR service */}
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">タックスリターンを準備し、代行で提出します</h3>
-              <p className="service-cta-sub">初回相談は無料。書類もATOポータルもストレスも不要です。還付金を最大化し、すべてオンラインで完結します。オーストラリアを離れた後でも対応可能です。</p>
+              <h3 className="service-cta-heading">登録税理士が代理で申告いたします</h3>
+              <p className="service-cta-sub">初回相談は無料。ATOポータルや英語の書類と格闘する必要はありません。日本語ですべて完結し、最大の還付金を取り戻します。帰国後も対応可能です。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              還付金を受け取る →
+              還付金を取り戻す →
             </a>
           </div>
         </div>
@@ -282,12 +326,12 @@ export default function JapaneseTaxReturnPage() {
       <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">私たちのサービス</span>
+            <span className="section-label center">当社のサービス</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '28ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              タックスリターンを最初から最後まで代行し、最大の還付金を取り戻します
+              タックスリターンを最初から最後まで日本語で代行
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.75, maxWidth: '34ch' }}>
-              ストレスも混乱もなく、正しく提出されたタックスリターンと、最大の還付金をお届けします。
+              書類仕事はゼロ。最大の還付金を取り戻すために必要な手続きをすべてお任せください。
             </p>
           </div>
 
@@ -295,23 +339,23 @@ export default function JapaneseTaxReturnPage() {
             {[
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10l4.5 4.5 7.5-9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: '税務状況をしっかり確認',
-                body: '収入、控除、税務上のステータスをすべて確認し、正しく反映します。',
+                title: 'すべての収入を正確に申告',
+                body: '複数の雇用主、ABN収入、現金払いの仕事も含めて、漏れなく集計します。',
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="11.5" x2="11" y2="11.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-                title: 'タックスリターンを正しく提出',
-                body: 'すべて準備し、ATOに直接代行で提出します。',
+                title: '登録税理士として代理提出',
+                body: 'TANを持つ登録税理士の監督の下、ATOに直接タックスリターンを提出します。',
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: '最大の還付金を取り戻す',
-                body: 'すべての控除可能な経費を見つけ、受け取るべき還付金を最大化します。',
+                title: 'すべての控除を漏れなく適用',
+                body: '作業着、工具、ライセンス、メディケア税免除など、対象となる控除をすべて適用します。',
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: 'ストレスも混乱もなし',
-                body: 'データを送るだけ。あとは私たちが対応します。ATOポータルも書類も不要です。',
+                title: '日本語で安心サポート',
+                body: '専門用語を使わず日本語でわかりやすくご案内。ATOからの問い合わせも当社が代理対応します。',
               },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
@@ -332,7 +376,7 @@ export default function JapaneseTaxReturnPage() {
               style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
               タックスリターンを依頼する →
             </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>2分で完了&nbsp;&bull;&nbsp;事前のお支払い不要</p>
+            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>無料相談&nbsp;&bull;&nbsp;事前支払い不要</p>
           </div>
         </div>
       </section>
@@ -376,19 +420,19 @@ export default function JapaneseTaxReturnPage() {
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">選ばれる理由</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-              タックスリターンでお金を取り逃さないために
+              還付金を取り逃さないために
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
             <div className="rounded-2xl" style={{ padding: '18px 20px', background: '#fff', border: '1px solid #E2EFE9' }}>
-              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-muted mb-4">自分でATOに提出</p>
+              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-muted mb-4">自分でATOに提出する場合</p>
               <div className="space-y-3">
                 {[
-                  'わかりにくいATO書類とシステム',
-                  '控除可能な経費を見逃しやすい',
+                  '英語のATOポータルと複雑な書類',
+                  '控除可能な経費を見逃しがち',
                   '正確に提出するのに時間と労力がかかる',
-                  '問題発生時のサポートなし',
+                  'ATOからの問い合わせも自分で対応',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
@@ -402,13 +446,13 @@ export default function JapaneseTaxReturnPage() {
             </div>
 
             <div className="rounded-2xl" style={{ padding: '18px 20px', background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
-              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-forest-500 mb-4">私たちのサービス</p>
+              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-forest-500 mb-4">当社のサービスの場合</p>
               <div className="space-y-3">
                 {[
-                  '最初から正しく完了',
-                  'すべての控除可能な経費を発見',
-                  'ストレスも混乱もなし',
-                  '各ステップで実際のサポートあり',
+                  '登録税理士が代理で正しく提出',
+                  'すべての控除を漏れなく適用',
+                  '日本語で完結、ストレスゼロ',
+                  'ATOからの問い合わせも当社が対応',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
@@ -560,7 +604,7 @@ export default function JapaneseTaxReturnPage() {
               4ステップで完了
             </h2>
             <p className="font-light text-muted" style={{ fontSize: '14px' }}>
-              シンプル、ガイド付き、最初から最後まで
+              ご相談から還付金受け取りまで、日本語ですべて対応
             </p>
           </div>
 
@@ -599,7 +643,7 @@ export default function JapaneseTaxReturnPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 32px', fontSize: '15px' }}>
               タックスリターンを依頼する →
             </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>2分で完了&nbsp;&bull;&nbsp;事前のお支払い不要</p>
+            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>無料相談&nbsp;&bull;&nbsp;事前支払い不要</p>
           </div>
         </div>
       </section>
@@ -612,13 +656,13 @@ export default function JapaneseTaxReturnPage() {
             <div className="reveal text-center lg:text-left">
               <span className="section-label center lg:text-left">スケジュール</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                還付金を受け取るタイミング
+                還付金の受け取りまでの流れ
               </h2>
               <div className="space-y-0">
                 {[
-                  { label: '私たちの準備',     body: 'タックスリターンは24時間以内に準備します。' },
-                  { label: 'ATOの処理',       body: 'ATOは通常7〜14営業日以内にタックスリターンを処理します。繁忙期はそれより長くなる場合があります。' },
-                  { label: '最終結果',         body: '処理が完了すると、還付金は直接あなたのオーストラリアの銀行口座に振り込まれます。' },
+                  { label: '当社の準備',     body: 'お送りいただいた書類をもとに、当社が通常24時間以内にタックスリターンを準備・提出します。' },
+                  { label: 'ATOの処理',     body: 'ATOは通常7〜14営業日でタックスリターンを処理。繁忙期（7〜8月）はもう少し時間がかかる場合があります。' },
+                  { label: '還付金の入金',  body: '処理完了後、還付金はご指定の銀行口座（オーストラリアまたは日本）に直接振り込まれます。' },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
                     <p className="text-[13px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{item.label}</p>
@@ -632,14 +676,14 @@ export default function JapaneseTaxReturnPage() {
             <div className="reveal delay-1 text-center lg:text-left">
               <span className="section-label center lg:text-left">必要なもの</span>
               <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                始めるために必要なもの
+                ご準備いただくもの
               </h2>
               <div className="space-y-0">
                 {[
-                  { n: '01', label: 'TFN（タックスファイルナンバー）',  hint: 'あなたの個人税番号' },
-                  { n: '02', label: '個人情報',                       hint: '住所と携帯電話番号' },
-                  { n: '03', label: 'オーストラリアの銀行口座',         hint: '還付金の振込先' },
-                  { n: '04', label: '業務経費の領収書',                hint: '控除可能な経費用' },
+                  { n: '01', label: 'TFN（タックスファイルナンバー）', hint: 'あなたの納税者番号' },
+                  { n: '02', label: '個人情報',                      hint: 'パスポート・連絡先・住所' },
+                  { n: '03', label: '銀行口座情報',                   hint: '還付金の振込先（豪・日本どちらも可）' },
+                  { n: '04', label: '業務関連経費の領収書',           hint: '控除を申請する場合のみ' },
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3" style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
                     <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#EAF6F1', color: '#0B5240', fontSize: '13px', letterSpacing: '-0.02em' }}>
@@ -664,19 +708,19 @@ export default function JapaneseTaxReturnPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">
-              <span className="section-label center">よくある質問</span>
+              <span className="section-label center">よくあるご質問</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.2, letterSpacing:'-0.02em', marginTop:'10px', marginBottom:'12px' }}>
                 タックスリターンに関するご質問
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.75, marginBottom:'24px' }}>
-                その他のご質問はお気軽にお問い合わせください。
+                掲載されていないご質問もお気軽にお問い合わせください。
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
                 style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                今すぐ相談する →
+                今すぐご相談する →
               </a>
             </div>
 
@@ -691,9 +735,9 @@ export default function JapaneseTaxReturnPage() {
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="次のステップ"
-        heading="スーパー（年金）を残さないで"
-        body="オーストラリアで働いている間、雇用主は給与とは別にスーパーに積み立てています。帰国時にそれを受け取ることができます。"
-        cta="スーパー受取資格を確認する →"
+        heading="スーパー受取（DASP）も忘れずに"
+        body="オーストラリアで働いた期間中、雇用主は給与とは別に12%をスーパーに積み立てています。帰国時にDASPを通じて受取を申請できます。"
+        cta="スーパー受取を確認する →"
         trustLine="数分で確認完了"
         href="/ja/superannuation"
       />

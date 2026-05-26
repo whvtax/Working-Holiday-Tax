@@ -35,27 +35,32 @@ export const metadata: Metadata = {
     title: 'TFN申請 - ワーキングホリデー オーストラリア',
     description: 'TFN（タックスファイルナンバー）を最短で正しく取得。登録税理士がサポートします。',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TFN申請 - ワーキングホリデー オーストラリア',
+    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。登録税理士がサポートします。',
+  },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
-  { question: 'TFNを取得する前から働けますか？', answer: 'はい。すぐに働き始めることはできますが、勤務開始から28日以内に雇用主にTFNを提供する必要があります。それまでは雇用主が最高税率（45%）で源泉徴収します。' },
-  { question: 'TFNはどこに送られてきますか？', answer: 'ATO（オーストラリア税務署）から、申請時に登録したオーストラリアの住所に郵送されます。確実に郵便を受け取れる住所をご登録ください。' },
-  { question: '観光ビザでもTFNは取得できますか？', answer: 'いいえ。TFNを申請するには、有効な就労ビザ（ワーキングホリデービザ サブクラス417または462など）が必要です。' },
-  { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去の税務書類を確認するか、税理士に確認することでTFNを再確認できます。' },
-  { question: 'TFN Declaration Formとは何ですか？', answer: '新しい仕事を始める際に記入する書類で、雇用主にどれだけ源泉徴収すべきかを伝えるためのものです。' },
+  { question: 'TFNを取得する前から働けますか？', answer: 'はい、TFNの到着を待たずにすぐに働き始めることができます。ただし、勤務開始から28日以内に雇用主にTFNを提出する必要があります。提出されるまで、雇用主は最高税率の45%で源泉徴収する義務があります。後日タックスリターンで取り戻せますが、到着前に申請しておくのがおすすめです。' },
+  { question: 'TFNはどこに送られてきますか？', answer: '申請時に登録したオーストラリアの住所にATOから郵送されます。シェアハウスやホステル、友人宅でも構いません。郵便を確実に受け取れる住所をご登録ください。発行から到着まで最長28日かかります。' },
+  { question: '観光ビザでもTFNは取得できますか？', answer: 'いいえ、観光ビザでは取得できません。TFNを申請するには、就労許可のあるビザ（ワーキングホリデービザ417・462、学生ビザ、就労ビザなど）が必要です。' },
+  { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去のタックスリターンの控えや給与明細から確認できます。また、当社の登録税理士サービスを通じてATO記録から取得することも可能です。' },
+  { question: 'TFN Declaration（タックスファイルナンバー宣言書）とは？', answer: '新しい仕事を始める際に雇用主に提出する書類です。あなたのTFN、ビザステータス、税務区分を伝えることで、雇用主が正しい税率（ワーキングホリデーメーカーは15%）で源泉徴収できるようになります。' },
 ]
 
 const STEPS = [
-  { n: '1', title: '状況を教えてください',         body: 'ビザの種類など、基本情報をお知らせください。' },
-  { n: '2', title: '必要書類を送信',               body: 'パスポートと基本情報のみ。簡単で素早く完了します。' },
-  { n: '3', title: '申請を代行します',             body: '私たちがすべて準備し、正しく申請を行います。' },
-  { n: '4', title: 'TFNを受け取り',                body: 'ATOからTFNが発行され、28日以内にオーストラリアの住所に郵送されます。' },
+  { n: '1', title: 'ご相談・お問い合わせ',  body: 'ビザの種類など、基本情報をお知らせいただきます。ご相談は無料です。' },
+  { n: '2', title: '書類のご送付',          body: 'パスポートと基本情報のみ。シンプルですぐに完了します。' },
+  { n: '3', title: 'ATOへ代理申請',         body: '当社が必要書類を準備し、ATOに正しく申請を行います。' },
+  { n: '4', title: 'TFNを受け取り',         body: 'ATOからTFNが発行され、28日以内にご指定の住所へ郵送されます。' },
 ]
 
 const TESTIMONIALS = [
-  { name: '田中 美咲', from: '日本 · WHV 417',     quote: '複数の雇用主がいて何をすればいいか分からなかったのですが、最初から最後まで丁寧に対応してくれました。',  amount: '', initials: 'M', bgColor: '#EAF6F1', textColor: '#0B5240' },
-  { name: 'Sophie Durant', from: 'フランス · WHV 417',  quote: 'TFNはたった2日で取得できて、すべてが明確で分かりやすかったです。ストレスゼロでした。', amount: '', initials: 'S', bgColor: '#FDF0D5', textColor: '#7A4A00' },
+  { name: '田中 美咲', from: '日本 · WHV 417', quote: '複数の雇用主のもとで働いていて何から始めればいいか分からなかったのですが、日本語で丁寧に対応してもらえました。TFNも数日で届きました。', amount: '', initials: '田', bgColor: '#EAF6F1', textColor: '#0B5240' },
+  { name: '鈴木 拓也', from: '日本 · WHV 462', quote: '到着前から申請を始められて、シドニーに着いた頃にはTFNが郵送で届いていました。何の不安もなくすぐ働き始められました。', amount: '', initials: '鈴', bgColor: '#FDF0D5', textColor: '#7A4A00' },
 ]
 
 const IconStar = () => (<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
@@ -76,11 +81,48 @@ const breadcrumbSchema = {
   ],
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'TFN（タックスファイルナンバー）の申請方法',
+  description: 'オーストラリアのワーキングホリデーメーカーがTFN（タックスファイルナンバー）を申請する手順。登録税理士が日本語で代行します。',
+  inLanguage: 'ja',
+  totalTime: 'P28D',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
+  supply: [
+    { '@type': 'HowToSupply', name: 'パスポート' },
+    { '@type': 'HowToSupply', name: 'オーストラリア国内の郵便受取住所' },
+    { '@type': 'HowToSupply', name: 'ワーキングホリデービザ（417または462）' },
+  ],
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+    url: `${SITE_URL}/ja/tfn#step-${i + 1}`,
+  })),
+}
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${SITE_URL}/ja/tfn#service`,
+  name: 'TFN申請代行サービス',
+  serviceType: 'タックスファイルナンバー申請',
+  description: 'オーストラリアのワーキングホリデーメーカー向けTFN申請代行。登録税理士が日本語ですべて代行します。',
+  provider: { '@id': `${SITE_URL}/#business` },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
+  inLanguage: 'ja',
+}
+
 export default function TFNPageJA() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
@@ -106,17 +148,17 @@ export default function TFNPageJA() {
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '10px' }}>
               <span style={{ display: 'block' }}>TFNを取得して</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>オーストラリアで正しく働く。</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>初日から正しい税率で働く。</span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize: 'clamp(13px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.5 }}>
-              TFNを一発で正しく申請。私たちにお任せください。
+              TFN申請をすべて代行。最短28日でお手元に届きます。
             </p>
 
             <p className="font-light"
               style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.58)', maxWidth: '48ch', marginBottom: '0' }}>
-              TFNがないと、ワーキングホリデービザ保持者は45%の高税率で源泉徴収されます。
+              TFNがないと、ワーキングホリデーメーカーの給料から最高税率の45%が源泉徴収されてしまいます。
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -129,12 +171,12 @@ export default function TFNPageJA() {
               <a href="#how-to-apply"
                 className="inline-flex btn-ghost-dark justify-center"
                 style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
-                手順を見る →
+                申請手順を見る →
               </a>
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート', '4.9★（300件以上のレビュー）', '45カ国以上に対応', '返信時間 1時間以内'].map((t, i) => (
+              {['1,200名以上をサポート', '4.9★（300件以上の口コミ）', '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -155,13 +197,13 @@ export default function TFNPageJA() {
                 TFNとは？
               </h2>
               <p className="tfn-intro-body">
-                <strong>TFN（タックスファイルナンバー）</strong>は、ATO（オーストラリア税務署）が発行する個人の納税者番号です。オーストラリアで働き始める前に、最初に必要となる番号です。
+                <strong>TFN（タックスファイルナンバー）</strong>は、ATO（オーストラリア税務署）が発行する個人の納税者番号です。オーストラリアで合法的に働き、正しい税率で給料を受け取るために必要な9桁の番号です。
               </p>
               <p className="tfn-intro-body">
-                TFNがない場合、雇用主は法律により、収入額にかかわらず<strong>45%</strong>の最高税率で源泉徴収する義務があります。
+                TFNがないまま働くと、雇用主は法律により、収入額にかかわらず<strong>45%</strong>の最高税率で源泉徴収する義務を負います。
               </p>
               <p className="tfn-intro-body">
-                TFNがあれば、ワーキングホリデーメーカーは45,000ドルまで通常の<strong>15%</strong>税率で課税されます。週あたり数百ドルもの差が出ることもあります。
+                TFNを取得すれば、ワーキングホリデーメーカーは年収45,000ドルまで<strong>15%</strong>のワーホリ税率が適用されます。週あたり数百ドルもの差になることもあります。
               </p>
               <div className="tfn-intro-note">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
@@ -169,7 +211,7 @@ export default function TFNPageJA() {
                   <path d="M12 8v5M12 16h.01" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
                 </svg>
                 <p style={{ margin: 0, fontSize: '13.5px', color: '#2A3C34', lineHeight: 1.75 }}>
-                  TFNは生涯有効です。オーストラリアを離れて後で戻ってきても、申請は一度だけで済みます。
+                  TFNは生涯有効です。一度取得すれば、後日セカンドビザでオーストラリアに戻ってきても同じ番号を使い続けられます。
                 </p>
               </div>
             </div>
@@ -195,8 +237,8 @@ export default function TFNPageJA() {
 
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">TFN申請をすべて代行します</h3>
-              <p className="service-cta-sub">WhatsAppでの無料相談から、初回で正しく申請。通常1時間以内に対応します。</p>
+              <h3 className="service-cta-heading">TFN申請をすべて当社が代行</h3>
+              <p className="service-cta-sub">WhatsAppでの無料相談から、確実かつ迅速に申請。通常1時間以内にご返信します。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               TFNを申請する →
@@ -209,19 +251,19 @@ export default function TFNPageJA() {
       <section className="py-12 lg:py-20" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
-            <span className="section-label center">私たちのサービス</span>
+            <span className="section-label center">当社のサービス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '10px' }}>
-              TFN申請を最初から最後まで、正確かつスピーディに対応します。
+              TFN申請を、最初から最後まで確実かつ迅速に代行
             </h2>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom: '28px', alignItems: 'stretch' }}>
             {[
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title: '初回で正しく申請。',           body: '提出前にすべての書類をチェックし、ミスや遅延を防ぎます。' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: '正しい税率からスタート。',     body: '早期に申請することで、ワーキングホリデーメーカーが最高税率で課税されるのを避けられます。' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: 'ATOの複雑な書類は不要。',     body: '政府のポータルや書類と格闘する必要はありません。私たちがすべて代行します。' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title: '迅速・簡単・完全オンライン。', body: 'データを送るだけで、TFN申請のすべてをお任せいただけます。' },
+              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title: '一度で確実に完了', body: '提出前にすべての書類をチェックし、ミスや遅延を防ぎます。' },
+              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: '初日から正しい税率で', body: 'TFNを早期に取得すれば、ワーホリ最高税率45%による源泉徴収を回避できます。' },
+              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: '面倒な書類仕事はゼロ', body: '英語のATOポータルや複雑な書類と格闘する必要はありません。すべて当社が代行します。' },
+              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title: '日本語でかんたん・スピーディ', body: '基本情報をお送りいただくだけで、TFN申請のすべてをお任せいただけます。' },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
                 style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
@@ -253,7 +295,7 @@ export default function TFNPageJA() {
             <span className="section-label center">お客様の声</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.15, letterSpacing: '-0.02em', marginTop: '10px', maxWidth: '34ch' }}>
-              実際のワーホリの皆さんがどのようにTFNを取得したか
+              当社でTFNを取得したワーホリの皆さん
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems: 'stretch' }}>
@@ -296,16 +338,16 @@ export default function TFNPageJA() {
             <span className="section-label center">TFN申請プロセス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px' }}>
-              TFN取得には、もっと簡単な方法があります
+              自分で申請するより、登録税理士に任せる方が確実
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems: 'stretch' }}>
             <div className="rounded-2xl" style={{ padding: '22px', background: '#fff', border: '1.5px solid #E2EFE9' }}>
               <p className="font-semibold text-muted" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '18px' }}>
-                ATOで自分で申請する場合は簡単に見えますが、混乱や遅延が多発します。
+                ATOで自分で申請する場合
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {['複雑な政府書類と不明確な手順', '小さなミスがTFN承認を遅らせる', '問題発生時のサポートなし', 'すべて自分で判断する必要がある'].map((item, i) => (
+                {['英語の複雑な政府書類と不明確な手順', '小さな入力ミスで申請が遅延・却下される', '問題が発生してもサポートを得られない', 'すべての判断を自分で行う必要がある'].map((item, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
                     <p className="font-light text-muted" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', lineHeight: 1.8 }}>{item}</p>
@@ -315,10 +357,10 @@ export default function TFNPageJA() {
             </div>
             <div className="rounded-2xl flex flex-col" style={{ padding: '22px', background: '#EAF6F1', border: '1.5px solid #C8EAE0' }}>
               <p className="font-semibold text-forest-500" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '18px' }}>
-                私たちのTFNサービス
+                当社のTFNサービスの場合
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px', flex: '1' }}>
-                {['最初から最後までガイド付きの簡単なプロセス', '提出前にすべて確認', '初回で正しく完了', '困ったときはいつでもサポート'].map((item, i) => (
+                {['日本語でガイド付きのかんたんなプロセス', '提出前に当社が書類を確認', '一度で確実に申請が完了', '何かあればいつでも日本語でサポート'].map((item, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     <p className="font-semibold text-ink" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', lineHeight: 1.8 }}>{item}</p>
@@ -341,10 +383,10 @@ export default function TFNPageJA() {
             <span className="section-label center">申請の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '10px' }}>
-              4ステップでTFN取得
+              4ステップでTFNを取得
             </h2>
             <p className="font-light text-muted" style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', lineHeight: 1.75 }}>
-              最初から最後まで、ガイド付きの簡単なプロセス。
+              ご相談から発行まで、日本語ですべてサポートいたします。
             </p>
           </div>
 
@@ -405,19 +447,19 @@ export default function TFNPageJA() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">
-              <span className="section-label center">よくある質問</span>
+              <span className="section-label center">よくあるご質問</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '12px' }}>
                 TFNに関するご質問
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize: '13.5px', lineHeight: 1.75, marginBottom: '24px' }}>
-                その他のご質問はお気軽にお問い合わせください。
+                掲載されていないご質問もお気軽にお問い合わせください。
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
                 style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
-                今すぐ相談する →
+                今すぐご相談する →
               </a>
             </div>
 
@@ -431,9 +473,9 @@ export default function TFNPageJA() {
       {/* ── NEXT STEP ────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="次のステップ"
-        heading="TFNは取得済みですか？"
-        body="個人事業主やフリーランスとして働く場合は、正しく請求書を発行するためにABNも必要になるかもしれません。"
-        cta="ABNの対象か確認する →"
+        heading="TFNの取得後は？"
+        body="個人事業主やフリーランス、配車・配達などで請負業務を行う場合は、正しく請求書を発行するためにABNの登録が必要です。"
+        cta="ABNが必要か確認する →"
         href="/ja/abn"
       />
     </>

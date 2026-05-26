@@ -35,29 +35,34 @@ export const metadata: Metadata = {
     title: 'ABN登録 - ワーキングホリデー オーストラリア',
     description: '個人事業主として正しくABNを登録。登録税理士がサポートします。',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ABN登録 - ワーキングホリデー オーストラリア',
+    description: '個人事業主として正しくABNを登録。登録税理士がサポートします。',
+  },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
-  { question: 'TFNとABNの両方を持つことはできますか？', answer: 'はい。両方持つことができます。TFNは雇用契約用、ABNは個人事業主としての活動用に使い分けます。' },
-  { question: 'TFNなしでABNを取得できますか？', answer: 'いいえ。ABNを申請する前に、まずTFNを取得する必要があります。' },
-  { question: 'GST（消費税）の登録は必要ですか？', answer: '年間売上が75,000ドルを超える場合のみGST登録が必要です。ほとんどのワーキングホリデービザ保持者はGST登録の必要はありません。' },
-  { question: 'オーストラリアを離れる時、ABNはどうなりますか？', answer: 'オーストラリアでの活動を終了する際、オンラインでABNを取り消すことができます。' },
-  { question: 'ABN申請が却下されることはありますか？', answer: 'はい。申請内容が実際の業務実態と一致しない場合、遅延や却下の可能性があります。だからこそ、登録税理士を利用することをお勧めします。最初から正しく設定することで、後々の問題を防げます。' },
+  { question: 'TFNとABNの両方を持つことはできますか？', answer: 'はい、両方持つことができます。多くのワーキングホリデーメーカーが両方を保有しています。TFNは雇用契約（給与所得）用、ABNは個人事業主としての請負業務用に使い分けます。同じ年度内に両方の収入があっても、1つのタックスリターンで一緒に申告できます。' },
+  { question: 'TFNなしでABNを取得できますか？', answer: 'いいえ、ABNを申請する前に、まずTFN（タックスファイルナンバー）を取得する必要があります。TFNがあなたの本人確認の基礎となるからです。当社では、必要に応じてTFNとABNを同時に申請することも可能です。' },
+  { question: 'GST（消費税）の登録は必要ですか？', answer: '年間売上（収入）が75,000ドルを超える場合のみGST登録が義務付けられています。ほとんどのワーキングホリデーメーカーはこの基準を超えないため、GST登録は不要です。ただし、Uber・DiDiなどの配車サービスドライバーは収入額に関わらずGST登録が必須です（フードデリバリーは75,000ドル基準が適用）。' },
+  { question: 'オーストラリアを離れる時、ABNはどうなりますか？', answer: 'オーストラリアでの業務を終了する際は、ABNを取り消す必要があります。当社にご依頼いただければ、最終的なタックスリターン・スーパー受取（DASP）と合わせてABN取消も代行いたします。' },
+  { question: 'ABN申請が却下されることはありますか？', answer: 'はい、申請内容が実際の業務実態と一致しない場合や、雇用関係に近い働き方なのにABNで申請した場合、却下されることがあります。だからこそ、登録税理士に依頼して最初から正しく設定することが重要です。' },
 ]
 
 const MISTAKES = [
-  { title: '雇用関係なのにABNで働く',                 body: '雇用主が働き方、時間、場所を指示している場合、ABNでの契約は適切ではない可能性があります。' },
-  { title: '誤った業種を登録する',                     body: 'ABNの登録内容は、実際の業務の性質を正確に反映する必要があります。' },
-  { title: '収入記録を残さない',                       body: '収入を記録し、税金分を別に取り分けておくことで、後々の問題を防げます。' },
-  { title: 'タックスリターンを怠る',                           body: 'ABN収入はATOへの申告が必須です。' },
+  { title: '雇用関係なのにABNで働く', body: '雇用主が労働時間や場所を指示している場合、本来は従業員（TFN）で契約すべきです。ABNで働かされていると、スーパーや有給休暇など本来の権利を失います。' },
+  { title: '誤った業種を登録する', body: 'ABNの事業内容は実際の業務に合った正確なものを登録する必要があります。誤った業種ではタックスリターン時に問題が発生します。' },
+  { title: '収入記録を残さない', body: '請求書、入金記録、経費レシートは必ず保存。税金分（収入の15-20%が目安）を別の口座に取り分けておくと安心です。' },
+  { title: 'タックスリターンを怠る', body: 'ABN収入は会計年度末（6月30日）にATOへ申告が必須です。提出を怠ると延滞ペナルティが発生します。' },
 ]
 
 const STEPS = [
-  { n: '1', title: 'お仕事の内容を教えてください',     body: '業務とビザの詳細をお知らせください。正しくご案内します。' },
-  { n: '2', title: 'データを送信',                   body: 'TFNとパスポート情報のみ。素早く完了します。' },
-  { n: '3', title: '登録を代行します',                 body: 'すべて準備し、正しく申請します。' },
-  { n: '4', title: 'ABNを取得して活動開始',          body: 'ABNは通常1時間以内に発行され、すぐに請求書発行や業務開始ができます。' },
+  { n: '1', title: 'お仕事内容のヒアリング', body: '業務の種類とビザの詳細をお知らせください。ABNが本当に必要かを含めてご案内します。' },
+  { n: '2', title: '書類のご送付',           body: 'TFN番号とパスポート情報のみ。所要時間は数分です。' },
+  { n: '3', title: 'ABRへ代理登録',          body: '当社が正しい業種コードでABRに代理申請を行います。' },
+  { n: '4', title: 'ABN取得・業務開始',      body: 'ABNは通常即日〜24時間で発行され、すぐに請求書発行や業務を開始できます。' },
 ]
 
 const faqSchema = {
@@ -76,11 +81,48 @@ const breadcrumbSchema = {
   ],
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'ABN（Australian Business Number）の登録方法',
+  description: 'オーストラリアで個人事業主・請負業務・フリーランスとして働くためのABN登録手順。登録税理士が日本語で代行します。',
+  inLanguage: 'ja',
+  totalTime: 'P1D',
+  estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
+  supply: [
+    { '@type': 'HowToSupply', name: 'TFN（タックスファイルナンバー）' },
+    { '@type': 'HowToSupply', name: 'パスポート情報' },
+    { '@type': 'HowToSupply', name: '業務内容（業種）' },
+  ],
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+    url: `${SITE_URL}/ja/abn#step-${i + 1}`,
+  })),
+}
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${SITE_URL}/ja/abn#service`,
+  name: 'ABN登録代行サービス',
+  serviceType: 'Australian Business Number登録',
+  description: 'オーストラリアのワーキングホリデーメーカー向けABN登録代行。個人事業主として正しい業種コードで登録します。',
+  provider: { '@id': `${SITE_URL}/#business` },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462), Sole Trader' },
+  inLanguage: 'ja',
+}
+
 export default function ABNPageJA() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
@@ -105,18 +147,18 @@ export default function ABNPageJA() {
 
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              <span style={{ display: 'block' }}>ABNを登録して</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>個人事業主として働く。</span>
+              <span style={{ display: 'block' }}>ABNを取得して</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>請負業務・フリーランスを始める。</span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.5 }}>
-              ABNを最初から正しく設定します。
+              ABN登録を最初から正しく代行。通常24時間以内に発行されます。
             </p>
 
             <p className="font-light"
               style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.58)', maxWidth: '48ch', marginBottom: '0' }}>
-              初日からあなたのお仕事に合わせて正しくABNをセットアップします。
+              Uber・DoorDash・ファーム請負・コンテンツ制作など、個人事業主として働くなら必須の番号です。
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -129,12 +171,12 @@ export default function ABNPageJA() {
               <a href="#how-to-register"
                 className="inline-flex btn-ghost-dark justify-center"
                 style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
-                手順を見る →
+                登録手順を見る →
               </a>
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート', '4.9★（300件以上のレビュー）', '45カ国以上に対応', '返信時間 1時間以内'].map((t, i) => (
+              {['1,200名以上をサポート', '4.9★（300件以上の口コミ）', '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -151,18 +193,18 @@ export default function ABNPageJA() {
           <div className="abn-intro-grid">
 
             <div className="abn-intro-content">
-              <p className="abn-intro-eyebrow">個人事業主・フリーランス向け</p>
+              <p className="abn-intro-eyebrow">個人事業主・請負業務・フリーランス向け</p>
               <h2 className="abn-intro-heading">
                 ABNとは？
               </h2>
               <p className="abn-intro-body">
-                <strong>ABN（Australian Business Number）</strong>は、オーストラリア政府(ABR)が発行する11桁の事業者番号です。給与を受け取る通常の従業員ではなく、自分の事業として働く場合に必要となります。
+                <strong>ABN（Australian Business Number）</strong>は、オーストラリア政府のABR（Australian Business Register）が発行する11桁の事業者番号です。給与をもらう従業員ではなく、自分の事業として働く方に必要です。
               </p>
               <p className="abn-intro-body">
-                ABNがあれば、<strong>クライアントに直接請求書を発行</strong>することができ、個人事業主（sole trader）やフリーランスとして合法的に働けます。ワーホリの方によくあるABN業務：Uber Eats・フードデリバリー、Uber配車サービス、ファーム請負作業、コンテンツ制作、清掃業、ヘアサロン業務委託など。
+                ABNがあれば、<strong>クライアントに直接請求書を発行</strong>でき、個人事業主（Sole Trader）として合法的に活動できます。ワーホリでよくあるABN業務：Uber Eats・フードデリバリー、Uber・DiDi配車サービス、ファーム請負作業（ピッキング・パッキング）、ヘアサロン・ネイル業務委託、コンテンツ制作、清掃業など。
               </p>
               <p className="abn-intro-body">
-                ABNはTFNの代わりではなく、それぞれ異なる役割を持っています。多くのワーキングホリデーメーカーは両方を持っています。TFNは雇用契約、ABNは個人事業として使い分けます。
+                ABNはTFNの代わりではなく、それぞれ役割が異なります。多くのワーホリが両方を保有し、TFNは雇用契約、ABNは請負業務と使い分けています。
               </p>
             </div>
 
@@ -176,12 +218,12 @@ export default function ABNPageJA() {
                       <path d="M4 21v-1a6 6 0 016-6h4a6 6 0 016 6v1" stroke="#587066" strokeWidth="1.6" strokeLinecap="round"/>
                     </svg>
                   </div>
-                  <p className="abn-compare-title">従業員</p>
-                  <p className="abn-compare-subtitle">TFNが必要</p>
+                  <p className="abn-compare-title">従業員（雇用契約）</p>
+                  <p className="abn-compare-subtitle">TFNを使用</p>
                   <ul className="abn-compare-list">
                     <li>雇用主が給与計算</li>
-                    <li>税金は自動的に源泉徴収</li>
-                    <li>スーパー（年金）の支給あり</li>
+                    <li>税金は自動で源泉徴収</li>
+                    <li>スーパー（年金）支給あり</li>
                   </ul>
                 </div>
 
@@ -193,12 +235,12 @@ export default function ABNPageJA() {
                       <path d="M9 21V12h6v9" stroke="#0B5240" strokeWidth="1.6" strokeLinecap="round"/>
                     </svg>
                   </div>
-                  <p className="abn-compare-title">個人事業主</p>
-                  <p className="abn-compare-subtitle">ABNが必要</p>
+                  <p className="abn-compare-title">個人事業主（請負）</p>
+                  <p className="abn-compare-subtitle">ABNを使用</p>
                   <ul className="abn-compare-list">
                     <li>自分で請求書を発行</li>
                     <li>税金は自己管理</li>
-                    <li>クライアントからのスーパーなし</li>
+                    <li>原則スーパーなし</li>
                   </ul>
                 </div>
 
@@ -209,8 +251,8 @@ export default function ABNPageJA() {
 
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">ABN登録を正しく代行します</h3>
-              <p className="service-cta-sub">WhatsAppでの無料相談から、あなたの業務に合わせた正しい設定でABNを登録。税務上の義務もわかりやすくご説明します。</p>
+              <h3 className="service-cta-heading">ABN登録を当社が代行いたします</h3>
+              <p className="service-cta-sub">無料相談から、業務内容に合わせた正しい業種コードで登録。GSTやBASなどの税務義務もわかりやすくご説明します。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               ABNを登録する →
@@ -224,22 +266,22 @@ export default function ABNPageJA() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
-            <span className="section-label center">私たちのサポート</span>
+            <span className="section-label center">当社のサポート</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
-              シンプルに、わかりやすく、最初から正しく。
+                登録から税務まで、ABN業務をフルサポート
             </h2>
             <p className="font-light text-muted"
               style={{ fontSize: 'clamp(12.5px,1.1vw,13.5px)', lineHeight: 1.75, maxWidth: '34ch', margin: '0 auto', color: 'rgba(10,15,13,0.5)' }}>
-              シンプルに、わかりやすく、最初から正しく設定します。
+              登録だけでなく、請求書の発行方法や税金分の取り分けまで日本語でアドバイス。
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6" style={{ marginBottom: '28px', alignItems: 'stretch' }}>
             {[
-              { n: '01', title: '正しい設定を選ぶお手伝い',          body: 'ABNが必要か迷っていますか？状況を確認し、明確にご案内します。' },
-              { n: '02', title: 'ABNを正しく登録',                  body: 'あなたの業務に合うABNを登録します。遅延も問題もなしで。' },
-              { n: '03', title: '初日から正しく設定',                body: 'すべて正確に処理されるので、すぐに問題なくお仕事を始められます。' },
+              { n: '01', title: 'ABNが必要か判断', body: '雇用契約と請負契約の違いをご説明し、本当にABNが必要かを判断します。' },
+              { n: '02', title: '正しい業種コードで登録', body: 'あなたの業務に合致した業種でABRに代理登録。後の税務問題を未然に防ぎます。' },
+              { n: '03', title: '初日から税務を整える', body: '請求書の発行方法、税金分の取り分け、年度末タックスリターンまで日本語でガイド。' },
             ].map((item, i) => (
               <div key={i} className="rounded-2xl flex flex-col"
                 style={{ padding: '18px', background: '#F5F9F7', border: '1px solid #C8EAE0' }}>
@@ -276,11 +318,11 @@ export default function ABNPageJA() {
             <span className="section-label center">よくあるミス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '28ch', marginTop: '8px', marginBottom: '8px' }}>
-              ABNの設定ミスは<br /><em className="not-italic font-normal text-forest-400">後々の問題につながります</em>
+              ABN関連の落とし穴<br /><em className="not-italic font-normal text-forest-400">最初に知っておくべきこと</em>
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(12.5px,1.1vw,13.5px)', lineHeight: 1.75, maxWidth: '38ch' }}>
-              これらのミスは頻繁に起こり、申請の遅延や後の複雑な問題を引き起こします。
+              ワーホリが陥りがちなミス。最初から正しく設定することが大切です。
             </p>
           </div>
 
@@ -310,11 +352,11 @@ export default function ABNPageJA() {
             <span className="section-label center">登録の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
-              4ステップでABN取得
+              4ステップでABNを取得
             </h2>
             <p className="font-light text-muted"
               style={{ fontSize: 'clamp(13px,1.2vw,14.5px)', lineHeight: 1.75 }}>
-              最初から最後まで、ガイド付きの簡単なプロセス
+              ご相談から発行まで、日本語ですべて対応します
             </p>
           </div>
 
@@ -370,19 +412,19 @@ export default function ABNPageJA() {
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">
-              <span className="section-label center">よくある質問</span>
+              <span className="section-label center">よくあるご質問</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '12px' }}>
                 ABNに関するご質問
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize: '13.5px', lineHeight: 1.75, marginBottom: '24px' }}>
-                その他のご質問はお気軽にお問い合わせください。
+                掲載されていないご質問もお気軽にお問い合わせください。
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
                 style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
-                今すぐ相談する →
+                今すぐご相談する →
               </a>
             </div>
 

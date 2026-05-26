@@ -5,7 +5,7 @@ import { CtaBand } from '@/components/ui/CtaBand'
 
 // ─── METADATA - rich SEO + AI optimized for Japanese market ─────────────
 export const metadata: Metadata = {
-  title: 'オーストラリア ワーホリ タックスリターン・スーパー返金・TFN申請',
+  title: 'オーストラリア ワーホリ タックスリターン・スーパー受取・TFN申請',
   description:
     'オーストラリアのワーキングホリデー（417・462ビザ）専門の登録税理士。TFN申請、タックスリターン、スーパー受取（DASP）、ABN登録、すべてオンラインで完結します。',
   keywords: [
@@ -35,6 +35,38 @@ export const metadata: Metadata = {
       'x-default': SITE_URL,
     },
   },
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    alternateLocale: ['en_AU', 'de_DE'],
+    url: `${SITE_URL}/ja`,
+    siteName: 'Working Holiday Tax',
+    title: 'オーストラリア ワーホリ タックスリターン・スーパー受取・TFN申請',
+    description: 'オーストラリアのワーキングホリデー（417・462ビザ）専門の登録税理士。TFN、タックスリターン、スーパー受取（DASP）、ABNまで、すべてお任せください。',
+    images: [{
+      url: `${SITE_URL}/og-image.png`,
+      width: 1200,
+      height: 630,
+      alt: 'Working Holiday Tax - オーストラリアのワーホリ向け税務サービス',
+    }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'オーストラリア ワーホリ タックスリターン・スーパー受取・TFN申請',
+    description: 'オーストラリアのワーキングホリデー専門の登録税理士。TFN、タックスリターン、スーパー、ABNまで、すべてお任せください。',
+    images: [`${SITE_URL}/og-image.png`],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  },
 }
 
 // ─── ICONS - relevant per service ───────────────────────────────────────
@@ -46,48 +78,48 @@ const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill
 const IconStar    = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
 const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
-// ─── TESTIMONIALS - backpacker reviews ─────────────────────────────────
+// ─── TESTIMONIALS - Japanese WHV reviews ─────────────────────────────────
 const TESTIMONIALS = [
-  { name: '佐藤 健太',  from: '日本 · WHV 417',     quote: '何から始めればいいか分からなかったのですが、丁寧に説明してくれて、知らなかった還付金まで取り戻してくれました。',          amount: '$4,100', initials: 'K' },
-  { name: 'Anna Larsen',   from: 'ノルウェー · WHV 417', quote: 'TFNとタックスリターンをすぐに対応してくれました。何も心配する必要がありませんでした。',                                    amount: '$2,450', initials: 'A' },
-  { name: "Liam O'Connor", from: 'アイルランド · WHV 417', quote: '雇い主が何社もあって、どうしたらいいか分かりませんでした。すべて代行してくれて、本当に楽でした。',                amount: '$3,200', initials: 'L' },
+  { name: '佐藤 健太', from: '日本 · WHV 417', quote: '何から始めればいいか分からず不安でしたが、日本語で丁寧に対応してもらえて、知らなかった控除も取り戻してくれました。', amount: '$4,100', initials: '佐' },
+  { name: '田中 美咲', from: '日本 · WHV 462', quote: 'ファームジョブで複数の雇用主のもとで働いたので複雑でしたが、すべて整理してタックスリターンを提出してくれました。', amount: '$2,450', initials: '田' },
+  { name: '山本 翔太', from: '日本 · WHV 417', quote: '帰国後にスーパーアニュエーション返金（DASP）を依頼。日本の口座に振り込んでもらえて本当に楽でした。', amount: '$3,200', initials: '山' },
 ]
 
 const STEPS = [
-  { n: '1', title: '状況を教えてください',         body: 'TFN、ABN、タックスリターン、スーパー返金、何が必要か最初からご案内します。' },
-  { n: '2', title: '必要な情報を送るだけ',         body: '簡単なチェックリストのみ。複雑な書類は不要です。' },
-  { n: '3', title: 'すべてお任せください',         body: '書類作成から申請まで、最後まで代行します。' },
-  { n: '4', title: '還付金を受け取れます',         body: '還付金は直接あなたの口座に振り込まれます。' },
+  { n: '1', title: 'ご相談・状況の確認',     body: 'TFN、ABN、タックスリターン、スーパー受取など、必要なサービスを最初にご案内します。' },
+  { n: '2', title: '必要書類のご準備',       body: 'シンプルなチェックリストに沿って情報をお送りいただくだけ。複雑な手続きは不要です。' },
+  { n: '3', title: '当社が手続きを代行',     body: '書類作成からATOへの申請まで、すべて登録税理士の監督下で完結します。' },
+  { n: '4', title: '還付金をお受け取り',     body: '還付金は指定の銀行口座（オーストラリア・海外）に直接振り込まれます。' },
 ]
 
 const SERVICES = [
   { n: '01', href: '/ja/tfn',            icon: <IconTFN />,      title: 'TFN申請',         desc: '初日から正しい税率で働くために必要なタックスファイルナンバーを取得します。' },
   { n: '02', href: '/ja/abn',            icon: <IconABN />,      title: 'ABN登録',         desc: '個人事業主として働き、正しく請求書を発行するためのABNを登録します。' },
   { n: '03', href: '/ja/tax-return',     icon: <IconReturn />,   title: 'タックスリターン', desc: '年次タックスリターンを提出し、受け取るべき最大の還付金を確実に取得します。' },
-  { n: '04', href: '/ja/superannuation', icon: <IconSuper />,    title: 'スーパー返金',     desc: 'オーストラリアを離れる際、積み立てたスーパーを受け取ります（DASP）。' },
-  { n: '05', href: '/ja/medicare',       icon: <IconMedicare />, title: 'メディケア税免除', desc: '対象外の場合、メディケア税の免除を申請します。' },
+  { n: '04', href: '/ja/superannuation', icon: <IconSuper />,    title: 'スーパー受取',     desc: '帰国時に、積み立てたスーパーアニュエーションをDASPで申請・受け取ります。' },
+  { n: '05', href: '/ja/medicare',       icon: <IconMedicare />, title: 'メディケア税免除', desc: '対象外の方は、所得の2%にあたるメディケア税の免除を申請できます。' },
 ]
 
 const FAQS = [
   {
     question: 'サービスの料金はいくらですか？',
-    answer: '初回相談とお見積もりは無料です。料金はサービスごとに定額制で、タックスリターンの場合は還付金から差し引くこともできます。事前のお支払いは不要です。作業を始める前に必ず料金をご確認いただきます。',
+    answer: '初回のご相談とお見積もりは無料です。料金はサービスごとに定額制で、タックスリターンの場合は還付金から差し引いてお支払いいただくことも可能です。事前のお支払いは必要ありません。作業を始める前に必ず料金にご納得いただいてから進めます。',
   },
   {
     question: '返信はどのくらいで来ますか？',
-    answer: '営業時間内（月〜金、9時〜18時 AEST）は通常1時間以内にご返信します。営業時間外のお問い合わせには、翌朝一番にご対応いたします。',
+    answer: '営業時間内（月〜金、シドニー時間9〜18時／日本時間10〜19時）は通常1時間以内にご返信します。営業時間外のお問い合わせには、翌営業日の朝一番にご対応いたします。',
   },
   {
     question: '帰国後でも対応してもらえますか？',
-    answer: 'はい。すでにオーストラリアを離れたワーキングホリデーメーカーの方のタックスリターンやスーパー受取（DASP）にも対応しています。すべてオンラインで完結し、還付金はオーストラリアまたは海外の口座にお振込みできます。',
+    answer: 'はい、もちろん対応いたします。すでにオーストラリアを離れたワーキングホリデーメーカーの方のタックスリターンや、スーパーアニュエーション返金（DASP）も日本からオンラインで申請できます。還付金はオーストラリアの口座でも、日本を含む海外の口座でも受け取り可能です。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
-    answer: 'ワーキングホリデーメーカーは、年収45,000ドルまでは一律15%、45,001〜135,000ドルは30%、135,001〜190,000ドルは37%、190,001ドル以上は45%の税率が適用されます。基礎控除（タックスフリーのしきい値）はありません。雇用主にTFNを提供しない場合、45%の源泉徴収となります。',
+    answer: 'ワーキングホリデーメーカーには、年収45,000ドルまで一律15%、45,001〜135,000ドルは30%、135,001〜190,000ドルは37%、190,001ドル以上は45%の税率が適用されます。オーストラリア居住者向けの非課税枠（タックスフリースレッショルド）は適用されません。雇用主にTFNを提出しない場合、最高税率の45%で源泉徴収されますので、初日に必ずTFNを取得してください。',
   },
   {
     question: 'タックスリターンだけのサービスですか？',
-    answer: 'いいえ。TFN申請、ABN登録、タックスリターン、スーパー受取（DASP）、メディケア税免除まで、ワーキングホリデーメーカーに必要なすべてのサービスをご提供しています。',
+    answer: 'いいえ、税務に関するすべてのサービスを提供しています。TFN申請、ABN登録、年次タックスリターン、スーパーアニュエーション返金（DASP）、メディケア税免除まで、ワーキングホリデーメーカーに必要な手続きをワンストップでサポートいたします。',
   },
 ]
 
@@ -135,11 +167,21 @@ export default function JapaneseHomePage() {
     })),
   }
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    inLanguage: 'ja',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
@@ -153,12 +195,12 @@ export default function JapaneseHomePage() {
           <h1 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(22px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
             <span style={{ display: 'block' }}>オーストラリアの税金、</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>まるごとサポート。</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>すべておまかせください。</span>
           </h1>
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '34ch', marginBottom: '10px' }}>
-            TFN・ABN・タックスリターン・スーパー返金。<br />すべて私たちが代行します。
+            TFN・ABN・タックスリターン・スーパーアニュエーション返金。<br />在豪・帰国後を問わずワンストップで対応。
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
@@ -170,7 +212,7 @@ export default function JapaneseHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200名以上をサポート', '4.9★（300件以上のレビュー）', '45カ国以上に対応', '返信時間 1時間以内'].map((label, i) => (
+            {['1,200名以上をサポート', '4.9★（300件以上の口コミ）', '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -188,20 +230,20 @@ export default function JapaneseHomePage() {
 
           <h2 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.12, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '10px', marginBottom: '10px' }}>
-            ワーキングホリデー専門だからできること。
+            ワーキングホリデー専門だから安心
           </h2>
 
           <p className="font-light text-muted mx-auto"
             style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '36ch', marginBottom: '32px', textAlign: 'center' }}>
-            私たちのゴールはひとつ。<br />あなたの還付金を最大化すること。
+            私たちの目標はただひとつ。<br />あなたの還付金を最大化することです。
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom: '36px' }}>
             {[
-              { title: 'ワーホリ税務の専門家。',     body: 'ワーキングホリデーの税務だけを扱っているので、最大限の還付金を取り戻す方法を熟知しています。' },
-              { title: 'ATO登録税理士。',           body: 'ATO（オーストラリア税務署）のルールに完全準拠し、登録税理士が監督します。' },
-              { title: 'わかりやすいサポート。',     body: '専門用語を使わず、ステップごとに丁寧にご案内します。' },
-              { title: 'すべて代行します。',         body: '書類もストレスも不要。最初から最後まで、すべてお任せください。' },
+              { title: 'ワーホリ税務の専門家', body: 'ワーキングホリデーメーカーの税務だけを専門に扱う登録税理士。最大の還付金を取り戻すノウハウがあります。' },
+              { title: 'ATO登録税理士', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。法令を完全遵守し、安心してお任せいただけます。' },
+              { title: '日本語で完全対応', body: '専門用語はわかりやすく説明。複雑な書類もこちらで代行するので、日本語だけで完結します。' },
+              { title: 'すべておまかせ', body: '面倒な書類仕事はゼロ。TFN取得から最終的な還付金受け取りまで、すべて代行します。' },
             ].map((item, i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>
@@ -226,7 +268,7 @@ export default function JapaneseHomePage() {
             <span className="section-label center">お客様の声</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', maxWidth: '26ch' }}>
-              ワーホリの皆さんが受け取った還付金。
+              ワーホリの皆さんの還付金実績
             </h2>
           </div>
 
@@ -260,10 +302,10 @@ export default function JapaneseHomePage() {
           <div style={{ marginTop: '28px', paddingTop: '24px', borderTop: '1px solid #E2EFE9' }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
-                { n: '4.9★',    l: '300件以上のレビュー' },
+                { n: '4.9★',    l: '300件以上の口コミ' },
                 { n: '1,200+',  l: 'サポート実績' },
-                { n: '< 1時間', l: '返信時間' },
-                { n: '100%',    l: 'すべてオンライン、書類不要' },
+                { n: '1時間以内', l: 'スピード返信' },
+                { n: '100%',    l: '完全オンライン対応' },
               ].map((s, i) => (
                 <div key={i} className="text-center py-2 lg:py-3">
                   <p className="font-serif font-black text-forest-500"
@@ -285,11 +327,11 @@ export default function JapaneseHomePage() {
             <span className="section-label center">ご利用の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px', maxWidth: '26ch' }}>
-              4ステップで還付金を受け取れます
+              4ステップで還付金を取り戻す
             </h2>
             <p className="font-light text-muted mx-auto"
-              style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '34ch', marginBottom: '4px' }}>
-              <em className="not-italic text-forest-400">シンプルな手続きで、最大の還付金を。</em>
+            style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '34ch', marginBottom: '4px' }}>
+              <em className="not-italic text-forest-400">シンプルな4ステップで、最大の還付金を取り戻す。</em>
             </p>
           </div>
 
@@ -344,7 +386,7 @@ export default function JapaneseHomePage() {
               タックスリターンを依頼する →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
-              無料相談&nbsp;&bull;&nbsp;事前のお支払い不要&nbsp;&bull;&nbsp;親身なサポート
+              無料相談&nbsp;&bull;&nbsp;事前支払い不要&nbsp;&bull;&nbsp;日本語で安心サポート
             </p>
           </div>
         </div>
@@ -358,12 +400,12 @@ export default function JapaneseHomePage() {
             <span className="section-label center">サービス一覧</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px', maxWidth: '26ch' }}>
-              ワーキングホリデーの税務をトータルサポート<br />
-              <em className="not-italic font-normal text-forest-400">オーストラリアで。</em>
+              ワーホリの税務をトータルサポート<br />
+              <em className="not-italic font-normal text-forest-400">オーストラリアで安心。</em>
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', textAlign: 'center', lineHeight: 1.7, maxWidth: '40ch' }}>
-              最初の仕事から最後の還付金まで。<br />すべて私たちにお任せください。
+              最初の仕事から帰国後の還付金まで。<br />すべて当社にお任せください。
             </p>
           </div>
 
@@ -417,9 +459,9 @@ export default function JapaneseHomePage() {
 
       <CtaBand
         eyebrow="今すぐ始める"
-        heading="オーストラリアの税金、"
-        headingEm="海外からでも対応します。"
-        sub={<>TFN、タックスリターン、スーパー、ABNまで<span className="hidden sm:inline">、</span><br className="sm:hidden" />すべてワンストップで対応します。</>}
+        heading="日本からでも、"
+        headingEm="オーストラリアの税金対応します。"
+        sub={<>TFN・タックスリターン・スーパー受取・ABN<span className="hidden sm:inline">まで、</span><br className="sm:hidden" />ワンストップで全部サポート。</>}
         primaryLabel="タックスリターンを依頼する"
         trustLine=""
         clipTop

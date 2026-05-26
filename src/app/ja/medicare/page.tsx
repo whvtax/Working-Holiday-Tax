@@ -88,11 +88,25 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': `${SITE_URL}/ja/medicare#service`,
+  name: 'メディケア税免除申請代行サービス',
+  serviceType: 'Medicare Levy Exemption申請',
+  description: 'オーストラリアのワーキングホリデーメーカー向けメディケア税（2%レビー）免除証明書の取得とタックスリターンでの適用。日本人はNDA国出身ですが、社会保険協定（RHCA）非締結のため通常メディケア対象外です。',
+  provider: { '@id': `${SITE_URL}/#business` },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) - Medicare対象外' },
+  inLanguage: 'ja',
+}
+
 export default function JapaneseMedicarePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
