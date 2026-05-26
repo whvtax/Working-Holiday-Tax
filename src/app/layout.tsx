@@ -291,8 +291,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
-        {/* Sync html[lang] with current route. /de/* pages set lang="de", others stay en-AU.
-            This ensures CSS html[lang="de"] rules (hyphenation, etc.) only apply to German pages. */}
+        {/* Sync html[lang] with current route. /de/* → "de", /ja/* → "ja", others → "en-AU".
+            This ensures locale-specific CSS rules (hyphenation, line-break) apply correctly. */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -300,7 +300,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 var setLang = function(){
                   var p = window.location.pathname || '/';
                   var isDE = p === '/de' || p.indexOf('/de/') === 0;
-                  document.documentElement.lang = isDE ? 'de' : 'en-AU';
+                  var isJA = p === '/ja' || p.indexOf('/ja/') === 0;
+                  document.documentElement.lang = isJA ? 'ja' : isDE ? 'de' : 'en-AU';
                 };
                 setLang();
                 // Re-run on client-side route changes (Next.js navigation)

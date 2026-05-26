@@ -5,8 +5,15 @@ import { useEffect, useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 
-const Logo = ({ isGerman }: { isGerman: boolean }) => (
-  <Link href={isGerman ? '/de' : '/'} className="flex items-center gap-2.5 flex-shrink-0" aria-label={isGerman ? 'Working Holiday Tax - Startseite' : 'Working Holiday Tax - Home'}>
+const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
+  const href = locale === 'de' ? '/de' : locale === 'ja' ? '/ja' : '/'
+  const aria = locale === 'de'
+    ? 'Working Holiday Tax - Startseite'
+    : locale === 'ja'
+    ? 'Working Holiday Tax - ホーム'
+    : 'Working Holiday Tax - Home'
+  return (
+  <Link href={href} className="flex items-center gap-2.5 flex-shrink-0" aria-label={aria}>
     <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
       <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" strokeWidth="2"/>
       <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>
@@ -17,7 +24,8 @@ const Logo = ({ isGerman }: { isGerman: boolean }) => (
     </svg>
     <span className="font-serif text-[15px] font-bold text-ink" style={{ letterSpacing: '-0.02em' }}>Working Holiday Tax</span>
   </Link>
-)
+  )
+}
 
 // Services that go under the dropdown (5 service pages)
 const SERVICES_LINKS = [
@@ -42,30 +50,54 @@ export function Nav() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
-  // Detect German pages - all German URLs start with /de
+  // Detect locale from URL
   const isGerman = pathname === '/de' || pathname?.startsWith('/de/')
+  const isJapanese = pathname === '/ja' || pathname?.startsWith('/ja/')
+  const locale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
 
   // Localized link sets
-  const servicesLinks = isGerman
-    ? [
-        { label: 'Steuernummer (TFN)',     href: '/de/tfn',            desc: 'Deine TFN beantragen' },
-        { label: 'ABN-Registrierung',      href: '/de/abn',            desc: 'Als Selbstständiger arbeiten' },
-        { label: 'Steuererklärung',        href: '/de/tax-return',     desc: 'Jahressteuererklärung einreichen' },
-        { label: 'Super auszahlen (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise zurück' },
-        { label: 'Medicare',               href: '/de/medicare',       desc: 'Medicare Levy Befreiung' },
-      ]
-    : SERVICES_LINKS
+  const servicesLinks =
+    locale === 'de'
+      ? [
+          { label: 'Steuernummer (TFN)',     href: '/de/tfn',            desc: 'Deine TFN beantragen' },
+          { label: 'ABN-Registrierung',      href: '/de/abn',            desc: 'Als Selbstständiger arbeiten' },
+          { label: 'Steuererklärung',        href: '/de/tax-return',     desc: 'Jahressteuererklärung einreichen' },
+          { label: 'Super auszahlen (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise zurück' },
+          { label: 'Medicare',               href: '/de/medicare',       desc: 'Medicare Levy Befreiung' },
+        ]
+      : locale === 'ja'
+      ? [
+          { label: 'TFN申請',         href: '/ja/tfn',            desc: 'タックスファイルナンバーを取得' },
+          { label: 'ABN登録',         href: '/ja/abn',            desc: '個人事業主として働く' },
+          { label: '確定申告',         href: '/ja/tax-return',     desc: '年次確定申告を提出' },
+          { label: 'スーパー受取',     href: '/ja/superannuation', desc: '帰国時のDASP受取' },
+          { label: 'メディケア',       href: '/ja/medicare',       desc: 'メディケア・レビー免除' },
+        ]
+      : SERVICES_LINKS
 
-  const topLinks = isGerman
-    ? [
-        { label: 'Rechner',  href: '/de/calculator' },
-        { label: 'Blog',     href: '/de/blog' },
-        { label: 'Kontakt',  href: '/de/contact' },
-      ]
-    : TOP_LINKS
+  const topLinks =
+    locale === 'de'
+      ? [
+          { label: 'Rechner',  href: '/de/calculator' },
+          { label: 'Blog',     href: '/de/blog' },
+          { label: 'Kontakt',  href: '/de/contact' },
+        ]
+      : locale === 'ja'
+      ? [
+          { label: '計算機',           href: '/ja/calculator' },
+          { label: 'ブログ',           href: '/ja/blog' },
+          { label: 'お問い合わせ',     href: '/ja/contact' },
+        ]
+      : TOP_LINKS
 
-  const servicesLabel  = isGerman ? 'Leistungen' : 'Services'
-  const ctaLabel       = isGerman ? 'Steuererklärung starten' : 'Start your tax return'
+  const servicesLabel =
+    locale === 'de' ? 'Leistungen' :
+    locale === 'ja' ? 'サービス' :
+    'Services'
+  const ctaLabel =
+    locale === 'de' ? 'Steuererklärung starten' :
+    locale === 'ja' ? '確定申告を始める' :
+    'Start your tax return'
 
   // Sticky background after scroll
   useEffect(() => {
@@ -114,7 +146,7 @@ export function Nav() {
         style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-[68px] flex items-center justify-between gap-5">
-            <Logo isGerman={isGerman} />
+            <Logo locale={locale} />
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-7">
@@ -232,7 +264,7 @@ export function Nav() {
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
 
         {/* All links - flat list */}
-        {(isGerman
+        {(locale === 'de'
           ? [
               { label: 'Steuernummer (TFN)',   href: '/de/tfn' },
               { label: 'ABN',                  href: '/de/abn' },
@@ -242,6 +274,17 @@ export function Nav() {
               { label: 'Rechner',              href: '/de/calculator' },
               { label: 'Blog',                 href: '/de/blog' },
               { label: 'Kontakt',              href: '/de/contact' },
+            ]
+          : locale === 'ja'
+          ? [
+              { label: 'TFN申請',           href: '/ja/tfn' },
+              { label: 'ABN登録',           href: '/ja/abn' },
+              { label: '確定申告',           href: '/ja/tax-return' },
+              { label: 'スーパー (DASP)',   href: '/ja/superannuation' },
+              { label: 'メディケア',         href: '/ja/medicare' },
+              { label: '計算機',             href: '/ja/calculator' },
+              { label: 'ブログ',             href: '/ja/blog' },
+              { label: 'お問い合わせ',       href: '/ja/contact' },
             ]
           : [
               { label: 'TFN',         href: '/tfn' },

@@ -3,8 +3,8 @@ import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
 
 /**
- * Site map - includes both English (default) and German (/de) versions.
- * Each English URL gets a matching /de entry. Search engines use these together
+ * Site map - includes English (default), German (/de) and Japanese (/ja) versions.
+ * Each English URL gets matching /de and /ja entries. Search engines use these together
  * with hreflang tags on the pages themselves to serve the right language.
  *
  * Legal pages (client-agreement, privacy) stay English-only - they're not
@@ -49,6 +49,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: r.priority * 0.95, // Slight priority drop vs canonical English
     }))
 
+  // Japanese static pages (mirrors English, excluding legal pages)
+  const japaneseStatic = routes
+    .filter(r => r.translated)
+    .map(r => ({
+      url: r.url === '/' ? `${SITE_URL}/ja` : `${SITE_URL}/ja${r.url}`,
+      lastModified: new Date(),
+      changeFrequency: r.changeFrequency,
+      priority: r.priority * 0.95,
+    }))
+
   // English category pages
   const englishCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/blog/category/${c.slug}`,
@@ -60,6 +70,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // German category pages
   const germanCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/de/blog/category/${c.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.76,
+  }))
+
+  // Japanese category pages
+  const japaneseCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
+    url: `${SITE_URL}/ja/blog/category/${c.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.76,
@@ -81,12 +99,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.71,
   }))
 
+  // Japanese guide pages (will be populated as articles are translated)
+  const japaneseGuides: MetadataRoute.Sitemap = guides.map(g => ({
+    url: `${SITE_URL}/ja/blog/${g.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.71,
+  }))
+
   return [
     ...englishStatic,
     ...germanStatic,
+    ...japaneseStatic,
     ...englishCategories,
     ...germanCategories,
+    ...japaneseCategories,
     ...englishGuides,
     ...germanGuides,
+    ...japaneseGuides,
   ]
 }

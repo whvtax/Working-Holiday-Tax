@@ -2224,3 +2224,57 @@ html[lang="de"] .guide-article h1 {
     word-break: break-word;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   JAPANESE LANGUAGE ADJUSTMENTS
+   Applied to <html lang="ja"> root. Affects Japanese pages only.
+   Japanese uses no spaces between words - line-break needs special handling.
+   These rules:
+   - Use 'strict' line-break rules (proper kinsoku 禁則 - prevents orphan kana/punctuation)
+   - Allow word-wrap inside Japanese text spans
+   - Disable hyphenation (irrelevant for CJK)
+   - Tighten line-height slightly (CJK glyphs are visually denser)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html[lang="ja"] {
+  /* Proper Japanese line-breaking with kinsoku shori (禁則処理) */
+  line-break: strict;
+  /* Disable hyphenation - CJK doesn't use hyphens */
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  /* Allow line breaks anywhere - Japanese has no word boundaries */
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+/* Headings in Japanese: tighter line-height looks better with CJK */
+html[lang="ja"] h1,
+html[lang="ja"] h2,
+html[lang="ja"] h3,
+html[lang="ja"] h4 {
+  line-break: strict;
+  word-break: keep-all;
+  /* Slightly tighter tracking for CJK */
+  letter-spacing: 0;
+}
+
+/* Body text in Japanese reads better with slightly more line-height */
+html[lang="ja"] p,
+html[lang="ja"] li {
+  line-break: strict;
+}
+
+/* Blog post H1 on Japanese pages */
+html[lang="ja"] article h1,
+html[lang="ja"] .guide-article h1 {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: strict;
+}
+
+/* Numerals and English embedded in Japanese text should keep tabular alignment */
+html[lang="ja"] .numeric,
+html[lang="ja"] code {
+  font-feature-settings: "tnum" 1;
+}

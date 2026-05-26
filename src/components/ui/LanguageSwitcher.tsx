@@ -5,25 +5,29 @@ import { useState, useRef, useEffect } from 'react'
 
 /**
  * LanguageSwitcher
- * Shows current language + flag, opens dropdown with the other option.
- * Smart pathing: if on /tfn, switching to DE goes to /de/tfn (and vice versa).
- * Used in Nav (desktop + mobile).
+ * Shows current language + flag, opens dropdown with the other options.
+ * Smart pathing: if on /tfn, switching to DE goes to /de/tfn; to JA → /ja/tfn.
+ * Used in Nav (desktop + mobile - same variant since the mobile menu now shows
+ * the pill button beside the burger instead of an inline mobile variant).
  */
 export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' | 'mobile' }) {
   const pathname = usePathname() || '/'
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  // Determine current language from pathname
-  const isGerman = pathname === '/de' || pathname.startsWith('/de/')
+  // Determine current locale from pathname
+  const isGerman   = pathname === '/de' || pathname.startsWith('/de/')
+  const isJapanese = pathname === '/ja' || pathname.startsWith('/ja/')
+  const currentLocale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
 
-  // Build the equivalent URL in the other language
-  const englishHref = isGerman
-    ? pathname.replace(/^\/de(\/|$)/, '/') || '/'
-    : pathname
-  const germanHref = isGerman
-    ? pathname
-    : pathname === '/' ? '/de' : `/de${pathname}`
+  // Build equivalent URLs by swapping the locale prefix
+  const stripLocale = (p: string) =>
+    p.replace(/^\/de(\/|$)/, '/').replace(/^\/ja(\/|$)/, '/') || '/'
+
+  const baseUrl = stripLocale(pathname)
+  const englishHref  = baseUrl === '/' ? '/'   : baseUrl
+  const germanHref   = baseUrl === '/' ? '/de' : `/de${baseUrl}`
+  const japaneseHref = baseUrl === '/' ? '/ja' : `/ja${baseUrl}`
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -64,46 +68,28 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
     </svg>
   )
 
-  // Mobile variant: simple inline link, no dropdown
-  if (variant === 'mobile') {
-    return (
-      <div className="flex items-center gap-2 py-3" style={{ borderBottom: '1px solid #F0F5F2' }}>
-        <span style={{ fontSize: '13px', color: '#587066', marginRight: '8px' }}>
-          {isGerman ? 'Sprache:' : 'Language:'}
-        </span>
-        <Link
-          href={englishHref}
-          aria-label="Switch to English"
-          aria-current={!isGerman ? 'true' : undefined}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all"
-          style={{
-            background: !isGerman ? '#EAF6F1' : 'transparent',
-            border: !isGerman ? '1px solid #C8EAE0' : '1px solid transparent',
-            fontSize: '13px',
-            fontWeight: !isGerman ? 600 : 400,
-            color: !isGerman ? '#0B5240' : '#587066',
-          }}>
-          <FlagUK /> EN
-        </Link>
-        <Link
-          href={germanHref}
-          aria-label="Zu Deutsch wechseln"
-          aria-current={isGerman ? 'true' : undefined}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all"
-          style={{
-            background: isGerman ? '#EAF6F1' : 'transparent',
-            border: isGerman ? '1px solid #C8EAE0' : '1px solid transparent',
-            fontSize: '13px',
-            fontWeight: isGerman ? 600 : 400,
-            color: isGerman ? '#0B5240' : '#587066',
-          }}>
-          <FlagDE /> DE
-        </Link>
-      </div>
-    )
-  }
+  const FlagJP = () => (
+    <svg width="20" height="14" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '2px', display: 'block', flexShrink: 0 }}>
+      <rect width="60" height="42" fill="#fff"/>
+      <circle cx="30" cy="21" r="12.6" fill="#BC002D"/>
+    </svg>
+  )
 
-  // Desktop variant: pill button with dropdown
+  // Pill button (desktop and beside-burger on mobile)
+  const currentFlag = currentLocale === 'ja' ? <FlagJP /> : currentLocale === 'de' ? <FlagDE /> : <FlagUK />
+  const currentCode = currentLocale === 'ja' ? 'JA' : currentLocale === 'de' ? 'DE' : 'EN'
+  const ariaLabel =
+    currentLocale === 'de' ? 'Sprache wechseln' :
+    currentLocale === 'ja' ? '言語を切り替える' :
+    'Switch language'
+
+  // Order: current first (highlighted), others below
+  const options: Array<{ code: 'en'|'de'|'ja'; label: string; href: string; flag: JSX.Element }> = [
+    { code: 'en', label: 'English',  href: englishHref,  flag: <FlagUK /> },
+    { code: 'de', label: 'Deutsch',  href: germanHref,   flag: <FlagDE /> },
+    { code: 'ja', label: '日本語',    href: japaneseHref, flag: <FlagJP /> },
+  ]
+
   return (
     <div ref={ref} style={{ position: 'relative' }}>
       <button
@@ -111,7 +97,7 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-haspopup="true"
-        aria-label={isGerman ? 'Sprache wechseln' : 'Switch language'}
+        aria-label={ariaLabel}
         className="inline-flex items-center gap-1.5 transition-all"
         style={{
           height: '32px',
@@ -124,8 +110,8 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
           color: '#587066',
           cursor: 'pointer',
         }}>
-        {isGerman ? <FlagDE /> : <FlagUK />}
-        <span>{isGerman ? 'DE' : 'EN'}</span>
+        {currentFlag}
+        <span>{currentCode}</span>
         <svg width="9" height="9" viewBox="0 0 12 12" fill="none" aria-hidden="true"
           style={{ transform: open ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }}>
           <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -145,46 +131,32 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
           padding: '6px',
           zIndex: 60,
         }}>
-          <Link
-            href={englishHref}
-            onClick={() => setOpen(false)}
-            aria-current={!isGerman ? 'true' : undefined}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-            style={{
-              background: !isGerman ? '#F4F9F6' : 'transparent',
-              textDecoration: 'none',
-              fontSize: '13px',
-              fontWeight: !isGerman ? 600 : 400,
-              color: '#0B5240',
-            }}>
-            <FlagUK />
-            <span>English</span>
-            {!isGerman && (
-              <svg width="14" height="14" viewBox="0 0 14 14" style={{ marginLeft: 'auto' }} aria-hidden="true">
-                <path d="M3 7l3 3 5-6" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-              </svg>
-            )}
-          </Link>
-          <Link
-            href={germanHref}
-            onClick={() => setOpen(false)}
-            aria-current={isGerman ? 'true' : undefined}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
-            style={{
-              background: isGerman ? '#F4F9F6' : 'transparent',
-              textDecoration: 'none',
-              fontSize: '13px',
-              fontWeight: isGerman ? 600 : 400,
-              color: '#0B5240',
-            }}>
-            <FlagDE />
-            <span>Deutsch</span>
-            {isGerman && (
-              <svg width="14" height="14" viewBox="0 0 14 14" style={{ marginLeft: 'auto' }} aria-hidden="true">
-                <path d="M3 7l3 3 5-6" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-              </svg>
-            )}
-          </Link>
+          {options.map(opt => {
+            const isCurrent = opt.code === currentLocale
+            return (
+              <Link
+                key={opt.code}
+                href={opt.href}
+                onClick={() => setOpen(false)}
+                aria-current={isCurrent ? 'true' : undefined}
+                className="flex items-center gap-2 px-3 py-2 rounded-lg transition-colors"
+                style={{
+                  background: isCurrent ? '#F4F9F6' : 'transparent',
+                  textDecoration: 'none',
+                  fontSize: '13px',
+                  fontWeight: isCurrent ? 600 : 400,
+                  color: '#0B5240',
+                }}>
+                {opt.flag}
+                <span>{opt.label}</span>
+                {isCurrent && (
+                  <svg width="14" height="14" viewBox="0 0 14 14" style={{ marginLeft: 'auto' }} aria-hidden="true">
+                    <path d="M3 7l3 3 5-6" stroke="#0B5240" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                )}
+              </Link>
+            )
+          })}
         </div>
       )}
     </div>
