@@ -5,7 +5,15 @@ import { EMAIL } from '@/lib/constants'
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description: 'Working Holiday Tax privacy policy - how we collect, use and protect your personal information.',
-  alternates: { canonical: '/privacy' },
+  alternates: {
+    canonical: '/privacy',
+    languages: {
+      'en-AU': '/privacy',
+      'de': '/de/privacy',
+      'ja': '/ja/privacy',
+      'x-default': '/privacy',
+    },
+  },
 }
 
 type Section = {

@@ -1,7 +1,5 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
-// NOTE: FormLang only supports 'en' | 'de'. The Japanese page uses the English
-// form UI ('en') wrapped with Japanese metadata and Schema.org for SEO discovery.
 import { FormClient } from '@/app/tfn-form/FormClient'
 
 export const metadata: Metadata = {
@@ -53,7 +51,7 @@ export default function JapaneseTFNFormPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <FormClient defaultLang="en" />
+      <FormClient defaultLang="ja" />
     </>
   )
 }

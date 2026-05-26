@@ -5,7 +5,15 @@ import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 export const metadata: Metadata = {
   title: 'Client Agreement',
   description: 'Working Holiday Tax client agreement.',
-  alternates: { canonical: '/client-agreement' },
+  alternates: {
+    canonical: '/client-agreement',
+    languages: {
+      'en-AU': '/client-agreement',
+      'de': '/de/client-agreement',
+      'ja': '/ja/client-agreement',
+      'x-default': '/client-agreement',
+    },
+  },
 }
 
 type Section = {

@@ -120,11 +120,48 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/de/tax-return#service',
+  name: 'Australische Steuererklärung für Working Holiday Maker',
+  description: 'Komplette Bearbeitung deiner australischen Steuererklärung - Vorbereitung, Optimierung und Einreichung beim ATO durch registrierte Steueragenten.',
+  serviceType: 'Tax Return Preparation',
+  category: 'Tax Preparation Service',
+  url: 'https://workingholidaytax.com.au/de/tax-return',
+  inLanguage: 'de',
+  areaServed: {
+    '@type': 'Country',
+    name: 'Australia',
+  },
+  audience: {
+    '@type': 'Audience',
+    name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
+  },
+  provider: {
+    '@type': 'Organization',
+    '@id': 'https://workingholidaytax.com.au/#organization',
+    name: 'Working Holiday Tax',
+    url: 'https://workingholidaytax.com.au',
+    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
+    knowsLanguage: ['de', 'en', 'ja'],
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '300',
+    bestRating: '5',
+    worstRating: '1',
+  },
+}
+
+
 export default function GermanTaxReturnPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">

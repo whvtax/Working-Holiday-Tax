@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     languages: {
       'en-AU': '/tax-form',
       'de': '/de/tax-form',
+      'ja': '/ja/tax-form',
       'x-default': '/tax-form',
     },
   },

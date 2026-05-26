@@ -75,11 +75,48 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/de/tfn#service',
+  name: 'TFN-Antrag (Tax File Number) für Working Holiday Maker',
+  description: 'Wir beantragen deine australische Tax File Number (TFN) - kostenlos, online und schnell. Damit du vom ersten Tag mit 15 % besteuert wirst statt mit 45 %.',
+  serviceType: 'TFN Application',
+  category: 'Tax Registration Service',
+  url: 'https://workingholidaytax.com.au/de/tfn',
+  inLanguage: 'de',
+  areaServed: {
+    '@type': 'Country',
+    name: 'Australia',
+  },
+  audience: {
+    '@type': 'Audience',
+    name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
+  },
+  provider: {
+    '@type': 'Organization',
+    '@id': 'https://workingholidaytax.com.au/#organization',
+    name: 'Working Holiday Tax',
+    url: 'https://workingholidaytax.com.au',
+    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
+    knowsLanguage: ['de', 'en', 'ja'],
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '300',
+    bestRating: '5',
+    worstRating: '1',
+  },
+}
+
+
 export default function TFNPageDE() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">

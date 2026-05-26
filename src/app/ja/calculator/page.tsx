@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
-// NOTE: We intentionally use the English CalculatorClient (the calculator UI itself
-// is English in this build). Only the metadata, FAQ content, and Schema.org around
-// the widget are localised. This keeps a single calculation logic source.
-import { CalculatorClient } from '@/app/calculator/CalculatorClient'
+import { CalculatorClient } from './CalculatorClient'
 
 export const metadata: Metadata = {
   title: '税金計算機 - ワーキングホリデー オーストラリア',

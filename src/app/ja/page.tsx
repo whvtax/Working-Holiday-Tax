@@ -176,12 +176,113 @@ export default function JapaneseHomePage() {
     ],
   }
 
+  // Organization schema with full service catalog - critical for AI search
+  const organizationLd = {
+    '@context': 'https://schema.org',
+    '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
+    '@id': `${SITE_URL}/#organization`,
+    name: 'Working Holiday Tax',
+    legalName: AGENT_NAME,
+    url: SITE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/icon-512.png`,
+      width: 512,
+      height: 512,
+    },
+    description: 'オーストラリアの登録税理士事務所。ワーキングホリデーメーカー（ビザサブクラス417・462）専門。日本語・英語・ドイツ語対応。',
+    foundingDate: '2020',
+    knowsLanguage: ['en', 'de', 'ja'],
+    areaServed: {
+      '@type': 'Country',
+      name: 'Australia',
+    },
+    audience: {
+      '@type': 'Audience',
+      name: 'オーストラリアのワーキングホリデービザ保持者（サブクラス417・462）',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '300',
+      bestRating: '5',
+      worstRating: '1',
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'ワーキングホリデーメーカー向け税務・会計サービス',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'TFN（タックスファイルナンバー）取得代行',
+            description: 'ワーキングホリデーメーカーのためのTFN取得申請。',
+            url: `${SITE_URL}/ja/tfn`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'ABN（事業者番号）登録代行',
+            description: '個人事業主としてのABN登録。',
+            url: `${SITE_URL}/ja/abn`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'タックスリターン（確定申告）代行',
+            description: 'ATOへの年次タックスリターンの準備と提出。',
+            url: `${SITE_URL}/ja/tax-return`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'スーパーアニュエーション返金（DASP）申請',
+            description: '帰国後のスーパーアニュエーション（DASP）申請代行。',
+            url: `${SITE_URL}/ja/superannuation`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'メディケア税免除（Medicare Levy Exemption）申請',
+            description: 'ワーキングホリデーメーカー向けメディケア税免除証明書の申請。',
+            url: `${SITE_URL}/ja/medicare`,
+          },
+        },
+      ],
+    },
+    sameAs: [
+      'https://www.tpb.gov.au/public-register',
+    ],
+    knowsAbout: [
+      'オーストラリア税法',
+      'ワーキングホリデービザ サブクラス417',
+      'ワーキングホリデービザ サブクラス462',
+      'タックスファイルナンバー（TFN）',
+      'オーストラリアビジネスナンバー（ABN）',
+      'スーパーアニュエーション・DASP',
+      'メディケア税免除',
+      'フェアワーク（Fair Work Australia）',
+      'PAYG源泉徴収',
+      'バックパッカー税率',
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">

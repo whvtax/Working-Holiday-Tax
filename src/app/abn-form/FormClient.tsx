@@ -327,7 +327,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
           <div className="form-section-title">{T('sectionDeclaration')}</div>
           <div className={`declaration-box${errors.declared?' decl-error':''}`}>
-            <p className="decl-text">{lang === 'de' ? 'Ich erkläre, dass ich kein Vermögen in Australien besitze und noch nie eine ABN bekommen habe. Ich beabsichtige, ein Geschäft als Einzelunternehmer (Sole Trader) zu führen, bei dem ich alleiniger Inhaber bin, mit Sitz in Australien.' : 'I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.'}</p>
+            <p className="decl-text">{T('declABN')}</p>
             <label className="check-row">
               <input type="checkbox" checked={declared} onChange={e=>{ setDeclared(e.target.checked); setErrors(p=>({...p,declared:''})) }} className="hidden"/>
               <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>

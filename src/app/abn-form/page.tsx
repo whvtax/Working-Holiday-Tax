@@ -6,7 +6,15 @@ export const metadata: Metadata = {
   title: 'Submit Your ABN Application | Working Holiday Tax',
   description: 'Submit your details to register an Australian Business Number. We set up your ABN correctly for your work type.',
   keywords: ['ABN registration form', 'apply ABN online', 'ABN form working holiday', 'register ABN sole trader'],
-  alternates: { canonical: '/abn-form' },
+  alternates: {
+    canonical: '/abn-form',
+    languages: {
+      'en-AU': '/abn-form',
+      'de': '/de/abn-form',
+      'ja': '/ja/abn-form',
+      'x-default': '/abn-form',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',

@@ -51,7 +51,7 @@ export default function JapaneseABNFormPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <FormClient defaultLang="en" />
+      <FormClient defaultLang="ja" />
     </>
   )
 }

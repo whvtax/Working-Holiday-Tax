@@ -307,11 +307,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <Field label={T('passport')} required error={errors.passport}>
             <input className={`form-input${errors.passport?' input-error':''}`} placeholder="e.g. AB1234567" autoComplete="off" maxLength={30} value={passport} onChange={e=>{ setPassport(e.target.value); setErrors(p=>({...p,passport:''})) }}/>
           </Field>
-          <Field label={lang === 'de' ? 'Land, das den Reisepass ausgestellt hat (mit Visum)' : "Country that issued the passport (with visa attached)"} required error={errors.passportCountry}>
+          <Field label={T('passportCountryWithVisa')} required error={errors.passportCountry}>
             <input className={`form-input${errors.passportCountry?' input-error':''}`} placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60} value={passportCountry} onChange={e=>{ setPassportCountry(e.target.value); setErrors(p=>({...p,passportCountry:''})) }}/>
           </Field>
 
-          <div className="form-section-title">{lang === 'de' ? 'Kontaktdaten' : 'Contact details'}</div>
+          <div className="form-section-title">{T('contactDetails')}</div>
           <Field label={T('whatsapp')} required error={errors.smsPhone}>
             <input type="tel" className={`form-input${errors.smsPhone?' input-error':''}`} placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30} value={smsPhone} onChange={e=>{ setSmsPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p=>({...p,smsPhone:''})) }} onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
@@ -321,11 +321,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <Field label={T('address')} required error={errors.auAddress}>
             <textarea className={`form-input form-textarea${errors.auAddress?' input-error':''}`} placeholder="e.g. 42 Bondi Rd, Bondi, NSW, 2026" value={auAddress} onChange={e=>{ setAuAddress(e.target.value); setErrors(p=>({...p,auAddress:''})) }}/>
           </Field>
-          <Field label={lang === 'de' ? 'Vollständige Adresse in deinem Heimatland' : "Full home country address"} required error={errors.homeAddress}>
+          <Field label={T('homeAddress')} required error={errors.homeAddress}>
             <textarea className={`form-input form-textarea${errors.homeAddress?' input-error':''}`} placeholder="e.g. 10 Downing Street, London, SW1A 2AA, UK" value={homeAddress} onChange={e=>{ setHomeAddress(e.target.value); setErrors(p=>({...p,homeAddress:''})) }}/>
           </Field>
 
-          <div className="form-section-title">{lang === 'de' ? 'Steuer- und Super-Fonds-Daten' : 'Tax & super fund details'}</div>
+          <div className="form-section-title">{T('taxAndSuperDetails')}</div>
           <Field label={T('tfn')} required error={errors.tfn}>
             <input className={`form-input${errors.tfn?' input-error':''}`} placeholder="e.g. 123 456 789" autoComplete="off" inputMode="numeric" maxLength={20} value={tfn} onChange={e=>{ setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,tfn:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
@@ -342,7 +342,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <Field label={T('bankName')} required error={errors.bankName}>
             <input className={`form-input${errors.bankName?' input-error':''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ" autoComplete="off" maxLength={100} value={bankName} onChange={e=>{ setBankName(e.target.value); setErrors(p=>({...p,bankName:''})) }}/>
           </Field>
-          <Field label={lang === 'de' ? 'Vollständiger Name des Kontoinhabers' : "Account holder full name"} required error={errors.bankHolder}>
+          <Field label={T('bankHolderFull')} required error={errors.bankHolder}>
             <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder="As it appears on the bank account" value={bankHolder} onChange={e=>{ setBankHolder(e.target.value); setErrors(p=>({...p,bankHolder:''})) }}/>
           </Field>
           <Field label={T('bankAccount')} required error={errors.bankAccount}>

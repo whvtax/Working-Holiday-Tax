@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     languages: {
       'en-AU': '/abn-form',
       'de': '/de/abn-form',
+      'ja': '/ja/abn-form',
       'x-default': '/abn-form',
     },
   },

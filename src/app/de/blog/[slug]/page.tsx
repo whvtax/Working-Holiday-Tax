@@ -139,6 +139,165 @@ function getLeadParagraph(body: string): string {
     .trim()
 }
 
+// Strip markdown to plain text (for articleBody)
+function stripMarkdown(body: string): string {
+  return body
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/^[-*]\s+/gm, '')
+    .replace(/^\d+\.\s+/gm, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+// Extract numbered steps for HowTo schema (only for how-to posts)
+function extractHowToSteps(body: string): Array<{ name: string; text: string }> {
+  const steps: Array<{ name: string; text: string }> = []
+  const lines = body.split('\n')
+  for (const line of lines) {
+    const m = /^(\d+)\.\s+(.+)$/.exec(line.trim())
+    if (m) {
+      const text = m[2]
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .trim()
+      // Use first 60 chars as step name, full text as text
+      const name = text.length > 60 ? text.substring(0, 57) + '...' : text
+      steps.push({ name, text })
+    }
+  }
+  return steps
+}
+
+// Detect if post is a "how-to" by slug
+function isHowToPost(slug: string): boolean {
+  return slug.startsWith('how-to-') || slug.includes('how-to-')
+}
+
+// Detect if post is a Q&A type (starts with question word)
+function isQuestionPost(slug: string, title: string): boolean {
+  const titleLower = title.toLowerCase()
+  return (
+    titleLower.startsWith('what ') ||
+    titleLower.startsWith('was ') ||
+    titleLower.startsWith('when ') ||
+    titleLower.startsWith('wann ') ||
+    titleLower.startsWith('why ') ||
+    titleLower.startsWith('warum ') ||
+    titleLower.startsWith('can ') ||
+    titleLower.startsWith('kann ') ||
+    titleLower.startsWith('kannst ') ||
+    titleLower.startsWith('do ') ||
+    titleLower.startsWith('does ') ||
+    titleLower.startsWith('should ') ||
+    titleLower.startsWith('is ') ||
+    titleLower.startsWith('are ') ||
+    titleLower.startsWith('ist ') ||
+    titleLower.startsWith('sind ') ||
+    titleLower.startsWith('hast ') ||
+    titleLower.startsWith('haben ') ||
+    titleLower.startsWith('müssen ') ||
+    titleLower.startsWith('musst ') ||
+    titleLower.startsWith('brauchst ') ||
+    titleLower.endsWith('?')
+  )
+}
+
+// Extract entity mentions from body for Article schema "mentions" field
+// Helps AI engines understand the entities (places, organizations) discussed
+function extractMentions(body: string, category: string): Array<{ '@type': string; name: string; sameAs?: string }> {
+  const mentions: Array<{ '@type': string; name: string; sameAs?: string }> = []
+  const lowerBody = body.toLowerCase()
+
+  // Australian government entities (always relevant)
+  const orgEntities = [
+    { match: /\bATO\b|Australian Taxation Office|Finanzamt/, name: 'Australian Taxation Office', sameAs: 'https://www.ato.gov.au/' },
+    { match: /Fair Work|Fairwork/i, name: 'Fair Work Ombudsman', sameAs: 'https://www.fairwork.gov.au/' },
+    { match: /\bABR\b|Australian Business Register/, name: 'Australian Business Register', sameAs: 'https://www.abr.gov.au/' },
+    { match: /Services Australia|Medicare/, name: 'Services Australia', sameAs: 'https://www.servicesaustralia.gov.au/' },
+    { match: /Department of Home Affairs|Heimatministerium/i, name: 'Department of Home Affairs', sameAs: 'https://www.homeaffairs.gov.au/' },
+    { match: /myGov|MyGov/, name: 'myGov', sameAs: 'https://my.gov.au/' },
+    { match: /Tax Practitioners Board|TPB/, name: 'Tax Practitioners Board', sameAs: 'https://www.tpb.gov.au/' },
+  ]
+  for (const ent of orgEntities) {
+    if (ent.match.test(body)) {
+      mentions.push({ '@type': 'Organization', name: ent.name, sameAs: ent.sameAs })
+    }
+  }
+
+  // Australian places mentioned
+  const placeEntities = [
+    { match: /\bSydney\b/, name: 'Sydney', sameAs: 'https://en.wikipedia.org/wiki/Sydney' },
+    { match: /\bMelbourne\b/, name: 'Melbourne', sameAs: 'https://en.wikipedia.org/wiki/Melbourne' },
+    { match: /\bBrisbane\b/, name: 'Brisbane', sameAs: 'https://en.wikipedia.org/wiki/Brisbane' },
+    { match: /\bPerth\b/, name: 'Perth', sameAs: 'https://en.wikipedia.org/wiki/Perth' },
+    { match: /\bAdelaide\b/, name: 'Adelaide', sameAs: 'https://en.wikipedia.org/wiki/Adelaide' },
+    { match: /\bDarwin\b/, name: 'Darwin', sameAs: 'https://en.wikipedia.org/wiki/Darwin,_Northern_Territory' },
+    { match: /\bCairns\b/, name: 'Cairns', sameAs: 'https://en.wikipedia.org/wiki/Cairns' },
+    { match: /\bCanberra\b/, name: 'Canberra', sameAs: 'https://en.wikipedia.org/wiki/Canberra' },
+    { match: /\bHobart\b/, name: 'Hobart', sameAs: 'https://en.wikipedia.org/wiki/Hobart' },
+    { match: /Gold Coast/, name: 'Gold Coast', sameAs: 'https://en.wikipedia.org/wiki/Gold_Coast,_Queensland' },
+  ]
+  for (const ent of placeEntities) {
+    if (ent.match.test(body)) {
+      mentions.push({ '@type': 'Place', name: ent.name, sameAs: ent.sameAs })
+    }
+  }
+
+  // Working Holiday Visa is the canonical topic
+  if (/Working Holiday|417|462|WHV/.test(body)) {
+    mentions.push({
+      '@type': 'Thing',
+      name: 'Working Holiday Visa (Australia)',
+      sameAs: 'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417',
+    })
+  }
+
+  return mentions
+}
+
+// Map slug/category to relevant official citations (ATO, Fair Work, etc.)
+function getRelevantCitations(slug: string, category: string): Array<{ name: string; url: string }> {
+  const citations: Array<{ name: string; url: string }> = []
+  const slugLower = slug.toLowerCase()
+
+  // TFN posts → ATO TFN page
+  if (slugLower.includes('tfn')) {
+    citations.push({ name: 'ATO - Tax file number (TFN)', url: 'https://www.ato.gov.au/individuals/tax-file-number/' })
+  }
+  // ABN posts → ABR
+  if (slugLower.includes('abn')) {
+    citations.push({ name: 'Australian Business Register (ABR)', url: 'https://www.abr.gov.au/' })
+  }
+  // Tax return / lodge / refund → ATO lodging
+  if (slugLower.includes('tax-return') || slugLower.includes('lodge') || slugLower.includes('refund') || category === 'Tax Return') {
+    citations.push({ name: 'ATO - Lodging your tax return', url: 'https://www.ato.gov.au/individuals/lodging-your-tax-return/' })
+  }
+  // Super / DASP
+  if (slugLower.includes('super') || slugLower.includes('dasp') || category === 'Super') {
+    citations.push({ name: 'ATO - Departing Australia superannuation payment (DASP)', url: 'https://www.ato.gov.au/individuals/super/withdrawing-and-using-your-super/departing-australia-superannuation-payment-dasp/' })
+  }
+  // Medicare
+  if (slugLower.includes('medicare')) {
+    citations.push({ name: 'Services Australia - Medicare', url: 'https://www.servicesaustralia.gov.au/medicare' })
+  }
+  // Work rights / Fair Work
+  if (slugLower.includes('award') || slugLower.includes('minimum-wage') || slugLower.includes('fair-work') ||
+      slugLower.includes('penalty-rate') || slugLower.includes('casual') || slugLower.includes('unpaid') ||
+      slugLower.includes('wage') || category === 'Work Rights') {
+    citations.push({ name: 'Fair Work Ombudsman', url: 'https://www.fairwork.gov.au/' })
+  }
+  // Backpacker tax rate
+  if (slugLower.includes('backpacker-tax') || slugLower.includes('working-holiday-tax')) {
+    citations.push({ name: 'ATO - Working holiday makers', url: 'https://www.ato.gov.au/individuals/coming-to-australia-or-going-overseas/in-detail/coming-to-australia/working-holiday-makers/' })
+  }
+
+  return citations
+}
+
 export default function GermanGuidePage({ params }: Props) {
   const result = getGermanGuide(params.slug)
   if (!result) notFound()
@@ -152,6 +311,10 @@ export default function GermanGuidePage({ params }: Props) {
   const wordCount = calcWordCount(guide.body)
   const faqs = extractFAQs(guide.body)
   const leadParagraph = getLeadParagraph(guide.body)
+  const fullBody = stripMarkdown(guide.body)
+  const howToSteps = isTranslated && isHowToPost(guide.slug) ? extractHowToSteps(guide.body) : []
+  const citations = getRelevantCitations(guide.slug, guide.category)
+  const mentions = extractMentions(guide.body, guide.category)
 
   // Set inLanguage based on whether body is German or still English
   const articleLang = isTranslated ? 'de' : 'en-AU'
@@ -164,15 +327,31 @@ export default function GermanGuidePage({ params }: Props) {
     description: guide.description,
     abstract: leadParagraph,
     articleSection: guide.category,
-    articleBody: leadParagraph,
+    articleBody: fullBody,
     wordCount,
     timeRequired: `PT${readTime}M`,
     inLanguage: articleLang,
     datePublished: guide.date,
     dateModified: guide.date,
-    author: { '@type': 'Organization', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
+    author: {
+      '@type': 'Organization',
+      '@id': 'https://workingholidaytax.com.au/#organization',
+      name: 'Working Holiday Tax',
+      url: 'https://workingholidaytax.com.au',
+      description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462).',
+      knowsAbout: [
+        'Australisches Steuerrecht',
+        'Working Holiday Visum (Subclass 417, 462)',
+        'Tax File Number (TFN)',
+        'Australian Business Number (ABN)',
+        'Superannuation und DASP',
+        'Medicare Levy',
+        'Fair Work Australia',
+      ],
+    },
     publisher: {
       '@type': 'Organization',
+      '@id': 'https://workingholidaytax.com.au/#organization',
       name: 'Working Holiday Tax',
       url: 'https://workingholidaytax.com.au',
       logo: { '@type': 'ImageObject', url: 'https://workingholidaytax.com.au/icon-512.png' },
@@ -183,6 +362,7 @@ export default function GermanGuidePage({ params }: Props) {
       { '@type': 'Thing', name: 'Working Holiday Visum Australien' },
       { '@type': 'Thing', name: guide.category },
     ],
+    ...(mentions.length > 0 && { mentions }),
     keywords: [
       'Working Holiday Tax',
       'Australien',
@@ -191,8 +371,54 @@ export default function GermanGuidePage({ params }: Props) {
       guide.category,
       'Backpacker Steuer',
     ].join(', '),
+    ...(citations.length > 0 && {
+      citation: citations.map(c => ({
+        '@type': 'CreativeWork',
+        name: c.name,
+        url: c.url,
+      })),
+      isBasedOn: citations.map(c => c.url),
+    }),
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.guide-lead'] },
   }
+
+  // HowTo schema - for "how to" posts with numbered steps
+  const howToLd = (howToSteps.length >= 2 && isTranslated) ? {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: guide.title,
+    description: guide.description,
+    inLanguage: 'de',
+    totalTime: `PT${readTime}M`,
+    step: howToSteps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+      url: `https://workingholidaytax.com.au/de/blog/${guide.slug}#step-${i + 1}`,
+    })),
+  } : null
+
+  // QAPage schema - for "What/How/Why/Can/Is..." question posts
+  const qaPageLd = (isTranslated && isQuestionPost(guide.slug, guide.title) && !howToLd) ? {
+    '@context': 'https://schema.org',
+    '@type': 'QAPage',
+    inLanguage: 'de',
+    mainEntity: {
+      '@type': 'Question',
+      name: guide.title,
+      text: guide.title,
+      answerCount: 1,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: leadParagraph,
+        inLanguage: 'de',
+        author: { '@type': 'Organization', name: 'Working Holiday Tax' },
+        upvoteCount: 1,
+        url: `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
+      },
+    },
+  } : null
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',
@@ -238,6 +464,12 @@ export default function GermanGuidePage({ params }: Props) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       {faqLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      )}
+      {howToLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToLd) }} />
+      )}
+      {qaPageLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(qaPageLd) }} />
       )}
       <main style={{ paddingTop: '68px', background: '#fff', minHeight: '100vh' }}>
 
@@ -345,7 +577,7 @@ export default function GermanGuidePage({ params }: Props) {
             <meta itemProp="headline" content={guide.title} />
             <meta itemProp="datePublished" content={guide.date} />
             <meta itemProp="author" content="Working Holiday Tax" />
-            <GuideArticle guide={guide} />
+            <GuideArticle guide={guide} locale="de" />
           </article>
 
           {relatedGuides.length > 0 && (

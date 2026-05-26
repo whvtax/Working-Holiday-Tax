@@ -75,11 +75,48 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/de/abn#service',
+  name: 'ABN-Registrierung für Working Holiday Maker',
+  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten - Uber, Lieferdienste, freiberufliche Tätigkeiten.',
+  serviceType: 'ABN Registration',
+  category: 'Business Registration Service',
+  url: 'https://workingholidaytax.com.au/de/abn',
+  inLanguage: 'de',
+  areaServed: {
+    '@type': 'Country',
+    name: 'Australia',
+  },
+  audience: {
+    '@type': 'Audience',
+    name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
+  },
+  provider: {
+    '@type': 'Organization',
+    '@id': 'https://workingholidaytax.com.au/#organization',
+    name: 'Working Holiday Tax',
+    url: 'https://workingholidaytax.com.au',
+    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
+    knowsLanguage: ['de', 'en', 'ja'],
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.9',
+    reviewCount: '300',
+    bestRating: '5',
+    worstRating: '1',
+  },
+}
+
+
 export default function ABNPageDE() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">

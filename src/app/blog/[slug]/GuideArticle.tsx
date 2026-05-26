@@ -16,6 +16,42 @@ interface Guide {
   category: string
 }
 
+type Locale = 'en' | 'de' | 'ja'
+
+// Localized UI strings for the article component
+const ARTICLE_UI = {
+  en: {
+    quickAnswerLabel: 'Quick answer',
+    onThisPage: 'On this page',
+    shareThisArticle: 'Share this article:',
+    shareCopy: 'Copy link',
+    shareCopied: '✓ Copied!',
+    shareWhatsApp: 'WhatsApp',
+    backToBlog: 'Back to Blog',
+    tocAriaLabel: 'Table of contents',
+  },
+  de: {
+    quickAnswerLabel: 'Schnelle Antwort',
+    onThisPage: 'Inhaltsverzeichnis',
+    shareThisArticle: 'Diesen Artikel teilen:',
+    shareCopy: 'Link kopieren',
+    shareCopied: '✓ Kopiert!',
+    shareWhatsApp: 'WhatsApp',
+    backToBlog: 'Zurück zum Blog',
+    tocAriaLabel: 'Inhaltsverzeichnis',
+  },
+  ja: {
+    quickAnswerLabel: '結論',
+    onThisPage: '目次',
+    shareThisArticle: 'この記事をシェア：',
+    shareCopy: 'リンクをコピー',
+    shareCopied: '✓ コピーしました！',
+    shareWhatsApp: 'WhatsApp',
+    backToBlog: 'ブログ一覧へ戻る',
+    tocAriaLabel: '目次',
+  },
+}
+
 function slugify(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
@@ -38,12 +74,13 @@ function shortenQuickAnswer(text: string): string {
   return result.trim() || cleaned.slice(0, 277).trim() + '…'
 }
 
-function parseBody(body: string) {
+function parseBody(body: string, locale: Locale = 'en') {
   const lines = body.trim().split('\n')
   const elements: React.ReactNode[] = []
   let key = 0
   let i = 0
   let isFirstParagraph = true
+  const ui = ARTICLE_UI[locale]
 
   const renderInline = (raw: string) => {
     return raw
@@ -140,7 +177,7 @@ function parseBody(body: string) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#2FA880' }} aria-hidden="true" />
               <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#0B5240', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
-                Quick answer
+                {ui.quickAnswerLabel}
               </span>
             </div>
             <p
@@ -182,13 +219,14 @@ function calcReadTime(body: string) {
   return Math.max(1, Math.round(words / 200))
 }
 
-export default function GuideArticle({ guide }: { guide: Guide }) {
+export default function GuideArticle({ guide, locale = 'en' }: { guide: Guide; locale?: Locale }) {
   const [scrollProgress, setScrollProgress] = useState(0)
   const [copied, setCopied] = useState(false)
   const [activeHeading, setActiveHeading] = useState<string>('')
   const articleRef = useRef<HTMLDivElement>(null)
   const headings = getHeadings(guide.body)
   const readTime = calcReadTime(guide.body)
+  const ui = ARTICLE_UI[locale]
 
   // Page view tracking - fires once per article load
   useEffect(() => {
@@ -273,10 +311,10 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
       </div>
 
       {/* Reading progress badge (floating bottom-left) */}
-      <ReadingProgress readTime={readTime} />
+      <ReadingProgress readTime={readTime} locale={locale} />
 
       {/* Mobile TOC drawer (only renders FAB on mobile/tablet) */}
-      <MobileTOC headings={headings} activeHeading={activeHeading} />
+      <MobileTOC headings={headings} activeHeading={activeHeading} locale={locale} />
 
       <div ref={articleRef} className={`article-layout ${showToc ? 'with-toc' : ''}`}>
 
@@ -284,11 +322,11 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
         <div style={{ minWidth: 0 }}>
 
           {/* Body */}
-          <div style={{ marginBottom: '2.5rem' }}>{parseBody(guide.body)}</div>
+          <div style={{ marginBottom: '2.5rem' }}>{parseBody(guide.body, locale)}</div>
 
           {/* Share */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2rem', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '11.5px', color: '#8AADA3', fontWeight: 500 }}>Share this article:</span>
+            <span style={{ fontSize: '11.5px', color: '#8AADA3', fontWeight: 500 }}>{ui.shareThisArticle}</span>
             <button
               onClick={handleCopy}
               className="share-btn"
@@ -299,7 +337,7 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
                 fontSize: '12px', color: '#587066', cursor: 'pointer', fontWeight: 500,
               }}
             >
-              {copied ? '✓ Copied!' : 'Copy link'}
+              {copied ? ui.shareCopied : ui.shareCopy}
             </button>
             <a
               href={waShareUrl}
@@ -314,14 +352,14 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
                 fontSize: '12px', color: '#587066', textDecoration: 'none', fontWeight: 500,
               }}
             >
-              WhatsApp
+              {ui.shareWhatsApp}
             </a>
           </div>
 
           {/* Back */}
           <div style={{ marginTop: '2.5rem', paddingBottom: '1rem' }}>
             <Link
-              href="/blog"
+              href={locale === 'de' ? '/de/blog' : locale === 'ja' ? '/ja/blog' : '/blog'}
               className="back-link"
               style={{
                 fontSize: '13px',
@@ -333,16 +371,16 @@ export default function GuideArticle({ guide }: { guide: Guide }) {
                 gap: '6px',
               }}
             >
-              <span className="back-arrow">←</span> Back to Blog
+              <span className="back-arrow">←</span> {ui.backToBlog}
             </Link>
           </div>
         </div>
 
         {/* Desktop TOC sidebar */}
         {showToc && (
-          <aside className="toc-sidebar" aria-label="Table of contents">
+          <aside className="toc-sidebar" aria-label={ui.tocAriaLabel}>
             <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#2FA880', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '12px' }}>
-              On this page
+              {ui.onThisPage}
             </p>
             <nav>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, borderLeft: '2px solid #E2EFE9' }}>

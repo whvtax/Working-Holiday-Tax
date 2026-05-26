@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     languages: {
       'en-AU': '/super-form',
       'de': '/de/super-form',
+      'ja': '/ja/super-form',
       'x-default': '/super-form',
     },
   },

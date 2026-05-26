@@ -6,7 +6,15 @@ export const metadata: Metadata = {
   title: 'Submit Your Super Claim | Working Holiday Tax',
   description: 'Submit your details to claim your Australian superannuation (DASP). We handle the entire process when you leave Australia.',
   keywords: ['DASP form', 'super claim form Australia', 'superannuation withdrawal form', 'claim super working holiday'],
-  alternates: { canonical: '/super-form' },
+  alternates: {
+    canonical: '/super-form',
+    languages: {
+      'en-AU': '/super-form',
+      'de': '/de/super-form',
+      'ja': '/ja/super-form',
+      'x-default': '/super-form',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',

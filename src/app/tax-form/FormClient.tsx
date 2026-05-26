@@ -704,7 +704,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
         <form onSubmit={handleSubmit} noValidate>
 
-          <div className="form-section-title">{lang === 'de' ? 'Kontaktdaten' : 'Contact details'}</div>
+          <div className="form-section-title">{T('contactDetails')}</div>
           <div>
 
             <Field label={T('whatsapp')} required error={errors.waNumber}>
@@ -737,10 +737,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
           </div>
 
-          <div className="form-section-title">{lang === 'de' ? 'Persönliche Daten' : 'Personal information'}</div>
+          <div className="form-section-title">{T('personalInfo')}</div>
           <div>
 
-            <Field label={lang === 'de' ? 'Heimatland' : 'Home Country'} required error={errors.country}>
+            <Field label={T('homeCountry')} required error={errors.country}>
               <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60}
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
             </Field>
@@ -764,7 +764,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
           </div>
 
-          <div className="form-section-title">{lang === 'de' ? 'Steuerdaten' : 'Tax information'}</div>
+          <div className="form-section-title">{T('taxInfo')}</div>
           <div>
 
             <Field label={T('tfn')} required error={errors.tfn}>
@@ -772,14 +772,14 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={tfn} onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, tfn: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
-            <Field label={lang === 'de' ? 'Hauptjob im letzten Jahr' : 'Primary job in the past year'} required error={errors.primaryJob}>
+            <Field label={T('primaryJob')} required error={errors.primaryJob}>
               <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
             </Field>
 
           <div className="form-section-title">ABN (Australian Business Number)</div>
 
-            <Field label={lang === 'de' ? 'Hast du eine ABN?' : 'Do you have an ABN?'} required error={errors.hasAbn}>
+            <Field label={T('hasAbn')} required error={errors.hasAbn}>
               <div className="radio-group">
                 {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${hasAbn === opt.val ? 'radio-card-active' : ''}`}>
@@ -793,17 +793,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
 
             {hasAbn === 'yes' && (<>
-              <Field label={lang === 'de' ? 'ABN-Nummer' : 'ABN number'} required error={errors.abnNumber}>
+              <Field label={T('abnNumber')} required error={errors.abnNumber}>
                 <input className={`inp ${errors.abnNumber ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 345 678 901" inputMode="numeric"
                   value={abnNumber} onChange={e => { setAbnNumber(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, abnNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
               </Field>
 
-              <Field label={lang === 'de' ? 'Jahres-Gesamteinkommen unter ABN (AUD)' : 'Total annual income under ABN (AUD)'} required error={errors.abnIncome}>
+              <Field label={T('abnIncome')} required error={errors.abnIncome}>
                 <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
                   value={abnIncome} onChange={e => { setAbnIncome(e.target.value.replace(/[^0-9.]/g, '')); setErrors(p => ({...p, abnIncome: ''})) }}  onKeyDown={e=>{if(!/^[0-9.]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
               </Field>
 
-              <Field label={lang === 'de' ? 'Welche Arbeit hast du unter ABN gemacht?' : 'What work did you do under your ABN?'} required error={errors.abnWork}>
+              <Field label={T('abnWork')} required error={errors.abnWork}>
                 <input className={`inp ${errors.abnWork ? 'inp-err' : ''}`} type="text" placeholder="e.g. Delivery driver, Freelance photographer"
                   value={abnWork} onChange={e => { setAbnWork(e.target.value); setErrors(p => ({...p, abnWork: ''})) }} />
               </Field>
@@ -814,7 +814,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
                 value={bankName} onChange={e => { setBankName(e.target.value); setErrors(p => ({...p, bankName: ''})) }} />
             </Field>
-            <Field label={lang === 'de' ? 'Vollständiger Name des Kontoinhabers' : 'Account holder full name'} required error={errors.bankHolder}>
+            <Field label={T('bankHolderFull')} required error={errors.bankHolder}>
               <input className={`inp ${errors.bankHolder ? 'inp-err' : ''}`} type="text" placeholder="As it appears on the bank account"
                 value={bankHolder} onChange={e => { setBankHolder(e.target.value); setErrors(p => ({...p, bankHolder: ''})) }} />
             </Field>
@@ -831,8 +831,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div className="form-section-title">{T('sectionDocuments')}</div>
           <div>
 
-            <Field label={lang === 'de' ? 'Bankauszüge' : 'Bank statements'} required error={errors.bankStatement}>
-              <FileUpload id="bankStatement" label={lang === 'de' ? 'Bankauszug hochladen' : 'Upload bank statement'} accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
+            <Field label={T('bankStatements')} required error={errors.bankStatement}>
+              <FileUpload id="bankStatement" label={T('uploadBankStatement')} accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} lang={lang} />
             </Field>
 
@@ -842,7 +842,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
 
 
-            <Field label={lang === 'de' ? 'Hast du arbeitsbezogene oder ABN-Ausgaben?' : 'Do you have work-related or ABN expenses?'} required error={errors.hasExpenses}>
+            <Field label={T('hasExpenses')} required error={errors.hasExpenses}>
               <div className="radio-group">
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>
@@ -873,11 +873,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </>)}
           </div>
 
-          <div className="form-section-title">{lang === 'de' ? 'Steuerjahr' : 'Tax year'}</div>
+          <div className="form-section-title">{T('taxYear')}</div>
           <div>
-            <Field label={lang === 'de' ? 'Wähle das/die Steuerjahr(e), für die du einreichst' : 'Please select the tax year(s) you want to file'} required error={errors.taxYear}>
+            <Field label={T('taxYearSelect')} required error={errors.taxYear}>
               <div style={{fontSize:12,color:'#587066',marginBottom:10,lineHeight:1.55,background:'#f7fbf9',border:'1px solid #d4eae2',borderRadius:8,padding:'10px 12px'}}>
-                {lang === 'de' ? <>💡 In Australien läuft das Steuerjahr vom <strong>1. Juli bis 30. Juni</strong>.<br/>Du kannst <strong>mehrere Jahre</strong> auswählen, falls du in vorigen Jahren nicht eingereicht hast.</> : <>💡 In Australia, the tax year runs from <strong>1 July to 30 June</strong>.<br/>You can select <strong>more than one year</strong> if you haven&apos;t filed in previous years.</>}
+                {lang === 'de' ? (
+                  <>💡 In Australien läuft das Steuerjahr vom <strong>1. Juli bis 30. Juni</strong>.<br/>Du kannst <strong>mehrere Jahre</strong> auswählen, falls du in vorigen Jahren nicht eingereicht hast.</>
+                ) : lang === 'ja' ? (
+                  <>💡 オーストラリアの税務年度は<strong>7月1日から6月30日</strong>までです。<br/>過去の年度で申告していない場合は、<strong>複数年度</strong>を選択できます。</>
+                ) : (
+                  <>💡 In Australia, the tax year runs from <strong>1 July to 30 June</strong>.<br/>You can select <strong>more than one year</strong> if you haven&apos;t filed in previous years.</>
+                )}
               </div>
               <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:8}}>
                 {(() => {
@@ -902,7 +908,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                           <div className={`check-box${isSelected ? ' checked' : ''}`} style={{flexShrink:0}}>
                             {isSelected && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
                           </div>
-                          <span style={{fontWeight:600,fontSize:13}}>FY {code}{code === currentYear ? (lang === 'de' ? ' (aktuell)' : ' (current)') : ''}</span>
+                          <span style={{fontWeight:600,fontSize:13}}>FY {code}{code === currentYear ? T('yearCurrent') : ''}</span>
                         </div>
                         <span style={{fontSize:10.5,color:'#587066',marginLeft:24}}>{range}</span>
                       </label>
@@ -912,7 +918,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               </div>
               {taxYears.length > 1 && (
                 <div style={{fontSize:11,color:'#0E5C42',marginTop:8,fontWeight:500}}>
-                  ✓ {taxYears.length} {lang === 'de' ? 'Steuerjahre ausgewählt' : 'tax years selected'}: {taxYears.sort().join(', ')}
+                  ✓ {taxYears.length} {T('taxYearsSelected')}: {taxYears.sort().join(', ')}
                 </div>
               )}
             </Field>
@@ -930,12 +936,18 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
             <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
-                {lang === 'de' ? <>Ich bestätige, dass ich den Abschnitt{' '}<a href="/de/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Steuerresidenz erklärt</a>{' '}und alle relevanten ATO-Informationen gelesen habe, und erkläre, dass ich bin:</> : <>I confirm that I have reviewed the{' '}<a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>{' '}section and all relevant ATO information, and I declare that I am:</>}<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
+                {lang === 'de' ? (
+                  <>Ich bestätige, dass ich den Abschnitt{' '}<a href="/de/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Steuerresidenz erklärt</a>{' '}und alle relevanten ATO-Informationen gelesen habe, und erkläre, dass ich bin:</>
+                ) : lang === 'ja' ? (
+                  <>{'「'}<a href="/ja/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>税務上の居住者ステータスについて</a>{'」'}のセクションとATOの関連情報をすべて確認したことを認め、以下に該当することを宣言します：</>
+                ) : (
+                  <>I confirm that I have reviewed the{' '}<a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>{' '}section and all relevant ATO information, and I declare that I am:</>
+                )}<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
               </label>
               <div className="radio-group radio-group-col">
                 {([
-                  { val: 'resident', label: lang === 'de' ? 'Australischer Steuerresident' : 'Australian resident for tax purposes' },
-                  { val: 'whm',      label: lang === 'de' ? 'Working Holiday Maker für die Steuer' : 'Working holiday maker for tax purposes' },
+                  { val: 'resident', label: T('australianTaxResident') },
+                  { val: 'whm',      label: T('workingHolidayMakerTax') },
                 ] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
@@ -950,7 +962,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <Field label="" required error={errors.declared}>
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
                 <p className="decl-text">
-                  {lang === 'de' ? <>Ich erkläre, dass alle Angaben wahr, vollständig und korrekt sind. Ich verstehe, dass falsche Angaben zu Strafen nach australischem Steuerrecht führen können, und bestätige, dass ich die{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen habe und akzeptiere.</> : <>I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}&amp;{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>}
+                  {lang === 'de' ? (
+                    <>Ich erkläre, dass alle Angaben wahr, vollständig und korrekt sind. Ich verstehe, dass falsche Angaben zu Strafen nach australischem Steuerrecht führen können, und bestätige, dass ich die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen habe und akzeptiere.</>
+                  ) : lang === 'ja' ? (
+                    <>提供されたすべての情報が真実、完全、かつ正確であることを宣言します。虚偽の情報を提供することはオーストラリア税法上のペナルティとなる可能性があることを理解し、{' '}<a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">クライアント規約</a>{' '}および{' '}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">プライバシーポリシー</a>を読み、同意することを確認します。</>
+                  ) : (
+                    <>I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}&amp;{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>
+                  )}
                 </p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
@@ -962,7 +980,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
             <Field label="" required error={errors.declaredIncome}>
               <div className={`declaration-box${errors.declaredIncome ? ' decl-error' : ''}`}>
-                <p className="decl-text">{lang === 'de' ? 'Ich erkläre unter meiner vollen rechtlichen Verantwortung, dass alle Einkommen, die im betreffenden Steuerjahr in Australien und im Ausland erzielt wurden, wahrheitsgemäß und vollständig offengelegt sind. Ich verstehe, dass jede falsche, irreführende oder unvollständige Erklärung eine Steuerstraftat nach australischem Recht darstellen kann und dass Working Holiday Tax keine Haftung für Ungenauigkeiten in den von mir bereitgestellten Informationen übernimmt.' : 'I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.'}</p>
+                <p className="decl-text">{T('declTaxIncome')}</p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
                   <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>

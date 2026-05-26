@@ -2,14 +2,23 @@
 
 import { useEffect, useState } from 'react'
 
+type Locale = 'en' | 'de' | 'ja'
+
+const READING_UI = {
+  en: { minLeft: 'min left' },
+  de: { minLeft: 'Min. übrig' },
+  ja: { minLeft: '分残り' },
+}
+
 /**
  * Floating reading progress badge.
  * Shows the estimated time left to finish the article, based on scroll position
  * and the total reading time. Appears once the user is past 5% and hides near the end.
  */
-export default function ReadingProgress({ readTime }: { readTime: number }) {
+export default function ReadingProgress({ readTime, locale = 'en' }: { readTime: number; locale?: Locale }) {
   const [progress, setProgress] = useState(0)
   const [visible, setVisible] = useState(false)
+  const ui = READING_UI[locale]
 
   useEffect(() => {
     let rafId = 0
@@ -45,7 +54,7 @@ export default function ReadingProgress({ readTime }: { readTime: number }) {
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
-        {minutesLeft} min left
+        {minutesLeft} {ui.minLeft}
       </span>
     </div>
   )

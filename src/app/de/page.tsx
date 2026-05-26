@@ -131,11 +131,112 @@ export default function GermanHomePage() {
     })),
   }
 
+  // Organization schema with full service catalog - critical for AI search
+  const organizationLd = {
+    '@context': 'https://schema.org',
+    '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
+    '@id': `${SITE_URL}/#organization`,
+    name: 'Working Holiday Tax',
+    legalName: AGENT_NAME,
+    url: SITE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${SITE_URL}/icon-512.png`,
+      width: 512,
+      height: 512,
+    },
+    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462). Beratung in Deutsch, Englisch und Japanisch.',
+    foundingDate: '2020',
+    knowsLanguage: ['en', 'de', 'ja'],
+    areaServed: {
+      '@type': 'Country',
+      name: 'Australia',
+    },
+    audience: {
+      '@type': 'Audience',
+      name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
+    },
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '300',
+      bestRating: '5',
+      worstRating: '1',
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Steuer- und Buchhaltungsdienstleistungen für Working Holiday Maker',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'TFN-Antrag (Tax File Number)',
+            description: 'Beantragung der Tax File Number für Working Holiday Maker.',
+            url: `${SITE_URL}/de/tfn`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'ABN-Registrierung',
+            description: 'Registrierung der Australian Business Number für Selbstständige.',
+            url: `${SITE_URL}/de/abn`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Australische Steuererklärung',
+            description: 'Vorbereitung und Einreichung der jährlichen Steuererklärung beim ATO.',
+            url: `${SITE_URL}/de/tax-return`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'DASP Superannuation-Auszahlung',
+            description: 'Beantragung der Departing Australia Superannuation Payment nach der Abreise.',
+            url: `${SITE_URL}/de/superannuation`,
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Medicare Levy Exemption',
+            description: 'Beantragung der Medicare Levy Befreiung für Working Holiday Maker.',
+            url: `${SITE_URL}/de/medicare`,
+          },
+        },
+      ],
+    },
+    sameAs: [
+      'https://www.tpb.gov.au/public-register',
+    ],
+    knowsAbout: [
+      'Australisches Steuerrecht',
+      'Working Holiday Visum Subclass 417',
+      'Working Holiday Visum Subclass 462',
+      'Tax File Number (TFN)',
+      'Australian Business Number (ABN)',
+      'Superannuation und DASP',
+      'Medicare Levy Exemption',
+      'Fair Work Australia',
+      'PAYG Steuerabzug',
+      'Backpacker Steuersatz',
+    ],
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">

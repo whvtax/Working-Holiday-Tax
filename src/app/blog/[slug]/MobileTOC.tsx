@@ -8,14 +8,52 @@ interface Heading {
   id: string
 }
 
+type Locale = 'en' | 'de' | 'ja'
+
+const MOBILE_TOC_UI = {
+  en: {
+    onThisPage: 'On this page',
+    section: 'section',
+    sections: 'sections',
+    openLabel: 'Open table of contents',
+    closeLabel: 'Close',
+    tocLabel: 'Table of contents',
+  },
+  de: {
+    onThisPage: 'Inhaltsverzeichnis',
+    section: 'Abschnitt',
+    sections: 'Abschnitte',
+    openLabel: 'Inhaltsverzeichnis öffnen',
+    closeLabel: 'Schließen',
+    tocLabel: 'Inhaltsverzeichnis',
+  },
+  ja: {
+    onThisPage: '目次',
+    section: 'セクション',
+    sections: 'セクション',
+    openLabel: '目次を開く',
+    closeLabel: '閉じる',
+    tocLabel: '目次',
+  },
+}
+
 /**
  * Mobile TOC drawer.
  * Floating action button (bottom-right) that opens a slide-up panel listing
  * all H2 headings in the article. Visible only on screens where the desktop
  * sidebar TOC is hidden (under 1100px wide).
  */
-export default function MobileTOC({ headings, activeHeading }: { headings: Heading[]; activeHeading: string }) {
+export default function MobileTOC({
+  headings,
+  activeHeading,
+  locale = 'en',
+}: {
+  headings: Heading[]
+  activeHeading: string
+  locale?: Locale
+}) {
   const [open, setOpen] = useState(false)
+  const ui = MOBILE_TOC_UI[locale]
 
   // Close when navigating to a section
   useEffect(() => {
@@ -55,7 +93,7 @@ export default function MobileTOC({ headings, activeHeading }: { headings: Headi
       <button
         className="mobile-toc-button has-toc"
         onClick={() => setOpen(true)}
-        aria-label="Open table of contents"
+        aria-label={ui.openLabel}
         aria-expanded={open}
       >
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -79,7 +117,7 @@ export default function MobileTOC({ headings, activeHeading }: { headings: Headi
       <div
         className={`mobile-toc-panel ${open ? 'open' : ''}`}
         role="dialog"
-        aria-label="Table of contents"
+        aria-label={ui.tocLabel}
         aria-modal="true"
       >
         <div className="mobile-toc-panel-handle" aria-hidden="true" />
@@ -88,16 +126,16 @@ export default function MobileTOC({ headings, activeHeading }: { headings: Headi
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
             <div>
               <p style={{ fontSize: '10.5px', fontWeight: 700, color: '#2FA880', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: '4px' }}>
-                On this page
+                {ui.onThisPage}
               </p>
               <p className="font-serif" style={{ fontSize: '17px', fontWeight: 700, color: '#080F0D', margin: 0, letterSpacing: '-0.015em' }}>
-                {headings.length} {headings.length === 1 ? 'section' : 'sections'}
+                {headings.length} {headings.length === 1 ? ui.section : ui.sections}
               </p>
             </div>
             <button
               onClick={() => setOpen(false)}
               style={{ background: 'transparent', border: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#587066' }}
-              aria-label="Close"
+              aria-label={ui.closeLabel}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18" />

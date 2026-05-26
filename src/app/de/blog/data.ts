@@ -191,7 +191,7 @@ export const dePostTranslations: Record<string, { title: string; description: st
 
   'what-is-a-tfn': {
     title: 'Was ist eine TFN und warum brauchst du eine in Australien?',
-    description: 'Eine Tax File Number ist das Erste, was du brauchst, wenn du in Australien anfängst zu arbeiten. Ohne eine muss dein Arbeitgeber fast die Hälfte deines Lohns einbehalten.',
+    description: 'Eine Tax File Number ist das Erste, was du brauchst, wenn du in Australien arbeiten willst. Ohne TFN behält dein Arbeitgeber fast die Hälfte deines Lohns ein.',
     body: `
 Eine Tax File Number (TFN) ist eine eindeutige neunstellige Nummer, die das ATO (australisches Finanzamt) jeder Person ausstellt, die in Australien Einkommen hat. Du brauchst sie, weil ohne TFN dein Arbeitgeber gesetzlich verpflichtet ist, 45 % Steuern einzubehalten - statt der 15 % Working-Holiday-Maker-Rate. Die TFN ist permanent, kostenlos und bleibt ein Leben lang gültig.
 
@@ -249,7 +249,7 @@ Steuer, die du zu viel gezahlt hast, bevor deine TFN hinterlegt war, kannst du d
 
   'how-to-apply-for-a-tfn': {
     title: 'Wie du als Working Holiday Maker eine TFN beantragst',
-    description: 'Eine TFN in Australien zu beantragen ist einfach und kostenlos. Hier ist genau, wie du es als Working Holiday Visuminhaber machst.',
+    description: 'Eine TFN in Australien zu beantragen ist einfach und kostenlos. So machst du es als Working Holiday Visuminhaber - Schritt für Schritt.',
     body: `
 Um als Working Holiday Maker eine Tax File Number (TFN) zu beantragen, reichst du einen Onlineantrag direkt beim ATO (australisches Finanzamt) ein. Der Antrag ist kostenlos, dauert etwa 10 Minuten und deine TFN kommt innerhalb von 28 Tagen per Post. Du kannst den Antrag stellen, sobald dein Working Holiday Visum genehmigt wurde - sogar bevor du in Australien ankommst - solange du eine gültige australische Postadresse hast.
 
@@ -295,7 +295,7 @@ Jeder Arbeitgeber braucht sein eigenes TFN Declaration-Formular. Wenn du deine T
 
   'how-long-does-it-take-to-get-a-tfn': {
     title: 'Wie lange dauert es, eine TFN in Australien zu bekommen?',
-    description: 'Das ATO bearbeitet TFN-Anträge meistens innerhalb von 28 Tagen. Hier ist, was du in jedem Schritt erwarten kannst.',
+    description: 'Das ATO bearbeitet TFN-Anträge meistens innerhalb von 28 Tagen. Hier erfährst du, was du in jedem Schritt erwarten kannst.',
     body: `
 Ein TFN-Antrag in Australien wird vom ATO (australisches Finanzamt) innerhalb von 28 Tagen bearbeitet. In der Praxis bekommen viele Antragsteller ihre Tax File Number schon innerhalb von zwei Wochen, der genaue Zeitpunkt hängt aber von der aktuellen Auslastung des ATO ab. Deine TFN kommt als Brief an deine australische Adresse. Es gibt keine Zustellung per E-Mail oder SMS.
 
@@ -340,7 +340,7 @@ Deine TFN brauchst du außerdem, um deine [Steuererklärung](/de/tax-return) ein
 
   'can-you-start-work-without-a-tfn': {
     title: 'Kannst du in Australien anfangen zu arbeiten ohne TFN?',
-    description: 'Ja, aber dein Arbeitgeber muss 45 % Steuern einbehalten, bis du deine TFN bereitstellst. Hier ist, was du dabei wissen musst.',
+    description: 'Ja, aber dein Arbeitgeber muss 45 % Steuern einbehalten, bis du deine TFN bereitstellst. Hier erfährst du, was du dabei wissen musst.',
     body: `
 Ja, du kannst legal in Australien anfangen zu arbeiten ohne TFN. Es gibt kein Gesetz, das dich daran hindert, eingestellt zu werden, bevor deine Tax File Number ausgestellt wurde. Allerdings ist dein Arbeitgeber gesetzlich verpflichtet, 45 % Steuern (den höchsten Grenzsteuersatz) einzubehalten, bis du sowohl deine TFN als auch ein ausgefülltes TFN Declaration-Formular bereitstellst.
 
@@ -377,7 +377,7 @@ Wenn du bar bezahlt wirst, wird die TFN-Frage anders behandelt, weil keine forme
 
   'what-happens-without-your-tfn': {
     title: 'Was passiert, wenn dein Arbeitgeber deine TFN nicht hat?',
-    description: 'Ohne deine TFN muss dein Arbeitgeber zum höchsten Steuersatz von 45 % einbehalten - statt 15 %. Hier ist, wie du das so schnell wie möglich behebst.',
+    description: 'Ohne deine TFN muss dein Arbeitgeber zum höchsten Steuersatz von 45 % einbehalten - statt 15 %. Hier erfährst du, wie du das so schnell wie möglich behebst.',
     body: `
 Wenn dein Arbeitgeber deine Tax File Number nicht hinterlegt hat, muss er nach australischem Steuerrecht 45 % Steuern einbehalten. Das ist der höchste Grenzsteuersatz und gilt ab deiner ersten Schicht, bis du deine TFN zusammen mit einem ausgefüllten TFN Declaration-Formular bereitstellst. Dein Arbeitgeber hat keinen Ermessensspielraum. Die Pflicht kommt vom ATO.
 
@@ -420,7 +420,7 @@ Wenn du während deiner Zeit in Australien für mehr als einen Arbeitgeber arbei
 
   'tfn-vs-abn-difference': {
     title: 'TFN vs. ABN - was ist der Unterschied und welche brauchst du?',
-    description: 'TFN und ABN sind zwei verschiedene Nummern für unterschiedliche Steuersituationen. Hier ist, wann du welche brauchst.',
+    description: 'TFN und ABN sind zwei verschiedene Nummern für unterschiedliche Steuersituationen. Hier erfährst du, wann du welche brauchst.',
     body: `
 Eine Tax File Number (TFN) ist deine persönliche Steueridentifikationsnummer, die du nutzt, wenn du angestellt bist und Lohn verdienst. Eine Australian Business Number (ABN) ist eine Geschäftsidentifikationsnummer, die du nutzt, wenn du als Sole Trader oder unabhängiger Contractor tätig bist und Kunden Rechnungen stellst. Die meisten Working Holiday Maker in normaler Anstellung brauchen nur eine TFN. Eine ABN brauchst du nur, wenn du dein eigenes Geschäft führst oder als unabhängiger Contractor arbeitest. Viele Backpacker haben am Ende beide.
 
@@ -470,7 +470,7 @@ Wenn du unsicher bist, welche Situation auf dich zutrifft, geht unser Artikel zu
 
   'apply-for-tfn-before-arriving': {
     title: 'Kannst du eine TFN beantragen, bevor du in Australien ankommst?',
-    description: 'Ja - du kannst eine TFN aus dem Ausland beantragen, sobald dein Working Holiday Visum genehmigt ist. Hier ist, wie es geht.',
+    description: 'Ja - du kannst eine TFN aus dem Ausland beantragen, sobald dein Working Holiday Visum genehmigt ist. So funktioniert es.',
     body: `
 Ja, du kannst eine australische Tax File Number (TFN) beantragen, bevor du in Australien ankommst, solange dein Working Holiday Visum schon genehmigt wurde. Das ATO erlaubt ausländischen Reisepassinhabern, einen TFN-Antrag online aus dem Ausland einzureichen - vorausgesetzt, sie haben eine gültige australische Postadresse, an die der TFN-Brief geschickt werden kann. Früh zu beantragen bedeutet, dass deine TFN ungefähr zur selben Zeit ankommen kann wie du - so vermeidest du den Zeitraum, in dem 45 % Steuern einbehalten werden, die gilt, bevor deine TFN bei deinem Arbeitgeber registriert ist.
 
@@ -516,7 +516,7 @@ Deine TFN brauchst du außerdem, um deine [Steuererklärung](/de/tax-return) am 
 
   'tfn-application-delayed': {
     title: 'Was tun, wenn dein TFN-Antrag sich verzögert',
-    description: 'Wenn deine TFN länger als 28 Tage braucht, gibt es konkrete Schritte, die du unternehmen kannst. Hier ist die Anleitung.',
+    description: 'Wenn deine TFN länger als 28 Tage braucht, gibt es konkrete Schritte, die du unternehmen kannst. So funktioniert es, Schritt für Schritt.',
     body: `
 Wenn deine TFN nach 28 Tagen nicht angekommen ist, sind die häufigsten Ursachen ein Adressfehler im Antrag oder ein verlorener Brief in der Post. Bevor du das ATO kontaktierst, prüfe die Adresse, die du eingereicht hast, bestätige, dass die 28 Tage tatsächlich vergangen sind (gezählt ab dem Tag, an dem das ATO deinen Antrag erhalten hat, nicht ab dem Tag, an dem du auf "Absenden" geklickt hast), und schau nach dem Brief an älteren Adressen, falls du umgezogen bist.
 
@@ -556,7 +556,7 @@ Ja. Während du wartest, kannst du weiterarbeiten. Sag deinem Arbeitgeber, dass 
 
   'do-you-need-new-tfn-second-visa': {
     title: 'Brauchst du eine neue TFN, wenn du mit einem zweiten Working Holiday Visum zurückkommst?',
-    description: 'Nein. Deine TFN ist ein Leben lang gültig. Hier ist, was du wissen musst, wenn du mit einem zweiten Visum zurückkommst.',
+    description: 'Nein. Deine TFN ist ein Leben lang gültig. Hier erfährst du, was du wissen musst, wenn du mit einem zweiten Visum zurückkommst.',
     body: `
 Nein, du brauchst keine neue Tax File Number, wenn du mit einem zweiten Working Holiday Visum nach Australien zurückkommst. Deine TFN ist permanent. Sie läuft nicht ab, wenn dein Visum abläuft, und sie ändert sich nicht, wenn dein Visum sich ändert. Dieselbe 9-stellige TFN, die du beim ersten Mal bekommen hast, ist die, die du bei jedem weiteren Besuch in Australien nutzt.
 
@@ -601,7 +601,7 @@ Deine Steuerpflichten bei deinem zweiten Besuch funktionieren genau gleich wie b
 
   'how-to-find-lost-tfn': {
     title: 'Wie du deine TFN findest, wenn du sie verloren oder vergessen hast',
-    description: 'Du hast deine TFN verloren? Keine Sorge - es gibt mehrere einfache Wege, sie wiederzufinden. Hier sind sie.',
+    description: 'Du hast deine TFN verloren? Keine Sorge - es gibt mehrere einfache Wege, sie wiederzufinden. Im Folgenden findest du sie.',
     body: `
 Um eine verlorene Tax File Number zu finden, fang mit Dokumenten an, die du eventuell schon hast (der originale ATO-Brief, Lohnzettel, Payment Summaries oder frühere Steuererklärungen). Deine TFN ist permanent und ändert sich nicht - die Nummer, die du ursprünglich bekommen hast, ist immer noch dieselbe. Wenn du sie nicht in deinen Unterlagen findest, kann unser Team sie für dich als registrierter Steueragent abrufen.
 
@@ -646,7 +646,7 @@ Vermeide es, deine TFN dir selbst unverschlüsselt zu mailen oder sie in ungesic
   // ─── ABN (2 first posts get title/description translation) ────────────────
   'what-is-an-abn': {
     title: 'Was ist eine ABN und brauchst du eine mit Working Holiday Visum?',
-    description: 'Eine Australian Business Number ist nur nötig, wenn du als Contractor oder Selbstständiger arbeitest. Hier ist, was du wissen musst.',
+    description: 'Eine Australian Business Number ist nur nötig, wenn du als Contractor oder Selbstständiger arbeitest. Hier erfährst du, was du wissen musst.',
     body: `
 Eine Australian Business Number (ABN) ist eine 11-stellige Identifikationsnummer für Unternehmen und Sole Trader, die in Australien tätig sind. Als Working Holiday Maker brauchst du eine ABN, wenn du als unabhängiger Contractor arbeitest (du stellst dem Unternehmen Rechnungen für deine Dienstleistungen) statt als Angestellter (auf einer Gehaltsliste). Die meisten Working Holiday Maker in normaler Anstellung brauchen keine ABN. Die ABN-Registrierung ist kostenlos, dauert online etwa 15 Minuten, und die meisten Anträge werden sofort bearbeitet.
 
@@ -702,7 +702,7 @@ Der Standardsteuersatz von 15 % für Working Holiday Maker auf die ersten 45.000
 
   'how-to-register-for-an-abn': {
     title: 'Wie du als Backpacker eine ABN in Australien registrierst',
-    description: 'Die ABN-Registrierung ist kostenlos und dauert wenige Minuten. Hier ist die komplette Anleitung für Working Holiday Maker.',
+    description: 'Die ABN-Registrierung beim ABR ist kostenlos und dauert nur 10-15 Minuten. Komplette Schritt-für-Schritt-Anleitung für Working Holiday Maker.',
     body: `
 Um als Working Holiday Maker eine Australian Business Number (ABN) zu registrieren, [registriere über unseren Service](/de/abn) und wir kümmern uns um den gesamten Prozess für dich. Unser Team bereitet den Antrag vor und reicht ihn für dich ein, und die meisten ABNs werden innerhalb von 24 Stunden genehmigt. Du bekommst deine ABN per E-Mail, einsatzbereit. Du brauchst eine [Tax File Number (TFN)](/de/tfn), bevor wir deine ABN registrieren können.
 
@@ -757,7 +757,7 @@ Wenn du deine Geschäftstätigkeit in Australien beendest, solltest du deine ABN
   // ─── Tax Return - Strategic posts (full body translations) ────────────────
   'backpacker-tax-rate-australia': {
     title: 'Was ist der Backpackersteuersatz in Australien und wie funktioniert er?',
-    description: 'Working Holiday Maker zahlen einen festen Steuersatz von 15 % auf ihr australisches Einkommen. Hier ist, wie das genau funktioniert und was es für deinen Nettolohn bedeutet.',
+    description: 'Working Holiday Maker zahlen 15 % Steuern auf australisches Einkommen bis 45.000 $. So funktioniert die Backpacker-Steuer und was sie für deinen Nettolohn bedeutet.',
     body: `
 Der Backpackersteuersatz in Australien beträgt pauschal 15 % auf die ersten 45.000 $ Einkommen pro Steuerjahr. Dieser Satz gilt für alle Working Holiday Maker mit einem Working Holiday Visum (Subclass 417) oder Work and Holiday Visum (Subclass 462). Er wird manchmal "Working-Holiday-Maker-Steuersatz" genannt und ersetzt die normalen Steuersätze für Residenten, die sonst gelten würden. Du musst deine [TFN](/de/tfn) bei jedem Arbeitgeber registrieren, um den 15 %-Satz zu bekommen - sonst wird standardmäßig mit 45 % einbehalten.
 
@@ -807,7 +807,7 @@ Die meisten Working Holiday Maker, die wir betreuen, bekommen eine Rückzahlung 
   // ─── Super - Strategic posts ──────────────────────────────────────────────
   'how-to-apply-for-super-back': {
     title: 'Wie du deine Super zurückbekommst, nachdem du Australien verlassen hast',
-    description: 'Schritt-für-Schritt-Anleitung zum DASP-Antrag, vom Finden deiner Superfonds bis zur Auszahlung auf deinem Konto.',
+    description: 'Schritt-für-Schritt-Anleitung zum DASP-Antrag - vom Finden deiner Superfonds bis zur Auszahlung auf dein Konto, weltweit. Wir machen das für dich.',
     body: `
 Um deine Super zurückzubekommen, nachdem du Australien verlassen hast, arbeitest du mit unserem Team zusammen, das den kompletten Departing Australia Superannuation Payment (DASP)-Prozess von Anfang bis Ende übernimmt. Wir finden alle deine Superkonten, bereiten die Anträge vor und reichen sie für dich ein und arrangieren die Auszahlung auf dein gewünschtes Bankkonto irgendwo auf der Welt. Die DASP-Quellensteuer für Working Holiday Maker beträgt 65 % der steuerpflichtigen Komponente, aber nach Steuern ist der Nettobetrag immer noch beträchtlich.
 
@@ -932,7 +932,7 @@ Mehr zu RHCA-Ländern und deren Abdeckung in unserem Artikel zu [Medicare-Abkomm
 
   'medicare-levy-working-holiday-makers': {
     title: 'Was ist die Medicare Levy und zahlen Working Holiday Maker sie?',
-    description: 'Die Medicare Levy ist eine 2 %-Steuer, die Australiens Gesundheitssystem finanziert. Die meisten Working Holiday Maker sind befreit. Hier ist, wie du die Befreiung beantragst.',
+    description: 'Die Medicare Levy ist eine 2 %-Steuer fürs Gesundheitssystem. Die meisten Working Holiday Maker sind befreit - so beantragst du die Medicare Levy Exemption.',
     body: `
 Die Medicare Levy ist eine 2 %-Steuer auf das zu versteuernde Einkommen australischer Residenten zur Finanzierung des Medicare-Systems. Die meisten Working Holiday Maker sind nicht für Medicare berechtigt und haben daher Anspruch auf eine vollständige Befreiung von der Medicare Levy in ihrer Steuererklärung. Die Befreiung ist nicht automatisch und muss bei der Einreichung korrekt angewendet werden. Unser Team beantragt die Medicare-Levy-Befreiung automatisch, wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten - das spart dir 2 % deines zu versteuernden Einkommens.
 
@@ -1004,7 +1004,7 @@ Wenn du eine frühere Steuererklärung eingereicht und die Medicare Levy gezahlt
   // ─── Work Rights - Minimum wage ────────────────────────────────────────────
   'minimum-wage-australia-2025-26': {
     title: 'Wie hoch ist der Mindestlohn in Australien für 2025-26?',
-    description: 'Australien hat einen der höchsten Mindestlöhne der Welt. Hier ist der aktuelle Satz und was das für Working Holiday Maker bedeutet.',
+    description: 'Australien hat einen der höchsten Mindestlöhne der Welt - aktuell 24,95 $ pro Stunde ab Juli 2025. Was Working Holiday Maker mindestens verdienen müssen.',
     body: `
 Der nationale Mindestlohn in Australien beträgt ab 1. Juli 2025 24,95 $ pro Stunde für festangestellte Arbeitnehmer und 31,19 $ pro Stunde für Casual-Arbeitnehmer (das umfasst den 25 %-Casual Loading). Das gilt für alle Arbeitnehmer, auch für Working Holiday Maker. Allerdings sind die meisten Branchen von modernen Awards oder Tarifverträgen abgedeckt, die höhere Mindestsätze als den nationalen Mindestlohn festlegen - der tatsächliche Satz für deine Stelle ist also meistens höher als 24,95 $.
 
@@ -1071,7 +1071,7 @@ Working Holiday Maker haben dieselben Rechte wie jeder andere Arbeitnehmer in Au
   // ─── Tax Return - More strategic posts ─────────────────────────────────────
   'how-does-australian-tax-year-work': {
     title: 'Wie funktioniert das australische Steuerjahr für Working Holiday Maker?',
-    description: 'Das australische Finanzjahr läuft vom 1. Juli bis 30. Juni. Hier ist, was das für deine Steuererklärung bedeutet und wann du sie einreichen musst.',
+    description: 'Das australische Finanzjahr läuft vom 1. Juli bis 30. Juni. Hier erfährst du, was das für deine Steuererklärung bedeutet und wann du sie einreichen musst.',
     body: `
 Das australische Finanzjahr läuft vom 1. Juli bis 30. Juni, nicht nach dem Kalenderjahr. Als Working Holiday Maker musst du für jedes Finanzjahr, in dem du in Australien Einkommen hattest, eine Steuererklärung einreichen. Die Einreichungsfrist ist der 31. Oktober nach Ende des Finanzjahres. Wenn du über einen registrierten Steueragenten wie unser Team einreichst, wird die Frist automatisch verlängert.
 
@@ -1123,7 +1123,7 @@ Wir können auf deine Income Statements direkt über unser Steueragenten-Portal 
 
   'tax-deductions-working-holiday-makers': {
     title: 'Welche Steuerabzüge können Working Holiday Maker in Australien geltend machen?',
-    description: 'Working Holiday Maker können arbeitsbezogene Absetzungen genau wie jeder andere Arbeitnehmer machen. Hier ist, was qualifiziert und was nicht.',
+    description: 'Working Holiday Maker können arbeitsbezogene Absetzungen genau wie jeder andere Arbeitnehmer machen. Hier erfährst du, was qualifiziert und was nicht.',
     body: `
 Working Holiday Maker in Australien können arbeitsbezogene Steuerabzüge in ihrer Steuererklärung geltend machen, genau wie australische Residenten. Häufige Absetzungen sind Uniformen und Schutzkleidung, Werkzeuge und Ausrüstung, Fahrten zwischen Arbeitsorten, arbeitsbezogene Handynutzung und Gebühren für registrierte Steueragenten. Um eine Absetzung zu beantragen, muss die Ausgabe direkt mit der Erzielung deines Einkommens zusammenhängen, und du musst einen Nachweis haben (Beleg, Kontoauszug oder Tagebuchnotiz). Unser Team identifiziert berechtigte Absetzungen, wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten.
 
@@ -1272,7 +1272,7 @@ Siehe unseren detaillierten Artikel zu [wie der DASP-Prozess funktioniert](/de/b
   // Tax Return
   'how-to-lodge-tax-return-working-holiday': {
     title: 'Wie du als Working Holiday Maker eine Steuererklärung in Australien einreichst',
-    description: 'Eine australische Steuererklärung einzureichen ist einfacher, als es klingt. Hier ist eine Schritt-für-Schritt-Anleitung des gesamten Prozesses.',
+    description: 'Eine australische Steuererklärung einzureichen ist einfacher, als es klingt. Schritt-für-Schritt-Anleitung des gesamten Prozesses.',
     body: `
 Um als Working Holiday Maker eine Steuererklärung in Australien einzureichen, ist die einfachste Option, einen registrierten Steueragenten wie unser Team zu nutzen. Wir sammeln deine Daten, greifen direkt über unser Steueragentenportal auf deine Income Statements zu, bereiten deine Steuererklärung vor und reichen sie für dich beim ATO ein. Der Prozess funktioniert gleich, egal ob du noch in Australien bist oder schon abgereist. Mit einem registrierten Agenten erhältst du eine verlängerte Einreichungsfrist über den Standard-31. Oktober hinaus.
 
@@ -1329,7 +1329,7 @@ Für Steuererklärungen mit mehreren Arbeitgebern oder für Working Holiday Make
 
   'what-is-payg-payment-summary': {
     title: 'Was ist ein PAYG Payment Summary und wie nutzt du es?',
-    description: 'Ein PAYG Payment Summary zeigt dein Gesamteinkommen und die einbehaltene Steuer für das Jahr. Hier ist, was es ist und wie du darauf zugreifst.',
+    description: 'Ein PAYG Payment Summary zeigt dein Gesamteinkommen und die einbehaltene Steuer für das Jahr. Hier erfährst du, was es ist und wie du darauf zugreifst.',
     body: `
 Ein PAYG Payment Summary - heute Income Statement genannt - ist die offizielle Aufzeichnung, die dein Gesamtgehalt und die gesamte vom Arbeitgeber einbehaltene Steuer in einem Steuerjahr zeigt. Es ist das Dokument, das zum Einreichen deiner [Steuererklärung](/de/tax-return) genutzt wird. Arbeitgeber melden Löhne und Einbehaltsbeträge automatisch über ihre Lohnbuchhaltungs-Software an das ATO, sodass das Income Statement digital erstellt wird, statt dir als Papierdokument ausgehändigt zu werden. Als dein registrierter Steueragent kann unser Team direkt über das ATO-System auf deine Income Statements zugreifen.
 
@@ -1380,7 +1380,7 @@ Ohne diese Abstimmung einzureichen ist riskant. Die Income Statements sind meist
 
   'do-you-need-to-lodge-tax-return-short-stay': {
     title: 'Musst du eine Steuererklärung einreichen, wenn du nur kurz in Australien gearbeitet hast?',
-    description: 'Auch wenn du nur ein paar Wochen gearbeitet hast, musst du eventuell eine Steuererklärung einreichen. Hier ist, wie du das herausfindest.',
+    description: 'Auch wenn du nur ein paar Wochen gearbeitet hast, musst du eventuell eine Steuererklärung einreichen. Hier erfährst du, wie du das herausfindest.',
     body: `
 Ja, du musst fast sicher eine Steuererklärung in Australien einreichen, auch wenn du nur ein paar Wochen gearbeitet hast. Die Einreichungspflicht hängt nicht davon ab, wie lange du geblieben bist. Sie hängt davon ab, ob du während des australischen Steuerjahres Einkommen hattest. Zwei Wochen zu arbeiten erzeugt dieselbe Einreichungspflicht wie zwei Jahre. Einreichen lohnt sich auch oft finanziell, weil die meisten Working Holiday Maker eine Rückzahlung bekommen.
 
@@ -1432,7 +1432,7 @@ Die Standardfrist ist der 31. Oktober nach Ende des Steuerjahres, aber wenn du �
 
   'how-to-lodge-tax-return-from-overseas': {
     title: 'Wie du eine australische Steuererklärung aus dem Ausland einreichst, nachdem du abgereist bist',
-    description: 'Australien zu verlassen heißt nicht, dass du die Steuererklärung überspringen kannst. Hier ist, wie du sie von überall auf der Welt einreichst.',
+    description: 'Australien zu verlassen heißt nicht, dass du die Steuererklärung überspringen kannst. Hier erfährst du, wie du sie von überall auf der Welt einreichst.',
     body: `
 Um eine australische Steuererklärung nach deiner Abreise aus dem Ausland einzureichen, arbeite mit einem registrierten Steueragenten, der die Steuererklärung remote für dich vorbereiten und einreichen kann. Der gesamte Prozess wird elektronisch erledigt, und deine Rückzahlung wird auf dein australisches Bankkonto überwiesen. Unser Team kümmert sich jede Woche um Steuererklärungen von Working Holiday Makern aus aller Welt. Du musst nicht nach Australien zurück, und die Einreichungsfrist wird verlängert, wenn du über einen registrierten Steueragenten gehst.
 
@@ -1494,7 +1494,7 @@ Die meisten Working Holiday Maker bekommen eine Rückzahlung. Geld zu schulden i
 
   'what-is-a-tax-agent': {
     title: 'Was ist ein Steueragent und warum sollten Working Holiday Maker einen nutzen?',
-    description: 'Ein registrierter Steueragent bereitet Steuererklärungen vor und reicht sie für dich ein. Hier ist, was sie machen und warum es sinnvoll ist.',
+    description: 'Ein registrierter Steueragent bereitet Steuererklärungen vor und reicht sie für dich ein. Hier erfährst du, was sie machen und warum es sinnvoll ist.',
     body: `
 Ein registrierter Steueragent ist ein Steuerprofi, der vom Tax Practitioners Board ermächtigt ist, Steuererklärungen im Namen von Mandanten vorzubereiten und einzureichen. In Australien muss jeder, der gegen Bezahlung Steuerdienstleistungen anbietet, beim TPB registriert sein. Working Holiday Maker profitieren aus drei Hauptgründen von einem registrierten Steueragenten: Zugang zu verlängerten Einreichungsfristen, vollständige Bearbeitung der Kommunikation mit dem ATO und Identifizierung von Absetzungen, die Selbsteinreicher oft übersehen.
 
@@ -1543,7 +1543,7 @@ Wir arbeiten unter der Aufsicht eines registrierten Steueragenten. Unsere Regist
 
   'how-does-payg-withholding-work': {
     title: 'Wie funktioniert PAYG-Einbehaltung in Australien?',
-    description: 'PAYG-Einbehaltung ist, wie dein Arbeitgeber Steuer von deinem Lohn einbehält, bevor er dich bezahlt. Hier ist, wie das System funktioniert.',
+    description: 'PAYG-Einbehaltung ist, wie dein Arbeitgeber Steuer von deinem Lohn einbehält, bevor er dich bezahlt. Hier erfährst du, wie das System funktioniert.',
     body: `
 PAYG (Pay As You Go)-Einbehaltung ist das System, das australische Arbeitgeber nutzen, um Einkommensteuer von deinem Lohn abzuziehen, bevor sie dich bezahlen. Der einbehaltene Betrag wird direkt ans ATO als Vorauszahlung auf deine jährliche Steuerschuld gezahlt. Für Working Holiday Maker mit hinterlegter [TFN](/de/tfn) beträgt der korrekte PAYG-Einbehaltungssatz 15 % auf die ersten 45.000 $ Einkommen. Ohne TFN springt der Satz auf 45 %.
 
@@ -1602,7 +1602,7 @@ Wenn dein Lohnzettel falsch aussieht oder du einen Fehler vermutest, [kontaktier
 
   'australian-financial-year-dates': {
     title: 'Was ist das australische Finanzjahr und wann beginnt und endet es?',
-    description: 'Australien nutzt ein Finanzjahr, das vom 1. Juli bis 30. Juni läuft, nicht das Kalenderjahr. Hier ist, was das für dich bedeutet.',
+    description: 'Australien nutzt ein Finanzjahr, das vom 1. Juli bis 30. Juni läuft, nicht das Kalenderjahr. Hier erfährst du, was das für dich bedeutet.',
     body: `
 Das australische Finanzjahr läuft vom 1. Juli bis 30. Juni des folgenden Kalenderjahres. Das ist anders als das Kalenderjahr und anders als das Steuerjahr, das in vielen anderen Ländern genutzt wird. Das aktuelle Finanzjahr ist (Stand Mitte 2026) 2025-26 (1. Juli 2025 bis 30. Juni 2026). Diese Daten zu kennen ist für Working Holiday Maker wichtig, weil das gesamte in einem Finanzjahr verdiente Einkommen zusammen auf einer Steuererklärung eingereicht werden muss.
 
@@ -1654,7 +1654,7 @@ Diese Daten sind wichtig, wenn du prüfst, ob dein Arbeitgeber deine [Super](/de
 
   'cash-in-hand-tax-return': {
     title: 'Kannst du eine Steuererklärung machen, wenn du in Australien schwarz gearbeitet hast?',
-    description: 'Schwarzarbeit befreit dich nicht von deinen Steuerpflichten. Hier ist, was du angeben musst und wie du damit umgehst.',
+    description: 'Schwarzarbeit befreit dich nicht von deinen Steuerpflichten. Hier erfährst du, was du angeben musst und wie du damit umgehst.',
     body: `
 Ja, du musst eine Steuererklärung einreichen, wenn du in Australien schwarz gearbeitet hast. Barzahlungen sind genauso steuerpflichtig wie Lohn, der per Banküberweisung gezahlt wurde. Der einzige Unterschied ist, dass zum Zeitpunkt der Zahlung keine PAYG-Steuer einbehalten wurde - du bist also dafür verantwortlich, das Einkommen anzugeben und die fällige Steuer am Ende des Steuerjahres zu zahlen. Bareinkommen nicht anzugeben ist Steuerhinterziehung. Unser Team kümmert sich regelmäßig um Steuererklärungen, die Schwarzarbeit beinhalten.
 
@@ -1782,7 +1782,7 @@ Spezifische Beratung ist sinnvoll, wenn eines der folgenden zutrifft:
 
   'what-is-a-tax-refund-australia': {
     title: 'Was ist eine Steuerrückzahlung und woher weißt du, ob dir eine in Australien zusteht?',
-    description: 'Eine Steuerrückzahlung ist Geld, das das ATO zurückzahlt, wenn du im Laufe des Jahres mehr Steuern gezahlt hast, als du musstest. Die meisten Working Holiday Maker bekommen eine.',
+    description: 'Eine Steuerrückzahlung ist Geld, das das ATO zurückerstattet, wenn du übers Jahr zu viel gezahlt hast. Die meisten Working Holiday Maker bekommen eine zurück.',
     body: `
 Eine Steuerrückzahlung ist Geld, das die Australian Taxation Office (ATO) dir zurückzahlt, wenn die im Laufe des Jahres von deinem Lohn einbehaltene Steuer höher war als deine tatsächliche Steuerschuld. Die meisten Working Holiday Maker bekommen eine Rückzahlung, weil ihr Arbeitgeber mehr Steuer als nötig einbehalten hat (oft während Zeiten ohne TFN oder weil sie nur einen Teil des Steuerjahres gearbeitet haben). Die Rückzahlung wird meistens innerhalb von zwei Wochen nach Einreichung auf dein australisches Bankkonto überwiesen. Unser Team berechnet deine erwartete Rückzahlung vor der Einreichung, damit du weißt, was zu erwarten ist.
 
@@ -1847,7 +1847,7 @@ Wir identifizieren Absetzungen, die du beim Selbsteinreichen vielleicht übersie
 
   'how-long-does-tax-refund-take-australia': {
     title: 'Wie lange dauert eine Steuerrückzahlung in Australien?',
-    description: 'Die meisten Steuerrückzahlungen in Australien werden innerhalb von zwei Wochen nach Einreichung bearbeitet. Hier ist, was den Zeitplan beeinflusst.',
+    description: 'Die meisten Steuerrückzahlungen in Australien werden innerhalb von zwei Wochen nach Einreichung bearbeitet. Hier erfährst du, was den Zeitplan beeinflusst.',
     body: `
 Die meisten australischen Steuerrückzahlungen werden innerhalb von zwei Wochen nach Einreichung bearbeitet und ausgezahlt, wenn die Steuererklärung elektronisch eingereicht wird. Über unseren Service als deinen registrierten Steueragenten reichen wir elektronisch ein, sodass Rückzahlungen typischerweise innerhalb von 7-14 Werktagen ankommen. Rückzahlungen in der Hauptsaison (August-September) dauern eventuell ein paar Tage länger. Wenn deine Rückzahlung länger dauert als erwartet, fasst unser Team direkt beim ATO nach.
 
@@ -1918,7 +1918,7 @@ Halte dein australisches Bankkonto mindestens 4-6 Wochen nach der Einreichung of
 
   'transferring-money-overseas-australia-tax': {
     title: 'Zahlst du Steuern, wenn du Geld aus Australien überweist?',
-    description: 'Du schickst deine Ersparnisse nach Hause, bevor du Australien verlässt? Hier ist, was Working Holiday Maker über internationale Überweisungen wissen müssen.',
+    description: 'Du schickst deine Ersparnisse nach Hause, bevor du Australien verlässt? Hier erfährst du, was Working Holiday Maker über internationale Überweisungen wissen müssen.',
     body: `
 Nein, Geld aus Australien zu überweisen erzeugt an sich keine Steuerpflicht. Die Übertragung von Mitteln von deinem australischen Bankkonto auf ein Konto in deinem Heimatland ist eine Geldbewegung, kein Einkommen. Das ATO besteuert dich nicht dafür, Geld zu bewegen. Was steuerlich zählt, ist das Einkommen, das du in Australien verdient hast - und das ist im Jahr des Erhalts steuerpflichtig, unabhängig davon, wo du es letztendlich ausgibst. Erledige deine Steuerangelegenheiten und die Superauszahlung, bevor du alles nach Hause überweist und dein australisches Konto schließt.
 
@@ -2012,7 +2012,7 @@ Was steuerpflichtig ist, ist alles, was du während deines Aufenthalts in Austra
 
   'low-income-tax-offset-working-holiday': {
     title: 'Was ist der Low Income Tax Offset und können Working Holiday Maker ihn beantragen?',
-    description: 'Der Low Income Tax Offset kann deine Steuer um bis zu 700 $ pro Jahr reduzieren. Hier ist, wer qualifiziert, wie es berechnet wird und wie du es beantragst.',
+    description: 'Der Low Income Tax Offset kann deine Steuer um bis zu 700 $ pro Jahr reduzieren. Hier erfährst du, wer qualifiziert, wie es berechnet wird und wie du es beantragst.',
     body: `
 Der Low Income Tax Offset (LITO) ist eine Steuerermäßigung für Einzelpersonen mit zu versteuerndem Einkommen unter festgelegten Schwellen. Das Maximum beträgt 700 $ für zu versteuerndes Einkommen bis 37.500 $, und reduziert sich schrittweise für Einkommen zwischen 37.500 $ und 66.667 $. Ob Working Holiday Maker LITO beantragen können, hängt von spezifischem Einkommen und Umständen ab. Unser Team prüft jeden anwendbaren Offset, wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten - berechtigter LITO wird also automatisch angewendet.
 
@@ -2104,7 +2104,7 @@ Unser Prozess:
   // Super
   'how-much-super-should-employer-pay': {
     title: 'Wie viel Super sollte dein Arbeitgeber für dich einzahlen?',
-    description: 'Australische Arbeitgeber müssen 12 % deiner Bruttoeinkünfte als Super einzahlen. Hier ist, wie du prüfst, ob du den korrekten Betrag bekommst.',
+    description: 'Australische Arbeitgeber müssen 12 % deiner Bruttoeinkünfte als Super einzahlen. Hier erfährst du, wie du prüfst, ob du den korrekten Betrag bekommst.',
     body: `
 Dein Arbeitgeber sollte ab 2026 12 % deiner regulären Arbeitseinkünfte (Ordinary Time Earnings) in deinen Superfonds einzahlen. Der Satz stieg am 1. Juli 2025 von 11,5 % auf 12 % und ist bei 12 % geblieben. Super wird zusätzlich zu deinem Lohn gezahlt, nicht davon abgezogen. Der einfachste Weg, zu prüfen, ob deine Super korrekt gezahlt wird, ist, dein Superfondskonto direkt zu prüfen. Wenn Beiträge fehlen oder falsch sind, kann unser Team helfen, unbezahlte Super für dich zurückzuholen.
 
@@ -2225,7 +2225,7 @@ Siehe unseren Artikel zu [welche Steuer von deiner DASP abgezogen wird](/de/blog
 
   'how-long-does-dasp-take': {
     title: 'Wie lange dauert die Bearbeitung eines DASP-Antrags?',
-    description: 'Die meisten DASP-Anträge werden innerhalb von 28 Tagen bearbeitet. Hier ist, was du in jedem Schritt erwarten kannst und wie du den Status verfolgst.',
+    description: 'Die meisten DASP-Anträge werden innerhalb von 28 Tagen bearbeitet. Hier erfährst du, was du in jedem Schritt erwarten kannst und wie du den Status verfolgst.',
     body: `
 Ein DASP (Departing Australia Superannuation Payment)-Antrag wird normalerweise innerhalb von 28 Tagen nach Einreichung bearbeitet. In vielen Fällen geht der Prozess schneller, besonders wenn deine Daten klar sind und der Superfonds alle Informationen hat, um deine Identität und Mitgliedschaft zu verifizieren. Unser Team überwacht jeden DASP-Antrag, den wir einreichen, und fragt bei Verzögerungen direkt beim Fonds nach.
 
@@ -2290,7 +2290,7 @@ Die Währungsumrechnung des Kontos kann ebenfalls die Dauer beeinflussen. Wenn d
   // Medicare
   'countries-with-medicare-agreement-australia': {
     title: 'Welche Länder haben ein Medicareabkommen mit Australien?',
-    description: '11 Länder haben ein Sozialversicherungsabkommen (RHCA) mit Australien. Hier ist die komplette Liste und was die Abkommen abdecken. Deutschland ist nicht dabei.',
+    description: '11 Länder haben ein Sozialversicherungsabkommen (RHCA) mit Australien. Folgende Dokumente sind nötig und was die Abkommen abdecken. Deutschland ist nicht dabei.',
     body: `
 Australien hat Sozialversicherungsabkommen (Reciprocal Health Care Agreements, RHCAs) mit 11 Ländern: Großbritannien, Republik Irland, Neuseeland, Schweden, Niederlande, Finnland, Norwegen, Belgien, Slowenien, Malta und Italien. Bürger dieser Länder mit gültigem Working Holiday Visum haben eventuell Anspruch auf begrenzte Medicare-Leistungen während ihres Aufenthalts. **Deutschland ist NICHT auf der Liste.** Bürger aller anderen Länder - auch Deutsche - sind nicht für Medicare berechtigt und sind auf eine private Krankenversicherung angewiesen.
 
@@ -2361,7 +2361,7 @@ Wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten, finden wir die ko
 
   'tax-file-number-declaration-form': {
     title: 'Was ist ein TFN Declaration-Formular und wie füllst du es aus?',
-    description: 'Das TFN-Declaration-Formular ist eines der wichtigsten Dokumente, die du in Australien ausfüllst. Hier ist, was die einzelnen Abschnitte bedeuten.',
+    description: 'Das TFN-Declaration-Formular ist eines der wichtigsten Dokumente, die du in Australien ausfüllst. Hier erfährst du, was die einzelnen Abschnitte bedeuten.',
     body: `
 Ein TFN Declaration-Formular ist das Formular, das du ausfüllst und deinem Arbeitgeber gibst, wenn du in Australien einen neuen Job anfängst. Es sagt deinem Arbeitgeber deine TFN, deinen Steuerresidenzstatus und ob du einen Studienkredit hast. Der Arbeitgeber nutzt diese Informationen, um deinen Steuersatz zu bestimmen. Für Working Holiday Maker sind die kritischen Antworten: wähle "Working Holiday Maker" für die Residenz und "Nein" für den Freibetrag. Das Formular richtig auszufüllen stellt sicher, dass der korrekte 15 %-Satz ab deinem ersten Lohnzettel angewendet wird.
 
@@ -2432,7 +2432,7 @@ Wenn dein Lohnzettel Einbehaltung mit 45 %, 30 % oder einem anderen Satz als 15 
 
   'what-does-tax-withheld-mean-payslip': {
     title: 'Was bedeutet "tax withheld" auf deinem Lohnzettel in Australien?',
-    description: '"Tax withheld" zeigt, wie viel Steuer dein Arbeitgeber von deinem Lohn einbehalten hat. Hier ist, wie du den Betrag verstehst und prüfst, ob er korrekt ist.',
+    description: '"Tax withheld" zeigt, wie viel Steuer dein Arbeitgeber von deinem Lohn einbehalten hat. Hier erfährst du, wie du den Betrag verstehst und prüfst, ob er korrekt ist.',
     body: `
 "Tax withheld" auf deinem Lohnzettel ist die Einkommensteuer, die dein Arbeitgeber von deinem Bruttolohn abzieht, bevor er dir den Nettobetrag zahlt. Es ist die PAYG-Einbehaltung, die im Auftrag des ATO gesammelt wird. Für Working Holiday Maker ist der korrekte Einbehaltungssatz 15 % deines Bruttoeinkommens bis 45.000 $. Du kannst es prüfen, indem du die einbehaltene Steuer durch den Bruttolohn teilst - das Ergebnis sollte ungefähr 0,15 sein. Wenn es 30 % oder 45 % zeigt, wurde dein TFN Declaration-Formular falsch ausgefüllt.
 
@@ -2499,7 +2499,7 @@ Die meisten modernen Lohnsysteme schicken Lohnzettel automatisch per E-Mail. Ric
   // Work Rights
   'how-many-hours-can-you-work-on-whv': {
     title: 'Wie viele Stunden pro Woche darfst du mit einem Working Holiday Visum arbeiten?',
-    description: 'Es gibt keine wöchentliche Stundenbegrenzung für Working Holiday Visa, aber es gibt eine 6-Monats-Begrenzung pro Arbeitgeber. Hier sind die aktuellen Regeln.',
+    description: 'Keine wöchentliche Stundenbegrenzung für Working Holiday Visa - aber maximal 6 Monate pro Arbeitgeber. Aktuelle Regeln für Subclass 417 und 462.',
     body: `
 Es gibt keine Begrenzung, wie viele Stunden pro Woche ein Working Holiday Visuminhaber in Australien arbeiten darf. Du kannst Vollzeit, Teilzeit oder Casual arbeiten. Allerdings begrenzt Visabedingung 8547 dich auf maximal 6 Monate bei einem einzigen Arbeitgeber - außer du arbeitest in einem ausgenommenen Sektor (Landwirtschaft, Pflanzen-/Tierzucht, Tourismus/Gastronomie, Gesundheit, Alten-/Behindertenpflege, Kinderbetreuung, Nahrungsmittelverarbeitung oder Katastrophenhilfe überall in Australien, oder in einigen nördlichen Regionen für andere Branchen). Außerhalb dieser Ausnahmen musst du nach 6 Monaten den Arbeitgeber wechseln oder eine schriftliche Erlaubnis vom Department of Home Affairs anfordern.
 
@@ -2593,7 +2593,7 @@ Wenn du viele Stunden arbeitest und unsicher bist, ob deine Super korrekt gezahl
 
   'penalty-rates-australia': {
     title: 'Was sind Penalty Rates und hast du in Australien Anspruch darauf?',
-    description: 'Penalty Rates sind Zuschläge für Arbeit am Wochenende, an Feiertagen oder bei Überstunden. Hier ist, wann du Anspruch hast und wie viel sie betragen.',
+    description: 'Penalty Rates sind Zuschläge für Arbeit am Wochenende, an Feiertagen oder bei Überstunden. Hier erfährst du, wann du Anspruch hast und wie viel sie betragen.',
     body: `
 Penalty Rates sind höhere Lohnsätze, die gelten, wenn Arbeitnehmer außerhalb der regulären Arbeitszeiten arbeiten - einschließlich Wochenenden, Feiertagen, Abenden und frühen Morgenstunden. Sie sind durch moderne Awards und Tarifverträge festgelegt und gelten für die meisten Arbeitnehmer in Australien, einschließlich Working Holiday Maker. Übliche Sätze: Samstag etwa 125-150 %, Sonntag etwa 175 %, Feiertage etwa 225-250 % deines normalen Satzes. Der genaue Satz hängt vom Award ab, der für deine Rolle gilt.
 
@@ -2657,7 +2657,7 @@ Zusätzliches Einkommen durch Penalty Rates unterliegt weiterhin dem 15 %-Workin
 
   'can-your-employer-pay-you-cash-in-hand': {
     title: 'Darf dein Arbeitgeber dich in Australien schwarz bezahlen?',
-    description: 'Schwarzarbeit ist nicht illegal an sich, aber sie ist problematisch. Hier ist, was du wissen musst, wenn du in bar bezahlt wirst.',
+    description: 'Schwarzarbeit ist nicht illegal an sich, aber sie ist problematisch. Hier erfährst du, was du wissen musst, wenn du in bar bezahlt wirst.',
     body: `
 Ja, ein Arbeitgeber darf dich in Australien legal in bar bezahlen. Es gibt kein Gesetz, das verlangt, dass Löhne per Banküberweisung gezahlt werden. Allerdings ändert die Zahlungsmethode nichts an den Pflichten des Arbeitgebers: Er muss weiterhin die korrekte PAYG-Steuer einbehalten, 12 % Super zusätzlich zu deinem Lohn zahlen, dir Lohnzettel ausstellen und Mindestlohn und Award-Bedingungen erfüllen. Barzahlung ist legal; Unterbezahlung, fehlende Super oder fehlende Lohnzettel sind es nicht. Unser Team hilft, unbezahlte Super zurückzuholen und Steuerprobleme für Working Holiday Maker zu lösen, die in bar bezahlt wurden.
 
@@ -2724,7 +2724,7 @@ Bewahre diese Aufzeichnungen sicher auf. Sie unterstützen sowohl deine Steuerer
 
   'fair-work-act-working-holiday-makers': {
     title: 'Was ist der Fair Work Act und wie schützt er Working Holiday Maker?',
-    description: 'Der Fair Work Act ist das wichtigste Arbeitsgesetz in Australien. Hier sind deine Rechte als Working Holiday Maker.',
+    description: 'Der Fair Work Act ist das wichtigste Arbeitsgesetz in Australien. Im Folgenden findest du deine Rechte als Working Holiday Maker.',
     body: `
 Der Fair Work Act 2009 ist Australiens wichtigstes Arbeitsgesetz. Er gilt für Working Holiday Maker genauso wie für australische Staatsbürger. Der Act etabliert die National Employment Standards (NES), die 11 Mindestansprüche garantieren - einschließlich Mindestlohn, bezahlten Feiertagen, Jahresurlaub und Schutz vor unfairer Kündigung. Working Holiday Maker haben vollen Schutz unter dem Act, unabhängig vom Visastatus. Unser Team kann dir helfen, deine Rechte zu verstehen und Probleme mit deinem Arbeitgeber anzugehen.
 
@@ -2786,7 +2786,7 @@ Das heißt, du kannst Arbeitsplatzprobleme angehen, ohne Visafolgen zu fürchten
   // ─── More TFN posts ────────────────────────────────────────────────────────
   'how-to-update-address-with-ato': {
     title: 'Wie du deine Adresse beim ATO in Australien aktualisierst',
-    description: 'Du ziehst um? Aktualisiere deine Adresse beim ATO, damit du keine wichtigen Briefe verpasst. Hier ist, wie es geht.',
+    description: 'Adresse beim ATO aktualisieren - so verpasst du keine wichtigen Briefe und Steuerbescheide. Drei einfache Wege für Working Holiday Maker erklärt.',
     body: `
 Wenn du in Australien an eine neue Adresse umziehst, aktualisiere sie so schnell wie möglich beim ATO (australisches Finanzamt). Das ATO schickt deinen TFN-Brief und andere wichtige Post an die hinterlegte Adresse. Über unseren Service aktualisieren wir deine Adresse beim ATO für dich - so verpasst du keine kritischen Briefe oder Rückzahlungsbenachrichtigungen. Wenn du noch auf deinen TFN-Brief wartest und umgezogen bist, ist eine schnelle Aktualisierung der Adresse der Unterschied zwischen dem Erhalt deiner TFN innerhalb von 28 Tagen und viel längerem Warten.
 
@@ -2848,7 +2848,7 @@ Wenn du Australien verlassen hast:
 
   'tfn-reference-number-before-tfn-arrives': {
     title: 'Was ist eine TFN-Referenznummer und kannst du arbeiten, bevor deine TFN ankommt?',
-    description: 'Während du auf deine TFN wartest, bekommst du eine Referenznummer. Hier ist, was sie ist und wie du sie nutzt.',
+    description: 'Während du auf deine TFN wartest, bekommst du eine Referenznummer vom ATO. Was sie kann, wie du sie nutzt und was dein Arbeitgeber wissen muss.',
     body: `
 Die TFN-Referenznummer ist eine temporäre Kennung, die das ATO (australisches Finanzamt) in dem Moment ausstellt, in dem du deinen TFN-Antrag online einreichst. Sie ist nicht deine eigentliche TFN, beweist aber, dass dein Antrag läuft, und ermöglicht deinem Arbeitgeber, deine Bezahlung beim korrekten 15 %-Satz einzurichten, während du auf die echte TFN wartest. Als Working Holiday Maker kannst du legal mit nur der Referenznummer arbeiten anfangen - vorausgesetzt, du gibst sie deinem Arbeitgeber am ersten Tag.
 
@@ -2903,13 +2903,13 @@ Lösch nicht die Bestätigungs-E-Mail von deinem TFN-Antrag:
 - Nützlich, wenn du schnell mehrere Jobs anfängst
 - Erforderlich, wenn du beim Antrag nachfassen musst
 
-Sobald deine TFN ausgestellt ist, wird die Referenznummer irrelevant. Aber in den Wochen davor ist sie wirklich nützlich, um sicherzustellen, dass deine Bezahlung ab deiner ersten Schicht zum korrekten 15 %-Satz läuft.
+Sobald deine TFN ausgestellt ist, wird die Referenznummer irrelevant. Doch in den Wochen davor ist sie wirklich nützlich, um sicherzustellen, dass deine Bezahlung ab deiner ersten Schicht zum korrekten 15 %-Satz läuft.
  `,
   },
 
   'tax-free-threshold-working-holiday-visa': {
     title: 'Können Working Holiday Maker den Freibetrag in Australien beantragen?',
-    description: 'Australische Steuerresidenten bekommen einen Freibetrag von 18.200 $. Hier ist, ob das auch für Working Holiday Maker gilt.',
+    description: 'Australische Steuerresidenten bekommen einen Freibetrag von 18.200 $. Im Folgenden erfährst du, ob das auch für Working Holiday Maker gilt.',
     body: `
 Nein, Working Holiday Maker können den Freibetrag in Australien nicht beanspruchen. Der Freibetrag (Tax-Free-Threshold) ist eine 18.200 $-Vergünstigung, die nur australischen Steuerresidenten zur Verfügung steht. Ihn als Working Holiday Visuminhaber zu beanspruchen führt dazu, dass dein Arbeitgeber weniger Steuer einbehält, als du tatsächlich schuldest - was am Jahresende zu einer Steuerschuld statt einer Rückzahlung führt. Die korrekte Einstellung auf deinem TFN Declaration-Formular ist: Working Holiday Maker für die Residenz und "Nein" zur Freibetragsfrage.
 
@@ -2964,7 +2964,7 @@ Jeder Lohnzettel zeigt dann den korrekten 15 %-Satz, und am Jahresende gibt es k
 
   'tfn-application-rejected': {
     title: 'Was tun, wenn dein TFN-Antrag in Australien abgelehnt wird',
-    description: 'TFN-Anträge können aus mehreren Gründen abgelehnt werden. Hier ist, was zu tun ist und wie du das Problem behebst.',
+    description: 'TFN-Anträge können aus mehreren Gründen abgelehnt werden. Hier erfährst du, was zu tun ist und wie du das Problem behebst.',
     body: `
 Ein TFN-Antrag (Tax File Number) kann abgelehnt werden, wenn die Daten im Antrag nicht mit den Aufzeichnungen des Department of Home Affairs übereinstimmen oder wenn die Identitätsprüfung fehlschlägt. Die häufigsten Ursachen sind eine Reisepassnummer, die nicht zur mit dem Visum verknüpften passt, ein falsches Geburtsdatum oder ein Name, der anders geschrieben ist als im Reisepass. Bis eine gültige TFN ausgestellt wird, muss dein Arbeitgeber Steuer zu 45 % einbehalten statt zum 15 %-Working-Holiday-Maker-Satz.
 
@@ -3009,7 +3009,7 @@ Ein registrierter Steueragent hat eine TAN (Tax Agent Number), die im Tax-Practi
 
   'tfn-identity-documents-required': {
     title: 'Welche Ausweisdokumente brauchst du, um eine TFN in Australien zu beantragen?',
-    description: 'Für den TFN-Antrag brauchst du bestimmte Identitätsnachweise. Hier ist die komplette Liste für Working Holiday Maker.',
+    description: 'Für den TFN-Antrag in Australien brauchst du Reisepass, Visadetails und eine Postadresse. Vollständige Dokumentenliste für Working Holiday Maker.',
     body: `
 Ein TFN-Antrag (Tax File Number) für einen Working Holiday Maker erfordert einen gültigen Reisepass, die Visabewilligungsmitteilung für ein Subclass 417- oder 462-Visum und eine australische Wohnadresse, an die der TFN-Brief zugestellt werden kann. Der Antrag verlangt außerdem deinen vollständigen rechtlichen Namen genau wie er im Reisepass steht, dein Geburtsdatum und dein Land der Staatsbürgerschaft.
 
@@ -3058,7 +3058,7 @@ Teile niemals Kopien deines Reisepasses, deiner Visabewilligung oder deiner TFN 
 
   'tfn-security-protect-from-fraud': {
     title: 'Wie du deine TFN in Australien vor Betrug und Identitätsdiebstahl schützt',
-    description: 'Deine TFN ist eine sensible Information. Hier ist, wie du sie schützt und was du tun musst, wenn sie missbraucht wurde.',
+    description: 'Deine TFN ist eine sensible Information. Hier erfährst du, wie du sie schützt und was du tun musst, wenn sie missbraucht wurde.',
     body: `
 Eine Tax File Number (TFN) ist eine permanente, lebenslange Kennung, die vom ATO (australisches Finanzamt) ausgestellt wird. Jeder, der deine TFN zusammen mit grundlegenden Identitätsdaten hat, kann eine Steuererklärung in deinem Namen einreichen, deine Rückzahlung auf sein eigenes Bankkonto umleiten und betrügerische ABN-Registrierungen mit deiner Identität anlegen. Working Holiday Maker sind ein häufiges Ziel, weil sie mit australischen Systemen nicht vertraut sind und oft Dokumente mit Fremden teilen, die sie in Hostels, auf Social Media oder Backpacker-Foren treffen.
 
@@ -3112,7 +3112,7 @@ Wenn du über unseren Service einreichst, werden deine TFN und Identitätsdokume
 
   'who-can-ask-for-your-tfn': {
     title: 'Wer darf in Australien deine TFN verlangen (und wer nicht)?',
-    description: 'Nicht jeder hat das Recht, deine TFN zu sehen. Hier ist eine Liste der legitimen Anfragen und Warnsignale für Betrug.',
+    description: 'Nicht jeder hat das Recht, deine TFN zu sehen. Folgende Liste hilft dir weiter der legitimen Anfragen und Warnsignale für Betrug.',
     body: `
 Eine Tax File Number (TFN) ist eine permanente Kennung, die vom ATO (australisches Finanzamt) ausgestellt wird. Unter australischem Datenschutzrecht hat nur eine begrenzte Liste von Organisationen das gesetzliche Recht, nach deiner TFN zu fragen. Jeder außerhalb dieser Liste, der danach fragt, sollte abgelehnt werden, und jeder Druck, sie über Social Media, Messaging-Apps oder persönlich zu teilen, sollte als Betrugsrisiko behandelt werden.
 
@@ -3173,7 +3173,7 @@ Jeder registrierte Steueragent in Australien hat eine Tax Agent Number (TAN), di
 
   'tfn-australian-address-no-fixed-address': {
     title: 'Wie du eine TFN ohne feste australische Adresse beantragst',
-    description: 'Du hast noch keine feste Adresse? Es gibt Wege, trotzdem eine TFN zu bekommen. Hier sind sie.',
+    description: 'Hostel, Camper oder Farm? Du kannst trotzdem eine TFN beantragen. Welche Adressen das ATO akzeptiert und wie Working Holiday Maker das richtig machen.',
     body: `
 Ein TFN-Antrag (Tax File Number) braucht eine australische Adresse, an die der TFN-Brief zugestellt werden kann - aber das muss keine langfristige Mietwohnung sein. Ein Hostel, die Wohnung eines Freundes, ein Arbeitsplatz oder sogar ein Backpacker-Postlager-Service kann genutzt werden, solange in den vier Wochen nach dem Antrag zuverlässig Post empfangen werden kann. Viele Working Holiday Maker ziehen in den ersten Monaten in Australien häufig um, und ohne feste Adresse zu beantragen ist häufiger, als die ATO-Website suggeriert.
 
@@ -3216,7 +3216,7 @@ Ein TFN-Brief ist ein hochwertiges Dokument. Sobald er ankommt, lass ihn nicht i
   // ─── More ABN posts ────────────────────────────────────────────────────────
   'farm-work-and-abns': {
     title: 'Farmarbeit und ABNs - was du wissen musst, bevor du anfängst',
-    description: 'Manche Farmer wollen, dass du eine ABN nutzt. Hier ist, warum das oft problematisch ist und wie du deine Rechte schützt.',
+    description: 'Manche Farmer wollen, dass du eine ABN nutzt. Hier erfährst du, warum das oft problematisch ist und wie du deine Rechte schützt.',
     body: `
 Für Farmarbeit in Australien brauchst du meistens eine Australian Business Number (ABN), wenn du über einen Personalvermittler arbeitest oder im Akkordlohn als Contractor bezahlt wirst. Eine ABN brauchst du nicht, wenn die Farm dich direkt als Angestellten beschäftigt. Kläre die Vereinbarung immer ab, bevor du anfängst zu arbeiten - denn die Antwort entscheidet, welche Steuer-, Super- und sonstigen Ansprüche für dich gelten.
 
@@ -3241,7 +3241,7 @@ Akkordlohn ist beim Obstpflücken üblich, wo du bezahlt wirst:
 - Pro geerntetem Kilogramm
 - Pro gepflückter oder gepackter Einheit
 
-Akkordlohnvereinbarungen sind häufig als Contracting strukturiert - in diesem Fall brauchst du eine ABN. Aber nicht jeder Akkordlohn ist Contracting. Manche Farmen führen Akkordlohn als Anstellungsverhältnis - du wirst pro Stück bezahlt, stehst aber trotzdem auf der Lohnabrechnung, und die Farm kümmert sich um Steuer und Super. Gehe nicht davon aus, dass Akkordlohn automatisch Contractor bedeutet. Frag die Farm.
+Akkordlohnvereinbarungen sind häufig als Contracting strukturiert - in diesem Fall brauchst du eine ABN. Doch nicht jeder Akkordlohn ist Contracting. Manche Farmen führen Akkordlohn als Anstellungsverhältnis - du wirst pro Stück bezahlt, stehst aber trotzdem auf der Lohnabrechnung, und die Farm kümmert sich um Steuer und Super. Gehe nicht davon aus, dass Akkordlohn automatisch Contractor bedeutet. Frag die Farm.
 
 ## Worauf solltest du bei Farmarbeit achten?
 
@@ -3270,7 +3270,7 @@ Bewahre Aufzeichnungen über jede erhaltene Zahlung und jede ausgestellte Rechnu
 
   'employee-vs-contractor-australia': {
     title: 'Was ist der Unterschied zwischen Angestelltem und Contractor in Australien?',
-    description: 'Die Unterscheidung ist wichtig für Steuer, Super und Rechte. Hier sind die Hauptunterschiede für Working Holiday Maker.',
+    description: 'Die Unterscheidung ist wichtig für Steuer, Super und Rechte. Im Folgenden findest du die Hauptunterschiede für Working Holiday Maker.',
     body: `
 Der Unterschied zwischen Angestelltem und Contractor in Australien hängt von der Substanz der Arbeitsvereinbarung ab, nicht vom Etikett. Ein Angestellter arbeitet unter Anweisung eines Arbeitgebers, der Steuer abzieht, Super zahlt und Urlaub gewährt. Ein Contractor führt sein eigenes Geschäft, stellt Kunden Rechnungen, legt seine eigene Steuer zurück und hat in der Regel keinen Anspruch auf Super von Kunden. Die Einstufung beeinflusst deine Steuer, deine Super, deine Arbeitsrechte und ob du eine ABN brauchst.
 
@@ -3327,7 +3327,7 @@ Ja. Viele Working Holiday Maker sind in einem Job Angestellter und woanders Cont
 
   'can-you-have-tfn-and-abn': {
     title: 'Kannst du gleichzeitig eine TFN und eine ABN haben?',
-    description: 'Ja, das ist üblich. Hier ist, wie es funktioniert und was du beim Steuerthema beachten musst.',
+    description: 'Ja, viele Working Holiday Maker haben beides. Wann du TFN und ABN gleichzeitig brauchst, wie sie zusammenarbeiten und was für die Steuererklärung gilt.',
     body: `
 Ja, du kannst eine Tax File Number (TFN) und eine Australian Business Number (ABN) gleichzeitig haben - viele Working Holiday Maker tun das. Tatsächlich brauchst du eine TFN, bevor du eine ABN beantragen kannst. Die TFN ist deine persönliche Steuernummer für Anstellungen, die ABN ist deine Geschäftsnummer für Contractor- oder Sole-Trader-Arbeit. Beide zu haben ist normal, wenn du beide Arten von Arbeit machst.
 
@@ -3380,7 +3380,7 @@ Führe das ganze Jahr über klare Aufzeichnungen über beide. Hebe deine Lohnzet
 
   'how-to-cancel-your-abn': {
     title: 'Wie du deine ABN kündigst, wenn du Australien verlässt',
-    description: 'Wenn du Australien permanent verlässt, solltest du deine ABN kündigen. Hier ist die Anleitung.',
+    description: 'Wenn du Australien permanent verlässt, solltest du deine ABN kündigen, um spätere Steuerprobleme zu vermeiden. Vollständige Anleitung in drei Schritten.',
     body: `
 Du solltest deine Australian Business Number (ABN) kündigen, wenn du Australien verlässt und kein Geschäft oder Contracting mehr betreibst. Unser Team kümmert sich um die Kündigung im Rahmen der Abwicklung deiner australischen Steuerposition vor deiner Abreise - du musst dich also nicht selbst mit dem Papierkram herumschlagen. Eine Kündigung hält deine Geschäftsunterlagen sauber und vermeidet spätere Verwaltungsprobleme.
 
@@ -3428,7 +3428,7 @@ ABN-Contracting-Arbeit erzeugt typischerweise keine Superbeiträge, aber paralle
 
   'gst-and-abn-for-working-holiday-makers': {
     title: 'GST und ABN - müssen sich Working Holiday Maker für GST registrieren?',
-    description: 'Du musst dich für GST registrieren, wenn deine ABN-Einkünfte 75.000 $ überschreiten. Hier ist, was das bedeutet.',
+    description: 'Du musst dich für GST registrieren, wenn deine ABN-Einkünfte 75.000 $ überschreiten. Hier erfährst du, was das bedeutet.',
     body: `
 Die meisten Working Holiday Maker mit einer ABN müssen sich nicht für GST registrieren. Die Registrierungsschwelle für die Goods and Services Tax (GST) liegt bei 75.000 $ Jahresumsatz aus Geschäftstätigkeiten, und die große Mehrheit der Backpacker verdient während eines einzelnen Aufenthalts weit darunter. Die Ausnahme sind Rideshare- und Essenslieferung-Fahrer - die müssen sich unabhängig vom Einkommen registrieren. Wenn dein ABN-Umsatz unter 75.000 $ bleibt und du nicht im Rideshare oder Lieferdienst bist, kannst du GST komplett ignorieren.
 
@@ -3489,7 +3489,7 @@ Für die meisten Working Holiday Maker mit einer [ABN](/de/abn) ist GST kein The
 
   'sole-trader-vs-company-australia-working-holiday': {
     title: 'Sole Trader vs. Company in Australien: was ist der Unterschied für Working Holiday Maker?',
-    description: 'Die meisten Backpacker arbeiten als Sole Trader, aber eine Company ist eine Option. Hier sind die Unterschiede.',
+    description: 'Die meisten Backpacker arbeiten als Sole Trader, aber eine Company ist eine Option. Im Folgenden findest du die Unterschiede.',
     body: `
 Für Working Holiday Maker fällt die Wahl zwischen Sole Trader und Company fast immer auf Sole Trader. Ein Sole Trader ist eine Einzelperson, die unter ihrem eigenen Namen (mit einer ABN) tätig ist - das Geschäftseinkommen fließt direkt in ihre persönliche Steuererklärung. Eine Company ist eine separate juristische Person mit ihrer eigenen ABN, Steuerpflichten und erheblichem Verwaltungsaufwand. Working Holiday Maker mit typischen Einkommen (5.000 $ bis 50.000 $ unter einer ABN) profitieren nicht von einer Company-Struktur. Unser Team registriert ABNs für Working Holiday Maker standardmäßig als Sole Trader.
 
@@ -3569,7 +3569,7 @@ Als Sole Trader ist dein persönliches Vermögen gefährdet, wenn das Geschäft 
 - Versicherungen können die meisten Haftungsrisiken zu niedrigen Kosten abdecken
 - Das Risiko ist meistens geringer als die Kosten der Companyverwaltung
 
-Für Working Holiday Maker mit riskanter spezialisierter Arbeit (Elektrik, Klempnerei mit Lizenzpflicht) bietet eine Company eventuell etwas Schutz. Aber diese spezialisierten Handwerke erfordern meistens Qualifikationen, die die meisten Working Holiday Maker nicht haben.
+Für Working Holiday Maker mit riskanter spezialisierter Arbeit (Elektrik, Klempnerei mit Lizenzpflicht) bietet eine Company eventuell etwas Schutz. Doch diese spezialisierten Handwerke erfordern meistens Qualifikationen, die die meisten Working Holiday Maker nicht haben.
 
 ## Wie registrierst du dich als Sole Trader?
 
@@ -3598,7 +3598,7 @@ Für Working Holiday Maker ist Sole Trader die einfache, richtige Antwort in fas
 
   'abn-invoicing-requirements-australia': {
     title: 'Wie du eine korrekte Tax Invoice mit einer ABN in Australien ausstellst',
-    description: 'Tax Invoices müssen bestimmte Informationen enthalten, um gesetzlich gültig zu sein. Hier ist die komplette Anleitung.',
+    description: 'Tax Invoices müssen ABN, GST-Status, Datum und weitere Pflichtangaben enthalten, um gesetzlich gültig zu sein. Komplette Checkliste für Working Holiday Maker.',
     body: `
 Eine Tax Invoice, die mit einer Australian Business Number (ABN) ausgestellt wird, muss den Namen des Anbieters, die ABN, das Datum, eine Beschreibung der Waren oder Dienstleistungen und den Gesamtbetrag enthalten. Wenn die Rechnung mehr als 75 $ beträgt und der Anbieter für GST registriert ist, sind zusätzliche GST-Angaben erforderlich. Wenn ein Working Holiday Maker Dienstleistungen erbringt, ohne eine gültige ABN anzugeben, ist der Kunde gesetzlich verpflichtet, 47 % der Zahlung nach der Einbehaltungsregel bei fehlender ABN einzubehalten.
 
@@ -3651,7 +3651,7 @@ Zur Steuerzeit gleichen wir jede Rechnung, die du im Jahr ausgestellt hast, mit 
   // ─── More Tax Return posts ─────────────────────────────────────────────────
   'amending-tax-return-australia': {
     title: 'Kannst du eine Steuererklärung nach Einreichung in Australien ändern?',
-    description: 'Du hast einen Fehler in deiner Steuererklärung gefunden? Hier ist, wie du sie änderst, wie lange du Zeit hast und was passiert.',
+    description: 'Du hast einen Fehler in deiner Steuererklärung gefunden? Hier erfährst du, wie du sie änderst, wie lange du Zeit hast und was passiert.',
     body: `
 Ja, du kannst eine Steuererklärung nach Einreichung in Australien ändern. Häufige Gründe für eine Änderung: eine Absetzung, die du vergessen hast, eine falsch eingegebene Einkommenszahl oder ein übersehener Offset. Die allgemeine Frist für Änderungen beträgt **zwei Jahre ab dem Datum des ursprünglichen Steuerbescheids**. Unser Team kümmert sich um Änderungen für Working Holiday Maker, auch aus dem Ausland. Proaktiv zu handeln, um Fehler zu beheben, ist viel besser, als zu warten, bis das ATO das Problem entdeckt.
 
@@ -3848,7 +3848,7 @@ Wir beantragen Strafnachlass, wenn berechtigt. Auch wenn nicht alle Strafen entf
 
   'tax-return-without-tfn-australia': {
     title: 'Kannst du in Australien eine Steuererklärung machen, wenn du ohne TFN gearbeitet hast?',
-    description: 'Ja - und wenn du ohne TFN gearbeitet hast, hast du wahrscheinlich Anspruch auf eine große Rückzahlung. Hier ist die Anleitung.',
+    description: 'Ja - und wenn du ohne TFN gearbeitet hast, hast du wahrscheinlich Anspruch auf eine große Rückzahlung. So funktioniert es, Schritt für Schritt.',
     body: `
 Ein Working Holiday Maker, der in Australien ohne Tax File Number (TFN) gearbeitet hat, kann trotzdem eine Steuererklärung einreichen und die zu viel einbehaltene Steuer zurückholen. Ohne hinterlegte TFN sind Arbeitgeber gesetzlich verpflichtet, Steuer zum höchsten Grenzsteuersatz von 45 % einzubehalten statt zum 15 %-Working-Holiday-Maker-Satz. Die Differenz ist erstattbar, aber die [Steuererklärung](/de/tax-return) kann nicht eingereicht werden, ohne vorher eine TFN zu bekommen.
 
@@ -3904,7 +3904,7 @@ Falls du ohne TFN gearbeitet hast, weil du unsicher warst, wie das System funkti
 
   'multiple-jobs-tax-return-working-holiday': {
     title: 'Wie du eine Steuererklärung einreichst, wenn du in Australien mehrere Jobs hattest',
-    description: 'Mehrere Arbeitgeber bedeuten, dass mehrere Income Statements abgeglichen werden müssen. Hier ist, wie es funktioniert.',
+    description: 'Mehrere Arbeitgeber bedeuten, dass mehrere Income Statements abgeglichen werden müssen. Hier erfährst du, wie es funktioniert.',
     body: `
 Ein Working Holiday Maker, der während eines Steuerjahres mehrere Jobs hatte, muss das Einkommen jedes Arbeitgebers auf einer einzigen Steuererklärung angeben. Jeder Arbeitgeber meldet deinen Lohn und die einbehaltene Steuer separat ans ATO unter dem Single-Touch-Payroll-System, und die [Steuererklärung](/de/tax-return) muss mit dem kombinierten Total übereinstimmen. Einen Arbeitgeber zu übersehen - auch einen, bei dem du nur eine Woche gearbeitet hast - erzeugt eine Diskrepanz, die das ATO erkennt und nach Einreichung korrigiert, was oft eine Folgeveranlagung auslöst.
 
@@ -3964,7 +3964,7 @@ Für Working Holiday Maker mit mehreren Jobs in einem Steuerjahr:
 
   'late-tax-return-penalty-working-holiday': {
     title: 'Was ist die Strafe für eine verspätete Steuererklärung als Working Holiday Maker?',
-    description: 'Verspätete Steuererklärungen können Strafgebühren auslösen. Hier ist, wie viel und was du tun kannst.',
+    description: 'Verspätete Steuererklärungen lösen Failure-to-Lodge-Strafen aus, die bis zu 1.650 $ erreichen können. Aktuelle Strafhöhen und wie du sie noch vermeidest.',
     body: `
 Das ATO erhebt eine Failure-to-Lodge (FTL)-Strafe von einer Penalty Unit für jeden 28-Tagezeitraum, dass eine [Steuererklärung](/de/tax-return) überfällig ist - bis zu maximal fünf Penalty Units. Ab dem Steuerjahr 2025-26 beträgt eine Penalty Unit 330 $, was die maximale FTL-Strafe auf 1.650 $ bringt. Die Strafe gilt unabhängig davon, ob du Steuer schuldest: Ein Working Holiday Maker, dem eigentlich eine Rückzahlung zusteht, kann trotzdem eine Failure-to-Lodge-Strafe für verspätete Einreichung bekommen.
 
@@ -4046,7 +4046,7 @@ Eine verspätete Steuererklärung ist selten irreparabel. [Kontaktiere unser Tea
 
   'tools-equipment-under-300-instant-deduction-whv': {
     title: 'Sofortabschreibung für Werkzeuge und Ausrüstung unter 300 $ als Working Holiday Maker',
-    description: 'Werkzeuge unter 300 $ können vollständig im Kaufjahr abgesetzt werden. Hier ist, wie es funktioniert.',
+    description: 'Arbeitswerkzeuge unter 300 $ kannst du als Working Holiday Maker komplett im Kaufjahr absetzen. Was qualifiziert, wie du Belege aufbewahrst und Beispiele.',
     body: `
 Das ATO erlaubt eine sofortige Absetzung für einzelne Werkzeuge, Ausrüstung und Vermögensgegenstände, die 300 $ oder weniger kosten und genutzt werden, um Einkommen aus Anstellung zu erzielen. Die Absetzung wird im Steuerjahr des Kaufs in voller Höhe vorgenommen, statt über mehrere Jahre abgeschrieben zu werden. Für Working Holiday Maker deckt diese Regel eine breite Palette arbeitsbezogener Gegenstände ab: Messer für Küchenarbeit, Pflückausrüstung für Farmarbeit, Werkzeuge für Bauarbeit, Arbeitsstiefel, Warnwesten, Ausrüstungstaschen und viele andere Gegenstände.
 
@@ -4142,7 +4142,7 @@ Wenn wir eine [Steuererklärung](/de/tax-return) über unseren Service einreiche
   // ─── More Super posts ──────────────────────────────────────────────────────
   'tax-on-super-withdrawal-backpacker': {
     title: 'Welche Steuer wird abgezogen, wenn du deine Super als Backpacker auszahlst?',
-    description: 'DASP-Auszahlungen werden mit 65 % besteuert. Hier ist, wie das berechnet wird und was nach Steuern übrig bleibt.',
+    description: 'DASP-Auszahlungen werden mit 65 % besteuert. Hier erfährst du, wie das berechnet wird und was nach Steuern übrig bleibt.',
     body: `
 Die Steuer auf eine DASP-Superauszahlung für Working Holiday Maker beträgt 65 % der steuerpflichtigen Komponente. Dieser Satz gilt speziell für Inhaber von Working Holiday Visa (Subclass 417 und 462) und ist höher als der Satz, der für andere temporäre Visuminhaber gilt. Die Steuer wird vom Superfonds oder ATO einbehalten, bevor die Zahlung an dich geht - du bekommst also den Nettobetrag. Trotz des hohen Satzes lohnt es sich immer noch, deine Super zu beantragen, weil die Alternative ist, das gesamte Guthaben zurückzulassen.
 
@@ -4191,7 +4191,7 @@ Der praktische Schritt ist sicherzustellen, dass keine Super zurückbleibt. Auch
 
   'what-happens-to-unclaimed-super': {
     title: 'Was passiert mit deiner Super, wenn du sie nie beantragst?',
-    description: 'Nicht beantragte Super wird nach 6 Monaten ans ATO übertragen. Hier ist, wie du sie immer noch zurückbekommen kannst.',
+    description: 'Nicht beantragte Super wird nach 6 Monaten ans ATO übertragen. Hier erfährst du, wie du sie immer noch zurückbekommen kannst.',
     body: `
 Nicht beantragte Super verschwindet nicht. Nach einer Phase der Inaktivität überweist der Superfonds das Guthaben ans ATO, wo es gegen deine Tax File Number als nicht beantragtes Geld gehalten wird. Du kannst es immer noch über den Standard-DASP-Prozess (Departing Australia Superannuation Payment) beantragen - auch nachdem es übertragen wurde. Die 65 %-DASP-Quellensteuer gilt weiterhin. Unser Team kümmert sich um Anträge sowohl für Super bei Fonds als auch beim ATO.
 
@@ -4246,7 +4246,7 @@ Beantrag deine Super. Es ist dein Geld, das zusätzlich zu deinem Lohn als Teil 
 
   'can-you-withdraw-super-in-australia': {
     title: 'Kannst du deine Super zurückziehen, während du noch in Australien bist?',
-    description: 'Generell nein - DASP gilt nur, wenn du Australien verlassen hast. Hier sind die seltenen Ausnahmen.',
+    description: 'Im Normalfall nein - DASP kannst du erst beantragen, nachdem du Australien verlassen hast. Welche seltenen Ausnahmen es gibt und wann sie für WHM gelten.',
     body: `
 Nein, du kannst deine Super nicht abheben, während du noch in Australien auf einem gültigen Working Holiday Visum bist. Der Departing Australia Superannuation Payment (DASP)-Prozess ist speziell für Leute gemacht, die Australien permanent verlassen haben und deren Visum abgelaufen oder gekündigt ist. Du musst zuerst abreisen, dann von außerhalb Australiens beantragen. Unser Team kümmert sich um DASP-Anträge remote, damit du aus deinem Heimatland beantragen kannst.
 
@@ -4312,7 +4312,7 @@ Siehe unseren detaillierten Artikel zu [wie du DASP beantragst](/de/blog/how-to-
 
   'how-to-find-lost-superannuation': {
     title: 'Wie du verlorene oder nicht beantragte Super in Australien findest',
-    description: 'Hast du Super von einem alten Job vergessen? Hier ist, wie du sie findest und beantragst.',
+    description: 'Vergessene Super von einem alten Job? Über myGov und das ATO-Superregister findest du jeden Cent. So holst du dir verlorene Beiträge zurück.',
     body: `
 Um verlorene oder nicht beantragte Super in Australien zu finden, arbeite mit unserem Team. Als registrierte Steueragenten können wir über alle großen Superfonds und ATO-Aufzeichnungen mit deiner Tax File Number suchen, um jedes Konto zu identifizieren, das deine Super hält. Working Holiday Maker sammeln oft Super über mehrere Fonds an, ohne es zu wissen - und jedes Konto vor dem DASP-Antrag aufzuspüren, stellt sicher, dass kein Geld zurückbleibt.
 
@@ -4378,7 +4378,7 @@ Wenn du nicht alles hast, ist das okay. Wir können die meisten Konten allein mi
 
   'how-to-choose-super-fund': {
     title: 'Was ist ein Superfonds und wie wählst du einen?',
-    description: 'Wenn du in Australien anfängst zu arbeiten, kannst du deinen Superfonds wählen. Hier ist, worauf du achten solltest.',
+    description: 'Wenn du in Australien anfängst zu arbeiten, kannst du deinen Superfonds wählen. Im Folgenden erfährst du, worauf du achten solltest.',
     body: `
 Für Working Holiday Maker ist die Wahl des Superfonds weniger wichtig als für einen australischen Residenten, der Altersvorsorge aufbaut. Du wirst deine Super über den DASP-Prozess zurückbekommen, wenn du Australien verlässt - die Prioritäten sind also Einfachheit und Zugänglichkeit, nicht langfristige Anlagerendite. Der einfachste Ansatz: nenne einen Fonds bei deinem ersten Job und bleib bei ihm für jede weitere Stelle. Unser Team kann helfen, deine Super-Einstellung zu wählen und zu verwalten, damit der eventuelle DASP-Antrag einfach wird.
 
@@ -4430,7 +4430,7 @@ Wenn du bereits Super in mehreren Fonds angesammelt hast, können wir helfen, si
 
   'super-for-casual-and-part-time-workers': {
     title: 'Haben Casual- und Teilzeitarbeiter in Australien Anspruch auf Super?',
-    description: 'Ja - alle Arbeitnehmer haben Anspruch auf Super, unabhängig von der Arbeitsart. Hier sind die Details.',
+    description: 'Ja - alle Arbeitnehmer in Australien haben Anspruch auf Super, egal ob Casual, Teilzeit oder Vollzeit. Aktuelle Sätze, Grenzen und was du als WHM erwarten kannst.',
     body: `
 Ja, Casual- und Teilzeitarbeiter in Australien haben Anspruch auf Superbeiträge von ihrem Arbeitgeber. Die 450 $-Monatseinkommensschwelle wurde im Juli 2022 abgeschafft - also muss jetzt Super auf alle Löhne ab dem allerersten Dollar gezahlt werden. Das gilt für Working Holiday Maker genauso wie für australische Arbeiter. Der aktuelle Supersatz ist 12 % deiner Ordinary Time Earnings (ab 1. Juli 2025), zusätzlich zu deinem Lohn gezahlt.
 
@@ -4501,7 +4501,7 @@ Wenn wir deine Super verwalten und deinen DASP-Antrag einreichen, machen vollst�
 
   'how-to-check-super-balance-working-holiday': {
     title: 'Wie du dein Superguthaben als Working Holiday Maker prüfst',
-    description: 'Du kannst dein Superguthaben online prüfen. Hier sind die einfachsten Wege.',
+    description: 'Super-Guthaben prüfen mit myGov, ATO-Online-Services oder direkt beim Fonds. So findest du heraus, wie viel dir Arbeitgeber wirklich eingezahlt haben.',
     body: `
 Um dein Superguthaben als Working Holiday Maker zu prüfen, logge dich im Online-Mitgliederportal deines Superfonds mit deiner Mitgliedsnummer und deinem Passwort ein. Dein Fonds schickt dir diese Daten, wenn dein Konto eröffnet wird. Super wird vierteljährlich von Arbeitgebern gezahlt, sodass Beiträge innerhalb weniger Tage nach den Quartalsfristen (28. Januar, 28. April, 28. Juli, 28. Oktober) in deinem Fonds erscheinen. Wenn du Super über mehrere Fonds hast oder deine Kontodaten nicht findest, kann unser Team jedes mit deiner TFN verbundene Konto finden.
 
@@ -4619,7 +4619,7 @@ Auch mit Teilinformationen können wir meistens jedes Konto über die mit deiner
 
   'dasp-documents-required': {
     title: 'Welche Dokumente brauchst du für einen DASP Superauszahlungsantrag?',
-    description: 'Für DASP brauchst du Reisepass, TFN, Visadaten und Superfondsinfos. Hier ist die komplette Liste.',
+    description: 'Für den DASP-Antrag brauchst du Reisepass, TFN, Visumdetails und Super-Fondsinfos. Komplette Dokumentenliste, die wir für Working Holiday Maker zusammenstellen.',
     body: `
 Ein Antrag für die Departing Australia Superannuation Payment (DASP) erfordert Identitätsnachweis, Nachweis, dass dein Working Holiday Visum abgelaufen oder gekündigt wurde, und Nachweis, dass du Australien verlassen hast. Die spezifischen Dokumente sind dein Reisepass, deine Visabewilligungs- oder Kündigungsmitteilung und deine Abreiseaufzeichnung vom Department of Home Affairs. Ohne alle drei wird der Superfonds deine Super nicht freigeben.
 
@@ -4691,7 +4691,7 @@ Der gesamte Prozess wird von Anfang bis Ende abgewickelt, sodass du nicht jeden 
   // ─── More Medicare & Other posts ───────────────────────────────────────────
   'what-is-an-income-statement': {
     title: 'Was ist ein Income Statement in Australien und wie greifst du auf deines zu?',
-    description: 'Ein Income Statement ersetzt das alte PAYG Payment Summary. Hier ist, was es ist und wie du darauf zugreifst.',
+    description: 'Das Income Statement ersetzt das alte PAYG Payment Summary und zeigt dein Jahreseinkommen plus einbehaltene Steuer. So greifst du als WHM darauf zu.',
     body: `
 Ein Income Statement ist die digitale Aufzeichnung, die das Gesamtgehalt zeigt, das dir ein Arbeitgeber gezahlt hat, und die gesamte einbehaltene Steuer für das Steuerjahr. Es hat das alte Papier-PAYG Payment Summary unter Single Touch Payroll (STP) ersetzt. Dein Arbeitgeber meldet die Daten direkt ans ATO über sein Lohn-System, und Income Statements werden zwischen 14. Juli und 31. Juli jedes Jahr abgeschlossen. Unser Team greift direkt über unser Steueragentenportal auf deine Income Statements zu, wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten.
 
@@ -4760,7 +4760,7 @@ Diese helfen uns, das Income Statement gegen das abzugleichen, was tatsächlich 
 
   'what-is-the-ato': {
     title: 'Was ist das ATO und was macht es?',
-    description: 'Die Australian Taxation Office (ATO) ist Australiens Finanzamt. Hier ist, was es macht und wann du Kontakt haben wirst.',
+    description: 'Die Australian Taxation Office (ATO) ist Australiens Finanzamt. Hier erfährst du, was es macht und wann du Kontakt haben wirst.',
     body: `
 Das Australian Taxation Office (ATO) ist die Bundesbehörde, die für die Verwaltung des australischen Steuersystems zuständig ist. Für Working Holiday Maker ist das ATO die Stelle, die deine TFN ausstellt, Lohn- und Supermeldungen von deinen Arbeitgebern empfängt, deine Steuererklärung bearbeitet und den DASP-Superauszahlungsprozess verwaltet. Die meisten Working Holiday Maker müssen nie direkt mit dem ATO zu tun haben. Unser Team kümmert sich um die gesamte ATO-Kommunikation für dich, auch aus dem Ausland.
 
@@ -4829,7 +4829,7 @@ Wenn deine Super vom ATO als nicht beantragte Super gehalten wurde, zahlt das AT
 
   'gross-pay-vs-net-pay-australia': {
     title: 'Was ist der Unterschied zwischen Brutto- und Nettolohn in Australien?',
-    description: 'Brutto ist das, was du verdienst; Netto ist das, was nach Steuer auf dein Konto kommt. Hier ist die Berechnung.',
+    description: 'Brutto ist dein Stundenlohn mal Stunden - Netto ist das, was nach Steuer und Super auf deinem Konto landet. Mit Beispielrechnung für Working Holiday Maker.',
     body: `
 Der Bruttolohn ist der Gesamtbetrag, den du vor Abzügen verdienst. Der Nettolohn ist das, was tatsächlich auf deinem Bankkonto ankommt, nachdem Abzüge gemacht wurden. Für Working Holiday Maker ist der Hauptabzug die PAYG-Steuereinbehaltung mit 15 % des Bruttolohns (mit hinterlegter TFN). Super ist kein Abzug - sie wird von deinem Arbeitgeber zusätzlich zu deinem Bruttolohn gezahlt, nicht von deinem Lohn. Steuererklärungen und Income Statements beziehen sich immer auf den Bruttolohn, nicht auf den Nettolohn.
 
@@ -4889,7 +4889,7 @@ Wenn die Zahlen nicht übereinstimmen, sprich es mit deinem Arbeitgeber an. Die 
 
   'tax-obligations-after-leaving-australia': {
     title: 'Was passiert mit deinen australischen Steuerpflichten, nachdem du das Land verlassen hast?',
-    description: 'Australien zu verlassen heißt nicht, dass deine Steuerpflichten enden. Hier ist, was du noch erledigen musst.',
+    description: 'Australien zu verlassen heißt nicht, dass deine Steuerpflichten enden. Steuererklärung, DASP, ABN-Kündigung - was Working Holiday Maker noch erledigen müssen.',
     body: `
 Australien zu verlassen beendet deine australischen Steuerpflichten nicht. Wenn du in einem australischen Steuerjahr Einkommen hattest, musst du für dieses Jahr eine Steuererklärung einreichen. Du musst außerdem deine Super über DASP beantragen, jede [ABN](/de/abn), die du registriert hast, kündigen und deine Kontaktdaten aktualisieren. Das alles kann aus dem Ausland über unseren Service gemacht werden. Wir helfen Working Holiday Makern, ihre australischen Steuerpflichten von überall auf der Welt abzuwickeln.
 
@@ -4964,7 +4964,7 @@ Die meisten Working Holiday Maker können ihr australisches Konto innerhalb von 
 
   'opening-bank-account-australia-working-holiday': {
     title: 'Wie du als Working Holiday Maker ein Bankkonto in Australien eröffnest',
-    description: 'Ein australisches Bankkonto ist essentiell für deinen Working Holiday. Hier sind die Banken und Schritte.',
+    description: 'Ein australisches Bankkonto ist Pflicht für Lohn und Super. Welche Banken Working Holiday Maker akzeptieren, was du brauchst und wie du es vor Ankunft öffnest.',
     body: `
 Ein australisches Bankkonto zu eröffnen ist eines der ersten Dinge, die du nach der Ankunft in Australien machen solltest. Du brauchst es, um deinen Lohn, deine Superbeiträge und Steuerrückzahlungen vom ATO zu bekommen. Die großen Banken (Commonwealth Bank, Westpac, ANZ, NAB) bieten alle Konten, die für Working Holiday Maker geeignet sind. Du kannst typischerweise online vor der Ankunft vorab beantragen und die Identitätsprüfung in den ersten Tagen persönlich abschließen. Halte das Konto offen, bis deine Steuerrückzahlung und Superauszahlung eingegangen sind - meistens 3-4 Monate nach Abreise.
 
@@ -5055,7 +5055,7 @@ Jede Kommunikation, die dich auffordert, auf einen Link zu klicken und Bankdaten
 
   'german-european-health-insurance-australia-working-holiday': {
     title: 'Krankenversicherung für deutsche Working Holiday Maker in Australien: welche Deckung brauchst du?',
-    description: 'Da Deutschland kein RHCA mit Australien hat, brauchst du eine private Krankenversicherung. Hier sind die Optionen.',
+    description: 'Da Deutschland kein RHCA mit Australien hat, brauchst du eine private Krankenversicherung. Im Folgenden findest du die Optionen.',
     body: `
 Deutschland hat kein Sozialversicherungsabkommen (RHCA) mit Australien. Deutsche Working Holiday Maker sind daher nicht für [Medicare](/de/medicare) berechtigt und können sich nicht auf das australische öffentliche Gesundheitssystem für kostenlose oder vergünstigte Behandlung verlassen. Jede medizinische Behandlung in Australien muss durch eine private Krankenversicherung, Reiseversicherung oder aus eigener Tasche bezahlt werden. Das ist einer der bedeutendsten praktischen Unterschiede zwischen einer Reise nach Australien als deutscher Bürger und einer Reise als britischer oder irischer Bürger.
 
@@ -5193,7 +5193,7 @@ Wenn du deine [Steuererklärung](/de/tax-return) über unseren Service einreichs
   // ─── More Work Rights posts ────────────────────────────────────────────────
   'employer-not-paying-correctly': {
     title: 'Was tun, wenn dein Arbeitgeber dich in Australien nicht korrekt bezahlt',
-    description: 'Wenn du unterbezahlt wirst oder dein Lohn nicht ankommt, gibt es klare Schritte, die du unternehmen kannst.',
+    description: 'Unterbezahlung, fehlender Lohn oder fehlende Super? Du hast klare Rechte. So gehst du Schritt für Schritt vor, von Fair Work bis zur ATO-Meldung.',
     body: `
 Wenn dein Arbeitgeber dich in Australien nicht korrekt bezahlt, hast du klare Rechte und Optionen, das zurückzuholen, was dir zusteht. Unterbezahlung ist leider üblich, besonders in Gastronomie-, Landwirtschafts- und Reinigungsbranchen, die viele Working Holiday Maker beschäftigen. Der effektivste Ansatz: zuerst den korrekten Satz identifizieren, die Unterbezahlung mit Belegen berechnen, mit dem Arbeitgeber ansprechen und bei ungeklärten Fällen über formale Kanäle eskalieren. Unser Team hilft Working Holiday Makern jede Woche, unterbezahlte Löhne zu identifizieren und zurückzuholen.
 
@@ -5259,7 +5259,7 @@ Wir haben Working Holiday Makern geholfen, Beschwerden ohne Visafolgen zu erhebe
 
   'leave-entitlements-working-holiday-visa': {
     title: 'Hast du als Working Holiday Visuminhaber Anspruch auf Urlaub und Krankenstand?',
-    description: 'Das hängt von deiner Anstellungsart ab. Hier sind die Regeln für Working Holiday Maker.',
+    description: 'Anspruch auf Urlaub, Krankenstand und Public Holidays hängt von deiner Anstellungsart ab. Vollzeit, Teilzeit oder Casual - was Working Holiday Maker bekommen.',
     body: `
 Working Holiday Maker in Australien haben unter den gleichen Regeln Anspruch auf Urlaub wie australische Arbeitnehmer - aber die Ansprüche hängen davon ab, ob du als Vollzeit, Teilzeit oder Casual angestellt bist. Vollzeit- und Teilzeitangestellte sammeln 4 Wochen Jahresurlaub und 10 Tage Persönlicher/Pflegeurlaub pro Jahr an. Casualangestellte bekommen keinen bezahlten Urlaub, aber einen 25 %-Casual Loading zusätzlich zu ihrem Stundenlohn als Ausgleich. Die meisten Working Holiday Maker in Casualrollen sammeln keine bedeutenden Urlaubsansprüche an, weil sie tendenziell oft die Jobs wechseln.
 
@@ -5320,7 +5320,7 @@ Long Service Leave (LSL)-Ansprüche erfordern typischerweise 7-10 Jahre bei eine
 
   'can-you-work-for-multiple-employers': {
     title: 'Kannst du in Australien für mehrere Arbeitgeber gleichzeitig arbeiten?',
-    description: 'Ja, das ist üblich für Working Holiday Maker. Hier ist, was du beim Steuerthema beachten musst.',
+    description: 'Ja - viele Working Holiday Maker arbeiten parallel für mehrere Arbeitgeber. Was du beim TFN, Steuersatz und der Steuererklärung beachten musst, im Überblick.',
     body: `
 Ja, Working Holiday Visuminhaber in Australien können für mehrere Arbeitgeber gleichzeitig arbeiten. Es gibt keine Visabeschränkung der Anzahl an Jobs, die du haben darfst. Jeder neue Arbeitgeber braucht deine [TFN](/de/tfn) und ein TFN Declaration-Formular, sonst muss er Steuer zu 45 % einbehalten. Der 15 %-Working-Holiday-Maker-Steuersatz gilt auf dein kombiniertes Einkommen bis 45.000 $ pro Steuerjahr. Alle Arbeitgeber müssen 12 % Super zusätzlich zu deinem Lohn zahlen, oft in verschiedene Superfonds.
 
@@ -5385,7 +5385,7 @@ Für Steuer- und Superzwecke sind mehrere Jobs völlig in Ordnung. Viele Working
 
   'full-time-part-time-casual-australia': {
     title: 'Was ist der Unterschied zwischen Vollzeit, Teilzeit und Casualarbeit in Australien?',
-    description: 'Die Anstellungsart bestimmt deinen Lohn, Urlaubsanspruch und mehr. Hier sind die Unterschiede.',
+    description: 'Vollzeit, Teilzeit, Casual - die Anstellungsart bestimmt Lohn, Urlaubsanspruch und Casual Loading. Alle Unterschiede für Working Holiday Maker erklärt.',
     body: `
 In Australien werden Angestellte als Vollzeit, Teilzeit oder Casual eingestuft. Jede Einstufung hat unterschiedliche Ansprüche: Vollzeit- und Teilzeitangestellte sammeln bezahlten Urlaub an (Jahresurlaub, Krankenurlaub) und bekommen einen Grundstundenlohn. Casualangestellte bekommen ein 25 %-Loading zusätzlich zum Grundsatz als Ausgleich für keinen bezahlten Urlaub. Der 15 %-Working-Holiday-Maker-Steuersatz gilt für alle drei Einstufungen. Die Einstufung ist wichtig, weil sie deinen Wochenlohn, deine Jobsicherheit und deine Urlaubsansprüche beeinflusst.
 
@@ -5455,7 +5455,7 @@ Alles Einkommen, unabhängig von der Einstufung, muss in deiner [Steuererklärun
 
   'white-card-australia-working-holiday': {
     title: 'Was ist ein White Card und brauchst du eines mit Working Holiday Visum?',
-    description: 'Ein White Card ist Pflicht für Bauarbeit in Australien. Hier ist, wie du es bekommst.',
+    description: 'Ein White Card ist Pflicht für jede Baustelle in Australien. Kosten, Online-Kurs, Anerkennung in allen Bundesstaaten - was Working Holiday Maker wissen müssen.',
     body: `
 Ein White Card (offiziell Construction-Induction-Trainings-Karte) ist Pflicht für jeden, der auf einer Baustelle in Australien arbeitet. Es beweist, dass du das Arbeitssicherheitstraining absolviert hast - eine gesetzliche Pflicht, nicht optional. Der Kurs dauert 4-8 Stunden, kostet etwa 100 $, und die Karte ist in den meisten Teilen Australiens lebenslang gültig. Kein seriöser Bauarbeitgeber lässt dich ohne anfangen.
 
@@ -5480,7 +5480,7 @@ Jeder, der Bauarbeit in Australien macht:
 - Handwerkshelfer und Auszubildende
 - Jeder, der regelmäßig Baustellen für die Arbeit besucht
 
-Wenn du Obst pflückst, in der Gastronomie oder im Büro arbeitest, brauchst du keines. Aber sobald jemand dir Bauarbeit anbietet, auch kurzfristige Casual-Arbeit, brauchst du ein White Card vor deiner ersten Schicht.
+Wenn du Obst pflückst, in der Gastronomie oder im Büro arbeitest, brauchst du keines. Doch sobald jemand dir Bauarbeit anbietet, auch kurzfristige Casual-Arbeit, brauchst du ein White Card vor deiner ersten Schicht.
 
 ## Wie bekommst du ein White Card?
 
@@ -5536,7 +5536,7 @@ Unser Team nimmt diese Schulungskosten auf, wenn wir deine Steuererklärung vorb
 
   'rsa-certificate-australia-working-holiday': {
     title: 'Was ist ein RSA-Zertifikat und brauchst du eines, um in der Gastronomie in Australien zu arbeiten?',
-    description: 'Ein RSA ist Pflicht für jeden, der Alkohol in Australien serviert. Hier ist, wie du es bekommst.',
+    description: 'RSA (Responsible Service of Alcohol) ist Pflicht für Bar-, Restaurant- und Hospitality-Jobs. Online-Kurs ab 35 $, in welchen Staaten gültig - alle Details.',
     body: `
 Ein Responsible Service of Alcohol (RSA)-Zertifikat ist gesetzlich erforderlich, um Alkohol in jeder lizenzierten Einrichtung in Australien zu servieren, verkaufen oder anbieten. Gastronomie ist eine der beliebtesten Branchen für Working Holiday Maker, und die meisten Gastronomierollen in Pubs, Bars, Restaurants und Liquor Shops verlangen ein RSA, bevor du anfangen kannst. Der Kurs dauert typischerweise 3-5 Stunden, kostet etwa 90 $ und kann online gemacht werden. Die Kurskosten sind als arbeitsbezogene Ausgaben steuerlich absetzbar.
 
@@ -5619,7 +5619,7 @@ Wenn wir deine Steuererklärung vorbereiten, nehmen wir Schulungszertifikate unt
 
   'wwcc-working-with-children-check-australia': {
     title: 'Was ist ein Working With Children Check und brauchst du einen mit Working Holiday Visum?',
-    description: 'Ein WWCC ist Pflicht für Arbeit mit Kindern in Australien. Hier sind die Details.',
+    description: 'Ein WWCC ist Pflicht für Arbeit mit Kindern - Au-pair, Camp-Counselor, Sportlehrer. Antrag, Kosten und Gültigkeit für Working Holiday Maker erklärt.',
     body: `
 Ein Working With Children Check (WWCC) ist eine Hintergrundüberprüfung, die für jeden erforderlich ist, der in Australien mit Kindern arbeitet. Wenn du planst, in Kinderbetreuung, Bildung, Nachhilfe, Sportcoaching, Jugendprogrammen oder als Au-pair zu arbeiten, brauchst du vor Beginn einen WWCC. Die Prüfung wird auf Bundesstaatsebene verwaltet, kostet etwa 80 $ (kostenlos für Freiwillige), und die Bearbeitung dauert ein paar Wochen. Starte den Antrag so früh wie möglich, um Verzögerungen vor deinem ersten Tag zu vermeiden.
 
@@ -5703,7 +5703,7 @@ Wenn du Hilfe brauchst zu verstehen, was für deine spezifische Situation nötig
   // ─── More Work Rights ─────────────────────────────────────────────────────
   'what-is-a-tax-invoice': {
     title: 'Was ist eine Tax Invoice und wann musst du eine ausstellen?',
-    description: 'Wenn du als Contractor mit ABN arbeitest, musst du Tax Invoices ausstellen, um bezahlt zu werden. Hier ist, was eine Tax Invoice enthält.',
+    description: 'Wenn du als Contractor mit ABN arbeitest, musst du Tax Invoices ausstellen, um bezahlt zu werden. Hier erfährst du, was eine Tax Invoice enthält.',
     body: `
 Eine Tax Invoice ist ein Dokument, das ein Lieferant einem Käufer ausstellt, um Zahlung für Waren oder Dienstleistungen anzufordern. Als Working Holiday Maker mit einer [ABN](/de/abn), die als Contractor arbeitet, musst du Tax Invoices an die Unternehmen ausstellen, die dich bezahlen. Eine gültige Tax Invoice muss enthalten: deinen Namen (oder Geschäftsnamen), deine ABN, das Datum, eine Beschreibung der Dienstleistungen und den Gesamtbetrag. Rechnungen ohne ABN auszustellen erlaubt dem Unternehmen, 47 % der Zahlung legal einzubehalten.
 
@@ -5771,7 +5771,7 @@ Wenn du angestelltenähnliche Arbeit machst, aber als Contractor in Rechnung ste
 
   'do-working-holiday-makers-pay-tax-on-tips': {
     title: 'Müssen Working Holiday Maker in Australien Steuer auf Trinkgeld zahlen?',
-    description: 'Ja, Trinkgeld, das du im Rahmen deiner Arbeit in Australien bekommst, ist steuerpflichtiges Einkommen. Hier ist, wie es behandelt wird.',
+    description: 'Ja, Trinkgeld, das du im Rahmen deiner Arbeit in Australien bekommst, ist steuerpflichtiges Einkommen. Hier erfährst du, wie es behandelt wird.',
     body: `
 Ja, Trinkgeld, das in Australien bekommen wird, ist für Working Holiday Maker steuerpflichtiges Einkommen. Das gilt, egal ob das Trinkgeld bar direkt vom Kunden gezahlt wird, über ein vom Arbeitgeber verwaltetes Tronc-System verteilt wird oder auf die Rechnung aufgeschlagen und über deinen Lohnzettel ausgezahlt wird. Trinkgeld muss in deiner [Steuererklärung](/de/tax-return) zum 15 %-Working-Holiday-Maker-Satz angegeben werden. Wenn Trinkgeld über die Lohnabrechnung deines Arbeitgebers gezahlt wird, ist es meistens schon in deinem Income Statement enthalten. Bargeldtrinkgeld, das direkt gezahlt wird, musst du selbst verfolgen und angeben.
 
@@ -5830,7 +5830,7 @@ Die Details hängen von deinem Award ab und wie der Arbeitgeber das Trinkgeld kl
 
   'employer-asking-you-to-work-more-than-visa-allows': {
     title: 'Was tun, wenn dein Arbeitgeber dich mehr arbeiten lässt, als dein Visum erlaubt',
-    description: 'Mehr zu arbeiten als dein Visum erlaubt, kann dein Visum gefährden. Hier ist, was die Regeln sagen und was du tun kannst.',
+    description: 'Mehr zu arbeiten als dein Visum erlaubt, kann dein Visum gefährden. Hier erfährst du, was die Regeln sagen und was du tun kannst.',
     body: `
 Working Holiday Visa kommen mit spezifischen Bedingungen, die begrenzen, wie lange du für denselben Arbeitgeber arbeiten kannst (Visumsbedingung 8547, die 6-Monatsgrenze) und verlangen, dass dein primärer Zweck in Australien ein Urlaub bleibt. Verstöße gegen diese Bedingungen können zur Visumsaufhebung führen. Wenn ein Arbeitgeber dich zu Vereinbarungen drängt, die deine Visumsbedingungen verletzen, hast du das Recht abzulehnen. Unser Team hilft Working Holiday Makern, ihre Visa-Arbeitsgrenzen zu verstehen und Situationen zu navigieren, in denen Arbeitgeber sie länger behalten wollen.
 
@@ -5944,7 +5944,7 @@ Unser Team kümmert sich um Steuererklärungen für Working Holiday Maker in all
 
   'farm-work-rights-working-holiday-australia': {
     title: 'Deine Arbeitsrechte bei Farmarbeit in Australien mit Working Holiday Visum',
-    description: 'Farmarbeit ist einer der häufigsten Jobs für Working Holiday Maker. Hier sind deine gesetzlichen Rechte.',
+    description: 'Farmarbeit ist einer der häufigsten WHV-Jobs. Mindestlohn, Pausen, Unterkunft und Super - deine vollen gesetzlichen Rechte unter dem Horticulture Award.',
     body: `
 Working Holiday Maker, die Farmarbeit in Australien machen, haben Anspruch auf dieselben Arbeitsplatzschutzmaßnahmen wie australische Arbeitnehmer. Dazu gehören Mindestlohn (oder höher unter dem Horticulture Award), sichere Arbeitsbedingungen, korrekte Lohnzettel und Super zu 12 % zusätzlich zum Lohn. Farmarbeit hat eine Geschichte von Lohndiebstahl und Ausbeutung, daher ist es wesentlich, deine Rechte zu kennen, bevor du anfängst. Unser Team hilft Working Holiday Makern in Farmarbeit, ihre Lohnsätze zu prüfen und unbezahlte Löhne oder Super zurückzuholen.
 
@@ -6101,7 +6101,7 @@ Wenn du nicht all das hast, arbeiten wir mit dem, was du hast. Auch teilweise Un
 
   'public-holidays-australia-working-holiday': {
     title: 'Gesetzliche Feiertage in Australien: was Working Holiday Maker wissen müssen',
-    description: 'Feiertage in Australien kommen mit höheren Lohnsätzen und unterschiedlichen Regeln je nach Anstellungsart. Hier ist alles.',
+    description: 'Feiertage in Australien kommen mit höheren Lohnsätzen und unterschiedlichen Regeln je nach Anstellungsart. Im Folgenden alles im Überblick.',
     body: `
 Gesetzliche Feiertage in Australien ziehen höhere Lohnsätze für Arbeitnehmer an - typischerweise 225-250 % deines normalen Satzes (zweieinhalbfacher Lohn). Working Holiday Maker haben Anspruch auf dieselben Feiertags-Penalty-Rates wie australische Arbeitnehmer. Es gibt nationale Feiertage, die im ganzen Land beobachtet werden (Neujahr, Australia Day, ANZAC Day, Weihnachten usw.), und zusätzliche bundesstaats-spezifische Feiertage. Wenn dein Lohnzettel den höheren Satz für Feiertagsarbeit nicht zeigt, kann unser Team helfen, das zurückzuholen, was dir geschuldet wird.
 
@@ -6279,7 +6279,7 @@ Je vollständiger die Aufzeichnungen, desto einfacher die Rückforderung.
 
   'six-month-employer-rule-working-holiday-visa': {
     title: 'Die 6-Monats-Regel: wie lange darfst du für denselben Arbeitgeber mit Working Holiday Visum arbeiten?',
-    description: 'Working Holiday Visuminhaber sind auf sechs Monate beim selben Arbeitgeber begrenzt. Hier ist, was die Regel bedeutet.',
+    description: 'Working Holiday Visuminhaber sind auf sechs Monate beim selben Arbeitgeber begrenzt. Hier erfährst du, was die Regel bedeutet.',
     body: `
 Die 6-Monats-Arbeitgeberregel (Visumsbedingung 8547) begrenzt Working Holiday Visuminhaber (Subclass 417 und 462) auf maximal 6 Kalendermonate Arbeit beim selben Arbeitgeber. Die Regel ist verpflichtend und bleibt 2026 in Kraft. Allerdings sind viele Sektoren von dieser Grenze ausgenommen, einschließlich Landwirtschaft, Tourismus/Gastronomie, Bauwesen, Bergbau, Altenpflege, Kinderbetreuung und Wiederaufbau nach Naturkatastrophen. Außerhalb dieser Ausnahmen musst du nach 6 Monaten den Arbeitgeber wechseln oder schriftliche Erlaubnis vom Department of Home Affairs anfragen. Unser Team hilft Working Holiday Makern zu verstehen, ob ihre Arbeit für eine Ausnahme qualifiziert.
 
@@ -6510,7 +6510,7 @@ Der TRS-Prozess selbst wird am Flughafen vor deinem Abflug gemacht, aber das Tim
 
   'vehicle-logbook-abn-working-holiday': {
     title: 'Fahrzeugkosten und Logbücher für Working Holiday Maker mit ABN',
-    description: 'Wenn du ein Auto für Arbeit unter deiner ABN nutzt, kannst du eventuell Fahrzeugkosten absetzen. Hier ist, wie es funktioniert.',
+    description: 'Wenn du ein Auto für Arbeit unter deiner ABN nutzt, kannst du eventuell Fahrzeugkosten absetzen. Hier erfährst du, wie es funktioniert.',
     body: `
 Wenn du unter einer ABN arbeitest und ein Fahrzeug für das Geschäft nutzt, kannst du Fahrzeugkosten als Steuerabzug geltend machen. Es gibt zwei Methoden: Cent pro Kilometer (88 Cent/km, bis zu 5.000 km/Jahr, kein Logbuch nötig) und die Logbuch-Methode (tatsächliche Kosten basierend auf dem geschäftlichen Nutzungsanteil absetzen). Fahrten von deiner Unterkunft zu einer Arbeitsstelle oder zwischen Jobstandorten zählen als Geschäftsreisen. Fahrten von zu Hause zu deinem regulären Arbeitsplatz zählen nicht. Unser Team wählt die Methode, die dir den größten legitimen Abzug bringt.
 
@@ -6620,7 +6620,7 @@ Der Sydney-zu-Cairnsroadtrip ist privat. Die Fahrt von deinem Hostel zu einer Fa
 
   'small-business-tax-offset-working-holiday-abn': {
     title: 'Was ist der Small Business Tax Offset und können Working Holiday Maker ihn beantragen?',
-    description: 'Wenn du Einkommen unter einer ABN als Sole Trader hast, hast du eventuell Anspruch auf den Small Business Tax Offset.',
+    description: 'Mit ABN-Einkommen als Sole Trader hast du eventuell Anspruch auf bis zu 1.000 $ Steuererleichterung durch den Small Business Tax Offset. Bedingungen erklärt.',
     body: `
 Der Small Business Tax Offset ist eine Steuervergünstigung für Sole Trader und Partnerschaften, die die Steuer auf dein Geschäftseinkommen um bis zu 1.000 $ pro Jahr reduzieren kann. Wenn du in Australien Einkommen unter einer ABN hattest, hast du eventuell Anspruch auf diesen Offset. Der aktuelle Satz beträgt 16 % Rabatt auf die auf Geschäftseinkommen zahlbare Steuer (gedeckelt bei 1.000 $). Der Offset ist nicht erstattungsfähig - er kann deine Steuer auf null reduzieren, aber von sich aus keine Rückzahlung erzeugen. Unser Team wendet alle berechtigten Offsets an, wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten.
 
@@ -6697,7 +6697,7 @@ Wenn du schon eine Steuererklärung ohne den Offset eingereicht hast, können wi
 
   'profit-loss-vs-personal-services-income-australia': {
     title: 'Was ist der Unterschied zwischen einem Profit-and-Loss-Business und Personal Services Income in Australien?',
-    description: 'Das ATO unterscheidet zwischen Personal Services Income und echtem Businesseinkommen. Hier sind die Auswirkungen.',
+    description: 'Das ATO unterscheidet zwischen Personal Services Income und echtem Businesseinkommen. Im Folgenden findest du die Auswirkungen.',
     body: `
 Das ATO unterscheidet zwischen zwei Arten von Geschäftseinkommen unter einer ABN: Personal Services Income (PSI) und echtem Profit-and-Loss-Geschäftseinkommen. Der Unterschied ist wichtig, weil PSI-Regeln bestimmte Absetzungen einschränken, die sonst für Unternehmen verfügbar wären. Für Working Holiday Maker ist fast alles ABN-Einkommen PSI - weil du für deine persönlichen Fähigkeiten und Arbeit bezahlt wirst. Das ist kein Problem - die normalen arbeitsbezogenen Absetzungen gelten weiterhin. Unser Team identifiziert, welche Regeln gelten, wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten.
 
@@ -6790,7 +6790,7 @@ Hilfreich ist, deine Arbeit genau zu beschreiben:
 
   'appealing-ato-decision-australia': {
     title: 'Kannst du eine ATO-Entscheidung in Australien anfechten?',
-    description: 'Wenn du mit einem ATO-Steuerbescheid oder einer Entscheidung nicht einverstanden bist, hast du das Recht, sie anzufechten. Hier ist der Prozess.',
+    description: 'Wenn du mit einem ATO-Steuerbescheid oder einer Entscheidung nicht einverstanden bist, hast du das Recht, sie anzufechten. Im Folgenden erklären wir den Prozess.',
     body: `
 Ja, du kannst eine ATO-Entscheidung in Australien anfechten. Wenn du eine Steuerbescheid oder Entscheidung erhältst, mit der du nicht einverstanden bist, lässt dich der formale Einspruchsprozess sie anfechten. Du musst einen schriftlichen Einspruch innerhalb von 60 Tagen nach dem Steuerbescheid einreichen (Verlängerungen sind möglich, aber schwerer). Working Holiday Maker haben dieselben Einspruchsrechte wie australische Steuerzahler. Unser Team kümmert sich um ATO-Einsprüche für Working Holiday Maker, einschließlich aus dem Ausland nach Abreise.
 
@@ -6877,7 +6877,7 @@ Wenn du unsicher bist, ob das ATO recht hat, schick uns die Korrespondenz, bevor
 
   'piece-rates-farm-work-working-holiday': {
     title: 'Akkordlohn bei Farmarbeit: wie Working Holiday Maker für Erntearbeit bezahlt werden',
-    description: 'Akkordlohn ist üblich beim Obstpflücken und bei der Erntearbeit in Australien. Hier ist, wie es funktioniert und was die Mindestlohnregeln sind.',
+    description: 'Akkordlohn ist üblich beim Obstpflücken und bei der Erntearbeit in Australien. Hier erfährst du, wie es funktioniert und was die Mindestlohnregeln sind.',
     body: `
 Akkordlohn (Piece Rates) ist ein Bezahlungssystem, das in der australischen Farmarbeit üblich ist - du wirst pro geernteter Einheit bezahlt (pro Kilogramm, pro Bin, pro Tray) statt pro Stunde. Akkordlohn ist unter dem Horticulture Award legal, aber das australische Recht verlangt, dass der resultierende Stundenlohn mindestens dem Casual-Mindestlohn entspricht (31,19 $/Stunde ab 1. Juli 2025). Wenn dein Akkordlohn-Einkommen für eine Stunde darunter fällt, muss dein Arbeitgeber deinen Lohn auf das Minimum aufstocken. Viele Working Holiday Maker in Farmarbeit sind unterbezahlt, weil Arbeitgeber die Top-up-Regel nicht anwenden. Unser Team kann deine Aufzeichnungen prüfen und das zurückholen, was dir geschuldet wird.
 
@@ -6961,7 +6961,7 @@ Wenn du als Angestellter (nicht unter einer [ABN](/de/abn)) arbeitest, sollte al
 
   'labour-hire-agencies-working-holiday-australia': {
     title: 'Personalvermittler in Australien: was Working Holiday Maker wissen müssen',
-    description: 'Personalvermittler sind ein beliebter Weg, schnell Arbeit in Australien zu finden. Hier ist, wie sie funktionieren und was deine Rechte sind.',
+    description: 'Personalvermittler sind ein beliebter Weg, schnell Arbeit in Australien zu finden. Hier erfährst du, wie sie funktionieren und was deine Rechte sind.',
     body: `
 Personalvermittler (Labour-Hire-Agenturen) sind Unternehmen, die Arbeitnehmer rekrutieren und sie gegen eine Gebühr bei Kundenunternehmen einsetzen. Für Working Holiday Maker bieten sie schnellen Zugang zu Casualarbeit in Landwirtschaft, Gastronomie, Lager, Bauwesen und Produktion. Wenn du dich bei einer Agentur registrierst, wirst du Angestellter der Agentur (nicht des Unternehmens, für das du arbeitest). Seriöse Agenturen kümmern sich korrekt um deine Steuer und Super; weniger seriöse können unterbezahlen oder übermäßige Abzüge anwenden. Unser Team kann deine Lohnzettel von jeder Agentur prüfen, um sicherzustellen, dass Steuer und Super korrekt gezahlt werden.
 
@@ -7065,7 +7065,7 @@ Wenn eine Agentur ausweichend zu Grunddaten ist, ist das ein Warnsignal.
 
   'how-to-read-a-payslip-australia-working-holiday': {
     title: 'Wie du als Working Holiday Maker einen Lohnzettel in Australien liest',
-    description: 'Dein Lohnzettel enthält alles, was du wissen musst, um zu prüfen, ob du korrekt bezahlt wirst. Hier ist, was jeder Abschnitt bedeutet.',
+    description: 'Dein Lohnzettel enthält alles, was du wissen musst, um zu prüfen, ob du korrekt bezahlt wirst. Hier erfährst du, was jeder Abschnitt bedeutet.',
     body: `
 Jeder australische Lohnzettel sollte zeigen: Bruttolohn, einbehaltene Steuer (15 % für Working Holiday Maker mit hinterlegter TFN), Superbeitrag (12 % zusätzlich zum Brutto ab 1. Juli 2025) und Nettolohn (was auf deiner Bank landet). Australische Arbeitgeber sind gesetzlich verpflichtet, einen Lohnzettel innerhalb von 24 Stunden nach Zahlung deines Lohns auszustellen. Zu wissen, wie du einen Lohnzettel liest, bedeutet, dass du Fehler früh erkennen kannst. Bewahre jeden Lohnzettel auf, falls du sie für deine Steuererklärung oder deinen Superantrag brauchst. Unser Team kann deine Lohnzettel prüfen, wenn etwas falsch aussieht.
 
@@ -7187,7 +7187,7 @@ Das ist eines der stärksten Anzeichen eines unzuverlässigen Arbeitgebers. Nimm
 
   'wage-theft-working-holiday-australia': {
     title: 'Lohnraub in Australien: was Working Holiday Maker tun können, wenn sie unterbezahlt werden',
-    description: 'Lohnraub ist leider üblich in Branchen, die bei Backpackern beliebt sind. Hier ist, wie du ihn erkennst und deine Optionen.',
+    description: 'Lohnraub ist leider üblich in Branchen, die bei Backpackern beliebt sind. Hier erfährst du, wie du ihn erkennst und deine Optionen.',
     body: `
 Lohnraub (weniger bezahlt zu werden, als dir gesetzlich zusteht) ist leider üblich in Branchen, die bei Working Holiday Makern beliebt sind: Gastronomie, Landwirtschaft, Reinigung, Einzelhandel. Häufige Formen sind Unterbezahlung des Mindestlohns, fehlende Penalty Rates, unbezahlte Super, übermäßige Abzüge und unbezahlte Probeschichten. Die Lösung: gute Aufzeichnungen führen, das Thema mit deinem Arbeitgeber ansprechen und bei ungeklärten Fällen über formale Kanäle eskalieren. Unser Team hilft Working Holiday Makern jede Woche, unbezahlte Löhne und Super zurückzuholen. Dein Visum ist geschützt, wenn du legitime Arbeitsplatzbeschwerden erhebst.
 
@@ -7289,7 +7289,7 @@ Wenn du Bedenken zu Unterbezahlung hast, [kontaktiere uns](/de/contact). Auch we
 
   'backpacker-tax-history-australia': {
     title: 'Die Backpackersteuer in Australien: was sie ist und wie sie sich verändert hat',
-    description: 'Die Backpackersteuer ist eine der meistdebattierten Steuerpolitiken in Australien. Hier ist die Geschichte und der aktuelle Satz.',
+    description: 'Die Backpackersteuer ist eine der meistdebattierten Steuerpolitiken in Australien. Im Folgenden die Geschichte und der aktuelle Satz.',
     body: `
 Die "Backpackersteuer" ist der inoffizielle Name für das Steuerregime, das auf Working Holiday Visuminhaber (Subclass 417 und 462) angewendet wird. Aktuell zahlen Working Holiday Maker pauschale 15 % auf die ersten 45.000 $ Einkommen, das in jedem Steuerjahr verdient wird. Der Satz wurde 2017 nach erheblicher Kontroverse und einer großen rechtlichen Anfechtung durch das Vereinigte Königreich 2019 eingeführt. Unser Team kümmert sich um Steuererklärungen für Working Holiday Maker und wendet den korrekten Satz basierend auf deinen spezifischen Umständen an.
 
@@ -7630,7 +7630,7 @@ Die 65 %-Steuer ist unvermeidbar, aber der Rest des Prozesses kann schnell und s
 
   'super-multiple-funds-consolidation': {
     title: 'Was tun, wenn du als Working Holiday Maker Super in mehreren Fonds hast',
-    description: 'Working Holiday Maker landen oft mit Super in drei oder vier verschiedenen Fonds. Hier ist, wie du sie zusammenführst.',
+    description: 'Working Holiday Maker landen oft mit Super in drei oder vier verschiedenen Fonds. Hier erfährst du, wie du sie zusammenführst.',
     body: `
 Ein Working Holiday Maker, der in Australien mehrere Arbeitgeber hatte, landet typischerweise mit [Super](/de/superannuation) in mehreren Fonds, weil jeder Arbeitgeber seinen eigenen Standardfonds nennt. Ohne aktive Zusammenführung kann ein Arbeiter mit vier Arbeitgebern mit vier separaten Superkonten enden - jedes belastet monatliche Gebühren und jedes erfordert einen separaten DASP-Antrag beim Verlassen des Landes. Die Gebühren allein können Hunderte Dollar aus einem Guthaben über ein einzelnes Jahr abziehen.
 
@@ -7696,7 +7696,7 @@ Betrüger zielen regelmäßig auf Working Holiday Maker mit Angeboten, "deine Su
 
   'dasp-rejected-what-to-do': {
     title: 'Was tun, wenn dein DASP Superauszahlungsantrag abgelehnt wird',
-    description: 'DASP-Anträge werden abgelehnt wegen Visastatusdiskrepanzen, Identitätsproblemen oder fehlenden Abreisedaten.',
+    description: 'DASP-Antrag abgelehnt? Häufigste Gründe: Visumstatus, Identitätsprobleme, fehlende Abreisedaten. So behebst du die Probleme und reichst erfolgreich neu ein.',
     body: `
 Ein Departing Australia Superannuation Payment (DASP)-Antrag kann vom Superfonds oder vom ATO aus mehreren Gründen abgelehnt werden: der Visastatus zeigt sich noch nicht als abgelaufen oder gekündigt, die Abreiseaufzeichnung wurde noch nicht vom Department of Home Affairs registriert, die Identitätsdokumente stimmen nicht mit den Fondsaufzeichnungen überein, oder der Antrag wurde bei einem Fonds eingereicht, der keine deiner Beiträge hält. Jeder dieser Punkte hat einen spezifischen Lösungsweg, und die Lösung ist über einen Steueragenten-Kanal viel schneller als über den öffentlichen Antragsweg.
 
@@ -7762,7 +7762,7 @@ Für Working Holiday Maker, die Australien schon verlassen haben, ist es extrem 
 
   'super-employer-not-paying-what-to-do': {
     title: 'Was tun, wenn dein Arbeitgeber deine Super in Australien nicht gezahlt hat',
-    description: 'Arbeitgeber sind gesetzlich verpflichtet, Super zu 12 % deines Lohns zu zahlen. Hier ist, was zu tun ist, wenn sie das nicht tun.',
+    description: 'Arbeitgeber sind gesetzlich verpflichtet, Super zu 12 % deines Lohns zu zahlen. Hier erfährst du, was zu tun ist, wenn sie das nicht tun.',
     body: `
 Australische Arbeitgeber sind gesetzlich verpflichtet, [Super](/de/superannuation) in deinen genannten Superfonds zur aktuellen Superannuation-Guarantee-Rate von 12 % deines Bruttolohns einzuzahlen. Die Beiträge müssen mindestens alle drei Monate gezahlt werden. Wenn ein Arbeitgeber nicht zahlt, kann der Arbeiter den unbezahlten Betrag über das ATO unter dem Superannuation-Guarantee-Charge-Regime zurückholen - oder über Fair-Work-Klagen für verwandte Lohnverstöße. Unbezahlte Super ist einer der häufigsten Arbeitgeberverstöße in Australien, besonders in Gastronomie, Farmarbeit und Bauwesen.
 
@@ -7836,7 +7836,7 @@ Sei vorsichtig bei jedem außerhalb eines registrierten Steueragenten, der anbie
 
   'super-stapling-rule-australia': {
     title: 'Was ist Super Stapling und wie beeinflusst es Working Holiday Maker in Australien?',
-    description: 'Super Stapling verbindet deine Super mit einem einzelnen Fonds, der dir zwischen Arbeitgebern folgt.',
+    description: 'Super Stapling verbindet deine Super mit einem festen Fonds, der dir zwischen Arbeitgebern folgt. Was das für Working Holiday Maker bedeutet und wie du wechselst.',
     body: `
 Super Stapling ist eine australische Regel, die im November 2021 eingeführt wurde und die [Super](/de/superannuation) jedes Arbeitnehmers an einen einzigen "gehefteten" Fonds bindet. Wenn du einen neuen Job anfängst, ist der Arbeitgeber verpflichtet, beim ATO nach deinem gehefteten Fonds zu suchen und Beiträge dorthin zu zahlen - statt automatisch auf den eigenen Standardfonds zurückzugreifen. Die Regel wurde entworfen, um zu verhindern, dass Arbeitnehmer beim Jobwechsel mit mehreren kleinen Superkonten enden.
 
@@ -8155,7 +8155,7 @@ Für den Mobbing- oder Belästigungsanspruch selbst sind die Fair Work Commissio
 
   'unpaid-trial-shifts-australia-legal': {
     title: 'Sind unbezahlte Probeschichten in Australien für Working Holiday Maker legal?',
-    description: 'Unbezahlte Probeschichten sind in Australien meistens illegal. Hier sind deine Rechte.',
+    description: 'Unbezahlte Probeschichten sind in Australien meistens illegal. Wann sie erlaubt sind, wann nicht, und wie du als Working Holiday Maker deinen Lohn einforderst.',
     body: `
 Unbezahlte Probeschichten sind in Australien in den meisten Umständen illegal. Unter dem Fair Work Act muss ein Arbeiter, der produktive Arbeit erbringt, die dem Unternehmen zugutekommt, mindestens den Mindestlohn oder den relevanten Award-Satz erhalten, unabhängig davon, wie der Arbeitgeber es nennt. Eine kurze, beaufsichtigte Demonstration von Fähigkeiten (typischerweise unter einer Stunde) kann als echte Probe akzeptabel sein, aber alles längere oder alles, was echten Kundenservice, Essenszubereitung oder andere produktive Aktivität involviert, muss bezahlt werden.
 
@@ -8240,7 +8240,7 @@ Wenn du deine [Steuererklärung](/de/tax-return) über unseren Service einreichs
 
   'uniform-laundry-deductions-illegal-australia': {
     title: 'Sind Uniform- und Wäscheabzüge vom Lohn in Australien legal?',
-    description: 'Arbeitgeber in Australien dürfen nur in eng definierten gesetzlichen Fällen Geld vom Lohn abziehen.',
+    description: 'Arbeitgeber dürfen nur in eng definierten gesetzlichen Fällen Geld vom Lohn abziehen. Uniform-, Wäsche- und Trainingsabzüge sind oft illegal - so wehrst du dich.',
     body: `
 Unter dem Fair Work Act kann ein Arbeitgeber Geld vom Lohn eines Angestellten nur in sehr eng definierten Umständen abziehen: der Abzug muss vom Angestellten schriftlich autorisiert sein, muss hauptsächlich zum Vorteil des Angestellten sein oder muss gesetzlich erforderlich sein (wie PAYG-Steuer). Abzüge für Uniformkäufe, Wäschegebühren, Brüche, Kundenflucht ohne Bezahlung, Kassenfehlbeträge oder "Schulungsgebühren" sind fast immer illegal, unabhängig davon, was der Anstellungsvertrag sagt.
 
@@ -8642,7 +8642,7 @@ Ein medizinischer Notfall beeinflusst selten nur einen Teil deines Lebens. [Kont
 
   'travel-insurance-vs-health-insurance-working-holiday': {
     title: 'Reiseversicherung vs. private Krankenversicherung für Working Holiday Maker: was ist der Unterschied?',
-    description: 'Reiseversicherung und australische private Krankenversicherung decken unterschiedliche Dinge ab. Hier sind die Details.',
+    description: 'Reiseversicherung und australische private Krankenversicherung decken unterschiedliche Dinge ab. Im Folgenden findest du die Details.',
     body: `
 Reiseversicherung und australische private Krankenversicherung (speziell Overseas Visitors Health Cover, oder OVHC) decken unterschiedliche Dinge ab. Reiseversicherung ist eine breite Police, die bei einem Reiseversicherungsanbieter gekauft wird und medizinische Notfälle plus reisebezogene Risiken wie Stornierung, Gepäckverlust und Rücktransport abdeckt. OVHC ist ein australisches Krankenversicherungsprodukt, das medizinische und Krankenhausbehandlung innerhalb Australiens abdeckt - ähnlich wie [Medicare](/de/medicare), aber für Nichtresidenten. Working Holiday Maker brauchen oft beides, besonders wenn sie aus einem Land ohne Sozialversicherungsabkommen mit Australien kommen.
 
@@ -8858,7 +8858,7 @@ Der Hospitality Award ist einer der komplexesten modernen Awards in Australien u
 
   'horticulture-award-working-holiday-makers': {
     title: 'Was ist der Horticulture Award und wie gilt er für Farmarbeit mit Working Holiday Visum?',
-    description: 'Der Horticulture Award (MA000028) legt die Mindestlöhne und Bedingungen für Farmarbeit in Australien fest.',
+    description: 'Der Horticulture Award (MA000028) legt Mindestlöhne, Pausen und Bedingungen für Farmarbeit fest. Aktuelle Sätze 2025-26 und Rechte für Working Holiday Maker.',
     body: `
 Der Horticulture Award 2020, bekannt als MA000028, ist der moderne Award, der gesetzliche Mindestlohnsätze, Einstufungen, Penalty Rates und Bedingungen für Farmarbeit in Australien festlegt. Der Award gilt für Working Holiday Maker, die die 88 Tage regionale Farmarbeit absolvieren, die für ein Zweitjahresvisum erforderlich sind, sowie für jeden, der bei Obst- und Gemüsepflücken, Verpackung, Beschneiden, Pflanzen oder allgemeiner Farmarbeit arbeitet. Der Award legt einen Mindeststundenlohn fest, der auch dann gilt, wenn der Arbeiter auf Akkordbasis bezahlt wird.
 
@@ -8960,7 +8960,7 @@ Farmarbeit ist, wo die größten Lücken zwischen gemeldeten und korrekten Löhn
 
   'restaurant-industry-award-working-holiday': {
     title: 'Was ist der Restaurant Industry Award und wie gilt er für Working Holiday Maker?',
-    description: 'Der Restaurant Industry Award (MA000119) deckt eigenständige Restaurants, Cafés und ähnliche Lokale ab.',
+    description: 'Der Restaurant Industry Award (MA000119) deckt Restaurants, Cafés und Bars ab. Mindestlöhne, Penalty Rates und Casual Loading für Working Holiday Maker erklärt.',
     body: `
 Der Restaurant Industry Award 2020, bekannt als MA000119, ist der moderne Award, der Mindestlohnsätze, Einstufungen, Penalty Rates und Bedingungen für eigenständige Restaurants, Cafés und ähnliche Foodservice-Lokale in Australien festlegt. Der Award gilt für Working Holiday Maker, die als Kellner, Küchenhilfen, Baristas, Bartender, Vorgesetzte und Köche in Lokalen arbeiten, die nicht Teil eines Hotels oder einer Unterkunft sind. Die Lohnsätze und Penalty Rates unterscheiden sich vom [Hospitality Award](/de/blog/hospitality-award-working-holiday-makers), und der Unterschied zählt am Ende der Woche.
 
@@ -9371,7 +9371,7 @@ Für die meisten Working Holiday Maker in routinemäßigen Tätigkeiten ist die 
 
   'bicycle-motorcycle-vehicle-deductions-working-holiday': {
     title: 'Absetzungen für Fahrräder, Motorräder und andere Fahrzeuge für Working Holiday Maker',
-    description: 'Fahrzeugabsetzungen sind nicht auf Autos beschränkt. Hier ist, was du für andere Fahrzeuge absetzen kannst.',
+    description: 'Auch Fahrräder, Motorräder, Roller und Vans qualifizieren für Fahrzeugabsetzungen. Was du als Working Holiday Maker absetzen kannst und wie du es dokumentierst.',
     body: `
 Die ATO-Regeln für die Abzüge bei Fahrzeugausgaben gelten für eine breitere Palette von Fahrzeugen, als den meisten Working Holiday Makern bewusst ist. Fahrräder, die für Essenslieferung genutzt werden, Motorräder, die für Rideshare oder berufliche Fahrten genutzt werden, und andere Fahrzeuge können alle zu legitimen Absetzungen führen, wo das Fahrzeug genutzt wird, um Einkommen zu erzielen. Die Methoden zur Berechnung der Absetzung unterscheiden sich zwischen Autos (mit zwei spezifischen Methoden) und anderen Fahrzeugen (mit breiteren Regeln zu den tatsächlichen Kosten), aber das zugrundeliegende Prinzip ist dasselbe: Kosten, die mit der Einkommenserzielung zusammenhängen, sind gegen dieses Einkommen absetzbar.
 
@@ -9627,7 +9627,7 @@ Die Entscheidung, DASP zu beantragen oder zu warten, liegt bei dir - aber das fi
 
   'fruit-picking-jobs-working-holiday-australia': {
     title: 'Obstpflückerjobs in Australien: was du mit einem Working Holiday Visum erwarten kannst',
-    description: 'Obstpflücken ist der häufigste Weg zu den 88 Tagen Regionalarbeit für ein zweites Working Holiday Visum.',
+    description: 'Obstpflücken ist der häufigste Weg zu den 88 Tagen Regionalarbeit für ein zweites Visum. Wo finden, was verdienen und wie du dich vor Wage Theft schützt.',
     body: `
 Obstpflücken ist die häufigste Form von Regionalarbeit, die von Working Holiday Makern in Australien erbracht wird, und der Standardweg zu den 88 Tagen spezifizierter Arbeit, die für ein Zweitjahresvisum benötigt werden. Pflücker ernten saisonales Obst (Mangos, Bananen, Zitrusfrüchte, Steinobst, Beeren, Äpfel, Trauben) über das regionale Australien, oft arbeitend für Personalvermittlungsunternehmen oder direkt für Farmen. Die Arbeit wird vom [Horticulture Award](/de/blog/horticulture-award-working-holiday-makers) abgedeckt, der Mindeststundenlohnsätze und Schutzmaßnahmen festlegt, die auch dann gelten, wenn der Arbeiter auf Akkordbasis bezahlt wird.
 
@@ -9840,7 +9840,7 @@ Für Working Holiday Maker in Farm-Hand-Rollen macht unser Team:
 
   'bartender-jobs-working-holiday-australia': {
     title: 'Bartenderjobs in Australien mit Working Holiday Visum: RSA, Lohn und Trinkgeld',
-    description: 'Bartending ist eine der zugänglichsten Gastronomie-Rollen für Working Holiday Maker.',
+    description: 'Bartending ist eine der zugänglichsten Hospitality-Rollen für Working Holiday Maker. RSA-Pflicht, Lohnsätze, Trinkgeld-Regelung und Casual Loading erklärt.',
     body: `
 Bartending ist eine der beliebtesten Gastronomie-Rollen für Working Holiday Maker in Australien. Die Arbeit ist breit verfügbar in Städten, Regionalzentren und Touristenzielen, und sie zahlt typischerweise besser als Einstiegsküchen- oder Servicearbeit wegen der Penalty Rates, die auf Abend- und Wochenendschichten gelten. Ein Responsible Service of Alcohol (RSA)-Zertifikat ist erforderlich, bevor du Alkohol in Australien servieren kannst, und die Lohnsätze werden vom [Hospitality Award](/de/blog/hospitality-award-working-holiday-makers) für Bars in Hotels oder vom [Restaurant Industry Award](/de/blog/restaurant-industry-award-working-holiday) für Bars in eigenständigen Restaurants festgelegt.
 
@@ -9946,7 +9946,7 @@ Bartending bringt erhebliche Casual-Einkünfte, aber auch erhebliche Unterbezahl
 
   'barista-coffee-shop-working-holiday-australia': {
     title: 'Baristajobs in Australien mit Working Holiday Visum: Lohn, Training und Bedingungen',
-    description: 'Die australische Kaffeekultur sorgt für hohe Nachfrage nach erfahrenen Baristas.',
+    description: 'Die australische Kaffeekultur sorgt für hohe Nachfrage nach erfahrenen Baristas. Lohnsätze, Cafés in Melbourne und Sydney, und was Working Holiday Maker verdienen.',
     body: `
 Australien hat eine der entwickeltsten Kaffeekulturen der Welt, und qualifizierte Baristas sind durchgängig gefragt in Cafés, Restaurants und Specialty-Coffee-Lokalen. Working Holiday Maker mit vorheriger Barista-Erfahrung finden oft schnell Arbeit, besonders in Melbourne, Sydney und Brisbane. Die Arbeit wird vom [Restaurant Industry Award](/de/blog/restaurant-industry-award-working-holiday) für eigenständige Cafés oder vom [Hospitality Award](/de/blog/hospitality-award-working-holiday-makers) für hotelbasierte Cafés abgedeckt. Die Einstufungsstufe hängt von deiner Erfahrung und der Verantwortung der Rolle ab.
 
@@ -10049,7 +10049,7 @@ Barista-Arbeit in Australien erzeugt gute Casual-Einkünfte, wenn der Award korr
 
   'waiter-waitress-working-holiday-australia': {
     title: 'Kellnerjobs in Australien mit Working Holiday Visum',
-    description: 'Restaurant- und Café-Service ist eine der häufigsten Rollen für Working Holiday Maker.',
+    description: 'Restaurant- und Café-Service ist eine der häufigsten Rollen für Working Holiday Maker. Mindestlohn, Casual Loading, Penalty Rates und worauf du achten solltest.',
     body: `
 Kellner- und Kellnerinarbeit (manchmal Food-and-Beverage-Attendant-Arbeit genannt) ist eine der häufigsten Rollen für Working Holiday Maker in Australien. Die Arbeit ist breit verfügbar in Restaurants, Cafés, Hotels und Veranstaltungsorten, und sie erfordert typischerweise keine formellen Qualifikationen über eine RSA hinaus, falls Alkoholservice involviert ist. Die Lohnsätze werden vom [Restaurant Industry Award](/de/blog/restaurant-industry-award-working-holiday) für eigenständige Restaurants oder vom [Hospitality Award](/de/blog/hospitality-award-working-holiday-makers) für Hotelrestaurants und Veranstaltungsorte festgelegt.
 
@@ -10264,7 +10264,7 @@ Kitchen-Hand-Arbeit ist eine der am konsistentesten unterbezahlten Rollen in der
 
   'construction-laborer-working-holiday-australia': {
     title: 'Bauarbeiterjobs in Australien mit Working Holiday Visum: White Card und Lohn',
-    description: 'Bauarbeit ist eine der bestbezahlten Einstiegsrollen für Working Holiday Maker in Australien.',
+    description: 'Bauarbeit zählt zu den bestbezahlten Einstiegsrollen für Working Holiday Maker. White-Card-Pflicht, Stundensätze, Casual Loading und Sicherheitsausrüstung im Überblick.',
     body: `
 Bauarbeit ist eine der bestbezahlten Einstiegsrollen, die Working Holiday Makern in Australien verfügbar sind. Die Arbeit beinhaltet allgemeine Standortarbeit, Materialhandling, Abbruch, Baustellenreinigung und Unterstützung von Handwerkern auf Wohn- und Gewerbebaustandorten. Eine White Card (auch Construction Induction Card genannt) ist gesetzlich erforderlich, bevor du eine Baustelle in Australien betrittst. Die Lohnsätze werden vom Building and Construction General On-site Award (MA000020) festgelegt, mit Einstufungen und Zulagen, die die Gesamteinkünfte weit über den allgemeinen Mindestlohn bringen.
 
@@ -10388,7 +10388,7 @@ Bauarbeit bringt starke Einkünfte und hohe Abzugsmöglichkeiten. [Kontaktiere u
 
   'uber-eats-delivery-rider-working-holiday-australia': {
     title: 'Uber Eats und Lieferdienstjobs in Australien mit Working Holiday Visum',
-    description: 'Essenslieferung mit Fahrrad, E-Bike oder Scooter wird in Australien als Contracting behandelt.',
+    description: 'Essenslieferung mit Fahrrad, E-Bike oder Scooter wird als Contracting behandelt - du brauchst eine ABN. Verdienst, Steuern und Absetzungen für Working Holiday Maker.',
     body: `
 Essenslieferungarbeit für Uber Eats, DoorDash, Menulog und ähnliche Plattformen ist eine der flexibelsten Optionen, die Working Holiday Makern in Australien verfügbar sind. Die Arbeit wird auf einem Fahrrad, E-Bike, Motorrad, Scooter oder Auto erbracht, und die Plattform zahlt Einkünfte direkt auf das Bankkonto des Fahrers ein. Aus Steuersicht ist Essenslieferung als **unabhängiges Contracting** klassifiziert, was bedeutet, dass ein Working Holiday Maker, der für diese Plattformen liefert, eine [ABN](/de/abn) haben muss, für seine eigenen Steuerpflichten verantwortlich ist und keine Steuer automatisch einbehalten bekommt. Anders als Ridesharepassagiertransport erfordert Essenslieferung nur GST-Registrierung, wenn der Umsatz 75.000 $ pro Jahr überschreitet.
 
@@ -10604,7 +10604,7 @@ Rideshare ist die steuerintensivste Gig-Economy-Arbeit für Working Holiday Make
 
   'ski-resort-jobs-working-holiday-australia': {
     title: 'Ski-Resort-Jobs in Australien mit Working Holiday Visum',
-    description: 'Ski-Resort-Arbeit in Australien läuft von Juni bis September in Resorts in Victoria und NSW.',
+    description: 'Ski-Resort-Arbeit läuft von Juni bis September in Victoria und NSW. Was du verdienst, welche Rollen offen sind und wie du dich bewirbst, als Working Holiday Maker.',
     body: `
 Australiens Skisaison läuft von Juni bis September, mit großen Resorts in Victoria (Mount Hotham, Falls Creek, Mount Buller) und New South Wales (Thredbo, Perisher, Charlotte Pass), die jeden Winter große saisonale Arbeitskräfte einstellen. Working Holiday Maker füllen viele dieser Rollen, einschließlich Liftbetrieb, Skischulunterstützung, Gastronomie, Einzelhandel, Unterkunft, Schneemachen und Pistenpräparierung. Die meisten Ski-Resort-Jobs umfassen Bergunterkunft als Teil des Pakets, was die praktische Seite des Lebens auf dem Berg vereinfacht, aber Komplexität auf der Steuerseite hinzufügt.
 
@@ -10972,7 +10972,7 @@ Stationsarbeit hat einzigartige Steuerkomplikationen wegen der Abgelegenheit, de
 
   'super-rate-12-percent-2025-2026-increase': {
     title: 'Superannuationsatz auf 12 % ab 1. Juli 2025 erhöht: was es für Working Holiday Maker bedeutet',
-    description: 'Ab 1. Juli 2025 stieg die Superannuation Guarantee von 11,5 % auf 12 %. Hier sind die Auswirkungen für dich.',
+    description: 'Ab 1. Juli 2025 stieg die Superannuation Guarantee von 11,5 % auf 12 %. Im Folgenden findest du die Auswirkungen für dich.',
     body: `
 Ab 1. Juli 2025 stieg der Superannuation Guarantee (SG)-Satz, den australische Arbeitgeber in Arbeitnehmersuperfonds einzahlen müssen, von 11,5 % auf 12 % der Ordinary Time Earnings. Das ist der letzte Schritt einer geplanten Reihe von Erhöhungen, die 2014 begann und jetzt abgeschlossen ist: Der Satz bleibt ab 2025-26 bei 12 %. Für Working Holiday Maker bedeutet die Änderung etwas größere Superbeiträge auf jeden verdienten Dollar und eine entsprechend größere [DASP](/de/blog/what-is-dasp-super-withdrawal)-Zahlung bei Abreise aus Australien.
 

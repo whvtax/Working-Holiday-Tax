@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     languages: {
       'en-AU': '/tfn-form',
       'de': '/de/tfn-form',
+      'ja': '/ja/tfn-form',
       'x-default': '/tfn-form',
     },
   },

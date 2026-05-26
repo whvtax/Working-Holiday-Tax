@@ -41,9 +41,8 @@ export function Footer() {
           { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
         ],
         copyright: 'Working Holiday Tax. Alle Rechte vorbehalten.',
-        // Client Agreement & Privacy stay in English (legal docs)
-        clientAgreement: 'Client Agreement',
-        privacyPolicy: 'Privacy Policy',
+        clientAgreement: 'Mandantenvereinbarung',
+        privacyPolicy: 'Datenschutzerklärung',
         secure: 'Sicher & verschlüsselt',
       }
     : locale === 'ja'
@@ -76,9 +75,9 @@ export function Footer() {
           { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
         ],
         copyright: 'Working Holiday Tax. All rights reserved.',
-        // Legal docs stay in English
-        clientAgreement: 'Client Agreement',
-        privacyPolicy: 'Privacy Policy',
+        copyrightJa: '無断複写・転載を禁じます。',
+        clientAgreement: 'クライアント規約',
+        privacyPolicy: 'プライバシーポリシー',
         secure: '安全・暗号化通信',
       }
     : {
@@ -215,14 +214,27 @@ export function Footer() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 
             <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }} suppressHydrationWarning>
-              <span>© {new Date().getFullYear()} {t.copyright}</span>
+              {locale === 'ja' ? (
+                <span>© {new Date().getFullYear()} Working Holiday Tax. 無断複写・転載を禁じます。</span>
+              ) : (
+                <span>© {new Date().getFullYear()} {t.copyright}</span>
+              )}
             </div>
 
-            {/* Legal links stay in English (legal documents) */}
             <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
-              <Link href="/client-agreement" className="footer-link-dark">{t.clientAgreement}</Link>
+              <Link
+                href={locale === 'de' ? '/de/client-agreement' : locale === 'ja' ? '/ja/client-agreement' : '/client-agreement'}
+                className="footer-link-dark"
+              >
+                {t.clientAgreement}
+              </Link>
               <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
-              <Link href="/privacy"          className="footer-link-dark">{t.privacyPolicy}</Link>
+              <Link
+                href={locale === 'de' ? '/de/privacy' : locale === 'ja' ? '/ja/privacy' : '/privacy'}
+                className="footer-link-dark"
+              >
+                {t.privacyPolicy}
+              </Link>
             </div>
           </div>
         </div>

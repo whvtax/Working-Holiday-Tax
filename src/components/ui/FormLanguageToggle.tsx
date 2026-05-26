@@ -3,10 +3,18 @@ import type { FormLang } from '@/lib/formStrings'
 
 /**
  * Language toggle pill shown at the top of each form.
- * Default: EN. Clicking switches labels/instructions to DE.
+ * Default: EN. Clicking switches labels/instructions to DE or JA.
  * Data submitted to CRM always stays in the language the user typed.
+ *
+ * Behavior:
+ * - If current is 'ja' or set was 'ja' → shows EN + 日本語 toggle
+ * - Otherwise → shows EN + Deutsch toggle
  */
 export function FormLanguageToggle({ lang, onChange }: { lang: FormLang; onChange: (l: FormLang) => void }) {
+  // Determine the "other" language based on current
+  const otherLang: 'de' | 'ja' = lang === 'ja' ? 'ja' : 'de'
+  const otherLabel = otherLang === 'ja' ? '日本語' : 'Deutsch'
+
   return (
     <div style={{
       display: 'flex',
@@ -52,29 +60,36 @@ export function FormLanguageToggle({ lang, onChange }: { lang: FormLang; onChang
       </button>
       <button
         type="button"
-        onClick={() => onChange('de')}
+        onClick={() => onChange(otherLang)}
         style={{
           padding: '6px 16px',
           fontSize: '12px',
-          fontWeight: lang === 'de' ? 700 : 500,
-          background: lang === 'de' ? '#fff' : 'transparent',
-          color: lang === 'de' ? '#0B5240' : '#587066',
+          fontWeight: lang === otherLang ? 700 : 500,
+          background: lang === otherLang ? '#fff' : 'transparent',
+          color: lang === otherLang ? '#0B5240' : '#587066',
           border: 'none',
           borderRadius: '100px',
           cursor: 'pointer',
           fontFamily: 'inherit',
-          boxShadow: lang === 'de' ? '0 1px 3px rgba(11,82,64,0.12)' : 'none',
+          boxShadow: lang === otherLang ? '0 1px 3px rgba(11,82,64,0.12)' : 'none',
           display: 'inline-flex',
           alignItems: 'center',
           gap: '6px',
           transition: 'all .15s',
         }}>
-        <svg width="14" height="10" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '1px' }}>
-          <rect width="60" height="14" y="0"  fill="#000"/>
-          <rect width="60" height="14" y="14" fill="#DD0000"/>
-          <rect width="60" height="14" y="28" fill="#FFCE00"/>
-        </svg>
-        Deutsch
+        {otherLang === 'ja' ? (
+          <svg width="14" height="10" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '1px' }}>
+            <rect width="60" height="42" fill="#fff"/>
+            <circle cx="30" cy="21" r="12" fill="#BC002D"/>
+          </svg>
+        ) : (
+          <svg width="14" height="10" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '1px' }}>
+            <rect width="60" height="14" y="0"  fill="#000"/>
+            <rect width="60" height="14" y="14" fill="#DD0000"/>
+            <rect width="60" height="14" y="28" fill="#FFCE00"/>
+          </svg>
+        )}
+        {otherLabel}
       </button>
     </div>
   )
