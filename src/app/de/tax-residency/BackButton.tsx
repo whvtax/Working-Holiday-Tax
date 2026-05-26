@@ -19,7 +19,7 @@ export default function BackButton() {
         borderRadius: '100px',
         fontSize: '15px',
         maxWidth: '300px',
-        width: '100 %',
+        width: '100%',
         border: 'none',
         cursor: 'pointer',
         fontFamily: 'inherit',

@@ -5,8 +5,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'TFN beantragen für Working Holiday Visa-Inhaber in Australien',
-  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt. Schritt-für-Schritt-Begleitung von einem registrierten Steueragenten in Australien.',
+  title: 'TFN beantragen für Working Holiday Visainhaber in Australien',
+  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt. Schritt-für-Schrittbegleitung von einem registrierten Steueragenten in Australien.',
   keywords: [
     'TFN beantragen Australien',
     'Steuernummer Australien',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN beantragen für Working Holiday Visa-Inhaber',
+    title: 'TFN beantragen für Working Holiday Visainhaber',
     description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - mit einem registrierten Steueragenten in Australien.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -46,7 +46,7 @@ const faqs = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Erzähl uns deine Situation',           body: 'Teil uns deine Visum-Details mit, damit wir dich richtig beraten können.' },
+  { n: '1', title: 'Erzähl uns deine Situation',           body: 'Teil uns deine Visumdetails mit, damit wir dich richtig beraten können.' },
   { n: '2', title: 'Schick uns deine Unterlagen',          body: 'Nur dein Reisepass und ein paar persönliche Daten - schnell und einfach.' },
   { n: '3', title: 'Wir bearbeiten deinen Antrag',         body: 'Wir bereiten alles vor und reichen es korrekt für dich ein.' },
   { n: '4', title: 'Du erhältst deine TFN',                body: 'Deine TFN wird vom ATO ausgestellt und innerhalb von 28 Tagen an deine australische Adresse geschickt.' },
@@ -122,19 +122,19 @@ export default function TFNPageDE() {
             <p className="font-light"
               style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '48ch', marginBottom: '0' }}>
               <span className="lg:hidden">Ohne TFN werden WHV-Inhaber mit 45 % besteuert.</span>
-              <span className="hidden lg:inline">Ohne TFN werden Working Holiday Visa-Inhaber mit 45 % besteuert.</span>
+              <span className="hidden lg:inline">Ohne TFN werden Working Holiday Visainhaber mit 45 % besteuert.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
               style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100 %' }}>
+                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
                 TFN beantragen →
               </a>
               <a href="#how-to-apply"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100 %' }}>
+                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
                 So funktioniert&apos;s →
               </a>
             </div>
@@ -225,8 +225,8 @@ export default function TFNPageDE() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom: '28px', alignItems: 'stretch' }}>
             {[
               { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title: 'Beim ersten Mal korrekt eingereicht.',          body: 'Jeder Antrag wird vor dem Einreichen geprüft, um Fehler oder Verzögerungen zu vermeiden.' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: 'Mit dem richtigen Steuersatz starten.',           body: 'Beantrage früh genug, damit du als Working Holiday-Inhaber nicht zum Höchstsatz besteuert wirst.' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: 'Keine komplizierten ATO-Formulare.', body: 'Du musst dich nicht mit Behörden-Portalen oder Papierkram herumschlagen. Wir machen das für dich.' },
+              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: 'Mit dem richtigen Steuersatz starten.',           body: 'Beantrage früh genug, damit du als Working Holiday Maker nicht zum Höchstsatz besteuert wirst.' },
+              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: 'Keine komplizierten ATO-Formulare.', body: 'Du musst dich nicht mit Behördenportalen oder Papierkram herumschlagen. Wir machen das für dich.' },
               { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title: 'Schnell, einfach und komplett online.',         body: 'Schick uns deine Daten - wir kümmern uns um den gesamten TFN-Antrag.' },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
@@ -245,7 +245,7 @@ export default function TFNPageDE() {
 
           <div className="text-center mt-6 lg:mt-10">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100 %', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
               TFN beantragen →
             </a>
           </div>
@@ -332,7 +332,7 @@ export default function TFNPageDE() {
                 ))}
               </div>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-                style={{ height: '50px', padding: '0 24px', fontSize: '14px', width: '100 %', justifyContent: 'center' }}>
+                style={{ height: '50px', padding: '0 24px', fontSize: '14px', width: '100%', justifyContent: 'center' }}>
                 TFN beantragen →
               </a>
             </div>
@@ -398,7 +398,7 @@ export default function TFNPageDE() {
 
           <div className="text-center mt-8 lg:mt-12">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary"
-              style={{ height: '52px', padding: '0 40px', fontSize: '15px', maxWidth: '320px', width: '100 %', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              style={{ height: '52px', padding: '0 40px', fontSize: '15px', maxWidth: '320px', width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               TFN beantragen →
             </a>
           </div>
@@ -422,7 +422,7 @@ export default function TFNPageDE() {
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100 %', maxWidth: '240px' }}>
+                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
                 Jetzt Hilfe bekommen →
               </a>
             </div>

@@ -30,15 +30,15 @@ export const formStrings = {
   sectionTax:          { en: 'Tax details',               de: 'Steuerdaten' },
   sectionBusiness:     { en: 'Business details',          de: 'Geschäftsdaten' },
   sectionBank:         { en: 'Bank details',              de: 'Bankverbindung' },
-  sectionSuper:        { en: 'Super fund details',        de: 'Super-Fonds-Daten' },
+  sectionSuper:        { en: 'Super fund details',        de: 'Superfondsdaten' },
   sectionEmployers:    { en: 'Employers',                 de: 'Arbeitgeber' },
 
   // ─ Field labels - shared ─
   firstName:           { en: 'First name (including middle name)', de: 'Vorname (inkl. Zweitname)' },
   lastName:            { en: 'Last name',                          de: 'Nachname' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses' },
-  passport:            { en: 'Passport number',                    de: 'Reisepass-Nummer' },
-  email:               { en: 'Email address',                      de: 'E-Mail-Adresse' },
+  passport:            { en: 'Passport number',                    de: 'Reisepassnummer' },
+  email:               { en: 'Email address',                      de: 'E-Mailadresse' },
   dob:                 { en: 'Date of birth',                      de: 'Geburtsdatum' },
   whatsapp:            { en: 'WhatsApp Number',                    de: 'WhatsApp-Nummer' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer' },
@@ -48,7 +48,7 @@ export const formStrings = {
   howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?' },
   selfieWithPassport:  { en: 'Selfie with passport',               de: 'Selfie mit Reisepass' },
   uploadSelfie:        { en: 'Upload selfie with passport',        de: 'Selfie mit Reisepass hochladen' },
-  passportPhoto:       { en: 'Passport photo page',                de: 'Reisepass-Fotoseite' },
+  passportPhoto:       { en: 'Passport photo page',                de: 'Reisepassfotoseite' },
   visaGrant:           { en: 'Visa grant letter',                  de: 'Visa Grant Letter' },
   tfn:                 { en: 'Tax File Number (TFN)',              de: 'Tax File Number (TFN)' },
 
@@ -57,7 +57,7 @@ export const formStrings = {
   submitTFN:           { en: 'Submit TFN Application →',           de: 'TFN-Antrag abschicken →' },
   submitABN:           { en: 'Submit ABN Application →',           de: 'ABN-Antrag abschicken →' },
   submitTax:           { en: 'Submit Tax Return →',                de: 'Steuererklärung abschicken →' },
-  submitSuper:         { en: 'Submit Super Claim →',               de: 'Super-Antrag abschicken →' },
+  submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →' },
   submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…' },
 
   // ─ Radio options ─
@@ -91,7 +91,7 @@ export const formStrings = {
 
   // ─ Submission errors ─
   tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es nochmal.' },
-  fileErrorPrefix:     { en: 'File error: ',                        de: 'Datei-Fehler: ' },
+  fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ' },
   fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 10MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 10 MB hoch.' },
   generic:             { en: 'Something went wrong. Please try again.', de: 'Etwas ist schiefgelaufen. Bitte versuche es nochmal.' },
 
@@ -107,8 +107,8 @@ export const formStrings = {
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung' },
-  titleTax:            { en: 'Tax Return Application',              de: 'Steuererklärung-Antrag' },
-  titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Super-Auszahlung (DASP)' },
+  titleTax:            { en: 'Tax Return Application',              de: 'Steuererklärungsantrag' },
+  titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)' },
 
   // ─ Tax form specific ─
   tfnRequired:         { en: 'Tax File Number (TFN)',               de: 'Tax File Number (TFN)' },
@@ -120,7 +120,7 @@ export const formStrings = {
   arrivalDate:         { en: 'Arrival date in Australia',           de: 'Ankunftsdatum in Australien' },
   departureDate:       { en: 'Departure date (or planned)',         de: 'Abreisedatum (oder geplant)' },
   bankBSB:             { en: 'BSB',                                 de: 'BSB' },
-  bankAccount:         { en: 'Bank account number',                 de: 'Bank-Kontonummer' },
+  bankAccount:         { en: 'Bank account number',                 de: 'Bankkontonummer' },
   bankName:            { en: 'Bank name',                           de: 'Name der Bank' },
   paymentSummary:      { en: 'Payment summary / income statement',  de: 'Payment Summary / Income Statement' },
   employerName:        { en: 'Employer name',                       de: 'Name des Arbeitgebers' },
@@ -133,11 +133,11 @@ export const formStrings = {
   removeEmployer:      { en: 'Remove',                              de: 'Entfernen' },
 
   // ─ Super form specific ─
-  superFundName:       { en: 'Super fund name',                     de: 'Name des Super-Fonds' },
-  superMemberNumber:   { en: 'Super member number',                 de: 'Super-Mitgliedsnummer' },
-  superStartDate:      { en: 'Super fund start date',               de: 'Eröffnungsdatum des Super-Fonds' },
+  superFundName:       { en: 'Super fund name',                     de: 'Name des Superfonds' },
+  superMemberNumber:   { en: 'Super member number',                 de: 'Supermitgliedsnummer' },
+  superStartDate:      { en: 'Super fund start date',               de: 'Eröffnungsdatum des Superfonds' },
   hasLeftAustralia:    { en: 'Have you left Australia?',            de: 'Hast du Australien verlassen?' },
-  visaStatus:          { en: 'Current visa status',                 de: 'Aktueller Visum-Status' },
+  visaStatus:          { en: 'Current visa status',                 de: 'Aktueller Visumsstatus' },
   visaExpired:         { en: 'Expired or cancelled',                de: 'Abgelaufen oder gekündigt' },
   visaActive:          { en: 'Still active',                        de: 'Noch aktiv' },
 

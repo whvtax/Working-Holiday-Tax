@@ -4,8 +4,8 @@ import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
-  title: 'Medicare in Australien für Working Holiday Visum-Inhaber',
-  description: 'Verstehe, ob du als Working Holiday Visum-Inhaber Anspruch auf Medicare hast und wie die Medicare Levy funktioniert. Wir holen für dich das Befreiungszertifikat.',
+  title: 'Medicare in Australien für Working Holiday Visuminhaber',
+  description: 'Verstehe, ob du als Working Holiday Visuminhaber Anspruch auf Medicare hast und wie die Medicare Levy funktioniert. Wir holen für dich das Befreiungszertifikat.',
   keywords: [
     'Medicare Working Holiday Australien',
     'Medicare Levy Befreiung Backpacker',
@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: 'https://workingholidaytax.com.au/de/medicare',
     siteName: 'Working Holiday Tax',
-    title: 'Medicare in Australien für Working Holiday Visum-Inhaber',
-    description: 'Verstehe Medicare und die Medicare Levy als Working Holiday Visum-Inhaber.',
+    title: 'Medicare in Australien für Working Holiday Visuminhaber',
+    description: 'Verstehe Medicare und die Medicare Levy als Working Holiday Visuminhaber.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Medicare in Australien für Working Holiday Visum-Inhaber',
+    title: 'Medicare in Australien für Working Holiday Visuminhaber',
     description: 'Verstehe Medicare und die Medicare Levy in Australien.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -41,27 +41,27 @@ const rhca = [
 const faqs = [
   {
     question: 'Muss ich mich für Medicare registrieren?',
-    answer: 'Nur, wenn du aus einem Land mit einem Sozialversicherungsabkommen (RHCA) mit Australien kommst. Wenn du nicht berechtigt bist, musst du dich nicht registrieren und solltest stattdessen die Medicare Levy-Befreiung bei deiner Steuererklärung beantragen.',
+    answer: 'Nur, wenn du aus einem Land mit einem Sozialversicherungsabkommen (RHCA) mit Australien kommst. Wenn du nicht berechtigt bist, musst du dich nicht registrieren und solltest stattdessen die Medicare-Levy-Befreiung bei deiner Steuererklärung beantragen.',
   },
   {
-    question: 'Was ist die Medicare Levy-Befreiung?',
-    answer: 'Wenn du nicht für Medicare berechtigt bist - was auf die meisten Working Holiday Visum-Inhaber zutrifft - kannst du dich bei deiner Steuererklärung von der Medicare Levy befreien lassen. Wir kümmern uns darum als Teil unserer Steuererklärungs-Leistung.',
+    question: 'Was ist die Medicare-Levy-Befreiung?',
+    answer: 'Wenn du nicht für Medicare berechtigt bist - was auf die meisten Working Holiday Visuminhaber zutrifft - kannst du dich bei deiner Steuererklärung von der Medicare Levy befreien lassen. Wir kümmern uns darum als Teil unserer Steuererklärungsleistung.',
   },
   {
     question: 'Ich komme aus Deutschland. Bin ich für Medicare berechtigt?',
-    answer: 'Deutschland hat KEIN Sozialversicherungsabkommen (RHCA) mit Australien. Das heißt: Als deutscher Working Holiday Maker bist du in der Regel NICHT für Medicare berechtigt. Stattdessen solltest du eine Medicare Levy-Befreiung bei deiner Steuererklärung beantragen - das machen wir für dich.',
+    answer: 'Deutschland hat KEIN Sozialversicherungsabkommen (RHCA) mit Australien. Das heißt: Als deutscher Working Holiday Maker bist du in der Regel NICHT für Medicare berechtigt. Stattdessen solltest du eine Medicare-Levy-Befreiung bei deiner Steuererklärung beantragen - das machen wir für dich.',
   },
   {
     question: 'Wenn ich nicht für Medicare berechtigt bin, muss ich trotzdem die Levy zahlen?',
-    answer: 'Nicht, wenn du eine Befreiung beantragst. Wenn du nicht für Medicare berechtigt bist, solltest du in deiner Steuererklärung eine Medicare Levy-Befreiung beantragen - dann wird sie dir nicht abgezogen.',
+    answer: 'Nicht, wenn du eine Befreiung beantragst. Wenn du nicht für Medicare berechtigt bist, solltest du in deiner Steuererklärung eine Medicare-Levy-Befreiung beantragen - dann wird sie dir nicht abgezogen.',
   },
   {
     question: 'Was ist eine private Krankenversicherung und brauche ich sie?',
     answer: 'Eine private Krankenversicherung deckt medizinische Kosten ab, die Medicare nicht übernimmt. Wenn du nicht für Medicare berechtigt bist, solltest du je nach deiner Situation eine private Krankenversicherung in Betracht ziehen. Das hat aber nichts mit der Medicare Levy zu tun.',
   },
   {
-    question: 'Hat mein Working Holiday Visum Einfluss auf meine Medicare-Berechtigung?',
-    answer: 'Ja. Die meisten Working Holiday Visum-Inhaber sind nicht für Medicare berechtigt, außer sie kommen aus einem Land mit Sozialversicherungsabkommen. Wenn du nicht berechtigt bist, beantragen wir die Medicare Levy-Befreiung als Teil deiner Steuererklärung.',
+    question: 'Hat mein Working Holiday Visum Einfluss auf meine Medicareberechtigung?',
+    answer: 'Ja. Die meisten Working Holiday Visuminhaber sind nicht für Medicare berechtigt, außer sie kommen aus einem Land mit Sozialversicherungsabkommen. Wenn du nicht berechtigt bist, beantragen wir die Medicare-Levy-Befreiung als Teil deiner Steuererklärung.',
   },
 ]
 
@@ -121,11 +121,11 @@ export default function GermanMedicarePage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Verstehe deinen Medicare-Status</span>
+                <span style={{ display:'block' }}>Verstehe deinen Medicarestatus</span>
                 <span style={{ display:'block', color:'#0B5240' }}>vor deiner Steuererklärung</span>
               </span>
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Verstehe deinen Medicare-Status</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Verstehe deinen Medicarestatus</span>
                 <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>vor deiner Steuererklärung</span>
               </span>
             </h1>
@@ -154,12 +154,12 @@ export default function GermanMedicarePage() {
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100 %' }}>
-                Medicare-Berechtigung prüfen →
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
+                Medicareberechtigung prüfen →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100 %' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
                 So funktioniert es →
               </a>
             </div>
@@ -192,10 +192,10 @@ export default function GermanMedicarePage() {
                 <strong>Medicare</strong> ist das öffentliche Gesundheitssystem in Australien. Es bietet Zugang zu vergünstigten medizinischen Leistungen und wird teilweise durch die <strong>2 %-Medicare Levy</strong> finanziert, die automatisch von deinem zu versteuernden Einkommen abgezogen wird.
               </p>
               <p className="medicare-intro-body">
-                Die meisten Working Holiday Visum-Inhaber haben <strong>keinen Anspruch</strong> auf Medicare-Leistungen. Wenn du keinen Anspruch hast, solltest du die Levy auch nicht zahlen - und kannst sie zurückholen.
+                Die meisten Working Holiday Visuminhaber haben <strong>keinen Anspruch</strong> auf Medicareleistungen. Wenn du keinen Anspruch hast, solltest du die Levy auch nicht zahlen - und kannst sie zurückholen.
               </p>
               <p className="medicare-intro-body">
-                Du wirst die Levy mit einem <strong>Medicare Levy-Befreiungszertifikat</strong> los. Das wird bei deiner Steuererklärung angewendet und kann dir Hunderte bis Tausende Dollar sparen.
+                Du wirst die Levy mit einem <strong>Medicare-Levy-Befreiungszertifikat</strong> los. Das wird bei deiner Steuererklärung angewendet und kann dir Hunderte bis Tausende Dollar sparen.
               </p>
             </div>
 
@@ -216,7 +216,7 @@ export default function GermanMedicarePage() {
                     </div>
                     <div>
                       <p className="medicare-check-label">Kein Anspruch auf Medicare</p>
-                      <p className="medicare-check-desc">Die meisten 417 / 462 Visum-Inhaber</p>
+                      <p className="medicare-check-desc">Die meisten 417 / 462 Visuminhaber</p>
                     </div>
                   </div>
 
@@ -233,7 +233,7 @@ export default function GermanMedicarePage() {
                       </svg>
                     </div>
                     <div>
-                      <p className="medicare-check-label">Levy-Befreiung beantragen</p>
+                      <p className="medicare-check-label">Befreiung beantragen</p>
                       <p className="medicare-check-desc">Die 2 %, die du das Jahr über gezahlt hast, zurückholen</p>
                     </div>
                   </div>
@@ -252,7 +252,7 @@ export default function GermanMedicarePage() {
           {/* CTA strip to OUR service */}
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">Wir holen für dich die Medicare Levy-Befreiung</h3>
+              <h3 className="service-cta-heading">Wir holen für dich die Medicare-Levy-Befreiung</h3>
               <p className="service-cta-sub">Kostenlose Erstberatung. Wir prüfen deine Berechtigung, bereiten dein Befreiungszertifikat vor und reichen es korrekt mit deiner Steuererklärung ein - damit du zurückbekommst, was du gar nicht zahlen musstest.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
@@ -295,7 +295,7 @@ export default function GermanMedicarePage() {
               </div>
               <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>Aus einem Nicht-RHCA-Land (z.B. Deutschland)</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
-                Wenn du keinen Anspruch auf Medicare hast, sorgen wir dafür, dass deine Medicare Levy-Befreiung korrekt angewendet wird, damit du nicht zu viel Steuern zahlst.
+                Wenn du keinen Anspruch auf Medicare hast, sorgen wir dafür, dass deine Medicare-Levy-Befreiung korrekt angewendet wird, damit du nicht zu viel Steuern zahlst.
               </p>
             </div>
           </div>
@@ -327,7 +327,7 @@ export default function GermanMedicarePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
               style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
-              Medicare-Berechtigung prüfen →
+              Medicareberechtigung prüfen →
             </a>
           </div>
         </div>
@@ -347,7 +347,7 @@ export default function GermanMedicarePage() {
             {[
               {
                 title: 'Wir prüfen deine Berechtigung',
-                body: 'Wir prüfen dein Visum und Herkunftsland, um deine Medicare-Berechtigung festzustellen.',
+                body: 'Wir prüfen dein Visum und Herkunftsland, um deine Medicareberechtigung festzustellen.',
               },
               {
                 title: 'Wir wenden die richtige Lösung an',
@@ -360,7 +360,7 @@ export default function GermanMedicarePage() {
             ].map((item, i) => (
               <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#EEF7F2', border: '1px solid #C8EAE0' }}>
                 <div className="flex items-center gap-2" style={{ marginBottom: '6px' }}>
-                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50 %', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
+                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
                   <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.title}</p>
@@ -377,10 +377,10 @@ export default function GermanMedicarePage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-2xl mx-auto text-center reveal">
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Medicare Levy-Befreiung
+              Medicare-Levy-Befreiung
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '40ch', marginBottom: '28px' }}>
-              Wenn du keinen Anspruch auf Medicare hast, brauchst du eventuell eine Medicare Levy-Befreiung vor deiner Steuererklärung.
+              Wenn du keinen Anspruch auf Medicare hast, brauchst du eventuell eine Medicare-Levy-Befreiung vor deiner Steuererklärung.
             </p>
             {/* Mobile: portrait 9/16, Desktop: landscape 16/9 */}
             <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto w-full">
@@ -388,24 +388,24 @@ export default function GermanMedicarePage() {
               <div className="block sm:hidden" style={{ aspectRatio: '9/16', maxWidth: '360px', margin: '0 auto' }}>
                 <iframe
                   src="https://www.youtube.com/embed/oj7ZSOHAxJk"
-                  title="Medicare Levy-Befreiung erklärt"
+                  title="Medicare-Levy-Befreiung erklärt"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  style={{ width: '100 %', height: '100 %', border: 'none', display: 'block' }}
+                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
                 />
               </div>
               {/* Desktop (landscape) */}
               <div className="hidden sm:block" style={{ aspectRatio: '16/9', maxWidth: '720px', margin: '0 auto' }}>
                 <iframe
                   src="https://www.youtube.com/embed/oj7ZSOHAxJk"
-                  title="Medicare Levy-Befreiung erklärt"
+                  title="Medicare-Levy-Befreiung erklärt"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
-                  style={{ width: '100 %', height: '100 %', border: 'none', display: 'block' }}
+                  style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
                 />
               </div>
             </div>
@@ -425,11 +425,11 @@ export default function GermanMedicarePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 reveal delay-1">
             {[
               { q: 'Muss ich mich für Medicare anmelden?', a: 'Nur, wenn du aus einem berechtigten RHCA-Land kommst. Sonst beantragen wir die Befreiung in deiner Steuererklärung.' },
-              { q: 'Warum erscheint die Medicare Levy auf meiner Steuerrechnung?', a: 'Wenn dein Medicare-Status nicht korrekt eingetragen wurde, kann die Levy auftauchen. Wir beheben das, wenn wir deine Steuererklärung machen.' },
+              { q: 'Warum erscheint die Medicare Levy auf meiner Steuerrechnung?', a: 'Wenn dein Medicarestatus nicht korrekt eingetragen wurde, kann die Levy auftauchen. Wir beheben das, wenn wir deine Steuererklärung machen.' },
               { q: 'Ich nutze Medicare nicht - warum wird mir die Levy abgezogen?', a: 'Wenn keine Befreiung beantragt wurde, zieht das ATO die Levy automatisch ab. Wir beantragen die richtige Befreiung, damit du nicht zu viel zahlst.' },
               { q: 'Ersetzt eine Reiseversicherung Medicare?', a: 'Nein. Reiseversicherung und Medicare sind zwei verschiedene Systeme. Wenn du keinen Anspruch auf Medicare hast, solltest du dich auf deine Reiseversicherung für medizinische Kosten verlassen.' },
-              { q: 'Beeinflusst mein Working Holiday Visum Medicare?', a: 'Ja. Die meisten Working Holiday Visum-Inhaber sind nicht für Medicare berechtigt, außer sie kommen aus einem RHCA-Land. Wir sorgen dafür, dass dein Medicare-Status korrekt in deiner Steuererklärung angewendet wird.' },
-              { q: 'Kann ich mit einem Working Holiday Visum eine Medicare-Karte bekommen?', a: 'Nur, wenn du aus einem berechtigten RHCA-Land kommst. Sonst beantragen wir stattdessen eine Medicare Levy-Befreiung.' },
+              { q: 'Beeinflusst mein Working Holiday Visum Medicare?', a: 'Ja. Die meisten Working Holiday Visuminhaber sind nicht für Medicare berechtigt, außer sie kommen aus einem RHCA-Land. Wir sorgen dafür, dass dein Medicarestatus korrekt in deiner Steuererklärung angewendet wird.' },
+              { q: 'Kann ich mit einem Working Holiday Visum eine Medicarekarte bekommen?', a: 'Nur, wenn du aus einem berechtigten RHCA-Land kommst. Sonst beantragen wir stattdessen eine Medicare-Levy-Befreiung.' },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl" style={{ padding: '16px', border: '1px solid #C8EAE0', boxShadow: '0 1px 2px rgba(0,0,0,.02)' }}>
                 <p className="text-[13px] font-semibold text-ink" style={{ marginBottom: '6px' }}>{item.q}</p>
@@ -444,7 +444,7 @@ export default function GermanMedicarePage() {
       <NextStep
         eyebrow="Was kommt als nächstes?"
         heading="Du bist bereit für deine Steuererklärung"
-        body="Wir sorgen dafür, dass dein Medicare-Status korrekt angewendet wird, damit du nicht zu viel Steuern zahlst."
+        body="Wir sorgen dafür, dass dein Medicarestatus korrekt angewendet wird, damit du nicht zu viel Steuern zahlst."
         cta="Steuererklärung starten →"
         href="/de/tax-return"
       />

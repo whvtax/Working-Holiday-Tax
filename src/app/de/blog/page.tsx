@@ -3,8 +3,8 @@ import BlogClient from '@/app/blog/BlogClient'
 import { getGermanGuides, deCategoryMeta, blogUI } from './data'
 
 export const metadata: Metadata = {
-  title: 'Blog | Working Holiday Tax',
-  description: 'Praktische Artikel über TFN, ABN, Steuererklärung, Super, Arbeitsrechte und mehr - geschrieben für Working Holiday Visum-Inhaber in Australien.',
+  title: 'Blog - Steuer, Super, TFN & ABN für Backpacker | Working Holiday Tax',
+  description: 'Praktische Artikel über TFN, ABN, Steuererklärung, Super, Arbeitsrechte und mehr - geschrieben für Working Holiday Visuminhaber in Australien.',
   keywords: [
     'Working Holiday Tax Australien',
     'Working Holiday Visum Blog',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Blog | Working Holiday Tax',
+    title: 'Blog - Steuer, Super, TFN & ABN für Backpacker | Working Holiday Tax',
     description: 'Alles, was du über Steuern in Australien wissen musst, einfach erklärt.',
     url: 'https://workingholidaytax.com.au/de/blog',
     siteName: 'Working Holiday Tax',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Blog | Working Holiday Tax',
+    title: 'Blog - Steuer, Super, TFN & ABN für Backpacker | Working Holiday Tax',
     description: 'Alles, was du über Steuern in Australien wissen musst, einfach erklärt.',
   },
   robots: {
@@ -54,7 +54,7 @@ export default function GermanBlogPage() {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: 'Working Holiday Tax Blog (Deutsch)',
-    description: 'Steuer-Blog für Working Holiday Visum-Inhaber in Australien',
+    description: 'Steuerblog für Working Holiday Visuminhaber in Australien',
     url: 'https://workingholidaytax.com.au/de/blog',
     inLanguage: 'de',
     isPartOf: {
@@ -64,11 +64,11 @@ export default function GermanBlogPage() {
     },
     about: {
       '@type': 'Thing',
-      name: 'Australische Steuer für Working Holiday Visum-Inhaber',
+      name: 'Australische Steuer für Working Holiday Visuminhaber',
     },
     audience: {
       '@type': 'Audience',
-      name: 'Working Holiday Visum-Inhaber in Australien (Subclass 417 und 462)',
+      name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
     },
     mainEntity: {
       '@type': 'ItemList',
@@ -97,14 +97,14 @@ export default function GermanBlogPage() {
     name: 'Working Holiday Tax',
     url: 'https://workingholidaytax.com.au',
     logo: 'https://workingholidaytax.com.au/icon-512.png',
-    description: 'Steuerservice für Working Holiday Visum-Inhaber in Australien. TFN-Anträge, Steuererklärungen, DASP Super-Auszahlungen und ABN-Registrierungen unter Aufsicht eines registrierten Steueragenten.',
+    description: 'Steuerservice für Working Holiday Visuminhaber in Australien. TFN-Anträge, Steuererklärungen, DASP Superauszahlungen und ABN-Registrierungen unter Aufsicht eines registrierten Steueragenten.',
     areaServed: { '@type': 'Country', name: 'Australia' },
     knowsAbout: [
       'Tax File Number Anträge',
       'Australian Business Number Registrierung',
       'Jährliche Steuererklärungen für Working Holiday Maker',
       'Departing Australia Superannuation Payment (DASP)',
-      'Medicare Levy-Befreiung',
+      'Medicare-Levy-Befreiung',
       'Working Holiday Visum Arbeitsrechte',
       'Subclass 417 Visum',
       'Subclass 462 Visum',

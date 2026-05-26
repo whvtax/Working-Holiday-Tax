@@ -5,8 +5,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'Super auszahlen (DASP) für Working Holiday Visum-Inhaber',
-  description: 'Hol dir deine australische Superannuation, nachdem du das Land verlassen hast. Dein Arbeitgeber hat 12 % deines Lohns in die Super eingezahlt - wir helfen dir, sie per DASP zurückzubekommen.',
+  title: 'Super auszahlen (DASP) für Working Holiday Visuminhaber',
+  description: 'Hol dir deine australische Superannuation nach Verlassen Australiens zurück. 12 % deines Lohns wurden eingezahlt - wir helfen dir per DASP zur Auszahlung.',
   keywords: [
     'DASP Super auszahlen',
     'Departing Australia Superannuation Payment Deutsch',
@@ -23,12 +23,12 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: 'https://workingholidaytax.com.au/de/superannuation',
     siteName: 'Working Holiday Tax',
-    title: 'Super auszahlen (DASP) für Working Holiday Visum-Inhaber',
+    title: 'Super auszahlen (DASP) für Working Holiday Visuminhaber',
     description: 'Hol dir deine australische Super über den DASP-Prozess zurück.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Super auszahlen (DASP) für Working Holiday Visum-Inhaber',
+    title: 'Super auszahlen (DASP) für Working Holiday Visuminhaber',
     description: 'Hol dir deine australische Super zurück, wenn du abreist.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -40,12 +40,12 @@ const faqs = [
     answer: 'Ja. Es gibt keine Frist für die Beantragung deiner Super. Auch wenn dein Guthaben schon ans ATO überwiesen wurde, kannst du es noch zurückholen.',
   },
   {
-    question: 'Ich hatte mehrere Arbeitgeber - habe ich mehrere Super-Konten?',
-    answer: 'Du hast vielleicht mehrere Super-Konten von verschiedenen Arbeitgebern. Wir helfen dir, alles zu finden und zu bündeln, bevor wir deinen Antrag stellen.',
+    question: 'Ich hatte mehrere Arbeitgeber - habe ich mehrere Superkonten?',
+    answer: 'Du hast vielleicht mehrere Superkonten von verschiedenen Arbeitgebern. Wir helfen dir, alles zu finden und zu bündeln, bevor wir deinen Antrag stellen.',
   },
   {
     question: 'Wie lange dauert es, bis ich meine Super bekomme?',
-    answer: 'Super-Auszahlungen (DASP) werden meistens innerhalb von 2-4 Wochen nach Genehmigung des Antrags ausgezahlt. Das Geld geht direkt auf dein Bankkonto.',
+    answer: 'Superauszahlungen (DASP) werden meistens innerhalb von 2-4 Wochen nach Genehmigung des Antrags ausgezahlt. Das Geld geht direkt auf dein Bankkonto.',
   },
   {
     question: 'Wohin wird meine Super gezahlt - australisches oder ausländisches Konto?',
@@ -53,15 +53,15 @@ const faqs = [
   },
   {
     question: 'Bekomme ich Super, wenn ich unter einer ABN gearbeitet habe?',
-    answer: 'Normalerweise nicht. Für ABN-Arbeit (also als Contractor/Selbstständiger) wird in der Regel keine Super gezahlt. Super gibt es meistens nur, wenn du als Angestellter eingestuft bist. Als Contractor mit ABN bist du selbst dafür verantwortlich, eine Super-Einzahlung zu organisieren, falls du das möchtest.',
+    answer: 'Normalerweise nicht. Für ABN-Arbeit (also als Contractor/Selbstständiger) wird in der Regel keine Super gezahlt. Super gibt es meistens nur, wenn du als Angestellter eingestuft bist. Als Contractor mit ABN bist du selbst dafür verantwortlich, eine Supereinzahlung zu organisieren, falls du das möchtest.',
   },
 ]
 
 const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Visa- und Arbeitsdaten, damit wir dich richtig beraten können.' },
-  { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Reisepass, TFN und Super-Fonds-Infos - schnell und einfach.' },
+  { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Reisepass, TFN und Superfondsinfos - schnell und einfach.' },
   { n: '3', title: 'Wir kümmern uns um alles',  body: 'Wir bereiten alles vor und reichen deinen Antrag korrekt ein.' },
-  { n: '4', title: 'Deine Super-Auszahlung kommt',    body: 'Dein Geld kommt direkt auf dein australisches Bankkonto.' },
+  { n: '4', title: 'Deine Superauszahlung kommt',    body: 'Dein Geld kommt direkt auf dein australisches Bankkonto.' },
 ]
 
 const TESTIMONIALS = [
@@ -180,12 +180,12 @@ export default function GermanSuperannuationPage() {
               style={{ marginTop:'24px', marginBottom:'20px', maxWidth:'480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100 %' }}>
+                style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
                 Super beantragen →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100 %' }}>
+                style={{ height:'52px', padding:'0 24px', fontSize:'15px', flex:'1', width:'100%' }}>
                 So funktioniert es →
               </a>
             </div>
@@ -214,7 +214,7 @@ export default function GermanSuperannuationPage() {
                 Was ist Superannuation?
               </h2>
               <p className="super-intro-body">
-                <strong>Superannuation</strong> (kurz &quot;Super&quot;) ist das australische Rentensystem. Per Gesetz zahlt dein Arbeitgeber <strong>12 % deines Lohns</strong> zusätzlich zu deinem Gehalt in einen Super-Fonds ein - du hast also mehr verdient, als du denkst.
+                <strong>Superannuation</strong> (kurz &quot;Super&quot;) ist das australische Rentensystem. Per Gesetz zahlt dein Arbeitgeber <strong>12 % deines Lohns</strong> zusätzlich zu deinem Gehalt in einen Superfonds ein - du hast also mehr verdient, als du denkst.
               </p>
               <p className="super-intro-body">
                 Als Working Holiday Maker kannst du dieses Geld zurückbekommen, wenn du Australien verlässt. Das läuft über den sogenannten <strong>DASP - Departing Australia Superannuation Payment</strong>.
@@ -260,7 +260,7 @@ export default function GermanSuperannuationPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir holen deine Super für dich zurück</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung. Vom Finden deiner Super-Fonds bis zur DASP-Beantragung - wir wickeln den ganzen Prozess ab, damit dein Geld nicht in Australien zurückbleibt.</p>
+              <p className="service-cta-sub">Kostenlose Erstberatung. Vom Finden deiner Superfonds bis zur DASP-Beantragung - wir wickeln den ganzen Prozess ab, damit dein Geld nicht in Australien zurückbleibt.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine Super beantragen →
@@ -311,7 +311,7 @@ export default function GermanSuperannuationPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
               style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              Super-Berechtigung prüfen →
+              Superberechtigung prüfen →
             </a>
           </div>
         </div>
@@ -396,7 +396,7 @@ export default function GermanSuperannuationPage() {
           </div>
 
           <div className="text-center mt-10 reveal delay-2">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100 %' }}>
+            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
               Super beantragen →
             </a>
           </div>
@@ -417,7 +417,7 @@ export default function GermanSuperannuationPage() {
                 {[
                   { label: 'Dein Visum ist abgelaufen oder gekündigt', body: 'Du kannst beantragen, sobald du Australien verlassen hast - keine Wartezeit.' },
                   { label: 'Du hast kein australisches Visum mehr',   body: 'Du darfst kein anderes aktives Visum in Australien haben.' },
-                  { label: 'Du hast Super-Einzahlungen',           body: 'Stell sicher, dass dein Arbeitgeber wirklich Super eingezahlt hat.' },
+                  { label: 'Du hast Supereinzahlungen',           body: 'Stell sicher, dass dein Arbeitgeber wirklich Super eingezahlt hat.' },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
                     <div className="flex items-start gap-2 mb-1">
@@ -441,10 +441,10 @@ export default function GermanSuperannuationPage() {
               </h2>
               <div className="space-y-3.5 mb-5">
                 {[
-                  'Deine Reisepass-Daten',
+                  'Deine Reisepassdaten',
                   'Deine Tax File Number (TFN)',
-                  'Name und Mitgliedsnummer deines Super-Fonds',
-                  'Das Eröffnungsdatum deines Super-Fonds',
+                  'Name und Mitgliedsnummer deines Superfonds',
+                  'Das Eröffnungsdatum deines Superfonds',
                   'Deine Bankverbindung für die Auszahlung',
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
@@ -479,7 +479,7 @@ export default function GermanSuperannuationPage() {
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100 %', maxWidth:'220px' }}>
+                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
                 Jetzt Hilfe holen →
               </a>
             </div>
@@ -497,7 +497,7 @@ export default function GermanSuperannuationPage() {
         eyebrow="Was kommt als nächstes?"
         heading="Bist du Medicare-berechtigt?"
         body="Je nach Herkunftsland hast du eventuell Anspruch auf Medicare oder bist von der Medicare Levy befreit."
-        cta="Medicare-Berechtigung prüfen →"
+        cta="Medicareberechtigung prüfen →"
         href="/de/medicare"
       />
 

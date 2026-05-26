@@ -178,7 +178,7 @@ export default function GermanGuidePage({ params }: Props) {
       logo: { '@type': 'ImageObject', url: 'https://workingholidaytax.com.au/icon-512.png' },
     },
     mainEntityOfPage: { '@type': 'WebPage', '@id': `https://workingholidaytax.com.au/de/blog/${guide.slug}` },
-    audience: { '@type': 'Audience', name: 'Working Holiday Visum-Inhaber in Australien (Subclass 417 und 462)' },
+    audience: { '@type': 'Audience', name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)' },
     about: [
       { '@type': 'Thing', name: 'Working Holiday Visum Australien' },
       { '@type': 'Thing', name: guide.category },
@@ -264,7 +264,7 @@ export default function GermanGuidePage({ params }: Props) {
                   <span>/</span>
                 </>
               )}
-              <span style={{ color: '#8AADA3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50 %' }}>{guide.title}</span>
+              <span style={{ color: '#8AADA3', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '50%' }}>{guide.title}</span>
             </div>
           </div>
 

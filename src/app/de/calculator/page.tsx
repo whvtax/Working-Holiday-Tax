@@ -3,7 +3,7 @@ import { SITE_URL } from '@/lib/constants'
 import { CalculatorClient } from './CalculatorClient'
 
 export const metadata: Metadata = {
-  title: 'Steuerrechner für Working Holiday Visum-Inhaber',
+  title: 'Steuerrechner für Working Holiday Visuminhaber',
   description: 'Schätze deine australische Steuerrückzahlung als Working Holiday Maker. Kostenlos und sofort - mit den aktuellen WHM-Steuersätzen 2025-26. Keine Anmeldung nötig.',
   keywords: [
     'Steuerrechner Australien',
@@ -21,12 +21,12 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/calculator`,
     siteName: 'Working Holiday Tax',
-    title: 'Steuerrechner für Working Holiday Visum-Inhaber',
+    title: 'Steuerrechner für Working Holiday Visuminhaber',
     description: 'Schätze deine australische Steuerrückzahlung als Working Holiday Maker. Kostenlos, sofort, keine Anmeldung.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Steuerrechner für Working Holiday Visum-Inhaber',
+    title: 'Steuerrechner für Working Holiday Visuminhaber',
     description: 'Schätze deine australische Steuerrückzahlung. Kostenlos, sofort, keine Anmeldung.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -79,7 +79,7 @@ const webAppSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebApplication',
   name: 'Working Holiday Steuerrechner',
-  description: 'Kostenloser Steuerrechner für Working Holiday Visum-Inhaber in Australien.',
+  description: 'Kostenloser Steuerrechner für Working Holiday Visuminhaber in Australien.',
   url: `${SITE_URL}/de/calculator`,
   applicationCategory: 'FinanceApplication',
   operatingSystem: 'Any',

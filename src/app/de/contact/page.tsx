@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Kontakt - Working Holiday Tax',
+  title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
   description: 'Kontaktiere unsere registrierten Steueragenten. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
   keywords: [
     'Kontakt Working Holiday Tax',
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
-    title: 'Kontakt - Working Holiday Tax',
+    title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unsere registrierten Steueragenten. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kontakt - Working Holiday Tax',
+    title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unsere registrierten Steueragenten.',
   },
   robots: {
@@ -45,7 +45,7 @@ const FAQS = [
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',
-    answer: 'Nein. Erste Fragen und Beratungen sind kostenlos. Wir berechnen erst dann etwas, wenn du dich für einen Service entscheidest - z.B. Steuererklärung, TFN-Antrag oder Super-Auszahlung.',
+    answer: 'Nein. Erste Fragen und Beratungen sind kostenlos. Wir berechnen erst dann etwas, wenn du dich für einen Service entscheidest - z.B. Steuererklärung, TFN-Antrag oder Superauszahlung.',
   },
   {
     question: 'Welche Sprachen sprecht ihr?',
@@ -57,7 +57,7 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Wir arbeiten mit Working Holiday Makern, die noch in Australien sind, vor Kurzem abgereist sind oder schon vor Jahren zurückgekehrt sind. Alles geht aus der Ferne - Steuererklärungen, Super-Auszahlungen (DASP) und ABN-Angelegenheiten.',
+    answer: 'Ja. Wir arbeiten mit Working Holiday Makern, die noch in Australien sind, vor Kurzem abgereist sind oder schon vor Jahren zurückgekehrt sind. Alles geht aus der Ferne - Steuererklärungen, Superauszahlungen (DASP) und ABN-Angelegenheiten.',
   },
 ]
 
@@ -92,7 +92,7 @@ export default function GermanContactPage() {
           contactType: 'customer service',
           email: EMAIL,
           areaServed: 'AU',
-          availableLanguage: ['English'],
+          availableLanguage: ['German', 'English'],
           hoursAvailable: {
             '@type': 'OpeningHoursSpecification',
             dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
@@ -106,7 +106,7 @@ export default function GermanContactPage() {
           contactType: 'WhatsApp',
           telephone: `+${'61424513998'}`,
           areaServed: 'AU',
-          availableLanguage: ['English'],
+          availableLanguage: ['German', 'English'],
         },
       ],
       identifier: [

@@ -5,8 +5,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'ABN-Registrierung für Working Holiday Visa-Inhaber in Australien',
-  description: 'Registriere deine ABN korrekt als Working Holiday-Selbstständiger. Wir kümmern uns um die Registrierung und alle Steuerpflichten - einfach, schnell, online.',
+  title: 'ABN-Registrierung für Working Holiday Visainhaber in Australien',
+  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten - einfach, schnell, online.',
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABN-Registrierung für Working Holiday Visa-Inhaber',
-    description: 'Registriere deine ABN korrekt als Working Holiday-Selbstständiger in Australien.',
+    title: 'ABN-Registrierung für Working Holiday Visainhaber',
+    description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker in Australien.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
 const faqs = [
   { question: 'Kann ich sowohl eine TFN als auch eine ABN haben?', answer: 'Ja. Du kannst beide haben - die TFN für Anstellungen und die ABN für selbstständige Tätigkeiten.' },
   { question: 'Bekomme ich eine ABN ohne TFN?', answer: 'Nein. Du brauchst zuerst eine TFN, bevor du eine ABN beantragen kannst.' },
-  { question: 'Muss ich mich für GST registrieren?', answer: 'Eine GST-Registrierung ist nur erforderlich, wenn dein Jahresumsatz über 75.000 AUD liegt. Die meisten Working Holiday Visa-Inhaber müssen sich nicht für GST registrieren.' },
+  { question: 'Muss ich mich für GST registrieren?', answer: 'Eine GST-Registrierung ist nur erforderlich, wenn dein Jahresumsatz über 75.000 AUD liegt. Die meisten Working Holiday Visainhaber müssen sich nicht für GST registrieren.' },
   { question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?', answer: 'Du kannst deine ABN online stornieren, sobald du aufhörst, in Australien zu arbeiten.' },
   { question: 'Kann meine ABN abgelehnt werden?', answer: 'Ja. Wenn deine Angaben deine Arbeitsrealität nicht korrekt widerspiegeln, kann der Antrag verzögert oder abgelehnt werden. Deshalb empfehlen wir, einen Steueragenten zu nutzen, um Fehler zu vermeiden und alles von Anfang an richtig aufzusetzen.' },
 ]
@@ -53,8 +53,8 @@ const MISTAKES = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Erzähl uns von deiner Arbeit',         body: 'Teil uns deine Arbeits- und Visum-Details mit, damit wir dich richtig beraten.' },
-  { n: '2', title: 'Schick uns deine Daten',               body: 'TFN und Reisepass-Infos - schnell und einfach.' },
+  { n: '1', title: 'Erzähl uns von deiner Arbeit',         body: 'Teil uns deine Arbeits- und Visumdetails mit, damit wir dich richtig beraten.' },
+  { n: '2', title: 'Schick uns deine Daten',               body: 'TFN und Reisepassinfos - schnell und einfach.' },
   { n: '3', title: 'Wir kümmern uns um die Registrierung', body: 'Wir bereiten alles vor und reichen deinen Antrag korrekt ein.' },
   { n: '4', title: 'Du erhältst deine ABN und legst los',  body: 'Deine ABN wird meist innerhalb einer Stunde ausgestellt. Du kannst sofort Rechnungen schreiben und arbeiten.' },
 ]
@@ -129,12 +129,12 @@ export default function ABNPageDE() {
               style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
-                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100 %' }}>
+                style={{ height: '54px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', flex: '1', width: '100%' }}>
                 ABN registrieren →
               </a>
               <a href="#how-to-register"
                 className="inline-flex btn-ghost-dark justify-center"
-                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100 %' }}>
+                style={{ height: '52px', padding: '0 24px', fontSize: '15px', flex: '1', width: '100%' }}>
                 So funktioniert&apos;s →
               </a>
             </div>
@@ -187,7 +187,7 @@ export default function ABNPageDE() {
                   <ul className="abn-compare-list">
                     <li>Gehaltsabrechnung vom Arbeitgeber</li>
                     <li>Steuer automatisch einbehalten</li>
-                    <li>Bekommt Super-Beiträge</li>
+                    <li>Bekommt Superbeiträge</li>
                   </ul>
                 </div>
 
@@ -264,7 +264,7 @@ export default function ABNPageDE() {
           <div className="text-center mt-6 lg:mt-8">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100 %' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%' }}>
               ABN registrieren →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: 'rgba(10,15,13,0.4)' }}>
@@ -387,7 +387,7 @@ export default function ABNPageDE() {
               </p>
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100 %', maxWidth: '240px' }}>
+                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
                 Jetzt Hilfe bekommen →
               </a>
             </div>

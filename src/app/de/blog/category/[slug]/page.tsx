@@ -78,7 +78,7 @@ export default function GermanCategoryPage({ params }: Props) {
     inLanguage: 'de',
     isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
     about: { '@type': 'Thing', name: meta.category },
-    audience: { '@type': 'Audience', name: 'Working Holiday Visum-Inhaber in Australien (Subclass 417 und 462)' },
+    audience: { '@type': 'Audience', name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)' },
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: articles.length,
@@ -132,7 +132,7 @@ export default function GermanCategoryPage({ params }: Props) {
             </nav>
 
             <div className="inline-flex items-center gap-2" style={{ marginBottom: '12px' }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50 %', background: colors.text, display: 'inline-block' }} aria-hidden="true" />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: colors.text, display: 'inline-block' }} aria-hidden="true" />
               <span style={{ fontSize: '10px', letterSpacing: '0.16em', color: colors.text, textTransform: 'uppercase', fontWeight: 600 }}>
                 {articles.length} {articles.length === 1 ? 'Artikel' : 'Artikel'}
               </span>

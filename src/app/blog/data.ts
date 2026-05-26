@@ -6123,7 +6123,7 @@ If you are planning to leave with a debt:
 The ATO has multiple penalties for non-payment:
 
 - **General Interest Charge (GIC)**: currently around 11% per year, compounding daily
-- **Failure-to-lodge penalty**: $313 per 28 days late, up to $1,565 maximum
+- **Failure-to-lodge penalty**: $330 per 28 days late, up to $1,650 maximum
 - **Tax Debt Disclosure**: large debts may be disclosed to credit reporting agencies
 - **Director penalty notices** (for company tax debts)
 - **Garnishee orders**: ATO can direct your employer to deduct tax from your wages
@@ -11657,7 +11657,7 @@ For most working holiday makers, bringing savings in is straightforward and tax-
  date: "25 May 2026",
  readTime: 4,
  body: `
-The Australian Taxation Office (ATO) charges interest and penalties on tax debts that are not paid by the due date. The General Interest Charge (GIC) compounds daily on the unpaid amount at a rate substantially above the cash rate. Separately, a Failure to Pay penalty of one penalty unit ($313 in 2025-26) can apply for every 28 days the debt remains unpaid, up to a maximum of five units ($1,565 per year per debt). The penalties are independent of the Failure to Lodge penalties that apply for [late tax returns](/blog/late-tax-return-penalty-working-holiday).
+The Australian Taxation Office (ATO) charges interest and penalties on tax debts that are not paid by the due date. The General Interest Charge (GIC) compounds daily on the unpaid amount at a rate substantially above the cash rate. Separately, a Failure to Pay penalty of one penalty unit ($330 in 2025-26) can apply for every 28 days the debt remains unpaid, up to a maximum of five units ($1,650 per year per debt). The penalties are independent of the Failure to Lodge penalties that apply for [late tax returns](/blog/late-tax-return-penalty-working-holiday).
 
 For working holiday makers, tax debts most often arise from [ABN](/abn) income with tax not withheld during the year, from amended assessments after a return is lodged, or from BAS obligations for [rideshare drivers](/blog/uber-driver-working-holiday-australia) who did not remit GST.
 
@@ -11688,7 +11688,7 @@ The GIC continues to accrue regardless of where you are in the world. Leaving Au
 
 ## What is the Failure to Pay penalty?
 
-Separately from the GIC, the ATO can apply a Failure to Pay penalty. The penalty is one penalty unit ($313 in 2025-26) for every 28 days the debt remains unpaid, capped at five units ($1,565 per year per debt).
+Separately from the GIC, the ATO can apply a Failure to Pay penalty. The penalty is one penalty unit ($330 in 2025-26) for every 28 days the debt remains unpaid, capped at five units ($1,650 per year per debt).
 
 The Failure to Pay penalty is applied less consistently than the GIC. The ATO may apply it where:
 
@@ -11704,7 +11704,7 @@ For working holiday makers, the GIC is the more reliable concern. The Failure to
 The two penalty systems are independent:
 
 - **Failure to Lodge (FTL)**: applied when a [tax return](/tax-return) is filed late. $222 per 28 days, max $1,110. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday).
-- **Failure to Pay (FTP) + GIC**: applied when a tax debt is not paid by the due date. $313 per 28 days plus daily interest at around 11% per year.
+- **Failure to Pay (FTP) + GIC**: applied when a tax debt is not paid by the due date. $330 per 28 days plus daily interest at around 11% per year.
 
 A working holiday maker who lodges late AND pays late can be hit with both penalty systems on the same debt. The total cost can substantially exceed the original tax owing.
 

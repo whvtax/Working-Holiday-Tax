@@ -7,7 +7,7 @@ import { CtaBand } from '@/components/ui/CtaBand'
 export const metadata: Metadata = {
   title: 'Working Holiday Tax - Steuer & Super für Backpacker in Australien',
   description:
-    'Registrierter Steueragent für Working Holiday Visa-Inhaber (Subclass 417 und 462) in Australien. TFN, Steuererklärung, Super-Auszahlung (DASP) und ABN - wir kümmern uns um alles.',
+    'Registrierter Steueragent für Working Holiday Visainhaber (417/462) in Australien. TFN, Steuererklärung, Super (DASP) und ABN - alles online erledigt.',
   keywords: [
     'Working Holiday Steuer Australien',
     'Backpacker Steuer Australien',
@@ -59,7 +59,7 @@ const SERVICES = [
   { n: '01', href: '/de/tfn',            icon: <IconTFN />,      title: 'TFN beantragen',       desc: 'Vom ersten Arbeitstag an mit dem richtigen Steuersatz arbeiten.' },
   { n: '02', href: '/de/abn',            icon: <IconABN />,      title: 'ABN-Registrierung',    desc: 'Als Selbstständiger arbeiten und Rechnungen korrekt ausstellen.' },
   { n: '03', href: '/de/tax-return',     icon: <IconReturn />,   title: 'Steuererklärung',      desc: 'Jahressteuererklärung einreichen und die maximale Rückzahlung sichern.' },
-  { n: '04', href: '/de/superannuation', icon: <IconSuper />,    title: 'Super-Auszahlung',     desc: 'Hol dir dein Super-Guthaben zurück, wenn du Australien verlässt.' },
+  { n: '04', href: '/de/superannuation', icon: <IconSuper />,    title: 'Superauszahlung',     desc: 'Hol dir dein Superguthaben zurück, wenn du Australien verlässt.' },
   { n: '05', href: '/de/medicare',       icon: <IconMedicare />, title: 'Medicare Levy',        desc: 'Befreiung von der Medicare Levy beantragen, wenn du nicht versichert bist.' },
 ]
 
@@ -74,7 +74,7 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Wir helfen Working Holiday Makern, die Australien bereits verlassen haben, bei der Steuererklärung und der Super-Auszahlung (DASP) - alles komplett online. Wir wickeln alles aus der Ferne ab. Deine Rückzahlung kannst du auf ein australisches oder ausländisches Konto erhalten.',
+    answer: 'Ja. Wir helfen Working Holiday Makern, die Australien bereits verlassen haben, bei der Steuererklärung und der Superauszahlung (DASP) - alles komplett online. Wir wickeln alles aus der Ferne ab. Deine Rückzahlung kannst du auf ein australisches oder ausländisches Konto erhalten.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker?',
@@ -82,7 +82,7 @@ const FAQS = [
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
-    answer: 'Nein. Wir helfen bei TFN-Anträgen, ABN-Registrierungen, Steuererklärungen, Super-Auszahlungen (DASP) und Medicare Levy-Befreiungen - also bei allem, was du als Working Holiday Maker brauchst.',
+    answer: 'Nein. Wir helfen bei TFN-Anträgen, ABN-Registrierungen, Steuererklärungen, Superauszahlungen (DASP) und Medicare-Levy-Befreiungen - also bei allem, was du als Working Holiday Maker brauchst.',
   },
 ]
 
@@ -106,7 +106,7 @@ export default function GermanHomePage() {
     '@type': 'Service',
     '@id': `${SITE_URL}/de/#service`,
     name: 'Working Holiday Tax Services Australien',
-    description: 'Steuerservice für Working Holiday Visa-Inhaber in Australien.',
+    description: 'Steuerservice für Working Holiday Visainhaber in Australien.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: 'AU',
     inLanguage: 'de',
@@ -159,7 +159,7 @@ export default function GermanHomePage() {
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100 %', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
               Steuererklärung starten →
             </a>
           </div>
@@ -193,7 +193,7 @@ export default function GermanHomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom: '36px' }}>
             {[
-              { title: 'Backpacker-Steuerexperten.',       body: 'Wir machen nur Working Holiday Steuern. Deshalb wissen wir genau, wie wir das Maximum für dich rausholen.' },
+              { title: 'Backpackersteuerexperten.',       body: 'Wir machen nur Working Holiday Steuern. Deshalb wissen wir genau, wie wir das Maximum für dich rausholen.' },
               { title: 'ATO-konform.',                     body: 'Voll konform mit den ATO-Regeln, überwacht von einem registrierten Steueragenten.' },
               { title: 'Klare, einfache Hilfe.',           body: 'Keine komplizierten Begriffe. Wir führen dich Schritt für Schritt durch alles durch.' },
               { title: 'Wir kümmern uns um alles.',        body: 'Kein Papierkram, kein Stress. Wir machen alles für dich - von Anfang bis Ende.' },
@@ -335,7 +335,7 @@ export default function GermanHomePage() {
           <div className="text-center" style={{ marginTop: '8px' }}>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100 %', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
               Steuererklärung starten →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>

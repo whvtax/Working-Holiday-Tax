@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Registrierter Steueragent für Working Holiday Visa-Inhaber (Subclass 417 und 462) in Australien. TFN, Steuererklärung, Super-Auszahlung (DASP) und ABN - wir erledigen alles für dich.',
+    'Registrierter Steueragent für Working Holiday Visainhaber (Subclass 417 und 462) in Australien. TFN, Steuererklärung, Superauszahlung (DASP) und ABN - wir erledigen alles für dich.',
   keywords: [
     'Working Holiday Australien Steuer',
     'Steuererklärung Backpacker Australien',
