@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 const STORAGE_KEY = 'security-notice-dismissed'
 const AUTO_DISMISS_MS = 4000
@@ -8,6 +9,10 @@ const AUTO_DISMISS_MS = 4000
 export function SecurityNotice() {
   const [visible, setVisible] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const pathname = usePathname() || '/'
+
+  // Auto-detect language from URL (mirrors Nav.tsx logic)
+  const isGerman = pathname === '/de' || pathname.startsWith('/de/')
 
   useEffect(() => {
     setMounted(true)
@@ -40,6 +45,7 @@ export function SecurityNotice() {
       aria-live="polite"
       className="security-notice"
       data-visible={visible}
+      lang={isGerman ? 'de' : 'en'}
     >
       <div className="security-notice-inner">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
@@ -48,13 +54,17 @@ export function SecurityNotice() {
           <line x1="12" y1="18" x2="12.01" y2="18" stroke="#9A3412" strokeWidth="2" strokeLinecap="round"/>
         </svg>
         <p className="security-notice-text">
-          A registered tax agent will never ask for your <strong>myGov login details</strong>.
+          {isGerman ? (
+            <>Ein registrierter Steueragent fragt niemals nach deinen <strong>myGov-Logindaten</strong>.</>
+          ) : (
+            <>A registered tax agent will never ask for your <strong>myGov login details</strong>.</>
+          )}
         </p>
         <button
           type="button"
           onClick={handleClose}
           className="security-notice-close"
-          aria-label="Dismiss notice"
+          aria-label={isGerman ? 'Hinweis schließen' : 'Dismiss notice'}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>

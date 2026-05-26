@@ -2053,9 +2053,9 @@
    ───────────────────────────────────────────────────────────────── */
 .security-notice {
   position: fixed;
-  bottom: 20px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%) translateY(20px);
+  transform: translate(-50%, -50%) scale(0.96);
   z-index: 9999;
   max-width: calc(100vw - 24px);
   width: 460px;
@@ -2065,7 +2065,7 @@
 }
 .security-notice[data-visible="true"] {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
 }
 .security-notice-inner {
@@ -2076,8 +2076,8 @@
   background: #FEF3F0;
   border: 1.5px solid #FBD0BB;
   border-radius: 14px;
-  box-shadow: 0 12px 32px -10px rgba(154, 52, 18, 0.18),
-              0 4px 12px -4px rgba(154, 52, 18, 0.08);
+  box-shadow: 0 20px 50px -12px rgba(154, 52, 18, 0.28),
+              0 8px 20px -6px rgba(154, 52, 18, 0.14);
 }
 .security-notice-text {
   flex: 1;
@@ -2113,15 +2113,14 @@
 
 @media (max-width: 480px) {
   .security-notice {
-    bottom: 12px;
     width: auto;
     left: 12px;
     right: 12px;
-    transform: translateY(20px);
+    transform: translate(0, -50%) scale(0.96);
     max-width: none;
   }
   .security-notice[data-visible="true"] {
-    transform: translateY(0);
+    transform: translate(0, -50%) scale(1);
   }
   .security-notice-text {
     font-size: 12.5px;
