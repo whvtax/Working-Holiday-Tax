@@ -190,7 +190,7 @@ export default function GermanContactPage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{
-                fontSize: 'clamp(28px,5vw,46px)',
+                fontSize: 'clamp(24px,5vw,46px)',
                 lineHeight: 1.1,
                 letterSpacing: '-0.03em',
                 marginBottom: '14px',

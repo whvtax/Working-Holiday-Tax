@@ -110,7 +110,7 @@ const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can prepare your working holiday tax return correctly.' },
   { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple, even from overseas.' },
   { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your tax return directly with the ATO.' },
-  { n: '4', title: 'Receive your refund',           body: 'Your tax refund is paid into your nominated Australian bank account, usually within 7-14 days.' },
+  { n: '4', title: 'Get your assessment',           body: 'Once your tax return is processed by the ATO, any refund you are owed is paid into your nominated Australian bank account, usually within 7-14 days.' },
 ]
 
 const TESTIMONIALS = [
@@ -159,9 +159,51 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/tax-return#service',
+  name: 'Working Holiday Tax Return Service',
+  serviceType: 'Tax return preparation and lodgement',
+  description: 'Australian tax return preparation and lodgement for 417 and 462 working holiday visa holders. Prepared and lodged with the ATO under the supervision of a registered tax agent.',
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
+  inLanguage: 'en-AU',
+}
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to lodge a working holiday tax return in Australia',
+  description: 'Step-by-step process for working holiday makers to lodge their Australian tax return with the ATO, from Australia or overseas.',
+  totalTime: 'P14D',
+  inLanguage: 'en-AU',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://workingholidaytax.com.au/tax-return#webpage',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.hero-sub'],
+  },
+  url: 'https://workingholidaytax.com.au/tax-return',
+}
+
 export default function TaxReturnPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}

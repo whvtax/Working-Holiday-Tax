@@ -110,9 +110,35 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/medicare#service',
+  name: 'Medicare Levy Exemption Service for Working Holiday Makers',
+  serviceType: 'Medicare levy exemption claim',
+  description: 'Medicare levy exemption claim handled as part of your working holiday tax return. For 417 and 462 visa holders not covered by Medicare.',
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) not covered by Medicare' },
+  inLanguage: 'en-AU',
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://workingholidaytax.com.au/medicare#webpage',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.hero-sub'],
+  },
+  url: 'https://workingholidaytax.com.au/medicare',
+}
+
 export default function MedicarePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 

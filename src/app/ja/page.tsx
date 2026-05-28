@@ -122,7 +122,7 @@ const STEPS = [
   { n: '1', title: 'ご相談・状況の確認',     body: 'TFN、ABN、ワーホリ タックスリターン、スーパー受取など、必要なサービスを最初にご案内します。' },
   { n: '2', title: '必要書類のご準備',       body: 'シンプルなチェックリストに沿って情報をお送りいただくだけ。複雑な書類作業は不要です。' },
   { n: '3', title: '当社が手続きを代行',     body: '登録税理士が、書類作成からATO（オーストラリア税務署）への申請まですべて代行します。' },
-  { n: '4', title: '還付金をお受け取り',     body: '還付金は、ご指定のオーストラリアの銀行口座へ直接お振り込みします。' },
+  { n: '4', title: 'ATOからの結果通知',     body: 'ATOによるタックスリターン処理が完了次第、還付金が発生する場合はご指定のオーストラリアの銀行口座へ直接お振り込みします。' },
 ]
 
 const SERVICES = [
@@ -336,14 +336,23 @@ export default function JapaneseHomePage() {
 
           <h1 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(22px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-            <span style={{ display: 'block' }}>オーストラリアの</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン還付金、</span>
-            <span style={{ display: 'block' }}>おまかせください。</span>
+            {/* Desktop */}
+            <span className="hidden lg:block">
+              <span style={{ display: 'block' }}>オーストラリアの</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン、</span>
+              <span style={{ display: 'block' }}>おまかせください。</span>
+            </span>
+            {/* Mobile */}
+            <span className="lg:hidden">
+              <span style={{ display: 'block' }}>ワーホリ向け</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン</span>
+            </span>
           </h1>
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            <span style={{ whiteSpace: 'nowrap' }}>417・462ビザ</span>のワーキングホリデーメーカー専門の税務サポート。<br />TFN・ABN・タックスリターン・スーパー
+            <span className="hidden lg:inline"><span style={{ whiteSpace: 'nowrap' }}>417・462ビザ</span>のワーキングホリデーメーカー専門の税務サポート。<br />TFN・ABN・タックスリターン・スーパー</span>
+            <span className="lg:hidden">TFN・ABN・タックスリターン・スーパー</span>
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">

@@ -109,7 +109,7 @@ const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: "TFN, ABN, working holiday tax return, super - we will guide you from the start." },
   { n: '2', title: 'Send your details in minutes',  body: 'Quick checklist, no complicated forms or paperwork.' },
   { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your return with the ATO.' },
-  { n: '4', title: 'Get your money back',           body: 'Your tax refund is paid straight into your Australian bank account.' },
+  { n: '4', title: 'Get your assessment',           body: 'Once the ATO processes your return, any refund you are owed is paid straight into your Australian bank account.' },
 ]
 
 const SERVICES = [
@@ -279,13 +279,24 @@ export default function HomePage() {
 
           <h1 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(22px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-            <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Working holiday tax refund?</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>We have got you covered.</span>
+            {/* Desktop H1 */}
+            <span className="hidden lg:block">
+              <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Working holiday tax return?</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>We have got you covered.</span>
+            </span>
+            {/* Mobile H1 */}
+            <span className="lg:hidden">
+              <span style={{ display: 'block' }}>Tax return for</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>working holiday makers</span>
+            </span>
           </h1>
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>.<br />TFN, ABN, tax return &amp; super
+            {/* Desktop sub-copy */}
+            <span className="hidden lg:inline">Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>.<br />TFN, ABN, tax return &amp; super</span>
+            {/* Mobile sub-copy */}
+            <span className="lg:hidden">TFN, ABN, tax return &amp; super</span>
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">

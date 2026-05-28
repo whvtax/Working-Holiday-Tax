@@ -97,9 +97,54 @@ const breadcrumbSchema = {
   ],
 }
 
+// Service schema - signals what we offer
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/tfn#service',
+  name: 'TFN Application Service for Working Holiday Makers',
+  serviceType: 'Tax File Number application',
+  description: 'TFN application service for 417 and 462 working holiday visa holders, prepared and submitted under the supervision of a registered tax agent.',
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
+  inLanguage: 'en-AU',
+}
+
+// HowTo schema - rich step-by-step result in Google
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to apply for a TFN as a working holiday maker',
+  description: 'Step-by-step process to apply for a Tax File Number in Australia as a working holiday visa holder.',
+  totalTime: 'P28D',
+  inLanguage: 'en-AU',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
+}
+
+// Speakable - cues Google Assistant for voice answers
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://workingholidaytax.com.au/tfn#webpage',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.hero-sub'],
+  },
+  url: 'https://workingholidaytax.com.au/tfn',
+}
+
 export default function TFNPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}

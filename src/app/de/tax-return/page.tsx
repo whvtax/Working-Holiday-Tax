@@ -106,7 +106,7 @@ const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Einkommens- und Arbeitsdaten, damit wir deine Working Holiday Steuererklärung korrekt vorbereiten können.' },
   { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Gehaltsabrechnungen und Basisinfos — schnell und einfach, auch aus dem Ausland.' },
   { n: '3', title: 'Wir kümmern uns um alles',  body: 'Ein registrierter Steueragent reicht deine Steuererklärung direkt beim ATO ein.' },
-  { n: '4', title: 'Deine Rückzahlung kommt',           body: 'Deine Steuerrückerstattung wird innerhalb von 7-14 Tagen auf dein australisches Bankkonto überwiesen.' },
+  { n: '4', title: 'Dein Bescheid kommt',           body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung innerhalb von 7-14 Tagen auf dein australisches Bankkonto überwiesen.' },
 ]
 
 const TESTIMONIALS = [

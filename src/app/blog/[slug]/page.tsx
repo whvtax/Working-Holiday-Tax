@@ -306,11 +306,50 @@ export default function GuidePage({ params }: Props) {
     },
   }
 
+  // HowTo schema - only emitted for actual step-by-step guides.
+  // Detects "How to" titles and extracts numbered/listed steps from the body.
+  const isHowToGuide = /^how to /i.test(guide.title)
+  let howToLd: object | null = null
+  if (isHowToGuide) {
+    const stepMatches: { name: string; text: string }[] = []
+    // Match markdown numbered list items at start of line: "1. Step text"
+    const numberedRe = /^\s*(\d+)\.\s+\*?\*?([^*\n]+?)\*?\*?(?:\.|\:|$)/gm
+    let m: RegExpExecArray | null
+    while ((m = numberedRe.exec(guide.body)) !== null && stepMatches.length < 10) {
+      const text = m[2].trim()
+      if (text.length > 8 && text.length < 200) {
+        stepMatches.push({
+          name: `Step ${m[1]}`,
+          text: text,
+        })
+      }
+    }
+    if (stepMatches.length >= 3) {
+      howToLd = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: guide.title,
+        description: guide.description,
+        totalTime: `PT${readTime}M`,
+        inLanguage: 'en-AU',
+        step: stepMatches.map((s, i) => ({
+          '@type': 'HowToStep',
+          position: i + 1,
+          name: s.name,
+          text: s.text,
+        })),
+      }
+    }
+  }
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      {howToLd && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToLd) }} />
+      )}
       {faqLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       )}

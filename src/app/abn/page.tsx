@@ -101,9 +101,51 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/abn#service',
+  name: 'ABN Registration Service for Working Holiday Makers',
+  serviceType: 'Australian Business Number registration',
+  description: 'ABN registration service for 417 and 462 working holiday visa holders working as contractors or sole traders, prepared and submitted under the supervision of a registered tax agent.',
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) - Contractors and sole traders' },
+  inLanguage: 'en-AU',
+}
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to register for an ABN as a working holiday maker',
+  description: 'Step-by-step process to register an Australian Business Number for contractor or sole-trader work on a working holiday visa.',
+  totalTime: 'PT15M',
+  inLanguage: 'en-AU',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://workingholidaytax.com.au/abn#webpage',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.hero-sub'],
+  },
+  url: 'https://workingholidaytax.com.au/abn',
+}
+
 export default function ABNPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}

@@ -100,7 +100,7 @@ const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super — wir helfen dir von Anfang an weiter.' },
   { n: '2', title: 'Schick uns deine Daten',         body: 'Kurze Checkliste, keine komplizierten Formulare oder Papierkram.' },
   { n: '3', title: 'Wir kümmern uns um alles',       body: 'Ein registrierter Steueragent bereitet alles vor und reicht es beim ATO ein.' },
-  { n: '4', title: 'Dein Geld kommt zurück',         body: 'Deine Steuerrückerstattung landet direkt auf deinem australischen Bankkonto.' },
+  { n: '4', title: 'Dein Bescheid kommt',            body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung direkt auf dein australisches Bankkonto überwiesen.' },
 ]
 
 const SERVICES = [
@@ -304,13 +304,22 @@ export default function GermanHomePage() {
 
           <h1 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(22px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-            <span style={{ display: 'block' }}>Steuerrückerstattung Australien?</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>Wir kümmern uns drum.</span>
+            {/* Desktop */}
+            <span className="hidden lg:block">
+              <span style={{ display: 'block' }}>Steuererklärung Australien?</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>Wir kümmern uns drum.</span>
+            </span>
+            {/* Mobile */}
+            <span className="lg:hidden">
+              <span style={{ display: 'block' }}>Steuererklärung für</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>Working Holiday Maker</span>
+            </span>
           </h1>
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            Steuerexperten für Working Holiday Maker auf <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 Visum</span>.<br />TFN, ABN, Steuererklärung &amp; Super
+            <span className="hidden lg:inline">Steuerexperten für Working Holiday Maker auf <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 Visum</span>.<br />TFN, ABN, Steuererklärung &amp; Super</span>
+            <span className="lg:hidden">TFN, ABN, Steuererklärung &amp; Super</span>
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">

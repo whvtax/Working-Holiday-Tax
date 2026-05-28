@@ -20,9 +20,9 @@ export const guides: Guide[] = [
  // ─── TFN ───────────────────────────────────────────────────────────────────
  {
  slug: "what-is-a-tfn",
- title: "What is a TFN and why do you need one in Australia?",
+ title: "What is a TFN? Tax File Number guide for working holiday makers in Australia",
  description:
- "A Tax File Number is the first thing you need when you start working in Australia. Without one, your employer must withhold nearly half your pay.",
+ "A Tax File Number (TFN) is your personal tax ID in Australia. What it is, why working holiday makers on 417 and 462 visas need one, and how it affects your pay and tax return.",
  category: "TFN",
  date: "1 July 2024",
  readTime: 5,
@@ -82,9 +82,9 @@ Any tax overpaid before your TFN was on file can be reclaimed when you lodge you
  },
  {
  slug: "how-to-apply-for-a-tfn",
- title: "How to apply for a TFN as a working holiday maker",
+ title: "How to apply for a TFN in Australia (working holiday maker guide)",
  description:
- "Applying for a TFN in Australia is straightforward and free. Here is exactly how to do it as a working holiday visa holder.",
+ "Step-by-step guide to applying for a Tax File Number (TFN) as a working holiday maker on a 417 or 462 visa. Application process, ID required, processing time and what to do while you wait.",
  category: "TFN",
  date: "8 July 2024",
  readTime: 4,
@@ -132,9 +132,9 @@ Each employer needs their own Tax File Number Declaration form. Providing your T
  },
  {
  slug: "how-long-does-it-take-to-get-a-tfn",
- title: "How long does it take to get a TFN in Australia?",
+ title: "How long does it take to get a TFN in Australia? (2025-26 guide)",
  description:
- "Most TFN applications are processed within 28 days. Here is what to expect and what to do while you wait.",
+ "Most TFN applications are processed within 28 days by the ATO. What working holiday makers can expect, what to check if it is taking longer, and how to work in the meantime.",
  category: "TFN",
  date: "15 July 2024",
  readTime: 4,
@@ -181,9 +181,9 @@ Your TFN is also required to lodge your [tax return](/tax-return) and access you
  },
  {
  slug: "can-you-start-work-without-a-tfn",
- title: "Can you start work in Australia without a TFN?",
+ title: "Can you start work in Australia without a TFN? Working holiday rules explained",
  description:
- "Yes, you can start work without a TFN, but there are real financial consequences. Here is what you need to know before your first shift.",
+ "You can start a job before you receive your TFN, but tax is withheld at 45% until you provide one. What working holiday makers should know about the 28-day rule and how to avoid losing pay.",
  category: "TFN",
  date: "22 July 2024",
  readTime: 4,
@@ -222,9 +222,9 @@ If you are being paid cash in hand, the TFN question is handled differently beca
  },
  {
  slug: "what-happens-without-your-tfn",
- title: "What happens if your employer does not have your TFN?",
+ title: "Tax withheld at 45%? What happens if your employer does not have your TFN",
  description:
- "If your employer does not hold your TFN, they must withhold tax at 45%. Here is exactly what that means for your pay and how to fix it.",
+ "Without a TFN, Australian employers must withhold tax at the top marginal rate of 45%. What it means for working holiday makers, when you can claim back the overpaid tax, and how to fix it fast.",
  category: "TFN",
  date: "29 July 2024",
  readTime: 4,
@@ -269,9 +269,9 @@ If you work for more than one employer during your time in Australia, each one n
  },
  {
  slug: "tfn-vs-abn-difference",
- title: "TFN vs ABN - what is the difference and which one do you need?",
+ title: "TFN vs ABN: the difference for working holiday makers in Australia",
  description:
- "A TFN and an ABN are two different things that serve different purposes. Here is how to work out which one applies to your situation.",
+ "TFN is your personal tax ID for employment income. ABN is for self-employed or contractor work. Which one working holiday makers on 417 and 462 visas need, and when you might need both.",
  category: "TFN",
  date: "5 August 2024",
  readTime: 5,
@@ -323,9 +323,9 @@ If you are unsure which situation applies, our article on [the difference betwee
  },
  {
  slug: "apply-for-tfn-before-arriving",
- title: "Can you apply for a TFN before arriving in Australia?",
+ title: "Can you apply for a TFN before arriving in Australia? Working holiday guide",
  description:
- "Yes, in most cases you can apply for a TFN before you land in Australia. Here is how it works and what you need.",
+ "For most working holiday visa holders, you must be in Australia before applying for a TFN. What you can prepare in advance, what documents you need, and when to apply for the fastest processing.",
  category: "TFN",
  date: "12 August 2024",
  readTime: 4,
@@ -373,9 +373,9 @@ Your TFN is also required to lodge your [tax return](/tax-return) at the end of 
  },
  {
  slug: "tfn-application-delayed",
- title: "What to do if your TFN application is delayed",
+ title: "TFN application delayed in Australia? What working holiday makers can do",
  description:
- "If your TFN has not arrived after 28 days, here is what to check and how to follow up with the ATO.",
+ "If your TFN has not arrived 28 days after applying, the ATO may have flagged your application or sent it to the wrong address. How to check status, follow up, and what to ask your employer in the meantime.",
  category: "TFN",
  date: "19 August 2024",
  readTime: 4,
@@ -418,9 +418,9 @@ Yes. While you are waiting, you can continue working. Let your employer know you
  {
  slug: "do-you-need-new-tfn-second-visa",
  title:
- "Do you need a new TFN if you return to Australia on a second working holiday visa?",
+ "Do you need a new TFN for a second working holiday visa in Australia?",
  description:
- "No. Your TFN is permanent and stays with you for life. Here is what you do need to do when you return.",
+ "No. Your TFN is permanent and stays with you for life, even between visa renewals. What working holiday makers should do when returning to Australia on a 2nd or 3rd working holiday visa.",
  category: "TFN",
  date: "26 August 2024",
  readTime: 3,
@@ -467,9 +467,9 @@ Your tax obligations on your second visit work exactly the same way as the first
  },
  {
  slug: "how-to-find-lost-tfn",
- title: "How to find your TFN if you have lost or forgotten it",
+ title: "How to find your TFN if you lost or forgot it (Australia)",
  description:
- "Lost your TFN? There are several ways to find it without contacting the ATO. Here is where to look first.",
+ "Lost your TFN? Check old payslips, your income statement, prior tax returns, or your myGov account. Step-by-step guide for working holiday makers to recover their TFN without contacting the ATO.",
  category: "TFN",
  date: "2 September 2024",
  readTime: 3,
@@ -517,9 +517,9 @@ Avoid emailing your TFN to yourself in plain text or storing it in unsecured doc
  // ─── ABN ───────────────────────────────────────────────────────────────────
  {
  slug: "what-is-an-abn",
- title: "What is an ABN and do you need one on a working holiday visa?",
+ title: "What is an ABN? Australian Business Number guide for working holiday makers",
  description:
- "An ABN is required if you are working as a contractor in Australia. Here is how to know if you need one and what happens if you work without one.",
+ "An Australian Business Number (ABN) is required for working holiday makers operating as contractors or sole traders. How to know if you need one, what it does, and what happens without one.",
  category: "ABN",
  date: "9 September 2024",
  readTime: 5,
@@ -579,9 +579,9 @@ The standard working holiday maker tax rate of 15% on the first $45,000 of earni
  },
  {
  slug: "how-to-register-for-an-abn",
- title: "How to register for an ABN in Australia as a backpacker",
+ title: "How to register for an ABN in Australia (working holiday guide)",
  description:
- "Registering for an ABN is free and takes around 15 minutes online. Here is exactly how to do it as a working holiday visa holder.",
+ "Registering for an ABN is free and takes around 15 minutes online. Step-by-step guide for working holiday makers on 417 and 462 visas, what information you need, and common application pitfalls.",
  category: "ABN",
  date: "16 September 2024",
  readTime: 4,
@@ -637,9 +637,9 @@ When you finish your business activity in Australia, you should cancel your ABN.
  },
  {
  slug: "farm-work-and-abns",
- title: "Farm work and ABNs - what you need to know before you start",
+ title: "Farm work and ABNs in Australia: what working holiday makers need to know",
  description:
- "Farm work is one of the most common reasons working holiday makers need an ABN. Here is how it works and what to watch out for.",
+ "Farm work is one of the most common reasons working holiday makers register for an ABN. When you need one, when you should be an employee instead, and what to watch out for with piece-rate contracts.",
  category: "ABN",
  date: "23 September 2024",
  readTime: 5,
@@ -696,9 +696,9 @@ Keep records of every payment received and every invoice issued. Good record-kee
  {
  slug: "employee-vs-contractor-australia",
  title:
- "What is the difference between being an employee and a contractor in Australia?",
+ "Employee vs contractor in Australia: what working holiday makers need to know",
  description:
- "The distinction between employee and contractor affects your tax, your super, and your workplace rights. Here is how to tell which one you are.",
+ "The distinction between employee and contractor affects tax, super, leave and workplace rights. How working holiday makers can tell which one applies, and what to do if you have been misclassified.",
  category: "ABN",
  date: "30 September 2024",
  readTime: 5,
@@ -757,9 +757,9 @@ Yes. Many working holiday makers are employees at one job and contractors elsewh
  },
  {
  slug: "can-you-have-tfn-and-abn",
- title: "Can you have both a TFN and an ABN at the same time?",
+ title: "Can you have both a TFN and an ABN in Australia? (working holiday guide)",
  description:
- "Yes, and many working holiday makers do. Here is how the two numbers work together and when you need both.",
+ "Yes, working holiday makers can hold a TFN and an ABN at the same time, and many do. How the two numbers work together, when you need both, and how it affects your tax return.",
  category: "ABN",
  date: "7 October 2024",
  readTime: 3,
@@ -814,9 +814,9 @@ Keep clear records of both throughout the year. Save your payslips, copy every i
  },
  {
  slug: "how-to-cancel-your-abn",
- title: "How to cancel your ABN when you leave Australia",
+ title: "How to cancel your ABN when leaving Australia (working holiday makers)",
  description:
- "If you are leaving Australia and no longer running a business, you should cancel your ABN. Here is how to do it and why it matters.",
+ "If you are leaving Australia and no longer running a business, the ATO expects you to cancel your ABN. How working holiday makers can cancel online, when to do it, and why it matters for your tax return.",
  category: "ABN",
  date: "14 October 2024",
  readTime: 3,
@@ -866,9 +866,9 @@ ABN contractor work typically does not generate super contributions, but employm
  },
  {
  slug: "gst-and-abn-for-working-holiday-makers",
- title: "GST and ABN - do working holiday makers need to register for GST?",
+ title: "GST and ABN for working holiday makers: do you need to register?",
  description:
- "Most working holiday makers with an ABN do not need to register for GST. Here is how to work out whether it applies to you.",
+ "Most working holiday makers with an ABN do not need to register for GST — the threshold is $75,000 annual turnover. Exception: rideshare drivers must register regardless. How to work out if it applies to you.",
  category: "ABN",
  date: "21 October 2024",
  readTime: 4,
@@ -1312,7 +1312,7 @@ The standard deadline is 31 October following the end of the financial year, but
  date: "9 December 2024",
  readTime: 5,
  body: `
-To lodge an Australian tax return from overseas after you have left, work with a registered tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and your refund is paid to your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go through a registered tax agent.
+To lodge an Australian tax return from overseas after you have left, work with a registered tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and any refund the ATO assesses is paid into your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go through a registered tax agent.
 
 ## How do you lodge from overseas through our service?
 
@@ -1616,9 +1616,9 @@ When you lodge through us:
  // ─── SUPER ─────────────────────────────────────────────────────────────────
  {
  slug: "what-is-superannuation",
- title: "What is superannuation and are working holiday makers eligible?",
+ title: "Superannuation in Australia: working holiday maker guide (2025-26)",
  description:
- "Superannuation is Australia's compulsory retirement savings system. Working holiday makers are eligible and can claim it back when they leave.",
+ "Superannuation is Australia's compulsory retirement savings system. Working holiday makers on 417 and 462 visas earn super from employers at 12% of pay and can claim it back when leaving Australia via DASP.",
  category: "Super",
  date: "13 January 2025",
  readTime: 5,
@@ -1673,9 +1673,9 @@ See our detailed article on [how the DASP process works](/blog/what-is-dasp-supe
  },
  {
  slug: "how-much-super-should-employer-pay",
- title: "How much super should your employer be paying you?",
+ title: "How much super should your employer pay in Australia? (12% in 2025-26)",
  description:
- "From 1 July 2025, employers must contribute 12% of your earnings to your super fund. Here is how to check you are getting what you are owed.",
+ "From 1 July 2025, Australian employers must contribute 12% of your ordinary earnings to your super fund. How working holiday makers can check what is owed and what to do if your employer is short.",
  category: "Super",
  date: "20 January 2025",
  readTime: 4,
@@ -1743,9 +1743,9 @@ The more complete the records, the easier the recovery process.
  },
  {
  slug: "what-is-dasp-super-withdrawal",
- title: "What is DASP and how does the super withdrawal process work?",
+ title: "DASP explained: how to claim your super back after leaving Australia",
  description:
- "DASP stands for Departing Australia Superannuation Payment. It is the official process for claiming your super back after you leave Australia.",
+ "DASP (Departing Australia Superannuation Payment) is the official ATO process for working holiday makers on 417 and 462 visas to claim their super back after leaving Australia. How it works and what to prepare.",
  category: "Super",
  date: "27 January 2025",
  readTime: 5,
@@ -1802,9 +1802,9 @@ See our article on [what tax is taken from your DASP](/blog/tax-on-super-withdra
  },
  {
  slug: "how-to-apply-for-super-back",
- title: "How to apply for your superannuation back after leaving Australia",
+ title: "How to apply for your super back after leaving Australia (DASP guide)",
  description:
- "A step-by-step walkthrough of the DASP application process, from finding your super funds to receiving the payment in your account.",
+ "Step-by-step DASP application guide for working holiday makers: finding your super funds, gathering documents, submitting to each fund, and receiving the payment in your overseas bank account.",
  category: "Super",
  date: "3 February 2025",
  readTime: 6,
@@ -1872,9 +1872,9 @@ See our article on [finding lost superannuation](/blog/how-to-find-lost-superann
  },
  {
  slug: "how-long-does-dasp-take",
- title: "How long does a DASP application take to process?",
+ title: "How long does DASP take? Super claim processing time for working holiday makers",
  description:
- "Most DASP applications are processed within 28 days. Here is what affects the timeline and what to do if yours is taking longer.",
+ "Most DASP applications are processed within 28 days. What affects the timeline, common reasons for delays, and what working holiday makers can do if their super claim is taking longer than expected.",
  category: "Super",
  date: "10 February 2025",
  readTime: 4,
@@ -1941,9 +1941,9 @@ Account currency conversion can also affect timing. If you want to receive the f
  {
  slug: "tax-on-super-withdrawal-backpacker",
  title:
- "What tax is taken from your super when you withdraw it as a backpacker?",
+ "DASP tax rate: 65% on super withdrawal for working holiday makers explained",
  description:
- "A 65% withholding tax applies to DASP payments for working holiday makers. Here is how it works and what it means for your payout.",
+ "A 65% withholding tax applies to DASP payments for working holiday makers (417 and 462 visa holders). How it is calculated, why it is higher than for other visa types, and what your net payout looks like.",
  category: "Super",
  date: "17 February 2025",
  readTime: 4,
@@ -1994,9 +1994,9 @@ The practical step is to make sure no super is left behind. Even at 65%, claimin
  },
  {
  slug: "what-happens-to-unclaimed-super",
- title: "What happens to your super if you never claim it?",
+ title: "Unclaimed super in Australia: what happens if working holiday makers never claim?",
  description:
- "Unclaimed superannuation does not disappear, but it does transfer to the ATO. Here is what happens and how to claim it back.",
+ "Unclaimed superannuation does not disappear, but six months after leaving Australia it transfers to the ATO. How working holiday makers can claim it back years later through DASP.",
  category: "Super",
  date: "24 February 2025",
  readTime: 4,
@@ -2053,9 +2053,9 @@ Claim your super. It is your money, paid on top of your wages as part of your em
  },
  {
  slug: "can-you-withdraw-super-in-australia",
- title: "Can you withdraw your super while still in Australia?",
+ title: "Can working holiday makers withdraw super while still in Australia?",
  description:
- "Generally, you cannot access your super while on a working holiday visa in Australia. Here is why, and what your options are.",
+ "Generally, no — super is preserved until retirement age, except in very limited circumstances (severe financial hardship, compassionate grounds). Why working holiday makers must wait for DASP after leaving Australia.",
  category: "Super",
  date: "3 March 2025",
  readTime: 4,
@@ -2123,9 +2123,9 @@ See our detailed article on [how to apply for DASP](/blog/how-to-apply-for-super
  },
  {
  slug: "how-to-find-lost-superannuation",
- title: "How to find lost or unclaimed superannuation in Australia",
+ title: "How to find lost super in Australia: working holiday maker tracking guide",
  description:
- "Super can end up in multiple funds or with the ATO without you realising it. Here is how to track down every dollar.",
+ "Working holiday makers often end up with super spread across multiple funds, or transferred to the ATO. How to track every dollar through myGov, ATO online services, and the super funds themselves.",
  category: "Super",
  date: "10 March 2025",
  readTime: 4,
@@ -2193,9 +2193,9 @@ If you do not have all this, that is fine. We can still find most accounts using
  },
  {
  slug: "how-to-choose-super-fund",
- title: "What is a superannuation fund and how do you choose one?",
+ title: "How to choose a super fund as a working holiday maker in Australia",
  description:
- "When you start a job in Australia, you can nominate where your super goes. Here is what a super fund is and how to choose one as a working holiday maker.",
+ "When you start a job in Australia, you can nominate where your super goes. What a super fund is, how fees affect your DASP payout, and what working holiday makers should look for when choosing.",
  category: "Super",
  date: "17 March 2025",
  readTime: 4,
@@ -2251,9 +2251,9 @@ If you have already accumulated super in multiple funds, we can help consolidate
  // ─── WORK RIGHTS ────────────────────────────────────────────────────────────
  {
  slug: "minimum-wage-australia-2025-26",
- title: "What is the minimum wage in Australia for 2025-26?",
+ title: "Minimum wage in Australia 2025-26: working holiday maker rate explained",
  description:
- "Australia has one of the highest minimum wages in the world. Here is the current rate and what it means for working holiday makers.",
+ "Australia has one of the highest minimum wages in the world. The current national minimum wage for working holiday makers, how casual loading works, and what to check on your payslip.",
  category: "Work Rights",
  date: "24 March 2025",
  readTime: 4,
@@ -2321,9 +2321,9 @@ Working holiday makers have the same rights as any other worker in Australia. Th
  },
  {
  slug: "how-many-hours-can-you-work-on-whv",
- title: "How many hours can you work per week on a working holiday visa?",
+ title: "How many hours can you work on a working holiday visa in Australia? (417 & 462)",
  description:
- "Working holiday visa holders were previously limited to 6 months with one employer. Here is what the current rules actually say.",
+ "Working holiday visa holders can work unlimited hours per week — the 6-month per-employer restriction was relaxed in 2022 for certain sectors. Current rules for 417 and 462 visa holders.",
  category: "Work Rights",
  date: "31 March 2025",
  readTime: 4,
@@ -2419,9 +2419,9 @@ If you are working long hours and unsure whether your super is being paid correc
  },
  {
  slug: "penalty-rates-australia",
- title: "What are penalty rates and are you entitled to them in Australia?",
+ title: "Penalty rates in Australia: working holiday maker entitlement guide",
  description:
- "Penalty rates are higher pay rates for working weekends, public holidays, and unsociable hours. Here is what they are and whether they apply to you.",
+ "Penalty rates are higher pay rates for working weekends, public holidays, and unsociable hours. What working holiday makers in hospitality, retail and farm work are entitled to, and how to check your payslip.",
  category: "Work Rights",
  date: "7 April 2025",
  readTime: 4,
@@ -2487,9 +2487,9 @@ Any additional income earned through penalty rates is still subject to the 15% w
  },
  {
  slug: "can-your-employer-pay-you-cash-in-hand",
- title: "Can your employer pay you cash in hand in Australia?",
+ title: "Cash-in-hand pay in Australia: working holiday maker risks and rights",
  description:
- "Cash in hand payments are common in some industries, but they come with tax obligations and rights implications. Here is what you need to know.",
+ "Cash-in-hand payments are common in some industries but come with serious tax and visa implications. What working holiday makers should know — including how to make sure tax and super are still paid.",
  category: "Work Rights",
  date: "14 April 2025",
  readTime: 4,
@@ -2559,9 +2559,9 @@ Keep these records somewhere secure. They support both your tax return and any f
  {
  slug: "fair-work-act-working-holiday-makers",
  title:
- "What is the Fair Work Act and how does it protect working holiday makers?",
+ "Fair Work Act protections for working holiday makers in Australia",
  description:
- "The Fair Work Act is Australia's main workplace relations law. Here is how it protects you as a working holiday maker.",
+ "The Fair Work Act is Australia's main workplace relations law. How it protects working holiday makers on 417 and 462 visas — minimum wage, leave, unfair dismissal, and how to raise a complaint.",
  category: "Work Rights",
  date: "21 April 2025",
  readTime: 4,
@@ -2625,9 +2625,9 @@ This means you can address workplace issues without fearing visa consequences. W
  {
  slug: "employer-not-paying-correctly",
  title:
- "What to do if your employer is not paying you correctly in Australia",
+ "Employer not paying correctly in Australia? Working holiday maker rights guide",
  description:
- "Underpayment is a serious issue in Australia. Here is what to do if you believe you are not being paid what you are owed.",
+ "Underpayment is a serious issue in Australia. How working holiday makers can check if they have been underpaid, raise it with the employer, and report to Fair Work Ombudsman if needed.",
  category: "Work Rights",
  date: "28 April 2025",
  readTime: 4,
@@ -2696,9 +2696,9 @@ We have helped working holiday makers raise complaints without any visa conseque
  {
  slug: "leave-entitlements-working-holiday-visa",
  title:
- "Are you entitled to sick leave and annual leave on a working holiday visa?",
+ "Sick leave & annual leave on a working holiday visa in Australia",
  description:
- "Working holiday makers are entitled to leave in Australia, but how much depends on how you are employed. Here is what the rules say.",
+ "Working holiday makers are entitled to leave in Australia, but the amount depends on employment type. Full-time, part-time, and casual entitlements explained for 417 and 462 visa holders.",
  category: "Work Rights",
  date: "5 May 2025",
  readTime: 4,
@@ -2761,9 +2761,9 @@ Long service leave (LSL) entitlements typically require 7-10 years with a single
  },
  {
  slug: "what-is-a-tax-invoice",
- title: "What is a tax invoice and when do you need to issue one?",
+ title: "Tax invoice in Australia: what working holiday makers with an ABN need to issue",
  description:
- "If you are working as a contractor with an ABN, you will need to issue tax invoices to get paid. Here is what a tax invoice must include.",
+ "If you are working as a contractor with an ABN in Australia, you must issue tax invoices to get paid. What a tax invoice must legally include and how to format one as a sole trader on a working holiday visa.",
  category: "Work Rights",
  date: "12 May 2025",
  readTime: 4,
@@ -2833,9 +2833,9 @@ If you are doing employee-like work but invoicing as a contractor, you may be a 
  },
  {
  slug: "can-you-work-for-multiple-employers",
- title: "Can you work for multiple employers at the same time in Australia?",
+ title: "Working for multiple employers on a working holiday visa: tax & visa rules",
  description:
- "Yes, working holiday makers can work for more than one employer simultaneously. Here is what to keep in mind for tax and visa purposes.",
+ "Yes — working holiday makers in Australia can work for more than one employer at the same time. What it means for tax (the 15% rate applies to each employer), super, and the 6-month visa rule.",
  category: "Work Rights",
  date: "19 May 2025",
  readTime: 3,
@@ -2903,9 +2903,9 @@ For tax and super purposes, multiple jobs are perfectly fine. Many working holid
  {
  slug: "full-time-part-time-casual-australia",
  title:
- "What is the difference between full time, part time, and casual work in Australia?",
+ "Full-time vs part-time vs casual in Australia: working holiday maker guide",
  description:
- "Your employment classification affects your pay rate, your leave entitlements, and your tax. Here is what each one means.",
+ "Your employment classification affects pay rates, leave entitlements, and tax. What full-time, part-time, and casual mean in Australia for working holiday makers on 417 and 462 visas.",
  category: "Work Rights",
  date: "26 May 2025",
  readTime: 4,
@@ -2979,9 +2979,9 @@ All income, regardless of classification, must be declared in your [tax return](
  // ─── MEDICARE & OTHER ────────────────────────────────────────────────────────
  {
  slug: "what-is-medicare-working-holiday-makers",
- title: "What is Medicare and are working holiday makers covered?",
+ title: "Medicare for working holiday makers in Australia: who is covered?",
  description:
- "Medicare is Australia's public health insurance system. Most working holiday makers are not covered, but there are exceptions.",
+ "Medicare is Australia's public health insurance system. Most working holiday makers on 417 and 462 visas are not covered — exceptions apply for citizens of countries with a Reciprocal Health Care Agreement.",
  category: "Medicare & Other",
  date: "2 June 2025",
  readTime: 4,
@@ -3040,9 +3040,9 @@ For more on RHCA countries and what they cover, see our article on [Medicare agr
  },
  {
  slug: "countries-with-medicare-agreement-australia",
- title: "Which countries have a Medicare agreement with Australia?",
+ title: "Reciprocal Health Care Agreement countries with Australia (full list 2025-26)",
  description:
- "Australia has Reciprocal Health Care Agreements with several countries, giving their citizens access to some Medicare benefits. Here is the full list.",
+ "Australia has Reciprocal Health Care Agreements with 11 countries (UK, Ireland, Italy, Sweden, Netherlands, Belgium, Finland, Norway, Malta, Slovenia, New Zealand). What working holiday makers from each country get.",
  category: "Medicare & Other",
  date: "9 June 2025",
  readTime: 4,
@@ -3113,9 +3113,9 @@ When we prepare your [tax return](/tax-return), we work out the correct Medicare
  },
  {
  slug: "medicare-levy-working-holiday-makers",
- title: "What is the Medicare levy and do working holiday makers pay it?",
+ title: "Medicare levy exemption for working holiday makers in Australia",
  description:
- "The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers are exempt. Here is how to claim the exemption.",
+ "The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers on 417 and 462 visas are exempt — how to claim the exemption on your tax return.",
  category: "Medicare & Other",
  date: "16 June 2025",
  readTime: 4,
@@ -3189,9 +3189,9 @@ If you lodged a previous return and paid the Medicare Levy when you should have 
  {
  slug: "tax-file-number-declaration-form",
  title:
- "What is a tax file number declaration form and how do you fill it in?",
+ "TFN declaration form: how working holiday makers complete it correctly",
  description:
- "The tax file number declaration form is what you give to your employer when you start a new job. Here is what it is and how to complete it correctly.",
+ "The TFN declaration form is what you give your employer when starting a new job in Australia. How working holiday makers should complete it — including the working holiday maker box that sets you to the 15% rate.",
  category: "Medicare & Other",
  date: "23 June 2025",
  readTime: 4,
@@ -3264,9 +3264,9 @@ If your payslip shows withholding at 45%, 30%, or any rate other than 15%, the f
  },
  {
  slug: "what-does-tax-withheld-mean-payslip",
- title: "What does tax withheld mean on your payslip in Australia?",
+ title: "Tax withheld on your Australian payslip: what working holiday makers should check",
  description:
- "Tax withheld is the income tax your employer deducts from your wages before paying you. Here is how to check it is correct.",
+ "Tax withheld is the income tax your employer deducts from your wages each pay. How to check it is correct as a working holiday maker — your rate should be 15% on the first $45,000 if your TFN is filed properly.",
  category: "Medicare & Other",
  date: "30 June 2025",
  readTime: 3,
@@ -3335,9 +3335,9 @@ Most modern payroll systems email payslips automatically. Set up an email folder
  {
  slug: "what-is-an-income-statement",
  title:
- "What is an income statement in Australia and how do you access yours?",
+ "Income statement Australia: how working holiday makers access theirs through myGov",
  description:
- "An income statement shows your total wages and tax withheld for the year. Here is how to find yours and what to do with it.",
+ "An income statement (previously called Payment Summary or Group Certificate) shows total wages and tax withheld for the financial year. How working holiday makers find theirs through myGov and use it for their tax return.",
  category: "Medicare & Other",
  date: "7 July 2025",
  readTime: 3,
@@ -3408,9 +3408,9 @@ These help us cross-check the income statement against what was actually paid, a
  },
  {
  slug: "what-is-the-ato",
- title: "What is the ATO and what does it do?",
+ title: "The ATO explained: Australian Taxation Office for working holiday makers",
  description:
- "The ATO is the Australian Taxation Office, the government agency responsible for collecting taxes. Here is what it does and when you will deal with it.",
+ "The ATO (Australian Taxation Office) is the government agency that collects tax in Australia. When working holiday makers deal with the ATO, what services it provides, and how to contact it from overseas.",
  category: "Medicare & Other",
  date: "14 July 2025",
  readTime: 3,
@@ -3481,9 +3481,9 @@ If your super was held by the ATO as unclaimed super, the ATO pays you directly.
  },
  {
  slug: "gross-pay-vs-net-pay-australia",
- title: "What is the difference between gross pay and net pay in Australia?",
+ title: "Gross pay vs net pay in Australia: working holiday maker payslip guide",
  description:
- "Gross pay is what you earn before deductions. Net pay is what you actually receive. Here is how the two relate to your tax situation.",
+ "Gross pay is what you earn before deductions. Net pay (take-home) is what hits your bank account. How working holiday makers can use this to check your tax is being withheld correctly at the 15% rate.",
  category: "Medicare & Other",
  date: "21 July 2025",
  readTime: 3,
@@ -3545,9 +3545,9 @@ If the figures do not match, raise it with your employer. The discrepancy may be
  },
  {
  slug: "do-working-holiday-makers-pay-tax-on-tips",
- title: "Do working holiday makers need to pay tax on tips in Australia?",
+ title: "Tax on tips in Australia: do working holiday makers declare them?",
  description:
- "Yes, tips received as part of your employment in Australia are taxable income. Here is how they are treated and what you need to declare.",
+ "Yes — tips received as part of employment in Australia are taxable income, whether cash or electronic. How working holiday makers should record and declare tips on their tax return.",
  category: "Medicare & Other",
  date: "28 July 2025",
  readTime: 3,
@@ -3609,9 +3609,9 @@ The specifics depend on your award and how the employer classifies the tips. If 
  {
  slug: "tax-obligations-after-leaving-australia",
  title:
- "What happens to your Australian tax obligations after you leave the country?",
+ "Australian tax obligations after leaving: working holiday maker guide",
  description:
- "Leaving Australia does not end your tax obligations there. Here is what you still need to do after you depart.",
+ "Leaving Australia does not end your tax obligations. Final tax return, DASP super claim, ABN cancellation — what working holiday makers must do after departing to stay compliant with the ATO.",
  category: "Medicare & Other",
  date: "4 August 2025",
  readTime: 4,
@@ -3757,9 +3757,9 @@ Specific advice is worthwhile if any of the following apply:
  // ─── NEW: TFN ──────────────────────────────────────────────────────────────
  {
  slug: "how-to-update-address-with-ato",
- title: "How to update your address with the ATO in Australia",
+ title: "How to update your address with the ATO (working holiday guide)",
  description:
- "If you move around Australia, keeping your address up to date with the ATO is important. Your TFN letter and any tax correspondence goes to the address on file.",
+ "If you move around Australia, keep your address current with the ATO. Your TFN letter, income statement and tax correspondence go to the address on file. How working holiday makers can update via myGov or by phone.",
  category: "TFN",
  date: "18 August 2025",
  readTime: 3,
@@ -3973,9 +3973,9 @@ Keep your Australian bank account open for at least 4-6 weeks after lodgment to 
  {
  slug: "super-for-casual-and-part-time-workers",
  title:
- "Are casual and part-time workers entitled to superannuation in Australia?",
+ "Super for casual and part-time work: working holiday maker entitlements in Australia",
  description:
- "Yes. Casual and part-time workers are entitled to superannuation in Australia regardless of how many hours they work, as long as they meet the earnings threshold.",
+ "Yes. Casual and part-time working holiday makers are entitled to superannuation regardless of hours worked. How the 12% rate applies, and what to do if your employer skips super contributions.",
  category: "Super",
  date: "8 September 2025",
  readTime: 4,
@@ -4051,9 +4051,9 @@ When we manage your super and lodge your DASP claim, complete records make the p
  {
  slug: "employer-asking-you-to-work-more-than-visa-allows",
  title:
- "What to do if your employer asks you to work more hours than your visa allows",
+ "Employer pressuring you to breach visa hours? Working holiday rights guide",
  description:
- "Working more than your visa allows can put your visa at risk. Here is what the rules say and what to do if your employer is pressuring you to breach them.",
+ "Working more than your visa allows can put your visa at risk. What the rules say for 417 and 462 visa holders, and what to do if your employer is pressuring you to breach them.",
  category: "Work Rights",
  date: "15 September 2025",
  readTime: 4,
@@ -4170,9 +4170,9 @@ Our team handles tax returns for working holiday makers in all employment config
  {
  slug: "farm-work-rights-working-holiday-australia",
  title:
- "Your work rights during farm work in Australia on a working holiday visa",
+ "Farm work rights in Australia for working holiday makers (417 & 462)",
  description:
- "Farm work is one of the most common jobs for working holiday makers. Here is what you are legally entitled to, including pay rates, conditions, and protections.",
+ "Farm work is one of the most common jobs for working holiday makers. What you are legally entitled to — pay rates, conditions, accommodation rules, and how 88-day specified work counts toward your 2nd visa.",
  category: "Work Rights",
  date: "22 September 2025",
  readTime: 5,
@@ -4252,9 +4252,9 @@ Many farm employers skip super for working holiday makers. Our team can recover 
  {
  slug: "what-is-superannuation-guarantee-charge",
  title:
- "What is the Superannuation Guarantee Charge and what does it mean for you?",
+ "SGC explained: when Australian employers underpay super for working holiday makers",
  description:
- "If your employer fails to pay your super correctly, the ATO can charge them the Superannuation Guarantee Charge. Here is how it works and what it means for your super.",
+ "If your Australian employer fails to pay your super correctly, the ATO can charge them the Superannuation Guarantee Charge. What this means for working holiday makers and how unpaid super is recovered.",
  category: "Medicare & Other",
  date: "29 September 2025",
  readTime: 4,
@@ -4341,9 +4341,9 @@ If you cannot find all of these, we work with what you have. Even partial record
  {
  slug: "tfn-reference-number-before-tfn-arrives",
  title:
- "What is a TFN reference number and can you work before your TFN arrives?",
+ "TFN reference number: can working holiday makers work while waiting for the TFN?",
  description:
- "You applied for your TFN but it has not arrived yet. Here is what a reference number is, how to use it, and what your employer needs to know.",
+ "You applied for your TFN but it has not arrived. The TFN reference number lets working holiday makers start working at the correct rate during the 28-day wait. How to get it and use it with your employer.",
  category: "TFN" as const,
  date: "6 October 2025",
  readTime: 4,
@@ -4407,9 +4407,9 @@ Once your TFN is issued, the reference number becomes irrelevant. But in the wee
  {
  slug: "tax-free-threshold-working-holiday-visa",
  title:
- "Can working holiday makers claim the tax-free threshold in Australia?",
+ "Tax-free threshold and the working holiday visa: why it does not apply (and the trap)",
  description:
- "The tax-free threshold sounds like it would save you money. For working holiday makers, claiming it actually creates a tax debt. Here is why.",
+ "The Australian tax-free threshold sounds like it would save you money. For working holiday makers on 417 and 462 visas, claiming it actually creates a tax debt. Why this happens and how to fix your TFN declaration.",
  category: "TFN" as const,
  date: "13 October 2025",
  readTime: 4,
@@ -4469,9 +4469,9 @@ Every payslip will then reflect the correct 15% rate, and there will be no surpr
  {
  slug: "white-card-australia-working-holiday",
  title:
- "What is a White Card and do you need one on a working holiday visa?",
+ "White Card Australia: construction certificate for working holiday makers",
  description:
- "If you want to work in construction in Australia, you need a White Card before your first day on site. Here is what it is, how to get it, and what it costs.",
+ "Working in construction in Australia requires a White Card before your first day on site. What the course covers, what it costs (around $40-$120), how long it takes, and where to do it as a working holiday maker.",
  category: "Work Rights" as const,
  date: "20 October 2025",
  readTime: 4,
@@ -4555,9 +4555,9 @@ Our team includes these training costs when we prepare your return. If you have 
  {
  slug: "rsa-certificate-australia-working-holiday",
  title:
- "What is an RSA certificate and do you need one to work in hospitality in Australia?",
+ "RSA certificate Australia: hospitality requirement for working holiday makers",
  description:
- "Working in a bar, pub, or bottle shop in Australia requires an RSA certificate. Here is what the course involves, what it costs, and how to get one as a working holiday maker.",
+ "Working in a bar, pub, or bottle shop in Australia requires an RSA (Responsible Service of Alcohol) certificate. What the course involves, what it costs by state, and how to get one as a working holiday maker.",
  category: "Work Rights" as const,
  date: "27 October 2025",
  readTime: 4,
@@ -4643,9 +4643,9 @@ When we prepare your return, we include training certifications among your deduc
  {
  slug: "wwcc-working-with-children-check-australia",
  title:
- "What is a Working With Children Check and do you need one on a working holiday visa?",
+ "Working With Children Check (WWCC) for working holiday makers in Australia",
  description:
- "If you want to work with children in Australia, a WWCC is required before you start. Here is what it involves, how long it takes, and how to apply as a working holiday maker.",
+ "Working with children in Australia requires a WWCC (Working With Children Check) before you start. What it involves, application processing time, and how working holiday makers can apply state by state.",
  category: "Work Rights" as const,
  date: "3 November 2025",
  readTime: 4,
@@ -4731,9 +4731,9 @@ If you need help understanding what is required for your specific situation, [ge
  {
  slug: "public-holidays-australia-working-holiday",
  title:
- "Public holidays in Australia: what working holiday makers need to know",
+ "Public holidays in Australia: pay rates for working holiday makers",
  description:
- "Public holidays in Australia come with higher pay rates and different rules depending on your employment type. Here is everything working holiday makers need to know.",
+ "Public holidays in Australia come with penalty pay rates and different rules depending on employment type. Full list of national & state public holidays and what working holiday makers are entitled to.",
  category: "Work Rights" as const,
  date: "10 November 2025",
  readTime: 5,
@@ -4827,9 +4827,9 @@ If your pay does not reflect the correct public holiday rate, [get in touch with
  },
  {
  slug: "casual-shift-cancellation-rules-australia",
- title: "Can your employer cancel your casual shift in Australia?",
+ title: "Can your employer cancel a casual shift in Australia? Working holiday rights",
  description:
- "As a casual worker in Australia, your shifts can be cancelled, but your employer must follow specific rules. Here is what the law says and what you are entitled to.",
+ "As a casual worker in Australia, shifts can be cancelled — but employers must follow specific rules. Notice requirements, minimum payment entitlements, and what working holiday makers can do about repeated cancellations.",
  category: "Work Rights" as const,
  date: "17 November 2025",
  readTime: 4,
@@ -4918,9 +4918,9 @@ The more complete the records, the easier the recovery.
  {
  slug: "six-month-employer-rule-working-holiday-visa",
  title:
- "The 6-month rule: how long can you work for the same employer on a working holiday visa?",
+ "6-month employer rule on working holiday visa: 417 & 462 limits explained",
  description:
- "Working holiday visa holders are limited to six months with the same employer. Here is what the rule means, what counts as the same employer, and what exceptions exist.",
+ "Working holiday visa holders are limited to 6 months with the same employer (with exceptions). What counts as the same employer, which sectors are exempt, and when you need to request permission.",
  category: "Work Rights" as const,
  date: "24 November 2025",
  readTime: 5,
@@ -5034,9 +5034,9 @@ If you are unsure whether your work qualifies for an exemption, [get in touch wi
  // ─── GENERAL / PRACTICAL - NEW ────────────────────────────────────────────
  {
  slug: "opening-bank-account-australia-working-holiday",
- title: "How to open a bank account in Australia as a working holiday maker",
+ title: "How to open an Australian bank account as a working holiday maker",
  description:
- "You need an Australian bank account before your first pay arrives. Here is which banks to consider, what documents you need, and when to close the account before you leave.",
+ "Working holiday makers need an Australian bank account before their first pay arrives. Which banks accept WHV applicants, what documents you need (passport, visa, address), and when to close before leaving.",
  category: "Medicare & Other" as const,
  date: "1 December 2025",
  readTime: 5,
@@ -5130,9 +5130,9 @@ Any communication asking you to click a link and enter banking information is a 
  {
  slug: "trs-tourist-refund-scheme-australia",
  title:
- "The Tourist Refund Scheme: how to claim GST back on purchases before leaving Australia",
+ "TRS Tourist Refund Scheme: claim 10% GST back when leaving Australia",
  description:
- "If you bought goods in Australia worth $300 or more, you may be able to claim back the 10% GST before you fly home. Here is how the TRS works and what you need to claim.",
+ "If you bought goods in Australia worth $300+ in one transaction, you can claim back the 10% GST at the airport before flying home. How the Tourist Refund Scheme works for working holiday makers leaving Australia.",
  category: "Medicare & Other" as const,
  date: "8 December 2025",
  readTime: 5,
@@ -5332,11 +5332,11 @@ The sequence to follow:
 1. Lodge your Australian [tax return](/tax-return) (our team handles this)
 2. Apply for your [superannuation withdrawal](/blog/what-is-dasp-super-withdrawal) through DASP
 3. Cancel any [ABN](/abn) you registered
-4. Wait for your tax refund and super payment to arrive in your Australian account
+4. Wait for any tax refund and your super payment to arrive in your Australian account
 5. Transfer everything home
 6. Close your Australian bank account
 
-Skipping or reordering these steps creates complications. Closing your bank account too early is the most common mistake - your tax refund and super payment then have nowhere to go.
+Skipping or reordering these steps creates complications. Closing your bank account too early is the most common mistake - any tax refund and your super payment then have nowhere to go.
 
 ## What about money you brought into Australia?
 
@@ -5356,9 +5356,9 @@ What is taxable is everything you earned in Australia during your stay. The dist
  {
  slug: "vehicle-logbook-abn-working-holiday",
  title:
- "Vehicle expenses and logbooks for working holiday makers with an ABN",
+ "Vehicle logbook for ABN income: working holiday makers' deduction guide",
  description:
- "If you use a car for work under your ABN, you may be able to claim vehicle expenses as a tax deduction. Here is how the logbook method works and what you need to record.",
+ "If you use a car for work under your ABN, you may be able to claim vehicle expenses as a tax deduction. How the logbook method works for working holiday makers, what to record, and the 12-week minimum.",
  category: "ABN" as const,
  date: "22 December 2025",
  readTime: 5,
@@ -5471,9 +5471,9 @@ The Sydney-to-Cairns road trip is personal. The drive from your hostel to a farm
  {
  slug: "small-business-tax-offset-working-holiday-abn",
  title:
- "What is the small business tax offset and can working holiday makers claim it?",
+ "Small business tax offset: can working holiday makers with an ABN claim it?",
  description:
- "If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset - a tax reduction of up to $1,000. Here is how it works.",
+ "If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset — a tax reduction of up to $1,000. How working holiday makers can claim it on their tax return.",
  category: "ABN" as const,
  date: "29 December 2025",
  readTime: 4,
@@ -5553,9 +5553,9 @@ If you have already lodged a return without claiming the offset, we can amend th
  {
  slug: "sole-trader-vs-company-australia-working-holiday",
  title:
- "Sole trader vs company in Australia: what is the difference for working holiday makers?",
+ "Sole trader vs company in Australia: the right structure for working holiday makers",
  description:
- "Most working holiday makers operate as sole traders, but understanding the difference between a sole trader and a company helps you make informed decisions about your business structure.",
+ "Most working holiday makers operate as sole traders, but understanding the difference between a sole trader and a company helps you choose the right business structure for your income and tax situation.",
  category: "ABN" as const,
  date: "5 January 2026",
  readTime: 5,
@@ -5667,9 +5667,9 @@ For working holiday makers, sole trader is the simple, correct answer in almost 
  {
  slug: "profit-loss-vs-personal-services-income-australia",
  title:
- "What is the difference between a profit and loss business and personal services income in Australia?",
+ "Personal Services Income (PSI) vs business income: ABN rules for working holiday makers",
  description:
- "The ATO distinguishes between personal services income and genuine business income. For working holiday makers with an ABN, understanding this distinction can affect your tax.",
+ "The ATO distinguishes between personal services income (PSI) and genuine business income. For working holiday makers with an ABN, getting this right affects what deductions you can claim and your tax return.",
  category: "ABN" as const,
  date: "12 January 2026",
  readTime: 5,
@@ -6161,9 +6161,9 @@ We apply for penalty remission when warranted. Even if not all penalties are rem
  {
  slug: "piece-rates-farm-work-working-holiday",
  title:
- "Piece rates in farm work: how are working holiday makers paid for harvest work?",
+ "Piece rates in farm work: pay rules for working holiday makers in Australia",
  description:
- "Piece rates are common in fruit picking and harvest work in Australia. Here is how they work, what the minimum pay rules are, and what to do if you are underpaid.",
+ "Piece rates are common in fruit picking and harvest work in Australia. How piece-rate pay works, the 2022 minimum-wage floor change, and what working holiday makers can do if underpaid.",
  category: "Work Rights" as const,
  date: "16 February 2026",
  readTime: 5,
@@ -6250,9 +6250,9 @@ If you are working as an employee (not under an [ABN](/abn)), all of this should
  {
  slug: "labour-hire-agencies-working-holiday-australia",
  title:
- "Labour hire agencies in Australia: what working holiday makers need to know",
+ "Labour hire agencies for working holiday makers in Australia: rights & risks",
  description:
- "Labour hire agencies are a popular way to find work quickly in Australia. Here is how they work, what your rights are, and what to watch out for before signing up.",
+ "Labour hire agencies are a popular way to find work quickly in Australia, especially for farm work and construction. How they work, your rights as a labour-hire worker, and warning signs to avoid.",
  category: "Work Rights" as const,
  date: "23 February 2026",
  readTime: 5,
@@ -6358,9 +6358,9 @@ If an agency seems evasive about basic details, that is a warning sign.
  },
  {
  slug: "how-to-read-a-payslip-australia-working-holiday",
- title: "How to read a payslip in Australia as a working holiday maker",
+ title: "How to read an Australian payslip: working holiday maker guide (2025-26)",
  description:
- "Your payslip contains everything you need to know about whether you are being paid correctly. Here is what each section means and what to check every pay cycle.",
+ "Your payslip contains everything you need to know about whether you are being paid correctly. What each section means — gross pay, PAYG, super, leave — and what working holiday makers should check every pay cycle.",
  category: "Work Rights" as const,
  date: "2 March 2026",
  readTime: 5,
@@ -6485,9 +6485,9 @@ This is one of the strongest signs of an unreliable employer. Take the records y
  {
  slug: "wage-theft-working-holiday-australia",
  title:
- "Wage theft in Australia: what working holiday makers can do if they are underpaid",
+ "Wage theft in Australia: recovery guide for working holiday makers",
  description:
- "Wage theft is unfortunately common in industries popular with backpackers. Here is how to recognise it, what your options are, and how to recover what you are owed.",
+ "Wage theft is unfortunately common in industries popular with backpackers. How to recognise underpayment, calculate what you are owed, and recover wages through Fair Work Ombudsman as a working holiday maker.",
  category: "Work Rights" as const,
  date: "9 March 2026",
  readTime: 5,
@@ -6701,9 +6701,9 @@ When you lodge through our service:
  {
  slug: "how-to-check-super-balance-working-holiday",
  title:
- "How to check your superannuation balance as a working holiday maker",
+ "How to check your super balance in Australia: working holiday maker guide",
  description:
- "Knowing how much super you have accumulated is important - especially before you leave Australia. Here is how to track your balance and make sure your employer is paying correctly.",
+ "Knowing how much super you have accumulated matters — especially before leaving Australia. How working holiday makers can track their balance through myGov, super fund apps, and confirm employer contributions.",
  category: "Super" as const,
  date: "23 March 2026",
  readTime: 4,
@@ -6827,9 +6827,9 @@ Even with partial information, we can usually locate every account through the A
 // ─── TFN ──────────────────────────────────────────────────────────────────
  {
  slug: "tfn-application-rejected",
- title: "What to do if your TFN application is rejected in Australia",
+ title: "TFN application rejected? What working holiday makers should do",
  description:
-   "TFN applications can be rejected for visa mismatches, identity issues, or incorrect details.",
+   "TFN applications can be rejected for visa mismatches, identity issues, or incorrect details. Common reasons working holiday makers get rejected and how to reapply successfully.",
  category: "TFN",
  date: "25 May 2026",
  readTime: 4,
@@ -6876,9 +6876,9 @@ A registered tax agent has a TAN (Tax Agent Number) listed on the Tax Practition
  },
  {
  slug: "tfn-identity-documents-required",
- title: "What identity documents do you need to apply for a TFN in Australia?",
+ title: "TFN application: which identity documents do working holiday makers need?",
  description:
-   "A TFN application requires specific identity documents including your passport, visa grant, and an Australian address.",
+   "A TFN application requires specific identity documents: your passport, working holiday visa grant notice, and an Australian address. Full list of what is accepted and common pitfalls to avoid.",
  category: "TFN",
  date: "25 May 2026",
  readTime: 4,
@@ -6929,9 +6929,9 @@ Never share copies of your passport, visa grant, or TFN with anyone who is not a
  },
  {
  slug: "tfn-security-protect-from-fraud",
- title: "How to protect your TFN from fraud and identity theft in Australia",
+ title: "TFN security: protecting your Tax File Number from fraud in Australia",
  description:
-   "Your TFN is one of the most valuable pieces of personal information in Australia.",
+   "Your TFN is one of the most valuable pieces of personal information in Australia. How working holiday makers can keep it safe, what to do if it is compromised, and who is allowed to see it.",
  category: "TFN",
  date: "25 May 2026",
  readTime: 5,
@@ -6987,9 +6987,9 @@ When you lodge through our service, your TFN and identity documents are handled 
  },
  {
  slug: "who-can-ask-for-your-tfn",
- title: "Who is allowed to ask for your TFN in Australia (and who is not)?",
+ title: "Who can legally ask for your TFN in Australia? (working holiday guide)",
  description:
-   "Only a short list of organisations have the legal right to ask for your Tax File Number.",
+   "Only a short list of organisations have the legal right to ask for your Tax File Number: the ATO, your employer, your bank, super fund, and Centrelink. What to do if someone else asks.",
  category: "TFN",
  date: "25 May 2026",
  readTime: 4,
@@ -7052,9 +7052,9 @@ Every registered tax agent in Australia has a Tax Agent Number (TAN) listed on t
  },
  {
  slug: "tfn-australian-address-no-fixed-address",
- title: "How to apply for a TFN when you do not have a permanent Australian address",
+ title: "How to apply for a TFN with no fixed Australian address (working holiday)",
  description:
-   "Many working holiday makers move between hostels, vans, and farm accommodation in their first weeks in Australia.",
+   "Many working holiday makers move between hostels, vans, and farm accommodation in their first weeks in Australia. How to apply for a TFN without a permanent address and where to have it sent.",
  category: "TFN",
  date: "25 May 2026",
  readTime: 4,
@@ -7100,9 +7100,9 @@ A TFN letter is a high-value document. Once it arrives, do not leave it lying ar
 // ─── ABN ──────────────────────────────────────────────────────────────────
  {
  slug: "abn-invoicing-requirements-australia",
- title: "How to write a legal tax invoice with an ABN in Australia",
+ title: "How to write a tax invoice with an ABN in Australia (legal requirements)",
  description:
-   "A tax invoice with an ABN must contain specific information to be legally valid.",
+   "A tax invoice with an ABN must contain specific information to be legally valid in Australia. Required fields, GST rules, and a working holiday maker template you can copy.",
  category: "ABN",
  date: "25 May 2026",
  readTime: 4,
@@ -7156,9 +7156,9 @@ At tax time, we reconcile every invoice you issued during the year against the i
  },
  {
  slug: "abn-deductions-business-expenses",
- title: "What business expenses can you claim with an ABN as a working holiday maker?",
+ title: "ABN business expense deductions for working holiday makers in Australia",
  description:
-   "Working holiday makers earning income under an ABN can claim work-related business expenses to reduce their taxable income.",
+   "Working holiday makers earning income under an ABN can claim work-related business expenses to reduce taxable income. Full list of what qualifies, what does not, and record-keeping rules for sole traders.",
  category: "ABN",
  date: "25 May 2026",
  readTime: 5,
@@ -7217,9 +7217,9 @@ For working holiday makers earning under an ABN, the difference between an unrev
  },
  {
  slug: "uber-doordash-rideshare-abn-working-holiday",
- title: "Working for Uber, DoorDash, or rideshare on a working holiday visa: ABN and tax rules",
+ title: "Uber, DoorDash & rideshare for working holiday makers: ABN, GST and tax",
  description:
-   "Rideshare and food delivery work is treated as contracting in Australia, which means an ABN is required and tax is not withheld automatically.",
+   "Rideshare and food delivery work is treated as contracting in Australia. Working holiday makers need an ABN (and GST registration for rideshare). How tax works when no PAYG is withheld, and what to set aside.",
  category: "ABN",
  date: "25 May 2026",
  readTime: 5,
@@ -7469,9 +7469,9 @@ A second or third year visa return is rarely just a copy of the first year retur
 // ─── SUPER ────────────────────────────────────────────────────────────────
  {
  slug: "dasp-documents-required",
- title: "What documents do you need to apply for DASP super withdrawal?",
+ title: "DASP documents required: working holiday maker checklist to claim super back",
  description:
-   "A Departing Australia Superannuation Payment (DASP) application requires specific documents to prove your visa has expired or been cancelled and your.",
+   "A DASP application requires specific documents: proof your working holiday visa is no longer active, proof you have left Australia, ID, and your super fund details. Full checklist and how to gather them.",
  category: "Super",
  date: "25 May 2026",
  readTime: 4,
@@ -7544,9 +7544,9 @@ The full process is handled end-to-end so you do not need to chase each fund ind
  },
  {
  slug: "dasp-tax-rate-65-percent-explained",
- title: "Why is DASP taxed at 65% for working holiday makers?",
+ title: "DASP 65% tax rate explained: why working holiday makers pay more on super",
  description:
-   "The Departing Australia Superannuation Payment is taxed at 65% for working holiday makers, much higher than for other visa holders.",
+   "The DASP withholding tax is 65% for working holiday makers (417 and 462 visa holders), much higher than the 35% rate for other visa types. Why this rule exists, what it applies to, and how it affects your payout.",
  category: "Super",
  date: "25 May 2026",
  readTime: 4,
@@ -7613,9 +7613,9 @@ The 65% tax is unavoidable, but the rest of the process can be made fast and cle
  },
  {
  slug: "super-multiple-funds-consolidation",
- title: "What to do if you have super in multiple funds as a working holiday maker",
+ title: "Multiple super funds: how working holiday makers can consolidate before DASP",
  description:
-   "Working holiday makers often end up with super in three or four different funds because each employer nominates a different one.",
+   "Working holiday makers often end up with super in three or four different funds because each employer nominates a different one. How to consolidate to one fund and the pros and cons before claiming DASP.",
  category: "Super",
  date: "25 May 2026",
  readTime: 4,
@@ -7683,9 +7683,9 @@ Scammers regularly target working holiday makers with offers to "consolidate you
  },
  {
  slug: "dasp-rejected-what-to-do",
- title: "What to do if your DASP super withdrawal application is rejected",
+ title: "DASP application rejected? What working holiday makers can do next",
  description:
-   "DASP applications are rejected for visa status mismatches, identity issues, or missing departure records.",
+   "DASP applications are rejected for visa status mismatches, identity issues, or missing departure records. Common reasons working holiday makers get rejected and how to fix it and resubmit.",
  category: "Super",
  date: "25 May 2026",
  readTime: 4,
@@ -7753,9 +7753,9 @@ For working holiday makers who have already left Australia, getting a rejection 
  },
  {
  slug: "super-employer-not-paying-what-to-do",
- title: "What to do if your employer has not paid your superannuation in Australia",
+ title: "Employer not paying super? What working holiday makers can do in Australia",
  description:
-   "Employers are legally required to pay superannuation at 12% of your wages.",
+   "Employers are legally required to pay superannuation at 12% of your ordinary earnings. How working holiday makers can check unpaid super through myGov, report it to the ATO, and recover what is owed.",
  category: "Super",
  date: "25 May 2026",
  readTime: 5,
@@ -7831,9 +7831,9 @@ Be cautious of anyone outside a registered tax agent offering to "chase your unp
  },
  {
  slug: "super-stapling-rule-australia",
- title: "What is super stapling and how does it affect working holiday makers in Australia?",
+ title: "Super stapling rule: how it affects working holiday makers in Australia",
  description:
-   "Super stapling links your superannuation to a single fund that follows you between employers.",
+   "Super stapling links your superannuation to a single fund that follows you between employers. How it works for working holiday makers, what to do with your first job, and how to avoid multiple-fund mess.",
  category: "Super",
  date: "25 May 2026",
  readTime: 4,
@@ -7896,9 +7896,9 @@ For working holiday makers planning to stay in Australia for the full visa perio
 // ─── WORK RIGHTS ──────────────────────────────────────────────────────────
  {
  slug: "workplace-injury-working-holiday-rights",
- title: "What are your rights if you are injured at work on a working holiday visa?",
+ title: "Injured at work on a working holiday visa? Workers compensation rights in Australia",
  description:
-   "Working holiday makers injured at work are covered by workers compensation in every Australian state, including for medical costs and lost wages.",
+   "Working holiday makers injured at work are covered by workers compensation in every Australian state, including for medical costs and lost wages. How to make a claim and what your employer must do.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -7978,9 +7978,9 @@ A workplace injury rarely affects only one part of your finances. [Get in touch 
  },
  {
  slug: "unfair-dismissal-working-holiday-australia",
- title: "Can a working holiday maker make an unfair dismissal claim in Australia?",
+ title: "Unfair dismissal claims for working holiday makers in Australia",
  description:
-   "Working holiday makers can make unfair dismissal claims through the Fair Work Commission, but eligibility depends on length of service, employer.",
+   "Working holiday makers can make unfair dismissal claims through the Fair Work Commission, but eligibility depends on length of service and employer size. Eligibility rules, time limits, and how to apply.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -8068,9 +8068,9 @@ If you have been dismissed and are uncertain about the wider financial picture, 
  },
  {
  slug: "bullying-harassment-workplace-working-holiday",
- title: "What are your options if you are bullied or harassed at work on a working holiday visa?",
+ title: "Workplace bullying & harassment: rights for working holiday makers in Australia",
  description:
-   "Bullying and sexual harassment at work are illegal in Australia and protected against by federal and state law.",
+   "Bullying and sexual harassment at work are illegal in Australia and protected against by federal and state law. What working holiday makers can do, how to report, and what protections exist.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -8168,9 +8168,9 @@ For the bullying or harassment claim itself, the Fair Work Commission, state ant
  },
  {
  slug: "unpaid-trial-shifts-australia-legal",
- title: "Are unpaid trial shifts legal in Australia for working holiday makers?",
+ title: "Unpaid trial shifts in Australia: are they legal for working holiday makers?",
  description:
-   "Unpaid trial shifts are mostly illegal in Australia.",
+   "Unpaid trial shifts are mostly illegal in Australia under Fair Work Act rules. When a brief trial is permitted, when you must be paid, and what working holiday makers can do if not paid.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 4,
@@ -8257,9 +8257,9 @@ When you lodge your [tax return](/tax-return) through our service, we identify a
  },
  {
  slug: "uniform-laundry-deductions-illegal-australia",
- title: "Are uniform and laundry deductions from your wages legal in Australia?",
+ title: "Uniform & laundry deductions from wages in Australia: legal or not?",
  description:
-   "Employers in Australia can only deduct money from your wages in narrow legal circumstances.",
+   "Employers in Australia can only deduct money from your wages in narrow legal circumstances. When uniform and laundry deductions are illegal, and how working holiday makers can recover deducted amounts.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 4,
@@ -8355,9 +8355,9 @@ When you lodge through our team, we:
 // ─── MEDICARE & OTHER ─────────────────────────────────────────────────────
  {
  slug: "uk-medicare-reciprocal-agreement-australia",
- title: "What does the UK-Australia Medicare reciprocal agreement cover for British working holiday makers?",
+ title: "UK-Australia Reciprocal Health Care Agreement: what British backpackers get",
  description:
-   "British citizens on a working holiday visa are covered by the Reciprocal Health Care Agreement between the UK and Australia, but the cover is limited.",
+   "British citizens on a working holiday visa are covered by the Reciprocal Health Care Agreement (RHCA) between the UK and Australia. What is included, what is not, and how to enrol on arrival.",
  category: "Medicare & Other",
  date: "25 May 2026",
  readTime: 5,
@@ -8448,9 +8448,9 @@ When you lodge your [tax return](/tax-return) through our service, we account fo
  },
  {
  slug: "german-european-health-insurance-australia-working-holiday",
- title: "Health insurance for German working holiday makers in Australia: what cover do you need?",
+ title: "Health insurance for German working holiday makers in Australia: what you need",
  description:
-   "Germany does not have a Reciprocal Health Care Agreement with Australia, meaning German working holiday makers are not covered by Medicare.",
+   "Germany does not have a Reciprocal Health Care Agreement with Australia, meaning German working holiday makers are not covered by Medicare. What cover you need, options, and how to enrol before travelling.",
  category: "Medicare & Other",
  date: "25 May 2026",
  readTime: 5,
@@ -8569,7 +8569,7 @@ When you lodge your [tax return](/tax-return) through our service, we account fo
  slug: "private-health-insurance-working-holiday-australia",
  title: "Do working holiday makers need private health insurance in Australia?",
  description:
-   "Private health insurance is a visa condition for many working holiday visas and a practical necessity for travellers from countries without a.",
+   "Private health insurance is a visa condition for many working holiday visas and a practical necessity for travellers from countries without a Reciprocal Health Care Agreement. What cover to look for and average costs.",
  category: "Medicare & Other",
  date: "25 May 2026",
  readTime: 4,
@@ -8674,9 +8674,9 @@ If you are uncertain about how your insurance status affects your tax, [get in t
  },
  {
  slug: "emergency-medical-care-working-holiday-no-medicare",
- title: "What to do in a medical emergency without Medicare cover in Australia",
+ title: "Emergency medical care without Medicare in Australia: what backpackers should know",
  description:
-   "Working holiday makers without Medicare cover can still receive emergency treatment in Australia, but the cost is the patient's responsibility.",
+   "Working holiday makers without Medicare cover can still receive emergency treatment in Australian public hospitals — but the cost is the patient's responsibility. Typical fees, what insurance covers, and what to expect.",
  category: "Medicare & Other",
  date: "25 May 2026",
  readTime: 5,
@@ -8794,9 +8794,9 @@ A medical emergency rarely affects only one part of your life. [Get in touch wit
  },
  {
  slug: "travel-insurance-vs-health-insurance-working-holiday",
- title: "Travel insurance vs private health insurance for working holiday makers: what is the difference?",
+ title: "Travel insurance vs private health insurance for working holiday makers",
  description:
-   "Travel insurance and Australian private health insurance cover different things.",
+   "Travel insurance and Australian private health insurance cover different things. What working holiday makers actually need, when each one applies, and why both may be worth having.",
  category: "Medicare & Other",
  date: "25 May 2026",
  readTime: 5,
@@ -8923,9 +8923,9 @@ A working holiday maker's insurance setup is a personal decision, but the tax si
 // ─── WORK RIGHTS - AWARDS ────────────────────────────────────────────────
  {
  slug: "hospitality-award-working-holiday-makers",
- title: "What is the Hospitality Award and how does it apply to working holiday makers?",
+ title: "Hospitality Award (MA000009): pay rates for working holiday makers in Australia",
  description:
-   "The Hospitality Award (MA000009) is the modern award that sets minimum pay rates, penalty rates, and conditions for most hospitality workers in.",
+   "The Hospitality Award (MA000009) sets minimum pay rates, penalty rates, and conditions for most hospitality workers in Australia. What working holiday makers in pubs, hotels and clubs should be paid.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -9022,9 +9022,9 @@ The Hospitality Award is one of the most complex modern awards in Australia and 
  },
  {
  slug: "horticulture-award-working-holiday-makers",
- title: "What is the Horticulture Award and how does it apply to farm work on a working holiday visa?",
+ title: "Horticulture Award (MA000028): farm work pay for working holiday makers",
  description:
-   "The Horticulture Award (MA000028) sets the minimum pay rates and conditions for farm work in Australia.",
+   "The Horticulture Award (MA000028) sets minimum pay rates and conditions for farm work in Australia. What working holiday makers picking fruit, harvesting, or doing 88-day specified work should be paid.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -9128,9 +9128,9 @@ Farm work is where the largest gaps between reported and correct wages typically
  },
  {
  slug: "restaurant-industry-award-working-holiday",
- title: "What is the Restaurant Industry Award and how does it apply to working holiday makers?",
+ title: "Restaurant Industry Award (MA000119): pay for working holiday makers in cafés",
  description:
-   "The Restaurant Industry Award (MA000119) covers stand-alone restaurants, cafes, and similar venues that are not part of a hotel.",
+   "The Restaurant Industry Award (MA000119) covers stand-alone restaurants, cafes, and similar venues that are not part of a hotel. What working holiday makers as waitstaff, kitchen hands, and chefs should be paid.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 4,
@@ -9240,9 +9240,9 @@ Misapplied awards are one of the most consistent patterns of underpayment in hos
  },
  {
  slug: "award-classifications-working-holiday-australia",
- title: "How to work out which modern award applies to your job in Australia",
+ title: "Australian modern awards: how to find the right one for your job",
  description:
-   "Most working holiday makers are covered by a modern award that sets their minimum pay rate and conditions.",
+   "Most working holiday makers are covered by a modern award that sets minimum pay and conditions. How to identify which of the 121 modern awards applies to your job and check your classification.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -9891,9 +9891,9 @@ For working holiday makers in delivery, rideshare, trades, and any other vehicle
 // ─── SUPER ────────────────────────────────────────────────────────────────
  {
  slug: "dasp-vs-leaving-super-in-australia-pros-cons",
- title: "Should you claim DASP or leave your superannuation in Australia?",
+ title: "DASP or leave super in Australia? Pros and cons for working holiday makers",
  description:
-   "Working holiday makers leaving Australia have to decide whether to claim DASP at 65% tax or leave the super in their fund.",
+   "Working holiday makers leaving Australia have to decide whether to claim DASP at 65% tax now or leave super in their fund. Pros, cons, and the 6-month rule that triggers ATO unclaimed super transfer.",
  category: "Super",
  date: "25 May 2026",
  readTime: 5,
@@ -10027,9 +10027,9 @@ The decision to claim DASP or wait is yours, but the financial picture should be
 // ─── FARM / AGRICULTURE ──────────────────────────────────────────────────
  {
  slug: "fruit-picking-jobs-working-holiday-australia",
- title: "Fruit picking jobs in Australia: what to expect on a working holiday visa",
+ title: "Fruit picking jobs in Australia: working holiday visa guide & pay rates",
  description:
-   "Fruit picking is the most common path to the 88 days of regional work for a second year working holiday visa.",
+   "Fruit picking is the most common path to the 88 days of specified work required for a 2nd year working holiday visa. Pay rates, conditions, regions, seasonal calendars, and how to avoid common scams.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -10142,9 +10142,9 @@ Fruit picking generates more wage and super disputes than almost any other indus
  },
  {
  slug: "farm-hand-jobs-working-holiday-australia",
- title: "Farm hand jobs in Australia: pay, conditions, and second year visa eligibility",
+ title: "Farm hand jobs in Australia: pay, conditions & 2nd year visa eligibility",
  description:
-   "Farm hand work covers a wide range of agricultural roles beyond fruit picking, including livestock care, planting, fencing, and general farm labour.",
+   "Farm hand work covers a wide range of agricultural roles beyond fruit picking — livestock care, planting, fencing, and general farm labour. What working holiday makers should expect and how it counts for the 2nd year visa.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -10250,9 +10250,9 @@ For working holiday makers in farm hand roles, our team:
 // ─── HOSPITALITY ─────────────────────────────────────────────────────────
  {
  slug: "bartender-jobs-working-holiday-australia",
- title: "Bartender jobs in Australia on a working holiday visa: RSA, pay, and tips",
+ title: "Bartender jobs in Australia on a working holiday visa: RSA, pay & tips",
  description:
-   "Bartending is one of the most accessible hospitality roles for working holiday makers.",
+   "Bartending is one of the most accessible hospitality roles for working holiday makers. RSA certificate requirements, Hospitality Award pay rates, penalty rates, and how tips are taxed in Australia.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -10360,9 +10360,9 @@ Bartending generates substantial casual earnings and substantial penalty rate un
  },
  {
  slug: "barista-coffee-shop-working-holiday-australia",
- title: "Barista jobs in Australia on a working holiday visa: pay, training, and conditions",
+ title: "Barista jobs in Australia on a working holiday visa: pay & training guide",
  description:
-   "Australian coffee culture creates strong demand for skilled baristas.",
+   "Australian coffee culture creates strong demand for skilled baristas. Hospitality Award pay rates, training requirements, and the best cities for working holiday makers looking for barista work.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -10467,9 +10467,9 @@ Barista work in Australia generates strong casual earnings when the award is pro
  },
  {
  slug: "waiter-waitress-working-holiday-australia",
- title: "Waiter and waitress jobs in Australia on a working holiday visa",
+ title: "Waiter & waitress jobs in Australia on a working holiday visa",
  description:
-   "Restaurant and cafe service work is one of the most common roles for working holiday makers.",
+   "Restaurant and cafe service work is one of the most common roles for working holiday makers. Pay rates under the Restaurant Industry Award, penalty rates, and how tips are taxed.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -10577,9 +10577,9 @@ Waiter work generates substantial penalty rate value when properly classified. [
  },
  {
  slug: "kitchen-hand-working-holiday-australia",
- title: "Kitchen hand jobs in Australia on a working holiday visa",
+ title: "Kitchen hand jobs in Australia on a working holiday visa: pay & conditions",
  description:
-   "Kitchen hand work is one of the most accessible entry points to Australian hospitality, with no formal qualifications required.",
+   "Kitchen hand work is one of the most accessible entry points to Australian hospitality, with no formal qualifications required. Pay rates, typical duties, and how to find shifts as a working holiday maker.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 4,
@@ -10692,9 +10692,9 @@ Kitchen hand work is one of the most consistently underpaid roles in Australian 
 // ─── CONSTRUCTION ─────────────────────────────────────────────────────────
  {
  slug: "construction-laborer-working-holiday-australia",
- title: "Construction labourer jobs in Australia on a working holiday visa: White Card and pay",
+ title: "Construction labourer jobs in Australia: White Card, pay & working holiday rules",
  description:
-   "Construction labouring is one of the highest-paying entry-level roles for working holiday makers in Australia.",
+   "Construction labouring is one of the highest-paying entry-level roles for working holiday makers in Australia. White Card requirements, typical hourly rates, and what to expect on a construction site.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -10822,9 +10822,9 @@ Construction work generates strong earnings and strong deductions. [Get in touch
 // ─── GIG ECONOMY ─────────────────────────────────────────────────────────
  {
  slug: "uber-eats-delivery-rider-working-holiday-australia",
- title: "Uber Eats and food delivery rider jobs in Australia on a working holiday visa",
+ title: "Uber Eats & food delivery rider jobs in Australia: ABN & tax rules",
  description:
-   "Food delivery on a bicycle, e-bike, or scooter is treated as contracting in Australia.",
+   "Food delivery on a bicycle, e-bike, or scooter is treated as contracting in Australia. ABN required, GST rules (not mandatory under $75k), and what working holiday makers need to set aside for tax.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -10922,9 +10922,9 @@ Delivery work without proper tax management often leads to a surprise tax bill a
  },
  {
  slug: "uber-driver-working-holiday-australia",
- title: "Uber driver and rideshare jobs in Australia on a working holiday visa: ABN, GST, and BAS",
+ title: "Uber driver & rideshare jobs in Australia: ABN, GST & BAS for working holiday makers",
  description:
-   "Rideshare driving in Australia requires an ABN, GST registration from the first dollar, and quarterly Business Activity Statements.",
+   "Rideshare driving in Australia requires an ABN, GST registration from the first dollar, and quarterly Business Activity Statements (BAS). Full tax setup guide for working holiday makers driving Uber, DiDi or Ola.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -11048,9 +11048,9 @@ Rideshare is the most tax-heavy gig economy work for working holiday makers, and
 // ─── SEASONAL / TOURISM ──────────────────────────────────────────────────
  {
  slug: "ski-resort-jobs-working-holiday-australia",
- title: "Ski resort jobs in Australia on a working holiday visa",
+ title: "Ski resort jobs in Australia on a working holiday visa (Victoria & NSW)",
  description:
-   "Ski resort work in Australia runs from June to September across Victorian and NSW resorts.",
+   "Ski resort work in Australia runs from June to September across Victorian and NSW resorts. Pay rates, accommodation, lift passes, and how to apply as a working holiday maker for the winter season.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -11159,9 +11159,9 @@ Ski seasons generate concentrated earnings over a 3-to-4 month period, which oft
 // ─── RETAIL ──────────────────────────────────────────────────────────────
  {
  slug: "supermarket-work-coles-woolworths-working-holiday",
- title: "Supermarket jobs at Coles, Woolworths, and ALDI on a working holiday visa",
+ title: "Coles, Woolworths & ALDI jobs on a working holiday visa in Australia",
  description:
-   "Australia's major supermarket chains hire working holiday makers in checkout, stocking, deli, and overnight roles.",
+   "Australia's major supermarket chains hire working holiday makers for shelf stacking, checkout, deli, and night fill. Pay rates under the General Retail Industry Award, penalty rates, and how to apply.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -11292,9 +11292,9 @@ Supermarket work is well-paid relative to many other entry-level options, but th
 // ─── REMOTE / OUTBACK ─────────────────────────────────────────────────────
  {
  slug: "station-hand-cattle-station-working-holiday-australia",
- title: "Station hand and cattle station jobs in outback Australia on a working holiday visa",
+ title: "Station hand & cattle station jobs in outback Australia for working holiday makers",
  description:
-   "Cattle stations and remote outback properties hire working holiday makers for livestock work, mustering, fencing, and general property maintenance.",
+   "Cattle stations and remote outback properties hire working holiday makers for livestock work, mustering, fencing, and general property maintenance. Pay, conditions, accommodation, and 2nd year visa eligibility.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 6,
@@ -11435,9 +11435,9 @@ Station work has unique tax complications because of the remoteness, the accommo
 
  {
  slug: "super-rate-12-percent-2025-2026-increase",
- title: "Superannuation rate increased to 12% from 1 July 2025: what it means for working holiday makers",
+ title: "Super rate 12% from July 2025: what it means for working holiday makers",
  description:
-   "From 1 July 2025, the Superannuation Guarantee rate increased from 11.5% to 12%.",
+   "From 1 July 2025, the Superannuation Guarantee rate increased from 11.5% to 12%. How this affects working holiday maker pay, your DASP payout, and what to check on your payslip.",
  category: "Super",
  date: "25 May 2026",
  readTime: 4,

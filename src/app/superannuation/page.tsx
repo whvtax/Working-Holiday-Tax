@@ -142,9 +142,51 @@ const breadcrumbSchema = {
   ],
 }
 
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://workingholidaytax.com.au/superannuation#service',
+  name: 'DASP Super Refund Service for Working Holiday Makers',
+  serviceType: 'Departing Australia Superannuation Payment (DASP) claim',
+  description: 'DASP super refund claim service for 417 and 462 working holiday visa holders, prepared and submitted under the supervision of a registered tax agent. Claim your super back after leaving Australia.',
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
+  areaServed: { '@type': 'Country', name: 'Australia' },
+  audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) leaving Australia' },
+  inLanguage: 'en-AU',
+}
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to claim your DASP super refund after leaving Australia',
+  description: 'Step-by-step process for working holiday makers to claim their super refund through the Departing Australia Superannuation Payment scheme.',
+  totalTime: 'P28D',
+  inLanguage: 'en-AU',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
+}
+
+const speakableSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://workingholidaytax.com.au/superannuation#webpage',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', '.hero-sub'],
+  },
+  url: 'https://workingholidaytax.com.au/superannuation',
+}
+
 export default function SuperannuationPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
