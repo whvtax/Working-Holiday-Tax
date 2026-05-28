@@ -5,10 +5,11 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
-  description: 'Claim your Australian superannuation after leaving. Your employer paid 12% of your wages into super - we help you get it back via DASP.',
+  title: 'Super Refund DASP for Working Holiday Visa Holders - Claim Your Super Back',
+  description: 'Claim your Australian superannuation refund (DASP) after leaving as a Working Holiday Maker (417/462). Your employer paid 12% of wages into super - get it refunded to you.',
   keywords: [
-    'DASP super withdrawal',
+    'DASP super refund',
+    'super refund Australia working holiday',
     'Departing Australia Superannuation Payment',
     'super refund working holiday',
     'claim super after leaving Australia',
@@ -16,6 +17,12 @@ export const metadata: Metadata = {
     'super withdrawal 462 visa',
     'backpacker super refund',
     'WHM superannuation claim',
+    'super refund working holiday maker',
+    'DASP refund 417',
+    'DASP refund 462',
+    'how to claim super refund Australia backpacker',
+    'super refund after leaving Australia',
+    'get my super back Australia working holiday',
   ],
   alternates: { canonical: '/superannuation' },
   openGraph: {
@@ -23,13 +30,13 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: 'https://workingholidaytax.com.au/superannuation',
     siteName: 'Working Holiday Tax',
-    title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
-    description: 'Claim your Australian superannuation after leaving via the DASP process.',
+    title: 'Super Refund DASP for Working Holiday Visa Holders',
+    description: 'Claim your Australian superannuation refund (DASP) after leaving. Your employer paid 12% of wages into super - get it back.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Super Withdrawal (DASP) for Working Holiday Visa Holders',
-    description: 'Claim your Australian superannuation after leaving.',
+    title: 'Super Refund DASP for Working Holiday Visa Holders',
+    description: 'Claim your Australian superannuation refund after leaving.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

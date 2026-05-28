@@ -3,17 +3,25 @@ import { SITE_URL } from '@/lib/constants'
 import { CalculatorClient } from './CalculatorClient'
 
 export const metadata: Metadata = {
-  title: 'Tax Calculator for Working Holiday Visa Holders',
-  description: 'Estimate your Australian tax refund as a working holiday maker. Free, instant calculator using the 2025-26 WHM tax rates - no sign-up required.',
+  title: 'Working Holiday Tax Refund Calculator Australia - WHV Estimator',
+  description: 'Estimate your Australian tax refund as a Working Holiday Maker (417/462). Free instant calculator using 2025-26 WHM tax rates. See how much tax back you can claim - no sign-up.',
   keywords: [
+    'working holiday tax refund calculator',
+    'WHV tax refund calculator',
+    'backpacker tax refund calculator Australia',
+    'Australian tax refund calculator working holiday',
+    '417 visa tax refund calculator',
+    '462 visa tax refund calculator',
+    'how much tax refund will I get Australia',
+    'tax back calculator Australia working holiday',
+    'WHM refund estimator',
     'tax calculator Australia',
     'working holiday tax calculator',
     'WHV refund calculator',
     'backpacker tax estimator',
-    '417 visa tax calculator',
-    '462 visa tax calculator',
     'WHM tax rate calculator',
     'Australian tax refund estimator',
+    'estimate Australian tax refund free',
   ],
   alternates: { canonical: '/calculator' },
   openGraph: {
@@ -21,13 +29,13 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/calculator`,
     siteName: 'Working Holiday Tax',
-    title: 'Tax Calculator for Working Holiday Visa Holders',
-    description: 'Estimate your Australian tax refund as a working holiday maker. Free, instant, no sign-up.',
+    title: 'Working Holiday Tax Refund Calculator Australia - WHV Estimator',
+    description: 'Estimate your Australian tax refund as a Working Holiday Maker. Free, instant, no sign-up.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tax Calculator for Working Holiday Visa Holders',
-    description: 'Estimate your Australian tax refund. Free, instant, no sign-up.',
+    title: 'Working Holiday Tax Refund Calculator Australia',
+    description: 'Estimate your Australian tax refund as a Working Holiday Maker. Free, instant.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

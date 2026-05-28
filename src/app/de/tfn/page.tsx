@@ -5,8 +5,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'TFN beantragen für Working Holiday Visainhaber in Australien',
-  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt. Schritt-für-Schrittbegleitung von einem registrierten Steueragenten in Australien.',
+  title: 'TFN beantragen für Working Holiday Maker - Grundlage für Steuerrückerstattung',
+  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Mit einem registrierten Steueragenten.',
   keywords: [
     'TFN beantragen Australien',
     'Steuernummer Australien',
@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     'TFN für Working Holiday Maker',
     'Tax File Number Deutsch',
     'Steuernummer Australien beantragen',
+    'TFN für Steuerrückerstattung',
+    'Steuernummer Working Holiday Steuerrückerstattung',
+    'TFN online beantragen Backpacker',
   ],
   alternates: {
     canonical: `${SITE_URL}/de/tfn`,
@@ -31,8 +34,13 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN beantragen für Working Holiday Visainhaber',
-    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - mit einem registrierten Steueragenten in Australien.',
+    title: 'TFN beantragen für Working Holiday Maker - Steuerrückerstattung',
+    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TFN beantragen für Working Holiday Maker',
+    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

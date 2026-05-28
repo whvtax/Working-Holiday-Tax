@@ -3,12 +3,23 @@ import { SITE_URL } from '@/lib/constants'
 import { CalculatorClient } from './CalculatorClient'
 
 export const metadata: Metadata = {
-  title: '税金計算機 - ワーキングホリデー オーストラリア',
-  description: 'ワーキングホリデーメーカーとしてのオーストラリア税金還付額を見積もり。2025-26年度のWHM税率を使用した無料・即時計算機。登録不要。',
+  title: 'タックスリターン 還付金 計算機 - ワーキングホリデー オーストラリア',
+  description: 'ワーキングホリデー（417・462ビザ）のオーストラリア タックスリターン還付金を無料で見積もり。2025-26年度のWHM税率使用。あなたの還付金がいくらか即時計算 - 登録不要。',
   keywords: [
+    // Refund-focused
+    'タックスリターン 還付金 計算機',
+    'オーストラリア 還付金 計算 ワーホリ',
+    'ワーキングホリデー 還付金 計算',
+    'ワーホリ 還付金 いくら シミュレーション',
+    'WHV 還付金 計算機',
+    'バックパッカー 還付金 計算 オーストラリア',
+    '417ビザ 還付金 計算',
+    '462ビザ 還付金 計算',
+    'オーストラリア タックスリターン 還付 見積もり',
+    'オーストラリア 税金 戻る 計算',
+    // Adjacent
     '税金 計算機 オーストラリア',
     'ワーキングホリデー 税金 計算',
-    'WHV 還付 計算機',
     'バックパッカー 税金 シミュレーター',
     '417ビザ 税金 計算',
     '462ビザ 税金 計算',
@@ -29,13 +40,13 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/calculator`,
     siteName: 'Working Holiday Tax',
-    title: '税金計算機 - ワーキングホリデー オーストラリア',
-    description: 'ワーキングホリデーメーカーの税金還付額を見積もり。無料・即時・登録不要。',
+    title: 'タックスリターン 還付金 計算機 - ワーキングホリデー オーストラリア',
+    description: 'ワーキングホリデーのオーストラリア タックスリターン還付金を無料で見積もり。即時・登録不要。',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '税金計算機 - ワーキングホリデー オーストラリア',
-    description: 'オーストラリア税金還付額を見積もり。無料・即時・登録不要。',
+    title: 'タックスリターン 還付金 計算機 - ワーホリ オーストラリア',
+    description: 'ワーホリのオーストラリア タックスリターン還付金を無料で見積もり。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

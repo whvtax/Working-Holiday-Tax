@@ -5,8 +5,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'TFN（タックスファイルナンバー）申請 - ワーキングホリデー オーストラリア',
-  description: 'TFN（タックスファイルナンバー）を最短で正しく取得。オーストラリアの登録税理士がステップごとに丁寧にサポートします。',
+  title: 'TFN（タックスファイルナンバー）申請 - ワーホリ オーストラリア 還付金の第一歩',
+  description: 'TFN（タックスファイルナンバー）を最短で正しく取得。オーストラリアの登録税理士がステップごとに丁寧にサポート。タックスリターン還付金を受け取るための第一歩。',
   keywords: [
     'TFN 申請 オーストラリア',
     'タックスファイルナンバー 取得',
@@ -17,6 +17,9 @@ export const metadata: Metadata = {
     'TFN ワーホリ 申請方法',
     'オーストラリア 税番号 日本語',
     'TFN オンライン 申請',
+    'TFN タックスリターン 還付',
+    'TFN 還付金 ワーホリ',
+    'タックスファイルナンバー 還付金 取得',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/tfn`,
@@ -32,13 +35,13 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN申請 - ワーキングホリデー オーストラリア',
-    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。登録税理士がサポートします。',
+    title: 'TFN申請 - ワーホリ オーストラリア 還付金の第一歩',
+    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金を受け取るための第一歩。登録税理士がサポート。',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'TFN申請 - ワーキングホリデー オーストラリア',
-    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。登録税理士がサポートします。',
+    title: 'TFN申請 - ワーホリ オーストラリア',
+    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金への第一歩。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

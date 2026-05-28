@@ -5,8 +5,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'TFN Application for Working Holiday Visa Holders',
-  description: 'Get your Tax File Number sorted fast. Apply correctly the first time with step-by-step guidance from a registered tax agent in Australia.',
+  title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
+  description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly with a registered tax agent.',
   keywords: [
     'TFN application Australia',
     'working holiday TFN',
@@ -15,6 +15,10 @@ export const metadata: Metadata = {
     'apply for TFN backpacker',
     'get TFN Australia',
     'TFN for WHV',
+    'TFN for working holiday tax refund',
+    'TFN application working holiday maker',
+    'how to apply for TFN backpacker',
+    'TFN Australia online application WHV',
   ],
   alternates: { canonical: '/tfn' },
   openGraph: {
@@ -22,13 +26,13 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: 'https://workingholidaytax.com.au/tfn',
     siteName: 'Working Holiday Tax',
-    title: 'TFN Application for Working Holiday Visa Holders',
-    description: 'Get your Tax File Number sorted fast. Apply correctly the first time with step-by-step guidance from a registered tax agent.',
+    title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
+    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly with a registered tax agent.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TFN Application for Working Holiday Visa Holders',
-    description: 'Get your Tax File Number sorted fast.',
+    description: 'Get your Tax File Number sorted fast - the first step to your Australian tax refund.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

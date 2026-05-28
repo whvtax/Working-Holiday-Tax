@@ -5,18 +5,30 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
-  description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションを受け取り。給与の12%がスーパーに積み立てられています。DASP申請をすべてサポート。',
+  title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
+  description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションを返金として受け取り。給与の12%がスーパーに積み立てられています。DASP申請を完全代行します。',
   keywords: [
+    // Refund-focused
+    'スーパー 返金 オーストラリア',
+    'スーパーアニュエーション 返金 ワーホリ',
+    'DASP 還付',
+    'DASP 返金',
+    'ワーキングホリデー スーパー 返金',
+    'スーパー 取り戻す オーストラリア',
+    'オーストラリア スーパー 返金 帰国後',
+    '417ビザ スーパー 返金',
+    '462ビザ スーパー 返金',
+    'バックパッカー スーパー 返金',
+    'スーパー 還付 ワーキングホリデー',
+    // Adjacent
     'DASP スーパー 受取',
     'Departing Australia Superannuation Payment 日本語',
-    'スーパー 還付 ワーキングホリデー',
     'オーストラリア 帰国 スーパー',
     'スーパー 受取 417ビザ',
     'スーパー 受取 462ビザ',
-    'バックパッカー スーパー 返金',
     'WHM スーパーアニュエーション 申請',
     'オーストラリア 年金 返金',
+    'スーパー受取 申請方法',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/superannuation`,
@@ -32,13 +44,13 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/superannuation`,
     siteName: 'Working Holiday Tax',
-    title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
-    description: 'オーストラリアのスーパーをDASPで受け取り。すべて代行します。',
+    title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
+    description: 'オーストラリアのスーパー返金をDASPで受け取り。ワーホリ専門の登録税理士がすべて代行します。',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
-    description: 'オーストラリアを離れる際、スーパーを受け取り。',
+    title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
+    description: 'オーストラリアを離れる際、スーパーを返金として受け取り。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

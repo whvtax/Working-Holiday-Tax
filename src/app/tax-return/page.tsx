@@ -5,17 +5,37 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'Tax Return in Australia for WHV Holders',
-  description: 'Get your Australian tax refund. We prepare and lodge your tax return for working holiday makers - online, fast, and handled for you.',
+  title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
+  description: 'Working holiday tax refund Australia — registered tax agent lodges your WHV tax return for 417 and 462 visa holders. Claim your tax back from Australia, even after you have gone home. All online, fast and simple.',
   keywords: [
+    'working holiday tax refund Australia',
+    'working holiday tax refund',
+    'WHV tax refund',
+    'WHV tax refund Australia',
+    'tax refund 417 visa',
+    'tax refund 462 visa',
+    'backpacker tax refund Australia',
+    'Australian tax refund working holiday',
+    'claim tax back Australia',
+    'claim tax back from Australia',
     'tax return Australia working holiday',
     'WHV tax return',
-    'backpacker tax refund Australia',
     '417 visa tax return',
     '462 visa tax return',
-    'lodge tax return Australia',
-    'maximum tax refund WHM',
+    'lodge tax return Australia backpacker',
+    'lodge tax return from overseas',
     'tax refund after leaving Australia',
+    'tax return Australia after going home',
+    'working holiday maker tax refund',
+    'how to claim tax refund Australia',
+    'how much tax refund will I get Australia working holiday',
+    'tax return for foreigners Australia',
+    'working holiday tax return online',
+    'registered tax agent working holiday',
+    'tax deductions working holiday makers',
+    'working holiday tax refund UK',
+    'working holiday tax refund Germany',
+    'working holiday tax refund Japan',
   ],
   alternates: { canonical: '/tax-return' },
   openGraph: {
@@ -23,37 +43,49 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: 'https://workingholidaytax.com.au/tax-return',
     siteName: 'Working Holiday Tax',
-    title: 'Tax Return in Australia for WHV Holders',
-    description: 'Get your Australian tax refund. We prepare and lodge your tax return for working holiday makers.',
+    title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
+    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online — even after you leave Australia.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tax Return in Australia for WHV Holders',
-    description: 'Get your Australian tax refund. We prepare and lodge your tax return.',
+    title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent — all online.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
   {
+    question: 'What is a working holiday tax refund and am I eligible?',
+    answer: 'A working holiday tax refund is the money the Australian Taxation Office (ATO) pays back when more tax was withheld from your wages than you actually owe. If you worked in Australia on a 417 or 462 visa, you may be eligible if your employer withheld at the wrong rate, you have eligible work-related deductions, or you only worked part of the financial year. The only way to find out is to lodge a tax return.',
+  },
+  {
     question: 'Do I need to lodge a tax return if I only worked for a short time?',
-    answer: 'Yes. If you earned income in Australia, you may still need to lodge a tax return, even if you only worked for a short period.',
+    answer: 'Yes. If you earned income in Australia on your working holiday visa, you may still need to lodge a tax return, even if you only worked for a short period. A short stay often means tax was overwithheld, so lodging is usually the only way to claim back what you are owed.',
   },
   {
     question: 'What happens if I do not lodge my tax return?',
-    answer: 'If you are required to lodge and do not do so, the ATO may apply penalties or take further action.',
+    answer: 'If you are required to lodge and do not do so, the ATO may apply penalties or take further action. You also miss the chance to claim any tax refund you are entitled to.',
   },
   {
-    question: 'Can I lodge my tax return after leaving Australia?',
-    answer: 'Yes. You can still lodge your tax return from overseas after leaving Australia.',
+    question: 'Can I claim my tax refund after leaving Australia?',
+    answer: 'Yes. You can lodge your Australian tax return from overseas after leaving the country - whether you have returned to the UK, Germany, Japan, or anywhere else. We handle the entire process online and your refund can be paid to an Australian or overseas bank account.',
   },
   {
-    question: 'How do I know if I\'m owed a tax refund?',
-    answer: 'You\'ll be owed a tax refund if you paid more tax than required during the year. This can happen if the wrong tax rate was applied or if you have eligible deductions. A tax agent helps make sure your return is completed correctly and you don\'t miss any money you may be entitled to.',
+    question: 'How do I know if I am owed a tax refund?',
+    answer: 'You will be owed a tax refund if you paid more tax than required during the year. This often happens to working holiday makers when the wrong tax rate was applied, when you did not provide your TFN early enough, or when you have eligible deductions. A registered tax agent reviews your situation and makes sure your return is lodged correctly so you do not miss anything you are entitled to.',
   },
   {
-    question: 'How do I know if my tax return has been completed?',
-    answer: 'Once your tax return is processed, the ATO issues a Notice of Assessment confirming the final outcome.',
+    question: 'How much working holiday tax refund will I get?',
+    answer: 'The amount depends on your individual circumstances: how much you earned, how much tax was withheld, your residency status for tax purposes, your visa subclass, and the deductions you can claim. We cannot guarantee a specific refund amount - what we can do is lodge your return correctly and make sure every deduction you are entitled to is included.',
+  },
+  {
+    question: 'How long does a working holiday tax refund take?',
+    answer: 'Once your return is lodged, the ATO usually processes it within 7 to 14 business days. Processing can be longer during busy periods or if the ATO requires extra information. Your refund is then paid directly into your chosen bank account.',
+  },
+  {
+    question: 'How do I know my tax return has been completed?',
+    answer: 'Once your tax return is processed, the ATO issues a Notice of Assessment confirming the final outcome. We forward this to you as soon as it is available.',
   },
 ]
 
@@ -67,10 +99,10 @@ const DEDUCTIONS = [
 ]
 
 const STEPS = [
-  { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can guide you correctly.' },
-  { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple.' },
-  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your tax return correctly.' },
-  { n: '4', title: 'Receive your refund',           body: 'Your refund will be paid directly into your bank account within 7-14 days.' },
+  { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can prepare your working holiday tax return correctly.' },
+  { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple, even from overseas.' },
+  { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your tax return directly with the ATO.' },
+  { n: '4', title: 'Receive your refund',           body: 'Your tax refund is paid into your nominated Australian or overseas bank account, usually within 7-14 days.' },
 ]
 
 const TESTIMONIALS = [
@@ -154,12 +186,12 @@ export default function TaxReturnPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Get your tax refund</span>
+                <span style={{ display:'block' }}>Working holiday tax refund</span>
                 <span style={{ display:'block', color:'#0B5240' }}>fast &amp; stress-free.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Get your tax refund</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Working holiday tax refund</span>
                 <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>fast &amp; stress-free.</span>
               </span>
             </h1>
@@ -167,7 +199,7 @@ export default function TaxReturnPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              We handle everything with the ATO on your behalf.
+              Registered tax agents handle your WHV tax return with the ATO.
             
             </p>
 
@@ -176,11 +208,11 @@ export default function TaxReturnPage() {
                 fontSize:'clamp(13px,1.2vw,15px)',
                 lineHeight:1.65,
                 color:'rgba(10,15,13,0.58)',
-                maxWidth:'44ch',
+                maxWidth:'46ch',
                 marginBottom:'0',
               }}>
-              <span className="hidden lg:inline">Most tax returns are lodged within 24 hours.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>Most tax returns are lodged within 24 hours.</span>
+              <span className="hidden lg:inline">For 417 and 462 visa holders. Most tax returns are lodged within 24 hours - even after you have left Australia.</span>
+              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>For 417 &amp; 462 visa holders. Most returns lodged within 24 hours - even after you leave.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -250,16 +282,16 @@ export default function TaxReturnPage() {
             <div className="taxret-intro-content">
               <p className="taxret-intro-eyebrow">Most WHM holders are owed money</p>
               <h2 className="taxret-intro-heading">
-                What is a tax return?
+                What is a working holiday tax return?
               </h2>
               <p className="taxret-intro-body">
                 A <strong>tax return</strong> is the annual settlement between you and the Australian Taxation Office. You declare how much you earned, claim deductions you are entitled to, and reconcile against the tax already withheld from your paychecks.
               </p>
               <p className="taxret-intro-body">
-                Most working holiday makers <strong>overpay tax during the year</strong>. When that happens, the ATO refunds the excess back to you - often a few thousand dollars.
+                Many working holiday makers on 417 and 462 visas <strong>overpay tax during the year</strong>. When that happens, the ATO refunds the excess back to you - your working holiday tax refund.
               </p>
               <p className="taxret-intro-body">
-                You can lodge from anywhere in the world, even after you have left Australia. Your refund can be paid to an Australian or overseas bank account.
+                You can lodge from anywhere in the world, even after you have left Australia and gone back to the UK, Germany, Japan, or any other country. Your refund can be paid to an Australian or overseas bank account.
               </p>
             </div>
 
@@ -268,11 +300,11 @@ export default function TaxReturnPage() {
           {/* CTA strip to OUR service */}
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">We prepare and lodge your tax return for you</h3>
-              <p className="service-cta-sub">Free initial consultation. No forms, no ATO portals, no stress. We maximise your refund and handle everything online - even after you leave Australia.</p>
+              <h3 className="service-cta-heading">We prepare and lodge your working holiday tax return for you</h3>
+              <p className="service-cta-sub">Free initial consultation. No forms, no ATO portals, no stress. We claim every deduction you are entitled to and handle everything online - even after you leave Australia.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
-              Get my refund →
+              Start my tax return →
             </a>
           </div>
         </div>
@@ -283,12 +315,11 @@ export default function TaxReturnPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Our Service</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '24ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              We handle your tax return from start to finish
-              and maximise your refund
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
+              We handle your working holiday tax return from start to finish
             </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
-              No stress, no confusion - just a correctly lodged tax return and the maximum eligible refund.
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '36ch' }}>
+              No stress, no confusion - a correctly lodged tax return and every refund you are entitled to.
             </p>
           </div>
 
@@ -302,12 +333,12 @@ export default function TaxReturnPage() {
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="11.5" x2="11" y2="11.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
                 title: 'We lodge your tax return correctly',
-                body: 'We prepare and submit your tax return directly to the ATO on your behalf.',
+                body: 'We prepare and submit your working holiday tax return directly to the ATO on your behalf.',
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: 'We help maximise your tax refund',
-                body: <>  <span className="hidden lg:inline">We identify all eligible deductions to ensure you receive your full entitled refund.</span><span className="lg:hidden">We identify all eligible deductions to ensure you receive your full entitled refund.</span></>,
+                title: 'We claim every deduction you are entitled to',
+                body: <>  <span className="hidden lg:inline">We identify all eligible work-related deductions so nothing you are entitled to is missed.</span><span className="lg:hidden">We identify all eligible work-related deductions so nothing you are entitled to is missed.</span></>,
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
@@ -344,10 +375,10 @@ export default function TaxReturnPage() {
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
             <span className="section-label center">Real results</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              See how much backpackers like you get back
+              What working holiday makers say about us
             </h2>
           </div>
-          <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Real refunds from real backpackers</p>
+          <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Backpackers from the UK, Germany, Japan and more</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
             {TESTIMONIALS.map((t, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 flex flex-col" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
@@ -377,7 +408,7 @@ export default function TaxReturnPage() {
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">why choose us?</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Don&apos;t risk losing money on your tax return
+              Get your working holiday tax return done properly
             </h2>
           </div>
 
@@ -440,11 +471,11 @@ export default function TaxReturnPage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Tax rates</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              How much tax you actually pay in Australia
+              Working holiday maker tax rates in Australia
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '40ch' }}>
-              <span className="hidden lg:inline">Tax rates are different depending on your visa and situation.</span>
-              <span className="lg:hidden">Tax rates are different depending on your<br />visa and situation.</span>
+              <span className="hidden lg:inline">Tax rates for 417 and 462 visa holders are different from Australian residents.</span>
+              <span className="lg:hidden">Tax rates for 417 &amp; 462 visa holders<br />are different from Australian residents.</span>
             </p>
           </div>
 
@@ -503,7 +534,7 @@ export default function TaxReturnPage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center justify-center font-medium transition-all"
                 style={{ fontSize: '14px', color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                <span className="hidden lg:inline">Not sure if you have overpaid tax? Check your refund now →</span><span className="lg:hidden">Not sure if you have overpaid tax?<br />Check your refund now →</span>
+                <span className="hidden lg:inline">Not sure if you have overpaid tax? Find out if you are entitled to a refund →</span><span className="lg:hidden">Not sure if you have overpaid tax?<br />Find out if you are entitled to a refund →</span>
               </a>
             </div>
         </div>
@@ -514,11 +545,11 @@ export default function TaxReturnPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Deductions</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Work-related deductions can increase your refund
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
+              Work-related deductions for working holiday makers
             </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '32ch' }}>
-              You may be able to claim more than you think. We make sure nothing is missed.
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '36ch' }}>
+              You may be entitled to claim more than you think. We make sure nothing eligible is missed.
             </p>
           </div>
 
@@ -543,8 +574,8 @@ export default function TaxReturnPage() {
           </div>
 
           <div className="text-center mt-8 reveal delay-3">
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '14px', lineHeight: 1.65, maxWidth: '40ch', marginBottom: '16px' }}>
-              Not sure what you can claim? We check everything for you and maximise your refund.
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '14px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '16px' }}>
+              Not sure what you can claim on your working holiday tax return? We check everything for you and claim every deduction you are entitled to.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
@@ -671,7 +702,7 @@ export default function TaxReturnPage() {
               <span className="section-label center">FAQs</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                Tax Return questions answered.
+                Working holiday tax refund questions
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>

@@ -34,6 +34,11 @@ export const metadata: Metadata = {
     title: 'ABN-Registrierung für Working Holiday Visainhaber',
     description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker in Australien.',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ABN-Registrierung für Working Holiday Visainhaber',
+    description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker in Australien.',
+  },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
