@@ -100,7 +100,7 @@ const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super — wir helfen dir von Anfang an weiter.' },
   { n: '2', title: 'Schick uns deine Daten',         body: 'Kurze Checkliste, keine komplizierten Formulare oder Papierkram.' },
   { n: '3', title: 'Wir kümmern uns um alles',       body: 'Ein registrierter Steueragent bereitet alles vor und reicht es beim ATO ein.' },
-  { n: '4', title: 'Dein Geld kommt zurück',         body: 'Deine Steuerrückerstattung landet direkt auf deinem australischen oder ausländischen Konto.' },
+  { n: '4', title: 'Dein Geld kommt zurück',         body: 'Deine Steuerrückerstattung landet direkt auf deinem australischen Bankkonto.' },
 ]
 
 const SERVICES = [
@@ -126,7 +126,7 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit dabei, ihre Steuererklärung einzureichen und ihre Super (DASP) zu beantragen — alles komplett online, auch Jahre nach der Rückkehr. Wir wickeln alles aus der Ferne ab. Deine Steuerrückerstattung kannst du auf ein australisches oder deutsches Konto erhalten.',
+    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit dabei, ihre Steuererklärung einzureichen und ihre Super (DASP) zu beantragen — alles komplett online, auch Jahre nach der Rückkehr. Wir wickeln alles aus der Ferne ab. Deine Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen (ATO-Vorschrift), die Super-Rückerstattung (DASP) kann aber auf dein deutsches Konto gehen.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
@@ -309,8 +309,8 @@ export default function GermanHomePage() {
           </h1>
 
           <p className="font-light mx-auto"
-            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '42ch', marginBottom: '10px' }}>
-            Steuerexperten für Working Holiday Maker auf 417 &amp; 462 Visum.<br />TFN, ABN, Steuererklärung &amp; Super - alles online.
+            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '50ch', marginBottom: '10px', textWrap: 'balance' }}>
+            Steuerexperten für Working Holiday Maker auf <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 Visum</span>. TFN, ABN, Steuererklärung &amp; Super — alles online.
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">

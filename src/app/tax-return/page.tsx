@@ -77,7 +77,7 @@ const faqs = [
   },
   {
     question: 'Can I claim my tax refund after leaving Australia?',
-    answer: 'Yes. You can lodge your Australian tax return from overseas after leaving the country - whether you have returned to the UK, Germany, Japan, or anywhere else. We handle the entire process online and your refund can be paid to an Australian or overseas bank account.',
+    answer: 'Yes. You can lodge your Australian tax return from overseas after leaving the country - whether you have returned to the UK, Germany, Japan, or anywhere else. We handle the entire process online. Your tax refund must be paid to an Australian bank account.',
   },
   {
     question: 'How do I know if I am owed a tax refund?',
@@ -110,7 +110,7 @@ const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can prepare your working holiday tax return correctly.' },
   { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple, even from overseas.' },
   { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your tax return directly with the ATO.' },
-  { n: '4', title: 'Receive your refund',           body: 'Your tax refund is paid into your nominated Australian or overseas bank account, usually within 7-14 days.' },
+  { n: '4', title: 'Receive your refund',           body: 'Your tax refund is paid into your nominated Australian bank account, usually within 7-14 days.' },
 ]
 
 const TESTIMONIALS = [
@@ -299,7 +299,7 @@ export default function TaxReturnPage() {
                 Many working holiday makers on 417 and 462 visas <strong>overpay tax during the year</strong>. When that happens, the ATO refunds the excess back to you - your working holiday tax refund.
               </p>
               <p className="taxret-intro-body">
-                You can lodge from anywhere in the world, even after you have left Australia and gone back to the UK, Germany, Japan, or any other country. Your refund can be paid to an Australian or overseas bank account.
+                You can lodge from anywhere in the world, even after you have left Australia and gone back to the UK, Germany, Japan, or any other country. Your tax refund is paid into your Australian bank account.
               </p>
             </div>
 

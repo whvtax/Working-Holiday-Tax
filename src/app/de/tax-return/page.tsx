@@ -73,7 +73,7 @@ const faqs = [
   },
   {
     question: 'Kann ich meine Steuerrückerstattung aus Australien beantragen, wenn ich schon zurück in Deutschland bin?',
-    answer: 'Ja. Du kannst deine australische Steuererklärung aus dem Ausland einreichen — egal ob du nach Deutschland, Österreich, in die Schweiz oder sonst wohin zurückgekehrt bist. Wir erledigen den gesamten Prozess online, und deine Rückerstattung kann auf ein australisches oder deutsches Konto überwiesen werden.',
+    answer: 'Ja. Du kannst deine australische Steuererklärung aus dem Ausland einreichen — egal ob du nach Deutschland, Österreich, in die Schweiz oder sonst wohin zurückgekehrt bist. Wir erledigen den gesamten Prozess online. Deine Steuerrückerstattung muss auf ein australisches Bankkonto überwiesen werden.',
   },
   {
     question: 'Woher weiß ich, ob ich eine Steuerrückzahlung bekomme?',
@@ -106,7 +106,7 @@ const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Einkommens- und Arbeitsdaten, damit wir deine Working Holiday Steuererklärung korrekt vorbereiten können.' },
   { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Gehaltsabrechnungen und Basisinfos — schnell und einfach, auch aus dem Ausland.' },
   { n: '3', title: 'Wir kümmern uns um alles',  body: 'Ein registrierter Steueragent reicht deine Steuererklärung direkt beim ATO ein.' },
-  { n: '4', title: 'Deine Rückzahlung kommt',           body: 'Deine Steuerrückerstattung wird innerhalb von 7-14 Tagen auf dein australisches oder deutsches Konto überwiesen.' },
+  { n: '4', title: 'Deine Rückzahlung kommt',           body: 'Deine Steuerrückerstattung wird innerhalb von 7-14 Tagen auf dein australisches Bankkonto überwiesen.' },
 ]
 
 const TESTIMONIALS = [
@@ -333,7 +333,7 @@ export default function GermanTaxReturnPage() {
                 Viele Working Holiday Maker auf 417 und 462 Visa <strong>zahlen im Laufe des Jahres zu viel Steuern</strong>. In dem Fall zahlt dir das ATO die Differenz zurück — deine Working Holiday Steuerrückerstattung.
               </p>
               <p className="taxret-intro-body">
-                Du kannst deine Steuererklärung von überall auf der Welt machen, auch nachdem du Australien verlassen hast und nach Deutschland oder in ein anderes Land zurückgekehrt bist. Deine Rückerstattung kann auf ein australisches oder ausländisches Konto überwiesen werden.
+                Du kannst deine Steuererklärung von überall auf der Welt machen, auch nachdem du Australien verlassen hast und nach Deutschland oder in ein anderes Land zurückgekehrt bist. Deine Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen.
               </p>
             </div>
 

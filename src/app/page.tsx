@@ -109,7 +109,7 @@ const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: "TFN, ABN, working holiday tax return, super - we will guide you from the start." },
   { n: '2', title: 'Send your details in minutes',  body: 'Quick checklist, no complicated forms or paperwork.' },
   { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your return with the ATO.' },
-  { n: '4', title: 'Get your money back',           body: 'Your tax refund is paid straight into your Australian or overseas account.' },
+  { n: '4', title: 'Get your money back',           body: 'Your tax refund is paid straight into your Australian bank account.' },
 ]
 
 const SERVICES = [
@@ -135,7 +135,7 @@ const FAQS = [
   },
   {
     question: 'Can you help me claim my tax refund after I have already left Australia?',
-    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries lodge their Australian tax return and claim their super (DASP) entirely online, even years after leaving. Everything is handled remotely - refunds can be paid to your Australian or overseas account.',
+    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries lodge their Australian tax return and claim their super (DASP) entirely online, even years after leaving. Everything is handled remotely - tax refunds are paid to your Australian bank account (ATO rule), while super refunds (DASP) can be paid to your overseas account.',
   },
   {
     question: 'What tax rate do working holiday makers pay in Australia?',
@@ -284,8 +284,8 @@ export default function HomePage() {
           </h1>
 
           <p className="font-light mx-auto"
-            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '38ch', marginBottom: '10px' }}>
-            Tax return specialists for working holiday makers on 417 &amp; 462 visas.<br />TFN, ABN, tax return &amp; super - all online.
+            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '46ch', marginBottom: '10px', textWrap: 'balance' }}>
+            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super — all online.
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
