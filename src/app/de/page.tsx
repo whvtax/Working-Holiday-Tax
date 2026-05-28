@@ -299,7 +299,7 @@ export default function GermanHomePage() {
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Steuererklärung-Spezialisten · WHV 417 & 462</span>
+            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Steuererklärung-Spezialisten</span>
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto"
@@ -309,8 +309,8 @@ export default function GermanHomePage() {
           </h1>
 
           <p className="font-light mx-auto"
-            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '50ch', marginBottom: '10px', textWrap: 'balance' }}>
-            Steuerexperten für Working Holiday Maker auf <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 Visum</span>. TFN, ABN, Steuererklärung &amp; Super — alles online.
+            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
+            Steuerexperten für Working Holiday Maker auf <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 Visum</span>.<br />TFN, ABN, Steuererklärung &amp; Super
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">

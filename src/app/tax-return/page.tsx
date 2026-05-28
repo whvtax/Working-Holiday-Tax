@@ -220,7 +220,7 @@ export default function TaxReturnPage() {
                 marginBottom:'0',
               }}>
               <span className="hidden lg:inline">For 417 and 462 visa holders. Most tax returns are lodged within 24 hours - even after you have left Australia.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>For 417 &amp; 462 visa holders. Most returns lodged within 24 hours - even after you leave.</span>
+              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>For 417 &amp; 462 visa holders. Most returns lodged within 24 hours even after you leave.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"

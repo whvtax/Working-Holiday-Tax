@@ -254,7 +254,7 @@ export default function GermanTaxReturnPage() {
                 marginBottom:'0',
               }}>
               <span className="hidden lg:inline">Für 417 und 462 Visuminhaber. Die meisten Steuererklärungen reichen wir innerhalb von 24 Stunden ein — auch nach deiner Rückkehr aus Australien.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>Für 417 &amp; 462 Visa. Die meisten Erklärungen innerhalb von 24h eingereicht — auch nach deiner Rückkehr.</span>
+              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>Für 417 &amp; 462 Visa. Die meisten Erklärungen innerhalb von 24h eingereicht auch nach deiner Rückkehr.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"

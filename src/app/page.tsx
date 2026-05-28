@@ -274,7 +274,7 @@ export default function HomePage() {
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Working Holiday Tax Return Specialists · 417 & 462</span>
+            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Working Holiday Tax Return Specialists</span>
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto"
@@ -284,8 +284,8 @@ export default function HomePage() {
           </h1>
 
           <p className="font-light mx-auto"
-            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '46ch', marginBottom: '10px', textWrap: 'balance' }}>
-            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super — all online.
+            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
+            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>.<br />TFN, ABN, tax return &amp; super
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
