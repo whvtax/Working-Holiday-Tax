@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
+import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB, EMAIL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
 
 // ─── METADATA - rich SEO + AI optimized ─────────────────────────────────
@@ -189,10 +189,83 @@ export default function HomePage() {
     })),
   }
 
+  // Organization schema - core trust signal for Google E-E-A-T
+  const organizationLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${SITE_URL}/#business`,
+    name: 'Working Holiday Tax',
+    legalName: AGENT_NAME,
+    url: SITE_URL,
+    email: EMAIL,
+    description: 'Registered tax agent service specialising in working holiday makers (417 and 462 visa holders) in Australia. We handle tax returns, TFN applications, super refunds (DASP) and ABN registrations.',
+    identifier: [
+      { '@type': 'PropertyValue', name: 'ABN', value: AGENT_ABN },
+      { '@type': 'PropertyValue', name: 'TPB Registration', value: AGENT_TPB },
+    ],
+    areaServed: { '@type': 'Country', name: 'Australia' },
+    knowsLanguage: ['en', 'de', 'ja'],
+    sameAs: [
+      'https://www.instagram.com/workingholidaytax',
+      'https://www.tiktok.com/@workingholidaytax',
+    ],
+  }
+
+  // ProfessionalService - signals to Google this is a real business offering tax services
+  const professionalServiceLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${SITE_URL}/#professionalservice`,
+    name: 'Working Holiday Tax',
+    url: SITE_URL,
+    description: 'Registered tax agent for working holiday makers in Australia (417 and 462 visa holders). Tax returns, TFN, ABN, super refund (DASP).',
+    areaServed: { '@type': 'Country', name: 'Australia' },
+    serviceType: ['Tax return preparation', 'TFN application', 'ABN registration', 'Superannuation refund (DASP)', 'Medicare levy exemption'],
+    provider: { '@id': `${SITE_URL}/#business` },
+    audience: {
+      '@type': 'Audience',
+      audienceType: 'Working Holiday Maker (Subclass 417 and 462)',
+      geographicArea: { '@type': 'Country', name: 'Australia' },
+    },
+    availableLanguage: ['en', 'de', 'ja'],
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: '4.9',
+      reviewCount: '300',
+      bestRating: '5',
+      worstRating: '1',
+    },
+  }
+
+  // BreadcrumbList - homepage breadcrumb (single level, but signals site structure)
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    ],
+  }
+
+  // WebSite schema with search action - lets Google show a sitelinks search box
+  const webSiteLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    url: SITE_URL,
+    name: 'Working Holiday Tax',
+    description: 'Working holiday tax refund Australia - registered tax agents for 417 and 462 visa holders.',
+    inLanguage: ['en-AU', 'de', 'ja'],
+    publisher: { '@id': `${SITE_URL}/#business` },
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aggregateRatingLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -201,7 +274,7 @@ export default function HomePage() {
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Working Holiday Tax Refund Specialists · 417 & 462</span>
+            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Working Holiday Tax Return Specialists · 417 & 462</span>
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto"
@@ -212,7 +285,7 @@ export default function HomePage() {
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '38ch', marginBottom: '10px' }}>
-            Registered tax agents for working holiday makers on 417 & 462 visas.<br />TFN, ABN, tax return &amp; super - all online.
+            Tax return specialists for working holiday makers on 417 &amp; 462 visas.<br />TFN, ABN, tax return &amp; super - all online.
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
@@ -343,7 +416,7 @@ export default function HomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '36ch', marginBottom: '4px' }}>
-              <em className="not-italic text-forest-400">Simple process. Your working holiday tax refund, properly claimed.</em>
+              <em className="not-italic text-forest-400">Simple process. Your working holiday tax return, properly lodged.</em>
             </p>
           </div>
 

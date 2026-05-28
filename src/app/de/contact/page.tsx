@@ -8,11 +8,19 @@ export const metadata: Metadata = {
   keywords: [
     'Kontakt Working Holiday Tax',
     'Steueragent Australien Kontakt',
+    'Steueragent Australien Deutsch Kontakt',
     'Backpacker Steuer Hilfe',
+    'Working Holiday Steuer Hilfe Deutsch',
     'Working Holiday Visum Hilfe',
     'TFN Hilfe Deutsch',
+    'Steuerrückerstattung Australien Hilfe',
+    'Steuererklärung Australien Hilfe Deutsch',
+    'WhatsApp Steueragent Australien',
+    'kostenlose Beratung Working Holiday Steuer',
+    'Steueragent Backpacker Deutsch',
+    'Working Holiday Maker Hilfe Deutschland',
   ],
-  alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'x-default': `${SITE_URL}/contact` } },
+  alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'ja': `${SITE_URL}/ja/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unsere registrierten Steueragenten. Schnelle Antworten von echten Beratern.',
@@ -58,6 +66,14 @@ const FAQS = [
   {
     question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
     answer: 'Ja. Wir arbeiten mit Working Holiday Makern, die noch in Australien sind, vor Kurzem abgereist sind oder schon vor Jahren zurückgekehrt sind. Alles geht aus der Ferne - Steuererklärungen, Superauszahlungen (DASP) und ABN-Angelegenheiten.',
+  },
+  {
+    question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',
+    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern dabei, ihre australische Steuerrückerstattung und Super (DASP) zu beantragen und alle offenen Steuerangelegenheiten von zu Hause aus zu regeln. Der gesamte Prozess läuft online ab - keine Rückreise nach Australien nötig.',
+  },
+  {
+    question: 'Welche Informationen brauche ich beim ersten Kontakt?',
+    answer: 'Nur ein paar Basics zum Anfang: deine Visumsklasse (417 oder 462), ungefähr wann du in Australien gearbeitet hast, womit wir dir helfen sollen (Steuererklärung, Super, TFN, ABN) und wo du dich gerade aufhältst. Falls wir Unterlagen brauchen, sagen wir dir das danach genau.',
   },
 ]
 

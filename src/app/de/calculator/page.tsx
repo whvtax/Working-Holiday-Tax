@@ -9,11 +9,13 @@ export const metadata: Metadata = {
     // Refund-focused
     'Steuerrückerstattung Rechner Australien',
     'Working Holiday Steuerrückerstattung Rechner',
+    'Steuerrückerstattung Rechner Working Holiday',
     'WHV Rückerstattung Rechner',
     'Backpacker Steuerrückerstattung Rechner Australien',
     '417 Visum Steuerrückerstattung Rechner',
     '462 Visum Steuerrückerstattung Rechner',
     'wie viel Steuer bekomme ich zurück Australien',
+    'wie viel Steuern zurück Australien Rechner',
     'Steuer zurück Rechner Australien Working Holiday',
     'Australische Steuerrückerstattung Schätzer',
     // Adjacent
@@ -24,6 +26,8 @@ export const metadata: Metadata = {
     '417 Visum Steuerrechner',
     '462 Visum Steuerrechner',
     'WHM Steuersatz Rechner',
+    'Australien Steuerrechner kostenlos',
+    'Work and Travel Steuerrückerstattung Rechner',
   ],
   alternates: { canonical: '/de/calculator', languages: { 'en-AU': '/calculator', 'de': '/de/calculator', 'ja': '/ja/calculator', 'x-default': '/calculator' } },
   openGraph: {
@@ -62,6 +66,14 @@ const faqs = [
   {
     question: 'Mir wird Steuerschuld angezeigt, was soll ich tun?',
     answer: 'Melde dich schnell bei uns. Wir schauen uns deine Situation an, finden vergessene absetzbare Kosten und reichen deine Steuererklärung korrekt ein. Oft kann man Steuerschulden durch richtige Absetzungen reduzieren oder ganz vermeiden.',
+  },
+  {
+    question: 'Kann ich den Rechner auch nutzen, wenn ich schon zurück in Deutschland bin?',
+    answer: 'Ja. Der Rechner funktioniert unabhängig von deinem Herkunftsland oder deinem aktuellen Aufenthaltsort. Die Steuersätze basieren auf deiner Visumsklasse (417 oder 462) und dem in Australien verdienten Einkommen — nicht darauf, wo du jetzt wohnst. Auch nach deiner Rückkehr nach Deutschland, Österreich oder in die Schweiz gilt die Schätzung.',
+  },
+  {
+    question: 'Berücksichtigt der Rechner die Medicare Levy?',
+    answer: 'Der Rechner konzentriert sich auf die Einkommensteuer. Die Medicare Levy ist eine separate Abgabe von 2 %, von der die meisten Working Holiday Maker befreit sind. Wenn wir deine Steuererklärung einreichen, beantragen wir die Medicare-Levy-Befreiung, sofern du dafür in Frage kommst — was bedeutet, dass deine tatsächliche Rückerstattung höher sein kann als die Schätzung des Rechners.',
   },
 ]
 

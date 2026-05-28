@@ -228,12 +228,12 @@ export default function GermanTaxReturnPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Steuerrückerstattung Australien</span>
+                <span style={{ display:'block' }}>Steuererklärung Australien</span>
                 <span style={{ display:'block', color:'#0B5240' }}>schnell &amp; stressfrei.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Steuerrückerstattung Australien</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Steuererklärung Australien</span>
                 <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>schnell &amp; stressfrei.</span>
               </span>
             </h1>

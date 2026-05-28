@@ -37,7 +37,15 @@ export const metadata: Metadata = {
     'working holiday tax refund Germany',
     'working holiday tax refund Japan',
   ],
-  alternates: { canonical: '/tax-return' },
+  alternates: {
+    canonical: '/tax-return',
+    languages: {
+      'en-AU': '/tax-return',
+      'de': '/de/tax-return',
+      'ja': '/ja/tax-return',
+      'x-default': '/tax-return',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',
@@ -186,12 +194,12 @@ export default function TaxReturnPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Working holiday tax refund</span>
+                <span style={{ display:'block' }}>Working holiday tax return</span>
                 <span style={{ display:'block', color:'#0B5240' }}>fast &amp; stress-free.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Working holiday tax refund</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Working holiday tax return</span>
                 <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>fast &amp; stress-free.</span>
               </span>
             </h1>

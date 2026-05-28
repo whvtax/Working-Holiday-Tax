@@ -331,7 +331,7 @@ export default function JapaneseHomePage() {
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>ワーホリ専門の登録税理士 · 417 & 462ビザ</span>
+            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>ワーホリ専門の税務サポート · 417 & 462ビザ</span>
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto"
@@ -343,7 +343,7 @@ export default function JapaneseHomePage() {
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '40ch', marginBottom: '10px' }}>
-            417・462ビザのワーキングホリデーメーカー専門の登録税理士。<br />TFN・ABN・タックスリターン・スーパー返金まで日本語で完結。
+            417・462ビザのワーキングホリデーメーカー専門の税務サポート。<br />TFN・ABN・タックスリターン・スーパー返金まで日本語で完結。
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">

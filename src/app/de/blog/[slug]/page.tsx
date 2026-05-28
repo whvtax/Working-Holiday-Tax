@@ -16,21 +16,76 @@ export async function generateStaticParams() {
   return guides.map(g => ({ slug: g.slug }))
 }
 
+// Per-category keyword expansions - dynamically applied per blog post
+const CATEGORY_KEYWORDS: Record<string, string[]> = {
+  'TFN': [
+    'TFN beantragen Working Holiday',
+    'Steuernummer Australien Backpacker',
+    'TFN 417 Visum',
+    'TFN 462 Visum',
+    'TFN für Steuerrückerstattung',
+  ],
+  'ABN': [
+    'ABN Registrierung Working Holiday',
+    'Australian Business Number Backpacker',
+    'Selbstständig Australien WHV',
+    'ABN 417 Visum',
+    'ABN 462 Visum',
+  ],
+  'Tax Return': [
+    'Steuerrückerstattung Australien Working Holiday',
+    'WHV Steuererklärung',
+    'Steuerrückzahlung 417 Visum',
+    'Steuerrückzahlung 462 Visum',
+    'Steuer zurück Australien Backpacker',
+    'Steuererklärung Australien nach Rückkehr',
+  ],
+  'Super': [
+    'Super-Rückerstattung Australien',
+    'DASP Auszahlung Working Holiday',
+    'Super zurückholen Australien Backpacker',
+    'Departing Australia Superannuation Payment',
+    'Super-Rückerstattung 417 Visum',
+  ],
+  'Work Rights': [
+    'Arbeitsrechte Working Holiday Australien',
+    'Fair Work Australien Backpacker',
+    'Working Holiday Beschäftigung Australien',
+    '417 Visum Arbeitsbedingungen',
+    '462 Visum Arbeitsbedingungen',
+  ],
+  'Medicare & Other': [
+    'Medicare Levy Befreiung Backpacker',
+    'Medicare Working Holiday Visum',
+    'RHCA Australien Deutsch',
+    'Medicare Levy Befreiung 417',
+    'Medicare Levy Befreiung 462',
+  ],
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const result = getGermanGuide(params.slug)
   if (!result) return {}
   const { guide } = result
+  const categoryKeywords = CATEGORY_KEYWORDS[guide.category] || []
   return {
     title: `${guide.title} | Working Holiday Tax`,
     description: guide.description,
     keywords: [
-      'Working Holiday Tax Australien',
-      'Working Holiday Visum',
-      '417 Visum',
-      '462 Visum',
-      guide.category,
-      'Backpacker Steuer',
+      // Core working holiday tax refund keywords (German)
+      'Steuerrückerstattung Australien',
+      'Working Holiday Steuer Australien',
+      'Working Holiday Visum Australien',
+      '417 Visum Australien',
+      '462 Visum Australien',
+      'Backpacker Steuer Australien',
       'WHM Steuer',
+      'WHV Steuer',
+      // Category-specific
+      ...categoryKeywords,
+      // Post-specific
+      guide.category,
+      guide.title,
     ],
     alternates: {
       canonical: `https://workingholidaytax.com.au/de/blog/${guide.slug}`,

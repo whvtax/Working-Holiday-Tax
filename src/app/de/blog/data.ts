@@ -756,8 +756,8 @@ Wenn du deine Geschäftstätigkeit in Australien beendest, solltest du deine ABN
 
   // ─── Tax Return - Strategic posts (full body translations) ────────────────
   'backpacker-tax-rate-australia': {
-    title: 'Was ist der Backpackersteuersatz in Australien und wie funktioniert er?',
-    description: 'Working Holiday Maker zahlen 15 % Steuern auf australisches Einkommen bis 45.000 $. So funktioniert die Backpacker-Steuer und was sie für deinen Nettolohn bedeutet.',
+    title: 'Backpacker-Steuersatz Australien 2025-26: Erklärung für 417 & 462 Visum',
+    description: 'Der aktuelle Backpacker-Steuersatz in Australien für Working Holiday Maker auf 417 und 462 Visum: 15 % auf die ersten 45.000 $, danach reguläre Stufensätze. Auswirkung auf Nettolohn und Steuerrückerstattung.',
     body: `
 Der Backpackersteuersatz in Australien beträgt pauschal 15 % auf die ersten 45.000 $ Einkommen pro Steuerjahr. Dieser Satz gilt für alle Working Holiday Maker mit einem Working Holiday Visum (Subclass 417) oder Work and Holiday Visum (Subclass 462). Er wird manchmal "Working-Holiday-Maker-Steuersatz" genannt und ersetzt die normalen Steuersätze für Residenten, die sonst gelten würden. Du musst deine [TFN](/de/tfn) bei jedem Arbeitgeber registrieren, um den 15 %-Satz zu bekommen - sonst wird standardmäßig mit 45 % einbehalten.
 
@@ -1122,8 +1122,8 @@ Wir können auf deine Income Statements direkt über unser Steueragenten-Portal 
   },
 
   'tax-deductions-working-holiday-makers': {
-    title: 'Welche Steuerabzüge können Working Holiday Maker in Australien geltend machen?',
-    description: 'Working Holiday Maker können arbeitsbezogene Absetzungen genau wie jeder andere Arbeitnehmer machen. Hier erfährst du, was qualifiziert und was nicht.',
+    title: 'Werbungskosten für Working Holiday Maker in Australien: vollständige Anleitung',
+    description: 'Welche arbeitsbezogenen Werbungskosten können Working Holiday Maker auf 417 und 462 Visum in Australien geltend machen? Arbeitskleidung, Werkzeuge, Fahrtkosten, Fortbildungen - die volle Liste.',
     body: `
 Working Holiday Maker in Australien können arbeitsbezogene Steuerabzüge in ihrer Steuererklärung geltend machen, genau wie australische Residenten. Häufige Absetzungen sind Uniformen und Schutzkleidung, Werkzeuge und Ausrüstung, Fahrten zwischen Arbeitsorten, arbeitsbezogene Handynutzung und Gebühren für registrierte Steueragenten. Um eine Absetzung zu beantragen, muss die Ausgabe direkt mit der Erzielung deines Einkommens zusammenhängen, und du musst einen Nachweis haben (Beleg, Kontoauszug oder Tagebuchnotiz). Unser Team identifiziert berechtigte Absetzungen, wenn wir deine [Steuererklärung](/de/tax-return) vorbereiten.
 
@@ -1271,8 +1271,8 @@ Siehe unseren detaillierten Artikel zu [wie der DASP-Prozess funktioniert](/de/b
 
   // Tax Return
   'how-to-lodge-tax-return-working-holiday': {
-    title: 'Wie du als Working Holiday Maker eine Steuererklärung in Australien einreichst',
-    description: 'Eine australische Steuererklärung einzureichen ist einfacher, als es klingt. Schritt-für-Schritt-Anleitung des gesamten Prozesses.',
+    title: 'Working Holiday Steuererklärung in Australien einreichen: Schritt-für-Schritt-Anleitung',
+    description: 'Schritt-für-Schritt-Anleitung zur Working Holiday Steuererklärung in Australien. Was du brauchst, wann du einreichst und wie ein registrierter Steueragent das für 417 und 462 Visuminhaber erledigt - auch aus Deutschland.',
     body: `
 Um als Working Holiday Maker eine Steuererklärung in Australien einzureichen, ist die einfachste Option, einen registrierten Steueragenten wie unser Team zu nutzen. Wir sammeln deine Daten, greifen direkt über unser Steueragentenportal auf deine Income Statements zu, bereiten deine Steuererklärung vor und reichen sie für dich beim ATO ein. Der Prozess funktioniert gleich, egal ob du noch in Australien bist oder schon abgereist. Mit einem registrierten Agenten erhältst du eine verlängerte Einreichungsfrist über den Standard-31. Oktober hinaus.
 
@@ -1328,8 +1328,8 @@ Für Steuererklärungen mit mehreren Arbeitgebern oder für Working Holiday Make
   },
 
   'what-is-payg-payment-summary': {
-    title: 'Was ist ein PAYG Payment Summary und wie nutzt du es?',
-    description: 'Ein PAYG Payment Summary zeigt dein Gesamteinkommen und die einbehaltene Steuer für das Jahr. Hier erfährst du, was es ist und wie du darauf zugreifst.',
+    title: 'PAYG Payment Summary verstehen: Anleitung für Working Holiday Maker',
+    description: 'Ein PAYG Payment Summary (jetzt Income Statement) zeigt dein Gesamteinkommen und die einbehaltene Steuer für das australische Steuerjahr. Wie du es findest, was die Abschnitte bedeuten und wie es in der Working Holiday Steuererklärung genutzt wird.',
     body: `
 Ein PAYG Payment Summary - heute Income Statement genannt - ist die offizielle Aufzeichnung, die dein Gesamtgehalt und die gesamte vom Arbeitgeber einbehaltene Steuer in einem Steuerjahr zeigt. Es ist das Dokument, das zum Einreichen deiner [Steuererklärung](/de/tax-return) genutzt wird. Arbeitgeber melden Löhne und Einbehaltsbeträge automatisch über ihre Lohnbuchhaltungs-Software an das ATO, sodass das Income Statement digital erstellt wird, statt dir als Papierdokument ausgehändigt zu werden. Als dein registrierter Steueragent kann unser Team direkt über das ATO-System auf deine Income Statements zugreifen.
 
@@ -1379,8 +1379,8 @@ Ohne diese Abstimmung einzureichen ist riskant. Die Income Statements sind meist
   },
 
   'do-you-need-to-lodge-tax-return-short-stay': {
-    title: 'Musst du eine Steuererklärung einreichen, wenn du nur kurz in Australien gearbeitet hast?',
-    description: 'Auch wenn du nur ein paar Wochen gearbeitet hast, musst du eventuell eine Steuererklärung einreichen. Hier erfährst du, wie du das herausfindest.',
+    title: 'Working Holiday Steuererklärung nach kurzem Aufenthalt in Australien nötig?',
+    description: 'Nur ein paar Wochen oder Monate auf Working Holiday Visum in Australien gearbeitet? Finde heraus, ob du eine Steuererklärung einreichen musst und wie du überzahlte Steuern zurückholen kannst.',
     body: `
 Ja, du musst fast sicher eine Steuererklärung in Australien einreichen, auch wenn du nur ein paar Wochen gearbeitet hast. Die Einreichungspflicht hängt nicht davon ab, wie lange du geblieben bist. Sie hängt davon ab, ob du während des australischen Steuerjahres Einkommen hattest. Zwei Wochen zu arbeiten erzeugt dieselbe Einreichungspflicht wie zwei Jahre. Einreichen lohnt sich auch oft finanziell, weil die meisten Working Holiday Maker eine Rückzahlung bekommen.
 
@@ -1431,8 +1431,8 @@ Die Standardfrist ist der 31. Oktober nach Ende des Steuerjahres, aber wenn du �
   },
 
   'how-to-lodge-tax-return-from-overseas': {
-    title: 'Wie du eine australische Steuererklärung aus dem Ausland einreichst, nachdem du abgereist bist',
-    description: 'Australien zu verlassen heißt nicht, dass du die Steuererklärung überspringen kannst. Hier erfährst du, wie du sie von überall auf der Welt einreichst.',
+    title: 'Australische Steuererklärung aus dem Ausland einreichen (Deutschland, UK, Japan)',
+    description: 'Australien verlassen und Working Holiday Steuererklärung einreichen? Komplette Anleitung für 417 und 462 Visuminhaber - aus Deutschland, Österreich, der Schweiz oder anderswo. Online mit registriertem Steueragenten.',
     body: `
 Um eine australische Steuererklärung nach deiner Abreise aus dem Ausland einzureichen, arbeite mit einem registrierten Steueragenten, der die Steuererklärung remote für dich vorbereiten und einreichen kann. Der gesamte Prozess wird elektronisch erledigt, und deine Rückzahlung wird auf dein australisches Bankkonto überwiesen. Unser Team kümmert sich jede Woche um Steuererklärungen von Working Holiday Makern aus aller Welt. Du musst nicht nach Australien zurück, und die Einreichungsfrist wird verlängert, wenn du über einen registrierten Steueragenten gehst.
 
@@ -1493,8 +1493,8 @@ Die meisten Working Holiday Maker bekommen eine Rückzahlung. Geld zu schulden i
   },
 
   'what-is-a-tax-agent': {
-    title: 'Was ist ein Steueragent und warum sollten Working Holiday Maker einen nutzen?',
-    description: 'Ein registrierter Steueragent bereitet Steuererklärungen vor und reicht sie für dich ein. Hier erfährst du, was sie machen und warum es sinnvoll ist.',
+    title: 'Registrierte Steueragenten für Working Holiday Maker in Australien: Anleitung',
+    description: 'Ein registrierter Steueragent ist vom Tax Practitioners Board (TPB) lizenziert, Steuererklärungen für dich vorzubereiten und einzureichen. Warum Working Holiday Maker auf 417 und 462 Visum Steueragenten nutzen, was sie machen und was sie kosten.',
     body: `
 Ein registrierter Steueragent ist ein Steuerprofi, der vom Tax Practitioners Board ermächtigt ist, Steuererklärungen im Namen von Mandanten vorzubereiten und einzureichen. In Australien muss jeder, der gegen Bezahlung Steuerdienstleistungen anbietet, beim TPB registriert sein. Working Holiday Maker profitieren aus drei Hauptgründen von einem registrierten Steueragenten: Zugang zu verlängerten Einreichungsfristen, vollständige Bearbeitung der Kommunikation mit dem ATO und Identifizierung von Absetzungen, die Selbsteinreicher oft übersehen.
 
@@ -1846,8 +1846,8 @@ Wir identifizieren Absetzungen, die du beim Selbsteinreichen vielleicht übersie
   },
 
   'how-long-does-tax-refund-take-australia': {
-    title: 'Wie lange dauert eine Steuerrückzahlung in Australien?',
-    description: 'Die meisten Steuerrückzahlungen in Australien werden innerhalb von zwei Wochen nach Einreichung bearbeitet. Hier erfährst du, was den Zeitplan beeinflusst.',
+    title: 'Wie lange dauert eine Working Holiday Steuerrückerstattung in Australien?',
+    description: 'Working Holiday Steuerrückerstattungen werden vom ATO meist innerhalb von 7-14 Werktagen nach Einreichung bearbeitet. Was den Zeitplan beeinflusst, was bei Verzögerungen zu tun ist und wie es funktioniert, wenn du Australien schon verlassen hast.',
     body: `
 Die meisten australischen Steuerrückzahlungen werden innerhalb von zwei Wochen nach Einreichung bearbeitet und ausgezahlt, wenn die Steuererklärung elektronisch eingereicht wird. Über unseren Service als deinen registrierten Steueragenten reichen wir elektronisch ein, sodass Rückzahlungen typischerweise innerhalb von 7-14 Werktagen ankommen. Rückzahlungen in der Hauptsaison (August-September) dauern eventuell ein paar Tage länger. Wenn deine Rückzahlung länger dauert als erwartet, fasst unser Team direkt beim ATO nach.
 
@@ -3650,8 +3650,8 @@ Zur Steuerzeit gleichen wir jede Rechnung, die du im Jahr ausgestellt hast, mit 
 
   // ─── More Tax Return posts ─────────────────────────────────────────────────
   'amending-tax-return-australia': {
-    title: 'Kannst du eine Steuererklärung nach Einreichung in Australien ändern?',
-    description: 'Du hast einen Fehler in deiner Steuererklärung gefunden? Hier erfährst du, wie du sie änderst, wie lange du Zeit hast und was passiert.',
+    title: 'Australische Steuererklärung nach Einreichung ändern (Working Holiday Anleitung)',
+    description: 'Working Holiday Steuererklärung eingereicht und Fehler bemerkt? Du kannst eine Steuererklärung beim ATO innerhalb bestimmter Fristen ändern. So geht es, wie lange es dauert und wie es deine Rückerstattung beeinflusst.',
     body: `
 Ja, du kannst eine Steuererklärung nach Einreichung in Australien ändern. Häufige Gründe für eine Änderung: eine Absetzung, die du vergessen hast, eine falsch eingegebene Einkommenszahl oder ein übersehener Offset. Die allgemeine Frist für Änderungen beträgt **zwei Jahre ab dem Datum des ursprünglichen Steuerbescheids**. Unser Team kümmert sich um Änderungen für Working Holiday Maker, auch aus dem Ausland. Proaktiv zu handeln, um Fehler zu beheben, ist viel besser, als zu warten, bis das ATO das Problem entdeckt.
 
@@ -3903,8 +3903,8 @@ Falls du ohne TFN gearbeitet hast, weil du unsicher warst, wie das System funkti
   },
 
   'multiple-jobs-tax-return-working-holiday': {
-    title: 'Wie du eine Steuererklärung einreichst, wenn du in Australien mehrere Jobs hattest',
-    description: 'Mehrere Arbeitgeber bedeuten, dass mehrere Income Statements abgeglichen werden müssen. Hier erfährst du, wie es funktioniert.',
+    title: 'Working Holiday Steuererklärung mit mehreren Arbeitgebern in Australien einreichen',
+    description: 'Working Holiday Maker auf 417 und 462 Visum arbeiten oft für mehrere Arbeitgeber in einem Steuerjahr - besonders in Gastronomie, Farmarbeit und Saisonjobs. So kombinierst du alles korrekt in einer Steuererklärung.',
     body: `
 Ein Working Holiday Maker, der während eines Steuerjahres mehrere Jobs hatte, muss das Einkommen jedes Arbeitgebers auf einer einzigen Steuererklärung angeben. Jeder Arbeitgeber meldet deinen Lohn und die einbehaltene Steuer separat ans ATO unter dem Single-Touch-Payroll-System, und die [Steuererklärung](/de/tax-return) muss mit dem kombinierten Total übereinstimmen. Einen Arbeitgeber zu übersehen - auch einen, bei dem du nur eine Woche gearbeitet hast - erzeugt eine Diskrepanz, die das ATO erkennt und nach Einreichung korrigiert, was oft eine Folgeveranlagung auslöst.
 

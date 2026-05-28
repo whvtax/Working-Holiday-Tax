@@ -9,23 +9,30 @@ export const metadata: Metadata = {
   description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Mit einem registrierten Steueragenten.',
   keywords: [
     'TFN beantragen Australien',
+    'TFN beantragen Working Holiday',
     'Steuernummer Australien',
+    'Steuernummer Australien beantragen',
     'Working Holiday TFN',
     'TFN 417 Visum',
     'TFN 462 Visum',
     'TFN Backpacker beantragen',
     'TFN für Working Holiday Maker',
     'Tax File Number Deutsch',
-    'Steuernummer Australien beantragen',
     'TFN für Steuerrückerstattung',
     'Steuernummer Working Holiday Steuerrückerstattung',
     'TFN online beantragen Backpacker',
+    'TFN Australien wie lange',
+    'TFN Australien Bearbeitungszeit',
+    'TFN vor Ankunft Australien beantragen',
+    'TFN für Steuererklärung Australien',
+    'Steuernummer Work and Travel Australien',
   ],
   alternates: {
     canonical: `${SITE_URL}/de/tfn`,
     languages: {
       'en-AU': `${SITE_URL}/tfn`,
       'de': `${SITE_URL}/de/tfn`,
+      'ja': `${SITE_URL}/ja/tfn`,
       'x-default': `${SITE_URL}/tfn`,
     },
   },
@@ -51,6 +58,8 @@ const faqs = [
   { question: 'Kann ich mit einem Touristenvisum eine TFN bekommen?', answer: 'Nein. Du brauchst ein gültiges Arbeitsvisum, zum Beispiel ein Working Holiday Visum (Subclass 417 oder 462), um eine TFN beantragen zu können.' },
   { question: 'Was passiert, wenn ich meine TFN vergesse?', answer: 'Du kannst deine TFN herausfinden, indem du den ATO direkt kontaktierst, in alten Steuerdokumenten nachschaust oder deinen Steueragenten fragst.' },
   { question: 'Was ist ein TFN Declaration Form?', answer: 'Ein Formular, das du ausfüllst, wenn du einen neuen Job anfängst. Es teilt deinem Arbeitgeber mit, wie viel Steuer er von deinem Gehalt einbehalten muss.' },
+  { question: 'Kann ich die TFN schon vor meiner Ankunft in Australien beantragen?', answer: 'Du kannst die TFN erst beantragen, sobald du in Australien bist und dein Working Holiday Visum aktiviert wurde. Du brauchst dann eine australische Postanschrift, an die das ATO deine TFN schicken kann.' },
+  { question: 'Wie hängt meine TFN mit meiner Steuerrückerstattung zusammen?', answer: 'Deine TFN verbindet dich mit jedem Steuerdokument in Australien. Ohne TFN muss dein Arbeitgeber Steuern zum Spitzensatz einbehalten statt zum Working Holiday Satz von 15 % - was meist zu einer höheren Steuerrückerstattung führt, wenn du deine Steuererklärung einreichst.' },
 ]
 
 const STEPS = [

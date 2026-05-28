@@ -3,19 +3,36 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Working Holiday Tax',
-  description: 'Get in touch with our registered tax agents. WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
+  title: 'Contact Us - Working Holiday Tax | Registered Tax Agents Australia',
+  description: 'Get in touch with our registered tax agents for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
   keywords: [
     'contact working holiday tax',
+    'working holiday tax agent contact',
     'tax agent Australia contact',
     'backpacker tax help',
+    'backpacker tax help Australia',
     'working holiday visa support',
+    'working holiday tax refund help',
     'TFN help',
+    'TFN application help Australia',
+    'WhatsApp tax agent Australia',
+    'contact tax agent UK backpacker',
+    'contact tax agent German backpacker',
+    'contact tax agent Japanese working holiday',
+    'free tax consultation working holiday',
   ],
-  alternates: { canonical: `${SITE_URL}/contact` },
+  alternates: {
+    canonical: `${SITE_URL}/contact`,
+    languages: {
+      'en-AU': `${SITE_URL}/contact`,
+      'de': `${SITE_URL}/de/contact`,
+      'ja': `${SITE_URL}/ja/contact`,
+      'x-default': `${SITE_URL}/contact`,
+    },
+  },
   openGraph: {
-    title: 'Contact Working Holiday Tax',
-    description: 'Get in touch with our registered tax agents. Fast responses from real advisors.',
+    title: 'Contact Working Holiday Tax | Registered Tax Agents Australia',
+    description: 'Get in touch with our registered tax agents. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
     url: `${SITE_URL}/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -23,8 +40,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact Working Holiday Tax',
-    description: 'Get in touch with our registered tax agents.',
+    title: 'Contact Working Holiday Tax | Registered Tax Agents',
+    description: 'Get in touch with our registered tax agents for your working holiday tax refund.',
   },
   robots: {
     index: true,
@@ -58,6 +75,14 @@ const FAQS = [
   {
     question: 'Can you help me if I have already left Australia?',
     answer: 'Yes. We work with working holiday makers who are still in Australia, recently departed, or returned years ago. Everything can be handled remotely - tax returns, super claims (DASP), and ABN matters.',
+  },
+  {
+    question: 'Can you help me from the UK, Germany, or Japan?',
+    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries claim their Australian tax refund, super (DASP) and handle any remaining tax matters from home. The entire process is online - no travel back to Australia required.',
+  },
+  {
+    question: 'What information should I include when I first contact you?',
+    answer: 'Just a few basics to start: your visa subclass (417 or 462), roughly when you worked in Australia, what you need help with (tax return, super, TFN, ABN), and where you are now. We will let you know if any documents are needed after that.',
   },
 ]
 

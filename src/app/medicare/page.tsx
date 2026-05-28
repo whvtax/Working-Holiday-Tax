@@ -4,30 +4,48 @@ import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
-  title: 'Medicare in Australia for Working Holiday Visa Holders',
-  description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder in Australia. Get your levy exemption certificate.',
+  title: 'Medicare Levy Exemption for Working Holiday Visa Holders Australia',
+  description: 'Understand Medicare eligibility and claim your Medicare levy exemption as a Working Holiday Visa holder (417/462). Increase your working holiday tax refund - handled as part of your tax return.',
   keywords: [
     'Medicare working holiday',
     'Medicare levy exemption backpacker',
+    'Medicare levy exemption working holiday',
+    'Medicare levy exemption 417 visa',
+    'Medicare levy exemption 462 visa',
     'Medicare 417 visa',
     'Medicare 462 visa',
     'RHCA Australia',
     'Reciprocal Health Care Agreement',
+    'Reciprocal Health Care Agreement working holiday',
     'Medicare levy exemption certificate',
+    'apply for Medicare levy exemption',
+    'Medicare levy 2% backpacker',
+    'do working holiday makers pay Medicare levy',
+    'Medicare exemption UK backpacker',
+    'Medicare exemption German backpacker',
+    'Medicare exemption Japanese working holiday',
   ],
-  alternates: { canonical: '/medicare' },
+  alternates: {
+    canonical: '/medicare',
+    languages: {
+      'en-AU': '/medicare',
+      'de': '/de/medicare',
+      'ja': '/ja/medicare',
+      'x-default': '/medicare',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',
     url: 'https://workingholidaytax.com.au/medicare',
     siteName: 'Working Holiday Tax',
-    title: 'Medicare in Australia for Working Holiday Visa Holders',
-    description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder.',
+    title: 'Medicare Levy Exemption for Working Holiday Visa Holders Australia',
+    description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder. Claim your levy exemption.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Medicare in Australia for Working Holiday Visa Holders',
-    description: 'Understand Medicare eligibility and the Medicare levy.',
+    title: 'Medicare Levy Exemption for Working Holiday Visa Holders',
+    description: 'Understand Medicare eligibility and the Medicare levy. Claim your exemption.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -62,6 +80,14 @@ const faqs = [
   {
     question: 'Does my Working Holiday visa affect my Medicare eligibility?',
     answer: 'Yes. Most Working Holiday visa holders are not eligible for Medicare unless they are from a country with a Reciprocal Health Care Agreement. If you are not eligible, we apply a Medicare levy exemption as part of your tax return.',
+  },
+  {
+    question: 'How does the Medicare levy exemption affect my working holiday tax refund?',
+    answer: 'The Medicare levy is 2% of your taxable income. If you are not eligible for Medicare and the levy was applied during the year, claiming the exemption removes it from your tax return - which can mean a larger refund. We check your eligibility and apply the exemption as part of preparing your tax return.',
+  },
+  {
+    question: 'Am I from a country with a Medicare agreement with Australia?',
+    answer: 'Australia has Reciprocal Health Care Agreements with 11 countries including the UK, Ireland, Italy, Sweden, the Netherlands, Belgium, Finland, Norway, Malta, Slovenia and New Zealand. Working holiday makers from Germany and Japan are not covered by an RHCA and should claim a Medicare levy exemption on their tax return.',
   },
 ]
 

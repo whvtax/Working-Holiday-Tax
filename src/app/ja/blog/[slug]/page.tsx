@@ -16,21 +16,76 @@ export async function generateStaticParams() {
   return guides.map(g => ({ slug: g.slug }))
 }
 
+// Per-category keyword expansions - dynamically applied per blog post
+const CATEGORY_KEYWORDS: Record<string, string[]> = {
+  'TFN': [
+    'TFN 申請 ワーホリ',
+    'タックスファイルナンバー 取得',
+    'TFN 417ビザ',
+    'TFN 462ビザ',
+    'TFN タックスリターン 還付',
+  ],
+  'ABN': [
+    'ABN 登録 ワーホリ',
+    'Australian Business Number ワーホリ',
+    'ワーホリ 個人事業主',
+    'ABN 417ビザ',
+    'ABN 462ビザ',
+  ],
+  'Tax Return': [
+    'オーストラリア タックスリターン 還付金',
+    'ワーホリ タックスリターン',
+    'タックスリターン 還付 417ビザ',
+    'タックスリターン 還付 462ビザ',
+    'ワーホリ 帰国後 タックスリターン',
+    'オーストラリア 確定申告 ワーホリ',
+  ],
+  'Super': [
+    'スーパー 返金 オーストラリア',
+    'DASP 申請',
+    'スーパーアニュエーション 返金 ワーホリ',
+    'Departing Australia Superannuation Payment',
+    'スーパー 返金 417ビザ',
+  ],
+  'Work Rights': [
+    'ワーホリ 労働者の権利 オーストラリア',
+    'Fair Work オーストラリア ワーホリ',
+    'ワーホリ 雇用条件',
+    '417ビザ 労働条件',
+    '462ビザ 労働条件',
+  ],
+  'Medicare & Other': [
+    'メディケア 税 免除 ワーホリ',
+    'メディケア ワーキングホリデー',
+    'RHCA オーストラリア',
+    'メディケア 免除 417ビザ',
+    'メディケア 免除 462ビザ',
+  ],
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const result = getJapaneseGuide(params.slug)
   if (!result) return {}
   const { guide } = result
+  const categoryKeywords = CATEGORY_KEYWORDS[guide.category] || []
   return {
     title: `${guide.title} | Working Holiday Tax`,
     description: guide.description,
     keywords: [
+      // Core working holiday tax refund keywords (Japanese)
+      'オーストラリア タックスリターン 還付金',
       'オーストラリア ワーホリ 税金',
-      'ワーキングホリデービザ',
-      '417ビザ',
-      '462ビザ',
-      guide.category,
-      'バックパッカー 税金',
+      'ワーキングホリデービザ オーストラリア',
+      '417ビザ オーストラリア',
+      '462ビザ オーストラリア',
+      'バックパッカー 税金 オーストラリア',
       'WHM 税金',
+      'WHV 税金',
+      // Category-specific
+      ...categoryKeywords,
+      // Post-specific
+      guide.category,
+      guide.title,
     ],
     alternates: {
       canonical: `https://workingholidaytax.com.au/ja/blog/${guide.slug}`,

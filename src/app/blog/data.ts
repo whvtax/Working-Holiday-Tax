@@ -989,9 +989,9 @@ We can access your income statements directly through our tax agent portal, so y
  },
  {
  slug: "backpacker-tax-rate-australia",
- title: "What is the backpacker tax rate in Australia and how does it work?",
+ title: "Backpacker tax rate Australia 2025-26: full breakdown for 417 & 462 visas",
  description:
- "Working holiday makers pay a flat 15% tax rate on their Australian earnings. Here is exactly how it works and what it means for your take-home pay.",
+ "The current backpacker tax rate in Australia for working holiday makers on 417 and 462 visas: 15% on the first $45,000, then resident-style brackets. How it affects your take-home pay and refund.",
  category: "Tax Return",
  date: "4 November 2024",
  readTime: 5,
@@ -1042,9 +1042,9 @@ Most working holiday makers we see get a refund of between $1,000 and $3,000 whe
  },
  {
  slug: "how-to-lodge-tax-return-working-holiday",
- title: "How to lodge a tax return in Australia as a working holiday maker",
+ title: "How to lodge a working holiday tax return in Australia (step-by-step)",
  description:
- "Lodging an Australian tax return is simpler than it sounds. Here is a step-by-step walkthrough of the whole process.",
+ "Step-by-step guide to lodging a working holiday tax return in Australia. What you need, when to lodge, and how a registered tax agent handles it for 417 and 462 visa holders - including from overseas.",
  category: "Tax Return",
  date: "11 November 2024",
  readTime: 6,
@@ -1103,9 +1103,9 @@ For multi-employer returns, or for working holiday makers with both TFN and [ABN
  },
  {
  slug: "what-is-payg-payment-summary",
- title: "What is a PAYG payment summary and how do you use it?",
+ title: "PAYG payment summary explained: what working holiday makers need to know",
  description:
- "A PAYG payment summary shows your total earnings and tax withheld for the year. Here is what it is and how to access yours.",
+ "A PAYG payment summary (now called Income Statement) shows your total earnings and tax withheld for the Australian financial year. How to find yours, what each section means, and how it is used in your working holiday tax return.",
  category: "Tax Return",
  date: "18 November 2024",
  readTime: 4,
@@ -1158,9 +1158,9 @@ Lodging without this cross-check is risky. The income statements are usually acc
  },
  {
  slug: "tax-deductions-working-holiday-makers",
- title: "What tax deductions can working holiday makers claim in Australia?",
+ title: "Tax deductions for working holiday makers in Australia: full guide",
  description:
- "Working holiday makers can claim work-related deductions just like any other worker. Here is what qualifies and what does not.",
+ "What work-related tax deductions working holiday makers on 417 and 462 visas can claim in Australia. Uniforms, tools, vehicle expenses, training - the full list of what qualifies and what does not.",
  category: "Tax Return",
  date: "25 November 2024",
  readTime: 5,
@@ -1248,9 +1248,9 @@ Without records, the deduction cannot be claimed even if the expense was genuine
  {
  slug: "do-you-need-to-lodge-tax-return-short-stay",
  title:
- "Do you need to lodge a tax return if you only worked for a short time in Australia?",
+ "Do you need to lodge a working holiday tax return after a short stay in Australia?",
  description:
- "Even if you only worked for a few weeks, you may be required to lodge a tax return. Here is how to work out whether you need to.",
+ "Worked in Australia for only a few weeks or months on a working holiday visa? Find out if you are required to lodge a tax return and how to claim back any overpaid tax.",
  category: "Tax Return",
  date: "2 December 2024",
  readTime: 4,
@@ -1305,9 +1305,9 @@ The standard deadline is 31 October following the end of the financial year, but
  {
  slug: "how-to-lodge-tax-return-from-overseas",
  title:
- "How to lodge an Australian tax return from overseas after you leave",
+ "How to lodge an Australian tax return from overseas (UK, Germany, Japan)",
  description:
- "Leaving Australia does not mean you can skip your tax return. Here is how to lodge from anywhere in the world.",
+ "Left Australia and need to lodge your working holiday tax return? Complete guide for 417 and 462 visa holders lodging from the UK, Germany, Japan or anywhere else - online, with a registered tax agent.",
  category: "Tax Return",
  date: "9 December 2024",
  readTime: 5,
@@ -1371,9 +1371,9 @@ Most working holiday makers receive a refund. Owing money is the exception, not 
  },
  {
  slug: "what-is-a-tax-agent",
- title: "What is a tax agent and why should working holiday makers use one?",
+ title: "Registered tax agents for working holiday makers in Australia: full guide",
  description:
- "A registered tax agent prepares and lodges tax returns on your behalf. Here is what they do and why using one makes sense for working holiday makers.",
+ "A registered tax agent is licensed by the Tax Practitioners Board (TPB) to prepare and lodge tax returns on your behalf. Why working holiday makers on 417 and 462 visas use tax agents, what they do, and how much they cost.",
  category: "Tax Return",
  date: "16 December 2024",
  readTime: 4,
@@ -3895,9 +3895,9 @@ We identify deductions you might miss when self-lodging. The result is usually a
  },
  {
  slug: "how-long-does-tax-refund-take-australia",
- title: "How long does it take to get a tax refund in Australia?",
+ title: "How long does a working holiday tax refund take in Australia?",
  description:
- "Most tax refunds in Australia are processed within two weeks of lodgement. Here is what affects the timeline and what to do if yours is taking longer.",
+ "Working holiday tax refunds are usually processed within 7-14 business days of lodgement with the ATO. What affects the timeline, what to do if yours is delayed, and how it works when you have already left Australia.",
  category: "Tax Return",
  date: "1 September 2025",
  readTime: 3,
@@ -5953,9 +5953,9 @@ If you are unsure whether the ATO is correct, send the correspondence to us befo
  },
  {
  slug: "amending-tax-return-australia",
- title: "Can you amend a tax return after it has been lodged in Australia?",
+ title: "How to amend an Australian tax return after lodgement (working holiday guide)",
  description:
- "Lodged your tax return and realised you made a mistake? Here is how to amend a return, how long you have, and what happens to your refund while the amendment is processed.",
+ "Lodged your working holiday tax return and noticed a mistake? You can amend a tax return with the ATO within set timeframes. How to do it, how long it takes, and how it affects your refund.",
  category: "Tax Return" as const,
  date: "2 February 2026",
  readTime: 4,
@@ -7342,9 +7342,9 @@ If you worked without a TFN because you were uncertain about how the system work
  },
  {
  slug: "multiple-jobs-tax-return-working-holiday",
- title: "How to lodge a tax return when you worked multiple jobs in Australia",
+ title: "How to lodge a working holiday tax return with multiple employers in Australia",
  description:
-   "Working holiday makers often hold multiple jobs in a single year, especially in hospitality and seasonal work.",
+ "Working holiday makers on 417 and 462 visas often work for several employers in one financial year - especially in hospitality, farm work and seasonal jobs. Here is how to combine everything into one tax return correctly.",
  category: "Tax Return",
  date: "25 May 2026",
  readTime: 4,

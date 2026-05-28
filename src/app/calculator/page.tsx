@@ -7,12 +7,14 @@ export const metadata: Metadata = {
   description: 'Estimate your Australian tax refund as a Working Holiday Maker (417/462). Free instant calculator using 2025-26 WHM tax rates. See how much tax back you can claim - no sign-up.',
   keywords: [
     'working holiday tax refund calculator',
+    'working holiday tax refund calculator Australia',
     'WHV tax refund calculator',
     'backpacker tax refund calculator Australia',
     'Australian tax refund calculator working holiday',
     '417 visa tax refund calculator',
     '462 visa tax refund calculator',
     'how much tax refund will I get Australia',
+    'how much tax refund Australia working holiday',
     'tax back calculator Australia working holiday',
     'WHM refund estimator',
     'tax calculator Australia',
@@ -22,8 +24,19 @@ export const metadata: Metadata = {
     'WHM tax rate calculator',
     'Australian tax refund estimator',
     'estimate Australian tax refund free',
+    'working holiday tax refund calculator UK',
+    'working holiday tax refund calculator Germany',
+    'working holiday tax refund calculator Japan',
   ],
-  alternates: { canonical: '/calculator' },
+  alternates: {
+    canonical: '/calculator',
+    languages: {
+      'en-AU': '/calculator',
+      'de': '/de/calculator',
+      'ja': '/ja/calculator',
+      'x-default': '/calculator',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',
@@ -60,6 +73,14 @@ const faqs = [
   {
     question: 'I am showing tax owing, what should I do?',
     answer: 'Contact us as soon as possible. We will review your situation, identify any missed deductions, and lodge your return correctly. There are often ways to reduce or eliminate tax owing through proper deduction claims.',
+  },
+  {
+    question: 'Can I use this calculator to estimate my refund from the UK, Germany, or Japan?',
+    answer: 'Yes. The calculator works regardless of your country of origin or current location. The tax rates are based on your visa subclass (417 or 462) and the income earned in Australia - not where you live now. If you have returned home to the UK, Germany, Japan or elsewhere, the estimate still applies.',
+  },
+  {
+    question: 'Does the calculator include the Medicare levy?',
+    answer: 'The calculator focuses on income tax. The Medicare levy is a separate 2% charge that most working holiday makers are exempt from. When we lodge your tax return, we apply the Medicare levy exemption where eligible - which can mean your actual refund is higher than the calculator shows.',
   },
 ]
 

@@ -9,10 +9,14 @@ export const metadata: Metadata = {
   description: 'Claim your Australian superannuation refund (DASP) after leaving as a Working Holiday Maker (417/462). Your employer paid 12% of wages into super - get it refunded to you.',
   keywords: [
     'DASP super refund',
+    'DASP super refund Australia',
     'super refund Australia working holiday',
+    'super refund Australia backpacker',
     'Departing Australia Superannuation Payment',
+    'Departing Australia Superannuation Payment 417',
     'super refund working holiday',
     'claim super after leaving Australia',
+    'claim super back Australia working holiday',
     'super withdrawal 417 visa',
     'super withdrawal 462 visa',
     'backpacker super refund',
@@ -23,8 +27,21 @@ export const metadata: Metadata = {
     'how to claim super refund Australia backpacker',
     'super refund after leaving Australia',
     'get my super back Australia working holiday',
+    'lost super Australia working holiday',
+    'find my super Australia backpacker',
+    'super refund UK backpacker Australia',
+    'super refund German backpacker Australia',
+    'super refund Japanese working holiday',
   ],
-  alternates: { canonical: '/superannuation' },
+  alternates: {
+    canonical: '/superannuation',
+    languages: {
+      'en-AU': '/superannuation',
+      'de': '/de/superannuation',
+      'ja': '/ja/superannuation',
+      'x-default': '/superannuation',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',
@@ -61,6 +78,14 @@ const faqs = [
   {
     question: 'Do I receive super if I worked under an ABN?',
     answer: 'Generally, no. Superannuation is not usually paid for ABN (contractor) work. Super is typically only paid when you are classified as an employee. As a contractor working under an ABN, you are responsible for arranging your own super if you want it.',
+  },
+  {
+    question: 'Can I claim my DASP super refund from the UK, Germany, or Japan?',
+    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries claim their DASP super refund entirely online after they have returned home. Your super refund can be paid directly to your overseas bank account.',
+  },
+  {
+    question: 'How is my DASP super refund taxed?',
+    answer: 'DASP payments are taxed at a fixed rate set by the ATO, which is deducted before the payment is sent to you. The amount you receive is the net figure after this tax has been applied. The exact rate depends on your visa subclass and the type of super being paid out.',
   },
 ]
 

@@ -16,7 +16,14 @@ export const metadata: Metadata = {
     'Australian resident tax rates',
     'WHV non-resident tax',
   ],
-  alternates: { canonical: '/tax-residency' },
+  alternates: {
+    canonical: '/tax-residency',
+    languages: {
+      'en-AU': '/tax-residency',
+      'de': '/de/tax-residency',
+      'x-default': '/tax-residency',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',

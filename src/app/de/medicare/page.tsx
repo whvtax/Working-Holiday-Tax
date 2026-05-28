@@ -8,14 +8,23 @@ export const metadata: Metadata = {
   description: 'Verstehe, ob du als Working Holiday Visuminhaber Anspruch auf Medicare hast und wie die Medicare Levy funktioniert. Wir holen für dich das Befreiungszertifikat.',
   keywords: [
     'Medicare Working Holiday Australien',
+    'Medicare Levy Befreiung',
     'Medicare Levy Befreiung Backpacker',
+    'Medicare Levy Befreiung Working Holiday',
+    'Medicare Levy Befreiung Deutschland',
     'Medicare 417 Visum',
     'Medicare 462 Visum',
     'RHCA Australien Deutsch',
     'Sozialversicherungsabkommen Australien',
+    'Sozialversicherungsabkommen Deutschland Australien',
     'Medicare Levy Befreiungszertifikat',
+    'Medicare Levy 2 Prozent',
+    'Medicare Befreiung Steuererklärung',
+    'Medicare Befreiung Backpacker Deutschland',
+    'Medicare Levy zurückbekommen',
+    'muss ich Medicare Levy zahlen Working Holiday',
   ],
-  alternates: { canonical: '/de/medicare', languages: { 'en-AU': '/medicare', 'de': '/de/medicare', 'x-default': '/medicare' } },
+  alternates: { canonical: '/de/medicare', languages: { 'en-AU': '/medicare', 'de': '/de/medicare', 'ja': '/ja/medicare', 'x-default': '/medicare' } },
   openGraph: {
     type: 'website',
     locale: 'de_DE',
@@ -62,6 +71,14 @@ const faqs = [
   {
     question: 'Hat mein Working Holiday Visum Einfluss auf meine Medicareberechtigung?',
     answer: 'Ja. Die meisten Working Holiday Visuminhaber sind nicht für Medicare berechtigt, außer sie kommen aus einem Land mit Sozialversicherungsabkommen. Wenn du nicht berechtigt bist, beantragen wir die Medicare-Levy-Befreiung als Teil deiner Steuererklärung.',
+  },
+  {
+    question: 'Wie wirkt sich die Medicare-Levy-Befreiung auf meine Steuerrückerstattung aus?',
+    answer: 'Die Medicare Levy beträgt 2 % deines zu versteuernden Einkommens. Wenn du nicht für Medicare berechtigt bist und die Levy während des Jahres trotzdem abgezogen wurde, kann die Befreiung sie aus deiner Steuererklärung herausnehmen - was zu einer höheren Rückerstattung führen kann. Wir prüfen deine Berechtigung und beantragen die Befreiung im Rahmen deiner Steuererklärung.',
+  },
+  {
+    question: 'Aus welchen Ländern besteht ein Medicare-Abkommen mit Australien?',
+    answer: 'Australien hat Sozialversicherungsabkommen (RHCA) mit 11 Ländern, darunter Großbritannien, Irland, Italien, Schweden, die Niederlande, Belgien, Finnland, Norwegen, Malta, Slowenien und Neuseeland. Working Holiday Maker aus Deutschland und Österreich sind nicht abgedeckt und sollten eine Medicare-Levy-Befreiung in ihrer Steuererklärung beantragen.',
   },
 ]
 

@@ -9,18 +9,34 @@ export const metadata: Metadata = {
   description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly with a registered tax agent.',
   keywords: [
     'TFN application Australia',
+    'TFN application working holiday',
     'working holiday TFN',
+    'Tax File Number Australia working holiday',
     'Tax File Number 417 visa',
     'Tax File Number 462 visa',
     'apply for TFN backpacker',
+    'apply for TFN working holiday',
     'get TFN Australia',
+    'how to apply for TFN Australia',
     'TFN for WHV',
     'TFN for working holiday tax refund',
     'TFN application working holiday maker',
     'how to apply for TFN backpacker',
     'TFN Australia online application WHV',
+    'TFN application before arriving Australia',
+    'TFN Australia processing time',
+    'TFN for working holiday tax return',
+    'register for TFN Australia backpacker',
   ],
-  alternates: { canonical: '/tfn' },
+  alternates: {
+    canonical: '/tfn',
+    languages: {
+      'en-AU': '/tfn',
+      'de': '/de/tfn',
+      'ja': '/ja/tfn',
+      'x-default': '/tfn',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',
@@ -43,6 +59,8 @@ const faqs = [
   { question:'Can I get a TFN on a tourist visa?', answer:'No. You must hold a valid work visa, such as a Working Holiday visa (Subclass 417 or 462), to apply for a TFN.' },
   { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
   { question:'What is a TFN Declaration Form?', answer:'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.' },
+  { question:'Can I apply for a TFN before arriving in Australia?', answer:'You can only apply once you arrive in Australia and your working holiday visa is activated. If you apply before arrival, the ATO will need an Australian postal address to send your TFN to.' },
+  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' },
 ]
 
 const STEPS = [

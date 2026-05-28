@@ -5,25 +5,43 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'ABN Registration for Working Holiday Visa Holders',
-  description: 'Set up your ABN correctly as a Working Holiday contractor. We handle registration and tax obligations - simple, fast, online.',
+  title: 'ABN Registration for Working Holiday Visa Holders | 417 & 462',
+  description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration and tax return - simple, fast, online.',
   keywords: [
     'ABN registration Australia',
+    'ABN registration working holiday',
+    'ABN application Australia',
     'ABN working holiday',
     'Australian Business Number backpacker',
+    'Australian Business Number working holiday',
     'sole trader ABN 417',
     'sole trader ABN 462',
+    'sole trader ABN working holiday',
     'ABN for contractors WHV',
+    'ABN backpacker contractor',
     'register ABN online',
+    'register ABN backpacker',
+    'ABN for working holiday tax return',
+    'ABN tax obligations backpacker',
+    'do I need an ABN working holiday',
+    'ABN vs TFN working holiday',
   ],
-  alternates: { canonical: '/abn' },
+  alternates: {
+    canonical: '/abn',
+    languages: {
+      'en-AU': '/abn',
+      'de': '/de/abn',
+      'ja': '/ja/abn',
+      'x-default': '/abn',
+    },
+  },
   openGraph: {
     type: 'website',
     locale: 'en_AU',
     url: 'https://workingholidaytax.com.au/abn',
     siteName: 'Working Holiday Tax',
-    title: 'ABN Registration for Working Holiday Visa Holders',
-    description: 'Set up your ABN correctly as a Working Holiday contractor.',
+    title: 'ABN Registration for Working Holiday Visa Holders | 417 & 462',
+    description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration.',
   },
   twitter: {
     card: 'summary_large_image',
@@ -39,6 +57,8 @@ const faqs = [
   { question: 'Do I need to register for GST?', answer: 'GST registration is only required if your annual turnover is over $75,000. Most Working Holiday visa holders do not need to register for GST.' },
   { question: 'What happens to my ABN when I leave Australia?', answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.' },
   { question: 'Can my ABN be rejected?', answer: 'Yes. If your details do not accurately reflect your work situation, your ABN application may be delayed or rejected. That is why we recommend using a tax agent to avoid mistakes and ensure everything is set up correctly from the start.' },
+  { question: 'Do I need an ABN as a working holiday maker?', answer: 'You only need an ABN if you are working as a contractor or sole trader - for example, doing rideshare, food delivery, freelance work, or being paid directly by clients rather than through PAYG employment. If you are a regular employee, you only need a TFN.' },
+  { question: 'How does ABN income affect my working holiday tax return?', answer: 'ABN income is treated differently from PAYG wages. No tax is withheld upfront, so you are responsible for setting aside money for tax. When you lodge your working holiday tax return, ABN income is declared separately and you can claim related business expenses as deductions.' },
 ]
 
 const MISTAKES = [

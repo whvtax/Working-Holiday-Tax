@@ -9,20 +9,27 @@ export const metadata: Metadata = {
   description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise als Working Holiday Maker (417/462). 12 % deines Lohns wurden in Super eingezahlt - per DASP-Antrag bekommst du es zurück.',
   keywords: [
     'Super-Rückerstattung Australien',
+    'Super zurück Australien',
     'DASP Rückerstattung',
     'DASP Auszahlung Working Holiday',
+    'DASP beantragen',
     'Super zurückholen Australien Backpacker',
     'Super auszahlen Working Holiday Maker',
+    'Super auszahlen Australien',
     'Departing Australia Superannuation Payment Deutsch',
     'Super-Rückerstattung 417 Visum',
     'Super-Rückerstattung 462 Visum',
     'Backpacker Super zurückholen',
     'Super beantragen nach Verlassen Australien',
+    'Super beantragen nach Rückkehr Deutschland',
     'Super auszahlen 417 Visum',
     'Super auszahlen 462 Visum',
     'WHM Superannuation Antrag',
     'wie bekomme ich meine Super zurück Australien',
+    'wie viel Super zurück Australien',
     'Super-Rückerstattung Working Holiday Maker',
+    'Pensionskasse Australien zurück',
+    'Rente Australien zurück Backpacker',
   ],
   alternates: { canonical: '/de/superannuation', languages: { 'en-AU': '/superannuation', 'de': '/de/superannuation', 'ja': '/ja/superannuation', 'x-default': '/superannuation' } },
   openGraph: {
@@ -61,6 +68,14 @@ const faqs = [
   {
     question: 'Bekomme ich Super, wenn ich unter einer ABN gearbeitet habe?',
     answer: 'Normalerweise nicht. Für ABN-Arbeit (also als Contractor/Selbstständiger) wird in der Regel keine Super gezahlt. Super gibt es meistens nur, wenn du als Angestellter eingestuft bist. Als Contractor mit ABN bist du selbst dafür verantwortlich, eine Supereinzahlung zu organisieren, falls du das möchtest.',
+  },
+  {
+    question: 'Kann ich meine DASP Super-Rückerstattung aus Deutschland beantragen?',
+    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit, ihre DASP-Rückerstattung komplett online zu beantragen, nachdem sie nach Hause zurückgekehrt sind. Deine Super-Rückerstattung kann direkt auf dein deutsches Bankkonto überwiesen werden.',
+  },
+  {
+    question: 'Wie wird meine DASP Super-Rückerstattung besteuert?',
+    answer: 'DASP-Auszahlungen werden zu einem festen Steuersatz besteuert, der vom ATO festgelegt ist und vor der Auszahlung einbehalten wird. Was du bekommst, ist der Nettobetrag nach Steuern. Der genaue Satz hängt von deiner Visumsklasse und der Art der ausgezahlten Super ab.',
   },
 ]
 

@@ -10,19 +10,27 @@ export const metadata: Metadata = {
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
-    'Australian Business Number Backpacker',
     'ABN beantragen Australien',
+    'ABN beantragen Working Holiday',
+    'Australian Business Number Backpacker',
+    'Australian Business Number Working Holiday',
     'Selbstständig Australien WHV',
+    'Selbstständig Australien Working Holiday',
     'ABN für Freelancer',
     'ABN 417 Visum',
     'ABN 462 Visum',
     'ABN online registrieren',
+    'ABN für Steuererklärung Australien',
+    'ABN vs TFN Working Holiday',
+    'brauche ich eine ABN Working Holiday',
+    'ABN Backpacker Selbstständig',
   ],
   alternates: {
     canonical: `${SITE_URL}/de/abn`,
     languages: {
       'en-AU': `${SITE_URL}/abn`,
       'de': `${SITE_URL}/de/abn`,
+      'ja': `${SITE_URL}/ja/abn`,
       'x-default': `${SITE_URL}/abn`,
     },
   },
@@ -48,6 +56,8 @@ const faqs = [
   { question: 'Muss ich mich für GST registrieren?', answer: 'Eine GST-Registrierung ist nur erforderlich, wenn dein Jahresumsatz über 75.000 AUD liegt. Die meisten Working Holiday Visainhaber müssen sich nicht für GST registrieren.' },
   { question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?', answer: 'Du kannst deine ABN online stornieren, sobald du aufhörst, in Australien zu arbeiten.' },
   { question: 'Kann meine ABN abgelehnt werden?', answer: 'Ja. Wenn deine Angaben deine Arbeitsrealität nicht korrekt widerspiegeln, kann der Antrag verzögert oder abgelehnt werden. Deshalb empfehlen wir, einen Steueragenten zu nutzen, um Fehler zu vermeiden und alles von Anfang an richtig aufzusetzen.' },
+  { question: 'Brauche ich als Working Holiday Maker eine ABN?', answer: 'Du brauchst eine ABN nur, wenn du als Selbstständiger oder Freelancer arbeitest - zum Beispiel Rideshare, Lieferdienste, freie Aufträge oder direkte Bezahlung durch Kunden statt PAYG-Anstellung. Als regulärer Angestellter brauchst du nur eine TFN.' },
+  { question: 'Wie beeinflussen ABN-Einkünfte meine Working Holiday Steuererklärung?', answer: 'ABN-Einkünfte werden anders behandelt als PAYG-Lohn. Es wird keine Steuer vorab einbehalten, du musst also selbst Geld für die Steuer zurücklegen. Bei deiner Steuererklärung werden ABN-Einkünfte separat angegeben, und du kannst entsprechende Geschäftsausgaben als Werbungskosten geltend machen.' },
 ]
 
 const MISTAKES = [

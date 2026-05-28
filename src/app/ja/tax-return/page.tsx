@@ -253,7 +253,7 @@ export default function JapaneseTaxReturnPage() {
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.5 }}>
-              登録税理士が417・462ビザのWHVタックスリターンをATOへ完全代行。
+              417・462ビザのWHVタックスリターンをATOへ完全代行いたします。
             </p>
 
             <p className="font-light"

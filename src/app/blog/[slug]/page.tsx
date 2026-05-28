@@ -14,20 +14,76 @@ export async function generateStaticParams() {
   return guides.map(g => ({ slug: g.slug }))
 }
 
+// Per-category keyword expansions - dynamically applied per blog post
+const CATEGORY_KEYWORDS: Record<string, string[]> = {
+  'TFN': [
+    'TFN application working holiday',
+    'Tax File Number 417 visa',
+    'Tax File Number 462 visa',
+    'apply for TFN backpacker',
+    'TFN for working holiday tax refund',
+  ],
+  'ABN': [
+    'ABN registration working holiday',
+    'Australian Business Number backpacker',
+    'sole trader ABN 417',
+    'sole trader ABN 462',
+    'ABN for working holiday tax return',
+  ],
+  'Tax Return': [
+    'working holiday tax refund Australia',
+    'WHV tax return',
+    'tax refund 417 visa',
+    'tax refund 462 visa',
+    'claim tax back Australia backpacker',
+    'lodge tax return from overseas',
+    'tax refund after leaving Australia',
+  ],
+  'Super': [
+    'DASP super refund Australia',
+    'super refund working holiday',
+    'claim super after leaving Australia',
+    'Departing Australia Superannuation Payment',
+    'super refund 417 visa',
+  ],
+  'Work Rights': [
+    'working holiday visa rights Australia',
+    'Fair Work Australia working holiday',
+    'working holiday visa employment',
+    '417 visa work conditions',
+    '462 visa work conditions',
+  ],
+  'Medicare & Other': [
+    'Medicare levy exemption backpacker',
+    'Medicare working holiday visa',
+    'Reciprocal Health Care Agreement Australia',
+    'Medicare levy exemption 417',
+    'Medicare levy exemption 462',
+  ],
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const guide = getGuideBySlug(params.slug)
   if (!guide) return {}
+  const categoryKeywords = CATEGORY_KEYWORDS[guide.category] || []
   return {
     title: `${guide.title} | Working Holiday Tax`,
     description: guide.description,
     keywords: [
+      // Core working holiday tax refund keywords
+      'working holiday tax refund Australia',
       'working holiday tax Australia',
-      'working holiday visa',
-      '417 visa',
-      '462 visa',
+      'working holiday visa Australia',
+      '417 visa Australia',
+      '462 visa Australia',
+      'backpacker tax Australia',
+      'WHM tax Australia',
+      'WHV tax Australia',
+      // Category-specific keywords
+      ...categoryKeywords,
+      // Post-specific
       guide.category,
-      'backpacker tax',
-      'WHM tax',
+      guide.title,
     ],
     alternates: {
       canonical: `https://workingholidaytax.com.au/blog/${guide.slug}`,
