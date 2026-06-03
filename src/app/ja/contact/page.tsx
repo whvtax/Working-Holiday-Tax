@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
@@ -225,7 +226,7 @@ export default function JapaneseContactPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
               { stat: '1,200+', label: 'サポート実績' },
-              { stat: '4.9★',   label: '評価' },
+              { stat: <GoogleRating variant="number" lang="ja" />, label: '評価' },
               { stat: '45+',    label: '対応国数' },
               { stat: '~1時間', label: '返信時間' },
             ].map((item, i) => (

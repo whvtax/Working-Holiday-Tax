@@ -207,13 +207,6 @@ const schemaOrg = {
           availableLanguage: ['en', 'English'],
         },
       ],
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        reviewCount: '300',
-        bestRating: '5',
-        worstRating: '1',
-      },
       hasOfferCatalog: {
         '@type': 'OfferCatalog',
         name: 'Tax Services for Working Holiday Makers',

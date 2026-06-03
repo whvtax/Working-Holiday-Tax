@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
@@ -238,7 +239,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
               { stat: '1,200+', label: 'Backpackers' },
-              { stat: '4.9★',   label: 'Rating' },
+              { stat: <GoogleRating variant="number" lang="en" />, label: 'Rating' },
               { stat: '45+',    label: 'Countries' },
               { stat: '~1 hr',  label: 'Response' },
             ].map((item, i) => (

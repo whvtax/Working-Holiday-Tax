@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { GoogleRating } from '@/components/ui/GoogleRating'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
@@ -90,11 +92,6 @@ const IconStar    = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-
 const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 // ─── TESTIMONIALS - real backpacker reviews ─────────────────────────────
-const TESTIMONIALS = [
-  { name: 'Tobias Bauer',  from: 'Deutschland · WHV 417', quote: 'Sie haben mir alles einfach erklärt und Geld zurückgeholt, von dem ich gar nichts wusste.', amount: '4.100 $', initials: 'T' },
-  { name: 'Anna Larsen',   from: 'Norwegen · WHV 417',    quote: 'Meine TFN und Steuererklärung wurden super schnell erledigt. Ich musste mir um nichts Gedanken machen.', amount: '2.450 $', initials: 'A' },
-  { name: "Liam O'Connor", from: 'Irland · WHV 417',       quote: 'Ich hatte mehrere Jobs und keine Ahnung, was zu tun ist. Sie haben sich um alles gekümmert.', amount: '3.200 $', initials: 'L' },
-]
 
 const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super — wir helfen dir von Anfang an weiter.' },
@@ -166,13 +163,6 @@ export default function GermanHomePage() {
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: 'AU',
     inLanguage: 'de',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '300',
-      bestRating: '5',
-      worstRating: '1',
-    },
   }
 
   const faqLd = {
@@ -210,13 +200,6 @@ export default function GermanHomePage() {
     audience: {
       '@type': 'Audience',
       name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '300',
-      bestRating: '5',
-      worstRating: '1',
     },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -331,7 +314,7 @@ export default function GermanHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1.200+ Backpacker geholfen', '4,9★ von 300+ Bewertungen', '45+ Länder', 'Antwort in unter 1 Stunde'].map((label, i) => (
+            {['1.200+ Backpacker geholfen', <GoogleRating variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Stunde'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -391,37 +374,12 @@ export default function GermanHomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl flex flex-col"
-                style={{ padding: '18px', boxShadow: '0 1px 4px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
-                <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
-                  {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
-                </div>
-                <p className="font-light text-body flex-1 line-clamp-3 lg:line-clamp-none"
-                  style={{ fontSize: '13px', lineHeight: 1.7, marginBottom: '12px' }}>
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center justify-between" style={{ paddingTop: '10px', borderTop: '1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                      style={{ width: '30px', height: '30px', fontSize: '11px', background: '#EAF6F1', color: '#0B5240' }}>{t.initials}</div>
-                    <div>
-                      <p className="font-semibold text-ink" style={{ fontSize: '12px', lineHeight: 1.2 }}>{t.name}</p>
-                      <p className="text-subtle" style={{ fontSize: '10.5px', marginTop: '1px' }}>{t.from}</p>
-                    </div>
-                  </div>
-                  <span className="font-serif font-black text-forest-500 flex-shrink-0"
-                    style={{ fontSize: 'clamp(18px, 2vw, 22px)', letterSpacing: '-0.03em' }}>{t.amount}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GoogleReviews lang="de" />
 
           <div style={{ marginTop: '28px', paddingTop: '24px', borderTop: '1px solid #E2EFE9' }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
-                { n: '4,9★',    l: 'von 300+ Bewertungen' },
+                { n: <GoogleRating variant="number" lang="de" />, l: <GoogleRating variant="count" lang="de" /> },
                 { n: '1.200+',  l: 'Backpacker geholfen' },
                 { n: '< 1 Std', l: 'Antwortzeit' },
                 { n: '100 %',   l: 'Komplett online, ohne Papierkram' },

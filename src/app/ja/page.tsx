@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { GoogleRating } from '@/components/ui/GoogleRating'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
@@ -112,11 +114,6 @@ const IconStar    = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-
 const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 // ─── TESTIMONIALS - Japanese WHV reviews ─────────────────────────────────
-const TESTIMONIALS = [
-  { name: '佐藤 健太', from: '日本 · WHV 417', quote: '何から始めればいいか分からず不安でしたが、日本語で丁寧に対応してもらえて、知らなかった控除も取り戻してくれました。', amount: '$4,100', initials: '佐' },
-  { name: '田中 美咲', from: '日本 · WHV 462', quote: 'ファームジョブで複数の雇用主のもとで働いたので複雑でしたが、すべて整理してタックスリターンを提出してくれました。', amount: '$2,450', initials: '田' },
-  { name: '山本 翔太', from: '日本 · WHV 417', quote: '帰国後にスーパーアニュエーション返金（DASP）を依頼。日本の口座に振り込んでもらえて本当に楽でした。', amount: '$3,200', initials: '山' },
-]
 
 const STEPS = [
   { n: '1', title: 'ご相談・状況の確認',     body: 'TFN、ABN、ワーホリ タックスリターン、スーパー受取など、必要なサービスを最初にご案内します。' },
@@ -188,13 +185,6 @@ export default function JapaneseHomePage() {
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: 'AU',
     inLanguage: 'ja',
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '300',
-      bestRating: '5',
-      worstRating: '1',
-    },
   }
 
   const faqLd = {
@@ -241,13 +231,6 @@ export default function JapaneseHomePage() {
     audience: {
       '@type': 'Audience',
       name: 'オーストラリアのワーキングホリデービザ保持者（サブクラス417・462）',
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '300',
-      bestRating: '5',
-      worstRating: '1',
     },
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
@@ -364,7 +347,7 @@ export default function JapaneseHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200名以上をサポート', '4.9★（300件以上の口コミ）', '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
+            {['1,200名以上をサポート', <GoogleRating variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -424,37 +407,12 @@ export default function JapaneseHomePage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl flex flex-col"
-                style={{ padding: '18px', boxShadow: '0 1px 4px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.06)' }}>
-                <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
-                  {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
-                </div>
-                <p className="font-light text-body flex-1 line-clamp-3 lg:line-clamp-none"
-                  style={{ fontSize: '13px', lineHeight: 1.7, marginBottom: '12px' }}>
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center justify-between" style={{ paddingTop: '10px', borderTop: '1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                      style={{ width: '30px', height: '30px', fontSize: '11px', background: '#EAF6F1', color: '#0B5240' }}>{t.initials}</div>
-                    <div>
-                      <p className="font-semibold text-ink" style={{ fontSize: '12px', lineHeight: 1.2 }}>{t.name}</p>
-                      <p className="text-subtle" style={{ fontSize: '10.5px', marginTop: '1px' }}>{t.from}</p>
-                    </div>
-                  </div>
-                  <span className="font-serif font-black text-forest-500 flex-shrink-0"
-                    style={{ fontSize: 'clamp(18px, 2vw, 22px)', letterSpacing: '-0.03em' }}>{t.amount}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GoogleReviews lang="ja" />
 
           <div style={{ marginTop: '28px', paddingTop: '24px', borderTop: '1px solid #E2EFE9' }}>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
-                { n: '4.9★',    l: '300件以上の口コミ' },
+                { n: <GoogleRating variant="number" lang="ja" />, l: <GoogleRating variant="count" lang="ja" /> },
                 { n: '1,200+',  l: 'サポート実績' },
                 { n: '1時間以内', l: 'スピード返信' },
                 { n: '100%',    l: '完全オンライン対応' },

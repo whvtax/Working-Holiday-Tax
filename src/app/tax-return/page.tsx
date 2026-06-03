@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { GoogleRating } from '@/components/ui/GoogleRating'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
@@ -113,26 +115,6 @@ const STEPS = [
   { n: '4', title: 'Get your assessment',           body: 'Once your tax return is processed by the ATO, any refund you are owed is paid into your nominated Australian bank account, usually within 7-14 days.' },
 ]
 
-const TESTIMONIALS = [
-  {
-    name: 'Anna Larsen',
-    from: 'Norway · WHV 417',
-    quote: 'They handled my tax return from start to finish. I had no idea what I could claim, and ended up getting way more back than expected.',
-    amount: '$2,450',
-    initials: 'A',
-    bgColor: '#FDF0D5',
-    textColor: '#7A4A00',
-  },
-  {
-    name: 'Tobias Bauer',
-    from: 'Germany · WHV 417',
-    quote: 'Super easy process. They explained everything clearly and made sure I got the maximum refund back. Highly recommend.',
-    amount: '$4,100',
-    initials: 'T',
-    bgColor: '#EAF6F1',
-    textColor: '#0B5240',
-  },
-]
 
 const IconStar = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
@@ -280,7 +262,7 @@ export default function TaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped','4.9★ from 300+ reviews','45+ countries served','~1 hour response time'].map((t,i) => (
+              {['1,200+ backpackers helped',<GoogleRating variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -429,26 +411,7 @@ export default function TaxReturnPage() {
             </h2>
           </div>
           <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Backpackers from the UK, Germany, Japan and more</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 flex flex-col" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
-                <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
-                  {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
-                </div>
-<p className="text-[13px] font-light text-body leading-[1.75] flex-1" style={{ marginBottom: '14px' }}>&ldquo;{t.quote}&rdquo;</p>
-                <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold flex-shrink-0" style={{ background: t.bgColor, color: t.textColor }}>{t.initials}</div>
-                    <div>
-                      <p className="text-[12.5px] font-semibold text-ink">{t.name}</p>
-                      <p className="text-[11.5px] text-subtle mt-0.5">{t.from}</p>
-                    </div>
-                  </div>
-                  <span className="font-serif font-black text-forest-500" style={{ fontSize: '17px', letterSpacing: '-0.03em' }}>{t.amount}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GoogleReviews lang="en" />
         </div>
       </section>
 

@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { GoogleRating } from '@/components/ui/GoogleRating'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
@@ -109,26 +111,6 @@ const STEPS = [
   { n: '4', title: 'Dein Bescheid kommt',           body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung innerhalb von 7-14 Tagen auf dein australisches Bankkonto überwiesen.' },
 ]
 
-const TESTIMONIALS = [
-  {
-    name: 'Anna Larsen',
-    from: 'Norwegen · WHV 417',
-    quote: 'Sie haben meine Steuererklärung von A bis Z für mich gemacht. Ich hatte keine Ahnung, was ich absetzen kann, und bekam am Ende viel mehr zurück als erwartet.',
-    amount: '2.450 $',
-    initials: 'A',
-    bgColor: '#FDF0D5',
-    textColor: '#7A4A00',
-  },
-  {
-    name: 'Tobias Bauer',
-    from: 'Deutschland · WHV 417',
-    quote: 'Mega easy. Sie haben mir alles klar erklärt und dafür gesorgt, dass ich die maximale Rückzahlung bekomme. Klare Empfehlung.',
-    amount: '4.100 $',
-    initials: 'T',
-    bgColor: '#EAF6F1',
-    textColor: '#0B5240',
-  },
-]
 
 const IconStar = () => (
   <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
@@ -181,13 +163,6 @@ const serviceSchema = {
     url: 'https://workingholidaytax.com.au',
     description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '300',
-    bestRating: '5',
-    worstRating: '1',
   },
 }
 
@@ -272,7 +247,7 @@ export default function GermanTaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpackern geholfen','4,9★ aus 300+ Bewertungen','45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
+              {['1.200+ Backpackern geholfen',<GoogleRating variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -421,26 +396,7 @@ export default function GermanTaxReturnPage() {
             </h2>
           </div>
           <p className="text-center font-medium text-muted" style={{ fontSize: '12px', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '16px', color: 'rgba(10,15,13,0.4)' }}>Backpacker aus Deutschland, UK, Japan und mehr</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl p-6 flex flex-col" style={{ boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
-                <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
-                  {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
-                </div>
-<p className="text-[13px] font-light text-body leading-[1.75] flex-1" style={{ marginBottom: '14px' }}>&ldquo;{t.quote}&rdquo;</p>
-                <div className="flex items-center justify-between pt-3" style={{ borderTop: '1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold flex-shrink-0" style={{ background: t.bgColor, color: t.textColor }}>{t.initials}</div>
-                    <div>
-                      <p className="text-[12.5px] font-semibold text-ink">{t.name}</p>
-                      <p className="text-[11.5px] text-subtle mt-0.5">{t.from}</p>
-                    </div>
-                  </div>
-                  <span className="font-serif font-black text-forest-500" style={{ fontSize: '17px', letterSpacing: '-0.03em' }}>{t.amount}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GoogleReviews lang="de" />
         </div>
       </section>
 

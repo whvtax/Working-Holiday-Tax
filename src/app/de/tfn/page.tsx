@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { GoogleRating } from '@/components/ui/GoogleRating'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
@@ -69,10 +71,6 @@ const STEPS = [
   { n: '4', title: 'Du erhältst deine TFN',                body: 'Deine TFN wird vom ATO ausgestellt und innerhalb von 28 Tagen an deine australische Adresse geschickt.' },
 ]
 
-const TESTIMONIALS = [
-  { name: 'Olivia Rossi',  from: 'Italien · WHV 417',     quote: 'Ich hatte mehrere Arbeitgeber und keine Ahnung, was zu tun ist. Sie haben mich durch alles begleitet und es einfach gemacht.', amount: '', initials: 'O', bgColor: '#EAF6F1', textColor: '#0B5240' },
-  { name: 'Sophie Durant', from: 'Frankreich · WHV 417',  quote: 'Meine TFN war in nur zwei Tagen geregelt und alles wurde klar und transparent gemacht. Kein Stress, einfach reibungslos.', amount: '', initials: 'S', bgColor: '#FDF0D5', textColor: '#7A4A00' },
-]
 
 const IconStar = () => (<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
 
@@ -117,13 +115,6 @@ const serviceSchema = {
     url: 'https://workingholidaytax.com.au',
     description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '300',
-    bestRating: '5',
-    worstRating: '1',
   },
 }
 
@@ -194,7 +185,7 @@ export default function TFNPageDE() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpacker geholfen', '4,9★ von 300+ Bewertungen', '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
+              {['1.200+ Backpacker geholfen', <GoogleRating variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -316,36 +307,7 @@ export default function TFNPageDE() {
               So haben Backpacker wie du ihre TFN schnell geregelt
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems: 'stretch' }}>
-            {TESTIMONIALS.map((t, i) => (
-              <div key={i} className="bg-white rounded-2xl flex flex-col"
-                style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 4px 20px rgba(11,82,64,.07)', border: '1px solid #E2EFE9' }}>
-                <div className="flex gap-0.5" style={{ marginBottom: '10px' }}>
-                  {Array.from({ length: 5 }).map((_, si) => <IconStar key={si} />)}
-                </div>
-                <p className="font-light text-body flex-1"
-                  style={{ fontSize: 'clamp(12.5px, 1.2vw, 14px)', lineHeight: 1.78, marginBottom: '16px' }}>
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-                <div className="flex items-center justify-between" style={{ paddingTop: '14px', borderTop: '1px solid #E2EFE9' }}>
-                  <div className="flex items-center gap-2.5">
-                    <div className="rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                      style={{ width: '34px', height: '34px', fontSize: '11px', background: t.bgColor, color: t.textColor }}>
-                      {t.initials}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-ink" style={{ fontSize: '12px', lineHeight: 1.2 }}>{t.name}</p>
-                      <p className="text-subtle" style={{ fontSize: '11px', marginTop: '2px' }}>{t.from}</p>
-                    </div>
-                  </div>
-                  <span className="font-serif font-black text-forest-500 flex-shrink-0"
-                    style={{ fontSize: 'clamp(18px, 2vw, 22px)', letterSpacing: '-0.03em' }}>
-                    {t.amount}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GoogleReviews lang="de" />
         </div>
       </section>
 
