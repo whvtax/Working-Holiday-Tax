@@ -3,61 +3,29 @@
 /**
  * GoogleReviews
  * -------------
- * Live Google reviews, styled to look like Google, in a self-scrolling
- * infinite carousel with a Google rating badge on top.
+ * Real Google reviews, styled like Google, in a self-scrolling infinite
+ * carousel with a Google rating badge on top.
  *
- * Reviews are fetched from the FREE Featurable API and refresh
- * automatically (~every 48h). No Google API key, no credit card.
+ * Data comes from our own /api/google-reviews route (server-side proxy of
+ * the free Featurable API), so there are no browser CORS / ad-blocker
+ * issues. Reviews refresh automatically (the server cache revalidates
+ * hourly; Featurable itself refreshes from Google ~every 48h).
  *
- * Setup is already done — the widget ID below is yours. To change it,
- * either edit FEATURABLE_WIDGET_ID or set NEXT_PUBLIC_FEATURABLE_ID.
- *
- * Required once:  npm install react-google-reviews
+ * No third-party client library and no extra npm install required.
  */
 
 import { useState } from 'react'
-import { ReactGoogleReviews } from 'react-google-reviews'
-import { useGoogleSummary, type GoogleSummary } from '@/lib/googleSummary'
+import { useGoogleData, type RGReview, type GoogleData } from '@/lib/googleSummary'
 
-const FEATURABLE_WIDGET_ID =
-  process.env.NEXT_PUBLIC_FEATURABLE_ID || 'e9befa26-d16a-4bc5-90e8-a857cb8cbb0c'
-
-// Link to your Google Business profile (the "View on Google" button)
+// Fallback link to your Google profile (used if the API doesn't supply one).
 const GOOGLE_PROFILE_URL = 'https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8'
 
 type Lang = 'en' | 'de' | 'ja'
 
-type RGReview = {
-  reviewId: string | null
-  reviewer: { profilePhotoUrl: string; displayName: string; isAnonymous: boolean }
-  starRating: number
-  comment: string
-  createTime: string | null
-  updateTime: string | null
-}
-
-const T: Record<Lang, { based: (n: number) => string; view: string; more: string; less: string; loading: string }> = {
-  en: {
-    based: (n) => `Based on ${n} Google review${n === 1 ? '' : 's'}`,
-    view: 'View us on Google',
-    more: 'Read more',
-    less: 'Show less',
-    loading: 'Loading reviews…',
-  },
-  de: {
-    based: (n) => `Basierend auf ${n} Google-Bewertung${n === 1 ? '' : 'en'}`,
-    view: 'Auf Google ansehen',
-    more: 'Mehr lesen',
-    less: 'Weniger anzeigen',
-    loading: 'Bewertungen werden geladen…',
-  },
-  ja: {
-    based: (n) => `${n}件のGoogleレビューに基づく`,
-    view: 'Googleで見る',
-    more: 'もっと読む',
-    less: '閉じる',
-    loading: 'レビューを読み込み中…',
-  },
+const T: Record<Lang, { based: (n: number) => string; view: string; more: string; less: string }> = {
+  en: { based: (n) => `Based on ${n} Google review${n === 1 ? '' : 's'}`, view: 'View us on Google', more: 'Read more', less: 'Show less' },
+  de: { based: (n) => `Basierend auf ${n} Google-Bewertung${n === 1 ? '' : 'en'}`, view: 'Auf Google ansehen', more: 'Mehr lesen', less: 'Weniger anzeigen' },
+  ja: { based: (n) => `${n}件のGoogleレビューに基づく`, view: 'Googleで見る', more: 'もっと読む', less: '閉じる' },
 }
 
 const STAR_GOLD = '#FBBC04'
@@ -111,8 +79,7 @@ function Stars({ rating, size = 15 }: { rating: number; size?: number }) {
 }
 
 function initialsFor(name: string) {
-  const parts = name.trim().split(/\s+/)
-  const a = parts[0]?.[0] || '?'
+  const a = name.trim().split(/\s+/)[0]?.[0] || '?'
   return a.toUpperCase()
 }
 
@@ -125,60 +92,26 @@ function ReviewCard({ r, idx, lang }: { r: RGReview; idx: number; lang: Lang }) 
   const text = open || !long ? r.comment : r.comment.slice(0, 170).trim() + '…'
 
   return (
-    <div
-      style={{
-        width: 300,
-        flex: '0 0 auto',
-        background: '#fff',
-        border: `1px solid ${BORDER}`,
-        borderRadius: 16,
-        padding: 18,
-        boxSizing: 'border-box',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <div style={{ width: 300, flex: '0 0 auto', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
         {photo ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={r.reviewer.profilePhotoUrl}
-            alt=""
-            referrerPolicy="no-referrer"
-            style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flex: '0 0 auto' }}
-          />
+          <img src={r.reviewer.profilePhotoUrl} alt="" referrerPolicy="no-referrer" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flex: '0 0 auto' }} />
         ) : (
-          <div
-            style={{
-              width: 40, height: 40, borderRadius: '50%', flex: '0 0 auto',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontWeight: 600, fontSize: 15, background: bg, color: fg,
-            }}
-          >
+          <div style={{ width: 40, height: 40, borderRadius: '50%', flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: 15, background: bg, color: fg }}>
             {initialsFor(r.reviewer.displayName)}
           </div>
         )}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 14, fontWeight: 600, color: '#1F2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {r.reviewer.displayName}
-          </div>
+          <div style={{ fontSize: 14, fontWeight: 600, color: '#1F2937', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.reviewer.displayName}</div>
           <div style={{ fontSize: 12, color: '#70757A' }}>{relativeDate(r.updateTime || r.createTime, lang)}</div>
         </div>
         <GoogleG size={20} />
       </div>
-
-      <div style={{ marginBottom: 8 }}>
-        <Stars rating={r.starRating} />
-      </div>
-
-      <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#3C4043', margin: 0, whiteSpace: 'pre-line' }}>
-        {text}
-      </p>
+      <div style={{ marginBottom: 8 }}><Stars rating={r.starRating} /></div>
+      <p style={{ fontSize: 13.5, lineHeight: 1.6, color: '#3C4043', margin: 0, whiteSpace: 'pre-line' }}>{text}</p>
       {long && (
-        <button
-          onClick={() => setOpen((v) => !v)}
-          style={{ alignSelf: 'flex-start', marginTop: 8, background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: '#70757A', fontSize: 12.5, fontWeight: 600 }}
-        >
+        <button onClick={() => setOpen((v) => !v)} style={{ alignSelf: 'flex-start', marginTop: 8, background: 'none', border: 'none', padding: 0, cursor: 'pointer', color: '#70757A', fontSize: 12.5, fontWeight: 600 }}>
           {open ? t.less : t.more}
         </button>
       )}
@@ -186,18 +119,15 @@ function ReviewCard({ r, idx, lang }: { r: RGReview; idx: number; lang: Lang }) 
   )
 }
 
-function Carousel({ reviews, lang, summary }: { reviews: RGReview[]; lang: Lang; summary: GoogleSummary | null }) {
+function Carousel({ data, lang }: { data: GoogleData; lang: Lang }) {
   const t = T[lang]
-  const clean = (reviews || []).filter((r) => r.comment && r.comment.trim().length > 0)
+  const clean = data.reviews.filter((r) => r.comment && r.comment.trim().length > 0)
   if (clean.length === 0) return null
 
-  // Badge uses the TRUE Google totals when available, falling back to the
-  // displayed reviews if the summary hasn't loaded.
-  const count = summary ? summary.count : clean.length
-  const avg = summary ? summary.rating : clean.reduce((s, r) => s + r.starRating, 0) / clean.length
-  const profileUrl = summary && summary.profileUrl ? summary.profileUrl : GOOGLE_PROFILE_URL
+  const count = data.count || clean.length
+  const avg = data.rating || clean.reduce((s, r) => s + r.starRating, 0) / clean.length
+  const profileUrl = data.profileUrl || GOOGLE_PROFILE_URL
 
-  // Build a wide enough track, then duplicate it for a seamless loop.
   let base = clean
   while (base.length < 6) base = base.concat(clean)
   const track = base.concat(base)
@@ -217,7 +147,6 @@ function Carousel({ reviews, lang, summary }: { reviews: RGReview[]; lang: Lang;
         }}
       />
 
-      {/* Google rating badge */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, marginBottom: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <GoogleG size={22} />
@@ -228,17 +157,11 @@ function Carousel({ reviews, lang, summary }: { reviews: RGReview[]; lang: Lang;
           <Stars rating={avg} size={22} />
         </div>
         <div style={{ fontSize: 13, color: '#70757A' }}>{t.based(count)}</div>
-        <a
-          href={profileUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ fontSize: 13, color: '#1A73E8', textDecoration: 'none', marginTop: 4 }}
-        >
+        <a href={profileUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: '#1A73E8', textDecoration: 'none', marginTop: 4 }}>
           {t.view} ↗
         </a>
       </div>
 
-      {/* Auto-scrolling infinite carousel */}
       <div className="gr-wrap">
         <div className="gr-track">
           {track.map((r, i) => (
@@ -251,15 +174,11 @@ function Carousel({ reviews, lang, summary }: { reviews: RGReview[]; lang: Lang;
 }
 
 export function GoogleReviews({ lang = 'en' }: { lang?: Lang }) {
-  const summary = useGoogleSummary()
+  const data = useGoogleData()
+  if (!data || data.reviews.filter((r) => r.comment && r.comment.trim()).length === 0) return null
   return (
     <div className="reveal delay-1">
-      <ReactGoogleReviews
-        layout="custom"
-        featurableId={FEATURABLE_WIDGET_ID}
-        renderer={(reviews) => <Carousel reviews={reviews as unknown as RGReview[]} lang={lang} summary={summary} />}
-        loadingMessage={T[lang].loading}
-      />
+      <Carousel data={data} lang={lang} />
     </div>
   )
 }
