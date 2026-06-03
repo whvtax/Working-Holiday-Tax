@@ -643,11 +643,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={bankHolder} onChange={e => { setBankHolder(e.target.value); setErrors(p => ({...p, bankHolder: ''})) }} />
             </Field>
             <Field label={T('bankAccount')} required error={errors.bankAccount}>
-              <input className={`inp ${errors.bankAccount ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12345678"
+              <input className={`inp ${errors.bankAccount ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12345678" inputMode="numeric"
                 value={bankAccount} onChange={e => { setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankAccount: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
             <Field label={T('bankBSB')} required error={errors.bankBsb}>
-              <input className={`inp ${errors.bankBsb ? 'inp-err' : ''}`} type="text" placeholder="e.g. 062-000"
+              <input className={`inp ${errors.bankBsb ? 'inp-err' : ''}`} type="text" placeholder="e.g. 062-000" inputMode="numeric"
                 value={bankBsb} onChange={e => { setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankBsb: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
           </div>

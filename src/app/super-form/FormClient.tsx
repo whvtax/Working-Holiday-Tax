@@ -333,7 +333,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <input className={`form-input${errors.superFundName?' input-error':''}`} type="text" placeholder="e.g. AustralianSuper, HostPlus, Rest Super" autoComplete="off" maxLength={100} value={superFundName} onChange={e=>{ setSuperFundName(e.target.value); setErrors(p=>({...p,superFundName:''})) }}/>
           </Field>
           <Field label={T('superMemberNumber')} required error={errors.superMemberNumber}>
-            <input className={`form-input${errors.superMemberNumber?' input-error':''}`} type="text" placeholder="e.g. 123456789" autoComplete="off" maxLength={50} value={superMemberNumber} onChange={e=>{ setSuperMemberNumber(e.target.value); setErrors(p=>({...p,superMemberNumber:''})) }}/>
+            <input className={`form-input${errors.superMemberNumber?' input-error':''}`} type="text" placeholder="e.g. 123456789" autoComplete="off" inputMode="numeric" maxLength={50} value={superMemberNumber} onChange={e=>{ setSuperMemberNumber(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,superMemberNumber:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label={T('superStartDate')} required error={errors.superOpeningDate}>
             <input className={`form-input${errors.superOpeningDate?' input-error':''}`} type="date" autoComplete="off" value={superOpeningDate} onChange={e=>{ setSuperOpeningDate(e.target.value); setErrors(p=>({...p,superOpeningDate:''})) }}/>
@@ -346,10 +346,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <input className={`form-input${errors.bankHolder?' input-error':''}`} type="text" placeholder="As it appears on the bank account" value={bankHolder} onChange={e=>{ setBankHolder(e.target.value); setErrors(p=>({...p,bankHolder:''})) }}/>
           </Field>
           <Field label={T('bankAccount')} required error={errors.bankAccount}>
-            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankAccount:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+            <input className={`form-input${errors.bankAccount?' input-error':''}`} type="text" placeholder="e.g. 12345678" inputMode="numeric" value={bankAccount} onChange={e=>{ setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankAccount:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
           <Field label={T('bankBSB')} required error={errors.bankBsb}>
-            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankBsb:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+            <input className={`form-input${errors.bankBsb?' input-error':''}`} type="text" placeholder="e.g. 062-000" inputMode="numeric" value={bankBsb} onChange={e=>{ setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p=>({...p,bankBsb:''})) }} onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
           </Field>
 
           <div className="form-section-title">{T('sectionDocuments')}</div>
