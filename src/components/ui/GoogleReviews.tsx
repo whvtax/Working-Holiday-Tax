@@ -85,8 +85,9 @@ function initialsFor(name: string) {
 
 function ReviewCard({ r, idx, lang }: { r: RGReview; idx: number; lang: Lang }) {
   const [open, setOpen] = useState(false)
+  const [imgOk, setImgOk] = useState(true)
   const t = T[lang]
-  const photo = !r.reviewer.isAnonymous && r.reviewer.profilePhotoUrl
+  const showPhoto = !r.reviewer.isAnonymous && !!r.reviewer.profilePhotoUrl && imgOk
   const [bg, fg] = AVATAR_COLORS[idx % AVATAR_COLORS.length]
   const long = r.comment.length > 170
   const text = open || !long ? r.comment : r.comment.slice(0, 170).trim() + '…'
@@ -94,9 +95,9 @@ function ReviewCard({ r, idx, lang }: { r: RGReview; idx: number; lang: Lang }) 
   return (
     <div style={{ width: 300, flex: '0 0 auto', background: '#fff', border: `1px solid ${BORDER}`, borderRadius: 16, padding: 18, boxSizing: 'border-box', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-        {photo ? (
+        {showPhoto ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={r.reviewer.profilePhotoUrl} alt="" referrerPolicy="no-referrer" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flex: '0 0 auto' }} />
+          <img src={r.reviewer.profilePhotoUrl} alt="" referrerPolicy="no-referrer" onError={() => setImgOk(false)} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flex: '0 0 auto' }} />
         ) : (
           <div style={{ width: 40, height: 40, borderRadius: '50%', flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, fontSize: 15, background: bg, color: fg }}>
             {initialsFor(r.reviewer.displayName)}
