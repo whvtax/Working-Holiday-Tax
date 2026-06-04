@@ -535,7 +535,7 @@ export default function DashboardClient() {
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
     // Trigger archive badge - client moved to archive
     setNewArchiveCount(n => n + 1)
-    await Promise.all([loadClients(), loadArchived()])
+    await Promise.all([loadClients(), loadArchived(), loadStats({ force: true })])
     setActiveClient(null)
     setView('clients')
     setConfirmArchive(null)
@@ -559,6 +559,7 @@ export default function DashboardClient() {
     try {
       const res = await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'done'})})
       if (!res.ok) throw new Error('server_error')
+      loadStats({ force: true })
     } catch (err) {
       console.error('[markDone]', err)
       // Restore state on failure so admin knows it didn't save
@@ -581,6 +582,7 @@ export default function DashboardClient() {
     setTasks(prev => prev.filter(t => t.id !== id))
     setActiveTask(null); setTaskView('list')
     await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete_permanent'})})
+    loadStats({ force: true })
   }
 
   async function saveTaskNotes() {
@@ -622,7 +624,7 @@ export default function DashboardClient() {
     await fetch(`/api/crm/tasks/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
     setActiveTask(null); setTaskView('list'); setConfirmDelete(null); setCaptureRefund(null)
     setCaptureRefundAmt(''); setCaptureSuperAmt(''); setCaptureRefundType('refund')
-    await Promise.all([loadTasks(),loadClients(),loadArchived()])
+    await Promise.all([loadTasks(),loadClients(),loadArchived(),loadStats({force:true})])
   }
 
   async function saveClientNotes() {

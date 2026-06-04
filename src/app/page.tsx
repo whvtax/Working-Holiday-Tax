@@ -275,10 +275,7 @@ export default async function HomePage() {
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            {/* Desktop sub-copy */}
-            <span className="hidden lg:inline">Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>.<br />TFN, ABN, tax return &amp; super</span>
-            {/* Mobile sub-copy */}
-            <span className="lg:hidden">Your TFN, tax return, super &amp; ABN - handled for you under the supervision of a registered tax agent, with every deduction you are entitled to. Even after you leave Australia.</span>
+            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super.
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
