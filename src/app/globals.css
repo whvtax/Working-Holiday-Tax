@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Skip-to-content link — CSS-only (no JS event handlers, works in Server Components).
+/* Skip-to-content link - CSS-only (no JS event handlers, works in Server Components).
    Visually hidden until focused via keyboard Tab, then slides into view. */
 .skip-to-content {
   position: absolute;
@@ -2116,7 +2116,7 @@
     width: auto;
     left: 12px;
     right: 12px;
-    bottom: 16px;
+    bottom: 88px;
     transform: translate(0, 16px) scale(0.98);
     max-width: none;
   }
@@ -2293,3 +2293,23 @@ html[lang="ja"] code {
 .radio-card:focus-within,
 .radio-pill:focus-within { outline: 2px solid #0B5240; outline-offset: 2px; }
 label:focus-within .check-box { outline: 2px solid #0B5240; outline-offset: 2px; }
+
+/* ───────────────────────────────────────────────────────────────────
+   PREMIUM POLISH LAYER (additive, brand-safe, mobile-first)
+   ─────────────────────────────────────────────────────────────────── */
+/* Crisper type rendering */
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+/* On-brand text selection */
+::selection { background: #CDEBDF; color: #0B2A20; }
+/* Remove blue tap flash + add momentum scrolling on touch */
+* { -webkit-tap-highlight-color: transparent; }
+body { -webkit-overflow-scrolling: touch; }
+/* Tactile press feedback on primary actions (mobile premium feel) */
+@media (prefers-reduced-motion: no-preference) {
+  .btn-primary, .btn-ghost-dark, .service-cta-button, a.btn-primary, button.btn-primary {
+    transition: transform 0.18s cubic-bezier(.2,.8,.2,1), box-shadow 0.18s ease, background 0.18s ease;
+  }
+  .btn-primary:active, .btn-ghost-dark:active, .service-cta-button:active { transform: translateY(1px) scale(0.985); }
+}
+/* Smooth, premium image/render edges */
+img { image-rendering: auto; }

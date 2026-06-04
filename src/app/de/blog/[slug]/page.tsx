@@ -395,7 +395,7 @@ export default function GermanGuidePage({ params }: Props) {
       '@id': `${SITE_URL}/#organization`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
-      description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462).',
+      description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462).',
       knowsAbout: [
         'Australisches Steuerrecht',
         'Working Holiday Visum (Subclass 417, 462)',

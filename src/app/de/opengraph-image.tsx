@@ -94,7 +94,7 @@ export default function Image() {
             lineHeight: 1.4,
           }}
         >
-          Registrierter Steueragent für Working Holiday Maker auf 417 &amp; 462 Visum
+          Unter Aufsicht eines registrierten Steueragenten für Working Holiday Maker auf 417 &amp; 462 Visum
         </div>
 
         {/* Trust pills */}

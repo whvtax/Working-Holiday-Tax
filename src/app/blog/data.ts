@@ -77,7 +77,7 @@ Apply for your TFN as soon as possible and let your employer know your applicati
 
 Any tax overpaid before your TFN was on file can be reclaimed when you lodge your [tax return](/tax-return) at the end of the financial year. You do not permanently lose that money, as long as you lodge a return before the deadline.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -127,7 +127,7 @@ When your TFN letter arrives:
 
 Each employer needs their own Tax File Number Declaration form. Providing your TFN to one employer does not automatically share it with others.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -217,7 +217,7 @@ Processing typically takes up to 28 days, so the earlier you apply, the less tim
 
 If you are being paid cash in hand, the TFN question is handled differently because no formal payroll exists. For more on how that works and the tax implications, see our article on [cash in hand work in Australia](/blog/can-your-employer-pay-you-cash-in-hand).
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -258,13 +258,13 @@ If your application is still in progress, show your employer the ATO confirmatio
 
 Yes. The excess tax withheld during the period before your TFN was on file is credited against your tax liability when you lodge your [annual tax return](/tax-return). The ATO calculates the difference between what you actually owed and what was withheld, then refunds the amount to your Australian bank account.
 
-The deadline is 31 October following the end of each financial year (1 July to 30 June). If you lodge through a registered tax agent, the deadline can be extended.
+The deadline is 31 October following the end of each financial year (1 July to 30 June). If you lodge under the supervision of a registered tax agent, the deadline can be extended.
 
 ## Giving your TFN to multiple employers
 
 If you work for more than one employer during your time in Australia, each one needs your TFN separately. Providing it to one employer does not automatically share it with others. Submit a Tax File Number Declaration form to every employer you work for, including casual and short-term roles.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -318,7 +318,7 @@ The key question is whether the business paying you is treating you as an employ
 
 If you are unsure which situation applies, our article on [the difference between employees and contractors in Australia](/blog/employee-vs-contractor-australia) goes into the legal tests in more detail.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -474,7 +474,7 @@ Your tax obligations on your second visit work exactly the same way as the first
  date: "2 September 2024",
  readTime: 3,
  body: `
-To find a lost Tax File Number, start with documents you may already have (the original ATO letter, payslips, payment summaries, or past tax returns). Your TFN is permanent and does not change, so the same number you were issued originally is the one you still hold. If you cannot find it in your records, our team can retrieve it for you as registered tax agents.
+To find a lost Tax File Number, start with documents you may already have (the original ATO letter, payslips, payment summaries, or past tax returns). Your TFN is permanent and does not change, so the same number you were issued originally is the one you still hold. If you cannot find it in your records, our team can retrieve it for you under the supervision of a registered tax agent.
 
 ## How to find your TFN at home
 
@@ -489,7 +489,7 @@ If you saved emails, scanned documents, or kept paperwork from previous work in 
 
 ## How to retrieve a lost TFN
 
-If you cannot find your TFN in any of your records, [get in touch with our team](/contact). We are registered tax agents and can retrieve your TFN on your behalf through our direct channels with the ATO.
+If you cannot find your TFN in any of your records, [get in touch with our team](/contact). We work under the supervision of a registered tax agent and can retrieve your TFN on your behalf through our direct channels with the ATO.
 
 To help us, please have ready:
 
@@ -499,7 +499,7 @@ To help us, please have ready:
 - Your residential address history in Australia
 - Any other personal identification details
 
-Retrieving a TFN as an individual involves long ATO phone wait times and an identity verification process that often requires Australian-specific documents most backpackers no longer have access to from overseas. Going through a registered tax agent is faster and more reliable.
+Retrieving a TFN as an individual involves long ATO phone wait times and an identity verification process that often requires Australian-specific documents most backpackers no longer have access to from overseas. Going under the supervision of a registered tax agent is faster and more reliable.
 
 ## How to keep your TFN safe in future
 
@@ -868,7 +868,7 @@ ABN contractor work typically does not generate super contributions, but employm
  slug: "gst-and-abn-for-working-holiday-makers",
  title: "GST and ABN for working holiday makers: do you need to register?",
  description:
- "Most working holiday makers with an ABN do not need to register for GST — the threshold is $75,000 annual turnover. Exception: rideshare drivers must register regardless. How to work out if it applies to you.",
+ "Most working holiday makers with an ABN do not need to register for GST - the threshold is $75,000 annual turnover. Exception: rideshare drivers must register regardless. How to work out if it applies to you.",
  category: "ABN",
  date: "21 October 2024",
  readTime: 4,
@@ -916,7 +916,7 @@ If GST applies to you:
 - Remit the collected GST to the ATO
 - You can claim back GST you paid on business expenses
 
-A registered tax agent can handle BAS lodgement and make this straightforward.
+We can handle BAS lodgement under the supervision of a registered tax agent and make this straightforward.
 
 ## What is the main tax obligation for most contractors?
 
@@ -940,7 +940,7 @@ For most working holiday makers with an [ABN](/abn), GST is not a concern. Your 
  date: "28 October 2024",
  readTime: 5,
  body: `
-The Australian financial year runs from 1 July to 30 June, not the calendar year. As a working holiday maker, you are required to lodge a tax return for any financial year in which you earned income in Australia. The deadline to lodge is 31 October following the end of the financial year. If you lodge through a registered tax agent like our team, the deadline is extended automatically.
+The Australian financial year runs from 1 July to 30 June, not the calendar year. As a working holiday maker, you are required to lodge a tax return for any financial year in which you earned income in Australia. The deadline to lodge is 31 October following the end of the financial year. If you lodge under the supervision of a registered tax agent like our team, the deadline is extended automatically.
 
 ## What does the financial year mean for you?
 
@@ -961,7 +961,7 @@ The standard deadline is 31 October following the end of the financial year:
 - 2024-25 financial year (ends 30 June 2025) → deadline 31 October 2025
 - 2025-26 financial year (ends 30 June 2026) → deadline 31 October 2026
 
-If we lodge your return as your registered tax agent, you qualify for an extended deadline, often until May the following year. This gives you breathing room if you missed October or your records are not yet complete.
+If we lodge your return under the supervision of a registered tax agent, you qualify for an extended deadline, often until May the following year. This gives you breathing room if you missed October or your records are not yet complete.
 
 ## What if you left Australia before 30 June?
 
@@ -984,7 +984,7 @@ To lodge your return, our team needs:
 
 We can access your income statements directly through our tax agent portal, so you do not need to collect payslips from each employer yourself. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas) for more detail on what we need.
 
-[Get in touch with our team](/contact) to lodge your Australian tax return through our registered tax agent service and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
  `,
  },
  {
@@ -1044,12 +1044,12 @@ Most working holiday makers we see get a refund of between $1,000 and $3,000 whe
  slug: "how-to-lodge-tax-return-working-holiday",
  title: "How to lodge a working holiday tax return in Australia (step-by-step)",
  description:
- "Step-by-step guide to lodging a working holiday tax return in Australia. What you need, when to lodge, and how a registered tax agent handles it for 417 and 462 visa holders - including from overseas.",
+ "Step-by-step guide to lodging a working holiday tax return in Australia. What you need, when to lodge, and how it is handled under the supervision of a registered tax agent for 417 and 462 visa holders - including from overseas.",
  category: "Tax Return",
  date: "11 November 2024",
  readTime: 6,
  body: `
-To lodge a tax return in Australia as a working holiday maker, the simplest option is to use a registered tax agent like our team. We collect your details, access your income statements directly through our tax agent portal, prepare your return, and lodge it with the ATO on your behalf. The process works the same whether you are still in Australia or have already left, and using a registered agent gives you an extended lodgment deadline beyond the standard 31 October.
+To lodge a tax return in Australia as a working holiday maker, the simplest option is to work with our team under the supervision of a registered tax agent. We collect your details, access your income statements directly through our tax agent portal, prepare your return, and lodge it with the ATO on your behalf. The process works the same whether you are still in Australia or have already left, and using a registered agent gives you an extended lodgment deadline beyond the standard 31 October.
 
 ## What do you need to lodge a tax return?
 
@@ -1110,7 +1110,7 @@ For multi-employer returns, or for working holiday makers with both TFN and [ABN
  date: "18 November 2024",
  readTime: 4,
  body: `
-A PAYG payment summary, now known as an income statement, is the official record showing your total wages and total tax withheld by an employer during a financial year. It is the document used to lodge your [tax return](/tax-return). Employers report wages and withholding amounts to the ATO automatically through their payroll software, so the income statement is generated digitally rather than handed to you as a paper document. As your registered tax agent, our team can access your income statements directly through the ATO system.
+A PAYG payment summary, now known as an income statement, is the official record showing your total wages and total tax withheld by an employer during a financial year. It is the document used to lodge your [tax return](/tax-return). Employers report wages and withholding amounts to the ATO automatically through their payroll software, so the income statement is generated digitally rather than handed to you as a paper document. Working under the supervision of a registered tax agent, our team can access your income statements directly through the ATO system.
 
 ## How do income statements work now?
 
@@ -1132,7 +1132,7 @@ What we see in your records:
 - Each employer listed separately if you worked for more than one
 - The finalisation status (in progress or finalised)
 
-This is one of the main advantages of lodging through a registered tax agent. We see everything the ATO sees, and we wait until all employer reports are finalised before lodging your return.
+This is one of the main advantages of lodging under the supervision of a registered tax agent. We see everything the ATO sees, and we wait until all employer reports are finalised before lodging your return.
 
 ## What if an employer has not finalised their report?
 
@@ -1299,7 +1299,7 @@ Even if you have already left Australia, lodging is straightforward through our 
 
 You do not need to come back to Australia. Keep your Australian bank account open until the refund clears.
 
-The standard deadline is 31 October following the end of the financial year, but if you lodge through our team as your registered tax agent, you qualify for the extended agent deadline.
+The standard deadline is 31 October following the end of the financial year, but if you lodge through our team under the supervision of a registered tax agent, you qualify for the extended agent deadline.
  `,
  },
  {
@@ -1307,12 +1307,12 @@ The standard deadline is 31 October following the end of the financial year, but
  title:
  "How to lodge an Australian tax return from overseas (UK, Germany, Japan)",
  description:
- "Left Australia and need to lodge your working holiday tax return? Complete guide for 417 and 462 visa holders lodging from the UK, Germany, Japan or anywhere else - online, with a registered tax agent.",
+ "Left Australia and need to lodge your working holiday tax return? Complete guide for 417 and 462 visa holders lodging from the UK, Germany, Japan or anywhere else - online, under the supervision of a registered tax agent.",
  category: "Tax Return",
  date: "9 December 2024",
  readTime: 5,
  body: `
-To lodge an Australian tax return from overseas after you have left, work with a registered tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and any refund the ATO assesses is paid into your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go through a registered tax agent.
+To lodge an Australian tax return from overseas after you have left, work under the supervision of a registered tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and any refund the ATO assesses is paid into your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go under the supervision of a registered tax agent.
 
 ## How do you lodge from overseas through our service?
 
@@ -1343,7 +1343,7 @@ If you have already closed your Australian bank account, [get in touch with our 
 The standard deadline is 31 October following the end of the financial year:
 
 - 2024-25 financial year → standard deadline 31 October 2025
-- Through our service as your registered tax agent → deadline often extended into the following May
+- Through our service under the supervision of a registered tax agent → deadline often extended into the following May
 
 This means if you missed the October deadline, lodging through us still gives you time to do it without late penalties.
 
@@ -1524,7 +1524,7 @@ If your stay crosses 30 June, you will need to lodge two tax returns, one for ea
 - **14 July**: employers begin finalising income statements
 - **31 July**: most income statements should be finalised by this date
 - **31 October**: standard deadline to lodge your tax return
-- **Extended (around May the following year)**: deadline if you lodge through a registered tax agent like our team
+- **Extended (around May the following year)**: deadline if you lodge under the supervision of a registered tax agent like our team
 
 Lodgment opens 1 July, but it is usually worth waiting until late July or early August so your employer's income statement is finalised. We monitor this for you when you lodge through our service.
 
@@ -1539,7 +1539,7 @@ Superannuation contributions are paid quarterly:
 
 These dates matter if you are checking that your employer has paid your [superannuation](/superannuation) correctly before you leave Australia.
 
-[Get in touch with our team](/contact) to lodge your Australian tax return through our registered tax agent service and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
  `,
  },
  {
@@ -2055,7 +2055,7 @@ Claim your super. It is your money, paid on top of your wages as part of your em
  slug: "can-you-withdraw-super-in-australia",
  title: "Can working holiday makers withdraw super while still in Australia?",
  description:
- "Generally, no — super is preserved until retirement age, except in very limited circumstances (severe financial hardship, compassionate grounds). Why working holiday makers must wait for DASP after leaving Australia.",
+ "Generally, no - super is preserved until retirement age, except in very limited circumstances (severe financial hardship, compassionate grounds). Why working holiday makers must wait for DASP after leaving Australia.",
  category: "Super",
  date: "3 March 2025",
  readTime: 4,
@@ -2130,7 +2130,7 @@ See our detailed article on [how to apply for DASP](/blog/how-to-apply-for-super
  date: "10 March 2025",
  readTime: 4,
  body: `
-To find lost or unclaimed superannuation in Australia, work with our team. As registered tax agents, we can search across all major super funds and ATO records using your Tax File Number to identify every account holding your super. Working holiday makers often accumulate super across multiple funds without realising it, and tracking down every account before lodging your DASP claim makes sure no money is left behind.
+To find lost or unclaimed superannuation in Australia, work with our team. Under the supervision of a registered tax agent, we can search across all major super funds and ATO records using your Tax File Number to identify every account holding your super. Working holiday makers often accumulate super across multiple funds without realising it, and tracking down every account before lodging your DASP claim makes sure no money is left behind.
 
 ## Why does super get lost or spread across multiple accounts?
 
@@ -2323,7 +2323,7 @@ Working holiday makers have the same rights as any other worker in Australia. Th
  slug: "how-many-hours-can-you-work-on-whv",
  title: "How many hours can you work on a working holiday visa in Australia? (417 & 462)",
  description:
- "Working holiday visa holders can work unlimited hours per week — the 6-month per-employer restriction was relaxed in 2022 for certain sectors. Current rules for 417 and 462 visa holders.",
+ "Working holiday visa holders can work unlimited hours per week - the 6-month per-employer restriction was relaxed in 2022 for certain sectors. Current rules for 417 and 462 visa holders.",
  category: "Work Rights",
  date: "31 March 2025",
  readTime: 4,
@@ -2489,7 +2489,7 @@ Any additional income earned through penalty rates is still subject to the 15% w
  slug: "can-your-employer-pay-you-cash-in-hand",
  title: "Cash-in-hand pay in Australia: working holiday maker risks and rights",
  description:
- "Cash-in-hand payments are common in some industries but come with serious tax and visa implications. What working holiday makers should know — including how to make sure tax and super are still paid.",
+ "Cash-in-hand payments are common in some industries but come with serious tax and visa implications. What working holiday makers should know - including how to make sure tax and super are still paid.",
  category: "Work Rights",
  date: "14 April 2025",
  readTime: 4,
@@ -2561,7 +2561,7 @@ Keep these records somewhere secure. They support both your tax return and any f
  title:
  "Fair Work Act protections for working holiday makers in Australia",
  description:
- "The Fair Work Act is Australia's main workplace relations law. How it protects working holiday makers on 417 and 462 visas — minimum wage, leave, unfair dismissal, and how to raise a complaint.",
+ "The Fair Work Act is Australia's main workplace relations law. How it protects working holiday makers on 417 and 462 visas - minimum wage, leave, unfair dismissal, and how to raise a complaint.",
  category: "Work Rights",
  date: "21 April 2025",
  readTime: 4,
@@ -2828,14 +2828,14 @@ ABN contractor work typically does not generate super contributions from the cli
 
 If you are doing employee-like work but invoicing as a contractor, you may be a victim of sham contracting and entitled to super. See our article on [employee vs contractor](/blog/employee-vs-contractor-australia) for how to tell the difference.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
  slug: "can-you-work-for-multiple-employers",
  title: "Working for multiple employers on a working holiday visa: tax & visa rules",
  description:
- "Yes — working holiday makers in Australia can work for more than one employer at the same time. What it means for tax (the 15% rate applies to each employer), super, and the 6-month visa rule.",
+ "Yes - working holiday makers in Australia can work for more than one employer at the same time. What it means for tax (the 15% rate applies to each employer), super, and the 6-month visa rule.",
  category: "Work Rights",
  date: "19 May 2025",
  readTime: 3,
@@ -2897,7 +2897,7 @@ While there is no legal limit, practical considerations include:
 
 For tax and super purposes, multiple jobs are perfectly fine. Many working holiday makers work two or three casual jobs in hospitality alongside a weekend role or seasonal work.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
@@ -2981,7 +2981,7 @@ All income, regardless of classification, must be declared in your [tax return](
  slug: "what-is-medicare-working-holiday-makers",
  title: "Medicare for working holiday makers in Australia: who is covered?",
  description:
- "Medicare is Australia's public health insurance system. Most working holiday makers on 417 and 462 visas are not covered — exceptions apply for citizens of countries with a Reciprocal Health Care Agreement.",
+ "Medicare is Australia's public health insurance system. Most working holiday makers on 417 and 462 visas are not covered - exceptions apply for citizens of countries with a Reciprocal Health Care Agreement.",
  category: "Medicare & Other",
  date: "2 June 2025",
  readTime: 4,
@@ -3115,7 +3115,7 @@ When we prepare your [tax return](/tax-return), we work out the correct Medicare
  slug: "medicare-levy-working-holiday-makers",
  title: "Medicare levy exemption for working holiday makers in Australia",
  description:
- "The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers on 417 and 462 visas are exempt — how to claim the exemption on your tax return.",
+ "The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers on 417 and 462 visas are exempt - how to claim the exemption on your tax return.",
  category: "Medicare & Other",
  date: "16 June 2025",
  readTime: 4,
@@ -3191,7 +3191,7 @@ If you lodged a previous return and paid the Medicare Levy when you should have 
  title:
  "TFN declaration form: how working holiday makers complete it correctly",
  description:
- "The TFN declaration form is what you give your employer when starting a new job in Australia. How working holiday makers should complete it — including the working holiday maker box that sets you to the 15% rate.",
+ "The TFN declaration form is what you give your employer when starting a new job in Australia. How working holiday makers should complete it - including the working holiday maker box that sets you to the 15% rate.",
  category: "Medicare & Other",
  date: "23 June 2025",
  readTime: 4,
@@ -3266,7 +3266,7 @@ If your payslip shows withholding at 45%, 30%, or any rate other than 15%, the f
  slug: "what-does-tax-withheld-mean-payslip",
  title: "Tax withheld on your Australian payslip: what working holiday makers should check",
  description:
- "Tax withheld is the income tax your employer deducts from your wages each pay. How to check it is correct as a working holiday maker — your rate should be 15% on the first $45,000 if your TFN is filed properly.",
+ "Tax withheld is the income tax your employer deducts from your wages each pay. How to check it is correct as a working holiday maker - your rate should be 15% on the first $45,000 if your TFN is filed properly.",
  category: "Medicare & Other",
  date: "30 June 2025",
  readTime: 3,
@@ -3356,7 +3356,7 @@ When we lodge your return, we see:
 - Finalisation status (in progress or finalised)
 - Super contributions paid
 
-This is one of the main advantages of working with a registered tax agent.
+This is one of the main advantages of working under the supervision of a registered tax agent.
 
 ## When do income statements become available?
 
@@ -3547,7 +3547,7 @@ If the figures do not match, raise it with your employer. The discrepancy may be
  slug: "do-working-holiday-makers-pay-tax-on-tips",
  title: "Tax on tips in Australia: do working holiday makers declare them?",
  description:
- "Yes — tips received as part of employment in Australia are taxable income, whether cash or electronic. How working holiday makers should record and declare tips on their tax return.",
+ "Yes - tips received as part of employment in Australia are taxable income, whether cash or electronic. How working holiday makers should record and declare tips on their tax return.",
  category: "Medicare & Other",
  date: "28 July 2025",
  readTime: 3,
@@ -3611,7 +3611,7 @@ The specifics depend on your award and how the employer classifies the tips. If 
  title:
  "Australian tax obligations after leaving: working holiday maker guide",
  description:
- "Leaving Australia does not end your tax obligations. Final tax return, DASP super claim, ABN cancellation — what working holiday makers must do after departing to stay compliant with the ATO.",
+ "Leaving Australia does not end your tax obligations. Final tax return, DASP super claim, ABN cancellation - what working holiday makers must do after departing to stay compliant with the ATO.",
  category: "Medicare & Other",
  date: "4 August 2025",
  readTime: 4,
@@ -3638,7 +3638,7 @@ Through our service, the process is fully remote:
 - We prepare and lodge the return on your behalf
 - Refund is paid to your Australian bank account
 
-The standard deadline is 31 October following the financial year. Through our service as your registered tax agent, the deadline is typically extended to May the following year.
+The standard deadline is 31 October following the financial year. Through our service under the supervision of a registered tax agent, the deadline is typically extended to May the following year.
 
 Failing to lodge when required can result in penalties. The ATO has your income records from your employers and expects a return. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas).
 
@@ -3784,7 +3784,7 @@ The simplest way is through our service:
 
 1. [Get in touch with our team](/contact)
 2. Give us your new address
-3. We update it with the ATO on your behalf as your registered tax agent
+3. We update it with the ATO on your behalf under the supervision of a registered tax agent
 4. Confirmation is sent back to us
 
 You do not need to log into ATO online services or wait on hold. We handle it as part of managing your tax position.
@@ -3902,7 +3902,7 @@ We identify deductions you might miss when self-lodging. The result is usually a
  date: "1 September 2025",
  readTime: 3,
  body: `
-Most Australian tax refunds are processed and paid within two weeks of lodgment when the return is filed electronically. Through our service as your registered tax agent, we lodge electronically so refunds typically arrive within 7-14 business days. Refunds during peak season (August-September) may take a few days longer. If your refund is taking longer than expected, our team follows up directly with the ATO.
+Most Australian tax refunds are processed and paid within two weeks of lodgment when the return is filed electronically. Through our service under the supervision of a registered tax agent, we lodge electronically so refunds typically arrive within 7-14 business days. Refunds during peak season (August-September) may take a few days longer. If your refund is taking longer than expected, our team follows up directly with the ATO.
 
 ## What is the typical refund timeline?
 
@@ -4172,7 +4172,7 @@ Our team handles tax returns for working holiday makers in all employment config
  title:
  "Farm work rights in Australia for working holiday makers (417 & 462)",
  description:
- "Farm work is one of the most common jobs for working holiday makers. What you are legally entitled to — pay rates, conditions, accommodation rules, and how 88-day specified work counts toward your 2nd visa.",
+ "Farm work is one of the most common jobs for working holiday makers. What you are legally entitled to - pay rates, conditions, accommodation rules, and how 88-day specified work counts toward your 2nd visa.",
  category: "Work Rights",
  date: "22 September 2025",
  readTime: 5,
@@ -4549,7 +4549,7 @@ Yes. If you completed the White Card course to qualify for or maintain construct
 
 Our team includes these training costs when we prepare your return. If you have multiple work-related certifications, we claim all of them.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
@@ -4637,7 +4637,7 @@ Yes. If you completed the RSA course for hospitality employment:
 
 When we prepare your return, we include training certifications among your deductions. Most working holiday makers have at least one or two relevant courses that are deductible.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
@@ -4829,7 +4829,7 @@ If your pay does not reflect the correct public holiday rate, [get in touch with
  slug: "casual-shift-cancellation-rules-australia",
  title: "Can your employer cancel a casual shift in Australia? Working holiday rights",
  description:
- "As a casual worker in Australia, shifts can be cancelled — but employers must follow specific rules. Notice requirements, minimum payment entitlements, and what working holiday makers can do about repeated cancellations.",
+ "As a casual worker in Australia, shifts can be cancelled - but employers must follow specific rules. Notice requirements, minimum payment entitlements, and what working holiday makers can do about repeated cancellations.",
  category: "Work Rights" as const,
  date: "17 November 2025",
  readTime: 4,
@@ -5348,7 +5348,7 @@ Money you brought in with you when you arrived is not taxable:
 
 What is taxable is everything you earned in Australia during your stay. The distinction is between what you earned here (taxable) and what you brought in or hold in savings (not taxable).
 
-[Get in touch with our team](/contact) to lodge your Australian tax return through our registered tax agent service and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
  `,
  },
 
@@ -5473,7 +5473,7 @@ The Sydney-to-Cairns road trip is personal. The drive from your hostel to a farm
  title:
  "Small business tax offset: can working holiday makers with an ABN claim it?",
  description:
- "If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset — a tax reduction of up to $1,000. How working holiday makers can claim it on their tax return.",
+ "If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset - a tax reduction of up to $1,000. How working holiday makers can claim it on their tax return.",
  category: "ABN" as const,
  date: "29 December 2025",
  readTime: 4,
@@ -6360,7 +6360,7 @@ If an agency seems evasive about basic details, that is a warning sign.
  slug: "how-to-read-a-payslip-australia-working-holiday",
  title: "How to read an Australian payslip: working holiday maker guide (2025-26)",
  description:
- "Your payslip contains everything you need to know about whether you are being paid correctly. What each section means — gross pay, PAYG, super, leave — and what working holiday makers should check every pay cycle.",
+ "Your payslip contains everything you need to know about whether you are being paid correctly. What each section means - gross pay, PAYG, super, leave - and what working holiday makers should check every pay cycle.",
  category: "Work Rights" as const,
  date: "2 March 2026",
  readTime: 5,
@@ -6703,7 +6703,7 @@ When you lodge through our service:
  title:
  "How to check your super balance in Australia: working holiday maker guide",
  description:
- "Knowing how much super you have accumulated matters — especially before leaving Australia. How working holiday makers can track their balance through myGov, super fund apps, and confirm employer contributions.",
+ "Knowing how much super you have accumulated matters - especially before leaving Australia. How working holiday makers can track their balance through myGov, super fund apps, and confirm employer contributions.",
  category: "Super" as const,
  date: "23 March 2026",
  readTime: 4,
@@ -6922,9 +6922,9 @@ The public TFN application form does not warn you about mismatches before submis
 
 ## What about TFN security?
 
-Never share copies of your passport, visa grant, or TFN with anyone who is not a registered tax agent. Scammers regularly pose as "accountants" or "tax helpers" on backpacker forums, social media, and messaging apps to collect identity documents. Once they have your TFN and passport details, they can lodge a fraudulent tax return in your name and divert the refund to their own account. A registered tax agent is listed on the Tax Practitioners Board register with a TAN number. If you cannot verify the number, do not share your documents. [Apply for your TFN](/tfn-form) through our registered agent service to keep your identity protected.
+Never share copies of your passport, visa grant, or TFN with anyone who is not a registered tax agent. Scammers regularly pose as "accountants" or "tax helpers" on backpacker forums, social media, and messaging apps to collect identity documents. Once they have your TFN and passport details, they can lodge a fraudulent tax return in your name and divert the refund to their own account. A registered tax agent is listed on the Tax Practitioners Board register with a TAN number. If you cannot verify the number, do not share your documents. [Apply for your TFN](/tfn-form) under the supervision of a registered tax agent to keep your identity protected.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -6982,7 +6982,7 @@ If you suspect your TFN has been shared with the wrong person or your details ha
 
 ## How do we keep your TFN secure?
 
-When you lodge through our service, your TFN and identity documents are handled through a registered tax agent channel covered by professional indemnity insurance and bound by the Tax Practitioners Board code of conduct. We never operate through anonymous messaging apps, and our TAN number is publicly verifiable on the Tax Practitioners Board register.
+When you lodge through our service, your TFN and identity documents are handled under the supervision of a registered tax agent channel covered by professional indemnity insurance and bound by the Tax Practitioners Board code of conduct. We never operate through anonymous messaging apps, and our TAN number is publicly verifiable on the Tax Practitioners Board register.
  `,
  },
  {
@@ -7045,9 +7045,9 @@ None of these are legitimate. Registered tax agents do not operate through anony
 
 Every registered tax agent in Australia has a Tax Agent Number (TAN) listed on the public Tax Practitioners Board register. Before sharing your TFN with anyone offering tax services, verify their TAN number is current. If they cannot give you a TAN or the number does not match the business, do not share any documents.
 
-[Our service](/tax-return) is delivered by a registered tax agent. Our TAN number is publicly verifiable, and your TFN is handled through a secure tax agent channel rather than through email or messaging apps.
+[Our service](/tax-return) is delivered under the supervision of a registered tax agent. Our TAN number is publicly verifiable, and your TFN is handled through a secure tax agent channel rather than through email or messaging apps.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -7093,7 +7093,7 @@ When we lodge a TFN application through our service, we can use a verified addre
 
 ## How do you keep your TFN safe once it arrives?
 
-A TFN letter is a high-value document. Once it arrives, do not leave it lying around in shared accommodation, do not photograph it for social media, and do not share it with anyone other than your employer, your bank, your super fund, or a registered tax agent. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the full list of who is allowed to ask for your TFN and who is not. [Get in touch with our team](/contact) to apply for your TFN through a registered tax agent channel.
+A TFN letter is a high-value document. Once it arrives, do not leave it lying around in shared accommodation, do not photograph it for social media, and do not share it with anyone other than your employer, your bank, your super fund, or a registered tax agent. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the full list of who is allowed to ask for your TFN and who is not. [Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent channel.
  `,
  },
 
@@ -8676,7 +8676,7 @@ If you are uncertain about how your insurance status affects your tax, [get in t
  slug: "emergency-medical-care-working-holiday-no-medicare",
  title: "Emergency medical care without Medicare in Australia: what backpackers should know",
  description:
-   "Working holiday makers without Medicare cover can still receive emergency treatment in Australian public hospitals — but the cost is the patient's responsibility. Typical fees, what insurance covers, and what to expect.",
+   "Working holiday makers without Medicare cover can still receive emergency treatment in Australian public hospitals - but the cost is the patient's responsibility. Typical fees, what insurance covers, and what to expect.",
  category: "Medicare & Other",
  date: "25 May 2026",
  readTime: 5,
@@ -9355,7 +9355,7 @@ The penalty is rarely the largest cost of a late tax return. For working holiday
 
 For working holiday makers lodging their own return, the deadline is 31 October following the end of the financial year (which runs 1 July to 30 June). A return for the 2024-25 financial year is therefore due by 31 October 2025.
 
-Working holiday makers who lodge through a registered tax agent have a later deadline. Tax agents can lodge for their clients up until late May of the following year, provided the client was registered with the agent before the standard 31 October deadline.
+Working holiday makers who lodge under the supervision of a registered tax agent have a later deadline. Tax agents can lodge for their clients up until late May of the following year, provided the client was registered with the agent before the standard 31 October deadline.
 
 This extension is one of the practical advantages of lodging through a tax agent, particularly for working holiday makers who are still in Australia or who have only just left.
 
@@ -9395,7 +9395,7 @@ The ATO has discretion to remit (cancel or reduce) the Failure to Lodge penalty 
 - ATO system or processing issues that prevented lodgement
 - First-time late lodgement with otherwise clean compliance history
 
-Remission must be specifically requested and supported by evidence. The remission rate for working holiday makers is generally higher when the request is made through a registered tax agent than when made directly by the taxpayer.
+Remission must be specifically requested and supported by evidence. The remission rate for working holiday makers is generally higher when the request is made under the supervision of a registered tax agent than when made directly by the taxpayer.
 
 ## What about returns from years you have already left Australia?
 
@@ -9513,7 +9513,7 @@ The reliable ways to avoid a shortfall penalty are:
 - Include every employer for every job worked in the financial year (no matter how short)
 - Include all ABN income, including gig economy platforms
 - Only claim deductions that are directly related to earning income, with records to support each one
-- Lodge through a registered tax agent who has direct access to the ATO income record
+- Lodge under the supervision of a registered tax agent who has direct access to the ATO income record
 - Wait until all employer Single Touch Payroll reporting is finalised before lodging (early-lodging risks amended assessments)
 
 ## How does our service handle ATO compliance risk?
@@ -10144,7 +10144,7 @@ Fruit picking generates more wage and super disputes than almost any other indus
  slug: "farm-hand-jobs-working-holiday-australia",
  title: "Farm hand jobs in Australia: pay, conditions & 2nd year visa eligibility",
  description:
-   "Farm hand work covers a wide range of agricultural roles beyond fruit picking — livestock care, planting, fencing, and general farm labour. What working holiday makers should expect and how it counts for the 2nd year visa.",
+   "Farm hand work covers a wide range of agricultural roles beyond fruit picking - livestock care, planting, fencing, and general farm labour. What working holiday makers should expect and how it counts for the 2nd year visa.",
  category: "Work Rights",
  date: "25 May 2026",
  readTime: 5,
@@ -11007,7 +11007,7 @@ Business Activity Statements are due quarterly:
 - Quarter 3 (January to March): due 28 April
 - Quarter 4 (April to June): due 28 July
 
-Lodgement through a registered tax agent typically extends the deadline by 4 weeks. Missing a BAS lodgement triggers Failure to Lodge penalties similar to those for late tax returns. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday) for the framework.
+Lodgement under the supervision of a registered tax agent typically extends the deadline by 4 weeks. Missing a BAS lodgement triggers Failure to Lodge penalties similar to those for late tax returns. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday) for the framework.
 
 ## What deductions can rideshare drivers claim?
 
@@ -11710,7 +11710,7 @@ A working holiday maker who lodges late AND pays late can be hit with both penal
 
 ## When is a tax debt due?
 
-For an individual lodging through a registered tax agent, the standard payment deadline is 21 days after the Notice of Assessment is issued (which is usually within a few weeks of lodgement). For self-lodgers, the payment deadline is typically by the 21st of November following the end of the financial year.
+For an individual lodging under the supervision of a registered tax agent, the standard payment deadline is 21 days after the Notice of Assessment is issued (which is usually within a few weeks of lodgement). For self-lodgers, the payment deadline is typically by the 21st of November following the end of the financial year.
 
 For BAS debts, the payment is due on the same date the BAS is due, which is 28 days after the end of the quarter for most lodgers.
 
@@ -11758,7 +11758,7 @@ The ATO has discretion to remit (reduce or cancel) the GIC and Failure to Pay pe
 - Circumstances beyond the taxpayer's control (illness, natural disaster, family emergency)
 - First-time non-payment with otherwise clean compliance history
 
-Remission requests must be made specifically and supported by evidence. The remission rate is generally higher for requests lodged through a registered tax agent than for direct requests.
+Remission requests must be made specifically and supported by evidence. The remission rate is generally higher for requests lodged under the supervision of a registered tax agent than for direct requests.
 
 ## How does our service support tax debt situations?
 
@@ -11874,7 +11874,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "When do working holiday makers need to lodge a tax return?",
  answer:
- "The Australian financial year ends on 30 June. You must lodge your tax return between 1 July and 31 October that year. If you lodge through a registered tax agent, the deadline can be extended.",
+ "The Australian financial year ends on 30 June. You must lodge your tax return between 1 July and 31 October that year. If you lodge under the supervision of a registered tax agent, the deadline can be extended.",
  },
  {
  question: "Do working holiday makers get a tax refund?",
@@ -11885,7 +11885,7 @@ export const categoryMeta: CategoryMeta[] = [
  question:
  "Can you lodge an Australian tax return after leaving the country?",
  answer:
- "Yes. You can lodge your tax return from anywhere in the world. A registered tax agent can manage the process remotely. Keep your Australian bank account open until the refund is paid.",
+ "Yes. You can lodge your tax return from anywhere in the world. We can manage the process remotely under the supervision of a registered tax agent. Keep your Australian bank account open until the refund is paid.",
  },
  {
  question: "What can working holiday makers claim as deductions?",
@@ -11923,7 +11923,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "How do you find lost or unclaimed super?",
  answer:
- "You can find lost super by linking your TFN to your account through our service, contacting the Australian Taxation Office, or working with a registered tax agent who can search across all funds.",
+ "You can find lost super by linking your TFN to your account through our service, contacting the Australian Taxation Office, or working under the supervision of a registered tax agent who can search across all funds.",
  },
  ],
  relatedServicePath: "/superannuation",

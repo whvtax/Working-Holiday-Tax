@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     console.error('[CRM login]', err)
     return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
   }
-  // No disconnect() — Redis singleton stays alive for warm instance reuse
+  // No disconnect() - Redis singleton stays alive for warm instance reuse
 }
 
 async function sendOtpEmail(to: string, apiKey: string, otp: string): Promise<boolean> {
@@ -122,5 +122,5 @@ async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
       subject: '⚠️ CRM login blocked',
       html:    `<p>${attempts} failed login attempts at ${time}</p>`,
     }),
-  }).catch(() => {}) // fire and forget — don't block the login response
+  }).catch(() => {}) // fire and forget - don't block the login response
 }

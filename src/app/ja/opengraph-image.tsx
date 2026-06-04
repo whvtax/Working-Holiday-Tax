@@ -93,7 +93,7 @@ export default function Image() {
             lineHeight: 1.5,
           }}
         >
-          ワーキングホリデー（417・462ビザ）専門の登録税理士
+          ワーキングホリデー（417・462ビザ）専門｜登録税理士の監督のもとで
         </div>
 
         {/* Service pills */}

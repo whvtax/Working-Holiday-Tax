@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { usePathname } from 'next/navigation'
 import { SecurityNotice } from '@/components/ui/SecurityNotice'
+import { StickyBar } from '@/components/layout/StickyBar'
 
 export default function PublicShellClient({
   children,
@@ -27,6 +28,7 @@ export default function PublicShellClient({
       {children}
       {!isCrm && footer}
       {!isCrm && <SecurityNotice />}
+      {!isCrm && <StickyBar />}
     </>
   )
 }

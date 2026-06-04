@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'TFN beantragen für Working Holiday Maker - Grundlage für Steuerrückerstattung',
-  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Mit einem registrierten Steueragenten.',
+  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Unter Aufsicht eines registrierten Steueragenten.',
   keywords: [
     'TFN beantragen Australien',
     'TFN beantragen Working Holiday',
@@ -113,7 +113,7 @@ const serviceSchema = {
     '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
-    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
+    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
   },
 }

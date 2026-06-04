@@ -1,4 +1,4 @@
-// Redis rate limiter — fails open if Redis unreachable
+// Redis rate limiter - fails open if Redis unreachable
 // Module-level singleton: warm serverless instances reuse the connection (saves 20-80ms per request)
 import { createClient } from 'redis'
 
@@ -73,7 +73,7 @@ export async function isRateLimited(ip: string, formName: string, maxRequests: n
         return count > maxRequests
       })(),
       new Promise<false>((resolve) =>
-        setTimeout(() => { console.warn('[rate-limit] timed out — failing open'); resolve(false) }, TOTAL_TIMEOUT_MS)
+        setTimeout(() => { console.warn('[rate-limit] timed out - failing open'); resolve(false) }, TOTAL_TIMEOUT_MS)
       ),
     ])
     return result
@@ -81,5 +81,5 @@ export async function isRateLimited(ip: string, formName: string, maxRequests: n
     console.error('[rate-limit]', err)
     return false
   }
-  // No disconnect() — singleton stays alive across requests on the same warm instance
+  // No disconnect() - singleton stays alive across requests on the same warm instance
 }

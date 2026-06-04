@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
-  description: 'Working holiday tax refund Australia — registered tax agent lodges your WHV tax return for 417 and 462 visa holders. Claim your tax back from Australia, even after you have gone home. All online, fast and simple.',
+  description: 'Working holiday tax refund Australia - your WHV tax return for 417 and 462 visa holders is lodged under the supervision of a registered tax agent. Claim your tax back from Australia, even after you have gone home. All online, fast and simple.',
   keywords: [
     'working holiday tax refund Australia',
     'working holiday tax refund',
@@ -54,12 +54,12 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/tax-return`,
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
-    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online — even after you leave Australia.',
+    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online - even after you leave Australia.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent — all online.',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent - all online.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -83,7 +83,7 @@ const faqs = [
   },
   {
     question: 'How do I know if I am owed a tax refund?',
-    answer: 'You will be owed a tax refund if you paid more tax than required during the year. This often happens to working holiday makers when the wrong tax rate was applied, when you did not provide your TFN early enough, or when you have eligible deductions. A registered tax agent reviews your situation and makes sure your return is lodged correctly so you do not miss anything you are entitled to.',
+    answer: 'You will be owed a tax refund if you paid more tax than required during the year. This often happens to working holiday makers when the wrong tax rate was applied, when you did not provide your TFN early enough, or when you have eligible deductions. Under the supervision of a registered tax agent, we review your situation and make sure your return is lodged correctly so you do not miss anything you are entitled to.',
   },
   {
     question: 'How much working holiday tax refund will I get?',
@@ -111,7 +111,7 @@ const DEDUCTIONS = [
 const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can prepare your working holiday tax return correctly.' },
   { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple, even from overseas.' },
-  { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your tax return directly with the ATO.' },
+  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your tax return directly with the ATO under the supervision of a registered tax agent.' },
   { n: '4', title: 'Get your assessment',           body: 'Once your tax return is processed by the ATO, any refund you are owed is paid into your nominated Australian bank account, usually within 7-14 days.' },
 ]
 

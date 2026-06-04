@@ -5,7 +5,7 @@ import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib
 
 export const metadata: Metadata = {
   title: 'Contact Us - Working Holiday Tax | Registered Tax Agents Australia',
-  description: 'Get in touch with our registered tax agents for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
+  description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
   keywords: [
     'contact working holiday tax',
     'working holiday tax agent contact',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Contact Working Holiday Tax | Registered Tax Agents Australia',
-    description: 'Get in touch with our registered tax agents. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
+    description: 'Get in touch with our team, working under the supervision of a registered tax agent. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
     url: `${SITE_URL}/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Contact Working Holiday Tax | Registered Tax Agents',
-    description: 'Get in touch with our registered tax agents for your working holiday tax refund.',
+    description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund.',
   },
   robots: {
     index: true,
@@ -96,7 +96,7 @@ export default function ContactPage() {
     '@id': `${SITE_URL}/contact`,
     url: `${SITE_URL}/contact`,
     name: 'Contact Working Holiday Tax',
-    description: 'Get in touch with our registered tax agents for help with TFN, tax returns, super and ABN.',
+    description: 'Get in touch with our team, working under the supervision of a registered tax agent, for help with TFN, tax returns, super and ABN.',
     inLanguage: 'en-AU',
     isPartOf: {
       '@type': 'WebSite',

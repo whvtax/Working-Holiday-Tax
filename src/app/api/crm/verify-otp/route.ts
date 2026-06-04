@@ -7,12 +7,12 @@ import crypto from 'crypto'
 
 const OTP_MAX_ATTEMPTS = 5
 const OTP_ATTEMPT_KEY  = 'crm_otp_attempts'
-const OTP_ATTEMPT_TTL  = 600 // 10 min — matches OTP TTL
+const OTP_ATTEMPT_TTL  = 600 // 10 min - matches OTP TTL
 
 export async function POST(req: NextRequest) {
   try {
     const { code } = await req.json()
-    // OTP is always 8 digits — anything else is invalid. Cap at 32 chars to
+    // OTP is always 8 digits - anything else is invalid. Cap at 32 chars to
     // prevent attackers wasting CPU on huge string hashing.
     if (!code || typeof code !== 'string' || code.length > 32) {
       return NextResponse.json({ ok: false, error: 'missing_code' }, { status: 400 })
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // One-time use — delete OTP and attempt counter immediately
+    // One-time use - delete OTP and attempt counter immediately
     await redis.del(['crm_otp', OTP_ATTEMPT_KEY])
 
     const token = createSession()
@@ -70,5 +70,5 @@ export async function POST(req: NextRequest) {
     console.error('[CRM verify-otp]', err)
     return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 })
   }
-  // No disconnect() — Redis singleton stays alive for warm instance reuse
+  // No disconnect() - Redis singleton stays alive for warm instance reuse
 }

@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
-  description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly with a registered tax agent.',
+  description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly under the supervision of a registered tax agent.',
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/tfn`,
     siteName: 'Working Holiday Tax',
     title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
-    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly with a registered tax agent.',
+    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
   },
   twitter: {
     card: 'summary_large_image',

@@ -1275,7 +1275,7 @@ ABN contractor work typically does not generate super contributions, but employm
 
 **URL:** https://workingholidaytax.com.au/blog/gst-and-abn-for-working-holiday-makers
 
-**Summary:** Most working holiday makers with an ABN do not need to register for GST — the threshold is $75,000 annual turnover. Exception: rideshare drivers must register regardless. How to work out if it applies to you.
+**Summary:** Most working holiday makers with an ABN do not need to register for GST - the threshold is $75,000 annual turnover. Exception: rideshare drivers must register regardless. How to work out if it applies to you.
 
 Most working holiday makers with an ABN do not need to register for GST. The Goods and Services Tax (GST) registration threshold is $75,000 in annual turnover from business activities, and the vast majority of backpackers earn well below this during a single visit. The exception is rideshare and food delivery drivers, who must register for GST regardless of income level. If your ABN turnover stays under $75,000 and you are not in rideshare or delivery, you can ignore GST entirely.
 
@@ -1450,7 +1450,7 @@ The Sydney-to-Cairns road trip is personal. The drive from your hostel to a farm
 
 **URL:** https://workingholidaytax.com.au/blog/small-business-tax-offset-working-holiday-abn
 
-**Summary:** If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset — a tax reduction of up to $1,000. How working holiday makers can claim it on their tax return.
+**Summary:** If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset - a tax reduction of up to $1,000. How working holiday makers can claim it on their tax return.
 
 The small business tax offset is a tax concession for sole traders and partnerships that can reduce the tax owed on your business income by up to $1,000 per year. If you earned income under an ABN in Australia, you may be entitled to this offset. The current rate is a 16% discount on tax payable on business income (capped at $1,000). The offset is non-refundable, meaning it can reduce your tax to zero but cannot create a refund on its own. Our team applies all eligible offsets when we prepare your [tax return](/tax-return).
 
@@ -4728,7 +4728,7 @@ Claim your super. It is your money, paid on top of your wages as part of your em
 
 **URL:** https://workingholidaytax.com.au/blog/can-you-withdraw-super-in-australia
 
-**Summary:** Generally, no — super is preserved until retirement age, except in very limited circumstances (severe financial hardship, compassionate grounds). Why working holiday makers must wait for DASP after leaving Australia.
+**Summary:** Generally, no - super is preserved until retirement age, except in very limited circumstances (severe financial hardship, compassionate grounds). Why working holiday makers must wait for DASP after leaving Australia.
 
 No, you cannot withdraw your superannuation while you are still in Australia on a valid working holiday visa. The Departing Australia Superannuation Payment (DASP) process is specifically designed for people who have permanently left Australia and whose visa has expired or been cancelled. You must depart first, then apply once outside Australia. Our team handles DASP applications remotely so you can claim from your home country.
 
@@ -4991,7 +4991,7 @@ When we manage your super and lodge your DASP claim, complete records make the p
 
 **URL:** https://workingholidaytax.com.au/blog/how-to-check-super-balance-working-holiday
 
-**Summary:** Knowing how much super you have accumulated matters — especially before leaving Australia. How working holiday makers can track their balance through myGov, super fund apps, and confirm employer contributions.
+**Summary:** Knowing how much super you have accumulated matters - especially before leaving Australia. How working holiday makers can track their balance through myGov, super fund apps, and confirm employer contributions.
 
 To check your superannuation balance as a working holiday maker, log into your super fund's online member portal using your member number and password. Your fund sends you these details when your account is opened. Super is paid quarterly by employers, so contributions appear in your fund within a few days of the quarterly deadlines (28 January, 28 April, 28 July, 28 October). If you have super across multiple funds or cannot find your account details, our team can locate every account associated with your TFN.
 
@@ -5828,7 +5828,7 @@ Working holiday makers have the same rights as any other worker in Australia. Th
 
 **URL:** https://workingholidaytax.com.au/blog/how-many-hours-can-you-work-on-whv
 
-**Summary:** Working holiday visa holders can work unlimited hours per week — the 6-month per-employer restriction was relaxed in 2022 for certain sectors. Current rules for 417 and 462 visa holders.
+**Summary:** Working holiday visa holders can work unlimited hours per week - the 6-month per-employer restriction was relaxed in 2022 for certain sectors. Current rules for 417 and 462 visa holders.
 
 There is no limit on how many hours per week a working holiday visa holder can work in Australia. You can work full-time, part-time, or casually. However, visa condition 8547 limits you to a maximum of 6 months with any one employer, unless you work in an exempt sector (agriculture, plant/animal cultivation, tourism/hospitality, health, aged/disability care, childcare, food processing, or natural disaster recovery anywhere in Australia, or in some northern regions for other industries). Outside these exemptions, you must change employers after 6 months or request written permission from the Department of Home Affairs to continue.
 
@@ -5990,7 +5990,7 @@ Any additional income earned through penalty rates is still subject to the 15% w
 
 **URL:** https://workingholidaytax.com.au/blog/can-your-employer-pay-you-cash-in-hand
 
-**Summary:** Cash-in-hand payments are common in some industries but come with serious tax and visa implications. What working holiday makers should know — including how to make sure tax and super are still paid.
+**Summary:** Cash-in-hand payments are common in some industries but come with serious tax and visa implications. What working holiday makers should know - including how to make sure tax and super are still paid.
 
 Yes, an employer can legally pay you in cash in Australia. There is no law that requires wages to be paid by bank transfer. However, the method of payment does not change any of the employer's obligations: they must still withhold the correct PAYG tax, pay 12% superannuation on top of your wages, provide you with payslips, and meet the minimum wage and award conditions. Cash payment is legal; underpayment, missing super, or no payslips is not. Our team helps recover unpaid super and resolve tax issues for working holiday makers paid cash.
 
@@ -6059,7 +6059,7 @@ Keep these records somewhere secure. They support both your tax return and any f
 
 **URL:** https://workingholidaytax.com.au/blog/fair-work-act-working-holiday-makers
 
-**Summary:** The Fair Work Act is Australia's main workplace relations law. How it protects working holiday makers on 417 and 462 visas — minimum wage, leave, unfair dismissal, and how to raise a complaint.
+**Summary:** The Fair Work Act is Australia's main workplace relations law. How it protects working holiday makers on 417 and 462 visas - minimum wage, leave, unfair dismissal, and how to raise a complaint.
 
 The Fair Work Act 2009 is Australia's primary employment law. It applies to working holiday makers in exactly the same way it applies to Australian citizens. The Act establishes the National Employment Standards (NES), which guarantee 11 minimum entitlements including minimum wage, paid public holidays, annual leave, and protection from unfair dismissal. Working holiday makers have full coverage under the Act regardless of their visa status. Our team can help you understand your rights and address any issues with your employer.
 
@@ -6315,7 +6315,7 @@ ABN contractor work typically does not generate super contributions from the cli
 
 If you are doing employee-like work but invoicing as a contractor, you may be a victim of sham contracting and entitled to super. See our article on [employee vs contractor](/blog/employee-vs-contractor-australia) for how to tell the difference.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
 
 ---
 
@@ -6323,7 +6323,7 @@ If you are doing employee-like work but invoicing as a contractor, you may be a 
 
 **URL:** https://workingholidaytax.com.au/blog/can-you-work-for-multiple-employers
 
-**Summary:** Yes — working holiday makers in Australia can work for more than one employer at the same time. What it means for tax (the 15% rate applies to each employer), super, and the 6-month visa rule.
+**Summary:** Yes - working holiday makers in Australia can work for more than one employer at the same time. What it means for tax (the 15% rate applies to each employer), super, and the 6-month visa rule.
 
 Yes, working holiday visa holders in Australia can work for multiple employers simultaneously. There is no visa restriction on the number of jobs you can have. Each new employer needs your [TFN](/tfn) and a Tax File Number Declaration form, otherwise they must withhold tax at 45%. The 15% working holiday maker tax rate applies to your combined income up to $45,000 per financial year. All employers must pay 12% superannuation on top of your wages, often into different super funds.
 
@@ -6382,7 +6382,7 @@ While there is no legal limit, practical considerations include:
 
 For tax and super purposes, multiple jobs are perfectly fine. Many working holiday makers work two or three casual jobs in hospitality alongside a weekend role or seasonal work.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
 
 ---
 
@@ -6578,7 +6578,7 @@ Our team handles tax returns for working holiday makers in all employment config
 
 **URL:** https://workingholidaytax.com.au/blog/farm-work-rights-working-holiday-australia
 
-**Summary:** Farm work is one of the most common jobs for working holiday makers. What you are legally entitled to — pay rates, conditions, accommodation rules, and how 88-day specified work counts toward your 2nd visa.
+**Summary:** Farm work is one of the most common jobs for working holiday makers. What you are legally entitled to - pay rates, conditions, accommodation rules, and how 88-day specified work counts toward your 2nd visa.
 
 Working holiday makers doing farm work in Australia are entitled to the same workplace protections as Australian workers. This includes minimum wage (or higher under the Horticulture Award), safe working conditions, accurate payslips, and super at 12% on top of wages. Farm work has a history of wage theft and exploitation, so knowing your rights before you start is essential. Our team helps working holiday makers in farm work check their pay rates and recover any unpaid wages or super.
 
@@ -6730,7 +6730,7 @@ Yes. If you completed the White Card course to qualify for or maintain construct
 
 Our team includes these training costs when we prepare your return. If you have multiple work-related certifications, we claim all of them.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
 
 ---
 
@@ -6815,7 +6815,7 @@ Yes. If you completed the RSA course for hospitality employment:
 
 When we prepare your return, we include training certifications among your deductions. Most working holiday makers have at least one or two relevant courses that are deductible.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
 
 ---
 
@@ -7002,7 +7002,7 @@ If your pay does not reflect the correct public holiday rate, [get in touch with
 
 **URL:** https://workingholidaytax.com.au/blog/casual-shift-cancellation-rules-australia
 
-**Summary:** As a casual worker in Australia, shifts can be cancelled — but employers must follow specific rules. Notice requirements, minimum payment entitlements, and what working holiday makers can do about repeated cancellations.
+**Summary:** As a casual worker in Australia, shifts can be cancelled - but employers must follow specific rules. Notice requirements, minimum payment entitlements, and what working holiday makers can do about repeated cancellations.
 
 Yes, your employer can cancel a casual shift in Australia, but there are rules. If a shift is cancelled with less than 24 hours notice and you had already made arrangements to attend, most awards require the employer to pay you a "minimum engagement" of 2-3 hours regardless. The exact rule depends on the award covering your industry. Our team helps working holiday makers check whether they have been underpaid for cancelled shifts and recover what they are owed.
 
@@ -7394,7 +7394,7 @@ If an agency seems evasive about basic details, that is a warning sign.
 
 **URL:** https://workingholidaytax.com.au/blog/how-to-read-a-payslip-australia-working-holiday
 
-**Summary:** Your payslip contains everything you need to know about whether you are being paid correctly. What each section means — gross pay, PAYG, super, leave — and what working holiday makers should check every pay cycle.
+**Summary:** Your payslip contains everything you need to know about whether you are being paid correctly. What each section means - gross pay, PAYG, super, leave - and what working holiday makers should check every pay cycle.
 
 Every Australian payslip should show: gross pay, tax withheld (15% for working holiday makers with TFN on file), super contribution (12% paid on top of gross from 1 July 2025), and net pay (what lands in your bank). Australian employers are legally required to issue a payslip within 24 hours of paying your wages. Knowing how to read a payslip means you can spot errors early. Save every payslip in case you need them for your tax return or super claim. Our team can review your payslips if anything looks wrong.
 
@@ -8589,7 +8589,7 @@ Fruit picking generates more wage and super disputes than almost any other indus
 
 **URL:** https://workingholidaytax.com.au/blog/farm-hand-jobs-working-holiday-australia
 
-**Summary:** Farm hand work covers a wide range of agricultural roles beyond fruit picking — livestock care, planting, fencing, and general farm labour. What working holiday makers should expect and how it counts for the 2nd year visa.
+**Summary:** Farm hand work covers a wide range of agricultural roles beyond fruit picking - livestock care, planting, fencing, and general farm labour. What working holiday makers should expect and how it counts for the 2nd year visa.
 
 "Farm hand" is the general term used in Australia for workers performing a wide range of agricultural tasks: livestock care, planting, harvesting non-fruit crops, fencing, machinery operation, general property maintenance, and labour across the farm. The work is performed across both horticultural farms (covered by the [Horticulture Award](/blog/horticulture-award-working-holiday-makers)) and pastoral farms (covered by the Pastoral Award), with different pay rates and conditions applying depending on the type of work.
 
@@ -9848,7 +9848,7 @@ Station work has unique tax complications because of the remoteness, the accommo
 
 **URL:** https://workingholidaytax.com.au/blog/what-is-medicare-working-holiday-makers
 
-**Summary:** Medicare is Australia's public health insurance system. Most working holiday makers on 417 and 462 visas are not covered — exceptions apply for citizens of countries with a Reciprocal Health Care Agreement.
+**Summary:** Medicare is Australia's public health insurance system. Most working holiday makers on 417 and 462 visas are not covered - exceptions apply for citizens of countries with a Reciprocal Health Care Agreement.
 
 Medicare is Australia's universal public health insurance scheme that provides citizens and permanent residents with free or subsidised healthcare. Working holiday makers (subclass 417 and 462) are generally **not** eligible for Medicare unless their home country has a Reciprocal Health Care Agreement (RHCA) with Australia. Without coverage, you pay the full cost of medical appointments and treatment. You are also entitled to a Medicare Levy exemption on your tax return, saving you 2% of your taxable income. Our team applies this exemption when lodging your return.
 
@@ -9978,7 +9978,7 @@ When we prepare your [tax return](/tax-return), we work out the correct Medicare
 
 **URL:** https://workingholidaytax.com.au/blog/medicare-levy-working-holiday-makers
 
-**Summary:** The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers on 417 and 462 visas are exempt — how to claim the exemption on your tax return.
+**Summary:** The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers on 417 and 462 visas are exempt - how to claim the exemption on your tax return.
 
 The Medicare Levy is a 2% tax applied to the taxable income of Australian residents to fund the Medicare system. Most working holiday makers are not eligible for Medicare and are therefore entitled to claim a full exemption from the Medicare Levy on their tax return. The exemption is not automatic and must be applied correctly when lodging. Our team applies the Medicare Levy exemption automatically when we prepare your [tax return](/tax-return), saving you 2% of your taxable income.
 
@@ -10051,7 +10051,7 @@ If you lodged a previous return and paid the Medicare Levy when you should have 
 
 **URL:** https://workingholidaytax.com.au/blog/tax-file-number-declaration-form
 
-**Summary:** The TFN declaration form is what you give your employer when starting a new job in Australia. How working holiday makers should complete it — including the working holiday maker box that sets you to the 15% rate.
+**Summary:** The TFN declaration form is what you give your employer when starting a new job in Australia. How working holiday makers should complete it - including the working holiday maker box that sets you to the 15% rate.
 
 A Tax File Number Declaration form is the form you complete and give to your employer when you start a new job in Australia. It tells your employer your TFN, your residency status for tax purposes, and whether you have a study loan. The employer uses this information to determine your tax rate. For working holiday makers, the critical answers are: select "Working Holiday Maker" for residency and "No" for the tax-free threshold. Getting the form right ensures the correct 15% rate is applied from your first payslip.
 
@@ -10124,7 +10124,7 @@ If your payslip shows withholding at 45%, 30%, or any rate other than 15%, the f
 
 **URL:** https://workingholidaytax.com.au/blog/what-does-tax-withheld-mean-payslip
 
-**Summary:** Tax withheld is the income tax your employer deducts from your wages each pay. How to check it is correct as a working holiday maker — your rate should be 15% on the first $45,000 if your TFN is filed properly.
+**Summary:** Tax withheld is the income tax your employer deducts from your wages each pay. How to check it is correct as a working holiday maker - your rate should be 15% on the first $45,000 if your TFN is filed properly.
 
 Tax withheld on your payslip is the income tax your employer deducts from your gross wages before paying you the net amount. It is the PAYG withholding collected on behalf of the ATO. For working holiday makers, the correct withholding rate is 15% of your gross earnings up to $45,000. You can check by dividing the tax withheld by your gross pay - the result should be approximately 0.15. If it shows 30% or 45%, your Tax File Number Declaration form was completed incorrectly.
 
@@ -10396,7 +10396,7 @@ If the figures do not match, raise it with your employer. The discrepancy may be
 
 **URL:** https://workingholidaytax.com.au/blog/do-working-holiday-makers-pay-tax-on-tips
 
-**Summary:** Yes — tips received as part of employment in Australia are taxable income, whether cash or electronic. How working holiday makers should record and declare tips on their tax return.
+**Summary:** Yes - tips received as part of employment in Australia are taxable income, whether cash or electronic. How working holiday makers should record and declare tips on their tax return.
 
 Yes, tips received in Australia are taxable income for working holiday makers. This applies whether the tip is paid in cash directly by a customer, distributed through a tronc system managed by your employer, or added to a bill and paid out via your payslip. Tips must be declared in your [tax return](/tax-return) at the 15% working holiday maker rate. If tips are paid through your employer's payroll, they are usually already included in your income statement. Cash tips paid directly need to be tracked and declared by you.
 
@@ -10457,7 +10457,7 @@ The specifics depend on your award and how the employer classifies the tips. If 
 
 **URL:** https://workingholidaytax.com.au/blog/tax-obligations-after-leaving-australia
 
-**Summary:** Leaving Australia does not end your tax obligations. Final tax return, DASP super claim, ABN cancellation — what working holiday makers must do after departing to stay compliant with the ATO.
+**Summary:** Leaving Australia does not end your tax obligations. Final tax return, DASP super claim, ABN cancellation - what working holiday makers must do after departing to stay compliant with the ATO.
 
 Leaving Australia does not end your Australian tax obligations. If you earned income during an Australian financial year, you must lodge a tax return for that year. You also need to claim your superannuation through DASP, cancel any [ABN](/abn) you registered, and update your contact details. All of this can be done from overseas through our service. We help working holiday makers wrap up their Australian tax obligations from anywhere in the world.
 
@@ -11147,7 +11147,7 @@ If you are uncertain about how your insurance status affects your tax, [get in t
 
 **URL:** https://workingholidaytax.com.au/blog/emergency-medical-care-working-holiday-no-medicare
 
-**Summary:** Working holiday makers without Medicare cover can still receive emergency treatment in Australian public hospitals — but the cost is the patient's responsibility. Typical fees, what insurance covers, and what to expect.
+**Summary:** Working holiday makers without Medicare cover can still receive emergency treatment in Australian public hospitals - but the cost is the patient's responsibility. Typical fees, what insurance covers, and what to expect.
 
 A working holiday maker who is not covered by [Medicare](/medicare) or a Reciprocal Health Care Agreement (RHCA) can still receive emergency medical treatment in Australia. Public hospitals provide emergency care regardless of insurance or ability to pay, but the patient is billed afterwards as a private patient. The bills can run to thousands or tens of thousands of dollars depending on the treatment. For working holiday makers from non-RHCA countries (Germany, France, Spain, USA, Canada, Japan), private health insurance or comprehensive travel insurance is the only realistic way to manage the cost.
 

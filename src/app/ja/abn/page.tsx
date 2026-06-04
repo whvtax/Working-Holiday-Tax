@@ -7,7 +7,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'ABN登録 - ワーキングホリデー オーストラリア',
-  description: '個人事業主として正しくABNを登録。ワーキングホリデー専門の登録税理士が、登録から税務まですべてサポートします。',
+  description: '個人事業主として正しくABNを登録。ワーキングホリデー専門のチームが、登録税理士の監督のもとで登録から税務まですべてサポートします。',
   keywords: [
     'ABN 登録 オーストラリア',
     'ABN ワーキングホリデー',
@@ -41,12 +41,12 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja/abn`,
     siteName: 'Working Holiday Tax',
     title: 'ABN登録 - ワーキングホリデー オーストラリア',
-    description: '個人事業主として正しくABNを登録。登録税理士がサポートします。',
+    description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ABN登録 - ワーキングホリデー オーストラリア',
-    description: '個人事業主として正しくABNを登録。登録税理士がサポートします。',
+    description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -56,7 +56,7 @@ const faqs = [
   { question: 'TFNなしでABNを取得できますか？', answer: 'いいえ、ABNを申請する前に、まずTFN（タックスファイルナンバー）を取得する必要があります。TFNがあなたの本人確認の基礎となるからです。当社では、必要に応じてTFNとABNを同時に申請することも可能です。' },
   { question: 'GST（消費税）の登録は必要ですか？', answer: '年間売上（収入）が75,000ドルを超える場合のみGST登録が義務付けられています。ほとんどのワーキングホリデーメーカーはこの基準を超えないため、GST登録は不要です。ただし、Uber・DiDiなどの配車サービスドライバーは収入額に関わらずGST登録が必須です（フードデリバリーは75,000ドル基準が適用）。' },
   { question: 'オーストラリアを離れる時、ABNはどうなりますか？', answer: 'オーストラリアでの業務を終了する際は、ABNを取り消す必要があります。当社にご依頼いただければ、最終的なタックスリターン・スーパー受取（DASP）と合わせてABN取消も代行いたします。' },
-  { question: 'ABN申請が却下されることはありますか？', answer: 'はい、申請内容が実際の業務実態と一致しない場合や、雇用関係に近い働き方なのにABNで申請した場合、却下されることがあります。だからこそ、登録税理士に依頼して最初から正しく設定することが重要です。' },
+  { question: 'ABN申請が却下されることはありますか？', answer: 'はい、申請内容が実際の業務実態と一致しない場合や、雇用関係に近い働き方なのにABNで申請した場合、却下されることがあります。だからこそ、登録税理士の監督のもとで最初から正しく設定することが重要です。' },
   { question: 'ワーホリでABNは必要ですか？', answer: 'ABNが必要なのは、個人事業主や請負業者として働く場合のみです。例えば、Uberやフードデリバリー、フリーランス業務、PAYG雇用ではなくクライアントから直接支払いを受ける場合などです。通常の従業員として働くだけなら、TFNだけで十分です。' },
   { question: 'ABN収入はワーホリのタックスリターン還付金にどう影響しますか？', answer: 'ABN収入はPAYG給与とは扱いが異なります。源泉徴収が行われないため、税金分を自分で取り置く必要があります。タックスリターン提出時にはABN収入を別途申告し、関連する業務経費を控除として申請できます。' },
 ]
@@ -95,7 +95,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'ABN（Australian Business Number）の登録方法',
-  description: 'オーストラリアで個人事業主・請負業務・フリーランスとして働くためのABN登録手順。登録税理士が日本語で代行します。',
+  description: 'オーストラリアで個人事業主・請負業務・フリーランスとして働くためのABN登録手順。登録税理士の監督のもとで日本語で代行します。',
   inLanguage: 'ja',
   totalTime: 'P1D',
   estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },

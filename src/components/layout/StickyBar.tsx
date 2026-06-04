@@ -1,10 +1,20 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { WA_URL } from '@/lib/constants'
 
 export function StickyBar() {
   const [visible, setVisible] = useState(false)
   const sentinel = useRef<HTMLDivElement>(null)
+  const pathname = usePathname() || '/'
+
+  const isDE = pathname === '/de' || pathname.startsWith('/de/')
+  const isJA = pathname === '/ja' || pathname.startsWith('/ja/')
+  const t = isDE
+    ? { cta: 'Steuererklärung starten', contact: 'Kontakt' }
+    : isJA
+    ? { cta: 'タックスリターンを始める', contact: 'お問い合わせ' }
+    : { cta: 'Start your tax return', contact: 'Contact us' }
 
   useEffect(() => {
     const el = sentinel.current
@@ -18,16 +28,16 @@ export function StickyBar() {
     <>
       <div ref={sentinel} className="fixed w-px h-px pointer-events-none" style={{ top: '100vh', left: 0 }} aria-hidden="true" />
       <div
-        className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden backdrop-blur-xl transition-transform duration-500 ease-spring ${visible ? 'translate-y-0' : 'translate-y-full'}`}
+        className={`fixed bottom-0 left-0 right-0 z-40 lg:hidden backdrop-blur-xl transition-transform duration-500 ${visible ? 'translate-y-0' : 'translate-y-full'}`}
         style={{ background: 'rgba(247,251,249,0.94)', borderTop: '1px solid rgba(205,227,219,0.45)', padding: '10px 20px calc(10px + env(safe-area-inset-bottom))' }}>
         <div className="flex gap-2.5 max-w-[480px] mx-auto">
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="flex-1 flex items-center justify-center font-semibold transition-colors"
             style={{ height: '52px', background: '#E9A020', color: '#1A2822', borderRadius: '13px', fontSize: '14px' }}>
-            Free Eligibility Check
+            {t.cta}
           </a>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-            aria-label="Contact us"
+            aria-label={t.contact}
             className="flex items-center justify-center flex-shrink-0 transition-all hover:scale-105"
             style={{ width: '52px', height: '52px', borderRadius: '13px', background: '#22C55E' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">

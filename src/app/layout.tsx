@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Get your Australian tax refund as a Working Holiday Maker (subclass 417 and 462). Registered tax agent for WHV tax returns, TFN, super refund (DASP) and ABN - lodged online.',
+    'Get your Australian tax refund as a Working Holiday Maker (subclass 417 and 462). Working under the supervision of a registered tax agent for WHV tax returns, TFN, super refund (DASP) and ABN - lodged online.',
   keywords: [
     'working holiday tax refund',
     'WHV tax refund Australia',
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia - WHV Tax Return Specialists',
-    description: 'Get your Australian tax refund as a Working Holiday Maker. Registered tax agent for WHV tax returns, TFN, super refund (DASP) and ABN - all online.',
+    description: 'Get your Australian tax refund as a Working Holiday Maker. Working under the supervision of a registered tax agent for WHV tax returns, TFN, super refund (DASP) and ABN - all online.',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
@@ -91,7 +91,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia - WHV Tax Return',
-    description: 'Get your Australian tax refund as a Working Holiday Maker. Registered tax agent for backpackers - all online.',
+    description: 'Get your Australian tax refund as a Working Holiday Maker. Working under the supervision of a registered tax agent for backpackers - all online.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -135,7 +135,7 @@ const schemaOrg = {
       image: 'https://workingholidaytax.com.au/og-image.png',
       telephone: '+61424513998',
       email: 'info@workingholidaytax.com.au',
-      description: 'Registered tax agent specialising in TFN applications, tax returns, superannuation (DASP) and ABN registrations for working holiday visa holders (subclass 417 and 462) in Australia.',
+      description: 'Working under the supervision of a registered tax agent, specialising in TFN applications, tax returns, superannuation (DASP) and ABN registrations for working holiday visa holders (subclass 417 and 462) in Australia.',
       slogan: 'Australian tax, sorted.',
       foundingDate: '2020',
       // ABN of the business (Australian Business Number)
@@ -227,7 +227,7 @@ const schemaOrg = {
             itemOffered: {
               '@type': 'Service',
               name: 'Tax Return Lodgement',
-              description: 'Lodge your Australian tax return as a working holiday maker with a registered tax agent.',
+              description: 'Lodge your Australian tax return as a working holiday maker under the supervision of a registered tax agent.',
               url: 'https://workingholidaytax.com.au/tax-return',
               provider: { '@id': 'https://workingholidaytax.com.au/#business' },
               areaServed: 'AU',

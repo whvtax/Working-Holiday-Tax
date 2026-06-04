@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja/superannuation`,
     siteName: 'Working Holiday Tax',
     title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
-    description: 'オーストラリアのスーパー返金をDASPで受け取り。ワーホリ専門の登録税理士がすべて代行します。',
+    description: 'オーストラリアのスーパー返金をDASPで受け取り。ワーホリ専門のチームが登録税理士の監督のもとですべて代行します。',
   },
   twitter: {
     card: 'summary_large_image',
@@ -135,7 +135,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'スーパー受取（DASP）の申請方法',
-  description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションをDASP（Departing Australia Superannuation Payment）で受け取る手順。登録税理士が日本語で代行します。',
+  description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションをDASP（Departing Australia Superannuation Payment）で受け取る手順。登録税理士の監督のもとで日本語で代行します。',
   inLanguage: 'ja',
   totalTime: 'P28D',
   estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },

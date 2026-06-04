@@ -5,7 +5,7 @@ import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib
 
 export const metadata: Metadata = {
   title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-  description: 'Kontaktiere unsere registrierten Steueragenten. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
+  description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
   keywords: [
     'Kontakt Working Holiday Tax',
     'Steueragent Australien Kontakt',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'ja': `${SITE_URL}/ja/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-    description: 'Kontaktiere unsere registrierten Steueragenten. Schnelle Antworten von echten Beratern.',
+    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-    description: 'Kontaktiere unsere registrierten Steueragenten.',
+    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet.',
   },
   robots: {
     index: true,
@@ -87,7 +87,7 @@ export default function GermanContactPage() {
     '@id': `${SITE_URL}/de/contact`,
     url: `${SITE_URL}/de/contact`,
     name: 'Kontakt - Working Holiday Tax',
-    description: 'Kontaktiere unsere registrierten Steueragenten für Hilfe mit TFN, Steuererklärung, Super und ABN.',
+    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet, für Hilfe mit TFN, Steuererklärung, Super und ABN.',
     inLanguage: 'de',
     isPartOf: {
       '@type': 'WebSite',

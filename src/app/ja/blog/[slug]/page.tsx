@@ -372,7 +372,7 @@ export default function JapaneseGuidePage({ params }: Props) {
       '@id': `${SITE_URL}/#organization`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
-      description: 'オーストラリアの登録税理士事務所。ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門としています。',
+      description: 'オーストラリアで登録税理士の監督のもとで運営。ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門としています。',
       knowsAbout: [
         'オーストラリア税法',
         'ワーキングホリデービザ（サブクラス417・462）',

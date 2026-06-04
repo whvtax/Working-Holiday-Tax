@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker (Subclass 417 und 462). Registrierter Steueragent für Steuererklärung, TFN, Superauszahlung (DASP) und ABN - alles online.',
+    'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker (Subclass 417 und 462). Unter Aufsicht eines registrierten Steueragenten für Steuererklärung, TFN, Superauszahlung (DASP) und ABN - alles online.',
   keywords: [
     'Steuerrückerstattung Australien',
     'Steuerrückzahlung Working Holiday',
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien für Working Holiday Maker | WHV Steuer',
-    description: 'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker. Registrierter Steueragent für Steuererklärung, TFN, Super (DASP) und ABN - alles online erledigt.',
+    description: 'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker. Unter Aufsicht eines registrierten Steueragenten für Steuererklärung, TFN, Super (DASP) und ABN - alles online erledigt.',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Steuerrückerstattung Australien für Backpacker - WHV',
-    description: 'Hol dir deine Steuerrückerstattung als Working Holiday Maker in Australien. Registrierter Steueragent - alles online.',
+    description: 'Hol dir deine Steuerrückerstattung als Working Holiday Maker in Australien. Unter Aufsicht eines registrierten Steueragenten - alles online.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

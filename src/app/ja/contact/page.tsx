@@ -5,7 +5,7 @@ import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib
 
 export const metadata: Metadata = {
   title: 'お問い合わせ - Working Holiday Tax',
-  description: '登録税理士に直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
+  description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
   keywords: [
     'お問い合わせ ワーホリ 税金',
     'お問い合わせ オーストラリア タックスリターン',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'お問い合わせ | Working Holiday Tax',
-    description: '登録税理士に直接ご相談ください。営業時間内なら1時間以内にご返信します。',
+    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。営業時間内なら1時間以内にご返信します。',
     url: `${SITE_URL}/ja/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'お問い合わせ | Working Holiday Tax',
-    description: '登録税理士に直接ご相談ください。',
+    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。',
   },
   robots: {
     index: true,
@@ -95,7 +95,7 @@ export default function JapaneseContactPage() {
     '@id': `${SITE_URL}/ja/contact`,
     url: `${SITE_URL}/ja/contact`,
     name: 'お問い合わせ - Working Holiday Tax',
-    description: '登録税理士に直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
+    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
     inLanguage: 'ja',
     isPartOf: {
       '@type': 'WebSite',

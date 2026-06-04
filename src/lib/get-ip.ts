@@ -1,9 +1,9 @@
 // Extract the real client IP for rate limiting.
 //
 // Trust order (most-trusted first):
-//   1. x-vercel-forwarded-for — set by Vercel's edge; clients CANNOT spoof it.
-//   2. x-real-ip             — set by many trusted reverse proxies.
-//   3. x-forwarded-for       — only as a last resort. The header is a
+//   1. x-vercel-forwarded-for - set by Vercel's edge; clients CANNOT spoof it.
+//   2. x-real-ip             - set by many trusted reverse proxies.
+//   3. x-forwarded-for       - only as a last resort. The header is a
 //      client-appendable list, so we take the FIRST entry and validate it.
 //
 // A spoofed/invalid value collapses to 'unknown', which still rate-limits

@@ -71,7 +71,7 @@ export function createSession(): string {
 export function validateSession(token: string | undefined): boolean {
   return checkToken(token, ADMIN_SESSION_TTL)
 }
-export function destroySession() { /* stateless — cookie cleared client-side */ }
+export function destroySession() { /* stateless - cookie cleared client-side */ }
 
 // ── Brute-force protection (Redis) ───────────────────────────────────────
 
@@ -79,7 +79,7 @@ const MAX_ATTEMPTS = 3
 const LOCKOUT_MS   = 30 * 60 * 1000
 const TTL_SECS     = 35 * 60
 
-// Admin login — keyed PER CLIENT IP so a single attacker cannot lock the
+// Admin login - keyed PER CLIENT IP so a single attacker cannot lock the
 // legitimate admin out of the CRM (a global counter made that trivial DoS).
 // A separate global counter is kept for ALERTING only (it never locks anyone).
 const FAIL_PREFIX   = 'crm_fail_count:'
@@ -98,7 +98,7 @@ export async function recordFailedAttemptRedis(
   await redis.expire(kCount, TTL_SECS)
   const locked = count >= MAX_ATTEMPTS
   if (locked) await redis.set(kLocked, '1', { EX: TTL_SECS })
-  // Global alert counter — notifies the admin of a distributed attack without
+  // Global alert counter - notifies the admin of a distributed attack without
   // locking any single IP's victim out.
   await redis.incr(KEY_ALERT)
   await redis.expire(KEY_ALERT, TTL_SECS)
