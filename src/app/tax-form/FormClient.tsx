@@ -579,7 +579,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 {(['Single', 'Married'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${marital === opt ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="marital" value={opt} checked={marital === opt}
-                      onChange={() => { setMarital(opt); setErrors(p => ({...p, marital: ''})) }} className="hidden" />
+                      onChange={() => { setMarital(opt); setErrors(p => ({...p, marital: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${marital === opt ? 'radio-dot-active' : ''}`} />
                     {opt}
                   </label>
@@ -608,7 +608,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${hasAbn === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="hasAbn" value={opt.val} checked={hasAbn === opt.val}
-                      onChange={() => { setHasAbn(opt.val); setErrors(p => ({...p, hasAbn: ''})) }} className="hidden" />
+                      onChange={() => { setHasAbn(opt.val); setErrors(p => ({...p, hasAbn: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${hasAbn === opt.val ? 'radio-dot-active' : ''}`} />
                     {opt.label}
                   </label>
@@ -671,7 +671,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="hasExpenses" value={opt} checked={hasExpenses === opt}
-                      onChange={() => { setHasExpenses(opt); setErrors(p => ({...p, hasExpenses: ''})) }} className="hidden" />
+                      onChange={() => { setHasExpenses(opt); setErrors(p => ({...p, hasExpenses: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${hasExpenses === opt ? 'radio-dot-active' : ''}`} />
                     {opt === 'yes' ? 'Yes' : 'No'}
                   </label>
@@ -731,7 +731,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                           onChange={() => {
                             setTaxYears(prev => isSelected ? prev.filter(y => y !== code) : [...prev, code])
                             setErrors(p => ({...p, taxYear: ''}))
-                          }} className="hidden" />
+                          }} className="vh-input" />
                         <div style={{display:'flex',alignItems:'center',gap:8,width:'100%'}}>
                           <div className={`check-box${isSelected ? ' checked' : ''}`} style={{flexShrink:0}}>
                             {isSelected && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
@@ -779,7 +779,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 ] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
-                      onChange={() => { setTaxStatus(opt.val); setErrors(p => ({...p, taxStatus: ''})) }} className="hidden" />
+                      onChange={() => { setTaxStatus(opt.val); setErrors(p => ({...p, taxStatus: ''})) }} className="vh-input" />
                     <div className={`radio-dot ${taxStatus === opt.val ? 'radio-dot-active' : ''}`} />
                     {opt.label}
                   </label>
@@ -799,7 +799,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   )}
                 </p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
-                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
+                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="vh-input"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="check-label">{T('declConfirm')}</span>
                 </label>
@@ -810,7 +810,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div className={`declaration-box${errors.declaredIncome ? ' decl-error' : ''}`}>
                 <p className="decl-text">{T('declTaxIncome')}</p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
-                  <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
+                  <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="vh-input"/>
                   <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="check-label">{T('declConfirm')}</span>
                 </label>

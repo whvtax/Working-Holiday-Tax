@@ -28,9 +28,10 @@ export function Footer() {
         learnLinks: [
           { label: 'Blog',                       href: '/de/blog' },
           { label: 'TFN-Artikel',                href: '/de/blog/category/tfn' },
-          { label: 'Steuererklärung-Artikel',    href: '/de/blog/category/tax-return' },
+          { label: 'Steuererklärungs-Artikel',    href: '/de/blog/category/tax-return' },
           { label: 'Super-Artikel',              href: '/de/blog/category/super' },
           { label: 'Arbeitsrechte',              href: '/de/blog/category/work-rights' },
+          { label: 'Steueransässigkeit',         href: '/de/tax-residency' },
         ],
         connect: 'Kontakt',
         connectLinks: [
@@ -65,6 +66,7 @@ export function Footer() {
           { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
           { label: 'スーパー返金の記事',       href: '/ja/blog/category/super' },
           { label: '労働者の権利',             href: '/ja/blog/category/work-rights' },
+          { label: '税務上の居住者判定',       href: '/ja/tax-residency' },
         ],
         connect: 'お問い合わせ',
         connectLinks: [
@@ -99,6 +101,7 @@ export function Footer() {
           { label: 'Tax Return Articles',        href: '/blog/category/tax-return' },
           { label: 'Super Articles',             href: '/blog/category/super' },
           { label: 'Work Rights',                href: '/blog/category/work-rights' },
+          { label: 'Tax Residency',              href: '/tax-residency' },
         ],
         connect: 'Connect',
         connectLinks: [

@@ -79,31 +79,49 @@ const MAX_ATTEMPTS = 3
 const LOCKOUT_MS   = 30 * 60 * 1000
 const TTL_SECS     = 35 * 60
 
-// Admin login
-const KEY_COUNT  = 'crm_fail_count'
-const KEY_TS     = 'crm_fail_ts'
-const KEY_LOCKED = 'crm_locked'
+// Admin login — keyed PER CLIENT IP so a single attacker cannot lock the
+// legitimate admin out of the CRM (a global counter made that trivial DoS).
+// A separate global counter is kept for ALERTING only (it never locks anyone).
+const FAIL_PREFIX   = 'crm_fail_count:'
+const TS_PREFIX     = 'crm_fail_ts:'
+const LOCKED_PREFIX = 'crm_locked:'
+const KEY_ALERT     = 'crm_fail_alert' // global, notification only
 
-export async function recordFailedAttemptRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
+export async function recordFailedAttemptRedis(
+  redis: import('redis').RedisClientType,
+  ip: string = 'unknown',
+): Promise<FailedAttempt> {
   const now = Date.now()
-  const count = await redis.incr(KEY_COUNT)
-  await redis.set(KEY_TS, String(now), { EX: TTL_SECS })
-  await redis.expire(KEY_COUNT, TTL_SECS)
+  const kCount = FAIL_PREFIX + ip, kTs = TS_PREFIX + ip, kLocked = LOCKED_PREFIX + ip
+  const count = await redis.incr(kCount)
+  await redis.set(kTs, String(now), { EX: TTL_SECS })
+  await redis.expire(kCount, TTL_SECS)
   const locked = count >= MAX_ATTEMPTS
-  if (locked) await redis.set(KEY_LOCKED, '1', { EX: TTL_SECS })
+  if (locked) await redis.set(kLocked, '1', { EX: TTL_SECS })
+  // Global alert counter — notifies the admin of a distributed attack without
+  // locking any single IP's victim out.
+  await redis.incr(KEY_ALERT)
+  await redis.expire(KEY_ALERT, TTL_SECS)
   return { count, lastAttempt: now, locked }
 }
 
-export async function resetFailedAttemptsRedis(redis: import('redis').RedisClientType): Promise<void> {
-  await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
+export async function resetFailedAttemptsRedis(
+  redis: import('redis').RedisClientType,
+  ip: string = 'unknown',
+): Promise<void> {
+  await redis.del([FAIL_PREFIX + ip, TS_PREFIX + ip, LOCKED_PREFIX + ip])
 }
 
-export async function isLockedOutRedis(redis: import('redis').RedisClientType): Promise<boolean> {
-  const locked = await redis.get(KEY_LOCKED)
+export async function isLockedOutRedis(
+  redis: import('redis').RedisClientType,
+  ip: string = 'unknown',
+): Promise<boolean> {
+  const kCount = FAIL_PREFIX + ip, kTs = TS_PREFIX + ip, kLocked = LOCKED_PREFIX + ip
+  const locked = await redis.get(kLocked)
   if (!locked) return false
-  const ts = await redis.get(KEY_TS)
+  const ts = await redis.get(kTs)
   if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
-    await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
+    await redis.del([kCount, kTs, kLocked])
     return false
   }
   return true

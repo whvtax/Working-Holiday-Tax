@@ -367,7 +367,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
           <div className={`declaration-box${errors.terms?' decl-error':''}`} style={{marginTop:10}}>
             <label className="check-row">
-              <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="hidden"/>
+              <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="vh-input"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
               <span className="check-label">{T('acceptTerms')} <a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">{T('clientAgreement')}</a> {T('and')} <a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">{T('privacyPolicy')}</a></span>
             </label>

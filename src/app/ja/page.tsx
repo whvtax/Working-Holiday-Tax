@@ -4,6 +4,7 @@ import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
+import { getGoogleRating } from '@/lib/googleData'
 
 // ─── METADATA - rich SEO + AI optimized for Japanese market ─────────────
 export const metadata: Metadata = {
@@ -110,7 +111,6 @@ const IconABN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill=
 const IconReturn  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
 const IconSuper   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 5.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.5s-6-3.5-6-8.5a3 3 0 016-2 3 3 0 016 2c0 5-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><line x1="10" y1="7" x2="10" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="7.5" y1="9.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
-const IconStar    = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
 const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 // ─── TESTIMONIALS - Japanese WHV reviews ─────────────────────────────────
@@ -161,7 +161,8 @@ const FAQS = [
   },
 ]
 
-export default function JapaneseHomePage() {
+export default async function JapaneseHomePage() {
+  const gRating = await getGoogleRating()
 
   // ─── Schema.org for Japanese page ───
   const webPageLd = {
@@ -178,13 +179,19 @@ export default function JapaneseHomePage() {
 
   const serviceLd = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    '@id': `${SITE_URL}/ja/#service`,
-    name: 'ワーキングホリデー向け税務サービス（オーストラリア）',
+    '@type': 'LocalBusiness',
+    '@id': `${SITE_URL}/#business`,
+    name: 'Working Holiday Tax',
     description: 'オーストラリアのワーキングホリデービザ保持者向け税務サービス。',
-    provider: { '@id': `${SITE_URL}/#business` },
-    areaServed: 'AU',
+    url: SITE_URL,
     inLanguage: 'ja',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: gRating.rating.toFixed(1),
+      reviewCount: gRating.count,
+      bestRating: '5',
+      worstRating: '1',
+    },
   }
 
   const faqLd = {
@@ -347,7 +354,7 @@ export default function JapaneseHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200名以上をサポート', <GoogleRating variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
+            {['1,200名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -430,7 +437,7 @@ export default function JapaneseHomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F4F9F6' }}>
+      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -503,7 +510,7 @@ export default function JapaneseHomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#EEF7F2' }}>
+      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>

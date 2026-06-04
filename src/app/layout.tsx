@@ -227,7 +227,7 @@ const schemaOrg = {
             itemOffered: {
               '@type': 'Service',
               name: 'Tax Return Lodgement',
-              description: 'Lodge your Australian tax return and claim your refund as a working holiday maker.',
+              description: 'Lodge your Australian tax return as a working holiday maker with a registered tax agent.',
               url: 'https://workingholidaytax.com.au/tax-return',
               provider: { '@id': 'https://workingholidaytax.com.au/#business' },
               areaServed: 'AU',
@@ -294,6 +294,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en-AU" className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
+        {/* Performance: preconnect to Google Fonts to eliminate render-blocking latency */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* DNS prefetch for third-party origins used on most pages */}
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
@@ -330,14 +336,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="skip-to-content">
           Skip to main content
         </a>
+
+        {/* Decorative film-grain overlay (fixed, non-interactive) */}
         <div className="grain" aria-hidden="true" />
-        {/* PublicShellClient hides Nav/Footer on /crm/* routes */}
-        <PublicShellClient nav={<Nav />} footer={<Footer />}>
-          <main id="main-content">{children}</main>
-        </PublicShellClient>
+
+        <div>
+          <PublicShellClient nav={<Nav />} footer={<Footer />}>
+            <main id="main-content">{children}</main>
+          </PublicShellClient>
+        </div>
+
+        <MobileLanguageBanner />
         <RevealObserver />
         <ScrollToTop />
-        <MobileLanguageBanner />
       </body>
     </html>
   )

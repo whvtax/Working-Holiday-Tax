@@ -203,7 +203,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
           </p>
           <h2 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '20ch' }}>
-            Wir holen die maximale Rückzahlung für dich
+            Hol dir die maximale Rückerstattung, die dir zusteht
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
             Dieser Rechner gibt dir nur eine Schätzung. Oft finden wir absetzbare Kosten und Steuergutschriften, die deine Rückzahlung noch erhöhen.

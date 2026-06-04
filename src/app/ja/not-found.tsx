@@ -1,0 +1,51 @@
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import { WA_URL } from '@/lib/constants'
+
+export const metadata: Metadata = {
+  title: 'ページが見つかりません | Working Holiday Tax',
+  description: 'お探しのページは存在しません。トップページにお戻りください。',
+  robots: { index: false, follow: true },
+}
+
+export default function NotFoundJA() {
+  return (
+    <div className="relative bg-white min-h-svh flex items-center justify-center overflow-hidden pt-[68px]">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10 relative z-10 text-center py-20">
+        <p
+          className="font-serif font-black leading-none mb-4"
+          style={{ fontSize: 'clamp(60px,15vw,120px)', color: 'rgba(11,82,64,0.08)' }}
+          aria-hidden="true"
+        >
+          404
+        </p>
+        <h1
+          className="font-serif font-black text-ink mb-3"
+          style={{ fontSize: 'clamp(22px,3.5vw,36px)', letterSpacing: '-0.025em', lineHeight: 1.1 }}
+        >
+          ページが見つかりません
+        </h1>
+        <p
+          className="font-light text-muted leading-[1.7] max-w-[380px] mx-auto mb-8"
+          style={{ fontSize: '14px' }}
+        >
+          お探しのページは存在しません。トップページよりご利用ください。
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 items-center justify-center">
+          <Link href="/ja" className="btn-primary" style={{ height: '46px', padding: '0 24px', fontSize: '13.5px' }}>
+            トップページへ →
+          </Link>
+          <a
+            href={WA_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-ghost-dark"
+            style={{ height: '46px', padding: '0 20px', fontSize: '13.5px' }}
+          >
+            お問い合わせ
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}

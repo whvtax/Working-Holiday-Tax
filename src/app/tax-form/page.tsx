@@ -4,7 +4,7 @@ import { FormClient } from './FormClient'
 
 export const metadata: Metadata = {
   title: 'Submit Your Tax Return | Working Holiday Tax',
-  description: 'Submit your details and documents to lodge your Australian tax return. We prepare everything and maximise your refund.',
+  description: 'Submit your details and documents to lodge your Australian tax return. We prepare and lodge everything for you and make sure you claim every deduction you are entitled to.',
   keywords: ['tax return form Australia', 'submit tax return WHV', 'lodge tax return working holiday', 'tax return application'],
   alternates: {
     canonical: '/tax-form',

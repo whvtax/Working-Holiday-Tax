@@ -6,6 +6,7 @@ import {
   generateOtp,
 } from '@/lib/crm-store'
 import { getRedis } from '@/lib/rate-limit'
+import { getClientIp } from '@/lib/get-ip'
 import crypto from 'crypto'
 type RedisClient = import('redis').RedisClientType
 
@@ -40,18 +41,19 @@ export async function POST(req: NextRequest) {
 
     const redis = await getRedis()
     if (!redis) return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
+    const clientIp = getClientIp(req)
 
-    if (await isLockedOutRedis(redis as RedisClient)) {
+    if (await isLockedOutRedis(redis as RedisClient, clientIp)) {
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
-      const fa = await recordFailedAttemptRedis(redis as RedisClient)
+      const fa = await recordFailedAttemptRedis(redis as RedisClient, clientIp)
       if (fa.locked && ADMIN_EMAIL) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
-    await resetFailedAttemptsRedis(redis as RedisClient)
+    await resetFailedAttemptsRedis(redis as RedisClient, clientIp)
 
     const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')

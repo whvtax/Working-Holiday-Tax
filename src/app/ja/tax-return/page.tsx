@@ -264,7 +264,7 @@ export default function JapaneseTaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -345,7 +345,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">当社のサービス</span>
@@ -418,7 +418,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">選ばれる理由</span>
@@ -553,7 +553,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">控除可能な経費</span>
@@ -652,7 +652,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 

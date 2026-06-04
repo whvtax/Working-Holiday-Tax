@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL } from '@/lib/constants'
+import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'de_DE',
-    url: 'https://workingholidaytax.com.au/de/tax-return',
+    url: `${SITE_URL}/de/tax-return`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
     description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Registrierter Steueragent — alles online, auch aus Deutschland.',
@@ -133,20 +133,20 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://workingholidaytax.com.au/de' },
-    { '@type': 'ListItem', position: 2, name: 'Steuererklärung', item: 'https://workingholidaytax.com.au/de/tax-return' },
+    { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
+    { '@type': 'ListItem', position: 2, name: 'Steuererklärung', item: `${SITE_URL}/de/tax-return` },
   ],
 }
 
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://workingholidaytax.com.au/de/tax-return#service',
+  '@id': `${SITE_URL}/de/tax-return#service`,
   name: 'Australische Steuererklärung für Working Holiday Maker',
   description: 'Komplette Bearbeitung deiner australischen Steuererklärung - Vorbereitung, Optimierung und Einreichung beim ATO durch registrierte Steueragenten.',
   serviceType: 'Tax Return Preparation',
   category: 'Tax Preparation Service',
-  url: 'https://workingholidaytax.com.au/de/tax-return',
+  url: `${SITE_URL}/de/tax-return`,
   inLanguage: 'de',
   areaServed: {
     '@type': 'Country',
@@ -158,9 +158,9 @@ const serviceSchema = {
   },
   provider: {
     '@type': 'Organization',
-    '@id': 'https://workingholidaytax.com.au/#organization',
+    '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
-    url: 'https://workingholidaytax.com.au',
+    url: `${SITE_URL}`,
     description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
   },
@@ -247,7 +247,7 @@ export default function GermanTaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpackern geholfen',<GoogleRating variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
+              {['1.200+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -328,7 +328,7 @@ export default function GermanTaxReturnPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Unser Service</span>
@@ -401,7 +401,7 @@ export default function GermanTaxReturnPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">Warum wir?</span>
@@ -539,7 +539,7 @@ export default function GermanTaxReturnPage() {
       </section>
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Absetzbare Kosten</span>
@@ -638,7 +638,7 @@ export default function GermanTaxReturnPage() {
       </section>
 
       {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
@@ -650,7 +650,7 @@ export default function GermanTaxReturnPage() {
               <div className="space-y-0">
                 {[
                   { label: 'Unsere Vorbereitung',  body: <><span className="hidden lg:inline">Wir bereiten deine Steuererklärung innerhalb von 24 Stunden vor.</span><span className="lg:hidden">Wir bereiten deine Steuererklärung<br />innerhalb von 24 Stunden vor.</span></> },
-                  { label: 'ATO-Bearbeitung',   body: 'The ATO usually processes returns within 7-14 business days. This can be longer during busy periods.' },
+                  { label: 'ATO-Bearbeitung',   body: 'Das ATO bearbeitet Steuererklärungen in der Regel innerhalb von 7-14 Werktagen. In stark frequentierten Zeiten kann es länger dauern.' },
                   { label: 'Endergebnis',    body: <><span className="hidden lg:inline">Sobald deine Erklärung bearbeitet ist, kommt die Rückzahlung direkt auf dein australisches Bankkonto.</span><span className="lg:hidden">Sobald deine Erklärung bearbeitet ist, kommt die Rückzahlung direkt<br />auf dein australisches Bankkonto.</span></> },
                 ].map((item, i) => (
                   <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>

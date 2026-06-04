@@ -133,7 +133,7 @@ export const deCategoryMeta: DeCategoryMeta[] = [
     intro: 'Superannuation (Super) ist das australische Rentensystem. Per Gesetz zahlt dein Arbeitgeber 12 % deines Lohns zusätzlich zu deinem Gehalt in einen Superfonds ein. Als Working Holiday Maker kannst du dieses Geld zurückbekommen, wenn du Australien verlässt - über den DASP-Prozess (Departing Australia Superannuation Payment). Für die meisten Backpacker sind das zwischen 2.000 und 5.000 AUD. Diese Artikel erklären, wie Super funktioniert, wie du es findest und wie du es richtig zurückholst.',
     faq: [
       { question: 'Wie viel Super zahlt mein Arbeitgeber für mich ein?', answer: 'In Australien zahlt dein Arbeitgeber 12 % deines Bruttolohns als Super ein, zusätzlich zu deinem Gehalt. Wenn du also 1.000 AUD pro Woche verdienst, gehen weitere 120 AUD in deinen Superfonds.' },
-      { question: 'Kann ich meine Super zurückbekommen, wenn ich Australien verlasse?', answer: 'Ja. Als Working Holiday Maker kannst du eine Departing Australia Superannuation Payment (DASP) beantragen, sobald du Australien verlassen hast und dein Visum abgelaufen oder gekündigt ist. Die Auszahlung wird mit 65 % besteuert, aber die restlichen 35 % sind echtes Geld für dich.' },
+      { question: 'Kann ich meine Super zurückbekommen, wenn ich Australien verlasse?', answer: 'Ja. Als Working Holiday Maker kannst du eine Departing Australia Superannuation Payment (DASP) beantragen, sobald du Australien verlassen hast und dein Visum abgelaufen oder gekündigt ist. Die steuerpflichtige Komponente wird mit 65 % besteuert – den Rest bekommst du ausgezahlt.' },
       { question: 'Wie lange dauert die DASP-Auszahlung?', answer: 'Nach Einreichung des DASP-Antrags dauert die Auszahlung normalerweise 2-4 Wochen. Das Geld kommt direkt auf dein Bankkonto (australisch oder ausländisch).' },
       { question: 'Was, wenn ich mehrere Superkonten habe?', answer: 'Wenn du für mehrere Arbeitgeber gearbeitet hast, hast du wahrscheinlich mehrere Superkonten. Du kannst alle zusammen finden lassen und einen einzigen DASP-Antrag stellen, der alle Konten abdeckt.' },
     ],
@@ -193,9 +193,9 @@ export const dePostTranslations: Record<string, { title: string; description: st
     title: 'Was ist eine TFN und warum brauchst du eine in Australien?',
     description: 'Eine Tax File Number ist das Erste, was du brauchst, wenn du in Australien arbeiten willst. Ohne TFN behält dein Arbeitgeber fast die Hälfte deines Lohns ein.',
     body: `
-Eine Tax File Number (TFN) ist eine eindeutige neunstellige Nummer, die das ATO (australisches Finanzamt) jeder Person ausstellt, die in Australien Einkommen hat. Du brauchst sie, weil ohne TFN dein Arbeitgeber gesetzlich verpflichtet ist, 45 % Steuern einzubehalten - statt der 15 % Working-Holiday-Maker-Rate. Die TFN ist permanent, kostenlos und bleibt ein Leben lang gültig.
+Eine Tax File Number (TFN) ist eine eindeutige neunstellige Nummer, die das ATO (australisches Finanzamt) jeder Person ausstellt, die in Australien Einkommen hat. Du brauchst sie, weil ohne TFN dein Arbeitgeber gesetzlich verpflichtet ist, 45 % Steuern einzubehalten - statt der 15 %, die für Working Holiday Maker gelten. Die TFN ist permanent, kostenlos und bleibt ein Leben lang gültig.
 
-Jeder Arbeitnehmer in Australien braucht eine TFN, egal ob du Staatsbürger, ständig wohnhafte Person oder Backpacker mit Working Holiday Visum bist. Das ATO nutzt sie, um dein Einkommen, deine Steuerzahlungen und mögliche Rückzahlungen nachzuverfolgen.
+Jeder Arbeitnehmer in Australien braucht eine TFN, egal ob du Staatsbürger, Daueraufenthaltsberechtigter oder Backpacker mit Working-Holiday-Visum bist. Das ATO nutzt sie, um dein Einkommen, deine Steuerzahlungen und mögliche Rückzahlungen nachzuverfolgen.
 
 ## Warum ist eine TFN ab dem ersten Tag wichtig?
 
@@ -1218,7 +1218,7 @@ Ohne Belege kann die Absetzung nicht geltend gemacht werden, selbst wenn die Aus
     title: 'Was ist Superannuation und sind Working Holiday Maker dafür berechtigt?',
     description: 'Superannuation ist Australiens verpflichtendes Rentensparsystem. Working Holiday Maker sind berechtigt und können es zurückbekommen, wenn sie das Land verlassen.',
     body: `
-Superannuation (Super) ist Australiens verpflichtendes Rentensparsystem. Australische Arbeitgeber müssen 12 % deiner regulären Arbeitseinkünfte in einen Superfonds einzahlen, zusätzlich zu deinem Lohn. Working Holiday Maker haben Anspruch auf Superbeiträge genau wie australische Arbeitnehmer und können das angesparte Guthaben zurückbekommen, wenn sie Australien permanent verlassen - über den Departing Australia Superannuation Payment (DASP)-Prozess. Unser Team kümmert sich um DASP-Anträge für Working Holiday Maker von überall auf der Welt.
+Superannuation (Super) ist Australiens verpflichtendes Rentensparsystem. Australische Arbeitgeber müssen 12 % deiner regulären Arbeitseinkünfte in einen Superfonds einzahlen, zusätzlich zu deinem Lohn. Working Holiday Maker haben Anspruch auf Superbeiträge genau wie australische Arbeitnehmer und können das angesparte Guthaben zurückbekommen, wenn sie Australien dauerhaft verlassen - über den Departing Australia Superannuation Payment (DASP)-Prozess. Unser Team kümmert sich um DASP-Anträge für Working Holiday Maker von überall auf der Welt.
 
 ## Wie viel Super zahlt dein Arbeitgeber ein?
 
@@ -1257,7 +1257,7 @@ Wenn du dir nicht sicher bist, ob Super für dich gezahlt wird, [schick uns dein
 Der Prozess heißt Departing Australia Superannuation Payment (DASP). Die Schritte:
 
 1. Dein Visum muss abgelaufen oder gekündigt sein
-2. Du musst Australien permanent verlassen haben
+2. Du musst Australien dauerhaft verlassen haben
 3. DASP beantragen über unseren Service, den wir für dich einreichen
 4. Der Fonds (oder das ATO, falls das Guthaben übertragen wurde) zahlt das Guthaben aus
 
@@ -2179,7 +2179,7 @@ DASP (Departing Australia Superannuation Payment) ist der offizielle Prozess, de
 Um für DASP berechtigt zu sein, musst du:
 
 - Ein temporäres australisches Visum gehalten haben (Working Holiday Visa Subclass 417 und 462 sind berechtigt)
-- Australien permanent verlassen haben (oder zumindest ohne unmittelbare Pläne, mit demselben Visum zurückzukehren)
+- Australien dauerhaft verlassen haben (oder zumindest ohne unmittelbare Pläne, mit demselben Visum zurückzukehren)
 - Dein Visum nach der Abreise abgelaufen oder gekündigt haben
 - Super in einem australischen Superfonds haben oder beim ATO
 
@@ -4200,7 +4200,7 @@ Nicht beantragte Super verschwindet nicht. Nach einer Phase der Inaktivität üb
 Ein Superfonds ist verpflichtet, dein Guthaben ans ATO zu überweisen, wenn:
 
 - Der Fonds dich nicht kontaktieren kann (Post zurückgeschickt, keine Antwort auf Mitteilungen)
-- Du Australien permanent verlassen hast und nicht innerhalb einer definierten Zeit beantragt hast
+- Du Australien dauerhaft verlassen hast und nicht innerhalb einer definierten Zeit beantragt hast
 - Dein Konto mehrere Jahre lang inaktiv war
 - Ein DASP-Antrag versucht wurde, aber nicht ausgezahlt werden konnte
 
@@ -4248,7 +4248,7 @@ Beantrag deine Super. Es ist dein Geld, das zusätzlich zu deinem Lohn als Teil 
     title: 'Kannst du deine Super zurückziehen, während du noch in Australien bist?',
     description: 'Im Normalfall nein - DASP kannst du erst beantragen, nachdem du Australien verlassen hast. Welche seltenen Ausnahmen es gibt und wann sie für WHM gelten.',
     body: `
-Nein, du kannst deine Super nicht abheben, während du noch in Australien auf einem gültigen Working Holiday Visum bist. Der Departing Australia Superannuation Payment (DASP)-Prozess ist speziell für Leute gemacht, die Australien permanent verlassen haben und deren Visum abgelaufen oder gekündigt ist. Du musst zuerst abreisen, dann von außerhalb Australiens beantragen. Unser Team kümmert sich um DASP-Anträge remote, damit du aus deinem Heimatland beantragen kannst.
+Nein, du kannst deine Super nicht abheben, während du noch in Australien auf einem gültigen Working Holiday Visum bist. Der Departing Australia Superannuation Payment (DASP)-Prozess ist speziell für Leute gemacht, die Australien dauerhaft verlassen haben und deren Visum abgelaufen oder gekündigt ist. Du musst zuerst abreisen, dann von außerhalb Australiens beantragen. Unser Team kümmert sich um DASP-Anträge remote, damit du aus deinem Heimatland beantragen kannst.
 
 ## Warum kannst du nicht früher auf deine Super zugreifen?
 
@@ -4265,7 +4265,7 @@ Die Regeln existieren, um die Integrität des Supersystems zu wahren. Sie gelten
 Um für DASP berechtigt zu sein, musst du alle folgenden erfüllen:
 
 - Ein temporäres australisches Visum gehalten haben (Working Holiday Visa 417 und 462 sind berechtigt)
-- Australien permanent verlassen haben
+- Australien dauerhaft verlassen haben
 - Dein Visum muss nach der Abreise abgelaufen oder gekündigt sein
 - Du musst von außerhalb Australiens beantragen
 
@@ -4296,7 +4296,7 @@ Working Holiday Maker sollten mit dem DASP-Prozess planen, statt vorzeitigen Zug
 
 Das DASP-Fenster öffnet, sobald beide Bedingungen erfüllt sind:
 
-- Du hast Australien permanent verlassen
+- Du hast Australien dauerhaft verlassen
 - Dein Working Holiday Visum ist abgelaufen oder gekündigt
 
 Für Working Holiday Visa heißt das typischerweise:

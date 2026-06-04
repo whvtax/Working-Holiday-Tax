@@ -1,3 +1,4 @@
+import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -27,12 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'WHM tax',
     ],
     alternates: {
-      canonical: `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
+      canonical: `${SITE_URL}/blog/category/${meta.slug}`,
     },
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
+      url: `${SITE_URL}/blog/category/${meta.slug}`,
       siteName: 'Working Holiday Tax',
       locale: 'en_AU',
       type: 'website',
@@ -67,12 +68,12 @@ export default function CategoryPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: meta.title,
     description: meta.description,
-    url: `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
+    url: `${SITE_URL}/blog/category/${meta.slug}`,
     inLanguage: 'en-AU',
     isPartOf: {
       '@type': 'WebSite',
       name: 'Working Holiday Tax',
-      url: 'https://workingholidaytax.com.au',
+      url: `${SITE_URL}`,
     },
     about: {
       '@type': 'Thing',
@@ -88,7 +89,7 @@ export default function CategoryPage({ params }: Props) {
       itemListElement: articles.map((g, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `https://workingholidaytax.com.au/blog/${g.slug}`,
+        url: `${SITE_URL}/blog/${g.slug}`,
         name: g.title,
       })),
     },
@@ -98,9 +99,9 @@ export default function CategoryPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/blog' },
-      { '@type': 'ListItem', position: 3, name: meta.category, item: `https://workingholidaytax.com.au/blog/category/${meta.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 3, name: meta.category, item: `${SITE_URL}/blog/category/${meta.slug}` },
     ],
   }
 

@@ -8308,7 +8308,7 @@ The only deductions that pass the "principally for the employee's benefit" test 
 
 ## What about uniform "deposits" or "bonds"?
 
-Some employers charge a uniform "deposit" or "bond" that is refundable when the uniform is returned. This is sometimes structured as a deduction from the first paycheck. The legal position is:
+Some employers charge a uniform "deposit" or "bond" that is refundable when the uniform is returned. This is sometimes structured as a deduction from the first pay. The legal position is:
 
 - The deposit is still a deduction from wages
 - It must be authorised in writing
@@ -9342,12 +9342,12 @@ Award identification is the foundation of every wage recovery process. [Get in t
  slug: "late-tax-return-penalty-working-holiday",
  title: "What is the penalty for lodging a late tax return as a working holiday maker?",
  description:
-   "Lodging a tax return late triggers a Failure to Lodge penalty of one penalty unit ($222 as of 2025-26) for every 28 days the return is overdue, up to.",
+   "Lodging a tax return late triggers a Failure to Lodge penalty of one penalty unit ($330 as of 2025-26) for every 28 days the return is overdue, up to.",
  category: "Tax Return",
  date: "25 May 2026",
  readTime: 4,
  body: `
-The ATO charges a Failure to Lodge (FTL) penalty of one penalty unit for every 28 days that a [tax return](/tax-return) is overdue, up to a maximum of five penalty units. As of the 2025-26 financial year, one penalty unit is $222, meaning the maximum FTL penalty is $1,110. The penalty applies whether or not you owe tax: a working holiday maker who is actually owed a refund can still receive a Failure to Lodge penalty for not lodging on time.
+The ATO charges a Failure to Lodge (FTL) penalty of one penalty unit for every 28 days that a [tax return](/tax-return) is overdue, up to a maximum of five penalty units. As of the 2025-26 financial year, one penalty unit is $330, meaning the maximum FTL penalty is $1,650. The penalty applies whether or not you owe tax: a working holiday maker who is actually owed a refund can still receive a Failure to Lodge penalty for not lodging on time.
 
 The penalty is rarely the largest cost of a late tax return. For working holiday makers, the bigger problem is usually a delayed refund and the cascading impact on DASP, second visa applications, and ATO compliance flags.
 
@@ -9363,13 +9363,13 @@ This extension is one of the practical advantages of lodging through a tax agent
 
 The Failure to Lodge penalty steps up every 28 days the return is overdue:
 
-- 1 to 28 days late: 1 penalty unit = $222
+- 1 to 28 days late: 1 penalty unit = $330
 - 29 to 56 days late: 2 penalty units = $444
 - 57 to 84 days late: 3 penalty units = $666
 - 85 to 112 days late: 4 penalty units = $888
-- 113 days or more late: 5 penalty units = $1,110 (maximum)
+- 113 days or more late: 5 penalty units = $1,650 (maximum)
 
-The maximum penalty caps at $1,110 regardless of how late the return is.
+The maximum penalty caps at $1,650 regardless of how late the return is.
 
 ## What if you are owed a refund?
 
@@ -9377,7 +9377,7 @@ A working holiday maker who is owed a refund can still receive a Failure to Lodg
 
 ## What if you are owed nothing or you owe a small amount?
 
-The Failure to Lodge penalty is the same regardless of whether you owe tax. A working holiday maker who would have had a zero tax outcome (no refund, no debt) can still be hit with the full $1,110 maximum penalty for a return that is more than 112 days overdue.
+The Failure to Lodge penalty is the same regardless of whether you owe tax. A working holiday maker who would have had a zero tax outcome (no refund, no debt) can still be hit with the full $1,650 maximum penalty for a return that is more than 112 days overdue.
 
 ## When is interest charged on top?
 
@@ -11703,7 +11703,7 @@ For working holiday makers, the GIC is the more reliable concern. The Failure to
 
 The two penalty systems are independent:
 
-- **Failure to Lodge (FTL)**: applied when a [tax return](/tax-return) is filed late. $222 per 28 days, max $1,110. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday).
+- **Failure to Lodge (FTL)**: applied when a [tax return](/tax-return) is filed late. $330 per 28 days, max $1,650. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday).
 - **Failure to Pay (FTP) + GIC**: applied when a tax debt is not paid by the due date. $330 per 28 days plus daily interest at around 11% per year.
 
 A working holiday maker who lodges late AND pays late can be hit with both penalty systems on the same debt. The total cost can substantially exceed the original tax owing.

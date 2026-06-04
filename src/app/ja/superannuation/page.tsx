@@ -238,7 +238,7 @@ export default function JapaneseSuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -317,7 +317,7 @@ export default function JapaneseSuperannuationPage() {
       </section>
 
       {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">あなたのお金です</span>
@@ -380,7 +380,7 @@ export default function JapaneseSuperannuationPage() {
 
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">ご利用の流れ</span>
@@ -398,7 +398,7 @@ export default function JapaneseSuperannuationPage() {
                 <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #F5F9F7, 0 0 0 5px #C8EAE0' }}>
                       {s.n}
                     </div>
                     <p className="text-[14px] font-semibold text-ink mb-2 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
@@ -491,7 +491,7 @@ export default function JapaneseSuperannuationPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 

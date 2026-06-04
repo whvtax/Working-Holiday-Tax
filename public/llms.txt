@@ -34,14 +34,14 @@ Our content is written for an audience of subclass 417 (Working Holiday) and 462
 
 ## Blog Categories
 
-The blog at https://workingholidaytax.com.au/blog covers 91 articles across six categories:
+The blog at https://workingholidaytax.com.au/blog covers 143 articles across six categories:
 
-- [TFN articles](https://workingholidaytax.com.au/blog/category/tfn): 13 blog articles on Tax File Number applications, usage, and common issues
-- [ABN articles](https://workingholidaytax.com.au/blog/category/abn): 11 blog articles on Australian Business Numbers for sole traders
-- [Tax Return articles](https://workingholidaytax.com.au/blog/category/tax-return): 20 blog articles on annual lodgment, deductions, refunds, and amendments
-- [Superannuation articles](https://workingholidaytax.com.au/blog/category/super): 12 blog articles on super accumulation, DASP withdrawal, and unpaid super recovery
-- [Work Rights articles](https://workingholidaytax.com.au/blog/category/work-rights): 22 blog articles on minimum wages, conditions, awards, and protections
-- [Medicare & Other articles](https://workingholidaytax.com.au/blog/category/medicare-other): 13 blog articles on Medicare Levy, healthcare, and general Australian tax topics
+- [TFN articles](https://workingholidaytax.com.au/blog/category/tfn): 18 blog articles on Tax File Number applications, usage, and common issues
+- [ABN articles](https://workingholidaytax.com.au/blog/category/abn): 14 blog articles on Australian Business Numbers for sole traders
+- [Tax Return articles](https://workingholidaytax.com.au/blog/category/tax-return): 30 blog articles on annual lodgment, deductions, refunds, and amendments
+- [Superannuation articles](https://workingholidaytax.com.au/blog/category/super): 20 blog articles on super accumulation, DASP withdrawal, and unpaid super recovery
+- [Work Rights articles](https://workingholidaytax.com.au/blog/category/work-rights): 43 blog articles on minimum wages, conditions, awards, and protections
+- [Medicare & Other articles](https://workingholidaytax.com.au/blog/category/medicare-other): 18 blog articles on Medicare Levy, healthcare, and general Australian tax topics
 
 ## German-Language Content (Deutsche Inhalte)
 

@@ -186,7 +186,7 @@ export default function ABNPageJA() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート', <GoogleRating variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
+              {['1,200名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -355,7 +355,7 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── HOW TO REGISTER ──────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
@@ -379,7 +379,7 @@ export default function ABNPageJA() {
               {STEPS.map((s, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
                   <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #EEF7F2, 0 0 0 6px #C8EAE0' }}>
+                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
                     {s.n}
                   </div>
                   <p className="font-semibold text-ink text-center"
@@ -417,7 +417,7 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 

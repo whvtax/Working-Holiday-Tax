@@ -1,3 +1,4 @@
+import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import BlogClient from '@/app/blog/BlogClient'
 import { getJapaneseGuides, jaCategoryMeta, blogUI } from './data'
@@ -27,18 +28,18 @@ export const metadata: Metadata = {
     'オーストラリア TFN ABN 解説',
   ],
   alternates: {
-    canonical: 'https://workingholidaytax.com.au/ja/blog',
+    canonical: `${SITE_URL}/ja/blog`,
     languages: {
-      'en-AU': 'https://workingholidaytax.com.au/blog',
-      'de': 'https://workingholidaytax.com.au/de/blog',
-      'ja': 'https://workingholidaytax.com.au/ja/blog',
-      'x-default': 'https://workingholidaytax.com.au/blog',
+      'en-AU': `${SITE_URL}/blog`,
+      'de': `${SITE_URL}/de/blog`,
+      'ja': `${SITE_URL}/ja/blog`,
+      'x-default': `${SITE_URL}/blog`,
     },
   },
   openGraph: {
     title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ完全ガイド',
     description: 'オーストラリアのワーキングホリデーのタックスリターン還付金、TFN、ABN、スーパー返金まで、実用情報をわかりやすくお届けします。',
-    url: 'https://workingholidaytax.com.au/ja/blog',
+    url: `${SITE_URL}/ja/blog`,
     siteName: 'Working Holiday Tax',
     locale: 'ja_JP',
     type: 'website',
@@ -68,12 +69,12 @@ export default function JapaneseBlogPage() {
     '@type': 'CollectionPage',
     name: 'Working Holiday Tax ブログ（日本語）',
     description: 'オーストラリアでワーキングホリデーをする方向けの税金ブログ',
-    url: 'https://workingholidaytax.com.au/ja/blog',
+    url: `${SITE_URL}/ja/blog`,
     inLanguage: 'ja',
     isPartOf: {
       '@type': 'WebSite',
       name: 'Working Holiday Tax',
-      url: 'https://workingholidaytax.com.au',
+      url: `${SITE_URL}`,
     },
     about: {
       '@type': 'Thing',
@@ -89,7 +90,7 @@ export default function JapaneseBlogPage() {
       itemListElement: jaCategoryMeta.map((c, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `https://workingholidaytax.com.au/ja/blog/category/${c.slug}`,
+        url: `${SITE_URL}/ja/blog/category/${c.slug}`,
         name: c.title,
       })),
     },
@@ -99,8 +100,8 @@ export default function JapaneseBlogPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://workingholidaytax.com.au/ja' },
-      { '@type': 'ListItem', position: 2, name: 'ブログ', item: 'https://workingholidaytax.com.au/ja/blog' },
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
+      { '@type': 'ListItem', position: 2, name: 'ブログ', item: `${SITE_URL}/ja/blog` },
     ],
   }
 
@@ -108,8 +109,8 @@ export default function JapaneseBlogPage() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Working Holiday Tax',
-    url: 'https://workingholidaytax.com.au',
-    logo: 'https://workingholidaytax.com.au/icon-512.png',
+    url: `${SITE_URL}`,
+    logo: `${SITE_URL}/icon-512.png`,
     description: 'オーストラリアのワーキングホリデー保持者向け税務サービス。登録税理士の監督のもと、TFN申請、タックスリターン、DASPスーパー返金、ABN登録を提供しています。',
     areaServed: { '@type': 'Country', name: 'Australia' },
     knowsAbout: [
