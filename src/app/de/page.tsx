@@ -332,7 +332,7 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
 
           <span className="section-label center">Warum wir?</span>
@@ -370,7 +370,7 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -404,7 +404,7 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -477,7 +477,7 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>

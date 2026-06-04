@@ -32,7 +32,7 @@ export function ScrollToTop() {
       className="lg:hidden"
       style={{
         position: 'fixed',
-        bottom: '88px',
+        bottom: '24px',
         right: '20px',
         zIndex: 50,
         width: '44px',

@@ -236,7 +236,7 @@ export default function ABNPage() {
 
       {/* ── WHAT IS AN ABN? - Unique design: Employee vs Contractor ──── */}
       <section className="abn-intro-section">
-        <div className="abn-intro-container">
+        <div className="abn-intro-container reveal">
           <div className="abn-intro-grid">
 
             {/* Left: Explainer */}
@@ -317,7 +317,7 @@ export default function ABNPage() {
       {/* ── HOW WE HELP ───────────────────────────────────────────────────── */}
       {/* Mobile: py-10 · Desktop: py-16 */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">How we help</span>
@@ -371,7 +371,7 @@ export default function ABNPage() {
 
       {/* ── COMMON MISTAKES ───────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="max-w-xl mx-auto text-center mb-7 lg:mb-10">
             <span className="section-label center">Common mistakes</span>
@@ -406,7 +406,7 @@ export default function ABNPage() {
 
       {/* ── HOW TO REGISTER ───────────────────────────────────────────────── */}
       <section id="how-to-register" className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Step by step</span>
@@ -468,7 +468,7 @@ export default function ABNPage() {
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">

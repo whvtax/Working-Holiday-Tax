@@ -269,16 +269,8 @@ export default async function HomePage() {
 
           <h1 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(22px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-            {/* Desktop H1 */}
-            <span className="hidden lg:block">
-              <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Your working holiday tax,</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>sorted properly.</span>
-            </span>
-            {/* Mobile H1 */}
-            <span className="lg:hidden">
-              <span style={{ display: 'block' }}>Your tax in Australia,</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>sorted for you.</span>
-            </span>
+            <span style={{ display: 'block' }}>Your working holiday tax,</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>sorted properly.</span>
           </h1>
 
           <p className="font-light mx-auto"
@@ -309,7 +301,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center reveal">
 
           <span className="section-label center">Why us?</span>
@@ -347,7 +339,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -381,7 +373,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -454,7 +446,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>

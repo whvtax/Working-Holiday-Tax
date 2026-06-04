@@ -235,7 +235,7 @@ export default function ContactPage() {
 
       {/* ── TRUST SIGNALS STRIP ─────────────────────────────────────────── */}
       <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
               { stat: '1,200+', label: 'Backpackers' },
@@ -258,7 +258,7 @@ export default function ContactPage() {
 
       {/* ── CONTACT OPTIONS ─────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="text-center mb-6 lg:mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -362,7 +362,7 @@ export default function ContactPage() {
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
       <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="text-center mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -389,7 +389,7 @@ export default function ContactPage() {
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-[520px] mx-auto text-center">
             <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
               Ready when you are

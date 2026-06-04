@@ -200,7 +200,7 @@ export default function TFNPageJA() {
 
       {/* ── WHAT IS A TFN? ───────────────────────────────────────────────── */}
       <section className="tfn-intro-section">
-        <div className="tfn-intro-container">
+        <div className="tfn-intro-container reveal">
           <div className="tfn-intro-grid">
 
             <div className="tfn-intro-content">
@@ -260,7 +260,7 @@ export default function TFNPageJA() {
 
       {/* ── SOLUTION ─────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">当社のサービス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -301,7 +301,7 @@ export default function TFNPageJA() {
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-18 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">お客様の声</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -315,7 +315,7 @@ export default function TFNPageJA() {
 
       {/* ── COMPARISON ───────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">TFN申請プロセス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -360,7 +360,7 @@ export default function TFNPageJA() {
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-to-apply" className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
             <span className="section-label center">申請の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -425,7 +425,7 @@ export default function TFNPageJA() {
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">

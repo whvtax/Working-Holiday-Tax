@@ -219,7 +219,7 @@ export default function TFNPage() {
 
       {/* ── WHAT IS A TFN? - Unique design: "Step 1 of your Australia journey" ─ */}
       <section className="tfn-intro-section">
-        <div className="tfn-intro-container">
+        <div className="tfn-intro-container reveal">
           <div className="tfn-intro-grid">
 
             {/* Left: Explainer */}
@@ -282,7 +282,7 @@ export default function TFNPage() {
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Why choose our service</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -323,7 +323,7 @@ export default function TFNPage() {
 
       {/* ── SOCIAL PROOF ──────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-18 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">What travellers say</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -337,7 +337,7 @@ export default function TFNPage() {
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">TFN APPLICATION PROCESS</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -382,7 +382,7 @@ export default function TFNPage() {
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
       <section id="how-to-apply" className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
             <span className="section-label center">How to apply</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -447,7 +447,7 @@ export default function TFNPage() {
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">
