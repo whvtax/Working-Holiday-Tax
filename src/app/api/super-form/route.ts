@@ -1,0 +1,73 @@
+export const runtime = 'nodejs'
+import { NextRequest, NextResponse } from 'next/server'
+import { createTask, findExistingClient } from '@/lib/db'
+import { isRateLimited } from '@/lib/rate-limit'
+import { uploadFiles } from '@/lib/upload'
+import { getClientIp } from '@/lib/get-ip'
+import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import crypto from 'crypto'
+
+export async function POST(req: NextRequest) {
+  try {
+    const ip = getClientIp(req)
+    if (await isRateLimited(ip, 'super-form')) {
+      return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
+    }
+
+    const formData  = await req.formData()
+    const email     = sanitiseShort(formData.get('email'))
+    const whatsapp  = sanitiseShort(formData.get('whatsapp') ?? formData.get('smsPhone'))
+    const fullName  = [sanitiseShort(formData.get('firstName')), sanitiseShort(formData.get('lastName'))].filter(Boolean).join(' ')
+    const existing  = await findExistingClient(email, whatsapp)
+    const isReturning = !!existing
+    const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
+
+    const rawSelfie = formData.get('selfiePassport')
+    const selfieFile = rawSelfie instanceof File ? rawSelfie : null
+    let fileUrls: string[]
+    try {
+      fileUrls = await uploadFiles([selfieFile], `super-form/${clientId}`)
+    } catch (uploadErr) {
+      const msg = uploadErr instanceof Error ? uploadErr.message : 'Upload error'
+      return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
+    }
+
+    await createTask({
+      clientId,
+      clientName:  fullName,
+      taskType:    'super',
+      whatsapp,
+      email,
+      country:     sanitiseShort(formData.get('country') ?? formData.get('passportCountry')),
+      dob:         sanitiseShort(formData.get('dob')),
+      taxYear:     '',
+      address:     sanitiseField(formData.get('address') ?? formData.get('auAddress')),
+      tfn:         sanitiseShort(formData.get('tfn')),
+      bankDetails: sanitiseField(formData.get('bankDetails')),
+      primaryJob:  sanitiseField(formData.get('business')),
+      marital:     sanitiseShort(formData.get('marital')),
+      taxStatus:   'Working Holiday Maker',
+      howHeard:    sanitiseShort(formData.get('howHeard')),
+      auPhone:     sanitiseShort(formData.get('auPhone')),
+      submittedAt: new Date().toISOString(),
+      notes:       [
+        isReturning ? '🔄 Returning client' : '',
+        formData.get('passport') ? `Passport No: ${sanitiseShort(formData.get('passport'))}` : '',
+        formData.get('superFundName') ? `Super Fund Name: ${sanitiseShort(formData.get('superFundName'))}` : '',
+        formData.get('superMemberNumber') ? `Super Member Number: ${sanitiseShort(formData.get('superMemberNumber'))}` : '',
+        formData.get('superOpeningDate') ? `Super Opening Date: ${sanitiseShort(formData.get('superOpeningDate'))}` : '',
+        formData.get('homeAddress') ? `Home Country Address: ${sanitiseField(formData.get('homeAddress'))}` : '',
+        formData.get('declared')     ? `→ ${sanitiseField(formData.get('declared'))}` : '',
+      ].filter(Boolean).join(' | '),
+      fileUrls,
+      reviewStatus: 'pending',
+      reviewerNote: '',
+      reviewedAt:   '',
+    })
+
+    return NextResponse.json({ ok: true })
+  } catch (err) {
+    console.error('[super-form] FAILED:', err)
+    return NextResponse.json({ ok: false, error: 'submission_failed' }, { status: 500 })
+  }
+}

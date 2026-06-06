@@ -1,0 +1,343 @@
+'use client'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useEffect, useState, useRef } from 'react'
+import { WA_URL } from '@/lib/constants'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
+
+const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
+  const href = locale === 'de' ? '/de' : locale === 'ja' ? '/ja' : '/'
+  const aria = locale === 'de'
+    ? 'Working Holiday Tax - Startseite'
+    : locale === 'ja'
+    ? 'Working Holiday Tax - ホーム'
+    : 'Working Holiday Tax - Home'
+  return (
+  <Link href={href} className="flex items-center gap-2.5 flex-shrink-0" aria-label={aria}>
+    <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+      <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#0B5240" strokeWidth="2"/>
+      <rect x="13" y="13" width="19" height="19" rx="4.5" fill="#0B5240"/>
+      <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.2" strokeLinecap="round" opacity="0.7"/>
+      <circle cx="2" cy="2" r="1.6" fill="#E9A020" opacity="0.7"/>
+      <path d="M22.5 17 L27 19 L27 23.5 Q27 27 22.5 29 Q18 27 18 23.5 L18 19 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1.2" strokeLinejoin="round"/>
+      <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+    <span className="font-serif text-[15px] font-bold text-ink" style={{ letterSpacing: '-0.02em' }}>Working Holiday Tax</span>
+  </Link>
+  )
+}
+
+// Services that go under the dropdown (5 service pages)
+const SERVICES_LINKS = [
+  { label: 'TFN Application',    href: '/tfn',            desc: 'Get your Tax File Number' },
+  { label: 'ABN Registration',   href: '/abn',            desc: 'Register as a contractor' },
+  { label: 'Tax Return',         href: '/tax-return',     desc: 'Lodge your annual return' },
+  { label: 'Super Withdrawal',   href: '/superannuation', desc: 'Claim DASP after leaving' },
+  { label: 'Medicare',           href: '/medicare',       desc: 'Levy exemption and access' },
+] as const
+
+// Top-level links (Services is a dropdown, others are direct)
+const TOP_LINKS = [
+  { label: 'Calculator', href: '/calculator' },
+  { label: 'Blog',       href: '/blog' },
+  { label: 'Contact',    href: '/contact' },
+] as const
+
+export function Nav() {
+  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname()
+
+  // Detect locale from URL
+  const isGerman = pathname === '/de' || pathname?.startsWith('/de/')
+  const isJapanese = pathname === '/ja' || pathname?.startsWith('/ja/')
+  const locale: 'en' | 'de' | 'ja' = isJapanese ? 'ja' : isGerman ? 'de' : 'en'
+
+  // Localized link sets
+  const servicesLinks =
+    locale === 'de'
+      ? [
+          { label: 'Steuernummer (TFN)',     href: '/de/tfn',            desc: 'Deine TFN beantragen' },
+          { label: 'ABN-Registrierung',      href: '/de/abn',            desc: 'Als Selbstständiger arbeiten' },
+          { label: 'Steuererklärung',        href: '/de/tax-return',     desc: 'Jahressteuererklärung einreichen' },
+          { label: 'Super auszahlen (DASP)', href: '/de/superannuation', desc: 'Super nach der Abreise zurück' },
+          { label: 'Medicare',               href: '/de/medicare',       desc: 'Medicare Levy Befreiung' },
+        ]
+      : locale === 'ja'
+      ? [
+          { label: 'TFN申請',         href: '/ja/tfn',            desc: 'タックスファイルナンバーを取得' },
+          { label: 'ABN登録',         href: '/ja/abn',            desc: '個人事業主として働く' },
+          { label: 'タックスリターン', href: '/ja/tax-return',     desc: '年次タックスリターンを提出' },
+          { label: 'スーパー受取',     href: '/ja/superannuation', desc: '帰国時のDASP申請' },
+          { label: 'メディケア',       href: '/ja/medicare',       desc: 'メディケア税免除' },
+        ]
+      : SERVICES_LINKS
+
+  const topLinks =
+    locale === 'de'
+      ? [
+          { label: 'Rechner',  href: '/de/calculator' },
+          { label: 'Blog',     href: '/de/blog' },
+          { label: 'Kontakt',  href: '/de/contact' },
+        ]
+      : locale === 'ja'
+      ? [
+          { label: '計算機',           href: '/ja/calculator' },
+          { label: 'ブログ',           href: '/ja/blog' },
+          { label: 'お問い合わせ',     href: '/ja/contact' },
+        ]
+      : TOP_LINKS
+
+  const servicesLabel =
+    locale === 'de' ? 'Leistungen' :
+    locale === 'ja' ? 'サービス' :
+    'Services'
+  const ctaLabel =
+    locale === 'de' ? 'Steuererklärung starten' :
+    locale === 'ja' ? 'タックスリターンを依頼する' :
+    'Start your tax return'
+
+  // Sticky background after scroll
+  useEffect(() => {
+    let rafId = 0
+    const fn = () => {
+      cancelAnimationFrame(rafId)
+      rafId = requestAnimationFrame(() => setScrolled(window.scrollY > 12))
+    }
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => { window.removeEventListener('scroll', fn); cancelAnimationFrame(rafId) }
+  }, [])
+
+  // Lock body scroll when mobile menu open
+  useEffect(() => { document.body.style.overflow = open ? 'hidden' : '' }, [open])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!servicesOpen) return
+    const onClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setServicesOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [servicesOpen])
+
+  // Close dropdown on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setServicesOpen(false)
+        setOpen(false)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  const close = () => setOpen(false)
+  const isServicePage = servicesLinks.some(s => pathname === s.href)
+
+  return (
+    <>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/96 backdrop-blur-xl shadow-sm' : ''}`}
+        style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="h-[68px] flex items-center justify-between gap-5">
+            <Logo locale={locale} />
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-7">
+
+              {/* Services Dropdown */}
+              <div ref={dropdownRef} style={{ position: 'relative' }}>
+                <button
+                  type="button"
+                  onClick={() => setServicesOpen(!servicesOpen)}
+                  onMouseEnter={() => setServicesOpen(true)}
+                  className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
+                  style={{ color: isServicePage ? '#0B5240' : '#587066', fontWeight: isServicePage ? 600 : 400 }}
+                  aria-expanded={servicesOpen}
+                  aria-haspopup="true"
+                >
+                  {servicesLabel}
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: servicesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {isServicePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
+                </button>
+
+                {/* Dropdown Panel */}
+                {servicesOpen && (
+                  <div
+                    onMouseLeave={() => setServicesOpen(false)}
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 16px)',
+                      left: '-16px',
+                      minWidth: '320px',
+                      background: '#fff',
+                      borderRadius: '14px',
+                      boxShadow: '0 12px 32px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
+                      border: '1px solid #E2EFE9',
+                      padding: '8px',
+                      zIndex: 60,
+                    }}
+                  >
+                    {servicesLinks.map(s => {
+                      const active = pathname === s.href
+                      return (
+                        <Link
+                          key={s.href}
+                          href={s.href}
+                          onClick={() => setServicesOpen(false)}
+                          className="services-dropdown-item"
+                          style={{
+                            display: 'block',
+                            padding: '12px 14px',
+                            borderRadius: '10px',
+                            textDecoration: 'none',
+                            background: active ? '#F7F9F8' : 'transparent',
+                          }}
+                        >
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '2px' }}>
+                            {s.label}
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#587066', fontWeight: 400, lineHeight: 1.4 }}>
+                            {s.desc}
+                          </div>
+                        </Link>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Top-level direct links */}
+              {topLinks.map(l => {
+                const active = pathname === l.href || (l.href.endsWith('/blog') && pathname?.startsWith(l.href))
+                return (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className="nav-link relative text-[13.5px]"
+                    style={{ color: active ? '#0B5240' : '#587066', fontWeight: active ? 600 : 400 }}
+                  >
+                    {l.label}
+                    {active && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
+                  </Link>
+                )
+              })}
+            </div>
+
+            {/* Desktop CTA */}
+            <div className="hidden lg:flex items-center gap-3">
+              <LanguageSwitcher variant="desktop" />
+              <a
+                href={WA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nav-cta inline-flex items-center gap-2 font-semibold text-white"
+                style={{ height: '40px', padding: '0 18px', background: '#0B5240', borderRadius: '100px', fontSize: '13px', boxShadow: '0 1px 2px rgba(0,0,0,.06), 0 2px 8px rgba(11,82,64,0.18)' }}
+              >
+                {ctaLabel}
+              </a>
+            </div>
+
+            {/* Mobile: language switcher + menu button */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <LanguageSwitcher variant="desktop" />
+              <button type="button" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}
+                className="flex flex-col justify-center gap-[5px] w-10 h-10 bg-transparent border-none p-2">
+                <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-300 w-5 ${open ? 'translate-y-[6.5px] rotate-45' : ''}`} />
+                <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-200 w-5 ${open ? 'opacity-0' : ''}`} />
+                <span className={`block h-[1.5px] bg-ink rounded-sm transition-all duration-300 ${open ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-3.5'}`} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Mobile Menu - flat list, no categorization */}
+      <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+
+        {/* All links - flat list */}
+        {(locale === 'de'
+          ? [
+              { label: 'Steuernummer (TFN)',   href: '/de/tfn' },
+              { label: 'ABN',                  href: '/de/abn' },
+              { label: 'Steuererklärung',      href: '/de/tax-return' },
+              { label: 'Super (DASP)',         href: '/de/superannuation' },
+              { label: 'Medicare',             href: '/de/medicare' },
+              { label: 'Rechner',              href: '/de/calculator' },
+              { label: 'Blog',                 href: '/de/blog' },
+              { label: 'Kontakt',              href: '/de/contact' },
+            ]
+          : locale === 'ja'
+          ? [
+              { label: 'TFN申請',           href: '/ja/tfn' },
+              { label: 'ABN登録',           href: '/ja/abn' },
+              { label: 'タックスリターン',   href: '/ja/tax-return' },
+              { label: 'スーパー受取',       href: '/ja/superannuation' },
+              { label: 'メディケア',         href: '/ja/medicare' },
+              { label: '計算機',             href: '/ja/calculator' },
+              { label: 'ブログ',             href: '/ja/blog' },
+              { label: 'お問い合わせ',       href: '/ja/contact' },
+            ]
+          : [
+              { label: 'TFN',         href: '/tfn' },
+              { label: 'ABN',         href: '/abn' },
+              { label: 'Tax Return',  href: '/tax-return' },
+              { label: 'Super',       href: '/superannuation' },
+              { label: 'Medicare',    href: '/medicare' },
+              { label: 'Calculator',  href: '/calculator' },
+              { label: 'Blog',        href: '/blog' },
+              { label: 'Contact',     href: '/contact' },
+            ]
+        ).map(l => (
+          <Link key={l.href} href={l.href} onClick={close}
+            className="block font-sans text-[17px] font-medium text-ink py-4 transition-colors hover:text-forest-500"
+            style={{ borderBottom: '1px solid #F0F5F2', letterSpacing: '-0.01em' }}>
+            {l.label}
+          </Link>
+        ))}
+
+        {/* CTA */}
+        <div className="mt-6">
+          <a href={WA_URL} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-primary w-full justify-center" style={{ height: '54px', borderRadius: '100px', fontSize: '15px' }}>
+            {ctaLabel} →
+          </a>
+        </div>
+
+        {/* Trust badges */}
+        <div className="flex items-center justify-center gap-3 mt-5 pb-2">
+          <a href="https://www.xero.com" target="_blank" rel="noopener noreferrer"
+            aria-label="Xero"
+            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70"
+            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm5 12.5l-2.9-2.5 2.9-2.5a.5.5 0 10-.65-.76L13.5 11.2l-2.85-2.46a.5.5 0 10-.65.76L12.9 12l-2.9 2.5a.5.5 0 10.65.76L13.5 12.8l2.85 2.46a.5.5 0 10.65-.76z" fill="#13B5EA"/>
+            </svg>
+          </a>
+          <div className="flex items-center justify-center rounded-full"
+            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}
+            title="Secure & encrypted">
+            <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
+              <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
+            aria-label="Registered Tax Practitioners Board"
+            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
+            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={24} height={24} style={{ objectFit: 'contain' }} />
+          </a>
+        </div>
+      </div>
+    </>
+  )
+}

@@ -1,0 +1,47 @@
+import type { Metadata } from 'next'
+import { SITE_URL } from '@/lib/constants'
+import { FormClient } from './FormClient'
+
+export const metadata: Metadata = {
+  title: 'Submit Your ABN Application | Working Holiday Tax',
+  description: 'Submit your details to register an Australian Business Number. We set up your ABN correctly for your work type.',
+  keywords: ['ABN registration form', 'apply ABN online', 'ABN form working holiday', 'register ABN sole trader'],
+  alternates: {
+    canonical: '/abn-form',
+    languages: {
+      'en-AU': '/abn-form',
+      'de': '/de/abn-form',
+      'ja': '/ja/abn-form',
+      'x-default': '/abn-form',
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_AU',
+    url: `${SITE_URL}/abn-form`,
+    siteName: 'Working Holiday Tax',
+    title: 'Submit Your ABN Application',
+    description: 'Submit your details to register an Australian Business Number.',
+  },
+  twitter: { card: 'summary', title: 'Submit Your ABN Application', description: 'Submit your details to register an Australian Business Number.' },
+  robots: { index: false, follow: true },
+}
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'ABN', item: `${SITE_URL}/abn` },
+    { '@type': 'ListItem', position: 3, name: 'Application', item: `${SITE_URL}/abn-form` },
+  ],
+}
+
+export default function ABNFormPage() {
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <FormClient />
+    </>
+  )
+}
