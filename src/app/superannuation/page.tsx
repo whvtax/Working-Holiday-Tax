@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_AU',
-    url: `${SITE_URL}/superannuation`,
+    url: 'https://workingholidaytax.com.au/superannuation',
     siteName: 'Working Holiday Tax',
     title: 'Super Refund DASP for Working Holiday Visa Holders',
     description: 'Claim your Australian superannuation refund (DASP) after leaving. Your employer paid 12% of wages into super - get it back.',
@@ -119,19 +119,19 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-    { '@type': 'ListItem', position: 2, name: 'Super Withdrawal', item: `${SITE_URL}/superannuation` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
+    { '@type': 'ListItem', position: 2, name: 'Super Withdrawal', item: 'https://workingholidaytax.com.au/superannuation' },
   ],
 }
 
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': `${SITE_URL}/superannuation#service`,
+  '@id': 'https://workingholidaytax.com.au/superannuation#service',
   name: 'DASP Super Refund Service for Working Holiday Makers',
   serviceType: 'Departing Australia Superannuation Payment (DASP) claim',
   description: 'DASP super refund claim service for 417 and 462 working holiday visa holders, prepared and submitted under the supervision of a registered tax agent. Claim your super back after leaving Australia.',
-  provider: { '@id': `${SITE_URL}/#business` },
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) leaving Australia' },
   inLanguage: 'en-AU',
@@ -155,12 +155,12 @@ const howToSchema = {
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  '@id': `${SITE_URL}/superannuation#webpage`,
+  '@id': 'https://workingholidaytax.com.au/superannuation#webpage',
   speakable: {
     '@type': 'SpeakableSpecification',
     cssSelector: ['h1', '.hero-sub'],
   },
-  url: `${SITE_URL}/superannuation`,
+  url: 'https://workingholidaytax.com.au/superannuation',
 }
 
 export default function SuperannuationPage() {
@@ -246,7 +246,7 @@ export default function SuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['1,200+ backpackers helped',<GoogleRating variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -325,7 +325,7 @@ export default function SuperannuationPage() {
       </section>
 
       {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">This is your money</span>
@@ -339,7 +339,7 @@ export default function SuperannuationPage() {
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/><path d="M11 7v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
                 title: 'Employers pay it for you',
-                body: 'As required by Australian law, superannuation is paid by your employer on top of your wages.',
+                body: 'As required by the Australian law, superannuation is paid by your employer on top of your wages.',
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="3" y="6" width="16" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M7 6V5a4 4 0 018 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M9 12l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
@@ -388,7 +388,7 @@ export default function SuperannuationPage() {
 
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">How it works</span>
@@ -406,7 +406,7 @@ export default function SuperannuationPage() {
                 <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #F5F9F7, 0 0 0 5px #C8EAE0' }}>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>
                       {s.n}
                     </div>
                     <p className="text-[14px] font-semibold text-ink mb-2 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
@@ -499,7 +499,7 @@ export default function SuperannuationPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 

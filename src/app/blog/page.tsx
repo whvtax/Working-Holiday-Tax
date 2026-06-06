@@ -1,4 +1,3 @@
-import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { guides, categoryMeta } from './data'
 import BlogClient from './BlogClient'
@@ -23,12 +22,12 @@ export const metadata: Metadata = {
     'tax refund advice working holiday',
   ],
   alternates: {
-    canonical: `${SITE_URL}/blog`,
+    canonical: 'https://workingholidaytax.com.au/blog',
   },
   openGraph: {
     title: 'Working Holiday Tax Refund Blog - WHV Tax Guides',
     description: 'Working holiday tax refund guides and tips for backpackers in Australia. Get the most from your WHV tax return.',
-    url: `${SITE_URL}/blog`,
+    url: 'https://workingholidaytax.com.au/blog',
     siteName: 'Working Holiday Tax',
     locale: 'en_AU',
     type: 'website',
@@ -58,12 +57,12 @@ export default function BlogPage() {
     '@type': 'CollectionPage',
     name: 'Working Holiday Tax Blog',
     description: 'Tax blog for working holiday visa holders in Australia',
-    url: `${SITE_URL}/blog`,
+    url: 'https://workingholidaytax.com.au/blog',
     inLanguage: 'en-AU',
     isPartOf: {
       '@type': 'WebSite',
       name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
+      url: 'https://workingholidaytax.com.au',
     },
     about: {
       '@type': 'Thing',
@@ -79,7 +78,7 @@ export default function BlogPage() {
       itemListElement: categoryMeta.map((c, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `${SITE_URL}/blog/category/${c.slug}`,
+        url: `https://workingholidaytax.com.au/blog/category/${c.slug}`,
         name: c.title,
       })),
     },
@@ -90,8 +89,8 @@ export default function BlogPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/blog' },
     ],
   }
 
@@ -101,9 +100,9 @@ export default function BlogPage() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    logo: `${SITE_URL}/icon-512.png`,
-    description: 'Tax service for working holiday visa holders in Australia. TFN applications, tax returns, DASP super claims, and ABN registrations handled under the supervision of a registered tax agent.',
+    url: 'https://workingholidaytax.com.au',
+    logo: 'https://workingholidaytax.com.au/icon-512.png',
+    description: 'Tax service for working holiday visa holders in Australia. TFN applications, tax returns, DASP super claims, and ABN registrations supervised by a registered tax agent.',
     areaServed: {
       '@type': 'Country',
       name: 'Australia',

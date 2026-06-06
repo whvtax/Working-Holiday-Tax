@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'TFN（タックスファイルナンバー）申請 - ワーホリ オーストラリア 還付金の第一歩',
-  description: 'TFN（タックスファイルナンバー）を最短で正しく取得。登録税理士の監督のもとで、ステップごとに丁寧にサポート。タックスリターン還付金を受け取るための第一歩。',
+  description: 'TFN（タックスファイルナンバー）を最短で正しく取得。オーストラリアの登録税理士がステップごとに丁寧にサポート。タックスリターン還付金を受け取るための第一歩。',
   keywords: [
     'TFN 申請 オーストラリア',
     'TFN 申請 ワーホリ',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja/tfn`,
     siteName: 'Working Holiday Tax',
     title: 'TFN申請 - ワーホリ オーストラリア 還付金の第一歩',
-    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金を受け取るための第一歩。登録税理士の監督のもとでサポート。',
+    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金を受け取るための第一歩。登録税理士がサポート。',
   },
   twitter: {
     card: 'summary_large_image',
@@ -60,7 +60,7 @@ const faqs = [
   { question: 'TFNを取得する前から働けますか？', answer: 'はい、TFNの到着を待たずにすぐに働き始めることができます。ただし、勤務開始から28日以内に雇用主にTFNを提出する必要があります。提出されるまで、雇用主は最高税率の45%で源泉徴収する義務があります。後日タックスリターンで取り戻せますが、到着前に申請しておくのがおすすめです。' },
   { question: 'TFNはどこに送られてきますか？', answer: '申請時に登録したオーストラリアの住所にATOから郵送されます。シェアハウスやホステル、友人宅でも構いません。郵便を確実に受け取れる住所をご登録ください。発行から到着まで最長28日かかります。' },
   { question: '観光ビザでもTFNは取得できますか？', answer: 'いいえ、観光ビザでは取得できません。TFNを申請するには、就労許可のあるビザ（ワーキングホリデービザ417・462、学生ビザ、就労ビザなど）が必要です。' },
-  { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去のタックスリターンの控えや給与明細から確認できます。また、登録税理士の監督のもとでATO記録から取得することも可能です。' },
+  { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去のタックスリターンの控えや給与明細から確認できます。また、当社の登録税理士サービスを通じてATO記録から取得することも可能です。' },
   { question: 'TFN Declaration（タックスファイルナンバー宣言書）とは？', answer: '新しい仕事を始める際に雇用主に提出する書類です。あなたのTFN、ビザステータス、税務区分を伝えることで、雇用主が正しい税率（ワーキングホリデーメーカーは15%）で源泉徴収できるようになります。' },
   { question: 'オーストラリア渡航前にTFNを申請できますか？', answer: 'TFNの申請はオーストラリア到着後、ワーキングホリデービザがアクティベートされてから行います。ATOからのTFN通知書を受け取るため、オーストラリア国内の郵送先住所が必要です。シェアハウスやホステルの住所でも問題ありません。' },
   { question: 'TFNとタックスリターン還付金の関係は？', answer: 'TFNはオーストラリアの税務記録すべてをあなたに紐付ける番号です。TFNを雇用主に提出していない場合、ワーホリ税率15%ではなく最高税率45%で源泉徴収されます。その分、タックスリターン提出時に大きな還付金として戻ってくることが多いです。' },
@@ -96,7 +96,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'TFN（タックスファイルナンバー）の申請方法',
-  description: 'オーストラリアのワーキングホリデーメーカーがTFN（タックスファイルナンバー）を申請する手順。登録税理士の監督のもとで日本語で代行します。',
+  description: 'オーストラリアのワーキングホリデーメーカーがTFN（タックスファイルナンバー）を申請する手順。登録税理士が日本語で代行します。',
   inLanguage: 'ja',
   totalTime: 'P28D',
   estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
@@ -120,7 +120,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/ja/tfn#service`,
   name: 'TFN申請代行サービス',
   serviceType: 'タックスファイルナンバー申請',
-  description: 'オーストラリアのワーキングホリデーメーカー向けTFN申請代行。登録税理士の監督のもとで日本語ですべて代行します。',
+  description: 'オーストラリアのワーキングホリデーメーカー向けTFN申請代行。登録税理士が日本語ですべて代行します。',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
@@ -187,7 +187,7 @@ export default function TFNPageJA() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
+              {['1,200名以上をサポート', <GoogleRating variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -200,7 +200,7 @@ export default function TFNPageJA() {
 
       {/* ── WHAT IS A TFN? ───────────────────────────────────────────────── */}
       <section className="tfn-intro-section">
-        <div className="tfn-intro-container reveal">
+        <div className="tfn-intro-container">
           <div className="tfn-intro-grid">
 
             <div className="tfn-intro-content">
@@ -259,8 +259,8 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── SOLUTION ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section className="py-12 lg:py-20" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">当社のサービス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -301,7 +301,7 @@ export default function TFNPageJA() {
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-18 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">お客様の声</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -314,13 +314,13 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── COMPARISON ───────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section className="py-12 lg:py-20" style={{ background: '#F4F9F6' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">TFN申請プロセス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px' }}>
-              自分で申請するより、登録税理士の監督のもとで任せる方が確実
+              自分で申請するより、登録税理士に任せる方が確実
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems: 'stretch' }}>
@@ -359,8 +359,8 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
             <span className="section-label center">申請の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -381,7 +381,7 @@ export default function TFNPageJA() {
               {STEPS.map((s, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
                   <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
+                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #EEF7F2, 0 0 0 6px #C8EAE0' }}>
                     {s.n}
                   </div>
                   <p className="font-semibold text-ink text-center" style={{ fontSize: '14px', marginBottom: '7px', letterSpacing: '-0.01em', lineHeight: 1.35 }}>{s.title}</p>
@@ -424,8 +424,8 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">

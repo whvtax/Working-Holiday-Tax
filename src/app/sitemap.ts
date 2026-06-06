@@ -2,12 +2,6 @@ import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
 
-// Parse a guide date string ("1 July 2024") into a Date for accurate <lastmod>.
-function parseGuideDate(s: string): Date {
-  const d = new Date(s)
-  return isNaN(d.getTime()) ? new Date() : d
-}
-
 /**
  * Site map - includes English (default), German (/de) and Japanese (/ja) versions.
  * Each English URL gets matching /de and /ja entries. Search engines use these together
@@ -92,7 +86,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // English guide pages
   const englishGuides: MetadataRoute.Sitemap = guides.map(g => ({
     url: `${SITE_URL}/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
   }))
@@ -100,7 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // German guide pages (will be populated as articles are translated)
   const germanGuides: MetadataRoute.Sitemap = guides.map(g => ({
     url: `${SITE_URL}/de/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.71,
   }))
@@ -108,7 +102,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Japanese guide pages (will be populated as articles are translated)
   const japaneseGuides: MetadataRoute.Sitemap = guides.map(g => ({
     url: `${SITE_URL}/ja/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.71,
   }))

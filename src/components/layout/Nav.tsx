@@ -70,7 +70,7 @@ export function Nav() {
           { label: 'TFN申請',         href: '/ja/tfn',            desc: 'タックスファイルナンバーを取得' },
           { label: 'ABN登録',         href: '/ja/abn',            desc: '個人事業主として働く' },
           { label: 'タックスリターン', href: '/ja/tax-return',     desc: '年次タックスリターンを提出' },
-          { label: 'スーパー受取',     href: '/ja/superannuation', desc: '帰国時のDASP申請' },
+          { label: 'スーパー返金',     href: '/ja/superannuation', desc: '帰国時のDASP申請' },
           { label: 'メディケア',       href: '/ja/medicare',       desc: 'メディケア税免除' },
         ]
       : SERVICES_LINKS
@@ -280,7 +280,7 @@ export function Nav() {
               { label: 'TFN申請',           href: '/ja/tfn' },
               { label: 'ABN登録',           href: '/ja/abn' },
               { label: 'タックスリターン',   href: '/ja/tax-return' },
-              { label: 'スーパー受取',       href: '/ja/superannuation' },
+              { label: 'スーパー返金',       href: '/ja/superannuation' },
               { label: 'メディケア',         href: '/ja/medicare' },
               { label: '計算機',             href: '/ja/calculator' },
               { label: 'ブログ',             href: '/ja/blog' },

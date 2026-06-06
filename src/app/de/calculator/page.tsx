@@ -69,11 +69,11 @@ const faqs = [
   },
   {
     question: 'Kann ich den Rechner auch nutzen, wenn ich schon zurück in Deutschland bin?',
-    answer: 'Ja. Der Rechner funktioniert unabhängig von deinem Herkunftsland oder deinem aktuellen Aufenthaltsort. Die Steuersätze basieren auf deiner Visumsklasse (417 oder 462) und dem in Australien verdienten Einkommen - nicht darauf, wo du jetzt wohnst. Auch nach deiner Rückkehr nach Deutschland, Österreich oder in die Schweiz gilt die Schätzung.',
+    answer: 'Ja. Der Rechner funktioniert unabhängig von deinem Herkunftsland oder deinem aktuellen Aufenthaltsort. Die Steuersätze basieren auf deiner Visumsklasse (417 oder 462) und dem in Australien verdienten Einkommen — nicht darauf, wo du jetzt wohnst. Auch nach deiner Rückkehr nach Deutschland, Österreich oder in die Schweiz gilt die Schätzung.',
   },
   {
     question: 'Berücksichtigt der Rechner die Medicare Levy?',
-    answer: 'Der Rechner konzentriert sich auf die Einkommensteuer. Die Medicare Levy ist eine separate Abgabe von 2 %, von der die meisten Working Holiday Maker befreit sind. Wenn wir deine Steuererklärung einreichen, beantragen wir die Medicare-Levy-Befreiung, sofern du dafür in Frage kommst - was bedeutet, dass deine tatsächliche Rückerstattung höher sein kann als die Schätzung des Rechners.',
+    answer: 'Der Rechner konzentriert sich auf die Einkommensteuer. Die Medicare Levy ist eine separate Abgabe von 2 %, von der die meisten Working Holiday Maker befreit sind. Wenn wir deine Steuererklärung einreichen, beantragen wir die Medicare-Levy-Befreiung, sofern du dafür in Frage kommst — was bedeutet, dass deine tatsächliche Rückerstattung höher sein kann als die Schätzung des Rechners.',
   },
 ]
 
