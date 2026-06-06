@@ -1,3 +1,4 @@
+import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -28,17 +29,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'WHM Steuer',
     ],
     alternates: {
-      canonical: `https://workingholidaytax.com.au/de/blog/category/${meta.slug}`,
+      canonical: `${SITE_URL}/de/blog/category/${meta.slug}`,
       languages: {
-        'en-AU': `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
-        'de': `https://workingholidaytax.com.au/de/blog/category/${meta.slug}`,
-        'x-default': `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
+        'en-AU': `${SITE_URL}/blog/category/${meta.slug}`,
+        'de': `${SITE_URL}/de/blog/category/${meta.slug}`,
+        'x-default': `${SITE_URL}/blog/category/${meta.slug}`,
       },
     },
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `https://workingholidaytax.com.au/de/blog/category/${meta.slug}`,
+      url: `${SITE_URL}/de/blog/category/${meta.slug}`,
       siteName: 'Working Holiday Tax',
       locale: 'de_DE',
       type: 'website',
@@ -74,9 +75,9 @@ export default function GermanCategoryPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: meta.title,
     description: meta.description,
-    url: `https://workingholidaytax.com.au/de/blog/category/${meta.slug}`,
+    url: `${SITE_URL}/de/blog/category/${meta.slug}`,
     inLanguage: 'de',
-    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
+    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
     about: { '@type': 'Thing', name: meta.category },
     audience: { '@type': 'Audience', name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)' },
     mainEntity: {
@@ -85,7 +86,7 @@ export default function GermanCategoryPage({ params }: Props) {
       itemListElement: articles.map((g, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `https://workingholidaytax.com.au/de/blog/${g.slug}`,
+        url: `${SITE_URL}/de/blog/${g.slug}`,
         name: g.title,
       })),
     },
@@ -95,9 +96,9 @@ export default function GermanCategoryPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://workingholidaytax.com.au/de' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/de/blog' },
-      { '@type': 'ListItem', position: 3, name: meta.category, item: `https://workingholidaytax.com.au/de/blog/category/${meta.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/de/blog` },
+      { '@type': 'ListItem', position: 3, name: meta.category, item: `${SITE_URL}/de/blog/category/${meta.slug}` },
     ],
   }
 

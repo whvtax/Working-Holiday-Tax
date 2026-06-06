@@ -20,15 +20,16 @@ const securityHeaders = [
       // Google Fonts files
       "font-src 'self' https://fonts.gstatic.com",
       // Images: self, data URIs, blob (object URLs), Supabase Storage, own domain (OG image)
-      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au",
+      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au https://lh3.googleusercontent.com",
       // PDF preview iframes + YouTube embeds
       "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com",
       // Supabase API calls + same-origin
-      "connect-src 'self' https://*.supabase.co https://*.supabase.in",
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com",
       "media-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
+      "frame-ancestors 'none'",
       "upgrade-insecure-requests",
     ].join('; '),
   },

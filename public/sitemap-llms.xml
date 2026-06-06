@@ -1,482 +1,2864 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://workingholidaytax.com.au</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/tfn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/tax-return</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/superannuation</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/abn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/calculator</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/medicare</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/contact</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/tax-residency</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/category/tfn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/category/abn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/category/tax-return</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/category/super</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/category/work-rights</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/category/medicare-other</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-a-tfn</loc>
+    <lastmod>2024-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-apply-for-a-tfn</loc>
+    <lastmod>2024-07-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-long-does-it-take-to-get-a-tfn</loc>
+    <lastmod>2024-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/can-you-start-work-without-a-tfn</loc>
+    <lastmod>2024-07-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-happens-without-your-tfn</loc>
+    <lastmod>2024-07-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tfn-vs-abn-difference</loc>
+    <lastmod>2024-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/apply-for-tfn-before-arriving</loc>
+    <lastmod>2024-08-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tfn-application-delayed</loc>
+    <lastmod>2024-08-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/do-you-need-new-tfn-second-visa</loc>
+    <lastmod>2024-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-find-lost-tfn</loc>
+    <lastmod>2024-09-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-an-abn</loc>
+    <lastmod>2024-09-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-register-for-an-abn</loc>
+    <lastmod>2024-09-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/farm-work-and-abns</loc>
+    <lastmod>2024-09-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/employee-vs-contractor-australia</loc>
+    <lastmod>2024-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/can-you-have-tfn-and-abn</loc>
+    <lastmod>2024-10-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-cancel-your-abn</loc>
+    <lastmod>2024-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/gst-and-abn-for-working-holiday-makers</loc>
+    <lastmod>2024-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-does-australian-tax-year-work</loc>
+    <lastmod>2024-10-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/backpacker-tax-rate-australia</loc>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-lodge-tax-return-working-holiday</loc>
+    <lastmod>2024-11-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-payg-payment-summary</loc>
+    <lastmod>2024-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tax-deductions-working-holiday-makers</loc>
+    <lastmod>2024-11-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/do-you-need-to-lodge-tax-return-short-stay</loc>
+    <lastmod>2024-12-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-lodge-tax-return-from-overseas</loc>
+    <lastmod>2024-12-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-a-tax-agent</loc>
+    <lastmod>2024-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-does-payg-withholding-work</loc>
+    <lastmod>2024-12-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/australian-financial-year-dates</loc>
+    <lastmod>2024-12-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/cash-in-hand-tax-return</loc>
+    <lastmod>2025-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-superannuation</loc>
+    <lastmod>2025-01-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-much-super-should-employer-pay</loc>
+    <lastmod>2025-01-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-dasp-super-withdrawal</loc>
+    <lastmod>2025-01-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-apply-for-super-back</loc>
+    <lastmod>2025-02-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-long-does-dasp-take</loc>
+    <lastmod>2025-02-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tax-on-super-withdrawal-backpacker</loc>
+    <lastmod>2025-02-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-happens-to-unclaimed-super</loc>
+    <lastmod>2025-02-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/can-you-withdraw-super-in-australia</loc>
+    <lastmod>2025-03-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-find-lost-superannuation</loc>
+    <lastmod>2025-03-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-choose-super-fund</loc>
+    <lastmod>2025-03-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://workingholidaytax.com.au/blog/minimum-wage-australia-2024-25</loc>
+    <loc>https://workingholidaytax.com.au/blog/minimum-wage-australia-2025-26</loc>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-many-hours-can-you-work-on-whv</loc>
+    <lastmod>2025-03-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/penalty-rates-australia</loc>
+    <lastmod>2025-04-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/can-your-employer-pay-you-cash-in-hand</loc>
+    <lastmod>2025-04-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/fair-work-act-working-holiday-makers</loc>
+    <lastmod>2025-04-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/employer-not-paying-correctly</loc>
+    <lastmod>2025-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/leave-entitlements-working-holiday-visa</loc>
+    <lastmod>2025-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-a-tax-invoice</loc>
+    <lastmod>2025-05-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/can-you-work-for-multiple-employers</loc>
+    <lastmod>2025-05-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/full-time-part-time-casual-australia</loc>
+    <lastmod>2025-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-medicare-working-holiday-makers</loc>
+    <lastmod>2025-06-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/countries-with-medicare-agreement-australia</loc>
+    <lastmod>2025-06-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/medicare-levy-working-holiday-makers</loc>
+    <lastmod>2025-06-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tax-file-number-declaration-form</loc>
+    <lastmod>2025-06-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-does-tax-withheld-mean-payslip</loc>
+    <lastmod>2025-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-an-income-statement</loc>
+    <lastmod>2025-07-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-the-ato</loc>
+    <lastmod>2025-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/gross-pay-vs-net-pay-australia</loc>
+    <lastmod>2025-07-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/do-working-holiday-makers-pay-tax-on-tips</loc>
+    <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tax-obligations-after-leaving-australia</loc>
+    <lastmod>2025-08-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tax-residency-working-holiday-makers</loc>
+    <lastmod>2025-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-update-address-with-ato</loc>
+    <lastmod>2025-08-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-a-tax-refund-australia</loc>
+    <lastmod>2025-08-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-long-does-tax-refund-take-australia</loc>
+    <lastmod>2025-09-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/super-for-casual-and-part-time-workers</loc>
+    <lastmod>2025-09-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/employer-asking-you-to-work-more-than-visa-allows</loc>
+    <lastmod>2025-09-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/farm-work-rights-working-holiday-australia</loc>
+    <lastmod>2025-09-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/what-is-superannuation-guarantee-charge</loc>
+    <lastmod>2025-09-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tfn-reference-number-before-tfn-arrives</loc>
+    <lastmod>2025-10-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/tax-free-threshold-working-holiday-visa</loc>
+    <lastmod>2025-10-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/white-card-australia-working-holiday</loc>
+    <lastmod>2025-10-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/rsa-certificate-australia-working-holiday</loc>
+    <lastmod>2025-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/wwcc-working-with-children-check-australia</loc>
+    <lastmod>2025-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/public-holidays-australia-working-holiday</loc>
+    <lastmod>2025-11-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/casual-shift-cancellation-rules-australia</loc>
+    <lastmod>2025-11-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/six-month-employer-rule-working-holiday-visa</loc>
+    <lastmod>2025-11-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/opening-bank-account-australia-working-holiday</loc>
+    <lastmod>2025-12-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/trs-tourist-refund-scheme-australia</loc>
+    <lastmod>2025-12-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/transferring-money-overseas-australia-tax</loc>
+    <lastmod>2025-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/vehicle-logbook-abn-working-holiday</loc>
+    <lastmod>2025-12-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/small-business-tax-offset-working-holiday-abn</loc>
+    <lastmod>2025-12-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/sole-trader-vs-company-australia-working-holiday</loc>
+    <lastmod>2026-01-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/profit-loss-vs-personal-services-income-australia</loc>
+    <lastmod>2026-01-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/low-income-tax-offset-working-holiday</loc>
+    <lastmod>2026-01-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/appealing-ato-decision-australia</loc>
+    <lastmod>2026-01-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/amending-tax-return-australia</loc>
+    <lastmod>2026-02-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/ato-payment-plan-tax-debt-australia</loc>
+    <lastmod>2026-02-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/piece-rates-farm-work-working-holiday</loc>
+    <lastmod>2026-02-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/labour-hire-agencies-working-holiday-australia</loc>
+    <lastmod>2026-02-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-read-a-payslip-australia-working-holiday</loc>
+    <lastmod>2026-03-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/wage-theft-working-holiday-australia</loc>
+    <lastmod>2026-03-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/backpacker-tax-history-australia</loc>
+    <lastmod>2026-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://workingholidaytax.com.au/blog/how-to-check-super-balance-working-holiday</loc>
+    <lastmod>2026-03-23</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://workingholidaytax.com.au/blog/tfn</loc>
+    <loc>https://workingholidaytax.com.au/blog/tfn-application-rejected</loc>
+    <lastmod>2024-07-02</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://workingholidaytax.com.au/blog/abn</loc>
+    <loc>https://workingholidaytax.com.au/blog/tfn-identity-documents-required</loc>
+    <lastmod>2024-07-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://workingholidaytax.com.au/blog/tax-return</loc>
+    <loc>https://workingholidaytax.com.au/blog/tfn-security-protect-from-fraud</loc>
+    <lastmod>2024-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://workingholidaytax.com.au/blog/super</loc>
+    <loc>https://workingholidaytax.com.au/blog/who-can-ask-for-your-tfn</loc>
+    <lastmod>2024-08-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://workingholidaytax.com.au/blog/work-rights</loc>
+    <loc>https://workingholidaytax.com.au/blog/tfn-australian-address-no-fixed-address</loc>
+    <lastmod>2024-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/abn-invoicing-requirements-australia</loc>
+    <lastmod>2024-09-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/abn-deductions-business-expenses</loc>
+    <lastmod>2024-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/uber-doordash-rideshare-abn-working-holiday</loc>
+    <lastmod>2024-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/tax-return-without-tfn-australia</loc>
+    <lastmod>2024-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/multiple-jobs-tax-return-working-holiday</loc>
+    <lastmod>2024-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/second-third-year-visa-tax-implications</loc>
+    <lastmod>2024-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/dasp-documents-required</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/dasp-tax-rate-65-percent-explained</loc>
+    <lastmod>2024-12-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/super-multiple-funds-consolidation</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/dasp-rejected-what-to-do</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/super-employer-not-paying-what-to-do</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/super-stapling-rule-australia</loc>
+    <lastmod>2025-01-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/workplace-injury-working-holiday-rights</loc>
+    <lastmod>2025-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/unfair-dismissal-working-holiday-australia</loc>
+    <lastmod>2025-02-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/bullying-harassment-workplace-working-holiday</loc>
+    <lastmod>2025-03-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/unpaid-trial-shifts-australia-legal</loc>
+    <lastmod>2025-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/uniform-laundry-deductions-illegal-australia</loc>
+    <lastmod>2025-04-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/uk-medicare-reciprocal-agreement-australia</loc>
+    <lastmod>2025-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/german-european-health-insurance-australia-working-holiday</loc>
+    <lastmod>2025-05-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/private-health-insurance-working-holiday-australia</loc>
+    <lastmod>2025-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/emergency-medical-care-working-holiday-no-medicare</loc>
+    <lastmod>2025-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/travel-insurance-vs-health-insurance-working-holiday</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/hospitality-award-working-holiday-makers</loc>
+    <lastmod>2025-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/horticulture-award-working-holiday-makers</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/restaurant-industry-award-working-holiday</loc>
+    <lastmod>2025-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/award-classifications-working-holiday-australia</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/late-tax-return-penalty-working-holiday</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/understating-income-ato-penalty-working-holiday</loc>
+    <lastmod>2025-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/tools-equipment-under-300-instant-deduction-whv</loc>
+    <lastmod>2025-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/1000-dollar-instant-deduction-rule-2026</loc>
+    <lastmod>2025-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/bicycle-motorcycle-vehicle-deductions-working-holiday</loc>
+    <lastmod>2025-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/dasp-vs-leaving-super-in-australia-pros-cons</loc>
+    <lastmod>2025-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/fruit-picking-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/farm-hand-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/bartender-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/barista-coffee-shop-working-holiday-australia</loc>
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/waiter-waitress-working-holiday-australia</loc>
+    <lastmod>2025-12-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/kitchen-hand-working-holiday-australia</loc>
+    <lastmod>2026-01-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/construction-laborer-working-holiday-australia</loc>
+    <lastmod>2026-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/uber-eats-delivery-rider-working-holiday-australia</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/uber-driver-working-holiday-australia</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/ski-resort-jobs-working-holiday-australia</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/supermarket-work-coles-woolworths-working-holiday</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/station-hand-cattle-station-working-holiday-australia</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/super-rate-12-percent-2025-2026-increase</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/bringing-money-into-australia-10000-reporting-threshold</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/blog/ato-tax-debt-failure-to-pay-penalty-australia</loc>
+    <lastmod>2026-05-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/tfn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/tax-return</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/superannuation</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/abn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/calculator</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/medicare</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/contact</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/tax-residency</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/category/tfn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/category/abn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/category/tax-return</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/category/super</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/category/work-rights</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/category/medicare-other</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-a-tfn</loc>
+    <lastmod>2024-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-apply-for-a-tfn</loc>
+    <lastmod>2024-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-long-does-it-take-to-get-a-tfn</loc>
+    <lastmod>2024-07-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/can-you-start-work-without-a-tfn</loc>
+    <lastmod>2024-07-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-happens-without-your-tfn</loc>
+    <lastmod>2024-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tfn-vs-abn-difference</loc>
+    <lastmod>2024-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/apply-for-tfn-before-arriving</loc>
+    <lastmod>2024-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tfn-application-delayed</loc>
+    <lastmod>2024-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/do-you-need-new-tfn-second-visa</loc>
+    <lastmod>2024-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-find-lost-tfn</loc>
+    <lastmod>2024-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-an-abn</loc>
+    <lastmod>2024-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-register-for-an-abn</loc>
+    <lastmod>2024-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/farm-work-and-abns</loc>
+    <lastmod>2024-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/employee-vs-contractor-australia</loc>
+    <lastmod>2024-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/can-you-have-tfn-and-abn</loc>
+    <lastmod>2024-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-cancel-your-abn</loc>
+    <lastmod>2024-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/gst-and-abn-for-working-holiday-makers</loc>
+    <lastmod>2024-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-does-australian-tax-year-work</loc>
+    <lastmod>2024-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/backpacker-tax-rate-australia</loc>
+    <lastmod>2024-11-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-lodge-tax-return-working-holiday</loc>
+    <lastmod>2024-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-payg-payment-summary</loc>
+    <lastmod>2024-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-deductions-working-holiday-makers</loc>
+    <lastmod>2024-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/do-you-need-to-lodge-tax-return-short-stay</loc>
+    <lastmod>2024-12-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-lodge-tax-return-from-overseas</loc>
+    <lastmod>2024-12-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-a-tax-agent</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-does-payg-withholding-work</loc>
+    <lastmod>2024-12-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/australian-financial-year-dates</loc>
+    <lastmod>2024-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/cash-in-hand-tax-return</loc>
+    <lastmod>2025-01-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-superannuation</loc>
+    <lastmod>2025-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-much-super-should-employer-pay</loc>
+    <lastmod>2025-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-dasp-super-withdrawal</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-apply-for-super-back</loc>
+    <lastmod>2025-02-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-long-does-dasp-take</loc>
+    <lastmod>2025-02-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-on-super-withdrawal-backpacker</loc>
+    <lastmod>2025-02-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-happens-to-unclaimed-super</loc>
+    <lastmod>2025-02-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/can-you-withdraw-super-in-australia</loc>
+    <lastmod>2025-03-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-find-lost-superannuation</loc>
+    <lastmod>2025-03-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-choose-super-fund</loc>
+    <lastmod>2025-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/minimum-wage-australia-2025-26</loc>
+    <lastmod>2025-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-many-hours-can-you-work-on-whv</loc>
+    <lastmod>2025-03-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/penalty-rates-australia</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/can-your-employer-pay-you-cash-in-hand</loc>
+    <lastmod>2025-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/fair-work-act-working-holiday-makers</loc>
+    <lastmod>2025-04-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/employer-not-paying-correctly</loc>
+    <lastmod>2025-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/leave-entitlements-working-holiday-visa</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-a-tax-invoice</loc>
+    <lastmod>2025-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/can-you-work-for-multiple-employers</loc>
+    <lastmod>2025-05-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/full-time-part-time-casual-australia</loc>
+    <lastmod>2025-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-medicare-working-holiday-makers</loc>
+    <lastmod>2025-06-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/countries-with-medicare-agreement-australia</loc>
+    <lastmod>2025-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/medicare-levy-working-holiday-makers</loc>
+    <lastmod>2025-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-file-number-declaration-form</loc>
+    <lastmod>2025-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-does-tax-withheld-mean-payslip</loc>
+    <lastmod>2025-06-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-an-income-statement</loc>
+    <lastmod>2025-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-the-ato</loc>
+    <lastmod>2025-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/gross-pay-vs-net-pay-australia</loc>
+    <lastmod>2025-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/do-working-holiday-makers-pay-tax-on-tips</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-obligations-after-leaving-australia</loc>
+    <lastmod>2025-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-residency-working-holiday-makers</loc>
+    <lastmod>2025-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-update-address-with-ato</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-a-tax-refund-australia</loc>
+    <lastmod>2025-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-long-does-tax-refund-take-australia</loc>
+    <lastmod>2025-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/super-for-casual-and-part-time-workers</loc>
+    <lastmod>2025-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/employer-asking-you-to-work-more-than-visa-allows</loc>
+    <lastmod>2025-09-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/farm-work-rights-working-holiday-australia</loc>
+    <lastmod>2025-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/what-is-superannuation-guarantee-charge</loc>
+    <lastmod>2025-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tfn-reference-number-before-tfn-arrives</loc>
+    <lastmod>2025-10-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-free-threshold-working-holiday-visa</loc>
+    <lastmod>2025-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/white-card-australia-working-holiday</loc>
+    <lastmod>2025-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/rsa-certificate-australia-working-holiday</loc>
+    <lastmod>2025-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/wwcc-working-with-children-check-australia</loc>
+    <lastmod>2025-11-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/public-holidays-australia-working-holiday</loc>
+    <lastmod>2025-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/casual-shift-cancellation-rules-australia</loc>
+    <lastmod>2025-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/six-month-employer-rule-working-holiday-visa</loc>
+    <lastmod>2025-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/opening-bank-account-australia-working-holiday</loc>
+    <lastmod>2025-12-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/trs-tourist-refund-scheme-australia</loc>
+    <lastmod>2025-12-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/transferring-money-overseas-australia-tax</loc>
+    <lastmod>2025-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/vehicle-logbook-abn-working-holiday</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/small-business-tax-offset-working-holiday-abn</loc>
+    <lastmod>2025-12-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/sole-trader-vs-company-australia-working-holiday</loc>
+    <lastmod>2026-01-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/profit-loss-vs-personal-services-income-australia</loc>
+    <lastmod>2026-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/low-income-tax-offset-working-holiday</loc>
+    <lastmod>2026-01-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/appealing-ato-decision-australia</loc>
+    <lastmod>2026-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/amending-tax-return-australia</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/ato-payment-plan-tax-debt-australia</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/piece-rates-farm-work-working-holiday</loc>
+    <lastmod>2026-02-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/labour-hire-agencies-working-holiday-australia</loc>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-read-a-payslip-australia-working-holiday</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/wage-theft-working-holiday-australia</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/backpacker-tax-history-australia</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/how-to-check-super-balance-working-holiday</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tfn-application-rejected</loc>
+    <lastmod>2024-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tfn-identity-documents-required</loc>
+    <lastmod>2024-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tfn-security-protect-from-fraud</loc>
+    <lastmod>2024-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/who-can-ask-for-your-tfn</loc>
+    <lastmod>2024-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tfn-australian-address-no-fixed-address</loc>
+    <lastmod>2024-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/abn-invoicing-requirements-australia</loc>
+    <lastmod>2024-09-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/abn-deductions-business-expenses</loc>
+    <lastmod>2024-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/uber-doordash-rideshare-abn-working-holiday</loc>
+    <lastmod>2024-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tax-return-without-tfn-australia</loc>
+    <lastmod>2024-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/multiple-jobs-tax-return-working-holiday</loc>
+    <lastmod>2024-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/second-third-year-visa-tax-implications</loc>
+    <lastmod>2024-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/dasp-documents-required</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/dasp-tax-rate-65-percent-explained</loc>
+    <lastmod>2024-12-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/super-multiple-funds-consolidation</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/dasp-rejected-what-to-do</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/super-employer-not-paying-what-to-do</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/super-stapling-rule-australia</loc>
+    <lastmod>2025-01-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/workplace-injury-working-holiday-rights</loc>
+    <lastmod>2025-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/unfair-dismissal-working-holiday-australia</loc>
+    <lastmod>2025-02-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/bullying-harassment-workplace-working-holiday</loc>
+    <lastmod>2025-03-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/unpaid-trial-shifts-australia-legal</loc>
+    <lastmod>2025-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/uniform-laundry-deductions-illegal-australia</loc>
+    <lastmod>2025-04-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/uk-medicare-reciprocal-agreement-australia</loc>
+    <lastmod>2025-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/german-european-health-insurance-australia-working-holiday</loc>
+    <lastmod>2025-05-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/private-health-insurance-working-holiday-australia</loc>
+    <lastmod>2025-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/emergency-medical-care-working-holiday-no-medicare</loc>
+    <lastmod>2025-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/travel-insurance-vs-health-insurance-working-holiday</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/hospitality-award-working-holiday-makers</loc>
+    <lastmod>2025-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/horticulture-award-working-holiday-makers</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/restaurant-industry-award-working-holiday</loc>
+    <lastmod>2025-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/award-classifications-working-holiday-australia</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/late-tax-return-penalty-working-holiday</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/understating-income-ato-penalty-working-holiday</loc>
+    <lastmod>2025-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/tools-equipment-under-300-instant-deduction-whv</loc>
+    <lastmod>2025-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/1000-dollar-instant-deduction-rule-2026</loc>
+    <lastmod>2025-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/bicycle-motorcycle-vehicle-deductions-working-holiday</loc>
+    <lastmod>2025-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/dasp-vs-leaving-super-in-australia-pros-cons</loc>
+    <lastmod>2025-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/fruit-picking-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/farm-hand-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/bartender-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/barista-coffee-shop-working-holiday-australia</loc>
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/waiter-waitress-working-holiday-australia</loc>
+    <lastmod>2025-12-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/kitchen-hand-working-holiday-australia</loc>
+    <lastmod>2026-01-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/construction-laborer-working-holiday-australia</loc>
+    <lastmod>2026-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/uber-eats-delivery-rider-working-holiday-australia</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/uber-driver-working-holiday-australia</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/ski-resort-jobs-working-holiday-australia</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/supermarket-work-coles-woolworths-working-holiday</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/station-hand-cattle-station-working-holiday-australia</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/super-rate-12-percent-2025-2026-increase</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/bringing-money-into-australia-10000-reporting-threshold</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/de/blog/ato-tax-debt-failure-to-pay-penalty-australia</loc>
+    <lastmod>2026-05-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/tfn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/tax-return</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/superannuation</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/abn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/calculator</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/medicare</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/contact</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/tax-residency</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/category/tfn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/category/abn</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/category/tax-return</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/category/super</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/category/work-rights</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/category/medicare-other</loc>
+    <lastmod>2026-06-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-a-tfn</loc>
+    <lastmod>2024-07-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-apply-for-a-tfn</loc>
+    <lastmod>2024-07-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-long-does-it-take-to-get-a-tfn</loc>
+    <lastmod>2024-07-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/can-you-start-work-without-a-tfn</loc>
+    <lastmod>2024-07-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-happens-without-your-tfn</loc>
+    <lastmod>2024-07-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tfn-vs-abn-difference</loc>
+    <lastmod>2024-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/apply-for-tfn-before-arriving</loc>
+    <lastmod>2024-08-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tfn-application-delayed</loc>
+    <lastmod>2024-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/do-you-need-new-tfn-second-visa</loc>
+    <lastmod>2024-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-find-lost-tfn</loc>
+    <lastmod>2024-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-an-abn</loc>
+    <lastmod>2024-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-register-for-an-abn</loc>
+    <lastmod>2024-09-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/farm-work-and-abns</loc>
+    <lastmod>2024-09-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/employee-vs-contractor-australia</loc>
+    <lastmod>2024-09-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/can-you-have-tfn-and-abn</loc>
+    <lastmod>2024-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-cancel-your-abn</loc>
+    <lastmod>2024-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/gst-and-abn-for-working-holiday-makers</loc>
+    <lastmod>2024-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-does-australian-tax-year-work</loc>
+    <lastmod>2024-10-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/backpacker-tax-rate-australia</loc>
+    <lastmod>2024-11-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-lodge-tax-return-working-holiday</loc>
+    <lastmod>2024-11-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-payg-payment-summary</loc>
+    <lastmod>2024-11-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-deductions-working-holiday-makers</loc>
+    <lastmod>2024-11-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/do-you-need-to-lodge-tax-return-short-stay</loc>
+    <lastmod>2024-12-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-lodge-tax-return-from-overseas</loc>
+    <lastmod>2024-12-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-a-tax-agent</loc>
+    <lastmod>2024-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-does-payg-withholding-work</loc>
+    <lastmod>2024-12-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/australian-financial-year-dates</loc>
+    <lastmod>2024-12-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/cash-in-hand-tax-return</loc>
+    <lastmod>2025-01-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-superannuation</loc>
+    <lastmod>2025-01-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-much-super-should-employer-pay</loc>
+    <lastmod>2025-01-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-dasp-super-withdrawal</loc>
+    <lastmod>2025-01-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-apply-for-super-back</loc>
+    <lastmod>2025-02-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-long-does-dasp-take</loc>
+    <lastmod>2025-02-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-on-super-withdrawal-backpacker</loc>
+    <lastmod>2025-02-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-happens-to-unclaimed-super</loc>
+    <lastmod>2025-02-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/can-you-withdraw-super-in-australia</loc>
+    <lastmod>2025-03-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-find-lost-superannuation</loc>
+    <lastmod>2025-03-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-choose-super-fund</loc>
+    <lastmod>2025-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/minimum-wage-australia-2025-26</loc>
+    <lastmod>2025-03-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-many-hours-can-you-work-on-whv</loc>
+    <lastmod>2025-03-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/penalty-rates-australia</loc>
+    <lastmod>2025-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/can-your-employer-pay-you-cash-in-hand</loc>
+    <lastmod>2025-04-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/fair-work-act-working-holiday-makers</loc>
+    <lastmod>2025-04-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/employer-not-paying-correctly</loc>
+    <lastmod>2025-04-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/leave-entitlements-working-holiday-visa</loc>
+    <lastmod>2025-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-a-tax-invoice</loc>
+    <lastmod>2025-05-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/can-you-work-for-multiple-employers</loc>
+    <lastmod>2025-05-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/full-time-part-time-casual-australia</loc>
+    <lastmod>2025-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-medicare-working-holiday-makers</loc>
+    <lastmod>2025-06-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/countries-with-medicare-agreement-australia</loc>
+    <lastmod>2025-06-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/medicare-levy-working-holiday-makers</loc>
+    <lastmod>2025-06-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-file-number-declaration-form</loc>
+    <lastmod>2025-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-does-tax-withheld-mean-payslip</loc>
+    <lastmod>2025-06-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-an-income-statement</loc>
+    <lastmod>2025-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-the-ato</loc>
+    <lastmod>2025-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/gross-pay-vs-net-pay-australia</loc>
+    <lastmod>2025-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/do-working-holiday-makers-pay-tax-on-tips</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-obligations-after-leaving-australia</loc>
+    <lastmod>2025-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-residency-working-holiday-makers</loc>
+    <lastmod>2025-08-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-update-address-with-ato</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-a-tax-refund-australia</loc>
+    <lastmod>2025-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-long-does-tax-refund-take-australia</loc>
+    <lastmod>2025-09-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/super-for-casual-and-part-time-workers</loc>
+    <lastmod>2025-09-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/employer-asking-you-to-work-more-than-visa-allows</loc>
+    <lastmod>2025-09-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/farm-work-rights-working-holiday-australia</loc>
+    <lastmod>2025-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/what-is-superannuation-guarantee-charge</loc>
+    <lastmod>2025-09-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tfn-reference-number-before-tfn-arrives</loc>
+    <lastmod>2025-10-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-free-threshold-working-holiday-visa</loc>
+    <lastmod>2025-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/white-card-australia-working-holiday</loc>
+    <lastmod>2025-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/rsa-certificate-australia-working-holiday</loc>
+    <lastmod>2025-10-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/wwcc-working-with-children-check-australia</loc>
+    <lastmod>2025-11-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/public-holidays-australia-working-holiday</loc>
+    <lastmod>2025-11-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/casual-shift-cancellation-rules-australia</loc>
+    <lastmod>2025-11-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/six-month-employer-rule-working-holiday-visa</loc>
+    <lastmod>2025-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/opening-bank-account-australia-working-holiday</loc>
+    <lastmod>2025-12-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/trs-tourist-refund-scheme-australia</loc>
+    <lastmod>2025-12-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/transferring-money-overseas-australia-tax</loc>
+    <lastmod>2025-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/vehicle-logbook-abn-working-holiday</loc>
+    <lastmod>2025-12-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/small-business-tax-offset-working-holiday-abn</loc>
+    <lastmod>2025-12-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/sole-trader-vs-company-australia-working-holiday</loc>
+    <lastmod>2026-01-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/profit-loss-vs-personal-services-income-australia</loc>
+    <lastmod>2026-01-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/low-income-tax-offset-working-holiday</loc>
+    <lastmod>2026-01-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/appealing-ato-decision-australia</loc>
+    <lastmod>2026-01-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/amending-tax-return-australia</loc>
+    <lastmod>2026-02-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/ato-payment-plan-tax-debt-australia</loc>
+    <lastmod>2026-02-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/piece-rates-farm-work-working-holiday</loc>
+    <lastmod>2026-02-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/labour-hire-agencies-working-holiday-australia</loc>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-read-a-payslip-australia-working-holiday</loc>
+    <lastmod>2026-03-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/wage-theft-working-holiday-australia</loc>
+    <lastmod>2026-03-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/backpacker-tax-history-australia</loc>
+    <lastmod>2026-03-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/how-to-check-super-balance-working-holiday</loc>
+    <lastmod>2026-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tfn-application-rejected</loc>
+    <lastmod>2024-07-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tfn-identity-documents-required</loc>
+    <lastmod>2024-07-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tfn-security-protect-from-fraud</loc>
+    <lastmod>2024-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/who-can-ask-for-your-tfn</loc>
+    <lastmod>2024-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tfn-australian-address-no-fixed-address</loc>
+    <lastmod>2024-08-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/abn-invoicing-requirements-australia</loc>
+    <lastmod>2024-09-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/abn-deductions-business-expenses</loc>
+    <lastmod>2024-09-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/uber-doordash-rideshare-abn-working-holiday</loc>
+    <lastmod>2024-10-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tax-return-without-tfn-australia</loc>
+    <lastmod>2024-10-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/multiple-jobs-tax-return-working-holiday</loc>
+    <lastmod>2024-10-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/second-third-year-visa-tax-implications</loc>
+    <lastmod>2024-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/dasp-documents-required</loc>
+    <lastmod>2024-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/dasp-tax-rate-65-percent-explained</loc>
+    <lastmod>2024-12-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/super-multiple-funds-consolidation</loc>
+    <lastmod>2024-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/dasp-rejected-what-to-do</loc>
+    <lastmod>2025-01-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/super-employer-not-paying-what-to-do</loc>
+    <lastmod>2025-01-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/super-stapling-rule-australia</loc>
+    <lastmod>2025-01-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/workplace-injury-working-holiday-rights</loc>
+    <lastmod>2025-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/unfair-dismissal-working-holiday-australia</loc>
+    <lastmod>2025-02-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/bullying-harassment-workplace-working-holiday</loc>
+    <lastmod>2025-03-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/unpaid-trial-shifts-australia-legal</loc>
+    <lastmod>2025-03-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/uniform-laundry-deductions-illegal-australia</loc>
+    <lastmod>2025-04-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/uk-medicare-reciprocal-agreement-australia</loc>
+    <lastmod>2025-04-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/german-european-health-insurance-australia-working-holiday</loc>
+    <lastmod>2025-05-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/private-health-insurance-working-holiday-australia</loc>
+    <lastmod>2025-05-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/emergency-medical-care-working-holiday-no-medicare</loc>
+    <lastmod>2025-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/travel-insurance-vs-health-insurance-working-holiday</loc>
+    <lastmod>2025-06-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/hospitality-award-working-holiday-makers</loc>
+    <lastmod>2025-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/horticulture-award-working-holiday-makers</loc>
+    <lastmod>2025-07-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/restaurant-industry-award-working-holiday</loc>
+    <lastmod>2025-07-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/award-classifications-working-holiday-australia</loc>
+    <lastmod>2025-08-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/late-tax-return-penalty-working-holiday</loc>
+    <lastmod>2025-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/understating-income-ato-penalty-working-holiday</loc>
+    <lastmod>2025-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/tools-equipment-under-300-instant-deduction-whv</loc>
+    <lastmod>2025-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/1000-dollar-instant-deduction-rule-2026</loc>
+    <lastmod>2025-09-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/bicycle-motorcycle-vehicle-deductions-working-holiday</loc>
+    <lastmod>2025-10-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/dasp-vs-leaving-super-in-australia-pros-cons</loc>
+    <lastmod>2025-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/fruit-picking-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/farm-hand-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/bartender-jobs-working-holiday-australia</loc>
+    <lastmod>2025-11-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/barista-coffee-shop-working-holiday-australia</loc>
+    <lastmod>2025-12-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/waiter-waitress-working-holiday-australia</loc>
+    <lastmod>2025-12-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/kitchen-hand-working-holiday-australia</loc>
+    <lastmod>2026-01-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/construction-laborer-working-holiday-australia</loc>
+    <lastmod>2026-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/uber-eats-delivery-rider-working-holiday-australia</loc>
+    <lastmod>2026-02-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/uber-driver-working-holiday-australia</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/ski-resort-jobs-working-holiday-australia</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/supermarket-work-coles-woolworths-working-holiday</loc>
+    <lastmod>2026-03-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/station-hand-cattle-station-working-holiday-australia</loc>
+    <lastmod>2026-03-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/super-rate-12-percent-2025-2026-increase</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/bringing-money-into-australia-10000-reporting-threshold</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://workingholidaytax.com.au/ja/blog/ato-tax-debt-failure-to-pay-penalty-australia</loc>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

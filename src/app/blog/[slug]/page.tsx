@@ -1,3 +1,4 @@
+import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -86,12 +87,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       guide.title,
     ],
     alternates: {
-      canonical: `https://workingholidaytax.com.au/blog/${guide.slug}`,
+      canonical: `${SITE_URL}/blog/${guide.slug}`,
+      languages: {
+        'en-AU': `${SITE_URL}/blog/${guide.slug}`,
+        'de': `${SITE_URL}/de/blog/${guide.slug}`,
+        'ja': `${SITE_URL}/ja/blog/${guide.slug}`,
+        'x-default': `${SITE_URL}/blog/${guide.slug}`,
+      },
     },
     openGraph: {
       title: guide.title,
       description: guide.description,
-      url: `https://workingholidaytax.com.au/blog/${guide.slug}`,
+      url: `${SITE_URL}/blog/${guide.slug}`,
       type: 'article',
       siteName: 'Working Holiday Tax',
       locale: 'en_AU',
@@ -117,7 +124,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function getRelatedGuides(current: { slug: string; category: string }, count = 3) {
   const sameCategory = guides.filter(g => g.slug !== current.slug && g.category === current.category)
-  // Fisher–Yates shuffle. Using `sort(() => 0.5 - Math.random())` produces a biased
+  // Fisher-Yates shuffle. Using `sort(() => 0.5 - Math.random())` produces a biased
   // distribution because Array.sort assumes a consistent comparator.
   const shuffled = [...sameCategory]
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -217,20 +224,20 @@ export default function GuidePage({ params }: Props) {
     author: {
       '@type': 'Organization',
       name: 'Working Holiday Tax',
-      url: 'https://workingholidaytax.com.au',
+      url: `${SITE_URL}`,
     },
     publisher: {
       '@type': 'Organization',
       name: 'Working Holiday Tax',
-      url: 'https://workingholidaytax.com.au',
+      url: `${SITE_URL}`,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://workingholidaytax.com.au/icon-512.png',
+        url: `${SITE_URL}/icon-512.png`,
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://workingholidaytax.com.au/blog/${guide.slug}`,
+      '@id': `${SITE_URL}/blog/${guide.slug}`,
     },
     audience: {
       '@type': 'Audience',
@@ -258,12 +265,12 @@ export default function GuidePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/blog' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/blog` },
       ...(categoryInfo
-        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `https://workingholidaytax.com.au/blog/category/${categoryInfo.slug}` }]
+        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `${SITE_URL}/blog/category/${categoryInfo.slug}` }]
         : []),
-      { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `https://workingholidaytax.com.au/blog/${guide.slug}` },
+      { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `${SITE_URL}/blog/${guide.slug}` },
     ],
   }
 
@@ -286,19 +293,19 @@ export default function GuidePage({ params }: Props) {
   const webPageLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': `https://workingholidaytax.com.au/blog/${guide.slug}`,
-    url: `https://workingholidaytax.com.au/blog/${guide.slug}`,
+    '@id': `${SITE_URL}/blog/${guide.slug}`,
+    url: `${SITE_URL}/blog/${guide.slug}`,
     name: guide.title,
     description: guide.description,
     inLanguage: 'en-AU',
     isPartOf: {
       '@type': 'WebSite',
       name: 'Working Holiday Tax',
-      url: 'https://workingholidaytax.com.au',
+      url: `${SITE_URL}`,
     },
     primaryImageOfPage: {
       '@type': 'ImageObject',
-      url: 'https://workingholidaytax.com.au/og-image.png',
+      url: `${SITE_URL}/og-image.png`,
     },
     speakable: {
       '@type': 'SpeakableSpecification',

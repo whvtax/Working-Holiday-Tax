@@ -25,7 +25,7 @@ type Section = {
 const sections: Section[] = [
   {
     title: '1. Introduction',
-    body: 'This Privacy Policy explains how Working Holiday Tax ("we", "us", "our") collects, uses, discloses, and protects your personal information in accordance with the Privacy Act 1988 (Cth), the Australian Privacy Principles (APPs), and the Notifiable Data Breaches (NDB) scheme. We also comply with our obligations as a registered tax agent under the ATO and the Tax Practitioners Board (TPB), including strict confidentiality requirements. By using our website or engaging our services, you consent to the collection and use of your information as described in this Privacy Policy.',
+    body: 'This Privacy Policy explains how Working Holiday Tax ("we", "us", "our") collects, uses, discloses, and protects your personal information in accordance with the Privacy Act 1988 (Cth), the Australian Privacy Principles (APPs), and the Notifiable Data Breaches (NDB) scheme. We also comply with our obligations, working under the supervision of a registered tax agent, under the ATO and the Tax Practitioners Board (TPB), including strict confidentiality requirements. By using our website or engaging our services, you consent to the collection and use of your information as described in this Privacy Policy.',
   },
   {
     title: '2. General Information Disclaimer',
