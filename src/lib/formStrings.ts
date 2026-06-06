@@ -41,7 +41,7 @@ export const formStrings = {
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
-  email:               { en: 'Email address',                      de: 'E-Mailadresse',             ja: 'メールアドレス' },
+  email:               { en: 'Email address',                      de: 'E-Mail-Adresse',             ja: 'メールアドレス' },
   dob:                 { en: 'Date of birth',                      de: 'Geburtsdatum',              ja: '生年月日' },
   whatsapp:            { en: 'WhatsApp Number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
@@ -119,7 +119,7 @@ export const formStrings = {
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung',        ja: 'ABN登録' },
   titleTax:            { en: 'Tax Return Application',              de: 'Steuererklärungsantrag',   ja: 'タックスリターン申請' },
-  titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー返金（DASP）' },
+  titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
 
   // ─ Tax form specific ─
   tfnRequired:         { en: 'Tax File Number (TFN)',               de: 'Tax File Number (TFN)',    ja: 'タックスファイルナンバー（TFN）' },

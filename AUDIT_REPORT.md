@@ -202,3 +202,56 @@ nonce-CSP; the static-vs-dynamic decision for item 3.
 - **Tests:** forms.test.js rewritten as 19 real unit tests against the live Supabase-era code (the old suite mocked @vercel/postgres, which the app no longer uses).
 - **Dead code:** removed unused checkToken `requiredRole`; removed REVIEWER_* from .env.example.
 Deferred: nonce-CSP and header dedup (need a build + smoke test).
+
+
+---
+
+## 13. Upgrade round 3 — implemented 6 June 2026 (post 4-agent re-audit)
+
+Continued from the owner-approved subset of the June 2026 findings report. Implemented
+on the COPY only; verified by per-file esbuild parse (TS/JSX), `next.config.js` Node load,
+and `vercel.json` JSON validation. (node_modules absent in sandbox → full `tsc/next build`
+not run here; syntax verified file-by-file.)
+
+Items fixed (owner picked 1, 3, 5, 6, 7, 8, 9, 10, 12, 13):
+
+1. **Static rendering restored (Item 1 / C1).** `src/app/layout.tsx` — removed the
+   `headers().get('x-locale')` read (and the `next/headers` import) that opted the entire
+   app into dynamic rendering. `<html lang>` is now static `en-AU`; the existing inline
+   client script keeps switching `documentElement.lang` to de/ja per URL. Restores static
+   generation across the site.
+2. **EN blog-index hreflang (Item 3 / C3).** `src/app/blog/page.tsx` — added the
+   `alternates.languages` map (en-AU/de/ja/x-default); the EN blog index was the only page
+   missing reciprocal hreflang.
+3. **Broken schema @id links (Item 5 / I4).** `de` + `ja` `blog/[slug]/page.tsx` — author
+   & publisher `@id` changed `#organization` → `#business` (the real Organization node id in
+   `layout.tsx`). EN `blog/[slug]` author+publisher gained `@id: …/#business` for a connected
+   knowledge graph.
+4. **Article dates re-spread + sitemap lastmod (Item 6 / I2).** All 143 EN article dates in
+   `src/app/blog/data.ts` redistributed with natural, irregular gaps (1–20 days, avg ~5)
+   across **1 Jul 2024 → 6 Jun 2026** (DE/JA inherit). `src/app/sitemap.ts` static & category
+   `lastModified` switched from build-time `new Date()` to a stable `LAST_CONTENT_UPDATE`
+   constant so `<lastmod>` no longer churns on every deploy.
+5. **Terminology (Item 7).** `formStrings.ts` — JA `titleSuper` スーパー返金 → **スーパー受取**
+   (matches footer/super page/super-form metadata); DE `email` 'E-Mailadresse' → **'E-Mail-Adresse'**.
+6. **CSP hardening (Item 8 / I8).** `next.config.js` — `'unsafe-eval'` is now dev-only
+   (`process.env.NODE_ENV === 'development'`); production `script-src` drops it. Duplicate CSP
+   header removed from `vercel.json` — `next.config.js` is the single source of truth.
+7. **Blog category labels localized (Item 9 / I7).** New `src/lib/category-labels.ts`
+   (`catLabelDe`/`catLabelJa`); DE/JA `blog/[slug]` + `blog/category/[slug]` now render
+   localized category text (Steuererklärung / Arbeitsrechte / Medicare & Sonstiges;
+   タックスリターン / 労働者の権利 / メディケア・その他). The English `Category` enum is unchanged
+   (still used for schema.org, colour lookups and routing) — only user-visible text is
+   localized, via a negative-lookbehind that leaves props and schema untouched.
+8. **German en-dash typography (Item 10 / P2).** 38 metadata `title:`/`description:` strings
+   across 16 DE files: spaced ASCII `" - "` → German en-dash `" – "`. Scoped to metadata only
+   (NOT prose/code) to avoid touching arithmetic like `inc - 45000`.
+9. **Breadcrumb aria-label (Item 12 / P4).** 8 DE files: `aria-label="Breadcrumb"` →
+   **"Brotkrümelnavigation"**. (JA already used パンくずリスト.)
+10. **Stale test env (Item 13 / P8).** `__tests__/setup.js` — removed unused
+    `POSTGRES_URL` / `BLOB_READ_WRITE_TOKEN` (app is Supabase-only).
+
+Deliberately NOT changed (owner did not select / needs owner input):
+Item 2 (flip Supabase `uploads` bucket to Private — owner dashboard action), Item 4
+(named credentialed author/reviewer — needs a real name), Item 11 (EN CTA voice),
+analytics IDs, home-H1 "refund" rewrite, and ATO sign-off on §8b figures.

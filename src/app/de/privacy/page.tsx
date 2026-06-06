@@ -4,7 +4,7 @@ import { EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Datenschutzerklärung | Working Holiday Tax',
-  description: 'Datenschutzerklärung von Working Holiday Tax - wie wir deine personenbezogenen Daten erheben, verwenden und schützen.',
+  description: 'Datenschutzerklärung von Working Holiday Tax – wie wir deine personenbezogenen Daten erheben, verwenden und schützen.',
   alternates: {
     canonical: '/de/privacy',
     languages: {

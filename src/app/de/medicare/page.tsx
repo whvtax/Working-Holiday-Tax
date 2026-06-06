@@ -108,7 +108,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/medicare#service`,
   name: 'Medicare Levy Exemption Certificate',
-  description: 'Beantragung des Medicare Levy Exemption Certificate - für Working Holiday Maker aus Ländern ohne RHCA wie Deutschland.',
+  description: 'Beantragung des Medicare Levy Exemption Certificate – für Working Holiday Maker aus Ländern ohne RHCA wie Deutschland.',
   serviceType: 'Medicare Levy Exemption',
   category: 'Tax Exemption Service',
   url: `${SITE_URL}/de/medicare`,
@@ -143,7 +143,7 @@ export default function GermanMedicarePage() {
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+          <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
             <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
             <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>

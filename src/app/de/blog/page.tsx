@@ -4,8 +4,8 @@ import BlogClient from '@/app/blog/BlogClient'
 import { getGermanGuides, deCategoryMeta, blogUI } from './data'
 
 export const metadata: Metadata = {
-  title: 'Steuerrückerstattung Australien Blog - WHV Steuer-Guides für Backpacker',
-  description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. Alles zu WHV-Steuererklärung, TFN, Super (DASP), ABN, 417/462 Visum - so holst du dir deine Steuern in Australien zurück.',
+  title: 'Steuerrückerstattung Australien Blog – WHV Steuer-Guides für Backpacker',
+  description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. Alles zu WHV-Steuererklärung, TFN, Super (DASP), ABN, 417/462 Visum – so holst du dir deine Steuern in Australien zurück.',
   keywords: [
     'Steuerrückerstattung Australien Blog',
     'WHV Steuerrückerstattung Guide',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Steuerrückerstattung Australien Blog - WHV Steuer-Guides',
+    title: 'Steuerrückerstattung Australien Blog – WHV Steuer-Guides',
     description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. So holst du dir deine Steuern zurück.',
     url: `${SITE_URL}/de/blog`,
     siteName: 'Working Holiday Tax',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Steuerrückerstattung Australien Blog - WHV Guides',
+    title: 'Steuerrückerstattung Australien Blog – WHV Guides',
     description: 'Praktische Artikel zur Steuerrückerstattung in Australien für Backpacker.',
   },
   robots: {

@@ -4,7 +4,7 @@ import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Mandantenvereinbarung | Working Holiday Tax',
-  description: 'Mandantenvereinbarung von Working Holiday Tax - Vertragsbedingungen für unsere Steuerdienstleistungen.',
+  description: 'Mandantenvereinbarung von Working Holiday Tax – Vertragsbedingungen für unsere Steuerdienstleistungen.',
   alternates: {
     canonical: '/de/client-agreement',
     languages: {

@@ -7,8 +7,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'Super-Rückerstattung (DASP) für Working Holiday Maker - Australien',
-  description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise als Working Holiday Maker (417/462). 12 % deines Lohns wurden in Super eingezahlt - per DASP-Antrag bekommst du es zurück.',
+  title: 'Super-Rückerstattung (DASP) für Working Holiday Maker – Australien',
+  description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise als Working Holiday Maker (417/462). 12 % deines Lohns wurden in Super eingezahlt – per DASP-Antrag bekommst du es zurück.',
   keywords: [
     'Super-Rückerstattung Australien',
     'Super zurück Australien',
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/superannuation`,
     siteName: 'Working Holiday Tax',
-    title: 'Super-Rückerstattung (DASP) für Working Holiday Maker - Australien',
-    description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise. 12 % deines Lohns wurden eingezahlt - per DASP zurück.',
+    title: 'Super-Rückerstattung (DASP) für Working Holiday Maker – Australien',
+    description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise. 12 % deines Lohns wurden eingezahlt – per DASP zurück.',
   },
   twitter: {
     card: 'summary_large_image',
@@ -120,7 +120,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/superannuation#service`,
   name: 'DASP Superannuation Auszahlung',
-  description: 'Wir holen deine in Australien angesparte Superannuation zurück (DASP) nach deiner Abreise - auf dein Konto weltweit.',
+  description: 'Wir holen deine in Australien angesparte Superannuation zurück (DASP) nach deiner Abreise – auf dein Konto weltweit.',
   serviceType: 'DASP Application',
   category: 'Superannuation Withdrawal Service',
   url: `${SITE_URL}/de/superannuation`,
@@ -170,7 +170,7 @@ export default function GermanSuperannuationPage() {
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+          <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
             <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
             <span aria-hidden="true" style={{ color:'rgba(10,15,13,0.18)' }}>/</span>

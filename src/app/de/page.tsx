@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten erledigen wir deine Steuererklärung, TFN, Super (DASP) und ABN - komplett online.',
+    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten erledigen wir deine Steuererklärung, TFN, Super (DASP) und ABN – komplett online.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Steuerrückerstattung Australien Working Holiday Maker - Backpacker Steuer 417 462 Visum' }],
   },
   twitter: {
@@ -149,7 +149,7 @@ export default async function GermanHomePage() {
     '@id': `${SITE_URL}/de/#webpage`,
     url: `${SITE_URL}/de`,
     name: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuerrückerstattung Australien unter Aufsicht eines registrierten Steueragenten - Working Holiday Maker auf 417/462 Visum. TFN, Steuererklärung, Super (DASP) und ABN - alles online erledigt.',
+    description: 'Steuerrückerstattung Australien unter Aufsicht eines registrierten Steueragenten – Working Holiday Maker auf 417/462 Visum. TFN, Steuererklärung, Super (DASP) und ABN – alles online erledigt.',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },

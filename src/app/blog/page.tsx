@@ -24,6 +24,12 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: `${SITE_URL}/blog`,
+    languages: {
+      'en-AU': `${SITE_URL}/blog`,
+      'de': `${SITE_URL}/de/blog`,
+      'ja': `${SITE_URL}/ja/blog`,
+      'x-default': `${SITE_URL}/blog`,
+    },
   },
   openGraph: {
     title: 'Working Holiday Tax Refund Blog - WHV Tax Guides',

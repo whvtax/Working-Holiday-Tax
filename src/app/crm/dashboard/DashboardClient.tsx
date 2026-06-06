@@ -238,6 +238,18 @@ export default function DashboardClient() {
     return now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
   })
   const [checkinFilter, setCheckinFilter] = useState<'all'|'done'|'pending'>('all')
+  // Dismissed birthday reminders — persisted so 'Done' survives reloads (keyed per client+occurrence)
+  const [dismissedBdays, setDismissedBdays] = useState<Set<string>>(() => {
+    if (typeof window === 'undefined') return new Set()
+    try { return new Set(JSON.parse(localStorage.getItem('whv_dismissed_bdays') || '[]')) } catch { return new Set() }
+  })
+  const dismissBday = useCallback((bkey: string) => {
+    setDismissedBdays(prev => {
+      const next = new Set(prev); next.add(bkey)
+      try { localStorage.setItem('whv_dismissed_bdays', JSON.stringify([...next])) } catch {}
+      return next
+    })
+  }, [])
   const [taskView, setTaskView]   = useState<'list'|'detail'>('list')
   const [tasks, setTasks]         = useState<Task[]>([])
   const [clients, setClients]     = useState<Client[]>([])
@@ -1456,8 +1468,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   }
                   const days = Math.round((bday.getTime() - today.getTime()) / 86400000)
                   if (days < -1 || days > 7) return null
-                  return { client: c, days }
-                }).filter((x): x is {client: Client, days: number} => x !== null)
+                  const bkey = `${c.id}:${bday.getFullYear()}-${month}-${day}`
+                  if (dismissedBdays.has(bkey)) return null
+                  return { client: c, days, bkey }
+                }).filter((x): x is {client: Client, days: number, bkey: string} => x !== null)
                   .sort((a,b) => a.days - b.days)
                 if (upcoming.length === 0) return null
                 const fmtDays = (d:number) => d===0 ? 'today! 🎉' : d===1 ? 'tomorrow' : d===-1 ? 'yesterday' : `in ${d} days`
@@ -1467,7 +1481,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:700,color:'#9d174d',marginBottom:6}}>{upcoming.length} birthday{upcoming.length!==1?'s':''} this week</div>
                       <div style={{display:'flex',flexDirection:'column' as const,gap:6}}>
-                        {upcoming.map(({client:c,days})=>{
+                        {upcoming.map(({client:c,days,bkey})=>{
                           const sanitized = (c.whatsapp||'').replace(/[^0-9+]/g,'')
                           const firstName = c.fullName.split(' ')[0] || 'there'
                           const msg = `Happy birthday ${firstName}! 🎉🎂 Wishing you an amazing year ahead — Working Holiday Tax`
@@ -1481,6 +1495,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                   🎁 Send wish
                                 </a>
                               )}
+                              <button type="button" onClick={()=>dismissBday(bkey)} title="Mark as done — dismiss this reminder"
+                                style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:600,padding:'3px 8px',background:'#fff',color:'#9d174d',border:'1px solid #f9a8d4',borderRadius:6,cursor:'pointer',whiteSpace:'nowrap' as const}}>
+                                ✓ Done
+                              </button>
                             </div>
                           )
                         })}
@@ -2049,7 +2067,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
           {/* ── CLIENTS LIST ── */}
           {view==='clients' && !activeClient && (
-            <div style={S.page}>
+            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
+              <div style={{padding:'26px 26px 8px',flexShrink:0}}>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>
                   <h1 style={S.pgTitle as React.CSSProperties}>Clients</h1>
@@ -2193,6 +2212,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </button>
                 )}
               </div>
+              </div>{/* end fixed header */}
+              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 24px'}}>
               {/* ── Refund summary bar (reactive to all filters) ── */}
               {visibleClients.length>0 && (()=>{
                 const totalTaxRefund = visibleClients.reduce((sum,c)=>{
@@ -2391,12 +2412,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </button>
                 </div>
               )}
+              </div>{/* end scroll */}
             </div>
           )}
 
           {/* ── ARCHIVE ── */}
           {view==='archive' && (
-            <div style={{...S.page, background:'linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%)', minHeight:'100vh'}}>
+            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden',background:'linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%)'}}>
+              <div style={{padding:'26px 26px 8px',flexShrink:0}}>
               {/* Header */}
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>
@@ -2459,6 +2482,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </button>
                 )}
               </div>
+              </div>{/* end fixed header */}
+              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 24px'}}>
               {/* Table */}
               {visibleArchived.length===0?(
                 <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div>
@@ -2509,6 +2534,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   </table>
                 </div>
               )}
+              </div>{/* end scroll */}
             </div>
           )}
 

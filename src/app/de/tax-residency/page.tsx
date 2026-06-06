@@ -151,7 +151,7 @@ export default function GermanTaxResidencyPage() {
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-14 lg:pb-10">
 
             {/* Breadcrumbs */}
-            <nav aria-label="Breadcrumb" className="mb-5 lg:mb-6">
+            <nav aria-label="Brotkrümelnavigation" className="mb-5 lg:mb-6">
               <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
                 <li>
                   <Link href="/de" style={{ color: '#587066' }}>Startseite</Link>

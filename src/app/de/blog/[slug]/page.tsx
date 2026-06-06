@@ -1,4 +1,5 @@
 import { SITE_URL } from '@/lib/constants'
+import { catLabelDe } from '@/lib/category-labels'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -392,7 +393,7 @@ export default function GermanGuidePage({ params }: Props) {
     dateModified: guide.date,
     author: {
       '@type': 'Organization',
-      '@id': `${SITE_URL}/#organization`,
+      '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
       description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462).',
@@ -408,7 +409,7 @@ export default function GermanGuidePage({ params }: Props) {
     },
     publisher: {
       '@type': 'Organization',
-      '@id': `${SITE_URL}/#organization`,
+      '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
       logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon-512.png` },
@@ -548,7 +549,7 @@ export default function GermanGuidePage({ params }: Props) {
               {categoryInfo && (
                 <>
                   <Link href={`/de/blog/category/${categoryInfo.slug}`} style={{ color: '#587066', textDecoration: 'none' }}>
-                    {categoryInfo.category}
+                    {catLabelDe(categoryInfo.category)}
                   </Link>
                   <span>/</span>
                 </>
@@ -577,7 +578,7 @@ export default function GermanGuidePage({ params }: Props) {
                           border: `1px solid ${categoryColors.border}`,
                         }}
                       >
-                        {guide.category}
+                        {catLabelDe(guide.category)}
                       </Link>
                       <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                     </>
@@ -659,7 +660,7 @@ export default function GermanGuidePage({ params }: Props) {
                             letterSpacing: '0.02em',
                             border: `1px solid ${gColors.border}`,
                           }}>
-                            {g.category}
+                            {catLabelDe(g.category)}
                           </span>
                           <span style={{ fontSize: '11px', color: '#8AADA3' }}>{g.readTime} Min. Lesezeit</span>
                         </div>
@@ -681,7 +682,7 @@ export default function GermanGuidePage({ params }: Props) {
                     href={`/de/blog/category/${categoryInfo.slug}`}
                     style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                   >
-                    Alle {categoryInfo.category}-Artikel ansehen →
+                    Alle {catLabelDe(categoryInfo.category)}-Artikel ansehen →
                   </Link>
                 </div>
               )}

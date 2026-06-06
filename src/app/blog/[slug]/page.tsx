@@ -223,11 +223,13 @@ export default function GuidePage({ params }: Props) {
     dateModified: guide.date,
     author: {
       '@type': 'Organization',
+      '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
     },
     publisher: {
       '@type': 'Organization',
+      '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
       logo: {

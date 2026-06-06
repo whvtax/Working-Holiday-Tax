@@ -7,7 +7,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'ABN-Registrierung für Working Holiday Visainhaber in Australien',
-  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten - einfach, schnell, online.',
+  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten – einfach, schnell, online.',
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
@@ -96,7 +96,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/abn#service`,
   name: 'ABN-Registrierung für Working Holiday Maker',
-  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten - Uber, Lieferdienste, freiberufliche Tätigkeiten.',
+  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten – Uber, Lieferdienste, freiberufliche Tätigkeiten.',
   serviceType: 'ABN Registration',
   category: 'Business Registration Service',
   url: `${SITE_URL}/de/abn`,
@@ -147,7 +147,7 @@ export default function ABNPageDE() {
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+          <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>

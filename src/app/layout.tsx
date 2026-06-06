@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import { headers } from 'next/headers'
 import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
@@ -292,9 +291,10 @@ const schemaOrg = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Server-render the correct <html lang> per locale (set by middleware from the
-  // URL prefix). Falls back to en-AU. NOTE: headers() opts pages into dynamic render.
-  const lang = headers().get('x-locale') || 'en-AU'
+  // Static <html lang> keeps every route statically rendered (no headers() = no
+  // forced dynamic render). The inline script below switches documentElement.lang
+  // to de/ja per URL on the client, including on client-side route changes.
+  const lang = 'en-AU'
   return (
     <html lang={lang} className={`${playfair.variable} ${dmSans.variable}`}>
       <head>

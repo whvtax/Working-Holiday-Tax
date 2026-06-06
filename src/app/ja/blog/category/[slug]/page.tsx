@@ -1,4 +1,5 @@
 import { SITE_URL } from '@/lib/constants'
+import { catLabelJa } from '@/lib/category-labels'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -130,7 +131,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
               <span aria-hidden="true">/</span>
               <Link href="/ja/blog" style={{ color: 'inherit', textDecoration: 'none' }}>ブログ</Link>
               <span aria-hidden="true">/</span>
-              <span aria-current="page" style={{ color: colors.text }}>{meta.category}</span>
+              <span aria-current="page" style={{ color: colors.text }}>{catLabelJa(meta.category)}</span>
             </nav>
 
             <div className="inline-flex items-center gap-2" style={{ marginBottom: '12px' }}>
@@ -164,7 +165,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
         <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 20px 24px' }}>
 
           <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#080F0D', marginBottom: '24px', letterSpacing: '-0.02em' }}>
-            {meta.category}の記事をすべて見る（{articles.length}件）
+            {catLabelJa(meta.category)}の記事をすべて見る（{articles.length}件）
           </h2>
 
           <div className="category-grid">
@@ -191,7 +192,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
                       letterSpacing: '0.02em',
                       border: `1px solid ${colors.border}`,
                     }}>
-                      {article.category}
+                      {catLabelJa(article.category)}
                     </span>
                     <span style={{ color: '#CDE3DB' }}>·</span>
                     <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{article.readTime}分で読めます</span>
@@ -261,7 +262,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
                       fontWeight: 600,
                     }}
                   >
-                    {c.category}
+                    {catLabelJa(c.category)}
                   </Link>
                 )
               })}

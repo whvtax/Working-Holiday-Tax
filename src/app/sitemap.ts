@@ -3,6 +3,10 @@ import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
 
 // Parse a guide date string ("1 July 2024") into a Date for accurate <lastmod>.
+// Stable last-content-update date for static & category pages, so <lastmod>
+// doesn't churn on every deploy (which a build-time new Date() would cause).
+const LAST_CONTENT_UPDATE = new Date('2026-06-01')
+
 function parseGuideDate(s: string): Date {
   const d = new Date(s)
   return isNaN(d.getTime()) ? new Date() : d
@@ -40,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // English static pages
   const englishStatic = routes.map(r => ({
     url: `${SITE_URL}${r.url}`,
-    lastModified: new Date(),
+    lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }))
@@ -50,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(r => r.translated)
     .map(r => ({
       url: r.url === '/' ? `${SITE_URL}/de` : `${SITE_URL}/de${r.url}`,
-      lastModified: new Date(),
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: r.changeFrequency,
       priority: r.priority * 0.95, // Slight priority drop vs canonical English
     }))
@@ -60,7 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(r => r.translated)
     .map(r => ({
       url: r.url === '/' ? `${SITE_URL}/ja` : `${SITE_URL}/ja${r.url}`,
-      lastModified: new Date(),
+      lastModified: LAST_CONTENT_UPDATE,
       changeFrequency: r.changeFrequency,
       priority: r.priority * 0.95,
     }))
@@ -68,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // English category pages
   const englishCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/blog/category/${c.slug}`,
-    lastModified: new Date(),
+    lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }))
@@ -76,7 +80,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // German category pages
   const germanCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/de/blog/category/${c.slug}`,
-    lastModified: new Date(),
+    lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: 'weekly' as const,
     priority: 0.76,
   }))
@@ -84,7 +88,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Japanese category pages
   const japaneseCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/ja/blog/category/${c.slug}`,
-    lastModified: new Date(),
+    lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: 'weekly' as const,
     priority: 0.76,
   }))

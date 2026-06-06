@@ -13,8 +13,9 @@ const securityHeaders = [
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
-      // Next.js requires unsafe-inline for hydration chunks; unsafe-eval for dev HMR
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      // Next.js requires unsafe-inline for hydration chunks. 'unsafe-eval' is only
+      // needed for dev HMR, so it's excluded from production builds.
+      `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
       // Tailwind inline styles + Google Fonts stylesheet
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Google Fonts files
