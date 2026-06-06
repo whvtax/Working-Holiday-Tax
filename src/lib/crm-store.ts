@@ -101,7 +101,7 @@ export function validateSession(token: string | undefined): boolean {
       const dot = (token as string).lastIndexOf('.')
       const claims = JSON.parse(Buffer.from((token as string).slice(0, dot), 'base64url').toString())
       if (typeof claims.iat === 'number' && claims.iat < _revokedBefore) return false
-    } catch { /* if decode fails, signature already passed — allow */ }
+    } catch { /* if decode fails, signature already passed - allow */ }
   }
   return true
 }

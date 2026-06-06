@@ -17,6 +17,7 @@ interface Props {
 export function CtaBand({ eyebrow = 'Ready?', heading, headingEm, sub, primaryLabel = 'Free Eligibility Check', secondaryLabel, secondaryHref = '/calculator', clipTop = false, trustLine }: Props) {
   return (
     <section className="relative overflow-hidden grid-bg py-10 sm:py-14" style={{ background: '#0B5240' }}>
+      <div className="cta-band-glow" aria-hidden="true" />
       <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
         <div className="text-center max-w-xl mx-auto px-1 relative z-10 reveal">
           <span className="section-label light center mb-3 block">{eyebrow}</span>

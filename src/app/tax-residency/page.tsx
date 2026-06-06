@@ -153,7 +153,7 @@ export default function TaxResidencyPage() {
       <main style={{ background: '#fff', minHeight: '100vh' }}>
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
-        <section className="relative overflow-hidden pt-[68px] bg-white">
+        <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-14 lg:pb-10">
 
             {/* Breadcrumbs */}

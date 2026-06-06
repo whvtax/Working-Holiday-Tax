@@ -4,7 +4,7 @@ import { CalculatorClient } from './CalculatorClient'
 
 export const metadata: Metadata = {
   title: 'Steuerrückerstattung Rechner Australien für Working Holiday Maker',
-  description: 'Berechne deine Steuerrückerstattung in Australien als Working Holiday Maker (417/462). Kostenloser Rechner mit den aktuellen WHM-Steuersätzen 2025-26. Schätze, wie viel Steuer du zurückbekommst – keine Anmeldung.',
+  description: 'Berechne deine Steuerrückerstattung in Australien als Working Holiday Maker (417/462). Kostenloser Rechner mit den aktuellen WHM-Steuersätzen 2025-26. Schätze, wie viel Steuer du zurückbekommst - keine Anmeldung.',
   keywords: [
     // Refund-focused
     'Steuerrückerstattung Rechner Australien',

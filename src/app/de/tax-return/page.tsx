@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-  description: 'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Unter Aufsicht eines registrierten Steueragenten reichen wir deine Steuererklärung online beim ATO ein – auch nach deiner Rückkehr nach Deutschland.',
+  description: 'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Unter Aufsicht eines registrierten Steueragenten reichen wir deine Steuererklärung online beim ATO ein - auch nach deiner Rückkehr nach Deutschland.',
   keywords: [
     'Steuerrückerstattung Australien',
     'Steuerrückerstattung Australien Working Holiday',
@@ -50,12 +50,12 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de/tax-return`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten – alles online, auch aus Deutschland.',
+    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten - alles online, auch aus Deutschland.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Steuerrückerstattung Australien | WHV Steuererklärung',
-    description: 'Steuerrückerstattung als Working Holiday Maker (417/462) – alles online erledigt.',
+    description: 'Steuerrückerstattung als Working Holiday Maker (417/462) - alles online erledigt.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -143,7 +143,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/tax-return#service`,
   name: 'Australische Steuererklärung für Working Holiday Maker',
-  description: 'Komplette Bearbeitung deiner australischen Steuererklärung – Vorbereitung, Optimierung und Einreichung beim ATO unter Aufsicht eines registrierten Steueragenten.',
+  description: 'Komplette Bearbeitung deiner australischen Steuererklärung - Vorbereitung, Optimierung und Einreichung beim ATO unter Aufsicht eines registrierten Steueragenten.',
   serviceType: 'Tax Return Preparation',
   category: 'Tax Preparation Service',
   url: `${SITE_URL}/de/tax-return`,
@@ -170,7 +170,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'So reichst du deine Working Holiday Steuererklärung in Australien ein',
-  description: 'Schritt-für-Schritt-Anleitung für Working Holiday Maker, wie du deine australische Steuererklärung beim ATO einreichst – aus Australien oder aus dem Ausland.',
+  description: 'Schritt-für-Schritt-Anleitung für Working Holiday Maker, wie du deine australische Steuererklärung beim ATO einreichst - aus Australien oder aus dem Ausland.',
   totalTime: 'P14D',
   inLanguage: 'de',
   step: STEPS.map((s, i) => ({
@@ -190,7 +190,7 @@ export default function GermanTaxReturnPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white">
+      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
           <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"

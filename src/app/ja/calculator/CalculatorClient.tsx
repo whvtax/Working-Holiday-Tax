@@ -53,7 +53,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
   return (
     <>
       {/* Page header */}
-      <section className="relative overflow-hidden pt-[68px] bg-white">
+      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
           <div className="max-w-[560px] lg:max-w-[700px] mx-auto text-center">
 
