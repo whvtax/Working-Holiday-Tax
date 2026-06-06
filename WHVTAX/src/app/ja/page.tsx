@@ -328,10 +328,8 @@ export default async function JapaneseHomePage() {
             style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.12, letterSpacing: '-0.025em', marginBottom: '14px' }}>
             {/* Desktop */}
             <span style={{ display: 'block' }}>オーストラリアの</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン、</span>
-              <span style={{ display: 'block' }}>おまかせください。</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン</span>
-            </span>
+            <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン、</span>
+            <span style={{ display: 'block' }}>おまかせください。</span>
           </h1>
 
           <p className="font-light mx-auto"

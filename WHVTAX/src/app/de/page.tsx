@@ -296,9 +296,7 @@ export default async function GermanHomePage() {
             style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.12, letterSpacing: '-0.025em', marginBottom: '14px' }}>
             {/* Desktop */}
             <span style={{ display: 'block' }}>Steuererklärung Australien?</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>Wir kümmern uns drum.</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>Working Holiday Maker</span>
-            </span>
+            <span style={{ display: 'block', color: '#0B5240' }}>Wir kümmern uns drum.</span>
           </h1>
 
           <p className="font-light mx-auto"
