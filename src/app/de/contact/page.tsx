@@ -50,7 +50,7 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten (Mo-Fr, 9-18 Uhr AEST) antworten wir meistens innerhalb einer Stunde. Außerhalb der Geschäftszeiten melden wir uns gleich am nächsten Morgen.',
+    answer: 'Während der Geschäftszeiten (Mo-Fr, 9-18 Uhr AEST/AEDT) antworten wir meistens innerhalb einer Stunde. Außerhalb der Geschäftszeiten melden wir uns gleich am nächsten Morgen.',
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',
@@ -331,7 +331,7 @@ export default function GermanContactPage() {
               Geschäftszeiten
             </p>
             <p className="contact-hours-detail">
-              Montag bis Freitag, 9-18 Uhr AEST<br />
+              Montag bis Freitag, 9-18 Uhr AEST/AEDT<br />
               <span style={{ color: '#8AADA3' }}>Antwort innerhalb einer Stunde während der Geschäftszeiten</span>
             </p>
           </div>

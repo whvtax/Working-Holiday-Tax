@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
     }
 
     const safeName = filename.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80)
-    // Use a UUID for the random portion - Math.random() can collide under
+    // Use a UUID for the random portion — Math.random() can collide under
     // heavy concurrent uploads (the tax form may upload 20+ files in parallel
     // with retries) since 5 base-36 chars only gives ~60M combinations.
     const pathname = `tax-form/invoices/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`

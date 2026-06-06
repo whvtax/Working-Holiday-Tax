@@ -49,14 +49,14 @@ export function Footer() {
     : locale === 'ja'
     ? {
         tagline: 'オーストラリアの税金、まるごと対応。',
-        intro: 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー返金、ABN登録をすべて代行します。',
+        intro: 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー受取、ABN登録をすべて代行します。',
         askUs: 'お気軽にご相談ください',
         services: 'サービス',
         serviceLinks: [
           { label: 'TFN申請',           href: '/ja/tfn' },
           { label: 'ABN登録',           href: '/ja/abn' },
           { label: 'タックスリターン',   href: '/ja/tax-return' },
-          { label: 'スーパー返金（DASP）', href: '/ja/superannuation' },
+          { label: 'スーパー受取（DASP）', href: '/ja/superannuation' },
           { label: 'メディケア税免除',   href: '/ja/medicare' },
         ],
         learn: '記事・ガイド',
@@ -64,7 +64,7 @@ export function Footer() {
           { label: 'ブログ',                   href: '/ja/blog' },
           { label: 'TFNの記事',                href: '/ja/blog/category/tfn' },
           { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
-          { label: 'スーパー返金の記事',       href: '/ja/blog/category/super' },
+          { label: 'スーパー受取の記事',       href: '/ja/blog/category/super' },
           { label: '労働者の権利',             href: '/ja/blog/category/work-rights' },
           { label: '税務上の居住者判定',       href: '/ja/tax-residency' },
         ],

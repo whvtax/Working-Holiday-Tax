@@ -7,7 +7,7 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
+  title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
   description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションを返金として受け取り。給与の12%がスーパーに積み立てられています。DASP申請を完全代行します。',
   keywords: [
     // Refund-focused
@@ -55,12 +55,12 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/superannuation`,
     siteName: 'Working Holiday Tax',
-    title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
-    description: 'オーストラリアのスーパー返金をDASPで受け取り。ワーホリ専門のチームが登録税理士の監督のもとですべて代行します。',
+    title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
+    description: 'オーストラリアのスーパー受取をDASPで受け取り。ワーホリ専門のチームが登録税理士の監督のもとですべて代行します。',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
+    title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
     description: 'オーストラリアを離れる際、スーパーを返金として受け取り。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -88,11 +88,11 @@ const faqs = [
     answer: 'ABN業務（請負業者・個人事業主）の場合、原則として雇用主からスーパー貢献はありません。スーパーは「従業員（TFNでの雇用）」として働いた期間にのみ積み立てられます。ただしABN業務でも、実態が雇用関係に近い場合はスーパーの対象となることがあるので、当社にご相談ください。',
   },
   {
-    question: '日本に帰国後でもスーパー返金（DASP）は申請できますか？',
-    answer: 'はい、日本に帰国された後でも世界中どこからでも申請できます。当社が日本語ですべての手続きを代行し、スーパー返金は直接日本の銀行口座に振り込むことが可能です。何年経っていても申請可能です。',
+    question: '日本に帰国後でもスーパー受取（DASP）は申請できますか？',
+    answer: 'はい、日本に帰国された後でも世界中どこからでも申請できます。当社が日本語ですべての手続きを代行し、スーパー受取は直接日本の銀行口座に振り込むことが可能です。何年経っていても申請可能です。',
   },
   {
-    question: 'DASPスーパー返金には税金がかかりますか？',
+    question: 'DASPスーパー受取には税金がかかりますか？',
     answer: 'はい、DASPの支払いには、ATOが定めた固定税率で課税され、振込前に源泉徴収されます。お受け取りになるのはこの税引き後の純額です。具体的な税率はビザの種類や支払われるスーパーの種類によって異なります。',
   },
 ]

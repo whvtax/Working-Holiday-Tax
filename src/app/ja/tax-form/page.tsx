@@ -4,7 +4,7 @@ import { FormClient } from '@/app/tax-form/FormClient'
 
 export const metadata: Metadata = {
   title: 'タックスリターンフォーム | Working Holiday Tax',
-  description: 'ワーキングホリデーメーカーとしてのオーストラリアタックスリターンをオンラインで提出。登録税理士の監督のもとで通常24時間以内にATOへ提出します。',
+  description: 'ワーキングホリデーメーカーとしてのオーストラリアタックスリターンをオンラインで提出。登録税理士が通常24時間以内にATOへ提出します。',
   keywords: [
     'タックスリターン 申請',
     'タックスリターン フォーム 日本語',

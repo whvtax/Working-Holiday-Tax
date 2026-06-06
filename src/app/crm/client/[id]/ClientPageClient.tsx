@@ -238,7 +238,7 @@ export default function ClientPageClient({ id }: { id: string }) {
           </div>
           <textarea
             className="cp-notes-textarea"
-            placeholder="Add private notes about this client - follow-ups, reminders, anything relevant..."
+            placeholder="Add private notes about this client — follow-ups, reminders, anything relevant..."
             value={notes}
             onChange={e => { setNotes(e.target.value); setNotesSaved(false) }}
           />
@@ -281,7 +281,7 @@ function Row({label,value,field,editing,form,setForm,type='text',ltr=false}:{
       <span className="cp-lbl">{label}</span>
       {editing
         ? <input type={type} className="cp-input" value={(form[field] as string)??''} onChange={e=>setForm({...form,[field]:e.target.value})} style={{direction:ltr?'ltr':'inherit'}}/>
-        : <span className={`cp-val${ltr?' ltr':''}${!value?' empty':''}`}>{value||'-'}</span>
+        : <span className={`cp-val${ltr?' ltr':''}${!value?' empty':''}`}>{value||'—'}</span>
       }
     </div>
   )

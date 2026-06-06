@@ -119,6 +119,21 @@ const serviceSchema = {
   },
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'So registrierst du eine ABN als Working Holiday Maker',
+  description: 'Schritt-für-Schritt-Anleitung, wie du als Working Holiday Visuminhaber eine Australian Business Number (ABN) für Selbstständigen- oder Vertragsarbeit registrierst.',
+  totalTime: 'PT15M',
+  inLanguage: 'de',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
+}
+
 
 export default function ABNPageDE() {
   return (
@@ -126,6 +141,7 @@ export default function ABNPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">

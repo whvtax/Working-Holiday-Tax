@@ -98,7 +98,7 @@ export default function Image() {
 
         {/* Service pills */}
         <div style={{ display: 'flex', gap: '16px' }}>
-          {['TFN申請', 'タックスリターン', 'スーパー返金', 'ABN登録'].map((label) => (
+          {['TFN申請', 'タックスリターン', 'スーパー受取', 'ABN登録'].map((label) => (
             <div
               key={label}
               style={{

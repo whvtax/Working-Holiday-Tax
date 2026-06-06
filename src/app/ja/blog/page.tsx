@@ -5,7 +5,7 @@ import { getJapaneseGuides, jaCategoryMeta, blogUI } from './data'
 
 export const metadata: Metadata = {
   title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ完全ガイド',
-  description: 'オーストラリアのワーキングホリデーで知っておきたいタックスリターン還付金、TFN、ABN、スーパー返金（DASP）、労働者の権利を実用的に解説。還付金を取り戻すための情報を網羅。',
+  description: 'オーストラリアのワーキングホリデーで知っておきたいタックスリターン還付金、TFN、ABN、スーパー受取（DASP）、労働者の権利を実用的に解説。還付金を取り戻すための情報を網羅。',
   keywords: [
     // Refund-focused
     'オーストラリア タックスリターン 還付金 ブログ',
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ完全ガイド',
-    description: 'オーストラリアのワーキングホリデーのタックスリターン還付金、TFN、ABN、スーパー返金まで、実用情報をわかりやすくお届けします。',
+    description: 'オーストラリアのワーキングホリデーのタックスリターン還付金、TFN、ABN、スーパー受取まで、実用情報をわかりやすくお届けします。',
     url: `${SITE_URL}/ja/blog`,
     siteName: 'Working Holiday Tax',
     locale: 'ja_JP',
@@ -111,7 +111,7 @@ export default function JapaneseBlogPage() {
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
     logo: `${SITE_URL}/icon-512.png`,
-    description: 'オーストラリアのワーキングホリデー保持者向け税務サービス。登録税理士の監督のもと、TFN申請、タックスリターン、DASPスーパー返金、ABN登録を提供しています。',
+    description: 'オーストラリアのワーキングホリデー保持者向け税務サービス。登録税理士の監督のもと、TFN申請、タックスリターン、DASPスーパー受取、ABN登録を提供しています。',
     areaServed: { '@type': 'Country', name: 'Australia' },
     knowsAbout: [
       'タックスファイルナンバー（TFN）申請',

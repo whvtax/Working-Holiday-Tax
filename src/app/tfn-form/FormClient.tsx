@@ -323,7 +323,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <div className="radio-group">
               {(['Female','Male'] as const).map(g => (
                 <label key={g} className={`radio-pill${gender===g?' selected':''}`}>
-                  <input type="radio" name="gender" value={g} checked={gender===g} onChange={()=>{ setGender(g); setErrors(p=>({...p,gender:''})) }} className="vh-input"/>
+                  <input type="radio" name="gender" value={g} checked={gender===g} onChange={()=>{ setGender(g); setErrors(p=>({...p,gender:''})) }} className="hidden"/>
                   {g}
                 </label>
               ))}
@@ -334,7 +334,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <div className="radio-group">
               {(['Single','Married'] as const).map(m => (
                 <label key={m} className={`radio-pill${marital===m?' selected':''}`}>
-                  <input type="radio" name="marital" value={m} checked={marital===m} onChange={()=>{ setMarital(m); setErrors(p=>({...p,marital:''})) }} className="vh-input"/>
+                  <input type="radio" name="marital" value={m} checked={marital===m} onChange={()=>{ setMarital(m); setErrors(p=>({...p,marital:''})) }} className="hidden"/>
                   {m}
                 </label>
               ))}
@@ -358,7 +358,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div className={`declaration-box${errors.declared?' decl-error':''}`}>
             <p className="decl-text">{formStrings.declTFN[lang]}</p>
             <label className="check-row">
-              <input type="checkbox" checked={declared} onChange={e=>{ setDeclared(e.target.checked); setErrors(p=>({...p,declared:''})) }} className="vh-input"/>
+              <input type="checkbox" checked={declared} onChange={e=>{ setDeclared(e.target.checked); setErrors(p=>({...p,declared:''})) }} className="hidden"/>
               <div className={`check-box${declared?' checked':''}`}>{declared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
               <span className="check-label">{T('declConfirm')}</span>
             </label>
@@ -369,7 +369,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
           <div className={`declaration-box${errors.terms?' decl-error':''}`} style={{marginTop:10}}>
             <label className="check-row">
-              <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="vh-input"/>
+              <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
               <span className="check-label">{T('acceptTerms')} <a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">{T('clientAgreement')}</a> {T('and')} <a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">{T('privacyPolicy')}</a></span>
             </label>

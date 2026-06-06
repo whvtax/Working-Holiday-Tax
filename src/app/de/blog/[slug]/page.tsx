@@ -36,8 +36,8 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   'Tax Return': [
     'Steuerrückerstattung Australien Working Holiday',
     'WHV Steuererklärung',
-    'Steuerrückzahlung 417 Visum',
-    'Steuerrückzahlung 462 Visum',
+    'Steuerrückerstattung 417 Visum',
+    'Steuerrückerstattung 462 Visum',
     'Steuer zurück Australien Backpacker',
     'Steuererklärung Australien nach Rückkehr',
   ],
@@ -389,7 +389,7 @@ export default function GermanGuidePage({ params }: Props) {
     timeRequired: `PT${readTime}M`,
     inLanguage: articleLang,
     datePublished: guide.date,
-    dateModified: '2026-06-01',
+    dateModified: guide.date,
     author: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#organization`,

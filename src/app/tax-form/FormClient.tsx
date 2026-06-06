@@ -333,7 +333,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
-    // Combine all uploaded URLs (core files only - invoices are sent by email)
+    // Combine all uploaded URLs (core files only — invoices are sent by email)
     const allFileUrls = [...Object.values(coreUrls)]
     if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 
@@ -478,15 +478,15 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="success-title">Thank you, {firstName}! 🎉</h1>
-          <p className="success-body">We've received your details and will be in touch shortly.</p>
+          <h1 className="success-title">{T('thankYou')}, {firstName}! 🎉</h1>
+          <p className="success-body">{T('successBody')}</p>
 
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.25)"/>
               <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3l.46 1.35c.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
             </svg>
-            Message us on WhatsApp
+            {T('msgWhatsApp')}
           </a>
 
           <div className="success-divider" />
@@ -579,7 +579,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 {(['Single', 'Married'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${marital === opt ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="marital" value={opt} checked={marital === opt}
-                      onChange={() => { setMarital(opt); setErrors(p => ({...p, marital: ''})) }} className="vh-input" />
+                      onChange={() => { setMarital(opt); setErrors(p => ({...p, marital: ''})) }} className="hidden" />
                     <div className={`radio-dot ${marital === opt ? 'radio-dot-active' : ''}`} />
                     {opt}
                   </label>
@@ -608,7 +608,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${hasAbn === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="hasAbn" value={opt.val} checked={hasAbn === opt.val}
-                      onChange={() => { setHasAbn(opt.val); setErrors(p => ({...p, hasAbn: ''})) }} className="vh-input" />
+                      onChange={() => { setHasAbn(opt.val); setErrors(p => ({...p, hasAbn: ''})) }} className="hidden" />
                     <div className={`radio-dot ${hasAbn === opt.val ? 'radio-dot-active' : ''}`} />
                     {opt.label}
                   </label>
@@ -671,7 +671,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="hasExpenses" value={opt} checked={hasExpenses === opt}
-                      onChange={() => { setHasExpenses(opt); setErrors(p => ({...p, hasExpenses: ''})) }} className="vh-input" />
+                      onChange={() => { setHasExpenses(opt); setErrors(p => ({...p, hasExpenses: ''})) }} className="hidden" />
                     <div className={`radio-dot ${hasExpenses === opt ? 'radio-dot-active' : ''}`} />
                     {opt === 'yes' ? 'Yes' : 'No'}
                   </label>
@@ -683,10 +683,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div style={{ background: '#EAF6F1', border: '1.5px solid #A7D9C5', borderRadius: 14, padding: '16px', marginTop: 10 }}>
                 <div style={{ fontSize: 20, marginBottom: 8, textAlign: 'center' }}>📧</div>
                 <p style={{ fontSize: 13, fontWeight: 700, color: '#0B5240', marginBottom: 6, textAlign: 'center' }}>
-                  Please email your invoices / receipts
+                  {T('emailInvoicesTitle')}
                 </p>
                 <p style={{ fontSize: 12, color: '#587066', lineHeight: 1.65, textAlign: 'center', marginBottom: 10 }}>
-                  Send all your invoices and receipts to:
+                  {T('emailInvoicesTo')}
                 </p>
                 <div style={{ background: '#fff', border: '1.5px solid #C8EAE0', borderRadius: 10, padding: '10px 14px', textAlign: 'center', marginBottom: 10 }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: '#0B5240', letterSpacing: '0.01em' }}>
@@ -694,8 +694,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   </span>
                 </div>
                 <p style={{ fontSize: 11, color: '#587066', lineHeight: 1.65, textAlign: 'center' }}>
-                  Use your <strong>full name</strong> as the email subject.<br />
-                  You can send this before or after submitting the form.
+                  {T('emailSubjectName')}<br />
+                  {T('emailSendAnytime')}
                 </p>
               </div>
             )}
@@ -731,7 +731,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                           onChange={() => {
                             setTaxYears(prev => isSelected ? prev.filter(y => y !== code) : [...prev, code])
                             setErrors(p => ({...p, taxYear: ''}))
-                          }} className="vh-input" />
+                          }} className="hidden" />
                         <div style={{display:'flex',alignItems:'center',gap:8,width:'100%'}}>
                           <div className={`check-box${isSelected ? ' checked' : ''}`} style={{flexShrink:0}}>
                             {isSelected && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
@@ -779,7 +779,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 ] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
-                      onChange={() => { setTaxStatus(opt.val); setErrors(p => ({...p, taxStatus: ''})) }} className="vh-input" />
+                      onChange={() => { setTaxStatus(opt.val); setErrors(p => ({...p, taxStatus: ''})) }} className="hidden" />
                     <div className={`radio-dot ${taxStatus === opt.val ? 'radio-dot-active' : ''}`} />
                     {opt.label}
                   </label>
@@ -799,7 +799,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   )}
                 </p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
-                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="vh-input"/>
+                  <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="check-label">{T('declConfirm')}</span>
                 </label>
@@ -810,7 +810,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div className={`declaration-box${errors.declaredIncome ? ' decl-error' : ''}`}>
                 <p className="decl-text">{T('declTaxIncome')}</p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
-                  <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="vh-input"/>
+                  <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
                   <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="check-label">{T('declConfirm')}</span>
                 </label>

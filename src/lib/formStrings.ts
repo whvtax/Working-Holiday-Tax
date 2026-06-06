@@ -17,7 +17,7 @@ export const formStrings = {
   englishOnlyNotice: {
     en: 'Please fill out the form in English only.',
     de: 'Bitte fülle alle Felder auf Englisch aus. Die deutsche Übersetzung ist nur zur Hilfe.',
-    ja: 'すべての項目を英語でご記入ください。日本語は参考用の表示です。',
+    ja: 'すべての項目を英語でご記入ください。日本語の表示は補助のみです。',
   },
   englishOnlyShort: {
     en: 'English only',
@@ -28,12 +28,12 @@ export const formStrings = {
   // ─ Section titles ─
   sectionPersonal:     { en: 'Personal details',          de: 'Persönliche Daten',          ja: '個人情報' },
   sectionDocuments:    { en: 'Documents',                 de: 'Dokumente',                  ja: '書類' },
-  sectionDeclaration:  { en: 'Declaration',               de: 'Erklärung',                  ja: '確認事項' },
+  sectionDeclaration:  { en: 'Declaration',               de: 'Erklärung',                  ja: '宣言' },
   sectionWork:         { en: 'Work details',              de: 'Arbeitsdaten',               ja: '就労情報' },
   sectionTax:          { en: 'Tax details',               de: 'Steuerdaten',                ja: '税務情報' },
   sectionBusiness:     { en: 'Business details',          de: 'Geschäftsdaten',             ja: '事業情報' },
   sectionBank:         { en: 'Bank details',              de: 'Bankverbindung',             ja: '銀行情報' },
-  sectionSuper:        { en: 'Super fund details',        de: 'Super-Fonds-Daten',            ja: 'スーパーファンド情報' },
+  sectionSuper:        { en: 'Super fund details',        de: 'Superfondsdaten',            ja: 'スーパーファンド情報' },
   sectionEmployers:    { en: 'Employers',                 de: 'Arbeitgeber',                ja: '雇用主情報' },
 
   // ─ Field labels - shared ─
@@ -41,7 +41,7 @@ export const formStrings = {
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
-  email:               { en: 'Email address',                      de: 'E-Mail-Adresse',             ja: 'メールアドレス' },
+  email:               { en: 'Email address',                      de: 'E-Mailadresse',             ja: 'メールアドレス' },
   dob:                 { en: 'Date of birth',                      de: 'Geburtsdatum',              ja: '生年月日' },
   whatsapp:            { en: 'WhatsApp Number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
@@ -51,7 +51,7 @@ export const formStrings = {
   howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?', ja: '当社をどこで知りましたか？' },
   selfieWithPassport:  { en: 'Selfie with passport',               de: 'Selfie mit Reisepass',      ja: 'パスポートと一緒の自撮り写真' },
   uploadSelfie:        { en: 'Upload selfie with passport',        de: 'Selfie mit Reisepass hochladen', ja: 'パスポートと一緒の自撮り写真をアップロード' },
-  passportPhoto:       { en: 'Passport photo page',                de: 'Passbildseite des Reisepasses',        ja: 'パスポートの顔写真ページ' },
+  passportPhoto:       { en: 'Passport photo page',                de: 'Reisepassfotoseite',        ja: 'パスポートの顔写真ページ' },
   visaGrant:           { en: 'Visa grant letter',                  de: 'Visa Grant Letter',         ja: 'ビザ承認レター（Visa Grant Letter）' },
   tfn:                 { en: 'Tax File Number (TFN)',              de: 'Tax File Number (TFN)',     ja: 'タックスファイルナンバー（TFN）' },
 
@@ -87,7 +87,7 @@ export const formStrings = {
     de: 'Ich bestätige, dass ich aktuell zum ersten Mal in Australien bin, meinen Namen oder mein Geschlecht nie geändert habe, kein Vermögen in Australien besitze und noch keine TFN bekommen habe.',
     ja: '現在オーストラリアに初めて滞在しており、氏名や性別の変更歴がなく、オーストラリアに資産を所有しておらず、TFNが発行されたことがないことを確認します。',
   },
-  declConfirm:         { en: 'I confirm this declaration',          de: 'Ich bestätige diese Erklärung', ja: '上記の内容に相違ありません' },
+  declConfirm:         { en: 'I confirm this declaration',          de: 'Ich bestätige diese Erklärung', ja: 'この宣言を確認します' },
   acceptTerms:         { en: 'I have read and accept the',          de: 'Ich habe Folgendes gelesen und akzeptiere die', ja: '以下を読み、同意します：' },
   clientAgreement:     { en: 'Client Agreement',                    de: 'Mandantenvereinbarung',     ja: 'クライアント規約' },
   and:                 { en: '&',                                   de: 'und die',                  ja: 'および' },
@@ -101,12 +101,18 @@ export const formStrings = {
 
   // ─ Success screen ─
   thankYou:            { en: 'Thank you',                            de: 'Vielen Dank',              ja: 'ありがとうございます' },
-  successBody:         { en: "We've received your details and will be in touch shortly.", de: 'Wir haben deine Daten erhalten und melden uns kurzfristig bei dir.', ja: 'お申し込みを受け付けました。担当者より追ってご連絡いたします。' },
+  successBody:         { en: "We've received your details and will be in touch shortly.", de: 'Wir haben deine Daten erhalten und melden uns kurzfristig bei dir.', ja: '情報を受領しました。担当者より速やかにご連絡いたします。' },
   msgWhatsApp:         { en: 'Message us on WhatsApp',              de: 'Schreib uns auf WhatsApp', ja: 'WhatsAppでメッセージを送る' },
   followUs:            { en: "Tax, Super & Workers' rights",        de: 'Steuern, Super & Arbeitsrechte', ja: '税金・スーパー・労働者の権利' },
   followSub:           { en: 'Learn one thing every day 🙋',         de: 'Jeden Tag eine Sache lernen 🙋', ja: '毎日ひとつ学びましょう 🙋' },
   followGuides:        { en: 'Free guides below ⬇️',                de: 'Kostenlose Anleitungen unten ⬇️', ja: '無料ガイドはこちら ⬇️' },
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
+
+  // ─ Expenses email block (tax form) ─
+  emailInvoicesTitle:  { en: 'Please email your invoices / receipts', de: 'Bitte sende deine Rechnungen / Belege per E-Mail', ja: '請求書・領収書をメールでお送りください' },
+  emailInvoicesTo:     { en: 'Send all your invoices and receipts to:', de: 'Sende alle Rechnungen und Belege an:', ja: 'すべての請求書・領収書を次の宛先へ送付してください：' },
+  emailSubjectName:    { en: 'Use your full name as the email subject.', de: 'Verwende deinen vollständigen Namen als E-Mail-Betreff.', ja: 'メールの件名にはフルネームをご記入ください。' },
+  emailSendAnytime:    { en: 'You can send this before or after submitting the form.', de: 'Du kannst dies vor oder nach dem Absenden des Formulars schicken.', ja: 'このメールはフォーム送信の前後どちらでも送信できます。' },
 
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
@@ -138,7 +144,7 @@ export const formStrings = {
 
   // ─ Super form specific ─
   superFundName:       { en: 'Super fund name',                     de: 'Name des Superfonds',      ja: 'スーパーファンド名' },
-  superMemberNumber:   { en: 'Super member number',                 de: 'Super-Mitgliedsnummer',     ja: 'スーパーメンバー番号' },
+  superMemberNumber:   { en: 'Super member number',                 de: 'Supermitgliedsnummer',     ja: 'スーパーメンバー番号' },
   superStartDate:      { en: 'Super fund start date',               de: 'Eröffnungsdatum des Superfonds', ja: 'スーパーファンド開始日' },
   hasLeftAustralia:    { en: 'Have you left Australia?',            de: 'Hast du Australien verlassen?', ja: 'オーストラリアを既に出国しましたか？' },
   visaStatus:          { en: 'Current visa status',                 de: 'Aktueller Visumsstatus',   ja: '現在のビザステータス' },

@@ -128,7 +128,7 @@ const FAQS = [
   },
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours (Mon-Fri, 9am-6pm AEST) we usually reply within an hour. Outside business hours, we will get back to you first thing the next morning.',
+    answer: 'During business hours (Mon-Fri, 9am-6pm AEST/AEDT) we usually reply within an hour. Outside business hours, we will get back to you first thing the next morning.',
   },
   {
     question: 'Can you help me claim my tax refund after I have already left Australia?',

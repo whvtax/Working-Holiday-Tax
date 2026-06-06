@@ -6,7 +6,6 @@ import {
   generateOtp,
 } from '@/lib/crm-store'
 import { getRedis } from '@/lib/rate-limit'
-import { getClientIp } from '@/lib/get-ip'
 import crypto from 'crypto'
 type RedisClient = import('redis').RedisClientType
 
@@ -41,19 +40,18 @@ export async function POST(req: NextRequest) {
 
     const redis = await getRedis()
     if (!redis) return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
-    const clientIp = getClientIp(req)
 
-    if (await isLockedOutRedis(redis as RedisClient, clientIp)) {
+    if (await isLockedOutRedis(redis as RedisClient)) {
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
-      const fa = await recordFailedAttemptRedis(redis as RedisClient, clientIp)
+      const fa = await recordFailedAttemptRedis(redis as RedisClient)
       if (fa.locked && ADMIN_EMAIL) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
-    await resetFailedAttemptsRedis(redis as RedisClient, clientIp)
+    await resetFailedAttemptsRedis(redis as RedisClient)
 
     const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
@@ -74,7 +72,7 @@ export async function POST(req: NextRequest) {
     console.error('[CRM login]', err)
     return NextResponse.json({ ok: false, message: 'Server error.' }, { status: 500 })
   }
-  // No disconnect() - Redis singleton stays alive for warm instance reuse
+  // No disconnect() — Redis singleton stays alive for warm instance reuse
 }
 
 async function sendOtpEmail(to: string, apiKey: string, otp: string): Promise<boolean> {
@@ -122,5 +120,5 @@ async function sendSecurityAlert(to: string, apiKey: string, attempts: number) {
       subject: '⚠️ CRM login blocked',
       html:    `<p>${attempts} failed login attempts at ${time}</p>`,
     }),
-  }).catch(() => {}) // fire and forget - don't block the login response
+  }).catch(() => {}) // fire and forget — don't block the login response
 }

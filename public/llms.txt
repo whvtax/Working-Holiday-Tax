@@ -1,6 +1,6 @@
 # Working Holiday Tax
 
-> Australian tax service for working holiday visa holders (subclass 417 and 462). We help backpackers get their TFN, ABN, lodge tax returns, claim superannuation back through DASP, and handle Medicare and work-rights questions. Supervised by a registered tax agent. Fully online, available from anywhere in the world.
+> Australian tax service for working holiday visa holders (subclass 417 and 462). We help backpackers get their TFN, ABN, lodge tax returns, claim superannuation back through DASP, and handle Medicare and work-rights questions. Supervised by a registered tax agent. Fully online, available from anywhere in the world. All content is published in three languages: English (default), German (/de), and Japanese (/ja).
 
 ## About
 
@@ -79,6 +79,36 @@ Der Blog auf https://workingholidaytax.com.au/de/blog enthält 143 Artikel in se
 - GST-Registrierungsschwelle: 75.000 $ Jahresumsatz
 - Zweites Working Holiday Visum: 88 Tage spezifizierte Regionalarbeit erforderlich
 - Drittes Working Holiday Visum: 6 Monate (179 Tage) spezifizierte Regionalarbeit erforderlich
+
+## Japanese-Language Content (日本語コンテンツ)
+
+A complete Japanese translation is available at https://workingholidaytax.com.au/ja for working holiday makers from Japan. All 143 blog articles, service pages, FAQs, and forms are professionally translated into natural Japanese (です・ます調), keeping community-standard search terms (タックスリターン, スーパー, TFN, ABN, DASP). The Japanese section mirrors the English content structure with hreflang tags linking corresponding pages.
+
+### 日本語サービスページ (Japanese Service Pages)
+
+- [TFN（タックスファイルナンバー）申請](https://workingholidaytax.com.au/ja/tfn): 世界中どこからでもTFNを申請
+- [ABN（事業者番号）登録](https://workingholidaytax.com.au/ja/abn): 個人事業主向けのABN登録
+- [タックスリターン（確定申告）](https://workingholidaytax.com.au/ja/tax-return): オーストラリアの年次確定申告を代行
+- [スーパー受取（DASP）](https://workingholidaytax.com.au/ja/superannuation): 出国後にスーパーアニュエーションを取り戻す
+- [メディケア](https://workingholidaytax.com.au/ja/medicare): ワーキングホリデー向けメディケア税の免除
+- [税務上の居住区分](https://workingholidaytax.com.au/ja/tax-residency): 税務上の居住者区分を理解する
+- [税金計算機](https://workingholidaytax.com.au/ja/calculator): 予想される還付金を計算
+- [お問い合わせ](https://workingholidaytax.com.au/ja/contact): チームに連絡する
+
+### 日本語ブログ (Japanese Blog)
+
+The Japanese blog at https://workingholidaytax.com.au/ja/blog contains the same 143 articles across six categories:
+
+- [TFN記事](https://workingholidaytax.com.au/ja/blog/category/tfn): 18 articles on Tax File Number applications and usage
+- [ABN記事](https://workingholidaytax.com.au/ja/blog/category/abn): 14 articles on Australian Business Numbers
+- [タックスリターン記事](https://workingholidaytax.com.au/ja/blog/category/tax-return): 30 articles on annual lodgment, deductions, and refunds
+- [スーパー記事](https://workingholidaytax.com.au/ja/blog/category/super): 20 articles on superannuation and DASP
+- [労働者の権利記事](https://workingholidaytax.com.au/ja/blog/category/work-rights): 43 articles on minimum wages, conditions, and protections
+- [メディケア・その他記事](https://workingholidaytax.com.au/ja/blog/category/medicare-other): 18 articles on Medicare Levy and general tax topics
+
+## Full Content Feed
+
+The full text of all 143 articles in all three languages (English, German, Japanese) is available for AI ingestion at https://workingholidaytax.com.au/llms-full.txt and the complete multilingual URL list at https://workingholidaytax.com.au/sitemap-llms.xml
 
 ## Sitemap
 

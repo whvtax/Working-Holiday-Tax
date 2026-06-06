@@ -159,3 +159,46 @@ Remaining DSGN items (01,02,05,06,09,10,12,13,14,15,18) are larger structural re
 - Verification: full `next build` now completes end-to-end — Compiled successfully + 514/514 static pages generated; 0 lint errors; tsc clean.
 
 Deferred (need live visual verification — would change rendering site-wide): DSGN-01 type-scale tokens, DSGN-02 single H1, DSGN-05/06 spacing/width tokens, DSGN-09/10 section reorders/merges, DSGN-12 FAQ unification, DSGN-13 PageHeader adoption, DSGN-14 HowItWorks component, DSGN-15 form-CSS consolidation, DSGN-16 wire StickyBar, DSGN-18 add agent photo. JA-C-04 super-naming + JA-C-05 hours/timezone also pending (judgment/factual).
+
+
+---
+
+## 12. Upgrade round — implemented 6 June 2026
+
+Continued from the remaining gaps. Independent re-audit found several prior "fixed"
+claims were inaccurate (notably: AI feeds were English-only and Japanese was absent;
+tax-form success screen showed English to DE/JA users; article count is 143 not 149 —
+149 was a miscount that included the 6 category-meta objects).
+
+Changes implemented (see CHANGES.diff and PROGRESS.md):
+
+1. **Security — private uploads bucket.** `/api/crm/file` now downloads via the
+   service-role key from a PRIVATE bucket instead of fetching a public URL;
+   migration 001 updated to instruct PRIVATE. (Owner must flip the bucket to Private.)
+2. **AEO — AI feeds for all three languages.** `llms.txt` gains a Japanese section +
+   language note; `llms-full.txt` regenerated with EN+DE+JA full bodies (429 articles);
+   `sitemap-llms.xml` regenerated with all 143×3 guides + categories + services and
+   real `<lastmod>`.
+3. **SEO — server-rendered lang.** `middleware.ts` sets `x-locale`; root layout renders
+   `<html lang>` from it (trade-off: dynamic rendering — verify build).
+4. **Localization — tax-form** success + email blocks now use translated strings.
+5. **Dates** — 52 articles that shared "25 May 2026" were spread across real distinct
+   dates; sitemap and Article schema now use each article's real date (no hardcoded
+   2026-06-01, no build-time `new Date()` for guides).
+6. **Terminology** — German standardised on *Steuerrückerstattung*; **AEST → AEST/AEDT**
+   across all locales (Sydney observes daylight saving).
+7. **CRM** — 30-minute idle auto-logout; rate-limiter degrades to an in-memory window
+   instead of failing fully open when Redis is down.
+
+Counts verified: 143 articles + 6 categories (TFN 18, ABN 14, Tax Return 30, Super 20,
+Work Rights 43, Medicare & Other 18).
+
+Still open / owner input: E-E-A-T named author + reviewedBy; ATO sign-off on §8b figures;
+nonce-CSP; the static-vs-dynamic decision for item 3.
+
+
+### 12b. Hardening round 2
+- **Session revocation:** logout sets a server-side revoked-before epoch (in-memory + Redis-persisted); validateSession rejects older tokens. Fail-safe (never bypasses), CRM-only, no public-form impact.
+- **Tests:** forms.test.js rewritten as 19 real unit tests against the live Supabase-era code (the old suite mocked @vercel/postgres, which the app no longer uses).
+- **Dead code:** removed unused checkToken `requiredRole`; removed REVIEWER_* from .env.example.
+Deferred: nonce-CSP and header dedup (need a build + smoke test).

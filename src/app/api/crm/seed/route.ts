@@ -5,7 +5,7 @@ import { validateSession } from '@/lib/crm-store'
 
 export async function POST(req: NextRequest) {
   // Double-guard: block in production AND require explicit opt-in env var
-  // Set SEED_ENABLED=true only in dev/staging - never in production
+  // Set SEED_ENABLED=true only in dev/staging — never in production
   if (process.env.NODE_ENV === 'production' || process.env.SEED_ENABLED !== 'true') {
     return NextResponse.json({ ok: false, error: 'not_available' }, { status: 404 })
   }

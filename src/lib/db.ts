@@ -118,7 +118,7 @@ export async function findExistingClient(email: string, whatsapp: string): Promi
     if (res.data && res.data.length > 0) return { id: res.data[0].id }
   }
 
-  // Search crm_tasks (active only) - same parallel strategy
+  // Search crm_tasks (active only) — same parallel strategy
   const taskQueries: PromiseLike<{ data: { client_id: string }[] | null }>[] = []
   if (e) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('email', e).limit(1))
   if (w) taskQueries.push(sb.from('crm_tasks').select('client_id').eq('done', false).ilike('whatsapp', w).limit(1))
@@ -633,7 +633,7 @@ export async function getDashboardStats(): Promise<DashboardStats> {
   }
 
   // Fallback: in-memory aggregation (works for small DBs without migration 002).
-  // WARNING: not suitable for >5,000 active clients - run migration 002 in Supabase.
+  // WARNING: not suitable for >5,000 active clients — run migration 002 in Supabase.
   console.warn('[getDashboardStats] RPC unavailable, falling back to in-memory. Run migration 002 in Supabase to scale.')
 
   const [
@@ -734,7 +734,7 @@ export async function searchClients(
   const safe = q.replace(/[\\%_]/g, ch => '\\' + ch)
   const pattern = `%${safe}%`
 
-  // Search in parallel across name, email, whatsapp - merge & dedupe
+  // Search in parallel across name, email, whatsapp — merge & dedupe
   const fields: ('full_name' | 'email' | 'whatsapp')[] = ['full_name', 'email', 'whatsapp']
   const results = await Promise.all(fields.map(f =>
     sb.from('crm_clients')

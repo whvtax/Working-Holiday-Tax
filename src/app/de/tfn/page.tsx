@@ -118,6 +118,21 @@ const serviceSchema = {
   },
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'So beantragst du eine TFN als Working Holiday Maker',
+  description: 'Schritt-f\u00fcr-Schritt-Anleitung, wie du als Working Holiday Visuminhaber eine Steuernummer (TFN) in Australien beantragst.',
+  totalTime: 'P28D',
+  inLanguage: 'de',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
+}
+
 
 export default function TFNPageDE() {
   return (
@@ -125,6 +140,7 @@ export default function TFNPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">

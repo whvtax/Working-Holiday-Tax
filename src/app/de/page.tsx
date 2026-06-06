@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     'Steuerrückerstattung Australien',
     'Steuerrückerstattung Australien Working Holiday',
     'Steuerrückerstattung Backpacker Australien',
-    'Working Holiday Steuerrückzahlung',
+    'Working Holiday Steuerrückerstattung',
     'WHV Steuerrückerstattung',
     'Steuer zurückholen Australien Backpacker',
     'Steuer zurück Australien',
@@ -119,7 +119,7 @@ const FAQS = [
   },
   {
     question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten (Mo-Fr, 9-18 Uhr AEST) antworten wir meistens innerhalb einer Stunde. Außerhalb der Geschäftszeiten melden wir uns gleich am nächsten Morgen bei dir.',
+    answer: 'Während der Geschäftszeiten (Mo-Fr, 9-18 Uhr AEST/AEDT) antworten wir meistens innerhalb einer Stunde. Außerhalb der Geschäftszeiten melden wir uns gleich am nächsten Morgen bei dir.',
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',

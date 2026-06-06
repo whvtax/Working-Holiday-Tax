@@ -85,7 +85,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 color: 'rgba(10,15,13,0.6)',
                 maxWidth: '38ch',
               }}>
-              Schätze deine australische Steuerrückzahlung sofort.
+              Schätze deine australische Steuerrückerstattung sofort.
             </p>
           </div>
         </div>

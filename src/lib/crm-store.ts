@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { getRedis } from '@/lib/rate-limit'
 
 export type FailedAttempt = { count: number; lastAttempt: number; locked: boolean }
 
@@ -39,7 +40,7 @@ function makeToken(claims: Record<string, unknown>): string {
   return `${payload}.${sig}`
 }
 
-function checkToken(token: string | undefined, maxTtl: number, requiredRole?: string): boolean {
+function checkToken(token: string | undefined, maxTtl: number): boolean {
   if (!token) return false
   try {
     const dot = token.lastIndexOf('.')
@@ -51,8 +52,7 @@ function checkToken(token: string | undefined, maxTtl: number, requiredRole?: st
     const b = Buffer.from(expected)
     if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false
     const claims = JSON.parse(Buffer.from(payload, 'base64url').toString())
-    const { iat, exp, role } = claims
-    if (requiredRole && role !== requiredRole) return false
+    const { iat, exp } = claims
     // Defence-in-depth: refuse anything non-numeric so a malformed token can't slip
     // through (e.g. exp=NaN would otherwise fail `now >= exp` and grant access).
     if (typeof exp !== 'number' || !Number.isFinite(exp)) return false
@@ -64,14 +64,56 @@ function checkToken(token: string | undefined, maxTtl: number, requiredRole?: st
   } catch { return false }
 }
 
+// ── Session revocation (server-side) ──────────────────────────────────────
+// Stateless tokens can't be individually revoked, so we keep a "revoked-before"
+// epoch: any token issued before it is rejected. Logout bumps it. The epoch is
+// held in memory (instant on the active instance) and persisted to Redis so it
+// survives restarts and propagates to other warm instances within REFRESH_MS.
+// FAIL-SAFE: this check can only ADD a rejection; if Redis is unavailable it
+// silently degrades to in-memory only and never causes a bypass or lockout.
+const REVOKE_KEY = 'crm_revoked_before'
+const REFRESH_MS = 60_000
+let _revokedBefore = 0
+let _lastRefresh = 0
+
+async function refreshRevocation(): Promise<void> {
+  try {
+    const redis = await getRedis()
+    if (!redis) return
+    const v = await redis.get(REVOKE_KEY)
+    if (v) { const n = Number(v); if (Number.isFinite(n)) _revokedBefore = Math.max(_revokedBefore, n) }
+  } catch { /* best effort */ }
+}
+
 // Admin session (8h)
 export function createSession(): string {
   return makeToken({ exp: Date.now() + ADMIN_SESSION_TTL })
 }
+
 export function validateSession(token: string | undefined): boolean {
-  return checkToken(token, ADMIN_SESSION_TTL)
+  if (!checkToken(token, ADMIN_SESSION_TTL)) return false
+  // Non-blocking periodic refresh of the revocation epoch from Redis.
+  const now = Date.now()
+  if (now - _lastRefresh > REFRESH_MS) { _lastRefresh = now; void refreshRevocation() }
+  // Reject tokens issued before the last global logout.
+  if (_revokedBefore > 0) {
+    try {
+      const dot = (token as string).lastIndexOf('.')
+      const claims = JSON.parse(Buffer.from((token as string).slice(0, dot), 'base64url').toString())
+      if (typeof claims.iat === 'number' && claims.iat < _revokedBefore) return false
+    } catch { /* if decode fails, signature already passed — allow */ }
+  }
+  return true
 }
-export function destroySession() { /* stateless - cookie cleared client-side */ }
+
+// Invalidate ALL existing sessions (used on logout). Best-effort Redis persist.
+export async function destroySession(): Promise<void> {
+  _revokedBefore = Date.now()
+  try {
+    const redis = await getRedis()
+    if (redis) await redis.set(REVOKE_KEY, String(_revokedBefore))
+  } catch { /* best effort */ }
+}
 
 // ── Brute-force protection (Redis) ───────────────────────────────────────
 
@@ -79,49 +121,31 @@ const MAX_ATTEMPTS = 3
 const LOCKOUT_MS   = 30 * 60 * 1000
 const TTL_SECS     = 35 * 60
 
-// Admin login - keyed PER CLIENT IP so a single attacker cannot lock the
-// legitimate admin out of the CRM (a global counter made that trivial DoS).
-// A separate global counter is kept for ALERTING only (it never locks anyone).
-const FAIL_PREFIX   = 'crm_fail_count:'
-const TS_PREFIX     = 'crm_fail_ts:'
-const LOCKED_PREFIX = 'crm_locked:'
-const KEY_ALERT     = 'crm_fail_alert' // global, notification only
+// Admin login
+const KEY_COUNT  = 'crm_fail_count'
+const KEY_TS     = 'crm_fail_ts'
+const KEY_LOCKED = 'crm_locked'
 
-export async function recordFailedAttemptRedis(
-  redis: import('redis').RedisClientType,
-  ip: string = 'unknown',
-): Promise<FailedAttempt> {
+export async function recordFailedAttemptRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
   const now = Date.now()
-  const kCount = FAIL_PREFIX + ip, kTs = TS_PREFIX + ip, kLocked = LOCKED_PREFIX + ip
-  const count = await redis.incr(kCount)
-  await redis.set(kTs, String(now), { EX: TTL_SECS })
-  await redis.expire(kCount, TTL_SECS)
+  const count = await redis.incr(KEY_COUNT)
+  await redis.set(KEY_TS, String(now), { EX: TTL_SECS })
+  await redis.expire(KEY_COUNT, TTL_SECS)
   const locked = count >= MAX_ATTEMPTS
-  if (locked) await redis.set(kLocked, '1', { EX: TTL_SECS })
-  // Global alert counter - notifies the admin of a distributed attack without
-  // locking any single IP's victim out.
-  await redis.incr(KEY_ALERT)
-  await redis.expire(KEY_ALERT, TTL_SECS)
+  if (locked) await redis.set(KEY_LOCKED, '1', { EX: TTL_SECS })
   return { count, lastAttempt: now, locked }
 }
 
-export async function resetFailedAttemptsRedis(
-  redis: import('redis').RedisClientType,
-  ip: string = 'unknown',
-): Promise<void> {
-  await redis.del([FAIL_PREFIX + ip, TS_PREFIX + ip, LOCKED_PREFIX + ip])
+export async function resetFailedAttemptsRedis(redis: import('redis').RedisClientType): Promise<void> {
+  await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
 }
 
-export async function isLockedOutRedis(
-  redis: import('redis').RedisClientType,
-  ip: string = 'unknown',
-): Promise<boolean> {
-  const kCount = FAIL_PREFIX + ip, kTs = TS_PREFIX + ip, kLocked = LOCKED_PREFIX + ip
-  const locked = await redis.get(kLocked)
+export async function isLockedOutRedis(redis: import('redis').RedisClientType): Promise<boolean> {
+  const locked = await redis.get(KEY_LOCKED)
   if (!locked) return false
-  const ts = await redis.get(kTs)
+  const ts = await redis.get(KEY_TS)
   if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
-    await redis.del([kCount, kTs, kLocked])
+    await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
     return false
   }
   return true

@@ -366,7 +366,7 @@ export default function JapaneseGuidePage({ params }: Props) {
     timeRequired: `PT${readTime}M`,
     inLanguage: articleLang,
     datePublished: guide.date,
-    dateModified: '2026-06-01',
+    dateModified: guide.date,
     author: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#organization`,

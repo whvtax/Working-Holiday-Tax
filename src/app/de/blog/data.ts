@@ -118,7 +118,7 @@ export const deCategoryMeta: DeCategoryMeta[] = [
     faq: [
       { question: 'Wann muss ich meine Steuererklärung in Australien machen?', answer: 'Das australische Steuerjahr läuft vom 1. Juli bis 30. Juni. Du hast bis zum 31. Oktober Zeit, um deine Steuererklärung einzureichen - wenn du sie selbst machst. Mit einem registrierten Steueragenten hast du bis Mai des Folgejahres Zeit.' },
       { question: 'Was kann ich als Working Holiday Maker absetzen?', answer: 'Du kannst arbeitsbezogene Kosten absetzen: Arbeitskleidung (z.B. Schutzkleidung, Uniformen), Werkzeuge und Ausrüstung, Lizenzen wie RSA oder White Card, Wäsche von Arbeitskleidung, Fahrten zwischen Arbeitsorten (nicht der tägliche Arbeitsweg) und Spenden an registrierte Wohltätigkeitsorganisationen.' },
-      { question: 'Wie hoch ist die durchschnittliche Steuerrückzahlung für WHM?', answer: 'Working Holiday Maker bekommen im Schnitt zwischen 2.000 und 3.500 AUD zurück, je nach Einkommen, Visumsstatus und absetzbaren Kosten. Die meisten haben im Laufe des Jahres zu viel Steuer gezahlt.' },
+      { question: 'Wie hoch ist die durchschnittliche Steuerrückerstattung für WHM?', answer: 'Working Holiday Maker bekommen im Schnitt zwischen 2.000 und 3.500 AUD zurück, je nach Einkommen, Visumsstatus und absetzbaren Kosten. Die meisten haben im Laufe des Jahres zu viel Steuer gezahlt.' },
       { question: 'Kann ich meine Steuererklärung machen, nachdem ich Australien verlassen habe?', answer: 'Ja. Du kannst die Steuererklärung von überall auf der Welt einreichen, auch nach deiner Abreise aus Australien. Die Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen.' },
     ],
     relatedServicePath: '/de/tax-return',
@@ -216,7 +216,7 @@ Das ATO nutzt deine TFN als Verbindung zwischen dir und jedem Teil deines finanz
 - Deine [jährliche Steuererklärung](/de/tax-return) am Ende des Steuerjahres einzureichen
 - Auf dein [Superkonto](/de/superannuation) zuzugreifen und es zu beantragen, wenn du Australien verlässt
 - Bestimmte australische Bankkonten zum korrekten (nicht-einbehaltenen) Satz zu eröffnen
-- Steuerrückzahlungen zu bekommen, die dir zustehen
+- Steuerrückerstattungen zu bekommen, die dir zustehen
 
 Jede andere steuerliche Verpflichtung - Steuererklärung, Superantrag oder ABN-Registrierung - ist mit deiner TFN verknüpft.
 
@@ -1781,10 +1781,10 @@ Spezifische Beratung ist sinnvoll, wenn eines der folgenden zutrifft:
   },
 
   'what-is-a-tax-refund-australia': {
-    title: 'Was ist eine Steuerrückzahlung und woher weißt du, ob dir eine in Australien zusteht?',
-    description: 'Eine Steuerrückzahlung ist Geld, das das ATO zurückerstattet, wenn du übers Jahr zu viel gezahlt hast. Die meisten Working Holiday Maker bekommen eine zurück.',
+    title: 'Was ist eine Steuerrückerstattung und woher weißt du, ob dir eine in Australien zusteht?',
+    description: 'Eine Steuerrückerstattung ist Geld, das das ATO zurückerstattet, wenn du übers Jahr zu viel gezahlt hast. Die meisten Working Holiday Maker bekommen eine zurück.',
     body: `
-Eine Steuerrückzahlung ist Geld, das die Australian Taxation Office (ATO) dir zurückzahlt, wenn die im Laufe des Jahres von deinem Lohn einbehaltene Steuer höher war als deine tatsächliche Steuerschuld. Die meisten Working Holiday Maker bekommen eine Rückzahlung, weil ihr Arbeitgeber mehr Steuer als nötig einbehalten hat (oft während Zeiten ohne TFN oder weil sie nur einen Teil des Steuerjahres gearbeitet haben). Die Rückzahlung wird meistens innerhalb von zwei Wochen nach Einreichung auf dein australisches Bankkonto überwiesen. Unser Team berechnet deine erwartete Rückzahlung vor der Einreichung, damit du weißt, was zu erwarten ist.
+Eine Steuerrückerstattung ist Geld, das die Australian Taxation Office (ATO) dir zurückzahlt, wenn die im Laufe des Jahres von deinem Lohn einbehaltene Steuer höher war als deine tatsächliche Steuerschuld. Die meisten Working Holiday Maker bekommen eine Rückzahlung, weil ihr Arbeitgeber mehr Steuer als nötig einbehalten hat (oft während Zeiten ohne TFN oder weil sie nur einen Teil des Steuerjahres gearbeitet haben). Die Rückzahlung wird meistens innerhalb von zwei Wochen nach Einreichung auf dein australisches Bankkonto überwiesen. Unser Team berechnet deine erwartete Rückzahlung vor der Einreichung, damit du weißt, was zu erwarten ist.
 
 ## Warum bekommen die meisten Working Holiday Maker eine Rückzahlung?
 
@@ -1849,7 +1849,7 @@ Wir identifizieren Absetzungen, die du beim Selbsteinreichen vielleicht übersie
     title: 'Wie lange dauert eine Working Holiday Steuerrückerstattung in Australien?',
     description: 'Working Holiday Steuerrückerstattungen werden vom ATO meist innerhalb von 7-14 Werktagen nach Einreichung bearbeitet. Was den Zeitplan beeinflusst, was bei Verzögerungen zu tun ist und wie es funktioniert, wenn du Australien schon verlassen hast.',
     body: `
-Die meisten australischen Steuerrückzahlungen werden innerhalb von zwei Wochen nach Einreichung bearbeitet und ausgezahlt, wenn die Steuererklärung elektronisch eingereicht wird. Über unseren Service unter Aufsicht eines registrierten Steueragenten reichen wir elektronisch ein, sodass Rückzahlungen typischerweise innerhalb von 7-14 Werktagen ankommen. Rückzahlungen in der Hauptsaison (August-September) dauern eventuell ein paar Tage länger. Wenn deine Rückzahlung länger dauert als erwartet, fasst unser Team direkt beim ATO nach.
+Die meisten australischen Steuerrückerstattungen werden innerhalb von zwei Wochen nach Einreichung bearbeitet und ausgezahlt, wenn die Steuererklärung elektronisch eingereicht wird. Über unseren Service unter Aufsicht eines registrierten Steueragenten reichen wir elektronisch ein, sodass Rückzahlungen typischerweise innerhalb von 7-14 Werktagen ankommen. Rückzahlungen in der Hauptsaison (August-September) dauern eventuell ein paar Tage länger. Wenn deine Rückzahlung länger dauert als erwartet, fasst unser Team direkt beim ATO nach.
 
 ## Was ist der typische Rückzahlungszeitplan?
 
@@ -1990,11 +1990,11 @@ Die zu befolgende Reihenfolge:
 1. Reiche deine australische [Steuererklärung](/de/tax-return) ein (unser Team kümmert sich darum)
 2. Beantrage deine [Superauszahlung](/de/blog/what-is-dasp-super-withdrawal) über DASP
 3. Kündige eine eventuelle [ABN](/de/abn), die du registriert hast
-4. Warte, bis deine Steuerrückzahlung und Superzahlung auf deinem australischen Konto ankommen
+4. Warte, bis deine Steuerrückerstattung und Superzahlung auf deinem australischen Konto ankommen
 5. Überweise alles nach Hause
 6. Schließe dein australisches Bankkonto
 
-Diese Schritte zu überspringen oder umzuordnen verursacht Komplikationen. Das Bankkonto zu früh zu schließen ist der häufigste Fehler - deine Steuerrückzahlung und Superzahlung haben dann nirgendwo hin.
+Diese Schritte zu überspringen oder umzuordnen verursacht Komplikationen. Das Bankkonto zu früh zu schließen ist der häufigste Fehler - deine Steuerrückerstattung und Superzahlung haben dann nirgendwo hin.
 
 ## Was ist mit Geld, das du nach Australien gebracht hast?
 
@@ -3177,7 +3177,7 @@ Jeder registrierte Steueragent in Australien hat eine Tax Agent Number (TAN), di
     body: `
 Ein TFN-Antrag (Tax File Number) braucht eine australische Adresse, an die der TFN-Brief zugestellt werden kann - aber das muss keine langfristige Mietwohnung sein. Ein Hostel, die Wohnung eines Freundes, ein Arbeitsplatz oder sogar ein Backpacker-Postlager-Service kann genutzt werden, solange in den vier Wochen nach dem Antrag zuverlässig Post empfangen werden kann. Viele Working Holiday Maker ziehen in den ersten Monaten in Australien häufig um, und ohne feste Adresse zu beantragen ist häufiger, als die ATO-Website suggeriert.
 
-Das größere Risiko ist die Wahl einer Adresse, an der Post verloren geht. Ein verlorener TFN-Brief verzögert deinen korrekten Steuersatz und den Beginn jeder [Steuerrückzahlung](/de/blog/what-is-a-tax-refund-australia), die dir zusteht.
+Das größere Risiko ist die Wahl einer Adresse, an der Post verloren geht. Ein verlorener TFN-Brief verzögert deinen korrekten Steuersatz und den Beginn jeder [Steuerrückerstattung](/de/blog/what-is-a-tax-refund-australia), die dir zusteht.
 
 ## Was akzeptiert das ATO als Adresse?
 
@@ -4954,7 +4954,7 @@ Wenn du mit unserem Team arbeitest, verwalten wir all das. Wir werden dein Konta
 
 Halte dein australisches Bankkonto offen, bis:
 
-- Jede Steuerrückzahlung bezahlt wurde
+- Jede Steuerrückerstattung bezahlt wurde
 - Jede Superauszahlung empfangen wurde (oder Auslandszahlung arrangiert wurde)
 - Alle Endabwicklungen bearbeitet wurden
 
@@ -4966,7 +4966,7 @@ Die meisten Working Holiday Maker können ihr australisches Konto innerhalb von 
     title: 'Wie du als Working Holiday Maker ein Bankkonto in Australien eröffnest',
     description: 'Ein australisches Bankkonto ist Pflicht für Lohn und Super. Welche Banken Working Holiday Maker akzeptieren, was du brauchst und wie du es vor Ankunft öffnest.',
     body: `
-Ein australisches Bankkonto zu eröffnen ist eines der ersten Dinge, die du nach der Ankunft in Australien machen solltest. Du brauchst es, um deinen Lohn, deine Superbeiträge und Steuerrückzahlungen vom ATO zu bekommen. Die großen Banken (Commonwealth Bank, Westpac, ANZ, NAB) bieten alle Konten, die für Working Holiday Maker geeignet sind. Du kannst typischerweise online vor der Ankunft vorab beantragen und die Identitätsprüfung in den ersten Tagen persönlich abschließen. Halte das Konto offen, bis deine Steuerrückzahlung und Superauszahlung eingegangen sind - meistens 3-4 Monate nach Abreise.
+Ein australisches Bankkonto zu eröffnen ist eines der ersten Dinge, die du nach der Ankunft in Australien machen solltest. Du brauchst es, um deinen Lohn, deine Superbeiträge und Steuerrückerstattungen vom ATO zu bekommen. Die großen Banken (Commonwealth Bank, Westpac, ANZ, NAB) bieten alle Konten, die für Working Holiday Maker geeignet sind. Du kannst typischerweise online vor der Ankunft vorab beantragen und die Identitätsprüfung in den ersten Tagen persönlich abschließen. Halte das Konto offen, bis deine Steuerrückerstattung und Superauszahlung eingegangen sind - meistens 3-4 Monate nach Abreise.
 
 ## Welche Bank solltest du wählen?
 
@@ -5016,7 +5016,7 @@ Manche Working Holiday Maker nutzen Dienste wie Wise (früher TransferWise) für
 - Bessere Wechselkurse als Banken für Auslandsüberweisungen
 - Nützlich, um australische Dollar in deine Heimatwährung umzurechnen
 - Ersetzt NICHT die Notwendigkeit eines australischen Bankkontos
-- Du brauchst weiterhin ein normales australisches Konto für Lohn, Steuerrückzahlungen und Super
+- Du brauchst weiterhin ein normales australisches Konto für Lohn, Steuerrückerstattungen und Super
 
 Nutz beides: eine australische Bank für Lohn und australische Behördenzahlungen und einen Überweisungsdienst, um Geld nach Hause zu schicken.
 
@@ -5024,12 +5024,12 @@ Nutz beides: eine australische Bank für Lohn und australische Behördenzahlunge
 
 **Schließ es nicht zu früh.** Du brauchst ein aktives australisches Bankkonto, um zu bekommen:
 
-- Deine Steuerrückzahlung vom ATO (2-6 Wochen nach Einreichung)
+- Deine Steuerrückerstattung vom ATO (2-6 Wochen nach Einreichung)
 - Deine Superauszahlung über DASP (kann 4+ Wochen dauern)
 - Letzte Lohnzahlungen von deinem Arbeitgeber
 - Unbezahlte Super, die über SGC zurückgeholt wurde
 
-Sowohl deine [Steuerrückzahlung](/de/tax-return) als auch [DASP-Superauszahlung](/de/blog/what-is-dasp-super-withdrawal) können Wochen oder Monate nach Verlassen Australiens dauern. Verfrühter Schließung verursacht ernsthafte Komplikationen.
+Sowohl deine [Steuerrückerstattung](/de/tax-return) als auch [DASP-Superauszahlung](/de/blog/what-is-dasp-super-withdrawal) können Wochen oder Monate nach Verlassen Australiens dauern. Verfrühter Schließung verursacht ernsthafte Komplikationen.
 
 Der richtige Ansatz:
 

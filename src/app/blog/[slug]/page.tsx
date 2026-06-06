@@ -220,7 +220,7 @@ export default function GuidePage({ params }: Props) {
     timeRequired: `PT${readTime}M`,
     inLanguage: 'en-AU',
     datePublished: guide.date,
-    dateModified: '2026-06-01',
+    dateModified: guide.date,
     author: {
       '@type': 'Organization',
       name: 'Working Holiday Tax',

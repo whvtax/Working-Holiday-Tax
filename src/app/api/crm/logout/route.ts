@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server'
 import { destroySession } from '@/lib/crm-store'
 
 export async function POST() {
-  destroySession()
+  await destroySession()
   const res = NextResponse.json({ ok: true })
-  // Clear with identical flags to the set - browsers require flag parity to
+  // Clear with identical flags to the set — browsers require flag parity to
   // remove a cookie. Missing httpOnly/secure/sameSite means the clear may
   // not remove the cookie in strict environments.
   res.cookies.set('crm_session', '', {

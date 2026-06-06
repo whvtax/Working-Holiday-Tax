@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours (Mon-Fri, 9am-6pm AEST) we usually reply within an hour. Outside business hours, we will get back to you first thing the next morning.',
+    answer: 'During business hours (Mon-Fri, 9am-6pm AEST/AEDT) we usually reply within an hour. Outside business hours, we will get back to you first thing the next morning.',
   },
   {
     question: 'Is there a fee just to ask a question?',
@@ -352,7 +352,7 @@ export default function ContactPage() {
               Business hours
             </p>
             <p className="contact-hours-detail">
-              Monday to Friday, 9am - 6pm AEST<br />
+              Monday to Friday, 9am - 6pm AEST/AEDT<br />
               <span style={{ color: '#8AADA3' }}>Replies within an hour during business hours</span>
             </p>
           </div>

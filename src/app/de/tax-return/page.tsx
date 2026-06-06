@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     'Steuerrückerstattung Australien Working Holiday',
     'Working Holiday Steuerrückerstattung',
     'WHV Steuerrückerstattung',
-    'Steuerrückzahlung 417 Visum',
-    'Steuerrückzahlung 462 Visum',
+    'Steuerrückerstattung 417 Visum',
+    'Steuerrückerstattung 462 Visum',
     'Backpacker Steuerrückerstattung Australien',
     'Working Holiday Maker Steuerrückerstattung',
     'Steuer zurückholen Australien Backpacker',
@@ -78,8 +78,8 @@ const faqs = [
     answer: 'Ja. Du kannst deine australische Steuererklärung aus dem Ausland einreichen - egal ob du nach Deutschland, Österreich, in die Schweiz oder sonst wohin zurückgekehrt bist. Wir erledigen den gesamten Prozess online. Deine Steuerrückerstattung muss auf ein australisches Bankkonto überwiesen werden.',
   },
   {
-    question: 'Woher weiß ich, ob ich eine Steuerrückzahlung bekomme?',
-    answer: 'Du bekommst eine Steuerrückzahlung, wenn du im Laufe des Jahres mehr Steuern gezahlt hast als nötig. Das passiert bei Working Holiday Makern oft, wenn der falsche Steuersatz angewendet wurde, deine TFN zu spät hinterlegt war, oder du absetzbare Kosten hast. Unter Aufsicht eines registrierten Steueragenten prüfen wir deine Situation und sorgen dafür, dass deine Erklärung korrekt eingereicht wird und du nichts verpasst, was dir zusteht.',
+    question: 'Woher weiß ich, ob ich eine Steuerrückerstattung bekomme?',
+    answer: 'Du bekommst eine Steuerrückerstattung, wenn du im Laufe des Jahres mehr Steuern gezahlt hast als nötig. Das passiert bei Working Holiday Makern oft, wenn der falsche Steuersatz angewendet wurde, deine TFN zu spät hinterlegt war, oder du absetzbare Kosten hast. Unter Aufsicht eines registrierten Steueragenten prüfen wir deine Situation und sorgen dafür, dass deine Erklärung korrekt eingereicht wird und du nichts verpasst, was dir zusteht.',
   },
   {
     question: 'Wie viel Steuerrückerstattung aus Australien bekomme ich?',
@@ -166,6 +166,21 @@ const serviceSchema = {
   },
 }
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'So reichst du deine Working Holiday Steuererklärung in Australien ein',
+  description: 'Schritt-für-Schritt-Anleitung für Working Holiday Maker, wie du deine australische Steuererklärung beim ATO einreichst - aus Australien oder aus dem Ausland.',
+  totalTime: 'P14D',
+  inLanguage: 'de',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
+}
+
 
 export default function GermanTaxReturnPage() {
   return (
@@ -173,6 +188,7 @@ export default function GermanTaxReturnPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
