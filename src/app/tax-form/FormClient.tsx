@@ -335,7 +335,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
-    // Combine all uploaded URLs (core files only — invoices are sent by email)
+    // Combine all uploaded URLs (core files only - invoices are sent by email)
     const allFileUrls = [...Object.values(coreUrls)]
     if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 

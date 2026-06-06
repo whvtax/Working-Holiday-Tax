@@ -189,7 +189,7 @@ export default function TaxReturnPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white">
+      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
@@ -231,7 +231,7 @@ export default function TaxReturnPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              Registered tax agents handle your WHV tax return with the ATO.
+              Your WHV tax return prepared and lodged under the supervision of a registered tax agent.
             
             </p>
 

@@ -125,10 +125,10 @@ export function Footer() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
 
           {/* Main grid - 4 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-8 md:gap-10 mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
 
             {/* Brand column */}
-            <div>
+            <div className="footer-brand-col col-span-2 md:col-span-1">
               <div className="flex items-center gap-2 mb-3">
                 <svg width="26" height="26" viewBox="0 0 30 30" fill="none" aria-hidden="true">
                   <rect x="2" y="2" width="16" height="16" rx="4" stroke="#0B5240" strokeWidth="1.4"/>

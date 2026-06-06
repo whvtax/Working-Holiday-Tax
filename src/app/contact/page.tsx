@@ -186,7 +186,7 @@ export default function ContactPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       {/* ── HERO + BREADCRUMBS ──────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white">
+      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-5 pb-7 lg:pt-12 lg:pb-12">
 
           {/* Breadcrumbs */}

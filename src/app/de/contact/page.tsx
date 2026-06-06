@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Kontakt – Steueragent für Backpacker | Working Holiday Tax',
+  title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
   description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
   keywords: [
     'Kontakt Working Holiday Tax',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'ja': `${SITE_URL}/ja/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
-    title: 'Kontakt – Steueragent für Backpacker | Working Holiday Tax',
+    title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
     type: 'website',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kontakt – Steueragent für Backpacker | Working Holiday Tax',
+    title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet.',
   },
   robots: {
@@ -165,7 +165,7 @@ export default function GermanContactPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       {/* ── HERO + BREADCRUMBS ──────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px] bg-white">
+      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-5 pb-7 lg:pt-12 lg:pb-12">
 
           {/* Breadcrumbs */}

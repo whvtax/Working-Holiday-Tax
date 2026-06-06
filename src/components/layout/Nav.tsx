@@ -142,7 +142,7 @@ export function Nav() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-canvas/92 backdrop-blur-2xl' : ''}`}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/96 backdrop-blur-xl shadow-sm' : ''}`}
         style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-[68px] flex items-center justify-between gap-5">
