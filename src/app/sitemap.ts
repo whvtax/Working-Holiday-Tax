@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
 
+// Parse a guide date string ("1 July 2024") into a Date for accurate <lastmod>.
 function parseGuideDate(s: string): Date {
   const d = new Date(s)
   return isNaN(d.getTime()) ? new Date() : d

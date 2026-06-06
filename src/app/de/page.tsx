@@ -4,12 +4,13 @@ import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
+import { getGoogleRating } from '@/lib/googleData'
 
 // ─── METADATA - rich SEO + AI optimized for German market ─────────────────
 export const metadata: Metadata = {
   title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
   description:
-    'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Registrierter Steueragent erledigt deine Steuererklärung, TFN, Super-Rückzahlung (DASP) und ABN — komplett online, auch nach deiner Rückkehr aus Australien.',
+    'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Unter Aufsicht eines registrierten Steueragenten erledigen wir deine Steuererklärung, TFN, Super-Rückzahlung (DASP) und ABN - komplett online, auch nach deiner Rückkehr aus Australien.',
   keywords: [
     // Primary refund-focused terms (core service)
     'Steuerrückerstattung Australien',
@@ -71,7 +72,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Registrierter Steueragent erledigt deine Steuererklärung, TFN, Super (DASP) und ABN — komplett online.',
+    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten erledigen wir deine Steuererklärung, TFN, Super (DASP) und ABN - komplett online.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Steuerrückerstattung Australien Working Holiday Maker - Backpacker Steuer 417 462 Visum' }],
   },
   twitter: {
@@ -88,15 +89,14 @@ const IconABN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill=
 const IconReturn  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
 const IconSuper   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 5.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.5s-6-3.5-6-8.5a3 3 0 016-2 3 3 0 016 2c0 5-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><line x1="10" y1="7" x2="10" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="7.5" y1="9.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
-const IconStar    = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
 const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 // ─── TESTIMONIALS - real backpacker reviews ─────────────────────────────
 
 const STEPS = [
-  { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super — wir helfen dir von Anfang an weiter.' },
+  { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super - wir helfen dir von Anfang an weiter.' },
   { n: '2', title: 'Schick uns deine Daten',         body: 'Kurze Checkliste, keine komplizierten Formulare oder Papierkram.' },
-  { n: '3', title: 'Wir kümmern uns um alles',       body: 'Ein registrierter Steueragent bereitet alles vor und reicht es beim ATO ein.' },
+  { n: '3', title: 'Wir kümmern uns um alles',       body: 'Wir bereiten alles vor und reichen es unter Aufsicht eines registrierten Steueragenten beim ATO ein.' },
   { n: '4', title: 'Dein Bescheid kommt',            body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung direkt auf dein australisches Bankkonto überwiesen.' },
 ]
 
@@ -111,11 +111,11 @@ const SERVICES = [
 const FAQS = [
   {
     question: 'Wie funktioniert eine Steuerrückerstattung aus Australien für Working Holiday Maker?',
-    answer: 'Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hat dein Arbeitgeber während des Jahres Steuern von deinem Lohn einbehalten. Nach dem 30. Juni reichst du eine Steuererklärung beim ATO (australisches Finanzamt) ein, und die zu viel gezahlten Steuern bekommst du als Rückerstattung zurück. Die genaue Höhe hängt von deinem Einkommen, deinem steuerlichen Wohnsitzstatus, den Abzügen, die du geltend machen kannst, und davon ab, ob dein Arbeitgeber als Working Holiday Maker Arbeitgeber registriert war. Ein registrierter Steueragent prüft deine Situation und sorgt dafür, dass deine Erklärung korrekt eingereicht wird.',
+    answer: 'Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hat dein Arbeitgeber während des Jahres Steuern von deinem Lohn einbehalten. Nach dem 30. Juni reichst du eine Steuererklärung beim ATO (australisches Finanzamt) ein, und die zu viel gezahlten Steuern bekommst du als Rückerstattung zurück. Die genaue Höhe hängt von deinem Einkommen, deinem steuerlichen Wohnsitzstatus, den Abzügen, die du geltend machen kannst, und davon ab, ob dein Arbeitgeber als Working Holiday Maker Arbeitgeber registriert war. Unter Aufsicht eines registrierten Steueragenten prüfen wir deine Situation und sorgen dafür, dass deine Erklärung korrekt eingereicht wird.',
   },
   {
     question: 'Was kosten eure Leistungen?',
-    answer: 'Die erste Anfrage und unser Kostenvoranschlag sind kostenlos. Unsere Gebühren sind pauschal und hängen vom Service ab. Bei Steuererklärungen können die Gebühren direkt von der Rückzahlung abgezogen werden — du musst also nichts im Voraus bezahlen. Wir bestätigen den Preis immer, bevor wir loslegen.',
+    answer: 'Die erste Anfrage und unser Kostenvoranschlag sind kostenlos. Unsere Gebühren sind pauschal und hängen vom Service ab. Bei Steuererklärungen können die Gebühren direkt von der Rückzahlung abgezogen werden - du musst also nichts im Voraus bezahlen. Wir bestätigen den Preis immer, bevor wir loslegen.',
   },
   {
     question: 'Wie schnell antwortet ihr?',
@@ -123,23 +123,24 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit dabei, ihre Steuererklärung einzureichen und ihre Super (DASP) zu beantragen — alles komplett online, auch Jahre nach der Rückkehr. Wir wickeln alles aus der Ferne ab. Deine Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen (ATO-Vorschrift), die Super-Rückerstattung (DASP) kann aber auf dein deutsches Konto gehen.',
+    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit dabei, ihre Steuererklärung einzureichen und ihre Super (DASP) zu beantragen - alles komplett online, auch Jahre nach der Rückkehr. Wir wickeln alles aus der Ferne ab. Deine Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen (ATO-Vorschrift), die Super-Rückerstattung (DASP) kann aber auf dein deutsches Konto gehen.',
   },
   {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
-    answer: 'Working Holiday Maker zahlen einen pauschalen Steuersatz von 15 % auf die ersten 45.000 AUD, dann 30 % bis 135.000 AUD, 37 % bis 190.000 AUD und 45 % darüber. Es gibt keinen steuerfreien Grundbetrag für WHV-Inhaber. Wenn du deinem Arbeitgeber keine TFN gibst, muss er sogar 45 % einbehalten — einer der häufigsten Gründe, warum Backpacker am Ende eine Steuerrückerstattung bekommen.',
+    answer: 'Working Holiday Maker zahlen einen pauschalen Steuersatz von 15 % auf die ersten 45.000 AUD, dann 30 % bis 135.000 AUD, 37 % bis 190.000 AUD und 45 % darüber. Es gibt keinen steuerfreien Grundbetrag für WHV-Inhaber. Wenn du deinem Arbeitgeber keine TFN gibst, muss er sogar 45 % einbehalten - einer der häufigsten Gründe, warum Backpacker am Ende eine Steuerrückerstattung bekommen.',
   },
   {
     question: 'Wie viel Steuerrückerstattung bekomme ich aus Australien?',
-    answer: 'Das hängt von deiner persönlichen Situation ab: wie viel du verdient hast, wie viel Steuer einbehalten wurde, dein steuerlicher Wohnsitzstatus, deine Visumsklasse und die abziehbaren Kosten. Wir können keinen bestimmten Betrag versprechen — was wir machen, ist deine Erklärung korrekt einzureichen und jeden Abzug, der dir zusteht, geltend zu machen.',
+    answer: 'Das hängt von deiner persönlichen Situation ab: wie viel du verdient hast, wie viel Steuer einbehalten wurde, dein steuerlicher Wohnsitzstatus, deine Visumsklasse und die abziehbaren Kosten. Wir können keinen bestimmten Betrag versprechen - was wir machen, ist deine Erklärung korrekt einzureichen und jeden Abzug, der dir zusteht, geltend zu machen.',
   },
   {
     question: 'Macht ihr nur Steuererklärungen?',
-    answer: 'Nein. Wir helfen bei TFN-Anträgen, ABN-Registrierungen, Working Holiday Steuererklärungen, Superauszahlungen (DASP) und Medicare-Levy-Befreiungen — also bei allem, was du als Working Holiday Maker auf einem 417 oder 462 Visum brauchst.',
+    answer: 'Nein. Wir helfen bei TFN-Anträgen, ABN-Registrierungen, Working Holiday Steuererklärungen, Superauszahlungen (DASP) und Medicare-Levy-Befreiungen - also bei allem, was du als Working Holiday Maker auf einem 417 oder 462 Visum brauchst.',
   },
 ]
 
-export default function GermanHomePage() {
+export default async function GermanHomePage() {
+  const gRating = await getGoogleRating()
 
   // ─── Schema.org for German page ───
   const webPageLd = {
@@ -148,7 +149,7 @@ export default function GermanHomePage() {
     '@id': `${SITE_URL}/de/#webpage`,
     url: `${SITE_URL}/de`,
     name: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Registrierter Steueragent für Steuerrückerstattung Australien — Working Holiday Maker auf 417/462 Visum. TFN, Steuererklärung, Super (DASP) und ABN — alles online erledigt.',
+    description: 'Steuerrückerstattung Australien unter Aufsicht eines registrierten Steueragenten - Working Holiday Maker auf 417/462 Visum. TFN, Steuererklärung, Super (DASP) und ABN - alles online erledigt.',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -156,13 +157,19 @@ export default function GermanHomePage() {
 
   const serviceLd = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    '@id': `${SITE_URL}/de/#service`,
-    name: 'Steuerrückerstattung Australien für Working Holiday Maker',
+    '@type': 'LocalBusiness',
+    '@id': `${SITE_URL}/#business`,
+    name: 'Working Holiday Tax',
     description: 'Steuerrückerstattung und Steuererklärung für Working Holiday Visuminhaber (417/462) in Australien.',
-    provider: { '@id': `${SITE_URL}/#business` },
-    areaServed: 'AU',
+    url: SITE_URL,
     inLanguage: 'de',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: gRating.rating.toFixed(1),
+      reviewCount: gRating.count,
+      bestRating: '5',
+      worstRating: '1',
+    },
   }
 
   const faqLd = {
@@ -190,7 +197,7 @@ export default function GermanHomePage() {
       width: 512,
       height: 512,
     },
-    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462). Beratung in Deutsch, Englisch und Japanisch.',
+    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462). Beratung in Deutsch, Englisch und Japanisch.',
     foundingDate: '2020',
     knowsLanguage: ['en', 'de', 'ja'],
     areaServed: {
@@ -282,7 +289,7 @@ export default function GermanHomePage() {
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Steuererklärung-Spezialisten</span>
+            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Steuererklärungs-Spezialisten</span>
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto"
@@ -314,7 +321,7 @@ export default function GermanHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1.200+ Backpacker geholfen', <GoogleRating variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Stunde'].map((label, i) => (
+            {['1.200+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Stunde'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -325,7 +332,7 @@ export default function GermanHomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
 
           <span className="section-label center">Warum wir?</span>
@@ -337,15 +344,15 @@ export default function GermanHomePage() {
 
           <p className="font-light text-muted mx-auto"
             style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '42ch', marginBottom: '32px', textAlign: 'center' }}>
-            Ein Fokus: Working Holiday Steuern.<br />Jede Steuerrückerstattung, die dir zusteht — korrekt beantragt.
+            Ein Fokus: Working Holiday Steuern.<br />Jede Steuerrückerstattung, die dir zusteht - korrekt beantragt.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom: '36px' }}>
             {[
               { title: 'Backpackersteuer-Experten.',       body: 'Wir arbeiten ausschließlich mit Working Holiday Makern. Die Regeln für 417 und 462 Visa kennen wir in- und auswendig.' },
               { title: 'ATO-konform.',                     body: 'Eingereicht über einen registrierten Steueragenten und voll konform mit den aktuellen ATO-Regeln für Working Holiday Maker.' },
-              { title: 'Klare, einfache Hilfe.',           body: 'Keine komplizierten Begriffe. Wir führen dich Schritt für Schritt durch deine Steuererklärung — in einfacher Sprache.' },
-              { title: 'Wir kümmern uns um alles.',        body: 'Kein Papierkram, kein Stress. Von der TFN bis zur Steuerrückerstattung — wir erledigen alles, in Australien oder nach deiner Rückkehr.' },
+              { title: 'Klare, einfache Hilfe.',           body: 'Keine komplizierten Begriffe. Wir führen dich Schritt für Schritt durch deine Steuererklärung - in einfacher Sprache.' },
+              { title: 'Wir kümmern uns um alles.',        body: 'Kein Papierkram, kein Stress. Von der TFN bis zur Steuerrückerstattung - wir erledigen alles, in Australien oder nach deiner Rückkehr.' },
             ].map((item, i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>
@@ -363,7 +370,7 @@ export default function GermanHomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -397,7 +404,7 @@ export default function GermanHomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F4F9F6' }}>
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -408,7 +415,7 @@ export default function GermanHomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '40ch', marginBottom: '4px' }}>
-              <em className="not-italic text-forest-400">Einfacher Ablauf. Deine Working Holiday Steuerrückerstattung — korrekt beantragt.</em>
+              <em className="not-italic text-forest-400">Einfacher Ablauf. Deine Working Holiday Steuerrückerstattung - korrekt beantragt.</em>
             </p>
           </div>
 
@@ -470,7 +477,7 @@ export default function GermanHomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#EEF7F2' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>

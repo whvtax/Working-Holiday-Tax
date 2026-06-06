@@ -4,11 +4,12 @@ import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB, EMAIL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
+import { getGoogleRating } from '@/lib/googleData'
 
 // ─── METADATA - rich SEO + AI optimized ─────────────────────────────────
 export const metadata: Metadata = {
   title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax Return',
-  description: 'Working holiday tax refund Australia — registered tax agents who handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. Lodge from Australia or after you go home, all online.',
+  description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. Lodge from Australia or after you go home, all online.',
   keywords: [
     // Primary refund-focused terms
     'working holiday tax refund',
@@ -69,7 +70,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax Return',
-    description: 'Working holiday tax refund Australia — registered tax agents handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. All online, even after you leave Australia.',
+    description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. All online, even after you leave Australia.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia - tax services for backpackers on 417 and 462 visas' }],
   },
   twitter: {
@@ -97,7 +98,6 @@ const IconSuper   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill=
 
 const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.5s-6-3.5-6-8.5a3 3 0 016-2 3 3 0 016 2c0 5-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><line x1="10" y1="7" x2="10" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="7.5" y1="9.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
 
-const IconStar  = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
 const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 // ─── DATA - colors aligned with site palette ────────────────────────────
@@ -105,7 +105,7 @@ const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="n
 const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: "TFN, ABN, working holiday tax return, super - we will guide you from the start." },
   { n: '2', title: 'Send your details in minutes',  body: 'Quick checklist, no complicated forms or paperwork.' },
-  { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your return with the ATO.' },
+  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your return with the ATO under the supervision of a registered tax agent.' },
   { n: '4', title: 'Get your assessment',           body: 'Once the ATO processes your return, any refund you are owed is paid straight into your Australian bank account.' },
 ]
 
@@ -120,7 +120,7 @@ const SERVICES = [
 const FAQS = [
   {
     question: 'How does a working holiday tax refund in Australia work?',
-    answer: 'If you worked in Australia on a 417 or 462 working holiday visa, tax was withheld from your pay throughout the year. After 30 June, you lodge a tax return with the Australian Taxation Office (ATO), and any tax you overpaid comes back to you as a refund. The exact amount depends on your income, your tax residency status, the deductions you can claim, and whether your employer registered as a Working Holiday Maker employer. A registered tax agent can review your situation and make sure your return is lodged correctly.',
+    answer: 'If you worked in Australia on a 417 or 462 working holiday visa, tax was withheld from your pay throughout the year. After 30 June, you lodge a tax return with the Australian Taxation Office (ATO), and any tax you overpaid comes back to you as a refund. The exact amount depends on your income, your tax residency status, the deductions you can claim, and whether your employer registered as a Working Holiday Maker employer. Under the supervision of a registered tax agent, we can review your situation and make sure your return is lodged correctly.',
   },
   {
     question: 'How much do your services cost?',
@@ -144,7 +144,8 @@ const FAQS = [
   },
 ]
 
-export default function HomePage() {
+export default async function HomePage() {
+  const gRating = await getGoogleRating()
 
   // ─── Schema.org ───
   const webPageLd = {
@@ -161,12 +162,18 @@ export default function HomePage() {
 
   const aggregateRatingLd = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    '@id': `${SITE_URL}/#service`,
-    name: 'Working Holiday Tax Refund Services Australia',
+    '@type': 'LocalBusiness',
+    '@id': `${SITE_URL}/#business`,
+    name: 'Working Holiday Tax',
     description: 'Working holiday tax refund and tax return services for 417 and 462 visa holders in Australia.',
-    provider: { '@id': `${SITE_URL}/#business` },
-    areaServed: 'AU',
+    url: SITE_URL,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: gRating.rating.toFixed(1),
+      reviewCount: gRating.count,
+      bestRating: '5',
+      worstRating: '1',
+    },
   }
 
   const faqLd = {
@@ -236,7 +243,7 @@ export default function HomePage() {
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
     name: 'Working Holiday Tax',
-    description: 'Working holiday tax refund Australia - registered tax agents for 417 and 462 visa holders.',
+    description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent for 417 and 462 visa holders.',
     inLanguage: ['en-AU', 'de', 'ja'],
     publisher: { '@id': `${SITE_URL}/#business` },
   }
@@ -262,24 +269,13 @@ export default function HomePage() {
 
           <h1 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(22px, 5vw, 42px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
-            {/* Desktop H1 */}
-            <span className="hidden lg:block">
-              <span style={{ display: 'block', whiteSpace: 'nowrap' }}>Working holiday tax return?</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>We have got you covered.</span>
-            </span>
-            {/* Mobile H1 */}
-            <span className="lg:hidden">
-              <span style={{ display: 'block' }}>Tax return for</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>working holiday makers</span>
-            </span>
+            <span style={{ display: 'block' }}>Your working holiday tax,</span>
+            <span style={{ display: 'block', color: '#0B5240' }}>sorted properly.</span>
           </h1>
 
           <p className="font-light mx-auto"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            {/* Desktop sub-copy */}
-            <span className="hidden lg:inline">Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>.<br />TFN, ABN, tax return &amp; super</span>
-            {/* Mobile sub-copy */}
-            <span className="lg:hidden">TFN, ABN, tax return &amp; super</span>
+            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super.
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
@@ -291,7 +287,7 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200+ backpackers helped', <GoogleRating variant="pill" lang="en" />, '45+ countries served', '~1 hour response time'].map((label, i) => (
+            {['1,200+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hour response time'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -302,8 +298,8 @@ export default function HomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center reveal">
 
           <span className="section-label center">Why us?</span>
 
@@ -320,7 +316,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom: '36px' }}>
             {[
               { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules for 417 and 462 visas inside out.' },
-              { title: 'ATO compliant.',                body: 'Lodged through a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
+              { title: 'ATO compliant.',                body: 'Lodged under the supervision of a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
               { title: 'Clear, simple support.',        body: 'No complicated terms. We guide you through your tax return step by step, in plain English.' },
               { title: 'We take care of everything.',   body: 'No paperwork, no stress. From your TFN to your final refund, we handle it all - in Australia or after you go home.' },
             ].map((item, i) => (
@@ -340,8 +336,8 @@ export default function HomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">Client results</span>
@@ -374,8 +370,8 @@ export default function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
             <span className="section-label center">How it works</span>
@@ -447,8 +443,8 @@ export default function HomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">What we help with</span>

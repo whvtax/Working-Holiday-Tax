@@ -69,7 +69,10 @@ ALTER TABLE crm_tasks   ENABLE ROW LEVEL SECURITY;
 -- STORAGE BUCKET SETUP
 -- After running SQL, do this in Storage UI:
 --   1. Create bucket named "uploads"
---   2. Set as PUBLIC (so /storage/v1/object/public/uploads/* URLs work)
+--   2. Set as PRIVATE (NOT public). Client identity documents (passport selfies,
+--      ID photos) must never be publicly reachable by URL. The app serves them
+--      only to authenticated CRM sessions via /api/crm/file (service-role download).
 --   3. File size limit: 10 MB
 --   4. Allowed MIME types: image/jpeg, image/png, image/webp, image/gif, application/pdf
+--   NOTE: Do NOT add any public SELECT storage policy for this bucket.
 -- ════════════════════════════════════════════════════════════════════════════

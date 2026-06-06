@@ -1,6 +1,6 @@
 // Shared, cached fetch of the REAL Google reviews + rating + total count.
 // Fetches from our OWN same-origin API route (/api/google-reviews), which
-// proxies Featurable on the server — so there are no browser CORS or
+// proxies Featurable on the server - so there are no browser CORS or
 // ad-blocker problems. One network request per page load is shared across
 // every component that uses these hooks.
 

@@ -1,3 +1,4 @@
+import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import BlogClient from '@/app/blog/BlogClient'
 import { getGermanGuides, deCategoryMeta, blogUI } from './data'
@@ -22,18 +23,18 @@ export const metadata: Metadata = {
     'Steuerrückerstattung Tipps Working Holiday',
   ],
   alternates: {
-    canonical: 'https://workingholidaytax.com.au/de/blog',
+    canonical: `${SITE_URL}/de/blog`,
     languages: {
-      'en-AU': 'https://workingholidaytax.com.au/blog',
-      'de': 'https://workingholidaytax.com.au/de/blog',
-      'ja': 'https://workingholidaytax.com.au/ja/blog',
-      'x-default': 'https://workingholidaytax.com.au/blog',
+      'en-AU': `${SITE_URL}/blog`,
+      'de': `${SITE_URL}/de/blog`,
+      'ja': `${SITE_URL}/ja/blog`,
+      'x-default': `${SITE_URL}/blog`,
     },
   },
   openGraph: {
     title: 'Steuerrückerstattung Australien Blog - WHV Steuer-Guides',
     description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. So holst du dir deine Steuern zurück.',
-    url: 'https://workingholidaytax.com.au/de/blog',
+    url: `${SITE_URL}/de/blog`,
     siteName: 'Working Holiday Tax',
     locale: 'de_DE',
     type: 'website',
@@ -63,12 +64,12 @@ export default function GermanBlogPage() {
     '@type': 'CollectionPage',
     name: 'Working Holiday Tax Blog (Deutsch)',
     description: 'Steuerblog für Working Holiday Visuminhaber in Australien',
-    url: 'https://workingholidaytax.com.au/de/blog',
+    url: `${SITE_URL}/de/blog`,
     inLanguage: 'de',
     isPartOf: {
       '@type': 'WebSite',
       name: 'Working Holiday Tax',
-      url: 'https://workingholidaytax.com.au',
+      url: `${SITE_URL}`,
     },
     about: {
       '@type': 'Thing',
@@ -84,7 +85,7 @@ export default function GermanBlogPage() {
       itemListElement: deCategoryMeta.map((c, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `https://workingholidaytax.com.au/de/blog/category/${c.slug}`,
+        url: `${SITE_URL}/de/blog/category/${c.slug}`,
         name: c.title,
       })),
     },
@@ -94,8 +95,8 @@ export default function GermanBlogPage() {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://workingholidaytax.com.au/de' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/de/blog' },
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/de/blog` },
     ],
   }
 
@@ -103,8 +104,8 @@ export default function GermanBlogPage() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Working Holiday Tax',
-    url: 'https://workingholidaytax.com.au',
-    logo: 'https://workingholidaytax.com.au/icon-512.png',
+    url: `${SITE_URL}`,
+    logo: `${SITE_URL}/icon-512.png`,
     description: 'Steuerservice für Working Holiday Visuminhaber in Australien. TFN-Anträge, Steuererklärungen, DASP Superauszahlungen und ABN-Registrierungen unter Aufsicht eines registrierten Steueragenten.',
     areaServed: { '@type': 'Country', name: 'Australia' },
     knowsAbout: [
