@@ -56,7 +56,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
   return (
     <>
       {/* Page header */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
           <div className="max-w-[560px] lg:max-w-[700px] mx-auto text-center">
 
@@ -203,7 +203,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
           </p>
           <h2 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '20ch' }}>
-            Claim the maximum refund you are entitled to
+            We will get you the maximum refund
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
             This calculator gives you an estimate. We often find deductions and offsets that push your refund higher.

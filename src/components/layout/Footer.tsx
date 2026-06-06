@@ -28,10 +28,9 @@ export function Footer() {
         learnLinks: [
           { label: 'Blog',                       href: '/de/blog' },
           { label: 'TFN-Artikel',                href: '/de/blog/category/tfn' },
-          { label: 'Steuererklärungs-Artikel',    href: '/de/blog/category/tax-return' },
+          { label: 'Steuererklärung-Artikel',    href: '/de/blog/category/tax-return' },
           { label: 'Super-Artikel',              href: '/de/blog/category/super' },
           { label: 'Arbeitsrechte',              href: '/de/blog/category/work-rights' },
-          { label: 'Steueransässigkeit',         href: '/de/tax-residency' },
         ],
         connect: 'Kontakt',
         connectLinks: [
@@ -49,14 +48,14 @@ export function Footer() {
     : locale === 'ja'
     ? {
         tagline: 'オーストラリアの税金、まるごと対応。',
-        intro: 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー受取、ABN登録をすべて代行します。',
+        intro: 'オーストラリアでワーキングホリデーをする方のTFN申請、タックスリターン、スーパー返金、ABN登録をすべて代行します。',
         askUs: 'お気軽にご相談ください',
         services: 'サービス',
         serviceLinks: [
           { label: 'TFN申請',           href: '/ja/tfn' },
           { label: 'ABN登録',           href: '/ja/abn' },
           { label: 'タックスリターン',   href: '/ja/tax-return' },
-          { label: 'スーパー受取（DASP）', href: '/ja/superannuation' },
+          { label: 'スーパー返金（DASP）', href: '/ja/superannuation' },
           { label: 'メディケア税免除',   href: '/ja/medicare' },
         ],
         learn: '記事・ガイド',
@@ -64,9 +63,8 @@ export function Footer() {
           { label: 'ブログ',                   href: '/ja/blog' },
           { label: 'TFNの記事',                href: '/ja/blog/category/tfn' },
           { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
-          { label: 'スーパー受取の記事',       href: '/ja/blog/category/super' },
+          { label: 'スーパー返金の記事',       href: '/ja/blog/category/super' },
           { label: '労働者の権利',             href: '/ja/blog/category/work-rights' },
-          { label: '税務上の居住者判定',       href: '/ja/tax-residency' },
         ],
         connect: 'お問い合わせ',
         connectLinks: [
@@ -101,7 +99,6 @@ export function Footer() {
           { label: 'Tax Return Articles',        href: '/blog/category/tax-return' },
           { label: 'Super Articles',             href: '/blog/category/super' },
           { label: 'Work Rights',                href: '/blog/category/work-rights' },
-          { label: 'Tax Residency',              href: '/tax-residency' },
         ],
         connect: 'Connect',
         connectLinks: [
@@ -125,10 +122,10 @@ export function Footer() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
 
           {/* Main grid - 4 columns */}
-          <div className="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-8 md:gap-10 mb-10">
 
             {/* Brand column */}
-            <div className="footer-brand-col col-span-2 md:col-span-1">
+            <div>
               <div className="flex items-center gap-2 mb-3">
                 <svg width="26" height="26" viewBox="0 0 30 30" fill="none" aria-hidden="true">
                   <rect x="2" y="2" width="16" height="16" rx="4" stroke="#0B5240" strokeWidth="1.4"/>

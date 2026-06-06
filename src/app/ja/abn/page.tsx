@@ -7,7 +7,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'ABN登録 - ワーキングホリデー オーストラリア',
-  description: '個人事業主として正しくABNを登録。ワーキングホリデー専門のチームが、登録税理士の監督のもとで登録から税務まですべてサポートします。',
+  description: '個人事業主として正しくABNを登録。ワーキングホリデー専門の登録税理士が、登録から税務まですべてサポートします。',
   keywords: [
     'ABN 登録 オーストラリア',
     'ABN ワーキングホリデー',
@@ -41,12 +41,12 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja/abn`,
     siteName: 'Working Holiday Tax',
     title: 'ABN登録 - ワーキングホリデー オーストラリア',
-    description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
+    description: '個人事業主として正しくABNを登録。登録税理士がサポートします。',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ABN登録 - ワーキングホリデー オーストラリア',
-    description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
+    description: '個人事業主として正しくABNを登録。登録税理士がサポートします。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -56,7 +56,7 @@ const faqs = [
   { question: 'TFNなしでABNを取得できますか？', answer: 'いいえ、ABNを申請する前に、まずTFN（タックスファイルナンバー）を取得する必要があります。TFNがあなたの本人確認の基礎となるからです。当社では、必要に応じてTFNとABNを同時に申請することも可能です。' },
   { question: 'GST（消費税）の登録は必要ですか？', answer: '年間売上（収入）が75,000ドルを超える場合のみGST登録が義務付けられています。ほとんどのワーキングホリデーメーカーはこの基準を超えないため、GST登録は不要です。ただし、Uber・DiDiなどの配車サービスドライバーは収入額に関わらずGST登録が必須です（フードデリバリーは75,000ドル基準が適用）。' },
   { question: 'オーストラリアを離れる時、ABNはどうなりますか？', answer: 'オーストラリアでの業務を終了する際は、ABNを取り消す必要があります。当社にご依頼いただければ、最終的なタックスリターン・スーパー受取（DASP）と合わせてABN取消も代行いたします。' },
-  { question: 'ABN申請が却下されることはありますか？', answer: 'はい、申請内容が実際の業務実態と一致しない場合や、雇用関係に近い働き方なのにABNで申請した場合、却下されることがあります。だからこそ、登録税理士の監督のもとで最初から正しく設定することが重要です。' },
+  { question: 'ABN申請が却下されることはありますか？', answer: 'はい、申請内容が実際の業務実態と一致しない場合や、雇用関係に近い働き方なのにABNで申請した場合、却下されることがあります。だからこそ、登録税理士に依頼して最初から正しく設定することが重要です。' },
   { question: 'ワーホリでABNは必要ですか？', answer: 'ABNが必要なのは、個人事業主や請負業者として働く場合のみです。例えば、Uberやフードデリバリー、フリーランス業務、PAYG雇用ではなくクライアントから直接支払いを受ける場合などです。通常の従業員として働くだけなら、TFNだけで十分です。' },
   { question: 'ABN収入はワーホリのタックスリターン還付金にどう影響しますか？', answer: 'ABN収入はPAYG給与とは扱いが異なります。源泉徴収が行われないため、税金分を自分で取り置く必要があります。タックスリターン提出時にはABN収入を別途申告し、関連する業務経費を控除として申請できます。' },
 ]
@@ -95,7 +95,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'ABN（Australian Business Number）の登録方法',
-  description: 'オーストラリアで個人事業主・請負業務・フリーランスとして働くためのABN登録手順。登録税理士の監督のもとで日本語で代行します。',
+  description: 'オーストラリアで個人事業主・請負業務・フリーランスとして働くためのABN登録手順。登録税理士が日本語で代行します。',
   inLanguage: 'ja',
   totalTime: 'P1D',
   estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
@@ -135,7 +135,7 @@ export default function ABNPageJA() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
@@ -186,7 +186,7 @@ export default function ABNPageJA() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
+              {['1,200名以上をサポート', <GoogleRating variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -199,7 +199,7 @@ export default function ABNPageJA() {
 
       {/* ── WHAT IS AN ABN? ──────────────────────────────────────────────── */}
       <section className="abn-intro-section">
-        <div className="abn-intro-container reveal">
+        <div className="abn-intro-container">
           <div className="abn-intro-grid">
 
             <div className="abn-intro-content">
@@ -273,7 +273,7 @@ export default function ABNPageJA() {
 
       {/* ── HOW WE HELP ──────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">当社のサポート</span>
@@ -322,7 +322,7 @@ export default function ABNPageJA() {
 
       {/* ── COMMON MISTAKES ──────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="max-w-xl mx-auto text-center mb-7 lg:mb-10">
             <span className="section-label center">よくあるミス</span>
@@ -355,8 +355,8 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── HOW TO REGISTER ──────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">登録の流れ</span>
@@ -379,7 +379,7 @@ export default function ABNPageJA() {
               {STEPS.map((s, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
                   <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
+                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #EEF7F2, 0 0 0 6px #C8EAE0' }}>
                     {s.n}
                   </div>
                   <p className="font-semibold text-ink text-center"
@@ -417,8 +417,8 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">

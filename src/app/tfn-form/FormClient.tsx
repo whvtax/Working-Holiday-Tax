@@ -3,7 +3,6 @@ import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
-import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
 type UploadState = { file: File | null; preview: string | null }
 
@@ -116,11 +115,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('howHeard',  howHeard)
     fd.append('declared',     declared ? '✓ I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.' : '')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
-        if (selfie.file) {
-          const selfieFile = await compressImage(selfie.file)
-          if (selfieFile.size > MAX_UPLOAD_BYTES) { setLoading(false); alert(T('fileTooLarge')); return }
-          fd.append('selfiePassport', selfieFile)
-        }
+        if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/tfn-form', { method: 'POST', body: fd })
       if (res.ok) {

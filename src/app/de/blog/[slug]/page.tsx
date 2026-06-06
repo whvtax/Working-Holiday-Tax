@@ -1,5 +1,3 @@
-import { SITE_URL } from '@/lib/constants'
-import { catLabelDe } from '@/lib/category-labels'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -37,8 +35,8 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   'Tax Return': [
     'Steuerrückerstattung Australien Working Holiday',
     'WHV Steuererklärung',
-    'Steuerrückerstattung 417 Visum',
-    'Steuerrückerstattung 462 Visum',
+    'Steuerrückzahlung 417 Visum',
+    'Steuerrückzahlung 462 Visum',
     'Steuer zurück Australien Backpacker',
     'Steuererklärung Australien nach Rückkehr',
   ],
@@ -90,18 +88,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       guide.title,
     ],
     alternates: {
-      canonical: `${SITE_URL}/de/blog/${guide.slug}`,
+      canonical: `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
       languages: {
-        'en-AU': `${SITE_URL}/blog/${guide.slug}`,
-        'de': `${SITE_URL}/de/blog/${guide.slug}`,
-        'ja': `${SITE_URL}/ja/blog/${guide.slug}`,
-        'x-default': `${SITE_URL}/blog/${guide.slug}`,
+        'en-AU': `https://workingholidaytax.com.au/blog/${guide.slug}`,
+        'de': `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
+        'x-default': `https://workingholidaytax.com.au/blog/${guide.slug}`,
       },
     },
     openGraph: {
       title: guide.title,
       description: guide.description,
-      url: `${SITE_URL}/de/blog/${guide.slug}`,
+      url: `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
       type: 'article',
       siteName: 'Working Holiday Tax',
       locale: 'de_DE',
@@ -393,10 +390,10 @@ export default function GermanGuidePage({ params }: Props) {
     dateModified: guide.date,
     author: {
       '@type': 'Organization',
-      '@id': `${SITE_URL}/#business`,
+      '@id': 'https://workingholidaytax.com.au/#organization',
       name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-      description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462).',
+      url: 'https://workingholidaytax.com.au',
+      description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462).',
       knowsAbout: [
         'Australisches Steuerrecht',
         'Working Holiday Visum (Subclass 417, 462)',
@@ -409,12 +406,12 @@ export default function GermanGuidePage({ params }: Props) {
     },
     publisher: {
       '@type': 'Organization',
-      '@id': `${SITE_URL}/#business`,
+      '@id': 'https://workingholidaytax.com.au/#organization',
       name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon-512.png` },
+      url: 'https://workingholidaytax.com.au',
+      logo: { '@type': 'ImageObject', url: 'https://workingholidaytax.com.au/icon-512.png' },
     },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/de/blog/${guide.slug}` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://workingholidaytax.com.au/de/blog/${guide.slug}` },
     audience: { '@type': 'Audience', name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)' },
     about: [
       { '@type': 'Thing', name: 'Working Holiday Visum Australien' },
@@ -453,7 +450,7 @@ export default function GermanGuidePage({ params }: Props) {
       position: i + 1,
       name: s.name,
       text: s.text,
-      url: `${SITE_URL}/de/blog/${guide.slug}#step-${i + 1}`,
+      url: `https://workingholidaytax.com.au/de/blog/${guide.slug}#step-${i + 1}`,
     })),
   } : null
 
@@ -473,7 +470,7 @@ export default function GermanGuidePage({ params }: Props) {
         inLanguage: 'de',
         author: { '@type': 'Organization', name: 'Working Holiday Tax' },
         upvoteCount: 1,
-        url: `${SITE_URL}/de/blog/${guide.slug}`,
+        url: `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
       },
     },
   } : null
@@ -482,12 +479,12 @@ export default function GermanGuidePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${SITE_URL}/de` },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE_URL}/de/blog` },
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: 'https://workingholidaytax.com.au/de' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://workingholidaytax.com.au/de/blog' },
       ...(categoryInfo
-        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `${SITE_URL}/de/blog/category/${categoryInfo.slug}` }]
+        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `https://workingholidaytax.com.au/de/blog/category/${categoryInfo.slug}` }]
         : []),
-      { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `${SITE_URL}/de/blog/${guide.slug}` },
+      { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `https://workingholidaytax.com.au/de/blog/${guide.slug}` },
     ],
   }
 
@@ -505,13 +502,13 @@ export default function GermanGuidePage({ params }: Props) {
   const webPageLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': `${SITE_URL}/de/blog/${guide.slug}`,
-    url: `${SITE_URL}/de/blog/${guide.slug}`,
+    '@id': `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
+    url: `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
     name: guide.title,
     description: guide.description,
     inLanguage: articleLang,
-    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
-    primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}/og-image.png` },
+    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
+    primaryImageOfPage: { '@type': 'ImageObject', url: 'https://workingholidaytax.com.au/og-image.png' },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.guide-lead'] },
   }
 
@@ -549,7 +546,7 @@ export default function GermanGuidePage({ params }: Props) {
               {categoryInfo && (
                 <>
                   <Link href={`/de/blog/category/${categoryInfo.slug}`} style={{ color: '#587066', textDecoration: 'none' }}>
-                    {catLabelDe(categoryInfo.category)}
+                    {categoryInfo.category}
                   </Link>
                   <span>/</span>
                 </>
@@ -578,7 +575,7 @@ export default function GermanGuidePage({ params }: Props) {
                           border: `1px solid ${categoryColors.border}`,
                         }}
                       >
-                        {catLabelDe(guide.category)}
+                        {guide.category}
                       </Link>
                       <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                     </>
@@ -660,7 +657,7 @@ export default function GermanGuidePage({ params }: Props) {
                             letterSpacing: '0.02em',
                             border: `1px solid ${gColors.border}`,
                           }}>
-                            {catLabelDe(g.category)}
+                            {g.category}
                           </span>
                           <span style={{ fontSize: '11px', color: '#8AADA3' }}>{g.readTime} Min. Lesezeit</span>
                         </div>
@@ -682,7 +679,7 @@ export default function GermanGuidePage({ params }: Props) {
                     href={`/de/blog/category/${categoryInfo.slug}`}
                     style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                   >
-                    Alle {catLabelDe(categoryInfo.category)}-Artikel ansehen →
+                    Alle {categoryInfo.category}-Artikel ansehen →
                   </Link>
                 </div>
               )}

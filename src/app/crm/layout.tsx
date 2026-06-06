@@ -1,32 +1,6 @@
 'use client'
 import { useEffect } from 'react'
 
-// Auto-logout after 30 minutes of inactivity (no mouse/keyboard/touch).
-const IDLE_MS = 30 * 60 * 1000
-function IdleLogout() {
-  useEffect(() => {
-    if (typeof window === 'undefined' || window.location.pathname === '/crm') return
-    let timer: ReturnType<typeof setTimeout>
-    const logout = async () => {
-      try { await fetch('/api/crm/logout', { method: 'POST' }) } catch {}
-      window.location.replace('/crm?timeout=1')
-    }
-    const reset = () => { clearTimeout(timer); timer = setTimeout(logout, IDLE_MS) }
-    const events = ['mousemove','mousedown','keydown','scroll','touchstart','click'] as const
-    events.forEach(e => window.addEventListener(e, reset, { passive: true }))
-    window.addEventListener('focus', reset)
-    document.addEventListener('visibilitychange', reset)
-    reset()
-    return () => {
-      clearTimeout(timer)
-      events.forEach(e => window.removeEventListener(e, reset))
-      window.removeEventListener('focus', reset)
-      document.removeEventListener('visibilitychange', reset)
-    }
-  }, [])
-  return null
-}
-
 // Auto-reload on ChunkLoadError (happens after new Vercel deployment)
 function ChunkErrorHandler() {
   useEffect(() => {
@@ -74,7 +48,6 @@ export default function CrmLayout({ children }: { children: React.ReactNode }) {
         body { margin: 0 !important; padding: 0 !important; }
       `}</style>
       <ChunkErrorHandler />
-      <IdleLogout />
       {children}
     </>
   )

@@ -5,7 +5,7 @@ import { FormClient } from '@/app/tax-form/FormClient'
 export const metadata: Metadata = {
   title: 'Steuererklärungsantrag stellen | Working Holiday Tax',
   description: 'Reiche deine australische Steuererklärung als Working Holiday Maker online ein. Registrierter Steueragent - meistens innerhalb von 24 Stunden eingereicht beim ATO.',
-  keywords: ['Steuererklärung Antrag', 'Tax Return Formular Deutsch', 'Steuererklärung online', 'Steuerrückerstattung beantragen', 'WHV Steuererklärung einreichen', 'Backpacker Steuererklärung Formular', 'Steuererklärung Australien Deutsch', 'australische Steuererklärung Antrag'],
+  keywords: ['Steuererklärung Antrag', 'Tax Return Formular Deutsch', 'Steuererklärung online', 'Steuerrückzahlung beantragen', 'WHV Steuererklärung einreichen', 'Backpacker Steuererklärung Formular', 'Steuererklärung Australien Deutsch', 'australische Steuererklärung Antrag'],
   alternates: {
     canonical: '/de/tax-form',
     languages: {

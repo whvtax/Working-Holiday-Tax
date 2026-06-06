@@ -53,7 +53,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
   return (
     <>
       {/* Page header */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
           <div className="max-w-[560px] lg:max-w-[700px] mx-auto text-center">
 
@@ -199,7 +199,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
           </p>
           <h2 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '20ch' }}>
-            あなたが受け取れる還付金を最大限に
+            最大限の還付金を取り戻します
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
             この計算機は概算のみです。控除可能な経費や税額控除を見つけ出し、還付金をさらに増やせる場合が多くあります。

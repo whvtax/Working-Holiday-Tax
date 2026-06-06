@@ -3,7 +3,6 @@ import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
-import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
 type UploadState = { file: File | null; preview: string | null }
 
@@ -119,11 +118,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('howHeard', howHeard)
     fd.append('declared',    terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
-    if (selfie.file) {
-      const selfieFile = await compressImage(selfie.file)
-      if (selfieFile.size > MAX_UPLOAD_BYTES) { setLoading(false); alert(T('fileTooLarge')); return }
-      fd.append('selfiePassport', selfieFile)
-    }
+    if (selfie.file) fd.append('selfiePassport', selfie.file)
     try {
       const res = await fetch('/api/super-form', { method: 'POST', body: fd })
       if (res.ok) {

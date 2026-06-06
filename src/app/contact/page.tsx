@@ -5,7 +5,7 @@ import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib
 
 export const metadata: Metadata = {
   title: 'Contact Us - Working Holiday Tax | Registered Tax Agents Australia',
-  description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
+  description: 'Get in touch with our registered tax agents for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
   keywords: [
     'contact working holiday tax',
     'working holiday tax agent contact',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Contact Working Holiday Tax | Registered Tax Agents Australia',
-    description: 'Get in touch with our team, working under the supervision of a registered tax agent. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
+    description: 'Get in touch with our registered tax agents. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
     url: `${SITE_URL}/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Contact Working Holiday Tax | Registered Tax Agents',
-    description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund.',
+    description: 'Get in touch with our registered tax agents for your working holiday tax refund.',
   },
   robots: {
     index: true,
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     question: 'How quickly will you reply?',
-    answer: 'During business hours (Mon-Fri, 9am-6pm AEST/AEDT) we usually reply within an hour. Outside business hours, we will get back to you first thing the next morning.',
+    answer: 'During business hours (Mon-Fri, 9am-6pm AEST) we usually reply within an hour. Outside business hours, we will get back to you first thing the next morning.',
   },
   {
     question: 'Is there a fee just to ask a question?',
@@ -96,7 +96,7 @@ export default function ContactPage() {
     '@id': `${SITE_URL}/contact`,
     url: `${SITE_URL}/contact`,
     name: 'Contact Working Holiday Tax',
-    description: 'Get in touch with our team, working under the supervision of a registered tax agent, for help with TFN, tax returns, super and ABN.',
+    description: 'Get in touch with our registered tax agents for help with TFN, tax returns, super and ABN.',
     inLanguage: 'en-AU',
     isPartOf: {
       '@type': 'WebSite',
@@ -186,7 +186,7 @@ export default function ContactPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       {/* ── HERO + BREADCRUMBS ──────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-5 pb-7 lg:pt-12 lg:pb-12">
 
           {/* Breadcrumbs */}
@@ -235,7 +235,7 @@ export default function ContactPage() {
 
       {/* ── TRUST SIGNALS STRIP ─────────────────────────────────────────── */}
       <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
               { stat: '1,200+', label: 'Backpackers' },
@@ -258,7 +258,7 @@ export default function ContactPage() {
 
       {/* ── CONTACT OPTIONS ─────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="text-center mb-6 lg:mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -352,7 +352,7 @@ export default function ContactPage() {
               Business hours
             </p>
             <p className="contact-hours-detail">
-              Monday to Friday, 9am - 6pm AEST/AEDT<br />
+              Monday to Friday, 9am - 6pm AEST<br />
               <span style={{ color: '#8AADA3' }}>Replies within an hour during business hours</span>
             </p>
           </div>
@@ -362,7 +362,7 @@ export default function ContactPage() {
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
       <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="text-center mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -389,7 +389,7 @@ export default function ContactPage() {
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[520px] mx-auto text-center">
             <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
               Ready when you are

@@ -7,8 +7,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
-  description: 'オーストラリア タックスリターン 還付金の手続きを、417・462ビザのワーキングホリデー専門のチームが登録税理士の監督のもとで日本語で完全代行。準備からATOへの提出まで、帰国後の日本からでもオンラインで完結します。',
+  title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門の登録税理士',
+  description: 'オーストラリア タックスリターン 還付金の手続きを、417・462ビザのワーキングホリデー専門の登録税理士が日本語で完全代行。準備からATOへの提出まで、帰国後の日本からでもオンラインで完結します。',
   keywords: [
     // Refund-focused (primary)
     'オーストラリア タックスリターン 還付金',
@@ -61,8 +61,8 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
-    description: '417・462ビザのワーホリ専門。登録税理士の監督のもとで、タックスリターン還付金の手続きを日本語で代行。帰国後も対応。',
+    title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門の登録税理士',
+    description: '417・462ビザのワーホリ専門の登録税理士。タックスリターン還付金の手続きを日本語で代行。帰国後も対応。',
   },
   twitter: {
     card: 'summary_large_image',
@@ -87,11 +87,11 @@ const faqs = [
   },
   {
     question: '帰国後でもタックスリターンを提出して還付金を受け取れますか？',
-    answer: 'はい、日本帰国後でも世界中どこからでも提出できます。登録税理士の監督のもとでオンラインで完結します。タックスリターン還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルールにより、海外口座への振込はできません）。帰国後でも数年遡って申請できるケースもあります。',
+    answer: 'はい、日本帰国後でも世界中どこからでも提出できます。当社の登録税理士サービスを通じてオンラインで完結します。タックスリターン還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルールにより、海外口座への振込はできません）。帰国後でも数年遡って申請できるケースもあります。',
   },
   {
     question: '還付金がもらえるか、どうやって分かりますか？',
-    answer: '年間で源泉徴収された税金が実際の納税額より多い場合、差額が還付されます。TFNなしの期間があった、間違った税率で源泉徴収された、業務関連の控除可能経費がある、会計年度の一部しか働いていない、などのケースでは還付金になることが多いです。登録税理士の監督のもとであなたの状況を確認し、正確に申告します。',
+    answer: '年間で源泉徴収された税金が実際の納税額より多い場合、差額が還付されます。TFNなしの期間があった、間違った税率で源泉徴収された、業務関連の控除可能経費がある、会計年度の一部しか働いていない、などのケースでは還付金になることが多いです。登録税理士があなたの状況を確認し、正確に申告します。',
   },
   {
     question: 'ワーホリのタックスリターン還付金はいくらもらえますか？',
@@ -119,7 +119,7 @@ const DEDUCTIONS = [
 const STEPS = [
   { n: '1', title: 'ご相談・お問い合わせ',   body: '日本語でお気軽にご相談ください。ワーホリ タックスリターンに必要な情報を簡単にご案内します。' },
   { n: '2', title: '必要書類のご送付',       body: 'TFN、給与明細、控除関連の領収書などを送るだけ。日本からでも簡単に対応できます。' },
-  { n: '3', title: 'ATOへ代理提出',          body: '登録税理士の監督のもとで、控除を漏れなく申告し、タックスリターンをATOへ提出します。' },
+  { n: '3', title: 'ATOへ代理提出',          body: '登録税理士として、控除を漏れなく申告し、タックスリターンをATOへ提出します。' },
   { n: '4', title: 'ATOからの結果通知',     body: '通常7〜14営業日でATOからの結果通知が届きます。還付金が発生する場合は、ご指定のオーストラリアの銀行口座に振り込まれます。' },
 ]
 
@@ -154,7 +154,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'オーストラリアのタックスリターン申告方法（ワーキングホリデー）',
-  description: 'オーストラリアのワーキングホリデーメーカーがタックスリターンを提出して還付金を受け取る手順。登録税理士の監督のもとで日本語で代行します。',
+  description: 'オーストラリアのワーキングホリデーメーカーがタックスリターンを提出して還付金を受け取る手順。登録税理士が日本語で代行します。',
   inLanguage: 'ja',
   totalTime: 'P1D',
   estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
@@ -179,7 +179,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/ja/tax-return#service`,
   name: 'タックスリターン代行サービス',
   serviceType: 'タックスリターン申告',
-  description: 'オーストラリアのワーキングホリデーメーカー向けタックスリターン代行。登録税理士の監督のもとで最大の還付金を取り戻します。平均還付額は約$2,800。',
+  description: 'オーストラリアのワーキングホリデーメーカー向けタックスリターン代行。登録税理士が最大の還付金を取り戻します。平均還付額は約$2,800。',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
@@ -201,7 +201,7 @@ export default function JapaneseTaxReturnPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
@@ -264,7 +264,7 @@ export default function JapaneseTaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['1,200名以上をサポート',<GoogleRating variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -325,7 +325,7 @@ export default function JapaneseTaxReturnPage() {
                 ワーキングホリデーメーカーの多くは<strong>年間で税金を払い過ぎている</strong>ため、差額が還付金として戻ってきます。当社で対応したワーホリの平均還付額は約<strong>$2,800</strong>。$1,000〜$5,000の還付になることも珍しくありません。
               </p>
               <p className="taxret-intro-body">
-                オーストラリアの会計年度は<strong>7月1日〜翌年6月30日</strong>。提出期限は10月31日ですが、当社のように登録税理士の監督のもとで提出する場合は翌年5月まで延長されます。日本帰国後でも世界中どこからでも申請可能で、還付金はオーストラリア・日本どちらの口座でも受け取れます。
+                オーストラリアの会計年度は<strong>7月1日〜翌年6月30日</strong>。提出期限は10月31日ですが、当社のような登録税理士経由なら翌年5月まで延長されます。日本帰国後でも世界中どこからでも申請可能で、還付金はオーストラリア・日本どちらの口座でも受け取れます。
               </p>
             </div>
 
@@ -334,7 +334,7 @@ export default function JapaneseTaxReturnPage() {
           {/* CTA strip to OUR service */}
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">登録税理士の監督のもとで代理申告いたします</h3>
+              <h3 className="service-cta-heading">登録税理士が代理で申告いたします</h3>
               <p className="service-cta-sub">初回相談は無料。ATOポータルや英語の書類と格闘する必要はありません。日本語ですべて完結し、最大の還付金を取り戻します。帰国後も対応可能です。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
@@ -345,7 +345,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">当社のサービス</span>
@@ -366,7 +366,7 @@ export default function JapaneseTaxReturnPage() {
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="11.5" x2="11" y2="11.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-                title: '登録税理士の監督のもとで代理提出',
+                title: '登録税理士として代理提出',
                 body: 'TANを持つ登録税理士の監督の下、ATOに直接タックスリターンを提出します。',
               },
               {
@@ -418,7 +418,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">選ばれる理由</span>
@@ -452,7 +452,7 @@ export default function JapaneseTaxReturnPage() {
               <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-forest-500 mb-4">当社のサービスの場合</p>
               <div className="space-y-3">
                 {[
-                  '登録税理士の監督のもとで代理で正しく提出',
+                  '登録税理士が代理で正しく提出',
                   'すべての控除を漏れなく適用',
                   '日本語で完結、ストレスゼロ',
                   'ATOからの問い合わせも当社が対応',
@@ -553,7 +553,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">控除可能な経費</span>
@@ -652,7 +652,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 

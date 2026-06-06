@@ -2,16 +2,6 @@ import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
 
-// Parse a guide date string ("1 July 2024") into a Date for accurate <lastmod>.
-// Stable last-content-update date for static & category pages, so <lastmod>
-// doesn't churn on every deploy (which a build-time new Date() would cause).
-const LAST_CONTENT_UPDATE = new Date('2026-06-01')
-
-function parseGuideDate(s: string): Date {
-  const d = new Date(s)
-  return isNaN(d.getTime()) ? new Date() : d
-}
-
 /**
  * Site map - includes English (default), German (/de) and Japanese (/ja) versions.
  * Each English URL gets matching /de and /ja entries. Search engines use these together
@@ -44,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // English static pages
   const englishStatic = routes.map(r => ({
     url: `${SITE_URL}${r.url}`,
-    lastModified: LAST_CONTENT_UPDATE,
+    lastModified: new Date(),
     changeFrequency: r.changeFrequency,
     priority: r.priority,
   }))
@@ -54,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(r => r.translated)
     .map(r => ({
       url: r.url === '/' ? `${SITE_URL}/de` : `${SITE_URL}/de${r.url}`,
-      lastModified: LAST_CONTENT_UPDATE,
+      lastModified: new Date(),
       changeFrequency: r.changeFrequency,
       priority: r.priority * 0.95, // Slight priority drop vs canonical English
     }))
@@ -64,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter(r => r.translated)
     .map(r => ({
       url: r.url === '/' ? `${SITE_URL}/ja` : `${SITE_URL}/ja${r.url}`,
-      lastModified: LAST_CONTENT_UPDATE,
+      lastModified: new Date(),
       changeFrequency: r.changeFrequency,
       priority: r.priority * 0.95,
     }))
@@ -72,7 +62,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // English category pages
   const englishCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/blog/category/${c.slug}`,
-    lastModified: LAST_CONTENT_UPDATE,
+    lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }))
@@ -80,7 +70,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // German category pages
   const germanCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/de/blog/category/${c.slug}`,
-    lastModified: LAST_CONTENT_UPDATE,
+    lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.76,
   }))
@@ -88,7 +78,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Japanese category pages
   const japaneseCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
     url: `${SITE_URL}/ja/blog/category/${c.slug}`,
-    lastModified: LAST_CONTENT_UPDATE,
+    lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.76,
   }))
@@ -96,7 +86,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // English guide pages
   const englishGuides: MetadataRoute.Sitemap = guides.map(g => ({
     url: `${SITE_URL}/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.75,
   }))
@@ -104,7 +94,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // German guide pages (will be populated as articles are translated)
   const germanGuides: MetadataRoute.Sitemap = guides.map(g => ({
     url: `${SITE_URL}/de/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.71,
   }))
@@ -112,7 +102,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Japanese guide pages (will be populated as articles are translated)
   const japaneseGuides: MetadataRoute.Sitemap = guides.map(g => ({
     url: `${SITE_URL}/ja/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
+    lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.71,
   }))

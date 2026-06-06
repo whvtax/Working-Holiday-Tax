@@ -1,5 +1,3 @@
-import { SITE_URL } from '@/lib/constants'
-import { catLabelJa } from '@/lib/category-labels'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -90,18 +88,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       guide.title,
     ],
     alternates: {
-      canonical: `${SITE_URL}/ja/blog/${guide.slug}`,
+      canonical: `https://workingholidaytax.com.au/ja/blog/${guide.slug}`,
       languages: {
-        'en-AU': `${SITE_URL}/blog/${guide.slug}`,
-        'de': `${SITE_URL}/de/blog/${guide.slug}`,
-        'ja': `${SITE_URL}/ja/blog/${guide.slug}`,
-        'x-default': `${SITE_URL}/blog/${guide.slug}`,
+        'en-AU': `https://workingholidaytax.com.au/blog/${guide.slug}`,
+        'de': `https://workingholidaytax.com.au/de/blog/${guide.slug}`,
+        'ja': `https://workingholidaytax.com.au/ja/blog/${guide.slug}`,
+        'x-default': `https://workingholidaytax.com.au/blog/${guide.slug}`,
       },
     },
     openGraph: {
       title: guide.title,
       description: guide.description,
-      url: `${SITE_URL}/ja/blog/${guide.slug}`,
+      url: `https://workingholidaytax.com.au/ja/blog/${guide.slug}`,
       type: 'article',
       siteName: 'Working Holiday Tax',
       locale: 'ja_JP',
@@ -370,10 +368,10 @@ export default function JapaneseGuidePage({ params }: Props) {
     dateModified: guide.date,
     author: {
       '@type': 'Organization',
-      '@id': `${SITE_URL}/#business`,
+      '@id': 'https://workingholidaytax.com.au/#organization',
       name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-      description: 'オーストラリアで登録税理士の監督のもとで運営。ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門としています。',
+      url: 'https://workingholidaytax.com.au',
+      description: 'オーストラリアの登録税理士事務所。ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門としています。',
       knowsAbout: [
         'オーストラリア税法',
         'ワーキングホリデービザ（サブクラス417・462）',
@@ -386,12 +384,12 @@ export default function JapaneseGuidePage({ params }: Props) {
     },
     publisher: {
       '@type': 'Organization',
-      '@id': `${SITE_URL}/#business`,
+      '@id': 'https://workingholidaytax.com.au/#organization',
       name: 'Working Holiday Tax',
-      url: `${SITE_URL}`,
-      logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon-512.png` },
+      url: 'https://workingholidaytax.com.au',
+      logo: { '@type': 'ImageObject', url: 'https://workingholidaytax.com.au/icon-512.png' },
     },
-    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/ja/blog/${guide.slug}` },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `https://workingholidaytax.com.au/ja/blog/${guide.slug}` },
     audience: { '@type': 'Audience', name: 'オーストラリアのワーキングホリデービザ保持者（サブクラス417・462）' },
     about: [
       { '@type': 'Thing', name: 'オーストラリアのワーキングホリデービザ' },
@@ -430,7 +428,7 @@ export default function JapaneseGuidePage({ params }: Props) {
       position: i + 1,
       name: s.name,
       text: s.text,
-      url: `${SITE_URL}/ja/blog/${guide.slug}#step-${i + 1}`,
+      url: `https://workingholidaytax.com.au/ja/blog/${guide.slug}#step-${i + 1}`,
     })),
   } : null
 
@@ -450,7 +448,7 @@ export default function JapaneseGuidePage({ params }: Props) {
         inLanguage: 'ja',
         author: { '@type': 'Organization', name: 'Working Holiday Tax' },
         upvoteCount: 1,
-        url: `${SITE_URL}/ja/blog/${guide.slug}`,
+        url: `https://workingholidaytax.com.au/ja/blog/${guide.slug}`,
       },
     },
   } : null
@@ -459,12 +457,12 @@ export default function JapaneseGuidePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-      { '@type': 'ListItem', position: 2, name: 'ブログ', item: `${SITE_URL}/ja/blog` },
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://workingholidaytax.com.au/ja' },
+      { '@type': 'ListItem', position: 2, name: 'ブログ', item: 'https://workingholidaytax.com.au/ja/blog' },
       ...(categoryInfo
-        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `${SITE_URL}/ja/blog/category/${categoryInfo.slug}` }]
+        ? [{ '@type': 'ListItem', position: 3, name: categoryInfo.category, item: `https://workingholidaytax.com.au/ja/blog/category/${categoryInfo.slug}` }]
         : []),
-      { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `${SITE_URL}/ja/blog/${guide.slug}` },
+      { '@type': 'ListItem', position: categoryInfo ? 4 : 3, name: guide.title, item: `https://workingholidaytax.com.au/ja/blog/${guide.slug}` },
     ],
   }
 
@@ -482,13 +480,13 @@ export default function JapaneseGuidePage({ params }: Props) {
   const webPageLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    '@id': `${SITE_URL}/ja/blog/${guide.slug}`,
-    url: `${SITE_URL}/ja/blog/${guide.slug}`,
+    '@id': `https://workingholidaytax.com.au/ja/blog/${guide.slug}`,
+    url: `https://workingholidaytax.com.au/ja/blog/${guide.slug}`,
     name: guide.title,
     description: guide.description,
     inLanguage: articleLang,
-    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
-    primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}/og-image.png` },
+    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
+    primaryImageOfPage: { '@type': 'ImageObject', url: 'https://workingholidaytax.com.au/og-image.png' },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.guide-lead'] },
   }
 
@@ -526,7 +524,7 @@ export default function JapaneseGuidePage({ params }: Props) {
               {categoryInfo && (
                 <>
                   <Link href={`/ja/blog/category/${categoryInfo.slug}`} style={{ color: '#587066', textDecoration: 'none' }}>
-                    {catLabelJa(categoryInfo.category)}
+                    {categoryInfo.category}
                   </Link>
                   <span>/</span>
                 </>
@@ -555,7 +553,7 @@ export default function JapaneseGuidePage({ params }: Props) {
                           border: `1px solid ${categoryColors.border}`,
                         }}
                       >
-                        {catLabelJa(guide.category)}
+                        {guide.category}
                       </Link>
                       <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                     </>
@@ -637,7 +635,7 @@ export default function JapaneseGuidePage({ params }: Props) {
                             letterSpacing: '0.02em',
                             border: `1px solid ${gColors.border}`,
                           }}>
-                            {catLabelJa(g.category)}
+                            {g.category}
                           </span>
                           <span style={{ fontSize: '11px', color: '#8AADA3' }}>{g.readTime}分で読めます</span>
                         </div>
@@ -659,7 +657,7 @@ export default function JapaneseGuidePage({ params }: Props) {
                     href={`/ja/blog/category/${categoryInfo.slug}`}
                     style={{ fontSize: '13px', color: '#0B5240', fontWeight: 600, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                   >
-                    {catLabelJa(categoryInfo.category)}の記事をすべて見る →
+                    {categoryInfo.category}の記事をすべて見る →
                   </Link>
                 </div>
               )}

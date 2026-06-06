@@ -1,5 +1,3 @@
-import { SITE_URL } from '@/lib/constants'
-import { catLabelJa } from '@/lib/category-labels'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -30,18 +28,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'WHM 税金',
     ],
     alternates: {
-      canonical: `${SITE_URL}/ja/blog/category/${meta.slug}`,
+      canonical: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
       languages: {
-        'en-AU': `${SITE_URL}/blog/category/${meta.slug}`,
-        'de': `${SITE_URL}/de/blog/category/${meta.slug}`,
-        'ja': `${SITE_URL}/ja/blog/category/${meta.slug}`,
-        'x-default': `${SITE_URL}/blog/category/${meta.slug}`,
+        'en-AU': `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
+        'de': `https://workingholidaytax.com.au/de/blog/category/${meta.slug}`,
+        'ja': `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
+        'x-default': `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
       },
     },
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `${SITE_URL}/ja/blog/category/${meta.slug}`,
+      url: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
       siteName: 'Working Holiday Tax',
       locale: 'ja_JP',
       type: 'website',
@@ -77,9 +75,9 @@ export default function JapaneseCategoryPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: meta.title,
     description: meta.description,
-    url: `${SITE_URL}/ja/blog/category/${meta.slug}`,
+    url: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
     inLanguage: 'ja',
-    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
+    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
     about: { '@type': 'Thing', name: meta.category },
     audience: { '@type': 'Audience', name: 'オーストラリアのワーキングホリデービザ保持者（サブクラス417・462）' },
     mainEntity: {
@@ -88,7 +86,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
       itemListElement: articles.map((g, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `${SITE_URL}/ja/blog/${g.slug}`,
+        url: `https://workingholidaytax.com.au/ja/blog/${g.slug}`,
         name: g.title,
       })),
     },
@@ -98,9 +96,9 @@ export default function JapaneseCategoryPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-      { '@type': 'ListItem', position: 2, name: 'ブログ', item: `${SITE_URL}/ja/blog` },
-      { '@type': 'ListItem', position: 3, name: meta.category, item: `${SITE_URL}/ja/blog/category/${meta.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://workingholidaytax.com.au/ja' },
+      { '@type': 'ListItem', position: 2, name: 'ブログ', item: 'https://workingholidaytax.com.au/ja/blog' },
+      { '@type': 'ListItem', position: 3, name: meta.category, item: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}` },
     ],
   }
 
@@ -131,7 +129,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
               <span aria-hidden="true">/</span>
               <Link href="/ja/blog" style={{ color: 'inherit', textDecoration: 'none' }}>ブログ</Link>
               <span aria-hidden="true">/</span>
-              <span aria-current="page" style={{ color: colors.text }}>{catLabelJa(meta.category)}</span>
+              <span aria-current="page" style={{ color: colors.text }}>{meta.category}</span>
             </nav>
 
             <div className="inline-flex items-center gap-2" style={{ marginBottom: '12px' }}>
@@ -165,7 +163,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
         <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 20px 24px' }}>
 
           <h2 className="font-serif" style={{ fontSize: '20px', fontWeight: 700, color: '#080F0D', marginBottom: '24px', letterSpacing: '-0.02em' }}>
-            {catLabelJa(meta.category)}の記事をすべて見る（{articles.length}件）
+            {meta.category}の記事をすべて見る（{articles.length}件）
           </h2>
 
           <div className="category-grid">
@@ -192,7 +190,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
                       letterSpacing: '0.02em',
                       border: `1px solid ${colors.border}`,
                     }}>
-                      {catLabelJa(article.category)}
+                      {article.category}
                     </span>
                     <span style={{ color: '#CDE3DB' }}>·</span>
                     <span style={{ fontSize: '11.5px', color: '#8AADA3' }}>{article.readTime}分で読めます</span>
@@ -262,7 +260,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
                       fontWeight: 600,
                     }}
                   >
-                    {catLabelJa(c.category)}
+                    {c.category}
                   </Link>
                 )
               })}

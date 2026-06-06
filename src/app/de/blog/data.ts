@@ -56,7 +56,7 @@ export const blogUI = {
   shareArticle:        'Artikel teilen',
   relatedArticles:     'Verwandte Artikel',
   needHelp:            'Brauchst du Hilfe?',
-  needHelpBody:        'Unser Team arbeitet unter Aufsicht eines registrierten Steueragenten und hilft Working Holiday Makern bei TFN, Steuererklärung, Super und ABN.',
+  needHelpBody:        'Unser Team von registrierten Steueragenten hilft Working Holiday Makern bei TFN, Steuererklärung, Super und ABN.',
   contactCTA:          'Kontaktiere uns →',
 
   // Translation notice (when post body is still English)
@@ -118,7 +118,7 @@ export const deCategoryMeta: DeCategoryMeta[] = [
     faq: [
       { question: 'Wann muss ich meine Steuererklärung in Australien machen?', answer: 'Das australische Steuerjahr läuft vom 1. Juli bis 30. Juni. Du hast bis zum 31. Oktober Zeit, um deine Steuererklärung einzureichen - wenn du sie selbst machst. Mit einem registrierten Steueragenten hast du bis Mai des Folgejahres Zeit.' },
       { question: 'Was kann ich als Working Holiday Maker absetzen?', answer: 'Du kannst arbeitsbezogene Kosten absetzen: Arbeitskleidung (z.B. Schutzkleidung, Uniformen), Werkzeuge und Ausrüstung, Lizenzen wie RSA oder White Card, Wäsche von Arbeitskleidung, Fahrten zwischen Arbeitsorten (nicht der tägliche Arbeitsweg) und Spenden an registrierte Wohltätigkeitsorganisationen.' },
-      { question: 'Wie hoch ist die durchschnittliche Steuerrückerstattung für WHM?', answer: 'Working Holiday Maker bekommen im Schnitt zwischen 2.000 und 3.500 AUD zurück, je nach Einkommen, Visumsstatus und absetzbaren Kosten. Die meisten haben im Laufe des Jahres zu viel Steuer gezahlt.' },
+      { question: 'Wie hoch ist die durchschnittliche Steuerrückzahlung für WHM?', answer: 'Working Holiday Maker bekommen im Schnitt zwischen 2.000 und 3.500 AUD zurück, je nach Einkommen, Visumsstatus und absetzbaren Kosten. Die meisten haben im Laufe des Jahres zu viel Steuer gezahlt.' },
       { question: 'Kann ich meine Steuererklärung machen, nachdem ich Australien verlassen habe?', answer: 'Ja. Du kannst die Steuererklärung von überall auf der Welt einreichen, auch nach deiner Abreise aus Australien. Die Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen.' },
     ],
     relatedServicePath: '/de/tax-return',
@@ -133,7 +133,7 @@ export const deCategoryMeta: DeCategoryMeta[] = [
     intro: 'Superannuation (Super) ist das australische Rentensystem. Per Gesetz zahlt dein Arbeitgeber 12 % deines Lohns zusätzlich zu deinem Gehalt in einen Superfonds ein. Als Working Holiday Maker kannst du dieses Geld zurückbekommen, wenn du Australien verlässt - über den DASP-Prozess (Departing Australia Superannuation Payment). Für die meisten Backpacker sind das zwischen 2.000 und 5.000 AUD. Diese Artikel erklären, wie Super funktioniert, wie du es findest und wie du es richtig zurückholst.',
     faq: [
       { question: 'Wie viel Super zahlt mein Arbeitgeber für mich ein?', answer: 'In Australien zahlt dein Arbeitgeber 12 % deines Bruttolohns als Super ein, zusätzlich zu deinem Gehalt. Wenn du also 1.000 AUD pro Woche verdienst, gehen weitere 120 AUD in deinen Superfonds.' },
-      { question: 'Kann ich meine Super zurückbekommen, wenn ich Australien verlasse?', answer: 'Ja. Als Working Holiday Maker kannst du eine Departing Australia Superannuation Payment (DASP) beantragen, sobald du Australien verlassen hast und dein Visum abgelaufen oder gekündigt ist. Die steuerpflichtige Komponente wird mit 65 % besteuert - den Rest bekommst du ausgezahlt.' },
+      { question: 'Kann ich meine Super zurückbekommen, wenn ich Australien verlasse?', answer: 'Ja. Als Working Holiday Maker kannst du eine Departing Australia Superannuation Payment (DASP) beantragen, sobald du Australien verlassen hast und dein Visum abgelaufen oder gekündigt ist. Die Auszahlung wird mit 65 % besteuert, aber die restlichen 35 % sind echtes Geld für dich.' },
       { question: 'Wie lange dauert die DASP-Auszahlung?', answer: 'Nach Einreichung des DASP-Antrags dauert die Auszahlung normalerweise 2-4 Wochen. Das Geld kommt direkt auf dein Bankkonto (australisch oder ausländisch).' },
       { question: 'Was, wenn ich mehrere Superkonten habe?', answer: 'Wenn du für mehrere Arbeitgeber gearbeitet hast, hast du wahrscheinlich mehrere Superkonten. Du kannst alle zusammen finden lassen und einen einzigen DASP-Antrag stellen, der alle Konten abdeckt.' },
     ],
@@ -193,9 +193,9 @@ export const dePostTranslations: Record<string, { title: string; description: st
     title: 'Was ist eine TFN und warum brauchst du eine in Australien?',
     description: 'Eine Tax File Number ist das Erste, was du brauchst, wenn du in Australien arbeiten willst. Ohne TFN behält dein Arbeitgeber fast die Hälfte deines Lohns ein.',
     body: `
-Eine Tax File Number (TFN) ist eine eindeutige neunstellige Nummer, die das ATO (australisches Finanzamt) jeder Person ausstellt, die in Australien Einkommen hat. Du brauchst sie, weil ohne TFN dein Arbeitgeber gesetzlich verpflichtet ist, 45 % Steuern einzubehalten - statt der 15 %, die für Working Holiday Maker gelten. Die TFN ist permanent, kostenlos und bleibt ein Leben lang gültig.
+Eine Tax File Number (TFN) ist eine eindeutige neunstellige Nummer, die das ATO (australisches Finanzamt) jeder Person ausstellt, die in Australien Einkommen hat. Du brauchst sie, weil ohne TFN dein Arbeitgeber gesetzlich verpflichtet ist, 45 % Steuern einzubehalten - statt der 15 % Working-Holiday-Maker-Rate. Die TFN ist permanent, kostenlos und bleibt ein Leben lang gültig.
 
-Jeder Arbeitnehmer in Australien braucht eine TFN, egal ob du Staatsbürger, Daueraufenthaltsberechtigter oder Backpacker mit Working-Holiday-Visum bist. Das ATO nutzt sie, um dein Einkommen, deine Steuerzahlungen und mögliche Rückzahlungen nachzuverfolgen.
+Jeder Arbeitnehmer in Australien braucht eine TFN, egal ob du Staatsbürger, ständig wohnhafte Person oder Backpacker mit Working Holiday Visum bist. Das ATO nutzt sie, um dein Einkommen, deine Steuerzahlungen und mögliche Rückzahlungen nachzuverfolgen.
 
 ## Warum ist eine TFN ab dem ersten Tag wichtig?
 
@@ -216,7 +216,7 @@ Das ATO nutzt deine TFN als Verbindung zwischen dir und jedem Teil deines finanz
 - Deine [jährliche Steuererklärung](/de/tax-return) am Ende des Steuerjahres einzureichen
 - Auf dein [Superkonto](/de/superannuation) zuzugreifen und es zu beantragen, wenn du Australien verlässt
 - Bestimmte australische Bankkonten zum korrekten (nicht-einbehaltenen) Satz zu eröffnen
-- Steuerrückerstattungen zu bekommen, die dir zustehen
+- Steuerrückzahlungen zu bekommen, die dir zustehen
 
 Jede andere steuerliche Verpflichtung - Steuererklärung, Superantrag oder ABN-Registrierung - ist mit deiner TFN verknüpft.
 
@@ -243,7 +243,7 @@ Beantrage deine TFN so schnell wie möglich und sag deinem Arbeitgeber, dass dei
 
 Steuer, die du zu viel gezahlt hast, bevor deine TFN hinterlegt war, kannst du dir mit deiner [Steuererklärung](/de/tax-return) am Ende des Steuerjahres zurückholen. Das Geld geht nicht dauerhaft verloren, solange du die Steuererklärung fristgerecht einreichst.
 
-[Kontaktiere unser Team](/de/contact), um deine TFN unter Aufsicht eines registrierten Steueragenten zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
+[Kontaktiere unser Team](/de/contact), um deine TFN über unseren registrierten Steueragentenservice zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
  `,
   },
 
@@ -289,7 +289,7 @@ Wenn dein TFN-Brief ankommt:
 
 Jeder Arbeitgeber braucht sein eigenes TFN Declaration-Formular. Wenn du deine TFN einem Arbeitgeber gibst, wird sie nicht automatisch mit anderen geteilt.
 
-[Kontaktiere unser Team](/de/contact), um deine TFN unter Aufsicht eines registrierten Steueragenten zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
+[Kontaktiere unser Team](/de/contact), um deine TFN über unseren registrierten Steueragentenservice zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
  `,
   },
 
@@ -371,7 +371,7 @@ Die Bearbeitung dauert typischerweise bis zu 28 Tage - je früher du beantragst,
 
 Wenn du bar bezahlt wirst, wird die TFN-Frage anders behandelt, weil keine formelle Lohnabrechnung existiert. Mehr dazu, wie das funktioniert und die steuerlichen Auswirkungen findest du in unserem Artikel zu [Schwarzarbeit in Australien](/de/blog/can-your-employer-pay-you-cash-in-hand).
 
-[Kontaktiere unser Team](/de/contact), um deine TFN unter Aufsicht eines registrierten Steueragenten zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
+[Kontaktiere unser Team](/de/contact), um deine TFN über unseren registrierten Steueragentenservice zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
  `,
   },
 
@@ -414,7 +414,7 @@ Die Frist ist der 31. Oktober nach Ende jedes Steuerjahres (1. Juli bis 30. Juni
 
 Wenn du während deiner Zeit in Australien für mehr als einen Arbeitgeber arbeitest, braucht jeder deine TFN separat. Wenn du sie einem Arbeitgeber gibst, wird sie nicht automatisch mit anderen geteilt. Reiche ein TFN Declaration-Formular bei jedem Arbeitgeber ein, für den du arbeitest - auch für Casual- und Kurzzeitrollen.
 
-[Kontaktiere unser Team](/de/contact), um deine TFN unter Aufsicht eines registrierten Steueragenten zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
+[Kontaktiere unser Team](/de/contact), um deine TFN über unseren registrierten Steueragentenservice zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
  `,
   },
 
@@ -464,7 +464,7 @@ Die Schlüsselfrage ist, ob das Unternehmen, das dich bezahlt, dich als Angestel
 
 Wenn du unsicher bist, welche Situation auf dich zutrifft, geht unser Artikel zu [dem Unterschied zwischen Angestellten und Contractors in Australien](/de/blog/employee-vs-contractor-australia) detaillierter auf die rechtlichen Tests ein.
 
-[Kontaktiere unser Team](/de/contact), um deine TFN unter Aufsicht eines registrierten Steueragenten zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
+[Kontaktiere unser Team](/de/contact), um deine TFN über unseren registrierten Steueragentenservice zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
  `,
   },
 
@@ -603,7 +603,7 @@ Deine Steuerpflichten bei deinem zweiten Besuch funktionieren genau gleich wie b
     title: 'Wie du deine TFN findest, wenn du sie verloren oder vergessen hast',
     description: 'Du hast deine TFN verloren? Keine Sorge - es gibt mehrere einfache Wege, sie wiederzufinden. Im Folgenden findest du sie.',
     body: `
-Um eine verlorene Tax File Number zu finden, fang mit Dokumenten an, die du eventuell schon hast (der originale ATO-Brief, Lohnzettel, Payment Summaries oder frühere Steuererklärungen). Deine TFN ist permanent und ändert sich nicht - die Nummer, die du ursprünglich bekommen hast, ist immer noch dieselbe. Wenn du sie nicht in deinen Unterlagen findest, kann unser Team sie unter Aufsicht eines registrierten Steueragenten für dich abrufen.
+Um eine verlorene Tax File Number zu finden, fang mit Dokumenten an, die du eventuell schon hast (der originale ATO-Brief, Lohnzettel, Payment Summaries oder frühere Steuererklärungen). Deine TFN ist permanent und ändert sich nicht - die Nummer, die du ursprünglich bekommen hast, ist immer noch dieselbe. Wenn du sie nicht in deinen Unterlagen findest, kann unser Team sie für dich als registrierter Steueragent abrufen.
 
 ## Wie du deine TFN zu Hause findest
 
@@ -618,7 +618,7 @@ Wenn du E-Mails gespeichert, Dokumente gescannt oder Papierkram von früherer Ar
 
 ## Wie du eine verlorene TFN wiederherstellst
 
-Wenn du deine TFN in keinen deiner Unterlagen findest, [kontaktiere unser Team](/de/contact). Wir arbeiten unter Aufsicht eines registrierten Steueragenten und können deine TFN für dich über unsere direkten Kanäle mit dem ATO abrufen.
+Wenn du deine TFN in keinen deiner Unterlagen findest, [kontaktiere unser Team](/de/contact). Wir sind registrierte Steueragenten und können deine TFN für dich über unsere direkten Kanäle mit dem ATO abrufen.
 
 Um uns zu helfen, halte bitte folgende Informationen bereit:
 
@@ -1094,7 +1094,7 @@ Die Standardfrist ist der 31. Oktober nach Ende des Finanzjahres:
 - Finanzjahr 2024-25 (endet 30. Juni 2025) → Frist 31. Oktober 2025
 - Finanzjahr 2025-26 (endet 30. Juni 2026) → Frist 31. Oktober 2026
 
-Wenn wir deine Steuererklärung unter Aufsicht eines registrierten Steueragenten einreichen, qualifizierst du dich für eine verlängerte Frist - oft bis Mai des Folgejahres. Das verschafft dir mehr Zeit, falls du den Oktober-Termin verpasst hast oder deine Unterlagen noch nicht komplett sind.
+Wenn wir deine Steuererklärung als dein registrierter Steueragent einreichen, qualifizierst du dich für eine verlängerte Frist - oft bis Mai des Folgejahres. Das verschafft dir mehr Zeit, falls du den Oktober-Termin verpasst hast oder deine Unterlagen noch nicht komplett sind.
 
 ## Was, wenn du Australien vor dem 30. Juni verlassen hast?
 
@@ -1117,7 +1117,7 @@ Um deine Steuererklärung einzureichen, braucht unser Team:
 
 Wir können auf deine Income Statements direkt über unser Steueragenten-Portal zugreifen, sodass du nicht selbst Lohnzettel von jedem Arbeitgeber zusammensuchen musst. Siehe unseren Artikel zur [Einreichung einer Steuererklärung aus dem Ausland](/de/blog/how-to-lodge-tax-return-from-overseas) für mehr Details, was wir brauchen.
 
-[Kontaktiere unser Team](/de/contact), um deine australische Steuererklärung unter Aufsicht eines registrierten Steueragenten einzureichen und sicherzustellen, dass jede Rückzahlung, die dir zusteht, beantragt wird.
+[Kontaktiere unser Team](/de/contact), um deine australische Steuererklärung über unseren registrierten Steueragentenservice einzureichen und sicherzustellen, dass jede Rückzahlung, die dir zusteht, beantragt wird.
  `,
   },
 
@@ -1218,7 +1218,7 @@ Ohne Belege kann die Absetzung nicht geltend gemacht werden, selbst wenn die Aus
     title: 'Was ist Superannuation und sind Working Holiday Maker dafür berechtigt?',
     description: 'Superannuation ist Australiens verpflichtendes Rentensparsystem. Working Holiday Maker sind berechtigt und können es zurückbekommen, wenn sie das Land verlassen.',
     body: `
-Superannuation (Super) ist Australiens verpflichtendes Rentensparsystem. Australische Arbeitgeber müssen 12 % deiner regulären Arbeitseinkünfte in einen Superfonds einzahlen, zusätzlich zu deinem Lohn. Working Holiday Maker haben Anspruch auf Superbeiträge genau wie australische Arbeitnehmer und können das angesparte Guthaben zurückbekommen, wenn sie Australien dauerhaft verlassen - über den Departing Australia Superannuation Payment (DASP)-Prozess. Unser Team kümmert sich um DASP-Anträge für Working Holiday Maker von überall auf der Welt.
+Superannuation (Super) ist Australiens verpflichtendes Rentensparsystem. Australische Arbeitgeber müssen 12 % deiner regulären Arbeitseinkünfte in einen Superfonds einzahlen, zusätzlich zu deinem Lohn. Working Holiday Maker haben Anspruch auf Superbeiträge genau wie australische Arbeitnehmer und können das angesparte Guthaben zurückbekommen, wenn sie Australien permanent verlassen - über den Departing Australia Superannuation Payment (DASP)-Prozess. Unser Team kümmert sich um DASP-Anträge für Working Holiday Maker von überall auf der Welt.
 
 ## Wie viel Super zahlt dein Arbeitgeber ein?
 
@@ -1257,7 +1257,7 @@ Wenn du dir nicht sicher bist, ob Super für dich gezahlt wird, [schick uns dein
 Der Prozess heißt Departing Australia Superannuation Payment (DASP). Die Schritte:
 
 1. Dein Visum muss abgelaufen oder gekündigt sein
-2. Du musst Australien dauerhaft verlassen haben
+2. Du musst Australien permanent verlassen haben
 3. DASP beantragen über unseren Service, den wir für dich einreichen
 4. Der Fonds (oder das ATO, falls das Guthaben übertragen wurde) zahlt das Guthaben aus
 
@@ -1272,9 +1272,9 @@ Siehe unseren detaillierten Artikel zu [wie der DASP-Prozess funktioniert](/de/b
   // Tax Return
   'how-to-lodge-tax-return-working-holiday': {
     title: 'Working Holiday Steuererklärung in Australien einreichen: Schritt-für-Schritt-Anleitung',
-    description: 'Schritt-für-Schritt-Anleitung zur Working Holiday Steuererklärung in Australien. Was du brauchst, wann du einreichst und wie es unter Aufsicht eines registrierten Steueragenten für 417 und 462 Visuminhaber erledigt wird - auch aus Deutschland.',
+    description: 'Schritt-für-Schritt-Anleitung zur Working Holiday Steuererklärung in Australien. Was du brauchst, wann du einreichst und wie ein registrierter Steueragent das für 417 und 462 Visuminhaber erledigt - auch aus Deutschland.',
     body: `
-Um als Working Holiday Maker eine Steuererklärung in Australien einzureichen, ist die einfachste Option, mit unserem Team unter Aufsicht eines registrierten Steueragenten zu arbeiten. Wir sammeln deine Daten, greifen direkt über unser Steueragentenportal auf deine Income Statements zu, bereiten deine Steuererklärung vor und reichen sie für dich beim ATO ein. Der Prozess funktioniert gleich, egal ob du noch in Australien bist oder schon abgereist. Mit einem registrierten Agenten erhältst du eine verlängerte Einreichungsfrist über den Standard-31. Oktober hinaus.
+Um als Working Holiday Maker eine Steuererklärung in Australien einzureichen, ist die einfachste Option, einen registrierten Steueragenten wie unser Team zu nutzen. Wir sammeln deine Daten, greifen direkt über unser Steueragentenportal auf deine Income Statements zu, bereiten deine Steuererklärung vor und reichen sie für dich beim ATO ein. Der Prozess funktioniert gleich, egal ob du noch in Australien bist oder schon abgereist. Mit einem registrierten Agenten erhältst du eine verlängerte Einreichungsfrist über den Standard-31. Oktober hinaus.
 
 ## Was brauchst du, um eine Steuererklärung einzureichen?
 
@@ -1331,7 +1331,7 @@ Für Steuererklärungen mit mehreren Arbeitgebern oder für Working Holiday Make
     title: 'PAYG Payment Summary verstehen: Anleitung für Working Holiday Maker',
     description: 'Ein PAYG Payment Summary (jetzt Income Statement) zeigt dein Gesamteinkommen und die einbehaltene Steuer für das australische Steuerjahr. Wie du es findest, was die Abschnitte bedeuten und wie es in der Working Holiday Steuererklärung genutzt wird.',
     body: `
-Ein PAYG Payment Summary - heute Income Statement genannt - ist die offizielle Aufzeichnung, die dein Gesamtgehalt und die gesamte vom Arbeitgeber einbehaltene Steuer in einem Steuerjahr zeigt. Es ist das Dokument, das zum Einreichen deiner [Steuererklärung](/de/tax-return) genutzt wird. Arbeitgeber melden Löhne und Einbehaltsbeträge automatisch über ihre Lohnbuchhaltungs-Software an das ATO, sodass das Income Statement digital erstellt wird, statt dir als Papierdokument ausgehändigt zu werden. Unter Aufsicht eines registrierten Steueragenten kann unser Team direkt über das ATO-System auf deine Income Statements zugreifen.
+Ein PAYG Payment Summary - heute Income Statement genannt - ist die offizielle Aufzeichnung, die dein Gesamtgehalt und die gesamte vom Arbeitgeber einbehaltene Steuer in einem Steuerjahr zeigt. Es ist das Dokument, das zum Einreichen deiner [Steuererklärung](/de/tax-return) genutzt wird. Arbeitgeber melden Löhne und Einbehaltsbeträge automatisch über ihre Lohnbuchhaltungs-Software an das ATO, sodass das Income Statement digital erstellt wird, statt dir als Papierdokument ausgehändigt zu werden. Als dein registrierter Steueragent kann unser Team direkt über das ATO-System auf deine Income Statements zugreifen.
 
 ## Wie funktionieren Income Statements heute?
 
@@ -1426,7 +1426,7 @@ Auch wenn du Australien schon verlassen hast, ist Einreichen über unseren Servi
 
 Du musst nicht nach Australien zurückkommen. Halte dein australisches Bankkonto offen, bis die Rückzahlung gutgeschrieben ist.
 
-Die Standardfrist ist der 31. Oktober nach Ende des Steuerjahres, aber wenn du über unser Team unter Aufsicht eines registrierten Steueragenten einreichst, qualifizierst du dich für die verlängerte Agentenfrist.
+Die Standardfrist ist der 31. Oktober nach Ende des Steuerjahres, aber wenn du über unser Team als deinen registrierten Steueragenten einreichst, qualifizierst du dich für die verlängerte Agentenfrist.
  `,
   },
 
@@ -1465,7 +1465,7 @@ Falls du dein australisches Bankkonto bereits geschlossen hast, [kontaktiere uns
 Die Standardfrist ist der 31. Oktober nach Ende des Steuerjahres:
 
 - Steuerjahr 2024-25 → Standardfrist 31. Oktober 2025
-- Über unseren Service unter Aufsicht eines registrierten Steueragenten → Frist oft bis Mai des Folgejahres verlängert
+- Über unseren Service als dein registrierter Steueragent → Frist oft bis Mai des Folgejahres verlängert
 
 Das bedeutet: Wenn du die Oktoberfrist verpasst hast, gibt dir das Einreichen über uns weiterhin Zeit, einzureichen ohne Strafgebühren.
 
@@ -1648,7 +1648,7 @@ Superannuation-Beiträge werden vierteljährlich gezahlt:
 
 Diese Daten sind wichtig, wenn du prüfst, ob dein Arbeitgeber deine [Super](/de/superannuation) korrekt gezahlt hat, bevor du Australien verlässt.
 
-[Kontaktiere unser Team](/de/contact), um deine australische Steuererklärung unter Aufsicht eines registrierten Steueragenten einzureichen und sicherzustellen, dass jede Rückzahlung, die dir zusteht, beantragt wird.
+[Kontaktiere unser Team](/de/contact), um deine australische Steuererklärung über unseren registrierten Steueragentenservice einzureichen und sicherzustellen, dass jede Rückzahlung, die dir zusteht, beantragt wird.
  `,
   },
 
@@ -1781,10 +1781,10 @@ Spezifische Beratung ist sinnvoll, wenn eines der folgenden zutrifft:
   },
 
   'what-is-a-tax-refund-australia': {
-    title: 'Was ist eine Steuerrückerstattung und woher weißt du, ob dir eine in Australien zusteht?',
-    description: 'Eine Steuerrückerstattung ist Geld, das das ATO zurückerstattet, wenn du übers Jahr zu viel gezahlt hast. Die meisten Working Holiday Maker bekommen eine zurück.',
+    title: 'Was ist eine Steuerrückzahlung und woher weißt du, ob dir eine in Australien zusteht?',
+    description: 'Eine Steuerrückzahlung ist Geld, das das ATO zurückerstattet, wenn du übers Jahr zu viel gezahlt hast. Die meisten Working Holiday Maker bekommen eine zurück.',
     body: `
-Eine Steuerrückerstattung ist Geld, das die Australian Taxation Office (ATO) dir zurückzahlt, wenn die im Laufe des Jahres von deinem Lohn einbehaltene Steuer höher war als deine tatsächliche Steuerschuld. Die meisten Working Holiday Maker bekommen eine Rückzahlung, weil ihr Arbeitgeber mehr Steuer als nötig einbehalten hat (oft während Zeiten ohne TFN oder weil sie nur einen Teil des Steuerjahres gearbeitet haben). Die Rückzahlung wird meistens innerhalb von zwei Wochen nach Einreichung auf dein australisches Bankkonto überwiesen. Unser Team berechnet deine erwartete Rückzahlung vor der Einreichung, damit du weißt, was zu erwarten ist.
+Eine Steuerrückzahlung ist Geld, das die Australian Taxation Office (ATO) dir zurückzahlt, wenn die im Laufe des Jahres von deinem Lohn einbehaltene Steuer höher war als deine tatsächliche Steuerschuld. Die meisten Working Holiday Maker bekommen eine Rückzahlung, weil ihr Arbeitgeber mehr Steuer als nötig einbehalten hat (oft während Zeiten ohne TFN oder weil sie nur einen Teil des Steuerjahres gearbeitet haben). Die Rückzahlung wird meistens innerhalb von zwei Wochen nach Einreichung auf dein australisches Bankkonto überwiesen. Unser Team berechnet deine erwartete Rückzahlung vor der Einreichung, damit du weißt, was zu erwarten ist.
 
 ## Warum bekommen die meisten Working Holiday Maker eine Rückzahlung?
 
@@ -1849,7 +1849,7 @@ Wir identifizieren Absetzungen, die du beim Selbsteinreichen vielleicht übersie
     title: 'Wie lange dauert eine Working Holiday Steuerrückerstattung in Australien?',
     description: 'Working Holiday Steuerrückerstattungen werden vom ATO meist innerhalb von 7-14 Werktagen nach Einreichung bearbeitet. Was den Zeitplan beeinflusst, was bei Verzögerungen zu tun ist und wie es funktioniert, wenn du Australien schon verlassen hast.',
     body: `
-Die meisten australischen Steuerrückerstattungen werden innerhalb von zwei Wochen nach Einreichung bearbeitet und ausgezahlt, wenn die Steuererklärung elektronisch eingereicht wird. Über unseren Service unter Aufsicht eines registrierten Steueragenten reichen wir elektronisch ein, sodass Rückzahlungen typischerweise innerhalb von 7-14 Werktagen ankommen. Rückzahlungen in der Hauptsaison (August-September) dauern eventuell ein paar Tage länger. Wenn deine Rückzahlung länger dauert als erwartet, fasst unser Team direkt beim ATO nach.
+Die meisten australischen Steuerrückzahlungen werden innerhalb von zwei Wochen nach Einreichung bearbeitet und ausgezahlt, wenn die Steuererklärung elektronisch eingereicht wird. Über unseren Service als deinen registrierten Steueragenten reichen wir elektronisch ein, sodass Rückzahlungen typischerweise innerhalb von 7-14 Werktagen ankommen. Rückzahlungen in der Hauptsaison (August-September) dauern eventuell ein paar Tage länger. Wenn deine Rückzahlung länger dauert als erwartet, fasst unser Team direkt beim ATO nach.
 
 ## Was ist der typische Rückzahlungszeitplan?
 
@@ -1990,11 +1990,11 @@ Die zu befolgende Reihenfolge:
 1. Reiche deine australische [Steuererklärung](/de/tax-return) ein (unser Team kümmert sich darum)
 2. Beantrage deine [Superauszahlung](/de/blog/what-is-dasp-super-withdrawal) über DASP
 3. Kündige eine eventuelle [ABN](/de/abn), die du registriert hast
-4. Warte, bis deine Steuerrückerstattung und Superzahlung auf deinem australischen Konto ankommen
+4. Warte, bis deine Steuerrückzahlung und Superzahlung auf deinem australischen Konto ankommen
 5. Überweise alles nach Hause
 6. Schließe dein australisches Bankkonto
 
-Diese Schritte zu überspringen oder umzuordnen verursacht Komplikationen. Das Bankkonto zu früh zu schließen ist der häufigste Fehler - deine Steuerrückerstattung und Superzahlung haben dann nirgendwo hin.
+Diese Schritte zu überspringen oder umzuordnen verursacht Komplikationen. Das Bankkonto zu früh zu schließen ist der häufigste Fehler - deine Steuerrückzahlung und Superzahlung haben dann nirgendwo hin.
 
 ## Was ist mit Geld, das du nach Australien gebracht hast?
 
@@ -2006,7 +2006,7 @@ Geld, das du bei deiner Ankunft mitgebracht hast, ist nicht steuerpflichtig:
 
 Was steuerpflichtig ist, ist alles, was du während deines Aufenthalts in Australien verdient hast. Die Unterscheidung ist zwischen dem, was du hier verdient hast (steuerpflichtig), und dem, was du mitgebracht oder als Ersparnisse hältst (nicht steuerpflichtig).
 
-[Kontaktiere unser Team](/de/contact), um deine australische Steuererklärung unter Aufsicht eines registrierten Steueragenten einzureichen und sicherzustellen, dass jede Rückzahlung, die dir zusteht, beantragt wird.
+[Kontaktiere unser Team](/de/contact), um deine australische Steuererklärung über unseren registrierten Steueragentenservice einzureichen und sicherzustellen, dass jede Rückzahlung, die dir zusteht, beantragt wird.
  `,
   },
 
@@ -2179,7 +2179,7 @@ DASP (Departing Australia Superannuation Payment) ist der offizielle Prozess, de
 Um für DASP berechtigt zu sein, musst du:
 
 - Ein temporäres australisches Visum gehalten haben (Working Holiday Visa Subclass 417 und 462 sind berechtigt)
-- Australien dauerhaft verlassen haben (oder zumindest ohne unmittelbare Pläne, mit demselben Visum zurückzukehren)
+- Australien permanent verlassen haben (oder zumindest ohne unmittelbare Pläne, mit demselben Visum zurückzukehren)
 - Dein Visum nach der Abreise abgelaufen oder gekündigt haben
 - Super in einem australischen Superfonds haben oder beim ATO
 
@@ -2808,7 +2808,7 @@ Der einfachste Weg ist über unseren Service:
 
 1. [Kontaktiere unser Team](/de/contact)
 2. Gib uns deine neue Adresse
-3. Wir aktualisieren sie unter Aufsicht eines registrierten Steueragenten für dich beim ATO
+3. Wir aktualisieren sie als dein registrierter Steueragent für dich beim ATO
 4. Die Bestätigung kommt zurück zu uns
 
 Du musst dich nicht in ATO-Onlinedienste einloggen oder in der Warteschleife hängen. Wir kümmern uns darum als Teil der Verwaltung deiner Steuerposition.
@@ -3050,9 +3050,9 @@ Das öffentliche TFN-Antragsformular warnt dich vor der Einreichung nicht vor Di
 
 ## Was ist mit TFN-Sicherheit?
 
-Teile niemals Kopien deines Reisepasses, deiner Visabewilligung oder deiner TFN mit jemandem, der kein registrierter Steueragent ist. Betrüger geben sich regelmäßig als "Buchhalter" oder "Steuerhelfer" in Backpackerforen, Social Media und Messaging-Apps aus, um Identitätsdokumente zu sammeln. Sobald sie deine TFN und Reisepassdaten haben, können sie eine betrügerische Steuererklärung in deinem Namen einreichen und die Rückzahlung auf ihr eigenes Konto umleiten. Ein registrierter Steueragent ist im Tax-Practitioners-Board-Register mit einer TAN-Nummer aufgeführt. Wenn du die Nummer nicht verifizieren kannst, gib deine Dokumente nicht heraus. [Beantrage deine TFN](/de/tfn-form) unter Aufsicht eines registrierten Steueragenten, um deine Identität geschützt zu halten.
+Teile niemals Kopien deines Reisepasses, deiner Visabewilligung oder deiner TFN mit jemandem, der kein registrierter Steueragent ist. Betrüger geben sich regelmäßig als "Buchhalter" oder "Steuerhelfer" in Backpackerforen, Social Media und Messaging-Apps aus, um Identitätsdokumente zu sammeln. Sobald sie deine TFN und Reisepassdaten haben, können sie eine betrügerische Steuererklärung in deinem Namen einreichen und die Rückzahlung auf ihr eigenes Konto umleiten. Ein registrierter Steueragent ist im Tax-Practitioners-Board-Register mit einer TAN-Nummer aufgeführt. Wenn du die Nummer nicht verifizieren kannst, gib deine Dokumente nicht heraus. [Beantrage deine TFN](/de/tfn-form) über unseren registrierten Agentenservice, um deine Identität geschützt zu halten.
 
-[Kontaktiere unser Team](/de/contact), um deine TFN unter Aufsicht eines registrierten Steueragenten zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
+[Kontaktiere unser Team](/de/contact), um deine TFN über unseren registrierten Steueragentenservice zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
  `,
   },
 
@@ -3165,9 +3165,9 @@ Keine dieser Anfragen ist legitim. Registrierte Steueragenten arbeiten nicht üb
 
 Jeder registrierte Steueragent in Australien hat eine Tax Agent Number (TAN), die im öffentlichen Tax-Practitioners-Board-Register aufgeführt ist. Bevor du deine TFN mit jemandem teilst, der Steuerdienste anbietet, verifiziere, dass seine TAN-Nummer aktuell ist. Wenn er dir keine TAN geben kann oder die Nummer nicht zum Geschäft passt, teile keine Dokumente.
 
-[Unser Service](/de/tax-return) wird unter Aufsicht eines registrierten Steueragenten erbracht. Unsere TAN-Nummer ist öffentlich verifizierbar, und deine TFN wird über einen sicheren Steueragentenkanal behandelt statt über E-Mail oder Messaging-Apps.
+[Unser Service](/de/tax-return) wird von einem registrierten Steueragenten erbracht. Unsere TAN-Nummer ist öffentlich verifizierbar, und deine TFN wird über einen sicheren Steueragentenkanal behandelt statt über E-Mail oder Messaging-Apps.
 
-[Kontaktiere unser Team](/de/contact), um deine TFN unter Aufsicht eines registrierten Steueragenten zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
+[Kontaktiere unser Team](/de/contact), um deine TFN über unseren registrierten Steueragentenservice zu beantragen oder Probleme mit einem bestehenden Antrag zu beheben.
  `,
   },
 
@@ -3177,7 +3177,7 @@ Jeder registrierte Steueragent in Australien hat eine Tax Agent Number (TAN), di
     body: `
 Ein TFN-Antrag (Tax File Number) braucht eine australische Adresse, an die der TFN-Brief zugestellt werden kann - aber das muss keine langfristige Mietwohnung sein. Ein Hostel, die Wohnung eines Freundes, ein Arbeitsplatz oder sogar ein Backpacker-Postlager-Service kann genutzt werden, solange in den vier Wochen nach dem Antrag zuverlässig Post empfangen werden kann. Viele Working Holiday Maker ziehen in den ersten Monaten in Australien häufig um, und ohne feste Adresse zu beantragen ist häufiger, als die ATO-Website suggeriert.
 
-Das größere Risiko ist die Wahl einer Adresse, an der Post verloren geht. Ein verlorener TFN-Brief verzögert deinen korrekten Steuersatz und den Beginn jeder [Steuerrückerstattung](/de/blog/what-is-a-tax-refund-australia), die dir zusteht.
+Das größere Risiko ist die Wahl einer Adresse, an der Post verloren geht. Ein verlorener TFN-Brief verzögert deinen korrekten Steuersatz und den Beginn jeder [Steuerrückzahlung](/de/blog/what-is-a-tax-refund-australia), die dir zusteht.
 
 ## Was akzeptiert das ATO als Adresse?
 
@@ -3473,7 +3473,7 @@ Wenn GST für dich gilt:
 - Überweise die eingezogene GST ans ATO
 - Du kannst GST, die du auf Geschäftsausgaben gezahlt hast, zurückholen
 
-Wir können die BAS-Einreichung unter Aufsicht eines registrierten Steueragenten übernehmen und das vereinfachen.
+Ein registrierter Steueragent kann die BAS-Einreichung übernehmen und das vereinfachen.
 
 ## Was ist die wichtigste Steuerpflicht für die meisten Contractors?
 
@@ -4200,7 +4200,7 @@ Nicht beantragte Super verschwindet nicht. Nach einer Phase der Inaktivität üb
 Ein Superfonds ist verpflichtet, dein Guthaben ans ATO zu überweisen, wenn:
 
 - Der Fonds dich nicht kontaktieren kann (Post zurückgeschickt, keine Antwort auf Mitteilungen)
-- Du Australien dauerhaft verlassen hast und nicht innerhalb einer definierten Zeit beantragt hast
+- Du Australien permanent verlassen hast und nicht innerhalb einer definierten Zeit beantragt hast
 - Dein Konto mehrere Jahre lang inaktiv war
 - Ein DASP-Antrag versucht wurde, aber nicht ausgezahlt werden konnte
 
@@ -4248,7 +4248,7 @@ Beantrag deine Super. Es ist dein Geld, das zusätzlich zu deinem Lohn als Teil 
     title: 'Kannst du deine Super zurückziehen, während du noch in Australien bist?',
     description: 'Im Normalfall nein - DASP kannst du erst beantragen, nachdem du Australien verlassen hast. Welche seltenen Ausnahmen es gibt und wann sie für WHM gelten.',
     body: `
-Nein, du kannst deine Super nicht abheben, während du noch in Australien auf einem gültigen Working Holiday Visum bist. Der Departing Australia Superannuation Payment (DASP)-Prozess ist speziell für Leute gemacht, die Australien dauerhaft verlassen haben und deren Visum abgelaufen oder gekündigt ist. Du musst zuerst abreisen, dann von außerhalb Australiens beantragen. Unser Team kümmert sich um DASP-Anträge remote, damit du aus deinem Heimatland beantragen kannst.
+Nein, du kannst deine Super nicht abheben, während du noch in Australien auf einem gültigen Working Holiday Visum bist. Der Departing Australia Superannuation Payment (DASP)-Prozess ist speziell für Leute gemacht, die Australien permanent verlassen haben und deren Visum abgelaufen oder gekündigt ist. Du musst zuerst abreisen, dann von außerhalb Australiens beantragen. Unser Team kümmert sich um DASP-Anträge remote, damit du aus deinem Heimatland beantragen kannst.
 
 ## Warum kannst du nicht früher auf deine Super zugreifen?
 
@@ -4265,7 +4265,7 @@ Die Regeln existieren, um die Integrität des Supersystems zu wahren. Sie gelten
 Um für DASP berechtigt zu sein, musst du alle folgenden erfüllen:
 
 - Ein temporäres australisches Visum gehalten haben (Working Holiday Visa 417 und 462 sind berechtigt)
-- Australien dauerhaft verlassen haben
+- Australien permanent verlassen haben
 - Dein Visum muss nach der Abreise abgelaufen oder gekündigt sein
 - Du musst von außerhalb Australiens beantragen
 
@@ -4296,7 +4296,7 @@ Working Holiday Maker sollten mit dem DASP-Prozess planen, statt vorzeitigen Zug
 
 Das DASP-Fenster öffnet, sobald beide Bedingungen erfüllt sind:
 
-- Du hast Australien dauerhaft verlassen
+- Du hast Australien permanent verlassen
 - Dein Working Holiday Visum ist abgelaufen oder gekündigt
 
 Für Working Holiday Visa heißt das typischerweise:
@@ -4314,7 +4314,7 @@ Siehe unseren detaillierten Artikel zu [wie du DASP beantragst](/de/blog/how-to-
     title: 'Wie du verlorene oder nicht beantragte Super in Australien findest',
     description: 'Vergessene Super von einem alten Job? Über myGov und das ATO-Superregister findest du jeden Cent. So holst du dir verlorene Beiträge zurück.',
     body: `
-Um verlorene oder nicht beantragte Super in Australien zu finden, arbeite mit unserem Team. Unter Aufsicht eines registrierten Steueragenten können wir über alle großen Superfonds und ATO-Aufzeichnungen mit deiner Tax File Number suchen, um jedes Konto zu identifizieren, das deine Super hält. Working Holiday Maker sammeln oft Super über mehrere Fonds an, ohne es zu wissen - und jedes Konto vor dem DASP-Antrag aufzuspüren, stellt sicher, dass kein Geld zurückbleibt.
+Um verlorene oder nicht beantragte Super in Australien zu finden, arbeite mit unserem Team. Als registrierte Steueragenten können wir über alle großen Superfonds und ATO-Aufzeichnungen mit deiner Tax File Number suchen, um jedes Konto zu identifizieren, das deine Super hält. Working Holiday Maker sammeln oft Super über mehrere Fonds an, ohne es zu wissen - und jedes Konto vor dem DASP-Antrag aufzuspüren, stellt sicher, dass kein Geld zurückbleibt.
 
 ## Warum geht Super verloren oder verteilt sich auf mehrere Konten?
 
@@ -4913,7 +4913,7 @@ Unser Team kümmert sich um alle vier zusammen als Teil eines "Abreise-Steuerpak
 - Wir bereiten die Steuererklärung vor und reichen sie für dich ein
 - Die Rückzahlung geht auf dein australisches Bankkonto
 
-Die Standardfrist ist der 31. Oktober nach dem Steuerjahr. Über unseren Service unter Aufsicht eines registrierten Steueragenten wird die Frist typischerweise auf Mai des Folgejahres verlängert.
+Die Standardfrist ist der 31. Oktober nach dem Steuerjahr. Über unseren Service als dein registrierter Steueragent wird die Frist typischerweise auf Mai des Folgejahres verlängert.
 
 Wenn du eine Pflicht zur Einreichung hast und nicht einreichst, kann das zu Strafen führen. Das ATO hat deine Einkommensdaten von deinen Arbeitgebern und erwartet eine Steuererklärung. Siehe unseren Artikel zu [Steuererklärung aus dem Ausland einreichen](/de/blog/how-to-lodge-tax-return-from-overseas).
 
@@ -4954,7 +4954,7 @@ Wenn du mit unserem Team arbeitest, verwalten wir all das. Wir werden dein Konta
 
 Halte dein australisches Bankkonto offen, bis:
 
-- Jede Steuerrückerstattung bezahlt wurde
+- Jede Steuerrückzahlung bezahlt wurde
 - Jede Superauszahlung empfangen wurde (oder Auslandszahlung arrangiert wurde)
 - Alle Endabwicklungen bearbeitet wurden
 
@@ -4966,7 +4966,7 @@ Die meisten Working Holiday Maker können ihr australisches Konto innerhalb von 
     title: 'Wie du als Working Holiday Maker ein Bankkonto in Australien eröffnest',
     description: 'Ein australisches Bankkonto ist Pflicht für Lohn und Super. Welche Banken Working Holiday Maker akzeptieren, was du brauchst und wie du es vor Ankunft öffnest.',
     body: `
-Ein australisches Bankkonto zu eröffnen ist eines der ersten Dinge, die du nach der Ankunft in Australien machen solltest. Du brauchst es, um deinen Lohn, deine Superbeiträge und Steuerrückerstattungen vom ATO zu bekommen. Die großen Banken (Commonwealth Bank, Westpac, ANZ, NAB) bieten alle Konten, die für Working Holiday Maker geeignet sind. Du kannst typischerweise online vor der Ankunft vorab beantragen und die Identitätsprüfung in den ersten Tagen persönlich abschließen. Halte das Konto offen, bis deine Steuerrückerstattung und Superauszahlung eingegangen sind - meistens 3-4 Monate nach Abreise.
+Ein australisches Bankkonto zu eröffnen ist eines der ersten Dinge, die du nach der Ankunft in Australien machen solltest. Du brauchst es, um deinen Lohn, deine Superbeiträge und Steuerrückzahlungen vom ATO zu bekommen. Die großen Banken (Commonwealth Bank, Westpac, ANZ, NAB) bieten alle Konten, die für Working Holiday Maker geeignet sind. Du kannst typischerweise online vor der Ankunft vorab beantragen und die Identitätsprüfung in den ersten Tagen persönlich abschließen. Halte das Konto offen, bis deine Steuerrückzahlung und Superauszahlung eingegangen sind - meistens 3-4 Monate nach Abreise.
 
 ## Welche Bank solltest du wählen?
 
@@ -5016,7 +5016,7 @@ Manche Working Holiday Maker nutzen Dienste wie Wise (früher TransferWise) für
 - Bessere Wechselkurse als Banken für Auslandsüberweisungen
 - Nützlich, um australische Dollar in deine Heimatwährung umzurechnen
 - Ersetzt NICHT die Notwendigkeit eines australischen Bankkontos
-- Du brauchst weiterhin ein normales australisches Konto für Lohn, Steuerrückerstattungen und Super
+- Du brauchst weiterhin ein normales australisches Konto für Lohn, Steuerrückzahlungen und Super
 
 Nutz beides: eine australische Bank für Lohn und australische Behördenzahlungen und einen Überweisungsdienst, um Geld nach Hause zu schicken.
 
@@ -5024,12 +5024,12 @@ Nutz beides: eine australische Bank für Lohn und australische Behördenzahlunge
 
 **Schließ es nicht zu früh.** Du brauchst ein aktives australisches Bankkonto, um zu bekommen:
 
-- Deine Steuerrückerstattung vom ATO (2-6 Wochen nach Einreichung)
+- Deine Steuerrückzahlung vom ATO (2-6 Wochen nach Einreichung)
 - Deine Superauszahlung über DASP (kann 4+ Wochen dauern)
 - Letzte Lohnzahlungen von deinem Arbeitgeber
 - Unbezahlte Super, die über SGC zurückgeholt wurde
 
-Sowohl deine [Steuerrückerstattung](/de/tax-return) als auch [DASP-Superauszahlung](/de/blog/what-is-dasp-super-withdrawal) können Wochen oder Monate nach Verlassen Australiens dauern. Verfrühter Schließung verursacht ernsthafte Komplikationen.
+Sowohl deine [Steuerrückzahlung](/de/tax-return) als auch [DASP-Superauszahlung](/de/blog/what-is-dasp-super-withdrawal) können Wochen oder Monate nach Verlassen Australiens dauern. Verfrühter Schließung verursacht ernsthafte Komplikationen.
 
 Der richtige Ansatz:
 

@@ -2,13 +2,13 @@ import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
-  description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly under the supervision of a registered tax agent.',
+  description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly with a registered tax agent.',
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
@@ -42,10 +42,10 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_AU',
-    url: `${SITE_URL}/tfn`,
+    url: 'https://workingholidaytax.com.au/tfn',
     siteName: 'Working Holiday Tax',
     title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
-    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
+    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly with a registered tax agent.',
   },
   twitter: {
     card: 'summary_large_image',
@@ -90,8 +90,8 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-    { '@type': 'ListItem', position: 2, name: 'TFN Application', item: `${SITE_URL}/tfn` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
+    { '@type': 'ListItem', position: 2, name: 'TFN Application', item: 'https://workingholidaytax.com.au/tfn' },
   ],
 }
 
@@ -99,11 +99,11 @@ const breadcrumbSchema = {
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': `${SITE_URL}/tfn#service`,
+  '@id': 'https://workingholidaytax.com.au/tfn#service',
   name: 'TFN Application Service for Working Holiday Makers',
   serviceType: 'Tax File Number application',
   description: 'TFN application service for 417 and 462 working holiday visa holders, prepared and submitted under the supervision of a registered tax agent.',
-  provider: { '@id': `${SITE_URL}/#business` },
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
   inLanguage: 'en-AU',
@@ -129,12 +129,12 @@ const howToSchema = {
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  '@id': `${SITE_URL}/tfn#webpage`,
+  '@id': 'https://workingholidaytax.com.au/tfn#webpage',
   speakable: {
     '@type': 'SpeakableSpecification',
     cssSelector: ['h1', '.hero-sub'],
   },
-  url: `${SITE_URL}/tfn`,
+  url: 'https://workingholidaytax.com.au/tfn',
 }
 
 export default function TFNPage() {
@@ -146,7 +146,7 @@ export default function TFNPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
@@ -206,7 +206,7 @@ export default function TFNPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['1,200+ backpackers helped',<GoogleRating variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -219,7 +219,7 @@ export default function TFNPage() {
 
       {/* ── WHAT IS A TFN? - Unique design: "Step 1 of your Australia journey" ─ */}
       <section className="tfn-intro-section">
-        <div className="tfn-intro-container reveal">
+        <div className="tfn-intro-container">
           <div className="tfn-intro-grid">
 
             {/* Left: Explainer */}
@@ -231,7 +231,7 @@ export default function TFNPage() {
                 A <strong>Tax File Number (TFN)</strong> is a personal ID issued by the Australian Taxation Office (ATO). It is the first thing you need before starting work in Australia.
               </p>
               <p className="tfn-intro-body">
-                Without a TFN, your employer is required by law to withhold the maximum tax rate of <strong>45%</strong> from every pay, regardless of how much you earn.
+                Without a TFN, your employer is required by law to withhold the maximum tax rate of <strong>45%</strong> from every paycheck, regardless of how much you earn.
               </p>
               <p className="tfn-intro-body">
                 With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference - sometimes hundreds of dollars per week.
@@ -252,7 +252,7 @@ export default function TFNPage() {
               <div className="tfn-comparison-card tfn-comparison-bad">
                 <p className="tfn-comparison-label">Without TFN</p>
                 <p className="tfn-comparison-rate">45%</p>
-                <p className="tfn-comparison-detail">Withheld from every pay</p>
+                <p className="tfn-comparison-detail">Withheld from every paycheck</p>
               </div>
               <div className="tfn-comparison-divider">
                 <div className="tfn-comparison-arrow">↓</div>
@@ -281,8 +281,8 @@ export default function TFNPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section className="py-12 lg:py-20" style={{ background:'#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Why choose our service</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -323,7 +323,7 @@ export default function TFNPage() {
 
       {/* ── SOCIAL PROOF ──────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-18 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">What travellers say</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -336,8 +336,8 @@ export default function TFNPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section className="py-12 lg:py-20" style={{ background:'#F4F9F6' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">TFN APPLICATION PROCESS</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -381,8 +381,8 @@ export default function TFNPage() {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background:'#EEF7F2' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
             <span className="section-label center">How to apply</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -403,7 +403,7 @@ export default function TFNPage() {
               {STEPS.map((s,i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex:1 }}>
                   <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width:'40px', height:'40px', background:'#0B5240', fontSize:'15px', marginBottom:'18px', boxShadow:'0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
+                    style={{ width:'40px', height:'40px', background:'#0B5240', fontSize:'15px', marginBottom:'18px', boxShadow:'0 0 0 5px #EEF7F2, 0 0 0 6px #C8EAE0' }}>
                     {s.n}
                   </div>
                   <p className="font-semibold text-ink text-center" style={{ fontSize:'14px', marginBottom:'7px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
@@ -446,8 +446,8 @@ export default function TFNPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_AU',
-    url: `${SITE_URL}/medicare`,
+    url: 'https://workingholidaytax.com.au/medicare',
     siteName: 'Working Holiday Tax',
     title: 'Medicare Levy Exemption for Working Holiday Visa Holders Australia',
     description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder. Claim your levy exemption.',
@@ -106,19 +106,19 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-    { '@type': 'ListItem', position: 2, name: 'Medicare', item: `${SITE_URL}/medicare` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
+    { '@type': 'ListItem', position: 2, name: 'Medicare', item: 'https://workingholidaytax.com.au/medicare' },
   ],
 }
 
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': `${SITE_URL}/medicare#service`,
+  '@id': 'https://workingholidaytax.com.au/medicare#service',
   name: 'Medicare Levy Exemption Service for Working Holiday Makers',
   serviceType: 'Medicare levy exemption claim',
   description: 'Medicare levy exemption claim handled as part of your working holiday tax return. For 417 and 462 visa holders not covered by Medicare.',
-  provider: { '@id': `${SITE_URL}/#business` },
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) not covered by Medicare' },
   inLanguage: 'en-AU',
@@ -127,12 +127,12 @@ const serviceSchema = {
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  '@id': `${SITE_URL}/medicare#webpage`,
+  '@id': 'https://workingholidaytax.com.au/medicare#webpage',
   speakable: {
     '@type': 'SpeakableSpecification',
     cssSelector: ['h1', '.hero-sub'],
   },
-  url: `${SITE_URL}/medicare`,
+  url: 'https://workingholidaytax.com.au/medicare',
 }
 
 export default function MedicarePage() {
@@ -144,7 +144,7 @@ export default function MedicarePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
+      <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
@@ -217,7 +217,7 @@ export default function MedicarePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['1,200+ backpackers helped',<GoogleRating variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -315,7 +315,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Your two scenarios</span>
@@ -410,7 +410,7 @@ export default function MedicarePage() {
                 body: "We ensure you are not charged the Medicare levy if you are not required to pay it.",
               },
             ].map((item, i) => (
-              <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#F5F9F7', border: '1px solid #C8EAE0' }}>
+              <div key={i} className="rounded-2xl" style={{ padding: '20px', background: '#EEF7F2', border: '1px solid #C8EAE0' }}>
                 <div className="flex items-center gap-2" style={{ marginBottom: '6px' }}>
                   <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -425,7 +425,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-2xl mx-auto text-center reveal">
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
