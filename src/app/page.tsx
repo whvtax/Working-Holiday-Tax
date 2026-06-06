@@ -259,37 +259,40 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #fff 0%, #F8FBF9 100%)' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-14 lg:pb-12 text-center">
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg, #fff 0%, #F5FBF8 60%, #EDF7F2 100%)' }}>
+        {/* decorative layers */}
+        <div className="hero-mesh" aria-hidden="true" />
+        <div className="hero-dots" aria-hidden="true" />
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-12 lg:pt-16 lg:pb-16 text-center relative z-10">
 
-          <div className="inline-flex items-center gap-2 mb-4 lg:mb-6 hero-animate">
-            <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Working Holiday Tax Return Specialists</span>
+          <div className="hero-badge mb-5 lg:mb-7 hero-animate inline-flex">
+            <span className="hero-badge-dot" aria-hidden="true" />
+            <span className="font-semibold uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: '#0B5240' }}>Working Holiday Tax Return Specialists</span>
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto hero-animate"
-            style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.12, letterSpacing: '-0.025em', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(30px, 5.5vw, 48px)', lineHeight: 1.09, letterSpacing: '-0.03em', marginBottom: '16px' }}>
             <span style={{ display: 'block' }}>Your working holiday tax,</span>
             <span style={{ display: 'block', color: '#0B5240' }}>sorted properly.</span>
           </h1>
 
           <p className="font-light mx-auto hero-animate-delay"
-            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super.
+            style={{ fontSize: 'clamp(15px, 1.6vw, 17px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.55)', maxWidth: '50ch', marginBottom: '0' }}>
+            Tax return specialists for working holiday makers on{` `}
+            <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super.
           </p>
 
-          <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4 hero-animate-delay-2">
+          <div style={{ marginTop: '28px', marginBottom: '20px' }} className="hero-animate-delay">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '300px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
+              style={{ height: '54px', padding: '0 40px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto', boxShadow: '0 4px 24px rgba(233,160,32,0.32), 0 1px 4px rgba(0,0,0,0.08)' }}>
               Start your tax return →
             </a>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hour response time'].map((label, i) => (
-              <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
-                style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
+          <div className="flex flex-wrap justify-center gap-2 hero-animate-delay-2" style={{ maxWidth: '560px', margin: '0 auto' }}>
+            {['1,200+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hr response'].map((label, i) => (
+              <span key={i} className="hero-trust-item">
                 <CheckIcon />{label}
               </span>
             ))}
@@ -462,15 +465,16 @@ export default async function HomePage() {
           <div className="services-grid grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
             {SERVICES.map((s) => (
               <Link key={s.href} href={s.href}
-                className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
-                style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <span className="font-medium uppercase text-subtle" style={{ fontSize: '10px', letterSpacing: '0.1em', marginBottom: '10px' }}>{s.n}</span>
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
-                  style={{ marginBottom: '10px' }}>{s.icon}</span>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '5px' }}>{s.title}</h3>
-                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize: '12px', marginBottom: '12px' }}>{s.desc}</p>
-                <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize: '12px' }}>
-                  Learn more →
+                className="group bg-white rounded-2xl flex flex-col transition-all"
+                style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 16px rgba(11,82,64,.07)', border: '1px solid rgba(205,227,219,0.5)' }}>
+                <span className="service-num font-medium uppercase text-subtle" style={{ fontSize: '10px', letterSpacing: '0.12em', marginBottom: '12px' }}>{s.n}</span>
+                <span className="service-icon-wrap w-9 h-9 rounded-xl flex items-center justify-center text-forest-500 bg-forest-100 group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
+                  style={{ marginBottom: '12px' }}>{s.icon}</span>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '6px', lineHeight: 1.3 }}>{s.title}</h3>
+                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize: '12.5px', marginBottom: '14px' }}>{s.desc}</p>
+                <span className="flex items-center gap-1.5 font-semibold text-forest-500 transition-all group-hover:gap-3" style={{ fontSize: '12px' }}>
+                  Learn more
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </span>
               </Link>
             ))}
