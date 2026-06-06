@@ -7,7 +7,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'ABN-Registrierung für Working Holiday Visainhaber in Australien',
-  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten - einfach, schnell, online.',
+  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten – einfach, schnell, online.',
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
@@ -94,12 +94,12 @@ const breadcrumbSchema = {
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://workingholidaytax.com.au/de/abn#service',
+  '@id': `${SITE_URL}/de/abn#service`,
   name: 'ABN-Registrierung für Working Holiday Maker',
-  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten - Uber, Lieferdienste, freiberufliche Tätigkeiten.',
+  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten – Uber, Lieferdienste, freiberufliche Tätigkeiten.',
   serviceType: 'ABN Registration',
   category: 'Business Registration Service',
-  url: 'https://workingholidaytax.com.au/de/abn',
+  url: `${SITE_URL}/de/abn`,
   inLanguage: 'de',
   areaServed: {
     '@type': 'Country',
@@ -111,12 +111,27 @@ const serviceSchema = {
   },
   provider: {
     '@type': 'Organization',
-    '@id': 'https://workingholidaytax.com.au/#organization',
+    '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
-    url: 'https://workingholidaytax.com.au',
-    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
+    url: `${SITE_URL}`,
+    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
   },
+}
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'So registrierst du eine ABN als Working Holiday Maker',
+  description: 'Schritt-für-Schritt-Anleitung, wie du als Working Holiday Visuminhaber eine Australian Business Number (ABN) für Selbstständigen- oder Vertragsarbeit registrierst.',
+  totalTime: 'PT15M',
+  inLanguage: 'de',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
 }
 
 
@@ -126,12 +141,13 @@ export default function ABNPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+          <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
@@ -186,7 +202,7 @@ export default function ABNPageDE() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpacker geholfen', <GoogleRating variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
+              {['1.200+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -199,7 +215,7 @@ export default function ABNPageDE() {
 
       {/* ── WHAT IS AN ABN? ──────────────────────────────────────────────── */}
       <section className="abn-intro-section">
-        <div className="abn-intro-container">
+        <div className="abn-intro-container reveal">
           <div className="abn-intro-grid">
 
             <div className="abn-intro-content">
@@ -273,7 +289,7 @@ export default function ABNPageDE() {
 
       {/* ── HOW WE HELP ──────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">Wie wir dir helfen</span>
@@ -322,7 +338,7 @@ export default function ABNPageDE() {
 
       {/* ── COMMON MISTAKES ──────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="max-w-xl mx-auto text-center mb-7 lg:mb-10">
             <span className="section-label center">Häufige Fehler</span>
@@ -355,8 +371,8 @@ export default function ABNPageDE() {
       </section>
 
       {/* ── HOW TO REGISTER ──────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Schritt für Schritt</span>
@@ -379,7 +395,7 @@ export default function ABNPageDE() {
               {STEPS.map((s, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
                   <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #EEF7F2, 0 0 0 6px #C8EAE0' }}>
+                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
                     {s.n}
                   </div>
                   <p className="font-semibold text-ink text-center"
@@ -417,8 +433,8 @@ export default function ABNPageDE() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">

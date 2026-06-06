@@ -6,8 +6,9 @@ import { SITE_URL, AGENT_NAME } from '@/lib/constants'
  * Wraps all /de/* pages. Provides default German metadata, OpenGraph, hreflang.
  * Pages can override these in their own metadata exports.
  *
- * NOTE: The lang attribute on <html> is set dynamically by a script in the
- * root layout (src/app/layout.tsx) based on the URL pathname.
+ * NOTE: The <html lang> attribute is server-rendered per locale by middleware
+ * (x-locale header) in the root layout (src/app/layout.tsx); a small client
+ * script keeps it correct during in-app navigation.
  */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -16,15 +17,15 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker (Subclass 417 und 462). Registrierter Steueragent für Steuererklärung, TFN, Superauszahlung (DASP) und ABN - alles online.',
+    'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker (Subclass 417 und 462). Unter Aufsicht eines registrierten Steueragenten für Steuererklärung, TFN, Superauszahlung (DASP) und ABN - alles online.',
   keywords: [
     'Steuerrückerstattung Australien',
-    'Steuerrückzahlung Working Holiday',
+    'Steuerrückerstattung Working Holiday',
     'Backpacker Steuerrückerstattung',
     'Steuer zurückholen Australien',
     'Steuer zurück Australien Backpacker',
     'WHV Steuerrückerstattung',
-    'Working Holiday Steuerrückzahlung',
+    'Working Holiday Steuerrückerstattung',
     'Steuerrückerstattung 417 Visum',
     'Steuerrückerstattung 462 Visum',
     'Steuererklärung Australien Backpacker',
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien für Working Holiday Maker | WHV Steuer',
-    description: 'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker. Registrierter Steueragent für Steuererklärung, TFN, Super (DASP) und ABN - alles online erledigt.',
+    description: 'Hol dir deine Steuerrückerstattung in Australien als Working Holiday Maker. Unter Aufsicht eines registrierten Steueragenten für Steuererklärung, TFN, Super (DASP) und ABN – alles online erledigt.',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
@@ -78,8 +79,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Steuerrückerstattung Australien für Backpacker - WHV',
-    description: 'Hol dir deine Steuerrückerstattung als Working Holiday Maker in Australien. Registrierter Steueragent - alles online.',
+    title: 'Steuerrückerstattung Australien für Backpacker – WHV',
+    description: 'Hol dir deine Steuerrückerstattung als Working Holiday Maker in Australien. Unter Aufsicht eines registrierten Steueragenten – alles online.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

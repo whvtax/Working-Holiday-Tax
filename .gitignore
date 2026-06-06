@@ -1,1 +1,25 @@
-.vercel
+# dependencies
+/node_modules
+# next.js
+/.next/
+/out/
+# production
+/build
+# env / secrets (NEVER commit real env files)
+.env
+.env.local
+.env*.local
+.env.development
+.env.production
+!.env.example
+# logs & debug
+*.log
+npm-debug.log*
+# os / editor
+.DS_Store
+*.pem
+.vscode/
+.idea/
+# typescript
+*.tsbuildinfo
+next-env.d.ts

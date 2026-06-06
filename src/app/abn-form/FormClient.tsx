@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
+import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
 type UploadState = { file: File | null; preview: string | null }
 
@@ -102,7 +103,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('tfn', tfn); fd.append('business', business)
     fd.append('declared',     declared ? '✓ I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.' : '')
     fd.append('terms',        terms ? '✓ I have read and accept the Client Agreement & Privacy Policy' : '')
-        if (selfie.file) fd.append('selfiePassport', selfie.file)
+        if (selfie.file) {
+          const selfieFile = await compressImage(selfie.file)
+          if (selfieFile.size > MAX_UPLOAD_BYTES) { setLoading(false); alert(T('fileTooLarge')); return }
+          fd.append('selfiePassport', selfieFile)
+        }
     try {
       const res = await fetch('/api/abn-form', { method: 'POST', body: fd })
       if (res.ok) {

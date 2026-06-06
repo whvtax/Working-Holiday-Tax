@@ -4,6 +4,7 @@ import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
+import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -255,8 +256,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
     // Pre-upload all files client-side for faster, more reliable submission
     const uploadOne = async (f: File): Promise<string | null> => {
-      if (f.size > 10 * 1024 * 1024) {
-        alert(`File "${f.name}" is too large (max 10MB). Please compress it and try again.`)
+      f = await compressImage(f)
+      if (f.size > MAX_UPLOAD_BYTES) {
+        alert(T('fileTooLarge'))
         return null
       }
       const attempt = async () => {
@@ -478,15 +480,15 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <path d="M12 20l6 6 10-12" stroke="#0B5240" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <h1 className="success-title">Thank you, {firstName}! 🎉</h1>
-          <p className="success-body">We've received your details and will be in touch shortly.</p>
+          <h1 className="success-title">{T('thankYou')}, {firstName}! 🎉</h1>
+          <p className="success-body">{T('successBody')}</p>
 
           <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.25)"/>
               <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3l.46 1.35c.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
             </svg>
-            Message us on WhatsApp
+            {T('msgWhatsApp')}
           </a>
 
           <div className="success-divider" />
@@ -683,10 +685,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div style={{ background: '#EAF6F1', border: '1.5px solid #A7D9C5', borderRadius: 14, padding: '16px', marginTop: 10 }}>
                 <div style={{ fontSize: 20, marginBottom: 8, textAlign: 'center' }}>📧</div>
                 <p style={{ fontSize: 13, fontWeight: 700, color: '#0B5240', marginBottom: 6, textAlign: 'center' }}>
-                  Please email your invoices / receipts
+                  {T('emailInvoicesTitle')}
                 </p>
                 <p style={{ fontSize: 12, color: '#587066', lineHeight: 1.65, textAlign: 'center', marginBottom: 10 }}>
-                  Send all your invoices and receipts to:
+                  {T('emailInvoicesTo')}
                 </p>
                 <div style={{ background: '#fff', border: '1.5px solid #C8EAE0', borderRadius: 10, padding: '10px 14px', textAlign: 'center', marginBottom: 10 }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: '#0B5240', letterSpacing: '0.01em' }}>
@@ -694,8 +696,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   </span>
                 </div>
                 <p style={{ fontSize: 11, color: '#587066', lineHeight: 1.65, textAlign: 'center' }}>
-                  Use your <strong>full name</strong> as the email subject.<br />
-                  You can send this before or after submitting the form.
+                  {T('emailSubjectName')}<br />
+                  {T('emailSendAnytime')}
                 </p>
               </div>
             )}

@@ -41,7 +41,7 @@ export const formStrings = {
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
-  email:               { en: 'Email address',                      de: 'E-Mailadresse',             ja: 'メールアドレス' },
+  email:               { en: 'Email address',                      de: 'E-Mail-Adresse',             ja: 'メールアドレス' },
   dob:                 { en: 'Date of birth',                      de: 'Geburtsdatum',              ja: '生年月日' },
   whatsapp:            { en: 'WhatsApp Number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
@@ -97,6 +97,7 @@ export const formStrings = {
   tooMany:             { en: 'Too many submissions. Please wait 15 minutes and try again.', de: 'Zu viele Anfragen. Bitte warte 15 Minuten und versuche es nochmal.', ja: '送信回数が多すぎます。15分後にもう一度お試しください。' },
   fileErrorPrefix:     { en: 'File error: ',                        de: 'Dateifehler: ',            ja: 'ファイルエラー：' },
   fileErrorGeneric:    { en: 'Please upload a valid image or PDF under 10MB.', de: 'Bitte lade ein gültiges Bild oder PDF unter 10 MB hoch.', ja: '10MB以下の画像またはPDFファイルをアップロードしてください。' },
+  fileTooLarge:        { en: 'This file is too large to upload. Please use a file under 4 MB — for a PDF, try compressing it or photographing the document instead.', de: 'Diese Datei ist zu groß. Bitte verwende eine Datei unter 4 MB – komprimiere ein PDF oder fotografiere das Dokument stattdessen.', ja: 'このファイルは大きすぎます。4MB未満のファイルをご利用ください。PDFは圧縮するか、書類を写真で撮影してください。' },
   generic:             { en: 'Something went wrong. Please try again.', de: 'Etwas ist schiefgelaufen. Bitte versuche es nochmal.', ja: 'エラーが発生しました。もう一度お試しください。' },
 
   // ─ Success screen ─
@@ -108,11 +109,17 @@ export const formStrings = {
   followGuides:        { en: 'Free guides below ⬇️',                de: 'Kostenlose Anleitungen unten ⬇️', ja: '無料ガイドはこちら ⬇️' },
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
 
+  // ─ Expenses email block (tax form) ─
+  emailInvoicesTitle:  { en: 'Please email your invoices / receipts', de: 'Bitte sende deine Rechnungen / Belege per E-Mail', ja: '請求書・領収書をメールでお送りください' },
+  emailInvoicesTo:     { en: 'Send all your invoices and receipts to:', de: 'Sende alle Rechnungen und Belege an:', ja: 'すべての請求書・領収書を次の宛先へ送付してください：' },
+  emailSubjectName:    { en: 'Use your full name as the email subject.', de: 'Verwende deinen vollständigen Namen als E-Mail-Betreff.', ja: 'メールの件名にはフルネームをご記入ください。' },
+  emailSendAnytime:    { en: 'You can send this before or after submitting the form.', de: 'Du kannst dies vor oder nach dem Absenden des Formulars schicken.', ja: 'このメールはフォーム送信の前後どちらでも送信できます。' },
+
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung',        ja: 'ABN登録' },
   titleTax:            { en: 'Tax Return Application',              de: 'Steuererklärungsantrag',   ja: 'タックスリターン申請' },
-  titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー返金（DASP）' },
+  titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
 
   // ─ Tax form specific ─
   tfnRequired:         { en: 'Tax File Number (TFN)',               de: 'Tax File Number (TFN)',    ja: 'タックスファイルナンバー（TFN）' },

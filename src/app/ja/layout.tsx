@@ -6,8 +6,9 @@ import { SITE_URL, AGENT_NAME } from '@/lib/constants'
  * Wraps all /ja/* pages. Provides default Japanese metadata, OpenGraph, hreflang.
  * Pages can override these in their own metadata exports.
  *
- * NOTE: The lang attribute on <html> is set dynamically by a script in the
- * root layout (src/app/layout.tsx) based on the URL pathname.
+ * NOTE: The <html lang> attribute is server-rendered per locale by middleware
+ * (x-locale header) in the root layout (src/app/layout.tsx); a small client
+ * script keeps it correct during in-app navigation.
  *
  * SEO STRATEGY for Japanese market:
  * - Target audience: Japanese Working Holiday Maker visa holders (417/462) in Australia
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'オーストラリアのワーキングホリデー（417・462ビザ）専門の登録税理士。タックスリターン還付金の受取、TFN申請、スーパー返金（DASP）、ABN登録までオンラインで完結。',
+    'オーストラリアのワーキングホリデー（417・462ビザ）専門。登録税理士の監督のもとで、タックスリターン還付金の受取、TFN申請、スーパー受取（DASP）、ABN登録までオンラインで完結。',
   keywords: [
     // Refund-focused (HIGH INTENT - primary service)
     'オーストラリア タックスリターン 還付金',
@@ -89,18 +90,18 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja`,
     siteName: 'Working Holiday Tax',
     title: 'オーストラリア タックスリターン 還付金 - ワーキングホリデー専門',
-    description: 'オーストラリアのワーホリ（417・462ビザ）専門の登録税理士。タックスリターン還付金、TFN、スーパー返金（DASP）まですべてオンライン。',
+    description: 'オーストラリアのワーホリ（417・462ビザ）専門。登録税理士の監督のもとで、タックスリターン還付金、TFN、スーパー受取（DASP）まですべてオンライン。',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'オーストラリア タックスリターン 還付金 - ワーキングホリデー専門の登録税理士',
+      alt: 'オーストラリア タックスリターン 還付金 - 登録税理士の監督のもとでワーキングホリデー専門',
     }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'オーストラリア タックスリターン 還付金 - ワーホリ専門',
-    description: 'オーストラリアのワーホリ専門の登録税理士。タックスリターン還付金を最大化。',
+    description: 'オーストラリアのワーホリ専門。登録税理士の監督のもとでタックスリターン還付金を最大化。',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

@@ -4,7 +4,7 @@ import { FormClient } from '@/app/abn-form/FormClient'
 
 export const metadata: Metadata = {
   title: 'ABN-Antrag stellen | Working Holiday Tax',
-  description: 'Beantrage deine Australian Business Number (ABN) für Working Holiday Visuminhaber. Wir kümmern uns um die komplette Registrierung beim ATO - schnell und unkompliziert.',
+  description: 'Beantrage deine Australian Business Number (ABN) für Working Holiday Visuminhaber. Wir kümmern uns um die komplette Registrierung beim ATO – schnell und unkompliziert.',
   keywords: ['ABN Antrag Formular', 'ABN online beantragen', 'ABN Formular Working Holiday', 'ABN Antrag absenden', 'Australian Business Number registrieren', 'ABN für Freelancer Deutsch', 'Sole Trader ABN Antrag', 'ABN Registrierung Formular'],
   alternates: {
     canonical: '/de/abn-form',

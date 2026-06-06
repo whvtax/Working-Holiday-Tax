@@ -151,7 +151,7 @@ export default function GermanTaxResidencyPage() {
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-14 lg:pb-10">
 
             {/* Breadcrumbs */}
-            <nav aria-label="Breadcrumb" className="mb-5 lg:mb-6">
+            <nav aria-label="Brotkrümelnavigation" className="mb-5 lg:mb-6">
               <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
                 <li>
                   <Link href="/de" style={{ color: '#587066' }}>Startseite</Link>
@@ -185,7 +185,7 @@ export default function GermanTaxResidencyPage() {
 
         {/* ── TAX TABLES COMPARISON ─────────────────────────────────────── */}
         <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
               <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_ROWS} />
@@ -211,7 +211,7 @@ export default function GermanTaxResidencyPage() {
 
         {/* ── RESIDENCY CONDITIONS ──────────────────────────────────────── */}
         <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
             <div className="text-center mb-8">
               <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -258,7 +258,7 @@ export default function GermanTaxResidencyPage() {
 
         {/* ── FAQ ───────────────────────────────────────────────────────── */}
         <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
-          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
             <div className="text-center mb-8">
               <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
                 Häufige Fragen
@@ -285,7 +285,7 @@ export default function GermanTaxResidencyPage() {
 
         {/* ── BACK TO FORM ─────────────────────────────────────────────────── */}
         <section style={{ background: '#0B5240', paddingTop: '40px', paddingBottom: '40px' }}>
-          <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+          <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center reveal">
             <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '20px', maxWidth: '40ch' }}>
               Jetzt, wo du deine Residenz verstehst, fülle deine Steuererklärung weiter aus.
             </p>

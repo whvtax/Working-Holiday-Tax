@@ -7,8 +7,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'TFN beantragen für Working Holiday Maker - Grundlage für Steuerrückerstattung',
-  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Mit einem registrierten Steueragenten.',
+  title: 'TFN beantragen für Working Holiday Maker – Grundlage für Steuerrückerstattung',
+  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt – der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Unter Aufsicht eines registrierten Steueragenten.',
   keywords: [
     'TFN beantragen Australien',
     'TFN beantragen Working Holiday',
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN beantragen für Working Holiday Maker - Steuerrückerstattung',
-    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien.',
+    title: 'TFN beantragen für Working Holiday Maker – Steuerrückerstattung',
+    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt – der erste Schritt zu deiner Steuerrückerstattung in Australien.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TFN beantragen für Working Holiday Maker',
-    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung.',
+    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt – der erste Schritt zu deiner Steuerrückerstattung.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -93,12 +93,12 @@ const breadcrumbSchema = {
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': 'https://workingholidaytax.com.au/de/tfn#service',
+  '@id': `${SITE_URL}/de/tfn#service`,
   name: 'TFN-Antrag (Tax File Number) für Working Holiday Maker',
-  description: 'Wir beantragen deine australische Tax File Number (TFN) - kostenlos, online und schnell. Damit du vom ersten Tag mit 15 % besteuert wirst statt mit 45 %.',
+  description: 'Wir beantragen deine australische Tax File Number (TFN) – kostenlos, online und schnell. Damit du vom ersten Tag mit 15 % besteuert wirst statt mit 45 %.',
   serviceType: 'TFN Application',
   category: 'Tax Registration Service',
-  url: 'https://workingholidaytax.com.au/de/tfn',
+  url: `${SITE_URL}/de/tfn`,
   inLanguage: 'de',
   areaServed: {
     '@type': 'Country',
@@ -110,12 +110,27 @@ const serviceSchema = {
   },
   provider: {
     '@type': 'Organization',
-    '@id': 'https://workingholidaytax.com.au/#organization',
+    '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
-    url: 'https://workingholidaytax.com.au',
-    description: 'Registrierte australische Steueragentur, spezialisiert auf Working Holiday Maker.',
+    url: `${SITE_URL}`,
+    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
   },
+}
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'So beantragst du eine TFN als Working Holiday Maker',
+  description: 'Schritt-f\u00fcr-Schritt-Anleitung, wie du als Working Holiday Visuminhaber eine Steuernummer (TFN) in Australien beantragst.',
+  totalTime: 'P28D',
+  inLanguage: 'de',
+  step: STEPS.map((s, i) => ({
+    '@type': 'HowToStep',
+    position: i + 1,
+    name: s.title,
+    text: s.body,
+  })),
 }
 
 
@@ -125,12 +140,13 @@ export default function TFNPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px] bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
 
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
+          <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
             <Link href="/de" className="transition-colors hover:text-forest-500">Startseite</Link>
             <span aria-hidden="true" style={{ color: 'rgba(10,15,13,0.18)' }}>/</span>
@@ -185,7 +201,7 @@ export default function TFNPageDE() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpacker geholfen', <GoogleRating variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
+              {['1.200+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -198,7 +214,7 @@ export default function TFNPageDE() {
 
       {/* ── WHAT IS A TFN? ───────────────────────────────────────────────── */}
       <section className="tfn-intro-section">
-        <div className="tfn-intro-container">
+        <div className="tfn-intro-container reveal">
           <div className="tfn-intro-grid">
 
             <div className="tfn-intro-content">
@@ -257,8 +273,8 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── SOLUTION ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
             <span className="section-label center">Warum unser Service</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -299,7 +315,7 @@ export default function TFNPageDE() {
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-18 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">Was Reisende sagen</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -312,8 +328,8 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── COMPARISON ───────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
             <span className="section-label center">DER TFN-ANTRAGSPROZESS</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -357,8 +373,8 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background: '#EEF7F2' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
             <span className="section-label center">So beantragst du</span>
             <h2 className="font-serif font-black text-ink mx-auto"
@@ -379,7 +395,7 @@ export default function TFNPageDE() {
               {STEPS.map((s, i) => (
                 <div key={i} className="flex-1 flex flex-col items-center px-3" style={{ zIndex: 1 }}>
                   <div className="rounded-full flex items-center justify-center font-bold text-white flex-shrink-0"
-                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #EEF7F2, 0 0 0 6px #C8EAE0' }}>
+                    style={{ width: '40px', height: '40px', background: '#0B5240', fontSize: '15px', marginBottom: '18px', boxShadow: '0 0 0 5px #F5F9F7, 0 0 0 6px #C8EAE0' }}>
                     {s.n}
                   </div>
                   <p className="font-semibold text-ink text-center" style={{ fontSize: '14px', marginBottom: '7px', letterSpacing: '-0.01em', lineHeight: 1.3 }}>{s.title}</p>
@@ -422,8 +438,8 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 
             <div className="text-center">

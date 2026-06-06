@@ -4,7 +4,7 @@ import { EMAIL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Datenschutzerklärung | Working Holiday Tax',
-  description: 'Datenschutzerklärung von Working Holiday Tax - wie wir deine personenbezogenen Daten erheben, verwenden und schützen.',
+  description: 'Datenschutzerklärung von Working Holiday Tax – wie wir deine personenbezogenen Daten erheben, verwenden und schützen.',
   alternates: {
     canonical: '/de/privacy',
     languages: {
@@ -25,7 +25,7 @@ type Section = {
 const sections: Section[] = [
   {
     title: '1. Einleitung',
-    body: 'Diese Datenschutzerklärung erläutert, wie Working Holiday Tax („wir", „uns", „unser") deine personenbezogenen Daten in Übereinstimmung mit dem Privacy Act 1988 (Cth), den Australian Privacy Principles (APPs) und dem Notifiable Data Breaches (NDB)-Schema erhebt, verwendet, offenlegt und schützt. Wir erfüllen außerdem unsere Pflichten als registrierte Steueragentur gegenüber dem ATO und dem Tax Practitioners Board (TPB), einschließlich strenger Vertraulichkeitsanforderungen. Durch die Nutzung unserer Website oder die Inanspruchnahme unserer Dienstleistungen stimmst du der Erhebung und Verwendung deiner Daten gemäß dieser Datenschutzerklärung zu.',
+    body: 'Diese Datenschutzerklärung erläutert, wie Working Holiday Tax („wir", „uns", „unser") deine personenbezogenen Daten in Übereinstimmung mit dem Privacy Act 1988 (Cth), den Australian Privacy Principles (APPs) und dem Notifiable Data Breaches (NDB)-Schema erhebt, verwendet, offenlegt und schützt. Wir erfüllen außerdem unsere Pflichten unter Aufsicht eines registrierten Steueragenten gegenüber dem ATO und dem Tax Practitioners Board (TPB), einschließlich strenger Vertraulichkeitsanforderungen. Durch die Nutzung unserer Website oder die Inanspruchnahme unserer Dienstleistungen stimmst du der Erhebung und Verwendung deiner Daten gemäß dieser Datenschutzerklärung zu.',
   },
   {
     title: '2. Allgemeiner Informationshinweis',

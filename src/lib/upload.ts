@@ -146,7 +146,9 @@ export async function uploadFile(
     throw new Error(`Upload failed: ${uploadError.message}`)
   }
 
-  // Get the public URL
+  // Build the canonical object URL. NOTE: the bucket is PRIVATE, so this URL is
+  // used only as a stable reference key stored in the DB — it is NOT publicly
+  // accessible. Files are served to authenticated CRM sessions via /api/crm/file.
   const { data: { publicUrl } } = sb.storage
     .from(STORAGE_BUCKETS.uploads)
     .getPublicUrl(pathname)

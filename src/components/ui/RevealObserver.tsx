@@ -4,19 +4,10 @@ import { useEffect } from 'react'
 export function RevealObserver() {
   useEffect(() => {
     const selectors = '.reveal,.reveal-left,.reveal-right'
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduce) return // respect accessibility: no animation, content stays visible
 
-    // Only animate elements that are BELOW the fold
-    // Elements already in view stay visible with no animation
-    document.querySelectorAll(selectors).forEach(el => {
-      const rect = el.getBoundingClientRect()
-      if (rect.top > window.innerHeight) {
-        // Below fold - add animate class to enable opacity:0 + transition
-        el.classList.add('animate')
-      }
-      // Above fold or in view - leave as-is (opacity:1, no animation)
-    })
-
-    // Now observe below-fold elements
+    const els = Array.from(document.querySelectorAll<HTMLElement>(selectors))
     const obs = new IntersectionObserver(
       entries => entries.forEach(e => {
         if (e.isIntersecting) {
@@ -25,10 +16,17 @@ export function RevealObserver() {
           obs.unobserve(e.target)
         }
       }),
-      { threshold: 0.06, rootMargin: '0px 0px -10px 0px' }
+      { threshold: 0.08, rootMargin: '0px 0px -6% 0px' }
     )
 
-    document.querySelectorAll(`${selectors}.animate`).forEach(el => obs.observe(el))
+    els.forEach(el => {
+      const rect = el.getBoundingClientRect()
+      // Hide + animate any element that is not already comfortably in view on load.
+      if (rect.top > window.innerHeight * 0.88) {
+        el.classList.add('animate')
+        obs.observe(el)
+      }
+    })
 
     return () => obs.disconnect()
   }, [])

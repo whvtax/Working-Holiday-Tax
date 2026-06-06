@@ -4,12 +4,13 @@ import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
 import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
+import { getGoogleRating } from '@/lib/googleData'
 
 // ─── METADATA - rich SEO + AI optimized for Japanese market ─────────────
 export const metadata: Metadata = {
-  title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門の登録税理士',
+  title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
   description:
-    'オーストラリア タックスリターン 還付金を、ワーキングホリデー（417・462ビザ）専門の登録税理士が手続き代行。TFN申請、スーパーアニュエーション返金（DASP）、ABN登録まで日本語でオンライン完結。帰国後の申請にも対応します。',
+    'オーストラリア タックスリターン 還付金を、ワーキングホリデー（417・462ビザ）専門のチームが登録税理士の監督のもとで手続き代行。TFN申請、スーパーアニュエーション返金（DASP）、ABN登録まで日本語でオンライン完結。帰国後の申請にも対応します。',
   keywords: [
     // Primary refund-focused terms (core service)
     'オーストラリア タックスリターン 還付金',
@@ -76,19 +77,19 @@ export const metadata: Metadata = {
     alternateLocale: ['en_AU', 'de_DE'],
     url: `${SITE_URL}/ja`,
     siteName: 'Working Holiday Tax',
-    title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門の登録税理士',
-    description: 'オーストラリアのワーホリ（417・462ビザ）専門の登録税理士。タックスリターン還付金、TFN申請、スーパーアニュエーション返金（DASP）まで日本語ですべてオンライン。帰国後も対応。',
+    title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
+    description: 'オーストラリアのワーホリ（417・462ビザ）専門。登録税理士の監督のもとで、タックスリターン還付金、TFN申請、スーパーアニュエーション返金（DASP）まで日本語ですべてオンライン。帰国後も対応。',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'オーストラリア タックスリターン 還付金 - ワーホリ（417・462ビザ）専門の登録税理士',
+      alt: 'オーストラリア タックスリターン 還付金 - 登録税理士の監督のもとでワーホリ（417・462ビザ）専門',
     }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門',
-    description: 'オーストラリアのワーホリ専門の登録税理士。タックスリターン還付金を日本語で代行申請。帰国後でも対応。',
+    description: 'オーストラリアのワーホリ専門。登録税理士の監督のもとでタックスリターン還付金を日本語で代行申請。帰国後でも対応。',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -110,7 +111,6 @@ const IconABN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill=
 const IconReturn  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
 const IconSuper   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.4"/><path d="M10 5.5v4l2.5 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.5s-6-3.5-6-8.5a3 3 0 016-2 3 3 0 016 2c0 5-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><line x1="10" y1="7" x2="10" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="7.5" y1="9.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
-const IconStar    = () => (<svg width="13" height="13" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1l1.35 2.73L10.5 4.2l-2.25 2.2.53 3.1L6 8.03 3.22 9.5l.53-3.1L1.5 4.2l3.15-.47z" fill="#E9A020"/></svg>)
 const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
 // ─── TESTIMONIALS - Japanese WHV reviews ─────────────────────────────────
@@ -118,7 +118,7 @@ const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill=
 const STEPS = [
   { n: '1', title: 'ご相談・状況の確認',     body: 'TFN、ABN、ワーホリ タックスリターン、スーパー受取など、必要なサービスを最初にご案内します。' },
   { n: '2', title: '必要書類のご準備',       body: 'シンプルなチェックリストに沿って情報をお送りいただくだけ。複雑な書類作業は不要です。' },
-  { n: '3', title: '当社が手続きを代行',     body: '登録税理士が、書類作成からATO（オーストラリア税務署）への申請まですべて代行します。' },
+  { n: '3', title: '当社が手続きを代行',     body: '登録税理士の監督のもとで、書類作成からATO（オーストラリア税務署）への申請まですべて代行します。' },
   { n: '4', title: 'ATOからの結果通知',     body: 'ATOによるタックスリターン処理が完了次第、還付金が発生する場合はご指定のオーストラリアの銀行口座へ直接お振り込みします。' },
 ]
 
@@ -133,7 +133,7 @@ const SERVICES = [
 const FAQS = [
   {
     question: 'オーストラリア タックスリターンの還付金はどのような仕組みですか？',
-    answer: '417・462ビザでオーストラリアで働いていた場合、雇用主は毎回の給与から税金を源泉徴収しています。会計年度末（6月30日）の後にATO（オーストラリア税務署）へタックスリターンを提出すると、払いすぎていた分が還付金としてあなたに戻ってきます。還付金の金額は、所得、税務上の居住者ステータス、申告可能な控除、雇用主がワーキングホリデーメーカー雇用主として登録されていたかなど、個々の状況によって異なります。登録税理士が状況を確認し、正しく申告手続きを行います。',
+    answer: '417・462ビザでオーストラリアで働いていた場合、雇用主は毎回の給与から税金を源泉徴収しています。会計年度末（6月30日）の後にATO（オーストラリア税務署）へタックスリターンを提出すると、払いすぎていた分が還付金としてあなたに戻ってきます。還付金の金額は、所得、税務上の居住者ステータス、申告可能な控除、雇用主がワーキングホリデーメーカー雇用主として登録されていたかなど、個々の状況によって異なります。登録税理士の監督のもとで状況を確認し、正しく申告手続きを行います。',
   },
   {
     question: 'サービスの料金はいくらですか？',
@@ -141,11 +141,11 @@ const FAQS = [
   },
   {
     question: '返信はどのくらいで来ますか？',
-    answer: '営業時間内（月〜金、シドニー時間9〜18時／日本時間10〜19時）は通常1時間以内にご返信します。営業時間外のお問い合わせには、翌営業日の朝一番にご対応いたします。',
+    answer: '営業時間内（月〜金、シドニー時間9〜18時）は通常1時間以内にご返信します。営業時間外のお問い合わせには、翌営業日の朝一番にご対応いたします。',
   },
   {
     question: '帰国後でもタックスリターンや還付金の申請はできますか？',
-    answer: 'はい、もちろん対応いたします。すでにオーストラリアを離れて日本に帰国された方のワーホリ タックスリターンや、スーパーアニュエーション返金（DASP）も、日本からオンラインで申請可能です。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルール）。スーパー返金（DASP）は日本の口座でもお受け取りいただけます。',
+    answer: 'はい、もちろん対応いたします。すでにオーストラリアを離れて日本に帰国された方のワーホリ タックスリターンや、スーパーアニュエーション返金（DASP）も、日本からオンラインで申請可能です。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルール）。スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
   },
   {
     question: 'ワーキングホリデーメーカーの税率はいくらですか？',
@@ -161,7 +161,8 @@ const FAQS = [
   },
 ]
 
-export default function JapaneseHomePage() {
+export default async function JapaneseHomePage() {
+  const gRating = await getGoogleRating()
 
   // ─── Schema.org for Japanese page ───
   const webPageLd = {
@@ -169,8 +170,8 @@ export default function JapaneseHomePage() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/ja/#webpage`,
     url: `${SITE_URL}/ja`,
-    name: 'オーストラリア タックスリターン 還付金 | ワーホリ専門の登録税理士',
-    description: '417・462ビザのワーキングホリデーメーカー専門の登録税理士。タックスリターン還付金、TFN、スーパー（DASP）、ABNまで日本語ですべてオンライン。',
+    name: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
+    description: '417・462ビザのワーキングホリデーメーカー専門。登録税理士の監督のもとで、タックスリターン還付金、TFN、スーパー（DASP）、ABNまで日本語ですべてオンライン。',
     inLanguage: 'ja',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -178,13 +179,19 @@ export default function JapaneseHomePage() {
 
   const serviceLd = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
-    '@id': `${SITE_URL}/ja/#service`,
-    name: 'ワーキングホリデー向け税務サービス（オーストラリア）',
+    '@type': 'LocalBusiness',
+    '@id': `${SITE_URL}/#business`,
+    name: 'Working Holiday Tax',
     description: 'オーストラリアのワーキングホリデービザ保持者向け税務サービス。',
-    provider: { '@id': `${SITE_URL}/#business` },
-    areaServed: 'AU',
+    url: SITE_URL,
     inLanguage: 'ja',
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: gRating.rating.toFixed(1),
+      reviewCount: gRating.count,
+      bestRating: '5',
+      worstRating: '1',
+    },
   }
 
   const faqLd = {
@@ -221,7 +228,7 @@ export default function JapaneseHomePage() {
       width: 512,
       height: 512,
     },
-    description: 'オーストラリアの登録税理士事務所。ワーキングホリデーメーカー（ビザサブクラス417・462）専門。日本語・英語・ドイツ語対応。',
+    description: 'オーストラリアで登録税理士の監督のもとで運営。ワーキングホリデーメーカー（ビザサブクラス417・462）専門。日本語・英語・ドイツ語対応。',
     foundingDate: '2020',
     knowsLanguage: ['en', 'de', 'ja'],
     areaServed: {
@@ -347,7 +354,7 @@ export default function JapaneseHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200名以上をサポート', <GoogleRating variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
+            {['1,200名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -358,7 +365,7 @@ export default function JapaneseHomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
 
           <span className="section-label center">選ばれる理由</span>
@@ -375,8 +382,8 @@ export default function JapaneseHomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-10" style={{ marginBottom: '36px' }}>
             {[
-              { title: 'ワーホリ税務の専門家', body: '417・462ビザのワーキングホリデーメーカーの税務だけを専門に扱う登録税理士。ルールを熟知しています。' },
-              { title: 'ATO登録税理士', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。ATOの最新ルールに完全準拠して申告します。' },
+              { title: 'ワーホリ税務の専門家', body: '417・462ビザのワーキングホリデーメーカーの税務だけを専門に扱う、登録税理士監督のもとのチーム。ルールを熟知しています。' },
+              { title: 'ATO登録税理士の監督', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。ATOの最新ルールに完全準拠して申告します。' },
               { title: '日本語で完全対応', body: '専門用語はわかりやすく説明。複雑な書類もこちらで代行するので、日本語だけで完結します。' },
               { title: 'すべておまかせ', body: '面倒な書類仕事はゼロ。TFN取得からタックスリターン還付金の受け取りまで、すべて代行。帰国後も対応。' },
             ].map((item, i) => (
@@ -396,7 +403,7 @@ export default function JapaneseHomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -430,7 +437,7 @@ export default function JapaneseHomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-24" style={{ background: '#F4F9F6' }}>
+      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -503,7 +510,7 @@ export default function JapaneseHomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-24" style={{ background: '#EEF7F2' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>

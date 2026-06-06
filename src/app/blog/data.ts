@@ -77,7 +77,7 @@ Apply for your TFN as soon as possible and let your employer know your applicati
 
 Any tax overpaid before your TFN was on file can be reclaimed when you lodge your [tax return](/tax-return) at the end of the financial year. You do not permanently lose that money, as long as you lodge a return before the deadline.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -86,7 +86,7 @@ Any tax overpaid before your TFN was on file can be reclaimed when you lodge you
  description:
  "Step-by-step guide to applying for a Tax File Number (TFN) as a working holiday maker on a 417 or 462 visa. Application process, ID required, processing time and what to do while you wait.",
  category: "TFN",
- date: "8 July 2024",
+ date: "7 July 2024",
  readTime: 4,
  body: `
 To apply for a Tax File Number (TFN) as a working holiday maker, you submit an online application directly to the Australian Taxation Office (ATO). The application is free, takes around 10 minutes to complete, and your TFN arrives by post within 28 days. You can apply as soon as your working holiday visa is granted, even before you arrive in Australia, as long as you have a valid Australian postal address.
@@ -127,7 +127,7 @@ When your TFN letter arrives:
 
 Each employer needs their own Tax File Number Declaration form. Providing your TFN to one employer does not automatically share it with others.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -185,7 +185,7 @@ Your TFN is also required to lodge your [tax return](/tax-return) and access you
  description:
  "You can start a job before you receive your TFN, but tax is withheld at 45% until you provide one. What working holiday makers should know about the 28-day rule and how to avoid losing pay.",
  category: "TFN",
- date: "22 July 2024",
+ date: "16 July 2024",
  readTime: 4,
  body: `
 Yes, you can legally start work in Australia without a TFN. There is no law that prevents you from being employed before your Tax File Number is issued. However, your employer is required by law to withhold tax at 45% (the top marginal rate) until you provide both your TFN and a completed Tax File Number Declaration form.
@@ -217,7 +217,7 @@ Processing typically takes up to 28 days, so the earlier you apply, the less tim
 
 If you are being paid cash in hand, the TFN question is handled differently because no formal payroll exists. For more on how that works and the tax implications, see our article on [cash in hand work in Australia](/blog/can-your-employer-pay-you-cash-in-hand).
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -226,7 +226,7 @@ If you are being paid cash in hand, the TFN question is handled differently beca
  description:
  "Without a TFN, Australian employers must withhold tax at the top marginal rate of 45%. What it means for working holiday makers, when you can claim back the overpaid tax, and how to fix it fast.",
  category: "TFN",
- date: "29 July 2024",
+ date: "23 July 2024",
  readTime: 4,
  body: `
 If your employer does not have your Tax File Number on file, they must withhold tax at 45% under Australian tax law. This is the highest marginal tax rate and applies from your first shift until you provide your TFN along with a completed Tax File Number Declaration form. Your employer has no discretion on this. The obligation comes from the ATO.
@@ -258,13 +258,13 @@ If your application is still in progress, show your employer the ATO confirmatio
 
 Yes. The excess tax withheld during the period before your TFN was on file is credited against your tax liability when you lodge your [annual tax return](/tax-return). The ATO calculates the difference between what you actually owed and what was withheld, then refunds the amount to your Australian bank account.
 
-The deadline is 31 October following the end of each financial year (1 July to 30 June). If you lodge through a registered tax agent, the deadline can be extended.
+The deadline is 31 October following the end of each financial year (1 July to 30 June). If you lodge under the supervision of a registered tax agent, the deadline can be extended.
 
 ## Giving your TFN to multiple employers
 
 If you work for more than one employer during your time in Australia, each one needs your TFN separately. Providing it to one employer does not automatically share it with others. Submit a Tax File Number Declaration form to every employer you work for, including casual and short-term roles.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -273,7 +273,7 @@ If you work for more than one employer during your time in Australia, each one n
  description:
  "TFN is your personal tax ID for employment income. ABN is for self-employed or contractor work. Which one working holiday makers on 417 and 462 visas need, and when you might need both.",
  category: "TFN",
- date: "5 August 2024",
+ date: "31 July 2024",
  readTime: 5,
  body: `
 A Tax File Number (TFN) is your personal tax identifier used when you are employed and earning wages. An Australian Business Number (ABN) is a business identifier used when you operate as a sole trader or independent contractor and invoice clients for your work. Most working holiday makers in standard employment need only a TFN. You need an ABN only if you are running your own business or contracting independently. Many backpackers end up holding both.
@@ -318,7 +318,7 @@ The key question is whether the business paying you is treating you as an employ
 
 If you are unsure which situation applies, our article on [the difference between employees and contractors in Australia](/blog/employee-vs-contractor-australia) goes into the legal tests in more detail.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -327,7 +327,7 @@ If you are unsure which situation applies, our article on [the difference betwee
  description:
  "For most working holiday visa holders, you must be in Australia before applying for a TFN. What you can prepare in advance, what documents you need, and when to apply for the fastest processing.",
  category: "TFN",
- date: "12 August 2024",
+ date: "20 August 2024",
  readTime: 4,
  body: `
 Yes, you can apply for an Australian Tax File Number (TFN) before you arrive in Australia, as long as your working holiday visa has already been granted. The ATO allows foreign passport holders to submit a TFN application online from overseas, provided they have a valid Australian postal address where the TFN letter can be sent. Applying early means your TFN may arrive around the same time you do, avoiding the period of 45% tax withholding that applies before your TFN is registered with your employer.
@@ -377,7 +377,7 @@ Your TFN is also required to lodge your [tax return](/tax-return) at the end of 
  description:
  "If your TFN has not arrived 28 days after applying, the ATO may have flagged your application or sent it to the wrong address. How to check status, follow up, and what to ask your employer in the meantime.",
  category: "TFN",
- date: "19 August 2024",
+ date: "24 August 2024",
  readTime: 4,
  body: `
 If your TFN has not arrived after 28 days, the most common causes are an address error in your application or a letter lost in the post. Before contacting the ATO, check the address you submitted, confirm the 28 days have actually passed (counted from when the ATO received your application, not when you clicked submit), and look for the letter at any older addresses if you have moved.
@@ -422,7 +422,7 @@ Yes. While you are waiting, you can continue working. Let your employer know you
  description:
  "No. Your TFN is permanent and stays with you for life, even between visa renewals. What working holiday makers should do when returning to Australia on a 2nd or 3rd working holiday visa.",
  category: "TFN",
- date: "26 August 2024",
+ date: "9 September 2024",
  readTime: 3,
  body: `
 No, you do not need a new Tax File Number when you return to Australia on a second working holiday visa. Your TFN is permanent. It does not expire when your visa expires and it does not change when your visa changes. The same 9-digit TFN you were issued the first time is the one you use on every subsequent visit to Australia.
@@ -471,10 +471,10 @@ Your tax obligations on your second visit work exactly the same way as the first
  description:
  "Lost your TFN? Check old payslips, your income statement, prior tax returns, or your myGov account. Step-by-step guide for working holiday makers to recover their TFN without contacting the ATO.",
  category: "TFN",
- date: "2 September 2024",
+ date: "13 September 2024",
  readTime: 3,
  body: `
-To find a lost Tax File Number, start with documents you may already have (the original ATO letter, payslips, payment summaries, or past tax returns). Your TFN is permanent and does not change, so the same number you were issued originally is the one you still hold. If you cannot find it in your records, our team can retrieve it for you as registered tax agents.
+To find a lost Tax File Number, start with documents you may already have (the original ATO letter, payslips, payment summaries, or past tax returns). Your TFN is permanent and does not change, so the same number you were issued originally is the one you still hold. If you cannot find it in your records, our team can retrieve it for you under the supervision of a registered tax agent.
 
 ## How to find your TFN at home
 
@@ -489,7 +489,7 @@ If you saved emails, scanned documents, or kept paperwork from previous work in 
 
 ## How to retrieve a lost TFN
 
-If you cannot find your TFN in any of your records, [get in touch with our team](/contact). We are registered tax agents and can retrieve your TFN on your behalf through our direct channels with the ATO.
+If you cannot find your TFN in any of your records, [get in touch with our team](/contact). We work under the supervision of a registered tax agent and can retrieve your TFN on your behalf through our direct channels with the ATO.
 
 To help us, please have ready:
 
@@ -499,7 +499,7 @@ To help us, please have ready:
 - Your residential address history in Australia
 - Any other personal identification details
 
-Retrieving a TFN as an individual involves long ATO phone wait times and an identity verification process that often requires Australian-specific documents most backpackers no longer have access to from overseas. Going through a registered tax agent is faster and more reliable.
+Retrieving a TFN as an individual involves long ATO phone wait times and an identity verification process that often requires Australian-specific documents most backpackers no longer have access to from overseas. Going under the supervision of a registered tax agent is faster and more reliable.
 
 ## How to keep your TFN safe in future
 
@@ -521,7 +521,7 @@ Avoid emailing your TFN to yourself in plain text or storing it in unsecured doc
  description:
  "An Australian Business Number (ABN) is required for working holiday makers operating as contractors or sole traders. How to know if you need one, what it does, and what happens without one.",
  category: "ABN",
- date: "9 September 2024",
+ date: "16 September 2024",
  readTime: 5,
  body: `
 An Australian Business Number (ABN) is an 11-digit identifier issued to businesses and sole traders operating in Australia. As a working holiday maker, you need an ABN if you are working as an independent contractor (invoicing the business for your services) rather than as an employee (on a payroll). Most working holiday makers in standard employment do not need an ABN. The ABN registration is free, takes around 15 minutes online, and most applications are processed immediately.
@@ -583,7 +583,7 @@ The standard working holiday maker tax rate of 15% on the first $45,000 of earni
  description:
  "Registering for an ABN is free and takes around 15 minutes online. Step-by-step guide for working holiday makers on 417 and 462 visas, what information you need, and common application pitfalls.",
  category: "ABN",
- date: "16 September 2024",
+ date: "22 September 2024",
  readTime: 4,
  body: `
 To register for an Australian Business Number (ABN) as a working holiday maker, [register through our service](/abn) and we handle the whole process for you. Our team prepares and lodges the application on your behalf, and most ABNs are approved within 24 hours. You receive your ABN by email, ready to use. You need a [Tax File Number (TFN)](/tfn) before we can register your ABN.
@@ -641,7 +641,7 @@ When you finish your business activity in Australia, you should cancel your ABN.
  description:
  "Farm work is one of the most common reasons working holiday makers register for an ABN. When you need one, when you should be an employee instead, and what to watch out for with piece-rate contracts.",
  category: "ABN",
- date: "23 September 2024",
+ date: "30 September 2024",
  readTime: 5,
  body: `
 You usually need an Australian Business Number (ABN) for farm work in Australia if you are working through a labour hire company or being paid on a piece-rate basis as a contractor. You do not need an ABN if the farm is employing you directly on a payroll. Always confirm the arrangement before you start work, because the answer determines what tax, super, and entitlements apply to you.
@@ -700,7 +700,7 @@ Keep records of every payment received and every invoice issued. Good record-kee
  description:
  "The distinction between employee and contractor affects tax, super, leave and workplace rights. How working holiday makers can tell which one applies, and what to do if you have been misclassified.",
  category: "ABN",
- date: "30 September 2024",
+ date: "4 October 2024",
  readTime: 5,
  body: `
 The difference between an employee and a contractor in Australia comes down to the substance of the working arrangement, not the label. An employee works under the direction of an employer who deducts tax, pays superannuation, and provides leave. A contractor runs their own business, invoices clients, sets aside their own tax, and is generally not entitled to super from clients. The classification affects your tax, your super, your workplace rights, and whether you need an ABN.
@@ -761,7 +761,7 @@ Yes. Many working holiday makers are employees at one job and contractors elsewh
  description:
  "Yes, working holiday makers can hold a TFN and an ABN at the same time, and many do. How the two numbers work together, when you need both, and how it affects your tax return.",
  category: "ABN",
- date: "7 October 2024",
+ date: "8 October 2024",
  readTime: 3,
  body: `
 Yes, you can hold a Tax File Number (TFN) and an Australian Business Number (ABN) at the same time, and many working holiday makers do. In fact, you must have a TFN before you can apply for an ABN. The TFN is your personal tax identifier used for employment, and the ABN is your business identifier used for contractor or sole trader work. Holding both is normal if you do both kinds of work.
@@ -818,7 +818,7 @@ Keep clear records of both throughout the year. Save your payslips, copy every i
  description:
  "If you are leaving Australia and no longer running a business, the ATO expects you to cancel your ABN. How working holiday makers can cancel online, when to do it, and why it matters for your tax return.",
  category: "ABN",
- date: "14 October 2024",
+ date: "9 October 2024",
  readTime: 3,
  body: `
 You should cancel your Australian Business Number (ABN) when you leave Australia and are no longer carrying on a business or contracting activity. Our team handles the cancellation as part of wrapping up your Australian tax position before you go, so you do not need to deal with the paperwork yourself. Cancelling keeps your business records tidy and avoids any administrative complications down the line.
@@ -868,9 +868,9 @@ ABN contractor work typically does not generate super contributions, but employm
  slug: "gst-and-abn-for-working-holiday-makers",
  title: "GST and ABN for working holiday makers: do you need to register?",
  description:
- "Most working holiday makers with an ABN do not need to register for GST — the threshold is $75,000 annual turnover. Exception: rideshare drivers must register regardless. How to work out if it applies to you.",
+ "Most working holiday makers with an ABN do not need to register for GST - the threshold is $75,000 annual turnover. Exception: rideshare drivers must register regardless. How to work out if it applies to you.",
  category: "ABN",
- date: "21 October 2024",
+ date: "10 October 2024",
  readTime: 4,
  body: `
 Most working holiday makers with an ABN do not need to register for GST. The Goods and Services Tax (GST) registration threshold is $75,000 in annual turnover from business activities, and the vast majority of backpackers earn well below this during a single visit. The exception is rideshare and food delivery drivers, who must register for GST regardless of income level. If your ABN turnover stays under $75,000 and you are not in rideshare or delivery, you can ignore GST entirely.
@@ -916,7 +916,7 @@ If GST applies to you:
 - Remit the collected GST to the ATO
 - You can claim back GST you paid on business expenses
 
-A registered tax agent can handle BAS lodgement and make this straightforward.
+We can handle BAS lodgement under the supervision of a registered tax agent and make this straightforward.
 
 ## What is the main tax obligation for most contractors?
 
@@ -937,10 +937,10 @@ For most working holiday makers with an [ABN](/abn), GST is not a concern. Your 
  description:
  "The Australian financial year runs from 1 July to 30 June. Here is what that means for your tax return and when you need to lodge it.",
  category: "Tax Return",
- date: "28 October 2024",
+ date: "23 October 2024",
  readTime: 5,
  body: `
-The Australian financial year runs from 1 July to 30 June, not the calendar year. As a working holiday maker, you are required to lodge a tax return for any financial year in which you earned income in Australia. The deadline to lodge is 31 October following the end of the financial year. If you lodge through a registered tax agent like our team, the deadline is extended automatically.
+The Australian financial year runs from 1 July to 30 June, not the calendar year. As a working holiday maker, you are required to lodge a tax return for any financial year in which you earned income in Australia. The deadline to lodge is 31 October following the end of the financial year. If you lodge under the supervision of a registered tax agent like our team, the deadline is extended automatically.
 
 ## What does the financial year mean for you?
 
@@ -961,7 +961,7 @@ The standard deadline is 31 October following the end of the financial year:
 - 2024-25 financial year (ends 30 June 2025) → deadline 31 October 2025
 - 2025-26 financial year (ends 30 June 2026) → deadline 31 October 2026
 
-If we lodge your return as your registered tax agent, you qualify for an extended deadline, often until May the following year. This gives you breathing room if you missed October or your records are not yet complete.
+If we lodge your return under the supervision of a registered tax agent, you qualify for an extended deadline, often until May the following year. This gives you breathing room if you missed October or your records are not yet complete.
 
 ## What if you left Australia before 30 June?
 
@@ -984,7 +984,7 @@ To lodge your return, our team needs:
 
 We can access your income statements directly through our tax agent portal, so you do not need to collect payslips from each employer yourself. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas) for more detail on what we need.
 
-[Get in touch with our team](/contact) to lodge your Australian tax return through our registered tax agent service and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
  `,
  },
  {
@@ -993,7 +993,7 @@ We can access your income statements directly through our tax agent portal, so y
  description:
  "The current backpacker tax rate in Australia for working holiday makers on 417 and 462 visas: 15% on the first $45,000, then resident-style brackets. How it affects your take-home pay and refund.",
  category: "Tax Return",
- date: "4 November 2024",
+ date: "27 October 2024",
  readTime: 5,
  body: `
 The backpacker tax rate in Australia is a flat 15% on the first $45,000 of income earned per financial year. This rate applies to all working holiday makers on a Working Holiday Visa (subclass 417) or Work and Holiday Visa (subclass 462). It is sometimes called the "working holiday maker tax rate" and it replaces the standard resident tax brackets that would otherwise apply. You must register your [TFN](/tfn) with each employer to qualify for the 15% rate, otherwise withholding defaults to 45%.
@@ -1044,12 +1044,12 @@ Most working holiday makers we see get a refund of between $1,000 and $3,000 whe
  slug: "how-to-lodge-tax-return-working-holiday",
  title: "How to lodge a working holiday tax return in Australia (step-by-step)",
  description:
- "Step-by-step guide to lodging a working holiday tax return in Australia. What you need, when to lodge, and how a registered tax agent handles it for 417 and 462 visa holders - including from overseas.",
+ "Step-by-step guide to lodging a working holiday tax return in Australia. What you need, when to lodge, and how it is handled under the supervision of a registered tax agent for 417 and 462 visa holders - including from overseas.",
  category: "Tax Return",
- date: "11 November 2024",
+ date: "29 October 2024",
  readTime: 6,
  body: `
-To lodge a tax return in Australia as a working holiday maker, the simplest option is to use a registered tax agent like our team. We collect your details, access your income statements directly through our tax agent portal, prepare your return, and lodge it with the ATO on your behalf. The process works the same whether you are still in Australia or have already left, and using a registered agent gives you an extended lodgment deadline beyond the standard 31 October.
+To lodge a tax return in Australia as a working holiday maker, the simplest option is to work with our team under the supervision of a registered tax agent. We collect your details, access your income statements directly through our tax agent portal, prepare your return, and lodge it with the ATO on your behalf. The process works the same whether you are still in Australia or have already left, and using a registered agent gives you an extended lodgment deadline beyond the standard 31 October.
 
 ## What do you need to lodge a tax return?
 
@@ -1107,10 +1107,10 @@ For multi-employer returns, or for working holiday makers with both TFN and [ABN
  description:
  "A PAYG payment summary (now called Income Statement) shows your total earnings and tax withheld for the Australian financial year. How to find yours, what each section means, and how it is used in your working holiday tax return.",
  category: "Tax Return",
- date: "18 November 2024",
+ date: "2 November 2024",
  readTime: 4,
  body: `
-A PAYG payment summary, now known as an income statement, is the official record showing your total wages and total tax withheld by an employer during a financial year. It is the document used to lodge your [tax return](/tax-return). Employers report wages and withholding amounts to the ATO automatically through their payroll software, so the income statement is generated digitally rather than handed to you as a paper document. As your registered tax agent, our team can access your income statements directly through the ATO system.
+A PAYG payment summary, now known as an income statement, is the official record showing your total wages and total tax withheld by an employer during a financial year. It is the document used to lodge your [tax return](/tax-return). Employers report wages and withholding amounts to the ATO automatically through their payroll software, so the income statement is generated digitally rather than handed to you as a paper document. Working under the supervision of a registered tax agent, our team can access your income statements directly through the ATO system.
 
 ## How do income statements work now?
 
@@ -1132,7 +1132,7 @@ What we see in your records:
 - Each employer listed separately if you worked for more than one
 - The finalisation status (in progress or finalised)
 
-This is one of the main advantages of lodging through a registered tax agent. We see everything the ATO sees, and we wait until all employer reports are finalised before lodging your return.
+This is one of the main advantages of lodging under the supervision of a registered tax agent. We see everything the ATO sees, and we wait until all employer reports are finalised before lodging your return.
 
 ## What if an employer has not finalised their report?
 
@@ -1162,7 +1162,7 @@ Lodging without this cross-check is risky. The income statements are usually acc
  description:
  "What work-related tax deductions working holiday makers on 417 and 462 visas can claim in Australia. Uniforms, tools, vehicle expenses, training - the full list of what qualifies and what does not.",
  category: "Tax Return",
- date: "25 November 2024",
+ date: "4 November 2024",
  readTime: 5,
  body: `
 Working holiday makers in Australia can claim work-related tax deductions on their tax return, the same as Australian residents. Common deductions include uniforms and protective clothing, tools and equipment, travel between work sites, work-related phone use, and registered tax agent fees. To claim a deduction, the expense must be directly related to earning your income and you must have a record (receipt, bank statement, or diary note). Our team identifies eligible deductions when we prepare your [tax return](/tax-return).
@@ -1252,7 +1252,7 @@ Without records, the deduction cannot be claimed even if the expense was genuine
  description:
  "Worked in Australia for only a few weeks or months on a working holiday visa? Find out if you are required to lodge a tax return and how to claim back any overpaid tax.",
  category: "Tax Return",
- date: "2 December 2024",
+ date: "7 November 2024",
  readTime: 4,
  body: `
 Yes, you almost certainly need to lodge a tax return in Australia even if you only worked for a few weeks. The requirement to lodge does not depend on how long you stayed. It depends on whether you earned income during the Australian financial year. Working for two weeks creates the same lodgment obligation as working for two years. Lodging is also often worthwhile financially, because most working holiday makers get a refund.
@@ -1299,7 +1299,7 @@ Even if you have already left Australia, lodging is straightforward through our 
 
 You do not need to come back to Australia. Keep your Australian bank account open until the refund clears.
 
-The standard deadline is 31 October following the end of the financial year, but if you lodge through our team as your registered tax agent, you qualify for the extended agent deadline.
+The standard deadline is 31 October following the end of the financial year, but if you lodge through our team under the supervision of a registered tax agent, you qualify for the extended agent deadline.
  `,
  },
  {
@@ -1307,12 +1307,12 @@ The standard deadline is 31 October following the end of the financial year, but
  title:
  "How to lodge an Australian tax return from overseas (UK, Germany, Japan)",
  description:
- "Left Australia and need to lodge your working holiday tax return? Complete guide for 417 and 462 visa holders lodging from the UK, Germany, Japan or anywhere else - online, with a registered tax agent.",
+ "Left Australia and need to lodge your working holiday tax return? Complete guide for 417 and 462 visa holders lodging from the UK, Germany, Japan or anywhere else - online, under the supervision of a registered tax agent.",
  category: "Tax Return",
- date: "9 December 2024",
+ date: "12 November 2024",
  readTime: 5,
  body: `
-To lodge an Australian tax return from overseas after you have left, work with a registered tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and any refund the ATO assesses is paid into your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go through a registered tax agent.
+To lodge an Australian tax return from overseas after you have left, work under the supervision of a registered tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and any refund the ATO assesses is paid into your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go under the supervision of a registered tax agent.
 
 ## How do you lodge from overseas through our service?
 
@@ -1343,7 +1343,7 @@ If you have already closed your Australian bank account, [get in touch with our 
 The standard deadline is 31 October following the end of the financial year:
 
 - 2024-25 financial year → standard deadline 31 October 2025
-- Through our service as your registered tax agent → deadline often extended into the following May
+- Through our service under the supervision of a registered tax agent → deadline often extended into the following May
 
 This means if you missed the October deadline, lodging through us still gives you time to do it without late penalties.
 
@@ -1375,7 +1375,7 @@ Most working holiday makers receive a refund. Owing money is the exception, not 
  description:
  "A registered tax agent is licensed by the Tax Practitioners Board (TPB) to prepare and lodge tax returns on your behalf. Why working holiday makers on 417 and 462 visas use tax agents, what they do, and how much they cost.",
  category: "Tax Return",
- date: "16 December 2024",
+ date: "14 November 2024",
  readTime: 4,
  body: `
 A registered tax agent is a tax professional authorised by the Tax Practitioners Board to prepare and lodge tax returns on behalf of clients. In Australia, anyone offering paid tax services must be TPB-registered. Working holiday makers benefit from using a registered tax agent for three main reasons: access to extended lodgment deadlines, complete handling of communication with the ATO, and identification of deductions that self-lodgers often miss.
@@ -1428,7 +1428,7 @@ We operate under the supervision of a registered tax agent. Our registration det
  description:
  "PAYG withholding is how your employer collects tax from your wages before paying you. Here is how the system works.",
  category: "Tax Return",
- date: "23 December 2024",
+ date: "24 November 2024",
  readTime: 4,
  body: `
 PAYG (Pay As You Go) withholding is the system Australian employers use to deduct income tax from your wages before paying you. The withheld amount is paid directly to the ATO as a prepayment of your annual tax liability. For working holiday makers with their [TFN](/tfn) on file, the correct PAYG withholding rate is 15% on the first $45,000 of earnings. Without a TFN, the rate jumps to 45%.
@@ -1492,7 +1492,7 @@ If your payslip looks wrong or you suspect an error, [get in touch with our team
  description:
  "Australia uses a financial year that runs from 1 July to 30 June, not the calendar year. Here is what that means for your tax.",
  category: "Tax Return",
- date: "30 December 2024",
+ date: "25 November 2024",
  readTime: 3,
  body: `
 The Australian financial year runs from 1 July to 30 June of the following calendar year. This is different from the calendar year and different from the tax year used in many other countries. The current financial year as of mid-2026 is 2025-26 (1 July 2025 to 30 June 2026). Knowing these dates matters for working holiday makers because all income earned in a financial year must be lodged together on one tax return.
@@ -1524,7 +1524,7 @@ If your stay crosses 30 June, you will need to lodge two tax returns, one for ea
 - **14 July**: employers begin finalising income statements
 - **31 July**: most income statements should be finalised by this date
 - **31 October**: standard deadline to lodge your tax return
-- **Extended (around May the following year)**: deadline if you lodge through a registered tax agent like our team
+- **Extended (around May the following year)**: deadline if you lodge under the supervision of a registered tax agent like our team
 
 Lodgment opens 1 July, but it is usually worth waiting until late July or early August so your employer's income statement is finalised. We monitor this for you when you lodge through our service.
 
@@ -1539,7 +1539,7 @@ Superannuation contributions are paid quarterly:
 
 These dates matter if you are checking that your employer has paid your [superannuation](/superannuation) correctly before you leave Australia.
 
-[Get in touch with our team](/contact) to lodge your Australian tax return through our registered tax agent service and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
  `,
  },
  {
@@ -1549,7 +1549,7 @@ These dates matter if you are checking that your employer has paid your [superan
  description:
  "Working cash in hand does not exempt you from your tax obligations. Here is what you need to declare and how to handle it.",
  category: "Tax Return",
- date: "6 January 2025",
+ date: "27 November 2024",
  readTime: 4,
  body: `
 Yes, you must lodge a tax return if you worked cash in hand in Australia. Cash payments are still taxable income, just like wages paid through a bank transfer. The only difference is that no PAYG tax was withheld at the time of payment, so you are responsible for declaring the income and paying any tax owed at the end of the financial year. Failing to declare cash income is tax evasion. Our team handles tax returns involving cash-in-hand work regularly.
@@ -1620,7 +1620,7 @@ When you lodge through us:
  description:
  "Superannuation is Australia's compulsory retirement savings system. Working holiday makers on 417 and 462 visas earn super from employers at 12% of pay and can claim it back when leaving Australia via DASP.",
  category: "Super",
- date: "13 January 2025",
+ date: "29 November 2024",
  readTime: 5,
  body: `
 Superannuation (super) is Australia's compulsory retirement savings system. Australian employers must contribute 12% of your ordinary time earnings into a super fund on top of your wages. Working holiday makers are entitled to receive super contributions just like Australian workers, and can claim the accumulated balance back when they permanently leave Australia through the Departing Australia Superannuation Payment (DASP) process. Our team handles DASP applications for working holiday makers from anywhere in the world.
@@ -1677,7 +1677,7 @@ See our detailed article on [how the DASP process works](/blog/what-is-dasp-supe
  description:
  "From 1 July 2025, Australian employers must contribute 12% of your ordinary earnings to your super fund. How working holiday makers can check what is owed and what to do if your employer is short.",
  category: "Super",
- date: "20 January 2025",
+ date: "2 December 2024",
  readTime: 4,
  body: `
 Your employer should be paying 12% of your ordinary time earnings into your super fund as of 2026. The rate increased from 11.5% to 12% on 1 July 2025 and has stayed at 12%. Super is paid on top of your wages, not deducted from them. The easiest way to verify your super is being paid correctly is to check your super fund account directly. If contributions are missing or incorrect, our team can help recover unpaid super on your behalf.
@@ -1747,7 +1747,7 @@ The more complete the records, the easier the recovery process.
  description:
  "DASP (Departing Australia Superannuation Payment) is the official ATO process for working holiday makers on 417 and 462 visas to claim their super back after leaving Australia. How it works and what to prepare.",
  category: "Super",
- date: "27 January 2025",
+ date: "5 December 2024",
  readTime: 5,
  body: `
 DASP (Departing Australia Superannuation Payment) is the official process used by working holiday makers and other temporary visa holders to withdraw their accumulated Australian superannuation after leaving the country. To apply, your visa must have expired or been cancelled and you must be outside Australia. The DASP withholding tax rate for working holiday makers is 65% of the taxable component. Our team handles DASP applications end-to-end, from locating your super accounts to receiving the payment.
@@ -1806,7 +1806,7 @@ See our article on [what tax is taken from your DASP](/blog/tax-on-super-withdra
  description:
  "Step-by-step DASP application guide for working holiday makers: finding your super funds, gathering documents, submitting to each fund, and receiving the payment in your overseas bank account.",
  category: "Super",
- date: "3 February 2025",
+ date: "13 December 2024",
  readTime: 6,
  body: `
 To apply for your superannuation back after leaving Australia, work with our team who manages the entire Departing Australia Superannuation Payment (DASP) process end-to-end. We locate all your super accounts, prepare and lodge the applications on your behalf, and arrange payment to your nominated bank account anywhere in the world. The DASP withholding tax for working holiday makers is 65% of the taxable component, but after tax, the net amount is usually still substantial.
@@ -1876,7 +1876,7 @@ See our article on [finding lost superannuation](/blog/how-to-find-lost-superann
  description:
  "Most DASP applications are processed within 28 days. What affects the timeline, common reasons for delays, and what working holiday makers can do if their super claim is taking longer than expected.",
  category: "Super",
- date: "10 February 2025",
+ date: "16 December 2024",
  readTime: 4,
  body: `
 A DASP (Departing Australia Superannuation Payment) application is usually processed within 28 days of submission. In many cases the process is faster, particularly if your details are straightforward and the super fund has all the information needed to verify your identity and membership. Our team monitors every DASP application we lodge and chases up any delays directly with the fund.
@@ -1945,7 +1945,7 @@ Account currency conversion can also affect timing. If you want to receive the f
  description:
  "A 65% withholding tax applies to DASP payments for working holiday makers (417 and 462 visa holders). How it is calculated, why it is higher than for other visa types, and what your net payout looks like.",
  category: "Super",
- date: "17 February 2025",
+ date: "19 December 2024",
  readTime: 4,
  body: `
 The tax on a DASP super withdrawal for working holiday makers is 65% of the taxable component. This rate applies specifically to holders of working holiday visas (subclass 417 and 462) and is higher than the rate applied to other temporary visa holders. The tax is withheld by the super fund or ATO before the payment is sent to you, so you receive the net amount. Despite the high rate, claiming your super is still worthwhile because the alternative is leaving the entire balance behind.
@@ -1998,7 +1998,7 @@ The practical step is to make sure no super is left behind. Even at 65%, claimin
  description:
  "Unclaimed superannuation does not disappear, but six months after leaving Australia it transfers to the ATO. How working holiday makers can claim it back years later through DASP.",
  category: "Super",
- date: "24 February 2025",
+ date: "22 December 2024",
  readTime: 4,
  body: `
 Unclaimed superannuation does not disappear. After a period of inactivity, the super fund transfers the balance to the ATO, where it is held against your Tax File Number as unclaimed money. You can still claim it through the standard DASP (Departing Australia Superannuation Payment) process even after it has been transferred. The 65% DASP withholding tax still applies. Our team handles claims for super held by both funds and the ATO.
@@ -2055,9 +2055,9 @@ Claim your super. It is your money, paid on top of your wages as part of your em
  slug: "can-you-withdraw-super-in-australia",
  title: "Can working holiday makers withdraw super while still in Australia?",
  description:
- "Generally, no — super is preserved until retirement age, except in very limited circumstances (severe financial hardship, compassionate grounds). Why working holiday makers must wait for DASP after leaving Australia.",
+ "Generally, no - super is preserved until retirement age, except in very limited circumstances (severe financial hardship, compassionate grounds). Why working holiday makers must wait for DASP after leaving Australia.",
  category: "Super",
- date: "3 March 2025",
+ date: "24 December 2024",
  readTime: 4,
  body: `
 No, you cannot withdraw your superannuation while you are still in Australia on a valid working holiday visa. The Departing Australia Superannuation Payment (DASP) process is specifically designed for people who have permanently left Australia and whose visa has expired or been cancelled. You must depart first, then apply once outside Australia. Our team handles DASP applications remotely so you can claim from your home country.
@@ -2127,10 +2127,10 @@ See our detailed article on [how to apply for DASP](/blog/how-to-apply-for-super
  description:
  "Working holiday makers often end up with super spread across multiple funds, or transferred to the ATO. How to track every dollar through myGov, ATO online services, and the super funds themselves.",
  category: "Super",
- date: "10 March 2025",
+ date: "29 December 2024",
  readTime: 4,
  body: `
-To find lost or unclaimed superannuation in Australia, work with our team. As registered tax agents, we can search across all major super funds and ATO records using your Tax File Number to identify every account holding your super. Working holiday makers often accumulate super across multiple funds without realising it, and tracking down every account before lodging your DASP claim makes sure no money is left behind.
+To find lost or unclaimed superannuation in Australia, work with our team. Under the supervision of a registered tax agent, we can search across all major super funds and ATO records using your Tax File Number to identify every account holding your super. Working holiday makers often accumulate super across multiple funds without realising it, and tracking down every account before lodging your DASP claim makes sure no money is left behind.
 
 ## Why does super get lost or spread across multiple accounts?
 
@@ -2197,7 +2197,7 @@ If you do not have all this, that is fine. We can still find most accounts using
  description:
  "When you start a job in Australia, you can nominate where your super goes. What a super fund is, how fees affect your DASP payout, and what working holiday makers should look for when choosing.",
  category: "Super",
- date: "17 March 2025",
+ date: "10 January 2025",
  readTime: 4,
  body: `
 For working holiday makers, the choice of super fund matters less than it would for an Australian resident building retirement savings. You will be withdrawing your super through the DASP process when you leave Australia, so the priorities are simplicity and accessibility, not long-term investment performance. The simplest approach is to nominate one fund at your first job and stick with it for every subsequent role. Our team can help you choose and manage your super setup to make the eventual DASP claim straightforward.
@@ -2255,7 +2255,7 @@ If you have already accumulated super in multiple funds, we can help consolidate
  description:
  "Australia has one of the highest minimum wages in the world. The current national minimum wage for working holiday makers, how casual loading works, and what to check on your payslip.",
  category: "Work Rights",
- date: "24 March 2025",
+ date: "19 January 2025",
  readTime: 4,
  body: `
 The national minimum wage in Australia from 1 July 2025 is $24.95 per hour for permanent employees and $31.19 per hour for casual employees (which includes the 25% casual loading). This applies to all workers, including working holiday makers. However, most industries are covered by modern awards or enterprise agreements that set higher minimum rates than the national minimum, so the actual rate that applies to your role is usually higher than $24.95.
@@ -2323,9 +2323,9 @@ Working holiday makers have the same rights as any other worker in Australia. Th
  slug: "how-many-hours-can-you-work-on-whv",
  title: "How many hours can you work on a working holiday visa in Australia? (417 & 462)",
  description:
- "Working holiday visa holders can work unlimited hours per week — the 6-month per-employer restriction was relaxed in 2022 for certain sectors. Current rules for 417 and 462 visa holders.",
+ "Working holiday visa holders can work unlimited hours per week - the 6-month per-employer restriction was relaxed in 2022 for certain sectors. Current rules for 417 and 462 visa holders.",
  category: "Work Rights",
- date: "31 March 2025",
+ date: "27 January 2025",
  readTime: 4,
  body: `
 There is no limit on how many hours per week a working holiday visa holder can work in Australia. You can work full-time, part-time, or casually. However, visa condition 8547 limits you to a maximum of 6 months with any one employer, unless you work in an exempt sector (agriculture, plant/animal cultivation, tourism/hospitality, health, aged/disability care, childcare, food processing, or natural disaster recovery anywhere in Australia, or in some northern regions for other industries). Outside these exemptions, you must change employers after 6 months or request written permission from the Department of Home Affairs to continue.
@@ -2423,7 +2423,7 @@ If you are working long hours and unsure whether your super is being paid correc
  description:
  "Penalty rates are higher pay rates for working weekends, public holidays, and unsociable hours. What working holiday makers in hospitality, retail and farm work are entitled to, and how to check your payslip.",
  category: "Work Rights",
- date: "7 April 2025",
+ date: "10 February 2025",
  readTime: 4,
  body: `
 Penalty rates are higher pay rates that apply when employees work outside ordinary hours, including weekends, public holidays, evenings, and early mornings. They are set by modern awards and enterprise agreements and apply to most workers in Australia, including working holiday makers. Common rates: Saturday around 125-150%, Sunday around 175%, public holidays around 225-250% of your ordinary rate. The exact rate depends on the award covering your role.
@@ -2489,9 +2489,9 @@ Any additional income earned through penalty rates is still subject to the 15% w
  slug: "can-your-employer-pay-you-cash-in-hand",
  title: "Cash-in-hand pay in Australia: working holiday maker risks and rights",
  description:
- "Cash-in-hand payments are common in some industries but come with serious tax and visa implications. What working holiday makers should know — including how to make sure tax and super are still paid.",
+ "Cash-in-hand payments are common in some industries but come with serious tax and visa implications. What working holiday makers should know - including how to make sure tax and super are still paid.",
  category: "Work Rights",
- date: "14 April 2025",
+ date: "12 February 2025",
  readTime: 4,
  body: `
 Yes, an employer can legally pay you in cash in Australia. There is no law that requires wages to be paid by bank transfer. However, the method of payment does not change any of the employer's obligations: they must still withhold the correct PAYG tax, pay 12% superannuation on top of your wages, provide you with payslips, and meet the minimum wage and award conditions. Cash payment is legal; underpayment, missing super, or no payslips is not. Our team helps recover unpaid super and resolve tax issues for working holiday makers paid cash.
@@ -2561,9 +2561,9 @@ Keep these records somewhere secure. They support both your tax return and any f
  title:
  "Fair Work Act protections for working holiday makers in Australia",
  description:
- "The Fair Work Act is Australia's main workplace relations law. How it protects working holiday makers on 417 and 462 visas — minimum wage, leave, unfair dismissal, and how to raise a complaint.",
+ "The Fair Work Act is Australia's main workplace relations law. How it protects working holiday makers on 417 and 462 visas - minimum wage, leave, unfair dismissal, and how to raise a complaint.",
  category: "Work Rights",
- date: "21 April 2025",
+ date: "17 February 2025",
  readTime: 4,
  body: `
 The Fair Work Act 2009 is Australia's primary employment law. It applies to working holiday makers in exactly the same way it applies to Australian citizens. The Act establishes the National Employment Standards (NES), which guarantee 11 minimum entitlements including minimum wage, paid public holidays, annual leave, and protection from unfair dismissal. Working holiday makers have full coverage under the Act regardless of their visa status. Our team can help you understand your rights and address any issues with your employer.
@@ -2629,7 +2629,7 @@ This means you can address workplace issues without fearing visa consequences. W
  description:
  "Underpayment is a serious issue in Australia. How working holiday makers can check if they have been underpaid, raise it with the employer, and report to Fair Work Ombudsman if needed.",
  category: "Work Rights",
- date: "28 April 2025",
+ date: "19 February 2025",
  readTime: 4,
  body: `
 If your employer is not paying you correctly in Australia, you have clear rights and options to recover what you are owed. Underpayment is unfortunately common, especially in hospitality, agriculture, and cleaning industries that employ many working holiday makers. The most effective approach is to first identify the correct rate, calculate the underpayment with records, raise it with the employer, and if unresolved, escalate through formal channels. Our team helps working holiday makers identify and recover underpaid wages every week.
@@ -2700,7 +2700,7 @@ We have helped working holiday makers raise complaints without any visa conseque
  description:
  "Working holiday makers are entitled to leave in Australia, but the amount depends on employment type. Full-time, part-time, and casual entitlements explained for 417 and 462 visa holders.",
  category: "Work Rights",
- date: "5 May 2025",
+ date: "24 February 2025",
  readTime: 4,
  body: `
 Working holiday makers in Australia are entitled to leave under the same rules as Australian workers, but the entitlements depend on whether you are employed as full-time, part-time, or casual. Full-time and part-time employees accrue 4 weeks of annual leave and 10 days of personal/carer's leave per year. Casual employees do not receive paid leave but get a 25% casual loading on top of their hourly rate to compensate. Most working holiday makers in casual roles do not accumulate significant leave entitlements because they tend to change jobs often.
@@ -2765,7 +2765,7 @@ Long service leave (LSL) entitlements typically require 7-10 years with a single
  description:
  "If you are working as a contractor with an ABN in Australia, you must issue tax invoices to get paid. What a tax invoice must legally include and how to format one as a sole trader on a working holiday visa.",
  category: "Work Rights",
- date: "12 May 2025",
+ date: "2 March 2025",
  readTime: 4,
  body: `
 A tax invoice is a document a supplier issues to a buyer to request payment for goods or services. As a working holiday maker with an [ABN](/abn) operating as a contractor, you need to issue tax invoices to the businesses paying you. A valid tax invoice must include your name (or business name), your ABN, the date, a description of services, and the total amount. Issuing invoices without an ABN allows the business to legally withhold 45% of the payment.
@@ -2828,16 +2828,16 @@ ABN contractor work typically does not generate super contributions from the cli
 
 If you are doing employee-like work but invoicing as a contractor, you may be a victim of sham contracting and entitled to super. See our article on [employee vs contractor](/blog/employee-vs-contractor-australia) for how to tell the difference.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
  slug: "can-you-work-for-multiple-employers",
  title: "Working for multiple employers on a working holiday visa: tax & visa rules",
  description:
- "Yes — working holiday makers in Australia can work for more than one employer at the same time. What it means for tax (the 15% rate applies to each employer), super, and the 6-month visa rule.",
+ "Yes - working holiday makers in Australia can work for more than one employer at the same time. What it means for tax (the 15% rate applies to each employer), super, and the 6-month visa rule.",
  category: "Work Rights",
- date: "19 May 2025",
+ date: "9 March 2025",
  readTime: 3,
  body: `
 Yes, working holiday visa holders in Australia can work for multiple employers simultaneously. There is no visa restriction on the number of jobs you can have. Each new employer needs your [TFN](/tfn) and a Tax File Number Declaration form, otherwise they must withhold tax at 45%. The 15% working holiday maker tax rate applies to your combined income up to $45,000 per financial year. All employers must pay 12% superannuation on top of your wages, often into different super funds.
@@ -2897,7 +2897,7 @@ While there is no legal limit, practical considerations include:
 
 For tax and super purposes, multiple jobs are perfectly fine. Many working holiday makers work two or three casual jobs in hospitality alongside a weekend role or seasonal work.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
@@ -2907,7 +2907,7 @@ For tax and super purposes, multiple jobs are perfectly fine. Many working holid
  description:
  "Your employment classification affects pay rates, leave entitlements, and tax. What full-time, part-time, and casual mean in Australia for working holiday makers on 417 and 462 visas.",
  category: "Work Rights",
- date: "26 May 2025",
+ date: "13 March 2025",
  readTime: 4,
  body: `
 In Australia, employees are classified as full-time, part-time, or casual. Each classification has different entitlements: full-time and part-time employees accrue paid leave (annual leave, sick leave) and receive a base hourly rate. Casual employees receive a 25% loading on top of the base rate to compensate for no paid leave. The 15% working holiday maker tax rate applies to all three classifications. The classification matters because it affects your weekly pay, your job security, and your leave entitlements.
@@ -2981,9 +2981,9 @@ All income, regardless of classification, must be declared in your [tax return](
  slug: "what-is-medicare-working-holiday-makers",
  title: "Medicare for working holiday makers in Australia: who is covered?",
  description:
- "Medicare is Australia's public health insurance system. Most working holiday makers on 417 and 462 visas are not covered — exceptions apply for citizens of countries with a Reciprocal Health Care Agreement.",
+ "Medicare is Australia's public health insurance system. Most working holiday makers on 417 and 462 visas are not covered - exceptions apply for citizens of countries with a Reciprocal Health Care Agreement.",
  category: "Medicare & Other",
- date: "2 June 2025",
+ date: "14 March 2025",
  readTime: 4,
  body: `
 Medicare is Australia's universal public health insurance scheme that provides citizens and permanent residents with free or subsidised healthcare. Working holiday makers (subclass 417 and 462) are generally **not** eligible for Medicare unless their home country has a Reciprocal Health Care Agreement (RHCA) with Australia. Without coverage, you pay the full cost of medical appointments and treatment. You are also entitled to a Medicare Levy exemption on your tax return, saving you 2% of your taxable income. Our team applies this exemption when lodging your return.
@@ -3044,7 +3044,7 @@ For more on RHCA countries and what they cover, see our article on [Medicare agr
  description:
  "Australia has Reciprocal Health Care Agreements with 11 countries (UK, Ireland, Italy, Sweden, Netherlands, Belgium, Finland, Norway, Malta, Slovenia, New Zealand). What working holiday makers from each country get.",
  category: "Medicare & Other",
- date: "9 June 2025",
+ date: "22 March 2025",
  readTime: 4,
  body: `
 Australia has Reciprocal Health Care Agreements (RHCAs) with 11 countries: the United Kingdom, Republic of Ireland, New Zealand, Sweden, Netherlands, Finland, Norway, Belgium, Slovenia, Malta, and Italy. Citizens of these countries holding a valid working holiday visa may be entitled to limited Medicare benefits during their stay. Citizens of all other countries are not eligible for Medicare and must rely on private health insurance.
@@ -3115,9 +3115,9 @@ When we prepare your [tax return](/tax-return), we work out the correct Medicare
  slug: "medicare-levy-working-holiday-makers",
  title: "Medicare levy exemption for working holiday makers in Australia",
  description:
- "The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers on 417 and 462 visas are exempt — how to claim the exemption on your tax return.",
+ "The Medicare levy is a 2% tax that funds Australia's healthcare system. Most working holiday makers on 417 and 462 visas are exempt - how to claim the exemption on your tax return.",
  category: "Medicare & Other",
- date: "16 June 2025",
+ date: "31 March 2025",
  readTime: 4,
  body: `
 The Medicare Levy is a 2% tax applied to the taxable income of Australian residents to fund the Medicare system. Most working holiday makers are not eligible for Medicare and are therefore entitled to claim a full exemption from the Medicare Levy on their tax return. The exemption is not automatic and must be applied correctly when lodging. Our team applies the Medicare Levy exemption automatically when we prepare your [tax return](/tax-return), saving you 2% of your taxable income.
@@ -3191,9 +3191,9 @@ If you lodged a previous return and paid the Medicare Levy when you should have 
  title:
  "TFN declaration form: how working holiday makers complete it correctly",
  description:
- "The TFN declaration form is what you give your employer when starting a new job in Australia. How working holiday makers should complete it — including the working holiday maker box that sets you to the 15% rate.",
+ "The TFN declaration form is what you give your employer when starting a new job in Australia. How working holiday makers should complete it - including the working holiday maker box that sets you to the 15% rate.",
  category: "Medicare & Other",
- date: "23 June 2025",
+ date: "2 April 2025",
  readTime: 4,
  body: `
 A Tax File Number Declaration form is the form you complete and give to your employer when you start a new job in Australia. It tells your employer your TFN, your residency status for tax purposes, and whether you have a study loan. The employer uses this information to determine your tax rate. For working holiday makers, the critical answers are: select "Working Holiday Maker" for residency and "No" for the tax-free threshold. Getting the form right ensures the correct 15% rate is applied from your first payslip.
@@ -3266,9 +3266,9 @@ If your payslip shows withholding at 45%, 30%, or any rate other than 15%, the f
  slug: "what-does-tax-withheld-mean-payslip",
  title: "Tax withheld on your Australian payslip: what working holiday makers should check",
  description:
- "Tax withheld is the income tax your employer deducts from your wages each pay. How to check it is correct as a working holiday maker — your rate should be 15% on the first $45,000 if your TFN is filed properly.",
+ "Tax withheld is the income tax your employer deducts from your wages each pay. How to check it is correct as a working holiday maker - your rate should be 15% on the first $45,000 if your TFN is filed properly.",
  category: "Medicare & Other",
- date: "30 June 2025",
+ date: "7 April 2025",
  readTime: 3,
  body: `
 Tax withheld on your payslip is the income tax your employer deducts from your gross wages before paying you the net amount. It is the PAYG withholding collected on behalf of the ATO. For working holiday makers, the correct withholding rate is 15% of your gross earnings up to $45,000. You can check by dividing the tax withheld by your gross pay - the result should be approximately 0.15. If it shows 30% or 45%, your Tax File Number Declaration form was completed incorrectly.
@@ -3339,7 +3339,7 @@ Most modern payroll systems email payslips automatically. Set up an email folder
  description:
  "An income statement (previously called Payment Summary or Group Certificate) shows total wages and tax withheld for the financial year. How working holiday makers find theirs through myGov and use it for their tax return.",
  category: "Medicare & Other",
- date: "7 July 2025",
+ date: "20 April 2025",
  readTime: 3,
  body: `
 An income statement is the digital record showing total wages paid to you by an employer and total tax withheld for the financial year. It replaced the old paper PAYG payment summary under Single Touch Payroll (STP). Your employer submits the data directly to the ATO through their payroll system, and income statements are finalised between 14 July and 31 July each year. Our team accesses your income statements directly through our tax agent portal when preparing your [tax return](/tax-return).
@@ -3356,7 +3356,7 @@ When we lodge your return, we see:
 - Finalisation status (in progress or finalised)
 - Super contributions paid
 
-This is one of the main advantages of working with a registered tax agent.
+This is one of the main advantages of working under the supervision of a registered tax agent.
 
 ## When do income statements become available?
 
@@ -3412,7 +3412,7 @@ These help us cross-check the income statement against what was actually paid, a
  description:
  "The ATO (Australian Taxation Office) is the government agency that collects tax in Australia. When working holiday makers deal with the ATO, what services it provides, and how to contact it from overseas.",
  category: "Medicare & Other",
- date: "14 July 2025",
+ date: "23 April 2025",
  readTime: 3,
  body: `
 The Australian Taxation Office (ATO) is the federal government agency responsible for administering Australia's tax system. For working holiday makers, the ATO is the entity that issues your TFN, receives wage and super reports from your employers, processes your tax return, and manages the DASP super withdrawal process. Most working holiday makers never need to deal with the ATO directly. Our team handles all ATO communication on your behalf, including from overseas.
@@ -3485,7 +3485,7 @@ If your super was held by the ATO as unclaimed super, the ATO pays you directly.
  description:
  "Gross pay is what you earn before deductions. Net pay (take-home) is what hits your bank account. How working holiday makers can use this to check your tax is being withheld correctly at the 15% rate.",
  category: "Medicare & Other",
- date: "21 July 2025",
+ date: "10 May 2025",
  readTime: 3,
  body: `
 Gross pay is the total amount you earn before any deductions. Net pay is what actually goes into your bank account after deductions. For working holiday makers, the main deduction is PAYG tax withholding at 15% of gross pay (with your TFN on file). Superannuation is not a deduction; it is paid by your employer on top of your gross wages, not from your wages. Tax returns and income statements always refer to gross pay, not net pay.
@@ -3547,9 +3547,9 @@ If the figures do not match, raise it with your employer. The discrepancy may be
  slug: "do-working-holiday-makers-pay-tax-on-tips",
  title: "Tax on tips in Australia: do working holiday makers declare them?",
  description:
- "Yes — tips received as part of employment in Australia are taxable income, whether cash or electronic. How working holiday makers should record and declare tips on their tax return.",
+ "Yes - tips received as part of employment in Australia are taxable income, whether cash or electronic. How working holiday makers should record and declare tips on their tax return.",
  category: "Medicare & Other",
- date: "28 July 2025",
+ date: "13 May 2025",
  readTime: 3,
  body: `
 Yes, tips received in Australia are taxable income for working holiday makers. This applies whether the tip is paid in cash directly by a customer, distributed through a tronc system managed by your employer, or added to a bill and paid out via your payslip. Tips must be declared in your [tax return](/tax-return) at the 15% working holiday maker rate. If tips are paid through your employer's payroll, they are usually already included in your income statement. Cash tips paid directly need to be tracked and declared by you.
@@ -3611,9 +3611,9 @@ The specifics depend on your award and how the employer classifies the tips. If 
  title:
  "Australian tax obligations after leaving: working holiday maker guide",
  description:
- "Leaving Australia does not end your tax obligations. Final tax return, DASP super claim, ABN cancellation — what working holiday makers must do after departing to stay compliant with the ATO.",
+ "Leaving Australia does not end your tax obligations. Final tax return, DASP super claim, ABN cancellation - what working holiday makers must do after departing to stay compliant with the ATO.",
  category: "Medicare & Other",
- date: "4 August 2025",
+ date: "15 May 2025",
  readTime: 4,
  body: `
 Leaving Australia does not end your Australian tax obligations. If you earned income during an Australian financial year, you must lodge a tax return for that year. You also need to claim your superannuation through DASP, cancel any [ABN](/abn) you registered, and update your contact details. All of this can be done from overseas through our service. We help working holiday makers wrap up their Australian tax obligations from anywhere in the world.
@@ -3638,7 +3638,7 @@ Through our service, the process is fully remote:
 - We prepare and lodge the return on your behalf
 - Refund is paid to your Australian bank account
 
-The standard deadline is 31 October following the financial year. Through our service as your registered tax agent, the deadline is typically extended to May the following year.
+The standard deadline is 31 October following the financial year. Through our service under the supervision of a registered tax agent, the deadline is typically extended to May the following year.
 
 Failing to lodge when required can result in penalties. The ATO has your income records from your employers and expects a return. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas).
 
@@ -3692,7 +3692,7 @@ Most working holiday makers can close their Australian account within 3-4 months
  description:
  "Your tax residency status affects which tax rates apply to you. Most working holiday makers are non-residents for tax purposes, but the rules have nuances worth understanding.",
  category: "Tax Return",
- date: "11 August 2025",
+ date: "24 May 2025",
  readTime: 5,
  body: `
 No, working holiday makers (subclass 417 and 462 visa holders) are not Australian tax residents under the standard rules. However, since 2017, all working holiday maker income is taxed under a specific framework: a flat 15% rate on the first $45,000, regardless of whether you are technically a resident or non-resident. The tax-free threshold does not apply to working holiday makers in any case. The residency question matters less for working holiday wages than it does for other visa types, but it can affect deductions and investment income treatment.
@@ -3761,7 +3761,7 @@ Specific advice is worthwhile if any of the following apply:
  description:
  "If you move around Australia, keep your address current with the ATO. Your TFN letter, income statement and tax correspondence go to the address on file. How working holiday makers can update via myGov or by phone.",
  category: "TFN",
- date: "18 August 2025",
+ date: "25 May 2025",
  readTime: 3,
  body: `
 If you move to a new address in Australia, update it with the Australian Taxation Office (ATO) as soon as possible. The ATO sends your TFN letter and other important correspondence to the address on file. Through our service, we update your address with the ATO on your behalf so you do not miss critical mail or refund notifications. If you are still waiting for your TFN letter and have moved, getting the address updated quickly is the difference between receiving your TFN within 28 days and waiting much longer.
@@ -3784,7 +3784,7 @@ The simplest way is through our service:
 
 1. [Get in touch with our team](/contact)
 2. Give us your new address
-3. We update it with the ATO on your behalf as your registered tax agent
+3. We update it with the ATO on your behalf under the supervision of a registered tax agent
 4. Confirmation is sent back to us
 
 You do not need to log into ATO online services or wait on hold. We handle it as part of managing your tax position.
@@ -3830,7 +3830,7 @@ If you have departed Australia:
  description:
  "A tax refund is money the ATO pays back to you when you have paid more tax than you owed during the year. Most working holiday makers are owed one.",
  category: "Tax Return",
- date: "25 August 2025",
+ date: "5 June 2025",
  readTime: 4,
  body: `
 A tax refund is money the Australian Taxation Office (ATO) pays back to you when the tax withheld from your wages during the year exceeded your actual tax liability. Most working holiday makers receive a refund because their employer withheld more tax than needed (often during periods without a TFN, or due to working only part of the financial year). The refund is usually paid to your Australian bank account within two weeks of lodgment. Our team calculates your expected refund before lodging so you know what to expect.
@@ -3899,10 +3899,10 @@ We identify deductions you might miss when self-lodging. The result is usually a
  description:
  "Working holiday tax refunds are usually processed within 7-14 business days of lodgement with the ATO. What affects the timeline, what to do if yours is delayed, and how it works when you have already left Australia.",
  category: "Tax Return",
- date: "1 September 2025",
+ date: "8 June 2025",
  readTime: 3,
  body: `
-Most Australian tax refunds are processed and paid within two weeks of lodgment when the return is filed electronically. Through our service as your registered tax agent, we lodge electronically so refunds typically arrive within 7-14 business days. Refunds during peak season (August-September) may take a few days longer. If your refund is taking longer than expected, our team follows up directly with the ATO.
+Most Australian tax refunds are processed and paid within two weeks of lodgment when the return is filed electronically. Through our service under the supervision of a registered tax agent, we lodge electronically so refunds typically arrive within 7-14 business days. Refunds during peak season (August-September) may take a few days longer. If your refund is taking longer than expected, our team follows up directly with the ATO.
 
 ## What is the typical refund timeline?
 
@@ -3977,7 +3977,7 @@ Keep your Australian bank account open for at least 4-6 weeks after lodgment to 
  description:
  "Yes. Casual and part-time working holiday makers are entitled to superannuation regardless of hours worked. How the 12% rate applies, and what to do if your employer skips super contributions.",
  category: "Super",
- date: "8 September 2025",
+ date: "9 June 2025",
  readTime: 4,
  body: `
 Yes, casual and part-time workers in Australia are entitled to superannuation contributions from their employer. The $450 monthly earnings threshold was removed in July 2022, so super must now be paid on all wages from your very first dollar of earnings. This applies to working holiday makers in the same way as Australian workers. The current super rate is 12% of your ordinary time earnings (from 1 July 2025), paid on top of your wages.
@@ -4055,7 +4055,7 @@ When we manage your super and lodge your DASP claim, complete records make the p
  description:
  "Working more than your visa allows can put your visa at risk. What the rules say for 417 and 462 visa holders, and what to do if your employer is pressuring you to breach them.",
  category: "Work Rights",
- date: "15 September 2025",
+ date: "15 June 2025",
  readTime: 4,
  body: `
 Working holiday visas come with specific conditions that limit how long you can work for the same employer (visa condition 8547, the 6-month limit) and require that your primary purpose in Australia remains a holiday. Breaching these conditions can lead to visa cancellation. If an employer pressures you into arrangements that breach your visa conditions, you have the right to refuse. Our team helps working holiday makers understand their visa work limits and navigate situations where employers want to keep them longer.
@@ -4172,9 +4172,9 @@ Our team handles tax returns for working holiday makers in all employment config
  title:
  "Farm work rights in Australia for working holiday makers (417 & 462)",
  description:
- "Farm work is one of the most common jobs for working holiday makers. What you are legally entitled to — pay rates, conditions, accommodation rules, and how 88-day specified work counts toward your 2nd visa.",
+ "Farm work is one of the most common jobs for working holiday makers. What you are legally entitled to - pay rates, conditions, accommodation rules, and how 88-day specified work counts toward your 2nd visa.",
  category: "Work Rights",
- date: "22 September 2025",
+ date: "16 June 2025",
  readTime: 5,
  body: `
 Working holiday makers doing farm work in Australia are entitled to the same workplace protections as Australian workers. This includes minimum wage (or higher under the Horticulture Award), safe working conditions, accurate payslips, and super at 12% on top of wages. Farm work has a history of wage theft and exploitation, so knowing your rights before you start is essential. Our team helps working holiday makers in farm work check their pay rates and recover any unpaid wages or super.
@@ -4256,7 +4256,7 @@ Many farm employers skip super for working holiday makers. Our team can recover 
  description:
  "If your Australian employer fails to pay your super correctly, the ATO can charge them the Superannuation Guarantee Charge. What this means for working holiday makers and how unpaid super is recovered.",
  category: "Medicare & Other",
- date: "29 September 2025",
+ date: "20 June 2025",
  readTime: 4,
  body: `
 The Superannuation Guarantee Charge (SGC) is a penalty the ATO applies to employers who fail to pay their employees' super correctly or on time. If your employer has missed super payments, our team can help recover them through the SGC process. The penalty includes the unpaid super amount, 10% per year interest, and an admin fee, all of which become payable by the employer. This makes it expensive for employers to skip super, which is exactly the point of the rule.
@@ -4345,7 +4345,7 @@ If you cannot find all of these, we work with what you have. Even partial record
  description:
  "You applied for your TFN but it has not arrived. The TFN reference number lets working holiday makers start working at the correct rate during the 28-day wait. How to get it and use it with your employer.",
  category: "TFN" as const,
- date: "6 October 2025",
+ date: "24 June 2025",
  readTime: 4,
  body: `
 The TFN reference number is a temporary identifier issued by the Australian Taxation Office (ATO) the moment your TFN application is submitted online. It is not your TFN itself, but it proves the application is in progress and lets your employer set up your pay at the correct 15% rate while you wait for the actual TFN to arrive. As a working holiday maker, you can legally start work using only the reference number, provided you give it to your employer on day one.
@@ -4411,7 +4411,7 @@ Once your TFN is issued, the reference number becomes irrelevant. But in the wee
  description:
  "The Australian tax-free threshold sounds like it would save you money. For working holiday makers on 417 and 462 visas, claiming it actually creates a tax debt. Why this happens and how to fix your TFN declaration.",
  category: "TFN" as const,
- date: "13 October 2025",
+ date: "25 June 2025",
  readTime: 4,
  body: `
 No, working holiday makers cannot claim the tax-free threshold in Australia. The tax-free threshold is a $18,200 concession available only to Australian tax residents. Claiming it as a working holiday visa holder causes your employer to withhold less tax than you actually owe, which creates a tax debt at year-end instead of a refund. The correct setup on your Tax File Number Declaration form is: Working Holiday Maker for residency, and "No" to the tax-free threshold question.
@@ -4473,7 +4473,7 @@ Every payslip will then reflect the correct 15% rate, and there will be no surpr
  description:
  "Working in construction in Australia requires a White Card before your first day on site. What the course covers, what it costs (around $40-$120), how long it takes, and where to do it as a working holiday maker.",
  category: "Work Rights" as const,
- date: "20 October 2025",
+ date: "2 July 2025",
  readTime: 4,
  body: `
 A White Card (officially called the Construction Induction Training card) is mandatory for anyone working on a construction site in Australia. It proves you have completed workplace health and safety training and is a legal requirement, not optional. The course takes 4-8 hours, costs around $100, and the card is valid for life across most of Australia. No legitimate construction employer will let you start without one.
@@ -4549,7 +4549,7 @@ Yes. If you completed the White Card course to qualify for or maintain construct
 
 Our team includes these training costs when we prepare your return. If you have multiple work-related certifications, we claim all of them.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
@@ -4559,7 +4559,7 @@ Our team includes these training costs when we prepare your return. If you have 
  description:
  "Working in a bar, pub, or bottle shop in Australia requires an RSA (Responsible Service of Alcohol) certificate. What the course involves, what it costs by state, and how to get one as a working holiday maker.",
  category: "Work Rights" as const,
- date: "27 October 2025",
+ date: "5 July 2025",
  readTime: 4,
  body: `
 A Responsible Service of Alcohol (RSA) certificate is legally required to serve, sell, or supply alcohol at any licensed venue in Australia. Hospitality is one of the most popular industries for working holiday makers, and most hospitality roles in pubs, bars, restaurants, and bottle shops require an RSA before you can start. The course typically takes 3-5 hours, costs around $90, and can be done online. Course costs are tax-deductible as work-related expenses.
@@ -4637,7 +4637,7 @@ Yes. If you completed the RSA course for hospitality employment:
 
 When we prepare your return, we include training certifications among your deductions. Most working holiday makers have at least one or two relevant courses that are deductible.
 
-[Get in touch with our team](/contact) if you have wage, super, or workplace issues — we handle the tax and super side and coordinate with Fair Work where needed.
+[Get in touch with our team](/contact) if you have wage, super, or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  `,
  },
  {
@@ -4647,7 +4647,7 @@ When we prepare your return, we include training certifications among your deduc
  description:
  "Working with children in Australia requires a WWCC (Working With Children Check) before you start. What it involves, application processing time, and how working holiday makers can apply state by state.",
  category: "Work Rights" as const,
- date: "3 November 2025",
+ date: "18 July 2025",
  readTime: 4,
  body: `
 A Working With Children Check (WWCC) is a background screening required for anyone working with children in Australia. If you plan to work in childcare, education, tutoring, sports coaching, youth programs, or as an au pair, you need a WWCC before starting. The check is managed at state level, costs around $80 (free for volunteers), and processing takes a few weeks. Start the application as early as possible to avoid delays before your first day.
@@ -4735,7 +4735,7 @@ If you need help understanding what is required for your specific situation, [ge
  description:
  "Public holidays in Australia come with penalty pay rates and different rules depending on employment type. Full list of national & state public holidays and what working holiday makers are entitled to.",
  category: "Work Rights" as const,
- date: "10 November 2025",
+ date: "20 July 2025",
  readTime: 5,
  body: `
 Public holidays in Australia attract higher pay rates for workers, typically 225-250% of your ordinary rate (double time and a quarter to double time and a half). Working holiday makers are entitled to the same public holiday penalty rates as Australian workers. There are national public holidays observed across the country (New Year's Day, Australia Day, ANZAC Day, Christmas Day, etc.) and additional state-specific public holidays. If your payslip does not show the higher rate for public holiday work, our team can help recover what you are owed.
@@ -4829,9 +4829,9 @@ If your pay does not reflect the correct public holiday rate, [get in touch with
  slug: "casual-shift-cancellation-rules-australia",
  title: "Can your employer cancel a casual shift in Australia? Working holiday rights",
  description:
- "As a casual worker in Australia, shifts can be cancelled — but employers must follow specific rules. Notice requirements, minimum payment entitlements, and what working holiday makers can do about repeated cancellations.",
+ "As a casual worker in Australia, shifts can be cancelled - but employers must follow specific rules. Notice requirements, minimum payment entitlements, and what working holiday makers can do about repeated cancellations.",
  category: "Work Rights" as const,
- date: "17 November 2025",
+ date: "24 July 2025",
  readTime: 4,
  body: `
 Yes, your employer can cancel a casual shift in Australia, but there are rules. If a shift is cancelled with less than 24 hours notice and you had already made arrangements to attend, most awards require the employer to pay you a "minimum engagement" of 2-3 hours regardless. The exact rule depends on the award covering your industry. Our team helps working holiday makers check whether they have been underpaid for cancelled shifts and recover what they are owed.
@@ -4922,7 +4922,7 @@ The more complete the records, the easier the recovery.
  description:
  "Working holiday visa holders are limited to 6 months with the same employer (with exceptions). What counts as the same employer, which sectors are exempt, and when you need to request permission.",
  category: "Work Rights" as const,
- date: "24 November 2025",
+ date: "27 July 2025",
  readTime: 5,
  body: `
 The 6-month employer rule (visa condition 8547) limits working holiday visa holders (subclass 417 and 462) to working for the same employer for a maximum of 6 calendar months. The rule is mandatory and remains in force in 2026. However, many sectors are exempt from this limit, including agriculture, tourism/hospitality, construction, mining, aged care, childcare, and natural disaster recovery. Outside these exemptions, you must change employers after 6 months or request written permission from the Department of Home Affairs. Our team helps working holiday makers understand whether their work qualifies for an exemption.
@@ -5038,7 +5038,7 @@ If you are unsure whether your work qualifies for an exemption, [get in touch wi
  description:
  "Working holiday makers need an Australian bank account before their first pay arrives. Which banks accept WHV applicants, what documents you need (passport, visa, address), and when to close before leaving.",
  category: "Medicare & Other" as const,
- date: "1 December 2025",
+ date: "4 August 2025",
  readTime: 5,
  body: `
 Opening an Australian bank account is one of the first things to do when arriving in Australia. You need it to receive your wages, super contributions, and any tax refund from the ATO. The major banks (Commonwealth Bank, Westpac, ANZ, NAB) all offer accounts suitable for working holiday makers. You can typically pre-apply online before arriving and complete identity verification in person within the first few days. Keep the account open until your tax refund and super withdrawal have been paid - usually 3-4 months after departure.
@@ -5134,7 +5134,7 @@ Any communication asking you to click a link and enter banking information is a 
  description:
  "If you bought goods in Australia worth $300+ in one transaction, you can claim back the 10% GST at the airport before flying home. How the Tourist Refund Scheme works for working holiday makers leaving Australia.",
  category: "Medicare & Other" as const,
- date: "8 December 2025",
+ date: "8 August 2025",
  readTime: 5,
  body: `
 The Tourist Refund Scheme (TRS) allows you to claim back the 10% Goods and Services Tax (GST) on goods purchased in Australia before flying home. To qualify, the invoice must be $300+ from a single business (single ABN), purchased within 60 days of departure, and you must be carrying the goods with you. Claims are made at the airport before passing through customs. A $1,000 laptop refunds about $91 of GST. For working holiday makers leaving Australia, the TRS is worth using on significant purchases.
@@ -5259,7 +5259,7 @@ The TRS process itself is done at the airport before you fly out, but the timing
  description:
  "Sending your savings home before leaving Australia? Here is what working holiday makers need to know about international transfers and Australian tax obligations.",
  category: "Tax Return" as const,
- date: "15 December 2025",
+ date: "11 August 2025",
  readTime: 4,
  body: `
 No, transferring money out of Australia does not create a tax obligation in itself. The transfer of funds from your Australian bank account to a bank account in your home country is a movement of money, not income. The ATO does not tax you for moving money. What matters for tax is the income you earned in Australia, which is taxable in the year it was received regardless of where you eventually spend it. Sort out your tax affairs and super withdrawal before you transfer everything home and close your Australian account.
@@ -5348,7 +5348,7 @@ Money you brought in with you when you arrived is not taxable:
 
 What is taxable is everything you earned in Australia during your stay. The distinction is between what you earned here (taxable) and what you brought in or hold in savings (not taxable).
 
-[Get in touch with our team](/contact) to lodge your Australian tax return through our registered tax agent service and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
  `,
  },
 
@@ -5360,7 +5360,7 @@ What is taxable is everything you earned in Australia during your stay. The dist
  description:
  "If you use a car for work under your ABN, you may be able to claim vehicle expenses as a tax deduction. How the logbook method works for working holiday makers, what to record, and the 12-week minimum.",
  category: "ABN" as const,
- date: "22 December 2025",
+ date: "12 August 2025",
  readTime: 5,
  body: `
 If you work under an ABN and use a vehicle for business, you can claim vehicle expenses as tax deductions. The two methods are: cents-per-kilometre (88c/km, up to 5,000 km/year, no logbook needed) and the logbook method (claim actual expenses based on business-use percentage). Driving from your accommodation to a work site or between job sites counts as business travel. Driving from home to your regular workplace does not. Our team picks the method that gives you the largest legitimate deduction.
@@ -5473,9 +5473,9 @@ The Sydney-to-Cairns road trip is personal. The drive from your hostel to a farm
  title:
  "Small business tax offset: can working holiday makers with an ABN claim it?",
  description:
- "If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset — a tax reduction of up to $1,000. How working holiday makers can claim it on their tax return.",
+ "If you earn income under an ABN as a sole trader, you may be entitled to the small business tax offset - a tax reduction of up to $1,000. How working holiday makers can claim it on their tax return.",
  category: "ABN" as const,
- date: "29 December 2025",
+ date: "16 August 2025",
  readTime: 4,
  body: `
 The small business tax offset is a tax concession for sole traders and partnerships that can reduce the tax owed on your business income by up to $1,000 per year. If you earned income under an ABN in Australia, you may be entitled to this offset. The current rate is a 16% discount on tax payable on business income (capped at $1,000). The offset is non-refundable, meaning it can reduce your tax to zero but cannot create a refund on its own. Our team applies all eligible offsets when we prepare your [tax return](/tax-return).
@@ -5557,7 +5557,7 @@ If you have already lodged a return without claiming the offset, we can amend th
  description:
  "Most working holiday makers operate as sole traders, but understanding the difference between a sole trader and a company helps you choose the right business structure for your income and tax situation.",
  category: "ABN" as const,
- date: "5 January 2026",
+ date: "2 September 2025",
  readTime: 5,
  body: `
 For working holiday makers, the choice between a sole trader and a company is almost always sole trader. A sole trader is an individual operating under their own name (with an ABN), where the business income flows directly to their personal tax return. A company is a separate legal entity with its own ABN, tax obligations, and significant administrative overhead. Working holiday makers earning typical amounts ($5,000 to $50,000 under an ABN) do not benefit from a company structure. Our team registers ABNs for working holiday makers as sole traders by default.
@@ -5671,7 +5671,7 @@ For working holiday makers, sole trader is the simple, correct answer in almost 
  description:
  "The ATO distinguishes between personal services income (PSI) and genuine business income. For working holiday makers with an ABN, getting this right affects what deductions you can claim and your tax return.",
  category: "ABN" as const,
- date: "12 January 2026",
+ date: "3 September 2025",
  readTime: 5,
  body: `
 The ATO distinguishes between two types of business income earned under an ABN: Personal Services Income (PSI) and genuine business profit-and-loss income. The difference matters because PSI rules restrict certain deductions that are otherwise available to businesses. For working holiday makers, almost all ABN income is PSI (because you are paid for your personal skills and labour). This is not a problem - the standard work-related deductions still apply. Our team identifies which rules apply when preparing your [tax return](/tax-return).
@@ -5771,7 +5771,7 @@ What is helpful is describing your work accurately:
  description:
  "The low income tax offset can reduce your tax by up to $700 a year. Here is who qualifies, how it is calculated, and how it applies to working holiday visa holders.",
  category: "Tax Return" as const,
- date: "19 January 2026",
+ date: "15 September 2025",
  readTime: 4,
  body: `
 The Low Income Tax Offset (LITO) is a tax reduction available to individuals with taxable income below set thresholds. The maximum is $700 for taxable income up to $37,500, gradually reducing for incomes between $37,500 and $66,667. Whether working holiday makers can claim LITO depends on specific income and circumstances. Our team assesses every applicable offset when preparing your [tax return](/tax-return), so eligible LITO is applied automatically.
@@ -5866,7 +5866,7 @@ Our process:
  description:
  "If you disagree with an ATO assessment or decision about your tax, you have the right to challenge it. Here is how the appeals process works for working holiday makers.",
  category: "Tax Return" as const,
- date: "26 January 2026",
+ date: "20 September 2025",
  readTime: 4,
  body: `
 Yes, you can appeal an ATO decision in Australia. If you receive a tax assessment or decision you disagree with, the formal objection process lets you challenge it. You must lodge a written objection within 60 days of the assessment (extensions are possible but harder). Working holiday makers have the same appeal rights as Australian taxpayers. Our team handles ATO objections for working holiday makers, including from overseas after departure.
@@ -5957,7 +5957,7 @@ If you are unsure whether the ATO is correct, send the correspondence to us befo
  description:
  "Lodged your working holiday tax return and noticed a mistake? You can amend a tax return with the ATO within set timeframes. How to do it, how long it takes, and how it affects your refund.",
  category: "Tax Return" as const,
- date: "2 February 2026",
+ date: "22 September 2025",
  readTime: 4,
  body: `
 Yes, you can amend a tax return after it has been lodged in Australia. Common reasons to amend: a deduction you forgot to claim, an income figure entered incorrectly, or a relevant offset you missed. The general time limit for amendments is **two years from the date the original assessment was issued**. Our team handles amendments for working holiday makers, including from overseas. Acting proactively to fix errors is much better than waiting for the ATO to identify the issue.
@@ -6052,7 +6052,7 @@ Most amendments result in a larger refund. Self-lodgers miss eligible deductions
  description:
  "Received a tax bill you cannot pay in full? The ATO offers payment arrangements for people who need more time. Here is how it works for working holiday makers.",
  category: "Tax Return" as const,
- date: "9 February 2026",
+ date: "30 September 2025",
  readTime: 4,
  body: `
 If you cannot pay your Australian tax bill in full by the due date, you can arrange a payment plan with the ATO to pay in instalments over time. Interest applies (at the General Interest Charge rate, currently around 11%), but this is much better than ignoring the debt, which leads to higher penalties and collection action. Our team helps working holiday makers arrange ATO payment plans, even after leaving Australia. Tax debts do not disappear when you leave the country.
@@ -6165,7 +6165,7 @@ We apply for penalty remission when warranted. Even if not all penalties are rem
  description:
  "Piece rates are common in fruit picking and harvest work in Australia. How piece-rate pay works, the 2022 minimum-wage floor change, and what working holiday makers can do if underpaid.",
  category: "Work Rights" as const,
- date: "16 February 2026",
+ date: "1 October 2025",
  readTime: 5,
  body: `
 Piece rates are a payment system common in Australian farm work where you are paid per unit harvested (per kilogram, per bin, per tray) rather than per hour. Piece rates are legal under the Horticulture Award, but Australian law requires the resulting hourly rate to be at least the casual minimum wage ($31.19/hour from 1 July 2025). If your piece rate earnings fall below this for any hour, your employer must top up your pay to the minimum. Many working holiday makers in farm work are underpaid because employers fail to apply the top-up rule. Our team can review your records and recover what you are owed.
@@ -6254,7 +6254,7 @@ If you are working as an employee (not under an [ABN](/abn)), all of this should
  description:
  "Labour hire agencies are a popular way to find work quickly in Australia, especially for farm work and construction. How they work, your rights as a labour-hire worker, and warning signs to avoid.",
  category: "Work Rights" as const,
- date: "23 February 2026",
+ date: "6 October 2025",
  readTime: 5,
  body: `
 Labour hire agencies are companies that recruit workers and place them with client businesses for a fee. For working holiday makers, they offer fast access to casual work in agriculture, hospitality, warehousing, construction, and manufacturing. When you register with an agency, you become an employee of the agency (not of the business you work for). Reputable agencies handle your tax and super correctly; less reputable ones may underpay or apply excessive deductions. Our team can check your payslips from any agency to make sure tax and super are being paid correctly.
@@ -6360,9 +6360,9 @@ If an agency seems evasive about basic details, that is a warning sign.
  slug: "how-to-read-a-payslip-australia-working-holiday",
  title: "How to read an Australian payslip: working holiday maker guide (2025-26)",
  description:
- "Your payslip contains everything you need to know about whether you are being paid correctly. What each section means — gross pay, PAYG, super, leave — and what working holiday makers should check every pay cycle.",
+ "Your payslip contains everything you need to know about whether you are being paid correctly. What each section means - gross pay, PAYG, super, leave - and what working holiday makers should check every pay cycle.",
  category: "Work Rights" as const,
- date: "2 March 2026",
+ date: "9 October 2025",
  readTime: 5,
  body: `
 Every Australian payslip should show: gross pay, tax withheld (15% for working holiday makers with TFN on file), super contribution (12% paid on top of gross from 1 July 2025), and net pay (what lands in your bank). Australian employers are legally required to issue a payslip within 24 hours of paying your wages. Knowing how to read a payslip means you can spot errors early. Save every payslip in case you need them for your tax return or super claim. Our team can review your payslips if anything looks wrong.
@@ -6489,7 +6489,7 @@ This is one of the strongest signs of an unreliable employer. Take the records y
  description:
  "Wage theft is unfortunately common in industries popular with backpackers. How to recognise underpayment, calculate what you are owed, and recover wages through Fair Work Ombudsman as a working holiday maker.",
  category: "Work Rights" as const,
- date: "9 March 2026",
+ date: "12 October 2025",
  readTime: 5,
  body: `
 Wage theft (being paid less than you are legally entitled to) is unfortunately common in industries popular with working holiday makers: hospitality, agriculture, cleaning, retail. Common forms include underpayment of minimum wage, missing penalty rates, unpaid super, excessive deductions, and unpaid trial shifts. The fix is to keep good records, raise the issue with your employer, and if unresolved, escalate through formal channels. Our team helps working holiday makers recover unpaid wages and super every week. Your visa is protected when raising legitimate workplace complaints.
@@ -6597,7 +6597,7 @@ If you have concerns about underpayment, [get in touch](/contact). Even if you h
  description:
  "The backpacker tax has been one of the most debated tax policies in Australia. Here is the history, what rate applies today, and what it means for your working holiday.",
  category: "Tax Return" as const,
- date: "16 March 2026",
+ date: "14 October 2025",
  readTime: 6,
  body: `
 The "backpacker tax" is the informal name for the tax regime applied to working holiday visa holders (subclass 417 and 462). Currently, working holiday makers pay a flat 15% on the first $45,000 of income earned each financial year. The rate was introduced in 2017 after significant controversy and a major legal challenge by the UK in 2019. Our team handles tax returns for working holiday makers and applies the correct rate based on your specific circumstances.
@@ -6703,9 +6703,9 @@ When you lodge through our service:
  title:
  "How to check your super balance in Australia: working holiday maker guide",
  description:
- "Knowing how much super you have accumulated matters — especially before leaving Australia. How working holiday makers can track their balance through myGov, super fund apps, and confirm employer contributions.",
+ "Knowing how much super you have accumulated matters - especially before leaving Australia. How working holiday makers can track their balance through myGov, super fund apps, and confirm employer contributions.",
  category: "Super" as const,
- date: "23 March 2026",
+ date: "16 October 2025",
  readTime: 4,
  body: `
 To check your superannuation balance as a working holiday maker, log into your super fund's online member portal using your member number and password. Your fund sends you these details when your account is opened. Super is paid quarterly by employers, so contributions appear in your fund within a few days of the quarterly deadlines (28 January, 28 April, 28 July, 28 October). If you have super across multiple funds or cannot find your account details, our team can locate every account associated with your TFN.
@@ -6831,7 +6831,7 @@ Even with partial information, we can usually locate every account through the A
  description:
    "TFN applications can be rejected for visa mismatches, identity issues, or incorrect details. Common reasons working holiday makers get rejected and how to reapply successfully.",
  category: "TFN",
- date: "25 May 2026",
+ date: "18 October 2025",
  readTime: 4,
  body: `
 A Tax File Number (TFN) application can be rejected when the details on the application do not match the records held by the Department of Home Affairs or when identity verification fails. The most common causes are a passport number that does not match the one linked to your visa, an incorrect date of birth, or a name spelled differently to your passport. Until a valid TFN is issued, your employer must withhold tax at 45% instead of the 15% working holiday maker rate.
@@ -6880,7 +6880,7 @@ A registered tax agent has a TAN (Tax Agent Number) listed on the Tax Practition
  description:
    "A TFN application requires specific identity documents: your passport, working holiday visa grant notice, and an Australian address. Full list of what is accepted and common pitfalls to avoid.",
  category: "TFN",
- date: "25 May 2026",
+ date: "22 October 2025",
  readTime: 4,
  body: `
 A Tax File Number (TFN) application for a working holiday maker requires a valid passport, the visa grant notice for a subclass 417 or 462 visa, and an Australian residential address where the TFN letter can be delivered. The application also requires your full legal name exactly as it appears on your passport, your date of birth, and your country of citizenship.
@@ -6922,9 +6922,9 @@ The public TFN application form does not warn you about mismatches before submis
 
 ## What about TFN security?
 
-Never share copies of your passport, visa grant, or TFN with anyone who is not a registered tax agent. Scammers regularly pose as "accountants" or "tax helpers" on backpacker forums, social media, and messaging apps to collect identity documents. Once they have your TFN and passport details, they can lodge a fraudulent tax return in your name and divert the refund to their own account. A registered tax agent is listed on the Tax Practitioners Board register with a TAN number. If you cannot verify the number, do not share your documents. [Apply for your TFN](/tfn-form) through our registered agent service to keep your identity protected.
+Never share copies of your passport, visa grant, or TFN with anyone who is not a registered tax agent. Scammers regularly pose as "accountants" or "tax helpers" on backpacker forums, social media, and messaging apps to collect identity documents. Once they have your TFN and passport details, they can lodge a fraudulent tax return in your name and divert the refund to their own account. A registered tax agent is listed on the Tax Practitioners Board register with a TAN number. If you cannot verify the number, do not share your documents. [Apply for your TFN](/tfn-form) under the supervision of a registered tax agent to keep your identity protected.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -6933,7 +6933,7 @@ Never share copies of your passport, visa grant, or TFN with anyone who is not a
  description:
    "Your TFN is one of the most valuable pieces of personal information in Australia. How working holiday makers can keep it safe, what to do if it is compromised, and who is allowed to see it.",
  category: "TFN",
- date: "25 May 2026",
+ date: "25 October 2025",
  readTime: 5,
  body: `
 A Tax File Number (TFN) is a permanent, lifetime identifier issued by the Australian Taxation Office (ATO). Anyone who has your TFN, along with basic identity details, can lodge a tax return in your name, divert your refund to their own bank account, and create fraudulent ABN registrations linked to you. Working holiday makers are a frequent target because they are unfamiliar with Australian systems and often share documents with strangers met through hostels, social media, or backpacker forums.
@@ -6982,7 +6982,7 @@ If you suspect your TFN has been shared with the wrong person or your details ha
 
 ## How do we keep your TFN secure?
 
-When you lodge through our service, your TFN and identity documents are handled through a registered tax agent channel covered by professional indemnity insurance and bound by the Tax Practitioners Board code of conduct. We never operate through anonymous messaging apps, and our TAN number is publicly verifiable on the Tax Practitioners Board register.
+When you lodge through our service, your TFN and identity documents are handled under the supervision of a registered tax agent channel covered by professional indemnity insurance and bound by the Tax Practitioners Board code of conduct. We never operate through anonymous messaging apps, and our TAN number is publicly verifiable on the Tax Practitioners Board register.
  `,
  },
  {
@@ -6991,7 +6991,7 @@ When you lodge through our service, your TFN and identity documents are handled 
  description:
    "Only a short list of organisations have the legal right to ask for your Tax File Number: the ATO, your employer, your bank, super fund, and Centrelink. What to do if someone else asks.",
  category: "TFN",
- date: "25 May 2026",
+ date: "27 October 2025",
  readTime: 4,
  body: `
 A Tax File Number (TFN) is a permanent identifier issued by the Australian Taxation Office (ATO). Under Australian privacy law, only a limited list of organisations has the legal right to request your TFN. Anyone outside that list asking for it should be refused, and any pressure to share it through social media, messaging apps, or in person should be treated as a fraud risk.
@@ -7045,9 +7045,9 @@ None of these are legitimate. Registered tax agents do not operate through anony
 
 Every registered tax agent in Australia has a Tax Agent Number (TAN) listed on the public Tax Practitioners Board register. Before sharing your TFN with anyone offering tax services, verify their TAN number is current. If they cannot give you a TAN or the number does not match the business, do not share any documents.
 
-[Our service](/tax-return) is delivered by a registered tax agent. Our TAN number is publicly verifiable, and your TFN is handled through a secure tax agent channel rather than through email or messaging apps.
+[Our service](/tax-return) is delivered under the supervision of a registered tax agent. Our TAN number is publicly verifiable, and your TFN is handled through a secure tax agent channel rather than through email or messaging apps.
 
-[Get in touch with our team](/contact) to apply for your TFN through our registered tax agent service or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
  `,
  },
  {
@@ -7056,7 +7056,7 @@ Every registered tax agent in Australia has a Tax Agent Number (TAN) listed on t
  description:
    "Many working holiday makers move between hostels, vans, and farm accommodation in their first weeks in Australia. How to apply for a TFN without a permanent address and where to have it sent.",
  category: "TFN",
- date: "25 May 2026",
+ date: "29 October 2025",
  readTime: 4,
  body: `
 A Tax File Number (TFN) application requires an Australian address where the TFN letter can be delivered, but this does not have to be a long-term rental. A hostel, a friend's house, a workplace, or even a backpacker mail-holding service can be used as long as mail can be received reliably for the four weeks following application. Many working holiday makers move frequently in their first months in Australia, and applying without a fixed address is more common than the ATO website suggests.
@@ -7093,7 +7093,7 @@ When we lodge a TFN application through our service, we can use a verified addre
 
 ## How do you keep your TFN safe once it arrives?
 
-A TFN letter is a high-value document. Once it arrives, do not leave it lying around in shared accommodation, do not photograph it for social media, and do not share it with anyone other than your employer, your bank, your super fund, or a registered tax agent. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the full list of who is allowed to ask for your TFN and who is not. [Get in touch with our team](/contact) to apply for your TFN through a registered tax agent channel.
+A TFN letter is a high-value document. Once it arrives, do not leave it lying around in shared accommodation, do not photograph it for social media, and do not share it with anyone other than your employer, your bank, your super fund, or a registered tax agent. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the full list of who is allowed to ask for your TFN and who is not. [Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent channel.
  `,
  },
 
@@ -7104,7 +7104,7 @@ A TFN letter is a high-value document. Once it arrives, do not leave it lying ar
  description:
    "A tax invoice with an ABN must contain specific information to be legally valid in Australia. Required fields, GST rules, and a working holiday maker template you can copy.",
  category: "ABN",
- date: "25 May 2026",
+ date: "30 October 2025",
  readTime: 4,
  body: `
 A tax invoice issued under an Australian Business Number (ABN) must contain the supplier's name, the ABN, the date, a description of the goods or services, and the total amount payable. If the invoice is for more than $75 and the supplier is registered for GST, additional GST information is also required. If a working holiday maker provides services without quoting a valid ABN, the client is legally required to withhold 47% of the payment under the No-ABN withholding rule.
@@ -7160,7 +7160,7 @@ At tax time, we reconcile every invoice you issued during the year against the i
  description:
    "Working holiday makers earning income under an ABN can claim work-related business expenses to reduce taxable income. Full list of what qualifies, what does not, and record-keeping rules for sole traders.",
  category: "ABN",
- date: "25 May 2026",
+ date: "15 November 2025",
  readTime: 5,
  body: `
 A working holiday maker earning income under an Australian Business Number (ABN) can deduct legitimate business expenses from their taxable income, reducing the amount of tax payable at the end of the financial year. Deductible expenses include tools, equipment, vehicle running costs for work travel, mobile phone use for business, protective clothing, and certain licences or training directly related to the work.
@@ -7221,7 +7221,7 @@ For working holiday makers earning under an ABN, the difference between an unrev
  description:
    "Rideshare and food delivery work is treated as contracting in Australia. Working holiday makers need an ABN (and GST registration for rideshare). How tax works when no PAYG is withheld, and what to set aside.",
  category: "ABN",
- date: "25 May 2026",
+ date: "20 November 2025",
  readTime: 5,
  body: `
 Working for Uber, DoorDash, or any rideshare or food delivery platform in Australia is classified as independent contracting rather than employment. This means a working holiday maker driving or delivering for these platforms must register an Australian Business Number (ABN), is responsible for their own tax obligations, and does not have tax withheld automatically by the platform. For rideshare specifically, GST registration is required from the first dollar earned, regardless of total turnover.
@@ -7286,7 +7286,7 @@ The penalties for getting rideshare tax wrong are significant, and the rules cha
  description:
    "Working without a TFN means your employer withheld tax at 45% instead of 15%.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "21 November 2025",
  readTime: 4,
  body: `
 A working holiday maker who worked in Australia without a Tax File Number (TFN) can still lodge a tax return and recover the excess tax that was withheld. Without a TFN on file, employers are legally required to withhold tax at the top marginal rate of 45% instead of the 15% working holiday maker rate. The difference is recoverable, but the [tax return](/tax-return) cannot be lodged without obtaining a TFN first.
@@ -7346,7 +7346,7 @@ If you worked without a TFN because you were uncertain about how the system work
  description:
  "Working holiday makers on 417 and 462 visas often work for several employers in one financial year - especially in hospitality, farm work and seasonal jobs. Here is how to combine everything into one tax return correctly.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "23 November 2025",
  readTime: 4,
  body: `
 A working holiday maker who has held multiple jobs during a financial year must report income from every employer on a single tax return. Each employer reports your wages and tax withheld separately to the ATO under the Single Touch Payroll system, and the [tax return](/tax-return) must reconcile against the combined total. Missing an employer, even one you only worked at for a week, creates a discrepancy that the ATO will pick up and correct after the return is lodged, often triggering a follow-up assessment.
@@ -7410,7 +7410,7 @@ For working holiday makers with multiple jobs in a financial year, our team:
  description:
    "Returning to Australia on a second or third year working holiday visa changes nothing about the tax rate but can change tax residency status,.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "24 November 2025",
  readTime: 5,
  body: `
 A working holiday maker on a second or third year visa is taxed at the same working holiday maker rates as on the first year visa: 15% on the first $45,000 of income. The visa year does not change the rate. What can change is your [tax residency](/blog/tax-residency-working-holiday-makers) status if your circumstances during the longer period in Australia have shifted, and there are practical differences in [superannuation](/superannuation), TFN, and [ABN](/abn) handling that catch working holiday makers off guard.
@@ -7473,7 +7473,7 @@ A second or third year visa return is rarely just a copy of the first year retur
  description:
    "A DASP application requires specific documents: proof your working holiday visa is no longer active, proof you have left Australia, ID, and your super fund details. Full checklist and how to gather them.",
  category: "Super",
- date: "25 May 2026",
+ date: "28 November 2025",
  readTime: 4,
  body: `
 A Departing Australia Superannuation Payment (DASP) application requires proof of identity, proof that your working holiday visa has expired or been cancelled, and proof that you have departed Australia. The specific documents are your passport, your visa grant or cancellation notice, and your departure record from the Department of Home Affairs. Without all three, the super fund will not release your superannuation.
@@ -7548,7 +7548,7 @@ The full process is handled end-to-end so you do not need to chase each fund ind
  description:
    "The DASP withholding tax is 65% for working holiday makers (417 and 462 visa holders), much higher than the 35% rate for other visa types. Why this rule exists, what it applies to, and how it affects your payout.",
  category: "Super",
- date: "25 May 2026",
+ date: "11 December 2025",
  readTime: 4,
  body: `
 The Departing Australia Superannuation Payment (DASP) for a working holiday maker is taxed at 65% on the taxable component of the super balance. This rate was set by federal legislation in 2017 specifically for super contributions made while a person was on a subclass 417 or 462 working holiday visa. For all other temporary visa holders, the DASP tax rate is 35%. The higher rate is the single largest reason why the net DASP a working holiday maker receives is much smaller than the gross balance in their super account.
@@ -7617,7 +7617,7 @@ The 65% tax is unavoidable, but the rest of the process can be made fast and cle
  description:
    "Working holiday makers often end up with super in three or four different funds because each employer nominates a different one. How to consolidate to one fund and the pros and cons before claiming DASP.",
  category: "Super",
- date: "25 May 2026",
+ date: "21 December 2025",
  readTime: 4,
  body: `
 A working holiday maker who has had multiple employers in Australia typically ends up with [superannuation](/superannuation) in multiple funds because each employer nominates their own default fund. Without active consolidation, a worker with four employers can end up with four separate super accounts, each charging monthly fees, and each requiring a separate DASP application when leaving the country. The fees alone can drain hundreds of dollars from a balance over a single year.
@@ -7687,7 +7687,7 @@ Scammers regularly target working holiday makers with offers to "consolidate you
  description:
    "DASP applications are rejected for visa status mismatches, identity issues, or missing departure records. Common reasons working holiday makers get rejected and how to fix it and resubmit.",
  category: "Super",
- date: "25 May 2026",
+ date: "22 December 2025",
  readTime: 4,
  body: `
 A Departing Australia Superannuation Payment (DASP) application can be rejected by the super fund or by the ATO for several reasons: the visa status has not yet shown as expired or cancelled, the departure record has not yet been recorded by the Department of Home Affairs, the identity documents do not match the fund's records, or the application has been lodged with a fund that does not hold any of your contributions. Each of these has a specific resolution path, and the resolution is much faster through a tax agent channel than through the public application route.
@@ -7757,7 +7757,7 @@ For working holiday makers who have already left Australia, getting a rejection 
  description:
    "Employers are legally required to pay superannuation at 12% of your ordinary earnings. How working holiday makers can check unpaid super through myGov, report it to the ATO, and recover what is owed.",
  category: "Super",
- date: "25 May 2026",
+ date: "29 December 2025",
  readTime: 5,
  body: `
 Australian employers are legally required to pay [superannuation](/superannuation) into your nominated super fund at the current Superannuation Guarantee rate of 12% of your gross wages. The contributions must be paid at least every three months. If an employer does not pay, the worker can recover the unpaid amount through the ATO under the Superannuation Guarantee Charge regime, or through Fair Work claims for related wage breaches. Unpaid super is one of the most common employer breaches in Australia, particularly in hospitality, farm work, and construction.
@@ -7835,7 +7835,7 @@ Be cautious of anyone outside a registered tax agent offering to "chase your unp
  description:
    "Super stapling links your superannuation to a single fund that follows you between employers. How it works for working holiday makers, what to do with your first job, and how to avoid multiple-fund mess.",
  category: "Super",
- date: "25 May 2026",
+ date: "14 January 2026",
  readTime: 4,
  body: `
 Super stapling is an Australian rule introduced in November 2021 that links each worker's [superannuation](/superannuation) to a single "stapled" fund. When you start a new job, the employer is required to check the ATO for your stapled fund and pay contributions there, instead of automatically defaulting to the employer's own preferred fund. The rule was designed to stop workers from ending up with multiple small super accounts as they change jobs.
@@ -7900,7 +7900,7 @@ For working holiday makers planning to stay in Australia for the full visa perio
  description:
    "Working holiday makers injured at work are covered by workers compensation in every Australian state, including for medical costs and lost wages. How to make a claim and what your employer must do.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "20 January 2026",
  readTime: 5,
  body: `
 A working holiday maker injured during the course of paid employment in Australia is entitled to make a workers compensation claim through the relevant state or territory scheme. Workers compensation covers medical treatment, rehabilitation, and a percentage of lost wages while you are unable to work. The right to claim does not depend on visa status, length of employment, or whether the employer has insurance in place. Every Australian state and territory requires employers to hold workers compensation insurance for every worker, including casual employees and working holiday makers.
@@ -7982,7 +7982,7 @@ A workplace injury rarely affects only one part of your finances. [Get in touch 
  description:
    "Working holiday makers can make unfair dismissal claims through the Fair Work Commission, but eligibility depends on length of service and employer size. Eligibility rules, time limits, and how to apply.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "23 January 2026",
  readTime: 5,
  body: `
 A working holiday maker dismissed from a job in Australia can make an unfair dismissal claim through the Fair Work Commission, provided they meet the minimum employment period and the employer is large enough to fall under the unfair dismissal jurisdiction. The minimum employment period is 6 months for most employers and 12 months for small businesses (fewer than 15 employees). Visa status does not affect eligibility, but length of service and employer size do.
@@ -8072,7 +8072,7 @@ If you have been dismissed and are uncertain about the wider financial picture, 
  description:
    "Bullying and sexual harassment at work are illegal in Australia and protected against by federal and state law. What working holiday makers can do, how to report, and what protections exist.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "25 January 2026",
  readTime: 5,
  body: `
 Workplace bullying, discrimination, and sexual harassment are illegal in Australia under the Fair Work Act and state and federal anti-discrimination laws. Working holiday makers have the same legal protections as Australian workers, with no exceptions based on visa status, length of service, or industry. The protections cover behaviour from employers, supervisors, co-workers, and even clients or customers in some cases.
@@ -8172,7 +8172,7 @@ For the bullying or harassment claim itself, the Fair Work Commission, state ant
  description:
    "Unpaid trial shifts are mostly illegal in Australia under Fair Work Act rules. When a brief trial is permitted, when you must be paid, and what working holiday makers can do if not paid.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "26 January 2026",
  readTime: 4,
  body: `
 Unpaid trial shifts in Australia are illegal in most circumstances. Under the Fair Work Act, if a worker is performing productive work that benefits the business, they must be paid at least the minimum wage or the relevant award rate, regardless of what the employer calls it. A brief, supervised demonstration of skills (typically under an hour) may be acceptable as a genuine trial, but anything longer or anything involving real customer service, food preparation, or other productive activity must be paid.
@@ -8261,7 +8261,7 @@ When you lodge your [tax return](/tax-return) through our service, we identify a
  description:
    "Employers in Australia can only deduct money from your wages in narrow legal circumstances. When uniform and laundry deductions are illegal, and how working holiday makers can recover deducted amounts.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "29 January 2026",
  readTime: 4,
  body: `
 Under the Fair Work Act, an employer can only deduct money from an employee's wages in very narrow circumstances: the deduction must be authorised by the employee in writing, must be principally for the employee's benefit, or must be required by law (such as PAYG tax). Deductions for uniform purchases, laundry charges, breakages, customer walk-outs, till shortages, or "training fees" are almost always illegal, regardless of what the employment contract says.
@@ -8308,7 +8308,7 @@ The only deductions that pass the "principally for the employee's benefit" test 
 
 ## What about uniform "deposits" or "bonds"?
 
-Some employers charge a uniform "deposit" or "bond" that is refundable when the uniform is returned. This is sometimes structured as a deduction from the first paycheck. The legal position is:
+Some employers charge a uniform "deposit" or "bond" that is refundable when the uniform is returned. This is sometimes structured as a deduction from the first pay. The legal position is:
 
 - The deposit is still a deduction from wages
 - It must be authorised in writing
@@ -8359,7 +8359,7 @@ When you lodge through our team, we:
  description:
    "British citizens on a working holiday visa are covered by the Reciprocal Health Care Agreement (RHCA) between the UK and Australia. What is included, what is not, and how to enrol on arrival.",
  category: "Medicare & Other",
- date: "25 May 2026",
+ date: "3 February 2026",
  readTime: 5,
  body: `
 British citizens on a working holiday visa in Australia are covered by the Reciprocal Health Care Agreement (RHCA) between the United Kingdom and Australia. The agreement allows British visitors to receive medically necessary treatment under [Medicare](/medicare), broadly equivalent to what an Australian resident receives in a public hospital setting. The cover does not extend to non-essential care, dental treatment, optical treatment, or treatment that can wait until the worker returns to the UK. Private health insurance is still strongly recommended to cover the gaps.
@@ -8452,7 +8452,7 @@ When you lodge your [tax return](/tax-return) through our service, we account fo
  description:
    "Germany does not have a Reciprocal Health Care Agreement with Australia, meaning German working holiday makers are not covered by Medicare. What cover you need, options, and how to enrol before travelling.",
  category: "Medicare & Other",
- date: "25 May 2026",
+ date: "6 February 2026",
  readTime: 5,
  body: `
 Germany does not have a Reciprocal Health Care Agreement with Australia. German working holiday makers are therefore not eligible for [Medicare](/medicare) and cannot rely on the Australian public health system for free or subsidised treatment. Any medical treatment received in Australia must be paid for through private health insurance, travel insurance, or out of pocket. This is one of the most significant practical differences between travelling to Australia as a German citizen and travelling as a British or Irish citizen.
@@ -8571,7 +8571,7 @@ When you lodge your [tax return](/tax-return) through our service, we account fo
  description:
    "Private health insurance is a visa condition for many working holiday visas and a practical necessity for travellers from countries without a Reciprocal Health Care Agreement. What cover to look for and average costs.",
  category: "Medicare & Other",
- date: "25 May 2026",
+ date: "15 February 2026",
  readTime: 4,
  body: `
 Private health insurance is a visa condition for many working holiday visas issued to Australia, particularly the subclass 462 Work and Holiday visa. The cover is also a practical necessity for working holiday makers from countries without a Reciprocal Health Care Agreement (RHCA) with Australia, including Germany, France, Spain, the United States, Canada, and Japan. For working holiday makers from RHCA countries (UK, Ireland, Netherlands, Sweden, and others), private cover supplements [Medicare](/medicare) by paying for the things Medicare does not cover.
@@ -8676,9 +8676,9 @@ If you are uncertain about how your insurance status affects your tax, [get in t
  slug: "emergency-medical-care-working-holiday-no-medicare",
  title: "Emergency medical care without Medicare in Australia: what backpackers should know",
  description:
-   "Working holiday makers without Medicare cover can still receive emergency treatment in Australian public hospitals — but the cost is the patient's responsibility. Typical fees, what insurance covers, and what to expect.",
+   "Working holiday makers without Medicare cover can still receive emergency treatment in Australian public hospitals - but the cost is the patient's responsibility. Typical fees, what insurance covers, and what to expect.",
  category: "Medicare & Other",
- date: "25 May 2026",
+ date: "16 February 2026",
  readTime: 5,
  body: `
 A working holiday maker who is not covered by [Medicare](/medicare) or a Reciprocal Health Care Agreement (RHCA) can still receive emergency medical treatment in Australia. Public hospitals provide emergency care regardless of insurance or ability to pay, but the patient is billed afterwards as a private patient. The bills can run to thousands or tens of thousands of dollars depending on the treatment. For working holiday makers from non-RHCA countries (Germany, France, Spain, USA, Canada, Japan), private health insurance or comprehensive travel insurance is the only realistic way to manage the cost.
@@ -8798,7 +8798,7 @@ A medical emergency rarely affects only one part of your life. [Get in touch wit
  description:
    "Travel insurance and Australian private health insurance cover different things. What working holiday makers actually need, when each one applies, and why both may be worth having.",
  category: "Medicare & Other",
- date: "25 May 2026",
+ date: "21 February 2026",
  readTime: 5,
  body: `
 Travel insurance and Australian private health insurance (specifically Overseas Visitors Health Cover, or OVHC) cover different things. Travel insurance is a broad policy bought from a travel insurance provider that covers medical emergencies plus trip-related risks like cancellation, lost baggage, and repatriation. OVHC is a domestic Australian health insurance product that covers medical and hospital treatment within Australia, similar to [Medicare](/medicare) but for non-residents. Working holiday makers often need both, particularly if they are from a country without a Reciprocal Health Care Agreement with Australia.
@@ -8927,7 +8927,7 @@ A working holiday maker's insurance setup is a personal decision, but the tax si
  description:
    "The Hospitality Award (MA000009) sets minimum pay rates, penalty rates, and conditions for most hospitality workers in Australia. What working holiday makers in pubs, hotels and clubs should be paid.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "24 February 2026",
  readTime: 5,
  body: `
 The Hospitality Industry (General) Award 2020, known as MA000009 or the Hospitality Award, is the modern award that sets minimum legal pay rates, classifications, penalty rates, allowances, and conditions for most workers in the Australian hospitality industry. The award applies to working holiday makers on the same terms as it applies to Australian workers. If you work in a hotel, motel, hostel, bar, nightclub, cafe attached to one of these venues, function centre, or caravan park, the Hospitality Award likely sets your minimum legal entitlements.
@@ -9026,7 +9026,7 @@ The Hospitality Award is one of the most complex modern awards in Australia and 
  description:
    "The Horticulture Award (MA000028) sets minimum pay rates and conditions for farm work in Australia. What working holiday makers picking fruit, harvesting, or doing 88-day specified work should be paid.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "26 February 2026",
  readTime: 5,
  body: `
 The Horticulture Award 2020, known as MA000028, is the modern award that sets minimum legal pay rates, classifications, penalty rates, and conditions for farm work in Australia. The award applies to working holiday makers performing the 88 days of regional farm work required for a second year visa, as well as to anyone working in fruit and vegetable picking, packing, pruning, planting, or general farm labour. The award sets a minimum hourly rate that applies even where the worker is paid on a piece rate basis.
@@ -9132,7 +9132,7 @@ Farm work is where the largest gaps between reported and correct wages typically
  description:
    "The Restaurant Industry Award (MA000119) covers stand-alone restaurants, cafes, and similar venues that are not part of a hotel. What working holiday makers as waitstaff, kitchen hands, and chefs should be paid.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "27 February 2026",
  readTime: 4,
  body: `
 The Restaurant Industry Award 2020, known as MA000119, is the modern award that sets minimum pay rates, classifications, penalty rates, and conditions for stand-alone restaurants, cafes, and similar food-service venues in Australia. The award applies to working holiday makers working as waiters, kitchen hands, baristas, bartenders, supervisors, and cooks in venues that are not part of a hotel or accommodation business. The pay rates and penalty rates differ from the [Hospitality Award](/blog/hospitality-award-working-holiday-makers), and the difference matters at the end of the week.
@@ -9244,7 +9244,7 @@ Misapplied awards are one of the most consistent patterns of underpayment in hos
  description:
    "Most working holiday makers are covered by a modern award that sets minimum pay and conditions. How to identify which of the 121 modern awards applies to your job and check your classification.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "1 March 2026",
  readTime: 5,
  body: `
 A modern award is a legal document set by the Fair Work Commission that establishes minimum pay rates, classifications, penalty rates, allowances, and conditions for an industry or occupation in Australia. Almost every working holiday maker job in Australia is covered by a modern award, and the award sets the minimum legal entitlements that apply regardless of what the employment contract says. Identifying the right award is the first step in checking whether you are being paid correctly.
@@ -9342,12 +9342,12 @@ Award identification is the foundation of every wage recovery process. [Get in t
  slug: "late-tax-return-penalty-working-holiday",
  title: "What is the penalty for lodging a late tax return as a working holiday maker?",
  description:
-   "Lodging a tax return late triggers a Failure to Lodge penalty of one penalty unit ($222 as of 2025-26) for every 28 days the return is overdue, up to.",
+   "Lodging a tax return late triggers a Failure to Lodge penalty of one penalty unit ($330 as of 2025-26) for every 28 days the return is overdue, up to.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "3 March 2026",
  readTime: 4,
  body: `
-The ATO charges a Failure to Lodge (FTL) penalty of one penalty unit for every 28 days that a [tax return](/tax-return) is overdue, up to a maximum of five penalty units. As of the 2025-26 financial year, one penalty unit is $222, meaning the maximum FTL penalty is $1,110. The penalty applies whether or not you owe tax: a working holiday maker who is actually owed a refund can still receive a Failure to Lodge penalty for not lodging on time.
+The ATO charges a Failure to Lodge (FTL) penalty of one penalty unit for every 28 days that a [tax return](/tax-return) is overdue, up to a maximum of five penalty units. As of the 2025-26 financial year, one penalty unit is $330, meaning the maximum FTL penalty is $1,650. The penalty applies whether or not you owe tax: a working holiday maker who is actually owed a refund can still receive a Failure to Lodge penalty for not lodging on time.
 
 The penalty is rarely the largest cost of a late tax return. For working holiday makers, the bigger problem is usually a delayed refund and the cascading impact on DASP, second visa applications, and ATO compliance flags.
 
@@ -9355,7 +9355,7 @@ The penalty is rarely the largest cost of a late tax return. For working holiday
 
 For working holiday makers lodging their own return, the deadline is 31 October following the end of the financial year (which runs 1 July to 30 June). A return for the 2024-25 financial year is therefore due by 31 October 2025.
 
-Working holiday makers who lodge through a registered tax agent have a later deadline. Tax agents can lodge for their clients up until late May of the following year, provided the client was registered with the agent before the standard 31 October deadline.
+Working holiday makers who lodge under the supervision of a registered tax agent have a later deadline. Tax agents can lodge for their clients up until late May of the following year, provided the client was registered with the agent before the standard 31 October deadline.
 
 This extension is one of the practical advantages of lodging through a tax agent, particularly for working holiday makers who are still in Australia or who have only just left.
 
@@ -9363,13 +9363,13 @@ This extension is one of the practical advantages of lodging through a tax agent
 
 The Failure to Lodge penalty steps up every 28 days the return is overdue:
 
-- 1 to 28 days late: 1 penalty unit = $222
+- 1 to 28 days late: 1 penalty unit = $330
 - 29 to 56 days late: 2 penalty units = $444
 - 57 to 84 days late: 3 penalty units = $666
 - 85 to 112 days late: 4 penalty units = $888
-- 113 days or more late: 5 penalty units = $1,110 (maximum)
+- 113 days or more late: 5 penalty units = $1,650 (maximum)
 
-The maximum penalty caps at $1,110 regardless of how late the return is.
+The maximum penalty caps at $1,650 regardless of how late the return is.
 
 ## What if you are owed a refund?
 
@@ -9377,7 +9377,7 @@ A working holiday maker who is owed a refund can still receive a Failure to Lodg
 
 ## What if you are owed nothing or you owe a small amount?
 
-The Failure to Lodge penalty is the same regardless of whether you owe tax. A working holiday maker who would have had a zero tax outcome (no refund, no debt) can still be hit with the full $1,110 maximum penalty for a return that is more than 112 days overdue.
+The Failure to Lodge penalty is the same regardless of whether you owe tax. A working holiday maker who would have had a zero tax outcome (no refund, no debt) can still be hit with the full $1,650 maximum penalty for a return that is more than 112 days overdue.
 
 ## When is interest charged on top?
 
@@ -9395,7 +9395,7 @@ The ATO has discretion to remit (cancel or reduce) the Failure to Lodge penalty 
 - ATO system or processing issues that prevented lodgement
 - First-time late lodgement with otherwise clean compliance history
 
-Remission must be specifically requested and supported by evidence. The remission rate for working holiday makers is generally higher when the request is made through a registered tax agent than when made directly by the taxpayer.
+Remission must be specifically requested and supported by evidence. The remission rate for working holiday makers is generally higher when the request is made under the supervision of a registered tax agent than when made directly by the taxpayer.
 
 ## What about returns from years you have already left Australia?
 
@@ -9430,7 +9430,7 @@ A late return is rarely beyond fixing. [Get in touch with our team](/contact) to
  description:
    "If the ATO finds that you have under-reported income on your tax return, administrative penalties range from 25% to 75% of the tax shortfall plus.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "9 March 2026",
  readTime: 4,
  body: `
 If the ATO finds that a [tax return](/tax-return) has under-reported income or over-claimed deductions, administrative penalties apply on the tax shortfall. The penalty range is 25% to 75% of the shortfall, depending on the level of fault, with an additional General Interest Charge accruing daily on the unpaid amount. Working holiday makers are a focus area for ATO data matching because their employment is short-term, their employers are often in cash-heavy industries, and the platforms they work through (Uber, DoorDash, Airtasker) report directly to the ATO.
@@ -9513,7 +9513,7 @@ The reliable ways to avoid a shortfall penalty are:
 - Include every employer for every job worked in the financial year (no matter how short)
 - Include all ABN income, including gig economy platforms
 - Only claim deductions that are directly related to earning income, with records to support each one
-- Lodge through a registered tax agent who has direct access to the ATO income record
+- Lodge under the supervision of a registered tax agent who has direct access to the ATO income record
 - Wait until all employer Single Touch Payroll reporting is finalised before lodging (early-lodging risks amended assessments)
 
 ## How does our service handle ATO compliance risk?
@@ -9539,7 +9539,7 @@ Working holiday makers are targeted by tax fraud scams that promise inflated ref
  description:
    "Tools and work equipment that cost less than $300 each can be claimed as an immediate tax deduction in the year of purchase.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "15 March 2026",
  readTime: 4,
  body: `
 The ATO allows an immediate deduction for individual tools, equipment, and assets that cost $300 or less and are used to earn income from employment. The deduction is taken in full in the financial year of purchase, rather than being depreciated over multiple years. For working holiday makers, this rule covers a wide range of work-related items: knives for kitchen work, picking equipment for farm work, tools for construction, work boots, high-vis vests, equipment bags, and many other items.
@@ -9653,7 +9653,7 @@ Working holiday makers in trade-heavy and farm work often have several thousand 
  description:
    "From 1 July 2026, working holiday makers can claim a $1,000 instant deduction for work-related expenses without receipts.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "21 March 2026",
  readTime: 4,
  body: `
 From 1 July 2026, a new $1,000 instant deduction rule applies to all Australian taxpayers, including working holiday makers. Under the rule, an individual can claim a flat $1,000 deduction for work-related expenses on their [tax return](/tax-return) without needing to substantiate each individual cost with receipts. The rule applies for the 2026-27 financial year onwards and replaces several existing simplified deduction methods. It does not apply retrospectively to 2025-26 or earlier returns.
@@ -9761,7 +9761,7 @@ For most working holiday makers in routine roles, the flat $1,000 will be the si
  description:
    "Vehicle deductions are not limited to cars.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "22 March 2026",
  readTime: 5,
  body: `
 The ATO rules for vehicle expense deductions apply to a wider range of vehicles than most working holiday makers realise. Bicycles used for food delivery, motorcycles used for rideshare or work travel, and other vehicles can all give rise to legitimate deductions where the vehicle is used to earn income. The methods for calculating the deduction differ between cars (with two specific methods) and other vehicles (with broader actual-cost rules), but the underlying principle is the same: costs that relate to earning income are deductible against that income.
@@ -9895,7 +9895,7 @@ For working holiday makers in delivery, rideshare, trades, and any other vehicle
  description:
    "Working holiday makers leaving Australia have to decide whether to claim DASP at 65% tax now or leave super in their fund. Pros, cons, and the 6-month rule that triggers ATO unclaimed super transfer.",
  category: "Super",
- date: "25 May 2026",
+ date: "24 March 2026",
  readTime: 5,
  body: `
 A working holiday maker leaving Australia can either claim their [superannuation](/superannuation) as a Departing Australia Superannuation Payment (DASP) at the 65% working holiday maker tax rate, or leave the super in the fund and consider claiming it at a later date. The choice has significant financial implications. For most working holiday makers who do not plan to return to Australia, claiming DASP is the better option, but the comparison depends on account fees, expected investment returns, the time horizon involved, and the chance of returning to Australia in the future.
@@ -10031,7 +10031,7 @@ The decision to claim DASP or wait is yours, but the financial picture should be
  description:
    "Fruit picking is the most common path to the 88 days of specified work required for a 2nd year working holiday visa. Pay rates, conditions, regions, seasonal calendars, and how to avoid common scams.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "26 March 2026",
  readTime: 5,
  body: `
 Fruit picking is the most common form of regional work performed by working holiday makers in Australia, and the standard route to the 88 days of specified work needed for a second year visa. Pickers harvest seasonal fruit (mangoes, bananas, citrus, stone fruit, berries, apples, grapes) across regional Australia, often working for labour hire companies or directly for farms. The work is covered by the [Horticulture Award](/blog/horticulture-award-working-holiday-makers), which sets minimum hourly pay rates and protections that apply even when the worker is paid on a piece rate basis.
@@ -10144,9 +10144,9 @@ Fruit picking generates more wage and super disputes than almost any other indus
  slug: "farm-hand-jobs-working-holiday-australia",
  title: "Farm hand jobs in Australia: pay, conditions & 2nd year visa eligibility",
  description:
-   "Farm hand work covers a wide range of agricultural roles beyond fruit picking — livestock care, planting, fencing, and general farm labour. What working holiday makers should expect and how it counts for the 2nd year visa.",
+   "Farm hand work covers a wide range of agricultural roles beyond fruit picking - livestock care, planting, fencing, and general farm labour. What working holiday makers should expect and how it counts for the 2nd year visa.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "2 April 2026",
  readTime: 5,
  body: `
 "Farm hand" is the general term used in Australia for workers performing a wide range of agricultural tasks: livestock care, planting, harvesting non-fruit crops, fencing, machinery operation, general property maintenance, and labour across the farm. The work is performed across both horticultural farms (covered by the [Horticulture Award](/blog/horticulture-award-working-holiday-makers)) and pastoral farms (covered by the Pastoral Award), with different pay rates and conditions applying depending on the type of work.
@@ -10254,7 +10254,7 @@ For working holiday makers in farm hand roles, our team:
  description:
    "Bartending is one of the most accessible hospitality roles for working holiday makers. RSA certificate requirements, Hospitality Award pay rates, penalty rates, and how tips are taxed in Australia.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "9 April 2026",
  readTime: 5,
  body: `
 Bartending is one of the most popular hospitality roles for working holiday makers in Australia. The work is widely available in cities, regional centres, and tourist destinations, and it typically pays better than entry-level kitchen or service work because of the penalty rates that apply to evening and weekend shifts. A Responsible Service of Alcohol (RSA) certificate is required before you can serve alcohol in Australia, and the pay rates are set by the [Hospitality Award](/blog/hospitality-award-working-holiday-makers) for bars in hotels, or the [Restaurant Industry Award](/blog/restaurant-industry-award-working-holiday) for bars in stand-alone restaurants.
@@ -10364,7 +10364,7 @@ Bartending generates substantial casual earnings and substantial penalty rate un
  description:
    "Australian coffee culture creates strong demand for skilled baristas. Hospitality Award pay rates, training requirements, and the best cities for working holiday makers looking for barista work.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "11 April 2026",
  readTime: 5,
  body: `
 Australia has one of the most developed coffee cultures in the world, and skilled baristas are in consistent demand across cafes, restaurants, and specialty coffee venues. Working holiday makers with prior barista experience often find work quickly, particularly in Melbourne, Sydney, and Brisbane. The work is covered by the [Restaurant Industry Award](/blog/restaurant-industry-award-working-holiday) for stand-alone cafes, or the [Hospitality Award](/blog/hospitality-award-working-holiday-makers) for hotel-based cafes. The classification level depends on your experience and the responsibility of the role.
@@ -10471,7 +10471,7 @@ Barista work in Australia generates strong casual earnings when the award is pro
  description:
    "Restaurant and cafe service work is one of the most common roles for working holiday makers. Pay rates under the Restaurant Industry Award, penalty rates, and how tips are taxed.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "15 April 2026",
  readTime: 5,
  body: `
 Waiter and waitress work (sometimes called food and beverage attendant work) is one of the most common roles for working holiday makers in Australia. The work is widely available across restaurants, cafes, hotels, and function venues, and it typically requires no formal qualifications beyond an RSA if alcohol service is involved. The pay rates are set by the [Restaurant Industry Award](/blog/restaurant-industry-award-working-holiday) for stand-alone restaurants or the [Hospitality Award](/blog/hospitality-award-working-holiday-makers) for hotel restaurants and function venues.
@@ -10581,7 +10581,7 @@ Waiter work generates substantial penalty rate value when properly classified. [
  description:
    "Kitchen hand work is one of the most accessible entry points to Australian hospitality, with no formal qualifications required. Pay rates, typical duties, and how to find shifts as a working holiday maker.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "19 April 2026",
  readTime: 4,
  body: `
 Kitchen hand work is one of the most accessible entry points to the Australian hospitality industry for working holiday makers. No formal qualifications are required, the work is consistently available across restaurants, cafes, hotels, and pubs, and the pay rates are set by the [Restaurant Industry Award](/blog/restaurant-industry-award-working-holiday) or [Hospitality Award](/blog/hospitality-award-working-holiday-makers) depending on the venue. Kitchen hands typically work alongside chefs and cooks in the back-of-house area of food service venues, handling washing up, food preparation support, and general kitchen tasks.
@@ -10696,7 +10696,7 @@ Kitchen hand work is one of the most consistently underpaid roles in Australian 
  description:
    "Construction labouring is one of the highest-paying entry-level roles for working holiday makers in Australia. White Card requirements, typical hourly rates, and what to expect on a construction site.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "29 April 2026",
  readTime: 5,
  body: `
 Construction labouring is one of the highest-paying entry-level roles available to working holiday makers in Australia. The work involves general site labour, materials handling, demolition, site clean-up, and assisting tradespeople on residential and commercial building sites. A White Card (also called a Construction Induction Card) is legally required before stepping onto any construction site in Australia. The pay rates are set by the Building and Construction General On-site Award (MA000020), with classifications and allowances that take total earnings well above the general minimum wage.
@@ -10826,7 +10826,7 @@ Construction work generates strong earnings and strong deductions. [Get in touch
  description:
    "Food delivery on a bicycle, e-bike, or scooter is treated as contracting in Australia. ABN required, GST rules (not mandatory under $75k), and what working holiday makers need to set aside for tax.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "12 May 2026",
  readTime: 5,
  body: `
 Food delivery work for Uber Eats, DoorDash, Menulog, and similar platforms is one of the most flexible options available to working holiday makers in Australia. The work is performed on a bicycle, e-bike, motorcycle, scooter, or car, and the platform deposits earnings into the rider's bank account directly. From a tax perspective, food delivery is classified as **independent contracting**, which means a working holiday maker delivering for these platforms must have an [ABN](/abn), is responsible for their own tax obligations, and does not have tax withheld automatically. Unlike rideshare passenger transport, food delivery only requires GST registration if turnover exceeds $75,000 per year.
@@ -10926,7 +10926,7 @@ Delivery work without proper tax management often leads to a surprise tax bill a
  description:
    "Rideshare driving in Australia requires an ABN, GST registration from the first dollar, and quarterly Business Activity Statements (BAS). Full tax setup guide for working holiday makers driving Uber, DiDi or Ola.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "15 May 2026",
  readTime: 5,
  body: `
 Driving for Uber, Ola, Didi, or any other rideshare passenger platform in Australia is treated as independent contracting and is subject to the strictest tax rules of any gig economy work. A working holiday maker driving rideshare must have an [ABN](/abn), must register for GST from the first dollar of fare income regardless of total turnover, and must lodge quarterly Business Activity Statements (BAS) to remit GST to the ATO. The GST rule for rideshare is different from food delivery: rideshare is GST-mandatory from dollar one; food delivery is not.
@@ -11007,7 +11007,7 @@ Business Activity Statements are due quarterly:
 - Quarter 3 (January to March): due 28 April
 - Quarter 4 (April to June): due 28 July
 
-Lodgement through a registered tax agent typically extends the deadline by 4 weeks. Missing a BAS lodgement triggers Failure to Lodge penalties similar to those for late tax returns. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday) for the framework.
+Lodgement under the supervision of a registered tax agent typically extends the deadline by 4 weeks. Missing a BAS lodgement triggers Failure to Lodge penalties similar to those for late tax returns. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday) for the framework.
 
 ## What deductions can rideshare drivers claim?
 
@@ -11052,7 +11052,7 @@ Rideshare is the most tax-heavy gig economy work for working holiday makers, and
  description:
    "Ski resort work in Australia runs from June to September across Victorian and NSW resorts. Pay rates, accommodation, lift passes, and how to apply as a working holiday maker for the winter season.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "16 May 2026",
  readTime: 5,
  body: `
 Australia's ski season runs from June through September, with major resorts in Victoria (Mount Hotham, Falls Creek, Mount Buller) and New South Wales (Thredbo, Perisher, Charlotte Pass) hiring large seasonal workforces every winter. Working holiday makers fill many of these roles, including lift operations, ski school assistance, hospitality, retail, accommodation, snowmaking, and grooming. Most ski resort jobs include on-mountain accommodation as part of the package, which simplifies the practical side of living on the mountain but adds complexity on the tax side.
@@ -11163,7 +11163,7 @@ Ski seasons generate concentrated earnings over a 3-to-4 month period, which oft
  description:
    "Australia's major supermarket chains hire working holiday makers for shelf stacking, checkout, deli, and night fill. Pay rates under the General Retail Industry Award, penalty rates, and how to apply.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "23 May 2026",
  readTime: 5,
  body: `
 Australia's major supermarket chains (Coles, Woolworths, ALDI, IGA, and Foodland) employ tens of thousands of casual workers across their store networks. Working holiday makers fill checkout, customer service, stocking, deli, bakery, and overnight replenishment roles in large numbers. The work is covered by the General Retail Industry Award (MA000004), which sets minimum hourly rates, penalty rates for weekend and evening shifts, and conditions for casual employees. Some supermarket chains have enterprise agreements that adjust the award rates, but the agreements must leave each worker better off overall than the award would.
@@ -11296,7 +11296,7 @@ Supermarket work is well-paid relative to many other entry-level options, but th
  description:
    "Cattle stations and remote outback properties hire working holiday makers for livestock work, mustering, fencing, and general property maintenance. Pay, conditions, accommodation, and 2nd year visa eligibility.",
  category: "Work Rights",
- date: "25 May 2026",
+ date: "26 May 2026",
  readTime: 6,
  body: `
 Cattle stations and remote outback properties in Northern Territory, Western Australia, Queensland, and South Australia hire working holiday makers each year for station hand work. The roles include livestock mustering, cattle handling, fencing, water trough maintenance, machinery operation, bore work, and general property maintenance across some of the most remote workplaces in Australia. Station hand work is covered by the Pastoral Award (MA000035), counts toward the 88 days of specified work for a second year visa, and almost always includes accommodation and meals as part of the package.
@@ -11439,7 +11439,7 @@ Station work has unique tax complications because of the remoteness, the accommo
  description:
    "From 1 July 2025, the Superannuation Guarantee rate increased from 11.5% to 12%. How this affects working holiday maker pay, your DASP payout, and what to check on your payslip.",
  category: "Super",
- date: "25 May 2026",
+ date: "29 May 2026",
  readTime: 4,
  body: `
 From 1 July 2025, the Superannuation Guarantee (SG) rate that Australian employers must pay into employee super funds increased from 11.5% to 12% of ordinary time earnings. This is the final step in a scheduled series of increases that began in 2014 and is now complete: the rate stays at 12% from 2025-26 onwards. For working holiday makers, the change means slightly larger super contributions on every dollar earned, and a correspondingly larger [DASP](/blog/what-is-dasp-super-withdrawal) payment when leaving Australia.
@@ -11547,7 +11547,7 @@ The 12% rate is now the final settled level for the Superannuation Guarantee. Ev
  description:
    "Travellers can bring any amount of cash or transfer any amount into Australia, but movements of $10,000 or more must be reported to AUSTRAC.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "1 June 2026",
  readTime: 4,
  body: `
 A working holiday maker arriving in Australia can bring any amount of money into the country, in cash or via bank transfer. There is no legal limit on the amount you can bring, and the act of bringing money into Australia does not, by itself, trigger any tax. However, movements of physical currency of A$10,000 or more (or the foreign currency equivalent) must be reported to AUSTRAC, the Australian financial intelligence agency, on entry to Australia. International electronic transfers of A$10,000 or more are reported automatically by the bank or money service provider.
@@ -11654,7 +11654,7 @@ For most working holiday makers, bringing savings in is straightforward and tax-
  description:
    "If you have a tax debt to the ATO and do not pay by the due date, the General Interest Charge accrues daily and Failure to Pay penalties of $313 per.",
  category: "Tax Return",
- date: "25 May 2026",
+ date: "6 June 2026",
  readTime: 4,
  body: `
 The Australian Taxation Office (ATO) charges interest and penalties on tax debts that are not paid by the due date. The General Interest Charge (GIC) compounds daily on the unpaid amount at a rate substantially above the cash rate. Separately, a Failure to Pay penalty of one penalty unit ($330 in 2025-26) can apply for every 28 days the debt remains unpaid, up to a maximum of five units ($1,650 per year per debt). The penalties are independent of the Failure to Lodge penalties that apply for [late tax returns](/blog/late-tax-return-penalty-working-holiday).
@@ -11703,14 +11703,14 @@ For working holiday makers, the GIC is the more reliable concern. The Failure to
 
 The two penalty systems are independent:
 
-- **Failure to Lodge (FTL)**: applied when a [tax return](/tax-return) is filed late. $222 per 28 days, max $1,110. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday).
+- **Failure to Lodge (FTL)**: applied when a [tax return](/tax-return) is filed late. $330 per 28 days, max $1,650. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday).
 - **Failure to Pay (FTP) + GIC**: applied when a tax debt is not paid by the due date. $330 per 28 days plus daily interest at around 11% per year.
 
 A working holiday maker who lodges late AND pays late can be hit with both penalty systems on the same debt. The total cost can substantially exceed the original tax owing.
 
 ## When is a tax debt due?
 
-For an individual lodging through a registered tax agent, the standard payment deadline is 21 days after the Notice of Assessment is issued (which is usually within a few weeks of lodgement). For self-lodgers, the payment deadline is typically by the 21st of November following the end of the financial year.
+For an individual lodging under the supervision of a registered tax agent, the standard payment deadline is 21 days after the Notice of Assessment is issued (which is usually within a few weeks of lodgement). For self-lodgers, the payment deadline is typically by the 21st of November following the end of the financial year.
 
 For BAS debts, the payment is due on the same date the BAS is due, which is 28 days after the end of the quarter for most lodgers.
 
@@ -11758,7 +11758,7 @@ The ATO has discretion to remit (reduce or cancel) the GIC and Failure to Pay pe
 - Circumstances beyond the taxpayer's control (illness, natural disaster, family emergency)
 - First-time non-payment with otherwise clean compliance history
 
-Remission requests must be made specifically and supported by evidence. The remission rate is generally higher for requests lodged through a registered tax agent than for direct requests.
+Remission requests must be made specifically and supported by evidence. The remission rate is generally higher for requests lodged under the supervision of a registered tax agent than for direct requests.
 
 ## How does our service support tax debt situations?
 
@@ -11874,7 +11874,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "When do working holiday makers need to lodge a tax return?",
  answer:
- "The Australian financial year ends on 30 June. You must lodge your tax return between 1 July and 31 October that year. If you lodge through a registered tax agent, the deadline can be extended.",
+ "The Australian financial year ends on 30 June. You must lodge your tax return between 1 July and 31 October that year. If you lodge under the supervision of a registered tax agent, the deadline can be extended.",
  },
  {
  question: "Do working holiday makers get a tax refund?",
@@ -11885,7 +11885,7 @@ export const categoryMeta: CategoryMeta[] = [
  question:
  "Can you lodge an Australian tax return after leaving the country?",
  answer:
- "Yes. You can lodge your tax return from anywhere in the world. A registered tax agent can manage the process remotely. Keep your Australian bank account open until the refund is paid.",
+ "Yes. You can lodge your tax return from anywhere in the world. We can manage the process remotely under the supervision of a registered tax agent. Keep your Australian bank account open until the refund is paid.",
  },
  {
  question: "What can working holiday makers claim as deductions?",
@@ -11923,7 +11923,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "How do you find lost or unclaimed super?",
  answer:
- "You can find lost super by linking your TFN to your account through our service, contacting the Australian Taxation Office, or working with a registered tax agent who can search across all funds.",
+ "You can find lost super by linking your TFN to your account through our service, contacting the Australian Taxation Office, or working under the supervision of a registered tax agent who can search across all funds.",
  },
  ],
  relatedServicePath: "/superannuation",

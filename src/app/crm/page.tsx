@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function CrmLoginPage() {
   const [step, setStep]         = useState<'password'|'otp'>('password')
@@ -8,6 +8,12 @@ export default function CrmLoginPage() {
   const [otp, setOtp]           = useState('')
   const [error, setError]       = useState('')
   const [loading, setLoading]   = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('timeout') === '1') {
+      setError('You were logged out after 30 minutes of inactivity. Please log in again.')
+    }
+  }, [])
 
   async function handlePassword(e: React.FormEvent) {
     e.preventDefault()

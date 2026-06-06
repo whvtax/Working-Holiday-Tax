@@ -199,7 +199,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
           </p>
           <h2 className="font-serif font-black text-ink mx-auto"
             style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '20ch' }}>
-            最大限の還付金を取り戻します
+            あなたが受け取れる還付金を最大限に
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
             この計算機は概算のみです。控除可能な経費や税額控除を見つけ出し、還付金をさらに増やせる場合が多くあります。
