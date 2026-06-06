@@ -298,7 +298,6 @@ export default async function GermanHomePage() {
             <span style={{ display: 'block' }}>Steuererklärung Australien?</span>
               <span style={{ display: 'block', color: '#0B5240' }}>Wir kümmern uns drum.</span>
               <span style={{ display: 'block', color: '#0B5240' }}>Working Holiday Maker</span>
-            </span>
           </h1>
 
           <p className="font-light mx-auto"

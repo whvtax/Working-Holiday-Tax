@@ -331,7 +331,6 @@ export default async function JapaneseHomePage() {
               <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン、</span>
               <span style={{ display: 'block' }}>おまかせください。</span>
               <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン</span>
-            </span>
           </h1>
 
           <p className="font-light mx-auto"
