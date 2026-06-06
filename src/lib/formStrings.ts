@@ -108,12 +108,6 @@ export const formStrings = {
   followGuides:        { en: 'Free guides below ⬇️',                de: 'Kostenlose Anleitungen unten ⬇️', ja: '無料ガイドはこちら ⬇️' },
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
 
-  // ─ Expenses email block (tax form) ─
-  emailInvoicesTitle:  { en: 'Please email your invoices / receipts', de: 'Bitte sende deine Rechnungen / Belege per E-Mail', ja: '請求書・領収書をメールでお送りください' },
-  emailInvoicesTo:     { en: 'Send all your invoices and receipts to:', de: 'Sende alle Rechnungen und Belege an:', ja: 'すべての請求書・領収書を次の宛先へ送付してください：' },
-  emailSubjectName:    { en: 'Use your full name as the email subject.', de: 'Verwende deinen vollständigen Namen als E-Mail-Betreff.', ja: 'メールの件名にはフルネームをご記入ください。' },
-  emailSendAnytime:    { en: 'You can send this before or after submitting the form.', de: 'Du kannst dies vor oder nach dem Absenden des Formulars schicken.', ja: 'このメールはフォーム送信の前後どちらでも送信できます。' },
-
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung',        ja: 'ABN登録' },

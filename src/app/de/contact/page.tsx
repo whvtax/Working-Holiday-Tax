@@ -5,7 +5,7 @@ import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib
 
 export const metadata: Metadata = {
   title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-  description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
+  description: 'Kontaktiere unsere registrierten Steueragenten. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
   keywords: [
     'Kontakt Working Holiday Tax',
     'Steueragent Australien Kontakt',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'ja': `${SITE_URL}/ja/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. Schnelle Antworten von echten Beratern.',
+    description: 'Kontaktiere unsere registrierten Steueragenten. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet.',
+    description: 'Kontaktiere unsere registrierten Steueragenten.',
   },
   robots: {
     index: true,
@@ -87,7 +87,7 @@ export default function GermanContactPage() {
     '@id': `${SITE_URL}/de/contact`,
     url: `${SITE_URL}/de/contact`,
     name: 'Kontakt - Working Holiday Tax',
-    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet, für Hilfe mit TFN, Steuererklärung, Super und ABN.',
+    description: 'Kontaktiere unsere registrierten Steueragenten für Hilfe mit TFN, Steuererklärung, Super und ABN.',
     inLanguage: 'de',
     isPartOf: {
       '@type': 'WebSite',
@@ -214,7 +214,7 @@ export default function GermanContactPage() {
 
       {/* ── TRUST SIGNALS STRIP ─────────────────────────────────────────── */}
       <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
               { stat: '1.200+', label: 'Backpacker' },
@@ -237,7 +237,7 @@ export default function GermanContactPage() {
 
       {/* ── CONTACT OPTIONS ─────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="text-center mb-6 lg:mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -341,7 +341,7 @@ export default function GermanContactPage() {
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
       <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="text-center mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -368,7 +368,7 @@ export default function GermanContactPage() {
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[520px] mx-auto text-center">
             <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
               Bereit, wenn du es bist

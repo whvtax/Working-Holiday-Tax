@@ -58,26 +58,13 @@ export async function getRedis(): Promise<ReturnType<typeof createClient> | null
   return _connecting
 }
 
-const _memHits = new Map<string, { count: number; resetAt: number }>()
-function memRateLimited(key: string, maxRequests: number): boolean {
-  const now = Date.now()
-  const entry = _memHits.get(key)
-  if (!entry || entry.resetAt <= now) {
-    _memHits.set(key, { count: 1, resetAt: now + WINDOW_SECS * 1000 })
-    if (_memHits.size > 5000) { for (const [k, v] of _memHits) if (v.resetAt <= now) _memHits.delete(k) }
-    return false
-  }
-  entry.count++
-  return entry.count > maxRequests
-}
-
 export async function isRateLimited(ip: string, formName: string, maxRequests: number = MAX_REQUESTS): Promise<boolean> {
-  const key = `rl:${formName}:${ip}`
   try {
     const result = await Promise.race<boolean>([
       (async () => {
         const redis = await getRedis()
-        if (!redis) return memRateLimited(key, maxRequests)
+        if (!redis) return false
+        const key = `rl:${formName}:${ip}`
         const [count] = await redis
           .multi()
           .incr(key)
@@ -85,14 +72,14 @@ export async function isRateLimited(ip: string, formName: string, maxRequests: n
           .exec() as [number, number]
         return count > maxRequests
       })(),
-      new Promise<boolean>((resolve) =>
-        setTimeout(() => { console.warn('[rate-limit] timed out — using in-memory fallback'); resolve(memRateLimited(key, maxRequests)) }, TOTAL_TIMEOUT_MS)
+      new Promise<false>((resolve) =>
+        setTimeout(() => { console.warn('[rate-limit] timed out — failing open'); resolve(false) }, TOTAL_TIMEOUT_MS)
       ),
     ])
     return result
   } catch (err) {
     console.error('[rate-limit]', err)
-    return memRateLimited(key, maxRequests)
+    return false
   }
   // No disconnect() — singleton stays alive across requests on the same warm instance
 }

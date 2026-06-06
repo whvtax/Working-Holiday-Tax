@@ -1,4 +1,3 @@
-import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -29,18 +28,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'WHM 税金',
     ],
     alternates: {
-      canonical: `${SITE_URL}/ja/blog/category/${meta.slug}`,
+      canonical: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
       languages: {
-        'en-AU': `${SITE_URL}/blog/category/${meta.slug}`,
-        'de': `${SITE_URL}/de/blog/category/${meta.slug}`,
-        'ja': `${SITE_URL}/ja/blog/category/${meta.slug}`,
-        'x-default': `${SITE_URL}/blog/category/${meta.slug}`,
+        'en-AU': `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
+        'de': `https://workingholidaytax.com.au/de/blog/category/${meta.slug}`,
+        'ja': `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
+        'x-default': `https://workingholidaytax.com.au/blog/category/${meta.slug}`,
       },
     },
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `${SITE_URL}/ja/blog/category/${meta.slug}`,
+      url: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
       siteName: 'Working Holiday Tax',
       locale: 'ja_JP',
       type: 'website',
@@ -76,9 +75,9 @@ export default function JapaneseCategoryPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: meta.title,
     description: meta.description,
-    url: `${SITE_URL}/ja/blog/category/${meta.slug}`,
+    url: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}`,
     inLanguage: 'ja',
-    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
+    isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: 'https://workingholidaytax.com.au' },
     about: { '@type': 'Thing', name: meta.category },
     audience: { '@type': 'Audience', name: 'オーストラリアのワーキングホリデービザ保持者（サブクラス417・462）' },
     mainEntity: {
@@ -87,7 +86,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
       itemListElement: articles.map((g, i) => ({
         '@type': 'ListItem',
         position: i + 1,
-        url: `${SITE_URL}/ja/blog/${g.slug}`,
+        url: `https://workingholidaytax.com.au/ja/blog/${g.slug}`,
         name: g.title,
       })),
     },
@@ -97,9 +96,9 @@ export default function JapaneseCategoryPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'ホーム', item: `${SITE_URL}/ja` },
-      { '@type': 'ListItem', position: 2, name: 'ブログ', item: `${SITE_URL}/ja/blog` },
-      { '@type': 'ListItem', position: 3, name: meta.category, item: `${SITE_URL}/ja/blog/category/${meta.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'ホーム', item: 'https://workingholidaytax.com.au/ja' },
+      { '@type': 'ListItem', position: 2, name: 'ブログ', item: 'https://workingholidaytax.com.au/ja/blog' },
+      { '@type': 'ListItem', position: 3, name: meta.category, item: `https://workingholidaytax.com.au/ja/blog/category/${meta.slug}` },
     ],
   }
 

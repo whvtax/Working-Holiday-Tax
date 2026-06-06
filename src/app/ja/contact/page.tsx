@@ -5,7 +5,7 @@ import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib
 
 export const metadata: Metadata = {
   title: 'お問い合わせ - Working Holiday Tax',
-  description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
+  description: '登録税理士に直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
   keywords: [
     'お問い合わせ ワーホリ 税金',
     'お問い合わせ オーストラリア タックスリターン',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'お問い合わせ | Working Holiday Tax',
-    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。営業時間内なら1時間以内にご返信します。',
+    description: '登録税理士に直接ご相談ください。営業時間内なら1時間以内にご返信します。',
     url: `${SITE_URL}/ja/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'お問い合わせ | Working Holiday Tax',
-    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。',
+    description: '登録税理士に直接ご相談ください。',
   },
   robots: {
     index: true,
@@ -78,7 +78,7 @@ const FAQS = [
   },
   {
     question: '日本に帰国後でも対応してもらえますか？',
-    answer: 'はい。日本に帰国された後でも、オーストラリアのタックスリターン還付金、スーパー（DASP）、その他の税務手続きを日本からオンラインで申請できます。すべての手続きはオンラインで完結し、オーストラリアに戻る必要はありません。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能ですが、スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
+    answer: 'はい。日本に帰国された後でも、オーストラリアのタックスリターン還付金、スーパー（DASP）、その他の税務手続きを日本からオンラインで申請できます。すべての手続きはオンラインで完結し、オーストラリアに戻る必要はありません。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能ですが、スーパー返金（DASP）は日本の口座でもお受け取りいただけます。',
   },
   {
     question: '初めてのお問い合わせ時、何を伝えればいいですか？',
@@ -95,7 +95,7 @@ export default function JapaneseContactPage() {
     '@id': `${SITE_URL}/ja/contact`,
     url: `${SITE_URL}/ja/contact`,
     name: 'お問い合わせ - Working Holiday Tax',
-    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
+    description: '登録税理士に直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
     inLanguage: 'ja',
     isPartOf: {
       '@type': 'WebSite',
@@ -222,7 +222,7 @@ export default function JapaneseContactPage() {
 
       {/* ── TRUST SIGNALS STRIP ─────────────────────────────────────────── */}
       <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
               { stat: '1,200+', label: 'サポート実績' },
@@ -245,7 +245,7 @@ export default function JapaneseContactPage() {
 
       {/* ── CONTACT OPTIONS ─────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '40px' }}>
-        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="text-center mb-6 lg:mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -346,7 +346,7 @@ export default function JapaneseContactPage() {
 
       {/* ── FAQ ─────────────────────────────────────────────────────────── */}
       <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
-        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
 
           <div className="text-center mb-8">
             <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
@@ -373,7 +373,7 @@ export default function JapaneseContactPage() {
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
       <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[520px] mx-auto text-center">
             <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
               準備ができたら

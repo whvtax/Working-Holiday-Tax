@@ -7,7 +7,7 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
+  title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
   description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションを返金として受け取り。給与の12%がスーパーに積み立てられています。DASP申請を完全代行します。',
   keywords: [
     // Refund-focused
@@ -55,12 +55,12 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/superannuation`,
     siteName: 'Working Holiday Tax',
-    title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
-    description: 'オーストラリアのスーパー受取をDASPで受け取り。ワーホリ専門のチームが登録税理士の監督のもとですべて代行します。',
+    title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
+    description: 'オーストラリアのスーパー返金をDASPで受け取り。ワーホリ専門の登録税理士がすべて代行します。',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
+    title: 'スーパー返金（DASP） - ワーキングホリデー オーストラリア',
     description: 'オーストラリアを離れる際、スーパーを返金として受け取り。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -88,11 +88,11 @@ const faqs = [
     answer: 'ABN業務（請負業者・個人事業主）の場合、原則として雇用主からスーパー貢献はありません。スーパーは「従業員（TFNでの雇用）」として働いた期間にのみ積み立てられます。ただしABN業務でも、実態が雇用関係に近い場合はスーパーの対象となることがあるので、当社にご相談ください。',
   },
   {
-    question: '日本に帰国後でもスーパー受取（DASP）は申請できますか？',
-    answer: 'はい、日本に帰国された後でも世界中どこからでも申請できます。当社が日本語ですべての手続きを代行し、スーパー受取は直接日本の銀行口座に振り込むことが可能です。何年経っていても申請可能です。',
+    question: '日本に帰国後でもスーパー返金（DASP）は申請できますか？',
+    answer: 'はい、日本に帰国された後でも世界中どこからでも申請できます。当社が日本語ですべての手続きを代行し、スーパー返金は直接日本の銀行口座に振り込むことが可能です。何年経っていても申請可能です。',
   },
   {
-    question: 'DASPスーパー受取には税金がかかりますか？',
+    question: 'DASPスーパー返金には税金がかかりますか？',
     answer: 'はい、DASPの支払いには、ATOが定めた固定税率で課税され、振込前に源泉徴収されます。お受け取りになるのはこの税引き後の純額です。具体的な税率はビザの種類や支払われるスーパーの種類によって異なります。',
   },
 ]
@@ -135,7 +135,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'スーパー受取（DASP）の申請方法',
-  description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションをDASP（Departing Australia Superannuation Payment）で受け取る手順。登録税理士の監督のもとで日本語で代行します。',
+  description: 'オーストラリアを離れた後、積み立てたスーパーアニュエーションをDASP（Departing Australia Superannuation Payment）で受け取る手順。登録税理士が日本語で代行します。',
   inLanguage: 'ja',
   totalTime: 'P28D',
   estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
@@ -238,7 +238,7 @@ export default function JapaneseSuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['1,200名以上をサポート',<GoogleRating variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -317,7 +317,7 @@ export default function JapaneseSuperannuationPage() {
       </section>
 
       {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">あなたのお金です</span>
@@ -380,7 +380,7 @@ export default function JapaneseSuperannuationPage() {
 
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">ご利用の流れ</span>
@@ -398,7 +398,7 @@ export default function JapaneseSuperannuationPage() {
                 <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-4 h-[2px]" style={{ background: 'linear-gradient(90deg, #C8EAE0 0%, #0B5240 30%, #0B5240 70%, #C8EAE0 100%)' }} aria-hidden="true" />
                 {STEPS.map((s, i) => (
                   <div key={i} className="flex-1 flex flex-col items-center px-5" style={{ zIndex: 1 }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #F5F9F7, 0 0 0 5px #C8EAE0' }}>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-[13px] font-bold text-white mb-5 flex-shrink-0" style={{ background: '#0B5240', boxShadow: '0 0 0 4px #EEF7F2, 0 0 0 5px #C8EAE0' }}>
                       {s.n}
                     </div>
                     <p className="text-[14px] font-semibold text-ink mb-2 text-center" style={{ letterSpacing: '-0.01em' }}>{s.title}</p>
@@ -491,7 +491,7 @@ export default function JapaneseSuperannuationPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
 

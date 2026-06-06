@@ -1,5 +1,4 @@
 import crypto from 'crypto'
-import { getRedis } from '@/lib/rate-limit'
 
 export type FailedAttempt = { count: number; lastAttempt: number; locked: boolean }
 
@@ -40,7 +39,7 @@ function makeToken(claims: Record<string, unknown>): string {
   return `${payload}.${sig}`
 }
 
-function checkToken(token: string | undefined, maxTtl: number): boolean {
+function checkToken(token: string | undefined, maxTtl: number, requiredRole?: string): boolean {
   if (!token) return false
   try {
     const dot = token.lastIndexOf('.')
@@ -52,7 +51,8 @@ function checkToken(token: string | undefined, maxTtl: number): boolean {
     const b = Buffer.from(expected)
     if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return false
     const claims = JSON.parse(Buffer.from(payload, 'base64url').toString())
-    const { iat, exp } = claims
+    const { iat, exp, role } = claims
+    if (requiredRole && role !== requiredRole) return false
     // Defence-in-depth: refuse anything non-numeric so a malformed token can't slip
     // through (e.g. exp=NaN would otherwise fail `now >= exp` and grant access).
     if (typeof exp !== 'number' || !Number.isFinite(exp)) return false
@@ -64,56 +64,14 @@ function checkToken(token: string | undefined, maxTtl: number): boolean {
   } catch { return false }
 }
 
-// ── Session revocation (server-side) ──────────────────────────────────────
-// Stateless tokens can't be individually revoked, so we keep a "revoked-before"
-// epoch: any token issued before it is rejected. Logout bumps it. The epoch is
-// held in memory (instant on the active instance) and persisted to Redis so it
-// survives restarts and propagates to other warm instances within REFRESH_MS.
-// FAIL-SAFE: this check can only ADD a rejection; if Redis is unavailable it
-// silently degrades to in-memory only and never causes a bypass or lockout.
-const REVOKE_KEY = 'crm_revoked_before'
-const REFRESH_MS = 60_000
-let _revokedBefore = 0
-let _lastRefresh = 0
-
-async function refreshRevocation(): Promise<void> {
-  try {
-    const redis = await getRedis()
-    if (!redis) return
-    const v = await redis.get(REVOKE_KEY)
-    if (v) { const n = Number(v); if (Number.isFinite(n)) _revokedBefore = Math.max(_revokedBefore, n) }
-  } catch { /* best effort */ }
-}
-
 // Admin session (8h)
 export function createSession(): string {
   return makeToken({ exp: Date.now() + ADMIN_SESSION_TTL })
 }
-
 export function validateSession(token: string | undefined): boolean {
-  if (!checkToken(token, ADMIN_SESSION_TTL)) return false
-  // Non-blocking periodic refresh of the revocation epoch from Redis.
-  const now = Date.now()
-  if (now - _lastRefresh > REFRESH_MS) { _lastRefresh = now; void refreshRevocation() }
-  // Reject tokens issued before the last global logout.
-  if (_revokedBefore > 0) {
-    try {
-      const dot = (token as string).lastIndexOf('.')
-      const claims = JSON.parse(Buffer.from((token as string).slice(0, dot), 'base64url').toString())
-      if (typeof claims.iat === 'number' && claims.iat < _revokedBefore) return false
-    } catch { /* if decode fails, signature already passed — allow */ }
-  }
-  return true
+  return checkToken(token, ADMIN_SESSION_TTL)
 }
-
-// Invalidate ALL existing sessions (used on logout). Best-effort Redis persist.
-export async function destroySession(): Promise<void> {
-  _revokedBefore = Date.now()
-  try {
-    const redis = await getRedis()
-    if (redis) await redis.set(REVOKE_KEY, String(_revokedBefore))
-  } catch { /* best effort */ }
-}
+export function destroySession() { /* stateless — cookie cleared client-side */ }
 
 // ── Brute-force protection (Redis) ───────────────────────────────────────
 

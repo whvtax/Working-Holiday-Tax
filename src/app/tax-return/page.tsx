@@ -2,13 +2,13 @@ import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL, SITE_URL } from '@/lib/constants'
+import { WA_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
-  description: 'Working holiday tax refund Australia - your WHV tax return for 417 and 462 visa holders is lodged under the supervision of a registered tax agent. Claim your tax back from Australia, even after you have gone home. All online, fast and simple.',
+  description: 'Working holiday tax refund Australia — registered tax agent lodges your WHV tax return for 417 and 462 visa holders. Claim your tax back from Australia, even after you have gone home. All online, fast and simple.',
   keywords: [
     'working holiday tax refund Australia',
     'working holiday tax refund',
@@ -51,15 +51,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_AU',
-    url: `${SITE_URL}/tax-return`,
+    url: 'https://workingholidaytax.com.au/tax-return',
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
-    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online - even after you leave Australia.',
+    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online — even after you leave Australia.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent - all online.',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent — all online.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -83,7 +83,7 @@ const faqs = [
   },
   {
     question: 'How do I know if I am owed a tax refund?',
-    answer: 'You will be owed a tax refund if you paid more tax than required during the year. This often happens to working holiday makers when the wrong tax rate was applied, when you did not provide your TFN early enough, or when you have eligible deductions. Under the supervision of a registered tax agent, we review your situation and make sure your return is lodged correctly so you do not miss anything you are entitled to.',
+    answer: 'You will be owed a tax refund if you paid more tax than required during the year. This often happens to working holiday makers when the wrong tax rate was applied, when you did not provide your TFN early enough, or when you have eligible deductions. A registered tax agent reviews your situation and makes sure your return is lodged correctly so you do not miss anything you are entitled to.',
   },
   {
     question: 'How much working holiday tax refund will I get?',
@@ -111,7 +111,7 @@ const DEDUCTIONS = [
 const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can prepare your working holiday tax return correctly.' },
   { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple, even from overseas.' },
-  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your tax return directly with the ATO under the supervision of a registered tax agent.' },
+  { n: '3', title: 'We handle everything for you',  body: 'A registered tax agent prepares and lodges your tax return directly with the ATO.' },
   { n: '4', title: 'Get your assessment',           body: 'Once your tax return is processed by the ATO, any refund you are owed is paid into your nominated Australian bank account, usually within 7-14 days.' },
 ]
 
@@ -136,19 +136,19 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}` },
-    { '@type': 'ListItem', position: 2, name: 'Tax Return', item: `${SITE_URL}/tax-return` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://workingholidaytax.com.au' },
+    { '@type': 'ListItem', position: 2, name: 'Tax Return', item: 'https://workingholidaytax.com.au/tax-return' },
   ],
 }
 
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
-  '@id': `${SITE_URL}/tax-return#service`,
+  '@id': 'https://workingholidaytax.com.au/tax-return#service',
   name: 'Working Holiday Tax Return Service',
   serviceType: 'Tax return preparation and lodgement',
   description: 'Australian tax return preparation and lodgement for 417 and 462 working holiday visa holders. Prepared and lodged with the ATO under the supervision of a registered tax agent.',
-  provider: { '@id': `${SITE_URL}/#business` },
+  provider: { '@id': 'https://workingholidaytax.com.au/#business' },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
   inLanguage: 'en-AU',
@@ -172,12 +172,12 @@ const howToSchema = {
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  '@id': `${SITE_URL}/tax-return#webpage`,
+  '@id': 'https://workingholidaytax.com.au/tax-return#webpage',
   speakable: {
     '@type': 'SpeakableSpecification',
     cssSelector: ['h1', '.hero-sub'],
   },
-  url: `${SITE_URL}/tax-return`,
+  url: 'https://workingholidaytax.com.au/tax-return',
 }
 
 export default function TaxReturnPage() {
@@ -262,7 +262,7 @@ export default function TaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['1,200+ backpackers helped',<GoogleRating variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -317,7 +317,7 @@ export default function TaxReturnPage() {
                 What is a working holiday tax return?
               </h2>
               <p className="taxret-intro-body">
-                A <strong>tax return</strong> is the annual settlement between you and the Australian Taxation Office. You declare how much you earned, claim deductions you are entitled to, and reconcile against the tax already withheld from your pay.
+                A <strong>tax return</strong> is the annual settlement between you and the Australian Taxation Office. You declare how much you earned, claim deductions you are entitled to, and reconcile against the tax already withheld from your paychecks.
               </p>
               <p className="taxret-intro-body">
                 Many working holiday makers on 417 and 462 visas <strong>overpay tax during the year</strong>. When that happens, the ATO refunds the excess back to you - your working holiday tax refund.
@@ -343,7 +343,7 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Our Service</span>
@@ -416,7 +416,7 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-10 reveal">
             <span className="section-label center">why choose us?</span>
@@ -554,7 +554,7 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#EEF7F2' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Deductions</span>
@@ -653,7 +653,7 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F4F9F6' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 

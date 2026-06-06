@@ -717,7 +717,7 @@ export default function DashboardClient() {
     setShowAddModal(false); await loadTasks()
   }
 
-  const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST/AEDT' : '—'
+  const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST' : '—'
 
   // Strip structured form data from notes — return only the user-written portion
   const extractUserNotes = (raw:string) => {
@@ -1018,13 +1018,13 @@ export default function DashboardClient() {
       `<span style="font-family:Georgia,serif;font-size:20px;font-weight:800;color:#080F0D;letter-spacing:-0.02em">Working Holiday Tax</span>` +
       `</div>` +
       `<h1 style="font-size:24px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;margin-bottom:6px">${esc(titles[task.taskType]??task.taskType)}</h1>` +
-      `<p style="font-size:12px;color:#6b7f76">Submitted: ${task.submittedAt ? new Date(task.submittedAt).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'})+' AEST/AEDT' : '—'}</p>` +
+      `<p style="font-size:12px;color:#6b7f76">Submitted: ${task.submittedAt ? new Date(task.submittedAt).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'})+' AEST' : '—'}</p>` +
       `</div>` +
 
       formBody +
 
       `<div style="margin-top:32px;padding-top:12px;border-top:1px solid #e8f0eb;display:flex;justify-content:space-between">` +
-      `<div style="font-size:10px;color:#aabab2">Generated ${new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'})} AEST/AEDT</div>` +
+      `<div style="font-size:10px;color:#aabab2">Generated ${new Date().toLocaleString('en-AU',{timeZone:'Australia/Sydney'})} AEST</div>` +
       `<div style="font-size:10px;color:#aabab2">Working Holiday Tax · workingholidaytax.com.au</div>` +
       `</div>` +
 
