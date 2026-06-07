@@ -442,7 +442,7 @@ export default function ABNPageDE() {
                   )}
                 </div>
                 <div style={{ paddingTop: '3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '3px', letterSpacing: '-0.01em', lineHeight: 1.3 }}>{s.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '3px', letterSpacing: '-0.01em', lineHeight: 1.3 }}>{s.title}</p>
                   <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.65 }}>{s.body}</p>
                 </div>
               </div>

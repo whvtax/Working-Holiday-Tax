@@ -594,7 +594,7 @@ export default function GermanTaxReturnPage() {
                     {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2 min-h-[20px]" style={{ background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
                   </div>
                   <div className="pt-1">
-                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
+                    <p className="text-[14px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
                     <p className="text-[12.5px] font-light text-muted leading-[1.65]">{s.body}</p>
                   </div>
                 </div>
