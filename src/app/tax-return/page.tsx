@@ -531,9 +531,9 @@ export default function TaxReturnPage() {
                   <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
-                  <p className="text-[13px] font-semibold text-ink">{d.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)' }}>{d.title}</p>
                 </div>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', paddingLeft:'26px' }}>{d.body}</p>
+                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '28ch', paddingLeft:'26px' }}>{d.body}</p>
               </div>
             ))}
           </div>
@@ -545,7 +545,7 @@ export default function TaxReturnPage() {
           </div>
 
           <div className="text-center mt-8 reveal delay-3">
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '14px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '16px' }}>
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '16px' }}>
               Not sure what you can claim? We review your situation and apply every deduction that fits.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
