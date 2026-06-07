@@ -117,11 +117,11 @@ export default function GermanPrivacyPage() {
         breadcrumbs={[{ label: 'Startseite', href: '/de' }, { label: 'Datenschutzerklärung' }]}
       />
 
-      <section className="pt-0 pb-10 lg:pb-14 bg-white">
+      <section className="pt-0 pb-10 lg:pb-12 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
 
-            <p className="text-[13px] font-light text-body leading-[1.75] mb-10">
+            <p className="text-[13px] font-light text-body leading-[1.75] mb-8">
               Wir sind dem Schutz deiner Privatsphäre verpflichtet und behandeln deine personenbezogenen Daten verantwortungsvoll.
             </p>
 

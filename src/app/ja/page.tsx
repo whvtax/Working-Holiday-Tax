@@ -313,7 +313,7 @@ export default async function JapaneseHomePage() {
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-14 lg:pb-12 text-center">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-12 lg:pb-12 text-center">
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6 hero-animate">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
@@ -354,7 +354,7 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
 
           <span className="section-label center">選ばれる理由</span>
@@ -369,7 +369,7 @@ export default async function JapaneseHomePage() {
             お客様が受け取るべきタックスリターン還付金を、漏れなく申告します。
           </p>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-10" style={{ marginBottom: '36px' }}>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8" style={{ marginBottom: '36px' }}>
             {[
               { title: 'ワーホリ税務の専門家', body: '417・462ビザのワーキングホリデーメーカーの税務だけを専門に扱う、登録税理士監督のもとのチーム。あなたに関わるルールを熟知しています。' },
               { title: 'ATO登録税理士の監督', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。ATOの最新ルールに完全準拠して申告します。' },
@@ -392,7 +392,7 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-12 lg:py-14 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -426,7 +426,7 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-12 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -499,7 +499,7 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-12 lg:py-14 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -535,7 +535,7 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="text-center mb-8">
             <span className="section-label center">よくあるご質問</span>

@@ -260,7 +260,7 @@ export default async function HomePage() {
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #fff 0%, #F8FBF9 100%)' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-14 lg:pb-12 text-center">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-12 lg:pb-12 text-center">
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6 hero-animate">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
@@ -298,7 +298,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center reveal">
 
           <span className="section-label center">Why us?</span>
@@ -313,7 +313,7 @@ export default async function HomePage() {
             Every refund you are entitled to, properly claimed.
           </p>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-10" style={{ marginBottom: '36px' }}>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8" style={{ marginBottom: '36px' }}>
             {[
               { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules that apply to you inside out.' },
               { title: 'ATO compliant.',                body: 'Lodged with a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
@@ -336,7 +336,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-12 lg:py-14 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -370,7 +370,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-12 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -443,7 +443,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-12 lg:py-14 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
@@ -479,7 +479,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20 bg-white">
+      <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="text-center mb-8">
             <span className="section-label center">Frequently asked</span>

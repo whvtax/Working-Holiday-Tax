@@ -120,7 +120,7 @@ export default function JapaneseMedicarePage() {
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -279,7 +279,7 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">2つのケース</span>
@@ -346,7 +346,7 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-9 lg:py-14 bg-white">
+      <section id="how-it-works" className="py-9 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">私たちが対応すること</span>
@@ -385,7 +385,7 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-2xl mx-auto text-center reveal">
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '24ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -426,7 +426,7 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
             <span className="section-label center">よくある質問</span>

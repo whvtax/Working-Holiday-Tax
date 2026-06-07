@@ -146,7 +146,7 @@ export default function TFNPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -270,13 +270,13 @@ export default function TFNPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
+          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Why choose our service</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
-              We manage your TFN application from start to finish, accurately and without delays.
+              We manage your entire TFN application for you
             </h2>
           </div>
 
@@ -311,7 +311,7 @@ export default function TFNPage() {
       </section>
 
       {/* ── SOCIAL PROOF ──────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-18 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">What travellers say</span>
@@ -325,9 +325,9 @@ export default function TFNPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">The easy way</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
@@ -370,9 +370,9 @@ export default function TFNPage() {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section id="how-to-apply" className="py-12 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
@@ -425,7 +425,7 @@ export default function TFNPage() {
             ))}
           </div>
 
-          <div className="text-center mt-8 lg:mt-12">
+          <div className="text-center mt-8 lg:mt-10">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary"
               style={{ height:'52px', padding:'0 40px', fontSize:'15px', maxWidth:'320px', width:'100%', display:'inline-flex', alignItems:'center', justifyContent:'center' }}>
               Apply for a TFN →
@@ -435,7 +435,7 @@ export default function TFNPage() {
       </section>
 
       {/* ── WHAT TO HAVE READY ── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto">
             <div className="text-center mb-6 lg:mb-8">
@@ -468,9 +468,9 @@ export default function TFNPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
 
             <div className="text-center">
               <span className="section-label center">FAQs</span>

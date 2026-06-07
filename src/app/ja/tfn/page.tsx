@@ -136,7 +136,7 @@ export default function TFNPageJA() {
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
@@ -249,32 +249,32 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── SOLUTION ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
+          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">当社のサービス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '10px' }}>
-              TFN申請を、最初から最後まで確実かつ迅速に代行
+              TFN申請のすべてを当社が代行します
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom: '28px', alignItems: 'stretch' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title: '一度で確実に完了', body: '提出前にすべての書類をチェックし、ミスや遅延を防ぎます。' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: '初日から正しい税率で', body: 'TFNを早期に取得すれば、ワーホリ最高税率45%による源泉徴収を回避できます。' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: '面倒な書類仕事はゼロ', body: '英語のATOポータルや複雑な書類と格闘する必要はありません。すべて当社が代行します。' },
-              { icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title: '日本語でかんたん・スピーディ', body: '基本情報をお送りいただくだけで、TFN申請のすべてをお任せいただけます。' },
-            ].map((item, i) => (
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'一度で確実に完了', body:'提出前にすべての書類をチェックし、ミスや遅延を防ぎます。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'初日から正しい税率で', body:'TFNを早期に取得すれば、ワーホリ最高税率45%による源泉徴収を回避できます。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'面倒な書類仕事はゼロ', body:'英語のATOポータルや複雑な書類と格闘する必要はありません。すべて当社が代行します。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'日本語でかんたん・スピーディ', body:'基本情報をお送りいただくだけで、TFN申請のすべてをお任せいただけます。' },
+            ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
-                style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
+                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
                 <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
-                  style={{ width: '36px', height: '36px', minWidth: '36px', background: '#EAF6F1', borderRadius: '8px' }}>
+                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
                   {item.icon}
                 </div>
-                <div style={{ paddingTop: '2px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)', letterSpacing: '-0.01em', marginBottom: '6px', lineHeight: 1.4 }}>{item.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', lineHeight: 1.75 }}>{item.body}</p>
+                <div style={{ paddingTop:'2px' }}>
+                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
                 </div>
               </div>
             ))}
@@ -290,7 +290,7 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-18 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">お客様の声</span>
@@ -304,9 +304,9 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── COMPARISON ───────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">かんたんな方法</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px' }}>
@@ -349,9 +349,9 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
+      <section id="how-to-apply" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">ご利用の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px', marginBottom: '10px' }}>
@@ -404,7 +404,7 @@ export default function TFNPageJA() {
             ))}
           </div>
 
-          <div className="text-center mt-8 lg:mt-12">
+          <div className="text-center mt-8 lg:mt-10">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary"
               style={{ height: '52px', padding: '0 40px', fontSize: '15px', maxWidth: '320px', width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               TFNを申請する →
@@ -414,7 +414,7 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── WHAT TO HAVE READY ── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto">
             <div className="text-center mb-6 lg:mb-8">
@@ -447,9 +447,9 @@ export default function TFNPageJA() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
 
             <div className="text-center">
               <span className="section-label center">よくあるご質問</span>

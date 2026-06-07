@@ -194,7 +194,7 @@ export default function JapaneseTaxReturnPage() {
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -337,7 +337,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">当社のサービス</span>
@@ -349,36 +349,22 @@ export default function JapaneseTaxReturnPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10l4.5 4.5 7.5-9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: 'すべての収入を正確に申告',
-                body: '複数の雇用主、ABN収入、現金払いの仕事も含めて、漏れなく集計します。',
-              },
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="11.5" x2="11" y2="11.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-                title: '登録税理士の監督のもとで代理提出',
-                body: 'TANを持つ登録税理士の監督の下、ATOに直接タックスリターンを提出します。',
-              },
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: 'すべての控除を漏れなく適用',
-                body: '作業着、工具、ライセンス、メディケア税免除など、対象となる控除をすべて適用します。',
-              },
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: '日本語で安心サポート',
-                body: '専門用語を使わず日本語でわかりやすくご案内。ATOからの問い合わせも当社が代理対応します。',
-              },
-            ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-forest-500" style={{ background: '#EAF6F1' }}>
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'すべての収入を正確に申告', body:'複数の雇用主、ABN収入、現金払いの仕事も含めて、漏れなく集計します。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'登録税理士の監督のもとで代理提出', body:'TANを持つ登録税理士の監督の下、ATOに直接タックスリターンを提出します。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'すべての控除を漏れなく適用', body:'作業着、工具、ライセンス、メディケア税免除など、対象となる控除をすべて適用します。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'日本語で安心サポート', body:'専門用語を使わず日本語でわかりやすくご案内。ATOからの問い合わせも当社が代理対応します。' },
+            ].map((item,i) => (
+              <div key={i} className="bg-white rounded-2xl flex gap-4"
+                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
+                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
+                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
                   {item.icon}
                 </div>
-                <div>
-                  <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '6px' }}>{item.title}</p>
-                  <p className="text-[13px] font-light text-muted leading-[1.75]">{item.body}</p>
+                <div style={{ paddingTop:'2px' }}>
+                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
                 </div>
               </div>
             ))}
@@ -410,9 +396,9 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── COMPARISON ── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">かんたんな方法</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
@@ -455,7 +441,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── TAX RATES ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="py-10 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">税率</span>
@@ -529,7 +515,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">控除可能な経費</span>
@@ -575,7 +561,7 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-14 bg-white">
+      <section id="how-it-works" className="py-10 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">ご利用の流れ</span>
@@ -618,7 +604,7 @@ export default function JapaneseTaxReturnPage() {
             </div>
           </div>
 
-          <div className="text-center mt-10 reveal delay-2">
+          <div className="text-center mt-8 reveal delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 32px', fontSize: '15px' }}>
               タックスリターンを依頼する →
             </a>
@@ -627,64 +613,43 @@ export default function JapaneseTaxReturnPage() {
         </div>
       </section>
 
-      {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-
-            <div className="reveal text-center lg:text-left">
-              <span className="section-label center lg:text-left">スケジュール</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
-                還付金の受け取りまでの流れ
-              </h2>
-              <div className="space-y-0">
-                {[
-                  { label: '当社の準備',     body: 'お送りいただいた書類をもとに、当社が通常24時間以内にタックスリターンを準備・提出します。' },
-                  { label: 'ATOの処理',     body: 'ATOは通常7〜14営業日でタックスリターンを処理。繁忙期（7〜8月）はもう少し時間がかかる場合があります。' },
-                  { label: '還付金の入金',  body: '処理完了後、還付金はご指定のオーストラリアの銀行口座に直接振り込まれます。' },
-                ].map((item, i) => (
-                  <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <p className="text-[13px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{item.label}</p>
-                    <p className="text-[13px] font-light text-muted leading-[1.85]">{item.body}</p>
-                  </div>
-                ))}
-                <div style={{ borderTop: '1px solid #E2EFE9' }} />
-              </div>
-            </div>
-
-            <div className="reveal delay-1 text-center lg:text-left">
-              <span className="section-label center lg:text-left">必要なもの</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+      {/* ── WHAT TO HAVE READY ── */}
+      <section className="py-10 lg:py-14" style={{ background:'#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-6 lg:mb-8">
+              <span className="section-label center">必要なもの</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em' }}>
                 ご準備いただくもの
               </h2>
-              <div className="space-y-0">
-                {[
-                  { n: '01', label: 'TFN（タックスファイルナンバー）', hint: 'あなたの納税者番号' },
-                  { n: '02', label: '個人情報',                      hint: 'パスポート・連絡先・住所' },
-                  { n: '03', label: '銀行口座情報',                   hint: '還付金の振込先（豪・日本どちらも可）' },
-                  { n: '04', label: '業務関連経費の領収書',           hint: '控除を申請する場合のみ' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3" style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#EAF6F1', color: '#0B5240', fontSize: '13px', letterSpacing: '-0.02em' }}>
-                      {item.n}
-                    </div>
-                    <div className="flex-1 text-left">
-                      <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.005em', lineHeight: 1.4 }}>{item.label}</p>
-                      <p className="text-[12px] font-light text-muted" style={{ lineHeight: 1.45, marginTop: '1px' }}>{item.hint}</p>
-                    </div>
+            </div>
+            <div className="space-y-0">
+              {[{ n:'01', label:'TFN（タックスファイルナンバー）', hint:'あなたの納税者番号' }, { n:'02', label:'個人情報', hint:'パスポート・連絡先・住所' }, { n:'03', label:'銀行口座情報', hint:'還付金の振込先（豪・日本どちらも可）' }, { n:'04', label:'業務関連経費の領収書', hint:'控除を申請する場合のみ' }].map((item, i) => (
+                <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
+                  <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
+                    {item.n}
                   </div>
-                ))}
-                <div style={{ borderTop: '1px solid #E2EFE9' }} />
-              </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing:'-0.005em', lineHeight:1.35 }}>{item.label}</p>
+                    <p className="text-[12px] font-light text-muted" style={{ lineHeight:1.4, marginTop:'1px' }}>{item.hint}</p>
+                  </div>
+                </div>
+              ))}
+              <div style={{ borderTop:'1px solid #E2EFE9' }} />
+            </div>
+            <div className="text-center mt-8">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', justifyContent:'center' }}>
+                タックスリターンを始める →
+              </a>
             </div>
           </div>
         </div>
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
 
             <div className="text-center">
               <span className="section-label center">よくあるご質問</span>

@@ -117,12 +117,12 @@ export default function PrivacyPage() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }]}
       />
 
-      <section className="pt-0 pb-10 lg:pb-14 bg-white">
+      <section className="pt-0 pb-10 lg:pb-12 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
 
             {/* Intro statement */}
-            <p className="text-[13px] font-light text-body leading-[1.75] mb-10">
+            <p className="text-[13px] font-light text-body leading-[1.75] mb-8">
               We are committed to protecting your privacy and handling your personal information responsibly.
             </p>
 

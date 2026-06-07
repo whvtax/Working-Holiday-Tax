@@ -176,18 +176,18 @@ export default function JapaneseClientAgreementPage() {
         breadcrumbs={[{ label: 'ホーム', href: '/ja' }, { label: 'クライアント規約' }]}
       />
 
-      <section className="pt-0 pb-10 lg:pb-14 bg-white">
+      <section className="pt-0 pb-10 lg:pb-12 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
 
-            <div className="rounded-xl px-5 py-4 mb-10" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
+            <div className="rounded-xl px-5 py-4 mb-8" style={{ background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
               <p className="text-[13px] font-light text-body leading-[1.75]">
                 Working Holiday Taxは、登録税理士の監督下で運営されています：{' '}
                 <strong className="font-semibold text-ink">{AGENT_NAME}（ABN：{AGENT_ABN}）、Tax Agent Number {AGENT_TPB}</strong>。
               </p>
             </div>
 
-            <p className="text-[13px] font-light text-body leading-[1.75] mb-10">
+            <p className="text-[13px] font-light text-body leading-[1.75] mb-8">
               本契約は、お客様（「クライアント」）とWorking Holiday Tax（「プロバイダー」）の間で締結され、タックスリターンの準備、提出、および関連サポートを含む当社のオーストラリア税務サービスのご利用を規定します。
             </p>
 

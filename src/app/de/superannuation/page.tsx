@@ -164,7 +164,7 @@ export default function GermanSuperannuationPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Brotkrümelnavigation" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -316,44 +316,32 @@ export default function GermanSuperannuationPage() {
       </section>
 
       {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Warum unser Service</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              Deine Super gehört dir. Du musst sie nur beantragen.
+              Wir helfen dir, die dir zustehende Super zurückzuholen
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 mb-8 lg:mb-10 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
-              {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="9.5" cy="9.5" r="6.5" stroke="currentColor" strokeWidth="1.4"/><path d="M14.3 14.3L19 19" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>,
-                title: 'Wir finden jedes Superkonto',
-                body: 'Mehrere Jobs bedeuten oft mehrere Fonds. Wir finden sie alle, damit nichts von deiner Super verloren geht.',
-              },
-              {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="8.5" stroke="currentColor" strokeWidth="1.4"/><path d="M2.5 11h17M11 2.5c2.4 2.6 2.4 13.4 0 17M11 2.5c-2.4 2.6-2.4 13.4 0 17" stroke="currentColor" strokeWidth="1.2"/></svg>,
-                title: 'Auch nach der Abreise beantragen',
-                body: 'Wir reichen deinen DASP komplett online ein und zahlen ihn auf dein Konto im Ausland - auch Jahre nach deiner Rückkehr.',
-              },
-              {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 2.5l7 2.5v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9v-5l7-2.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-                title: 'Es ist dein Geld, nicht das des ATO',
-                body: 'Nicht beantragte Super geht irgendwann an das ATO. Wir sorgen dafür, dass sie stattdessen zu dir zurückkommt.',
-              },
-              {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="4" y="3" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.4"/><path d="M7.5 8.5h7M7.5 12h4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: 'DASP eingereicht, Steuer geregelt',
-                body: 'Wir bereiten deine Departing Australia Superannuation Payment vor und kümmern uns korrekt um die Quellensteuer.',
-              },
-            ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl flex flex-col" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center text-forest-500" style={{ background: '#EAF6F1', marginBottom: '12px' }}>
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Wir finden jedes Superkonto', body:'Mehrere Jobs bedeuten oft mehrere Fonds. Wir finden sie alle, damit nichts von deiner Super verloren geht.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Auch nach der Abreise beantragen', body:'Wir reichen deinen DASP komplett online ein und zahlen ihn auf dein Konto im Ausland - auch Jahre nach deiner Rückkehr.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Es ist dein Geld, nicht das des ATO', body:'Nicht beantragte Super geht irgendwann an das ATO. Wir sorgen dafür, dass sie stattdessen zu dir zurückkommt.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'DASP eingereicht, Steuer geregelt', body:'Wir bereiten deine Departing Australia Superannuation Payment vor und kümmern uns korrekt um die Quellensteuer.' },
+            ].map((item,i) => (
+              <div key={i} className="bg-white rounded-2xl flex gap-4"
+                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
+                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
+                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
                   {item.icon}
                 </div>
-                <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '6px' }}>{item.title}</p>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch' }}>{item.body}</p>
+                <div style={{ paddingTop:'2px' }}>
+                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -384,9 +372,9 @@ export default function GermanSuperannuationPage() {
 
 
       {/* ── COMPARISON ── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section className="py-12 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Der einfache Weg</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
@@ -429,7 +417,7 @@ export default function GermanSuperannuationPage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
             <span className="section-label center">Schritt für Schritt</span>
@@ -472,7 +460,7 @@ export default function GermanSuperannuationPage() {
             </div>
           </div>
 
-          <div className="text-center mt-10 reveal delay-2">
+          <div className="text-center mt-8 reveal delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
               Super beantragen →
             </a>
@@ -481,7 +469,7 @@ export default function GermanSuperannuationPage() {
       </section>
 
       {/* ── WHAT TO HAVE READY ── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto">
             <div className="text-center mb-6 lg:mb-8">
@@ -514,15 +502,15 @@ export default function GermanSuperannuationPage() {
       </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 items-start">
 
             <div className="text-center">
               <span className="section-label center">FAQ</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                Häufige Fragen zu Super.
+                Häufige Fragen zu Super
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
