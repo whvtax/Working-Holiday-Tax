@@ -68,7 +68,7 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const result = getGermanGuide(params.slug)
   if (!result) return {}
-  const { guide } = result
+  const { guide, isTranslated } = result
   const categoryKeywords = CATEGORY_KEYWORDS[guide.category] || []
   return {
     title: `${guide.title} | Working Holiday Tax`,
@@ -90,7 +90,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       guide.title,
     ],
     alternates: {
-      canonical: `${SITE_URL}/de/blog/${guide.slug}`,
+      // When the post body is still English (not yet translated), point the
+      // canonical at the English source so Google doesn't index duplicate
+      // English content under a /de/ URL.
+      canonical: isTranslated
+        ? `${SITE_URL}/de/blog/${guide.slug}`
+        : `${SITE_URL}/blog/${guide.slug}`,
       languages: {
         'en-AU': `${SITE_URL}/blog/${guide.slug}`,
         'de': `${SITE_URL}/de/blog/${guide.slug}`,
@@ -112,10 +117,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: guide.description,
     },
     robots: {
-      index: true,
+      // Don't index untranslated (English-bodied) posts under /de — avoids
+      // duplicate content. Still follow links so equity flows to the English original.
+      index: isTranslated,
       follow: true,
       googleBot: {
-        index: true,
+        index: isTranslated,
         follow: true,
         'max-snippet': -1,
         'max-image-preview': 'large',

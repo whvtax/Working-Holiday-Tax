@@ -243,8 +243,7 @@ export default function TaxReturnPage() {
                 maxWidth:'46ch',
                 marginBottom:'0',
               }}>
-              <span className="hidden lg:inline">For 417 and 462 visa holders. Most tax returns are lodged within 24 hours - even after you have left Australia.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>For 417 &amp; 462 visa holders. Most returns lodged within 24 hours even after you leave.</span>
+              <span>For 417 and 462 visa holders. Most tax returns are lodged within 24 hours - even after you have left Australia.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -487,8 +486,7 @@ export default function TaxReturnPage() {
               Working holiday maker tax rates in Australia
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '40ch' }}>
-              <span className="hidden lg:inline">Tax rates for 417 and 462 visa holders are different from Australian residents.</span>
-              <span className="lg:hidden">Tax rates for 417 &amp; 462 visa holders<br />are different from Australian residents.</span>
+              <span>Tax rates for 417 and 462 visa holders are different from Australian residents.</span>
             </p>
           </div>
 

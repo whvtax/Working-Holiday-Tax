@@ -3,16 +3,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateSession } from '@/lib/crm-store'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
 
-function authRead(req: NextRequest) {
-  return validateSession(req.cookies.get('crm_session')?.value)
-}
-
-function authWrite(req: NextRequest) {
+function auth(req: NextRequest) {
   return validateSession(req.cookies.get('crm_session')?.value)
 }
 
 export async function GET(req: NextRequest) {
-  if (!authRead(req)) return NextResponse.json({ ok:false }, { status:401 })
+  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const { searchParams } = new URL(req.url)
     const parseNum = (v: string | null, def: number) => {
@@ -30,7 +26,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  if (!authWrite(req)) return NextResponse.json({ ok:false }, { status:401 })
+  if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
     const { createTask } = await import('@/lib/db')

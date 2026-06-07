@@ -244,8 +244,7 @@ export default function GermanTaxReturnPage() {
                 maxWidth:'48ch',
                 marginBottom:'0',
               }}>
-              <span className="hidden lg:inline">Für 417 und 462 Visuminhaber. Die meisten Steuererklärungen reichen wir innerhalb von 24 Stunden ein - auch nach deiner Rückkehr aus Australien.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>Für 417 &amp; 462 Visa. Die meisten Erklärungen innerhalb von 24h eingereicht auch nach deiner Rückkehr.</span>
+              <span>Für 417 und 462 Visuminhaber. Die meisten Steuererklärungen reichen wir innerhalb von 24 Stunden ein - auch nach deiner Rückkehr aus Australien.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -488,8 +487,7 @@ export default function GermanTaxReturnPage() {
               Working Holiday Maker Steuersätze in Australien
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '42ch' }}>
-              <span className="hidden lg:inline">Steuersätze für 417 und 462 Visa unterscheiden sich von denen australischer Steuerresidenten.</span>
-              <span className="lg:hidden">Steuersätze für 417 &amp; 462 Visa unterscheiden sich<br />von denen australischer Steuerresidenten.</span>
+              <span>Steuersätze für 417 und 462 Visa unterscheiden sich von denen australischer Steuerresidenten.</span>
             </p>
           </div>
 

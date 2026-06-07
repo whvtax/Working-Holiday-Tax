@@ -97,13 +97,39 @@ function toTask(r: Record<string, unknown>): Task {
   }
 }
 
-// ── Returning client lookup ────────────────────────────────────────────────
+// ── Audit trail ──────────────────────────────────────────────────────────
+// Best-effort, fail-safe record of sensitive/destructive CRM actions. NEVER
+// throws and NEVER blocks the underlying operation — if the crm_audit table
+// doesn't exist yet (migration 003 not run) or the write fails, it's swallowed.
+// Single-admin system, so actor defaults to 'crm-admin'.
+export async function logAudit(
+  action: string,
+  targetId: string,
+  detail = '',
+  actor = 'crm-admin',
+): Promise<void> {
+  try {
+    const sb = getSupabase()
+    await sb.from('crm_audit').insert({
+      actor,
+      action,
+      target_id: targetId ?? '',
+      detail: typeof detail === 'string' ? detail.slice(0, 2000) : '',
+    })
+  } catch (err) {
+    console.error('[audit] failed to record', action, err)
+  }
+}
+
+
 
 export async function findExistingClient(email: string, whatsapp: string): Promise<{ id: string } | null> {
   const sb = getSupabase()
   const norm = (s: string) => (s ?? '').trim().toLowerCase().replace(/\s+/g, '')
-  const e = norm(email)
-  const w = norm(whatsapp)
+  // Escape ILIKE wildcards so a value like "%@%" can't match unrelated clients.
+  const escapeLike = (s: string) => s.replace(/[\\%_]/g, ch => '\\' + ch)
+  const e = escapeLike(norm(email))
+  const w = escapeLike(norm(whatsapp))
   if (!e && !w) return null
 
   // Search crm_clients - case-insensitive match via ilike on each field separately.
@@ -356,6 +382,7 @@ export async function deleteTaskPermanent(taskId: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)
   if (error) throw error
+  await logAudit('task.delete_permanent', taskId)
 }
 
 // ── Clients ────────────────────────────────────────────────────────────────
@@ -411,6 +438,7 @@ export async function deleteClient(id: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('crm_clients').delete().eq('id', id)
   if (error) throw error
+  await logAudit('client.delete', id)
 }
 
 export async function updateClientNotes(id: string, notes: string): Promise<void> {
@@ -441,6 +469,7 @@ export async function removeTaxReturn(clientId: string, year: string): Promise<v
     .update({ tax_returns: JSON.stringify(updated) })
     .eq('id', clientId)
   if (error) throw error
+  await logAudit('client.remove_tax_return', clientId, `year=${year}`)
 }
 
 export async function addSuperReturn(clientId: string, r: SuperReturn): Promise<void> {
@@ -463,6 +492,7 @@ export async function removeSuperReturn(clientId: string, year: string): Promise
     .update({ super_returns: JSON.stringify(updated) })
     .eq('id', clientId)
   if (error) throw error
+  await logAudit('client.remove_super_return', clientId, `year=${year}`)
 }
 
 // ── TFN / ABN services ────────────────────────────────────────────────────
@@ -528,6 +558,7 @@ export async function clearClientSensitiveData(id: string): Promise<ClientRecord
     : `[PII CLEARED ${new Date().toISOString().slice(0, 10)}] ${client.notes}`.trim()
 
   await sb.from('crm_clients').update({ notes: clearedNote }).eq('id', id)
+  await logAudit('client.clear_sensitive_data', id)
   return getClientById(id)
 }
 
@@ -546,6 +577,7 @@ export async function archiveClient(id: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('crm_clients').update({ archived: true }).eq('id', id)
   if (error) throw error
+  await logAudit('client.archive', id)
 }
 
 export async function unarchiveClient(id: string): Promise<void> {

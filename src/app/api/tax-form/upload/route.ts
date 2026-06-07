@@ -1,6 +1,6 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
-import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
+import { getSupabase, STORAGE_BUCKETS, assertUploadsBucketPrivate } from '@/lib/supabase'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import crypto from 'crypto'
@@ -95,6 +95,8 @@ export async function POST(req: NextRequest) {
     const pathname = `tax-form/invoices/${Date.now()}_${crypto.randomUUID().slice(0, 8)}_${safeName}`
 
     const sb = getSupabase()
+    // Fail closed: never write identity docs / invoices into a public bucket.
+    await assertUploadsBucketPrivate()
     const { error: uploadError } = await sb.storage
       .from(STORAGE_BUCKETS.uploads)
       .upload(pathname, body, {

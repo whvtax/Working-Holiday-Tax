@@ -1,15 +1,10 @@
 /** @type {import('next').NextConfig} */
-const securityHeaders = [
-  { key: 'X-Content-Type-Options',  value: 'nosniff' },
-  { key: 'X-Frame-Options',         value: 'DENY' },
-  { key: 'X-XSS-Protection',        value: '1; mode=block' },
-  { key: 'Referrer-Policy',         value: 'strict-origin-when-cross-origin' },
-  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
-  { key: 'Permissions-Policy',      value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()' },
-  { key: 'Cross-Origin-Opener-Policy',   value: 'same-origin' },
-  { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
-  { key: 'X-DNS-Prefetch-Control',       value: 'on' },
-  {
+// When CSP_NONCE_ENABLED=true, the CSP is set per-request (with a nonce) by
+// middleware instead, so we must NOT also emit a static CSP here or the two
+// headers conflict. All OTHER security headers stay regardless.
+const CSP_NONCE_ENABLED = process.env.CSP_NONCE_ENABLED === 'true'
+
+const staticCsp = {
     key: 'Content-Security-Policy',
     value: [
       "default-src 'self'",
@@ -33,14 +28,30 @@ const securityHeaders = [
       "frame-ancestors 'none'",
       "upgrade-insecure-requests",
     ].join('; '),
-  },
+  }
+
+const securityHeaders = [
+  { key: 'X-Content-Type-Options',  value: 'nosniff' },
+  { key: 'X-Frame-Options',         value: 'DENY' },
+  { key: 'X-XSS-Protection',        value: '1; mode=block' },
+  { key: 'Referrer-Policy',         value: 'strict-origin-when-cross-origin' },
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+  { key: 'Permissions-Policy',      value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()' },
+  { key: 'Cross-Origin-Opener-Policy',   value: 'same-origin' },
+  { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
+  { key: 'X-DNS-Prefetch-Control',       value: 'on' },
+  // Static CSP only when NOT in nonce mode (middleware owns CSP in nonce mode).
+  ...(CSP_NONCE_ENABLED ? [] : [staticCsp]),
 ]
 
 const nextConfig = {
   trailingSlash: false,
   compress: true,
-  eslint:     { ignoreDuringBuilds: true },
-  typescript: { ignoreBuildErrors: true },
+  // Build-time safety nets. The codebase typechecks clean and lint emits only
+  // warnings, so failing the build on real type errors is worth it for a site
+  // handling financial PII. Flip back to true only as a temporary escape hatch.
+  eslint:     { ignoreDuringBuilds: false },
+  typescript: { ignoreBuildErrors: false },
   experimental: {
     serverActions: { bodySizeLimit: '15mb' },
   },

@@ -88,12 +88,12 @@ async function sendOtpEmail(to: string, apiKey: string, otp: string): Promise<bo
         subject: 'Your CRM login code',
         html: `
           <div style="font-family:system-ui,sans-serif;max-width:400px;margin:0 auto;">
-            <div style="background:#0E5C42;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
+            <div style="background:#0B5240;border-radius:16px 16px 0 0;padding:28px 32px;text-align:center;">
               <h1 style="color:#fff;font-size:18px;margin:0;font-weight:600;">CRM Login Code</h1>
             </div>
             <div style="background:#f9fafb;border:1px solid #e8e8e8;border-top:none;border-radius:0 0 16px 16px;padding:32px;text-align:center;">
               <p style="font-size:14px;color:#555;margin:0 0 20px;">Your one-time login code:</p>
-              <div style="background:#fff;border:2px solid #0E5C42;border-radius:12px;padding:20px;letter-spacing:0.3em;font-size:32px;font-weight:700;color:#0E5C42;">${otp}</div>
+              <div style="background:#fff;border:2px solid #0B5240;border-radius:12px;padding:20px;letter-spacing:0.3em;font-size:32px;font-weight:700;color:#0B5240;">${otp}</div>
               <p style="font-size:12px;color:#999;margin:16px 0 0;">Valid for 10 minutes · ${time} (Sydney)</p>
             </div>
           </div>

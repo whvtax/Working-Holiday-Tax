@@ -286,6 +286,7 @@ export default function DashboardClient() {
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
+  const [permDeleteText, setPermDeleteText] = useState('')
   const [confirmArchive, setConfirmArchive] = useState<string|null>(null)
 
   // Reused AudioContext for the new-task notification beep.
@@ -2868,16 +2869,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
       {/* Confirm permanent delete */}
       {confirmPermDelete && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmPermDelete(null)}}>
+        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setConfirmPermDelete(null);setPermDeleteText('')}}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
             <div style={{fontSize:34,marginBottom:10}}>⚠️</div>
             <div style={S.mTitle}>Delete permanently?</div>
-            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:14}}>
               All data will be deleted with <strong>no client card created</strong>. This cannot be undone.
             </div>
+            <div style={{fontSize:12,color:'#7a8a82',marginBottom:6,textAlign:'left'}}>Type <strong>DELETE</strong> to confirm:</div>
+            <input
+              autoFocus
+              value={permDeleteText}
+              onChange={e=>setPermDeleteText(e.target.value)}
+              placeholder="DELETE"
+              style={{width:'100%',padding:'9px 12px',border:'1.5px solid #e4ede8',borderRadius:9,fontSize:14,marginBottom:18,fontFamily:'inherit',outline:'none',boxSizing:'border-box'}}
+            />
             <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmPermDelete(null)}>Cancel</button>
-              <button style={S.mDel} onClick={()=>deleteTaskPermanently(confirmPermDelete)}>Yes, delete permanently</button>
+              <button style={S.mCancel} onClick={()=>{setConfirmPermDelete(null);setPermDeleteText('')}}>Cancel</button>
+              <button
+                style={{...S.mDel, opacity: permDeleteText.trim().toUpperCase()==='DELETE'?1:0.4, cursor: permDeleteText.trim().toUpperCase()==='DELETE'?'pointer':'not-allowed'}}
+                disabled={permDeleteText.trim().toUpperCase()!=='DELETE'}
+                onClick={()=>{deleteTaskPermanently(confirmPermDelete);setPermDeleteText('')}}>Yes, delete permanently</button>
             </div>
           </div>
         </div>
