@@ -58,12 +58,11 @@ export const metadata: Metadata = {
 
 const faqs = [
   { question: 'TFNを取得する前から働けますか？', answer: 'はい、TFNの到着を待たずにすぐに働き始めることができます。ただし、勤務開始から28日以内に雇用主にTFNを提出する必要があります。提出されるまで、雇用主は最高税率の45%で源泉徴収する義務があります。後日タックスリターンで取り戻せますが、到着前に申請しておくのがおすすめです。' },
-  { question: 'TFNはどこに送られてきますか？', answer: '申請時に登録したオーストラリアの住所にATOから郵送されます。シェアハウスやホステル、友人宅でも構いません。郵便を確実に受け取れる住所をご登録ください。発行から到着まで最長28日かかります。' },
   { question: '観光ビザでもTFNは取得できますか？', answer: 'いいえ、観光ビザでは取得できません。TFNを申請するには、就労許可のあるビザ（ワーキングホリデービザ417・462、学生ビザ、就労ビザなど）が必要です。' },
   { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去のタックスリターンの控えや給与明細から確認できます。また、登録税理士の監督のもとでATO記録から取得することも可能です。' },
   { question: 'TFN Declaration（タックスファイルナンバー宣言書）とは？', answer: '新しい仕事を始める際に雇用主に提出する書類です。あなたのTFN、ビザステータス、税務区分を伝えることで、雇用主が正しい税率（ワーキングホリデーメーカーは15%）で源泉徴収できるようになります。' },
   { question: 'オーストラリア渡航前にTFNを申請できますか？', answer: 'TFNの申請はオーストラリア到着後、ワーキングホリデービザがアクティベートされてから行います。ATOからのTFN通知書を受け取るため、オーストラリア国内の郵送先住所が必要です。シェアハウスやホステルの住所でも問題ありません。' },
-  { question: 'TFNとタックスリターン還付金の関係は？', answer: 'TFNはオーストラリアの税務記録すべてをあなたに紐付ける番号です。TFNを雇用主に提出していない場合、ワーホリ税率15%ではなく最高税率45%で源泉徴収されます。その分、タックスリターン提出時に大きな還付金として戻ってくることが多いです。' },
+  { question: 'TFNとタックスリターン還付金の関係は？', answer: 'TFNはオーストラリアの税務記録すべてをあなたに紐付ける番号です。TFNを雇用主に提出していない場合、ワーホリ税率15%ではなく最高税率45%で源泉徴収されます。その分、タックスリターン提出時に大きな還付金として戻ってくることが多いです。' }
 ]
 
 const STEPS = [
@@ -187,7 +186,7 @@ export default function TFNPageJA() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
+              {['350名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -216,15 +215,6 @@ export default function TFNPageJA() {
               <p className="tfn-intro-body">
                 TFNを取得すれば、ワーキングホリデーメーカーは年収45,000ドルまで<strong>15%</strong>のワーホリ税率が適用されます。週あたり数百ドルもの差になることもあります。
               </p>
-              <div className="tfn-intro-note">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
-                  <path d="M12 8v5M12 16h.01" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-                <p style={{ margin: 0, fontSize: '13.5px', color: '#2A3C34', lineHeight: 1.75 }}>
-                  TFNは生涯有効です。一度取得すれば、後日セカンドビザでオーストラリアに戻ってきても同じ番号を使い続けられます。
-                </p>
-              </div>
             </div>
 
             <div className="tfn-intro-visual">

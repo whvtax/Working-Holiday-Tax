@@ -50,10 +50,6 @@ const rhca = [
 
 const faqs = [
   {
-    question: 'Muss ich mich für Medicare registrieren?',
-    answer: 'Nur, wenn du aus einem Land mit einem Sozialversicherungsabkommen (RHCA) mit Australien kommst. Wenn du nicht berechtigt bist, musst du dich nicht registrieren und solltest stattdessen die Medicare-Levy-Befreiung bei deiner Steuererklärung beantragen.',
-  },
-  {
     question: 'Was ist die Medicare-Levy-Befreiung?',
     answer: 'Wenn du nicht für Medicare berechtigt bist - was auf die meisten Working Holiday Visuminhaber zutrifft - kannst du dich bei deiner Steuererklärung von der Medicare Levy befreien lassen. Wir kümmern uns darum als Teil unserer Steuererklärungsleistung.',
   },
@@ -66,10 +62,6 @@ const faqs = [
     answer: 'Nicht, wenn du eine Befreiung beantragst. Wenn du nicht für Medicare berechtigt bist, solltest du in deiner Steuererklärung eine Medicare-Levy-Befreiung beantragen - dann wird sie dir nicht abgezogen.',
   },
   {
-    question: 'Was ist eine private Krankenversicherung und brauche ich sie?',
-    answer: 'Eine private Krankenversicherung deckt medizinische Kosten ab, die Medicare nicht übernimmt. Wenn du nicht für Medicare berechtigt bist, solltest du je nach deiner Situation eine private Krankenversicherung in Betracht ziehen. Das hat aber nichts mit der Medicare Levy zu tun.',
-  },
-  {
     question: 'Hat mein Working Holiday Visum Einfluss auf meine Medicareberechtigung?',
     answer: 'Ja. Die meisten Working Holiday Visuminhaber sind nicht für Medicare berechtigt, außer sie kommen aus einem Land mit Sozialversicherungsabkommen. Wenn du nicht berechtigt bist, beantragen wir die Medicare-Levy-Befreiung als Teil deiner Steuererklärung.',
   },
@@ -80,7 +72,7 @@ const faqs = [
   {
     question: 'Aus welchen Ländern besteht ein Medicare-Abkommen mit Australien?',
     answer: 'Australien hat Sozialversicherungsabkommen (RHCA) mit 11 Ländern, darunter Großbritannien, Irland, Italien, Schweden, die Niederlande, Belgien, Finnland, Norwegen, Malta, Slowenien und Neuseeland. Working Holiday Maker aus Deutschland und Österreich sind nicht abgedeckt und sollten eine Medicare-Levy-Befreiung in ihrer Steuererklärung beantragen.',
-  },
+  }
 ]
 
 const faqSchema = {
@@ -213,7 +205,7 @@ export default function GermanMedicarePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
+              {['350+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

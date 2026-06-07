@@ -59,10 +59,6 @@ const rhca = [
 
 const faqs = [
   {
-    question: 'Do I need to register for Medicare?',
-    answer: 'Only if you are from a country with a Reciprocal Health Care Agreement (RHCA) with Australia. If you are not eligible, you do not need to register and should apply for a Medicare levy exemption when lodging your tax return.',
-  },
-  {
     question: 'What is the Medicare levy exemption?',
     answer: 'If you are not eligible for Medicare - which applies to most Working Holiday Visa holders - you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
   },
@@ -75,10 +71,6 @@ const faqs = [
     answer: 'Not if you apply for an exemption. If you are not eligible for Medicare, you should claim a Medicare levy exemption on your tax return - which means you will not be charged.',
   },
   {
-    question: 'What is private health insurance and do I need it?',
-    answer: 'Private health insurance covers medical costs not covered by Medicare. If you are not eligible for Medicare, you may want to consider private health cover depending on your situation. This is separate from the Medicare levy.',
-  },
-  {
     question: 'Does my Working Holiday visa affect my Medicare eligibility?',
     answer: 'Yes. Most Working Holiday visa holders are not eligible for Medicare unless they are from a country with a Reciprocal Health Care Agreement. If you are not eligible, we apply a Medicare levy exemption as part of your tax return.',
   },
@@ -89,7 +81,7 @@ const faqs = [
   {
     question: 'Am I from a country with a Medicare agreement with Australia?',
     answer: 'Australia has Reciprocal Health Care Agreements with 11 countries including the UK, Ireland, Italy, Sweden, the Netherlands, Belgium, Finland, Norway, Malta, Slovenia and New Zealand. Working holiday makers from Germany and Japan are not covered by an RHCA and should claim a Medicare levy exemption on their tax return.',
-  },
+  }
 ]
 
 const faqSchema = {
@@ -217,7 +209,7 @@ export default function MedicarePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

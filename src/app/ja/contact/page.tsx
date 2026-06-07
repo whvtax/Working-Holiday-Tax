@@ -79,12 +79,8 @@ const FAQS = [
   {
     question: '日本に帰国後でも対応してもらえますか？',
     answer: 'はい。日本に帰国された後でも、オーストラリアのタックスリターン還付金、スーパー（DASP）、その他の税務手続きを日本からオンラインで申請できます。すべての手続きはオンラインで完結し、オーストラリアに戻る必要はありません。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能ですが、スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
-  },
-  {
-    question: '初めてのお問い合わせ時、何を伝えればいいですか？',
-    answer: '最初は簡単な情報だけで大丈夫です。ビザの種類（417または462）、オーストラリアで働いていたおおよその時期、ご相談内容（タックスリターン、スーパー、TFN、ABN）、現在のご滞在先をお知らせください。書類が必要になった場合は、その後に具体的にご案内いたします。',
-  },
-]
+  }
+  ]
 
 export default function JapaneseContactPage() {
 
@@ -214,7 +210,7 @@ export default function JapaneseContactPage() {
                 color: 'rgba(10,15,13,0.7)',
                 maxWidth: '46ch',
               }}>
-              担当者が直接対応します。営業時間内なら1時間以内にご返信します。
+              営業時間内なら1時間以内にご返信します。
             </p>
           </div>
         </div>
@@ -225,7 +221,7 @@ export default function JapaneseContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '1,200+', label: 'サポート実績' },
+              { stat: '350+', label: 'サポート実績' },
               { stat: <GoogleRating variant="number" lang="ja" />, label: '評価' },
               { stat: '45+',    label: '対応国数' },
               { stat: '~1時間', label: '返信時間' },

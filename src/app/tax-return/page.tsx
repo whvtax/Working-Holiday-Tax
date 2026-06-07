@@ -74,10 +74,6 @@ const faqs = [
     answer: 'Yes. If you earned income in Australia on your working holiday visa, you may still need to lodge a tax return, even if you only worked for a short period. A short stay often means tax was overwithheld, so lodging is usually the only way to claim back what you are owed.',
   },
   {
-    question: 'What happens if I do not lodge my tax return?',
-    answer: 'If you are required to lodge and do not do so, the ATO may apply penalties or take further action. You also miss the chance to claim any tax refund you are entitled to.',
-  },
-  {
     question: 'Can I claim my tax refund after leaving Australia?',
     answer: 'Yes. You can lodge your Australian tax return from overseas after leaving the country - whether you have returned to the UK, Germany, Japan, or anywhere else. We handle the entire process online. Your tax refund must be paid to an Australian bank account.',
   },
@@ -92,12 +88,8 @@ const faqs = [
   {
     question: 'How long does a working holiday tax refund take?',
     answer: 'Once your return is lodged, the ATO usually processes it within 7 to 14 business days. Processing can be longer during busy periods or if the ATO requires extra information. Your refund is then paid directly into your chosen bank account.',
-  },
-  {
-    question: 'How do I know my tax return has been completed?',
-    answer: 'Once your tax return is processed, the ATO issues a Notice of Assessment confirming the final outcome. We forward this to you as soon as it is available.',
-  },
-]
+  }
+  ]
 
 const DEDUCTIONS = [
   { title: 'Work uniforms and clothing',   body: 'Protective or required clothing like boots, high-vis, or uniforms.' },
@@ -261,7 +253,7 @@ export default function TaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -345,7 +337,7 @@ export default function TaxReturnPage() {
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Our Service</span>
+            <span className="section-label center">Why choose our service</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               We handle your working holiday tax return from start to finish
             </h2>

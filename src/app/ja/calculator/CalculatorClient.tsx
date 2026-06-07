@@ -72,7 +72,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 letterSpacing: '-0.03em',
                 marginBottom: '10px',
               }}>
-              ワーキングホリデー税金計算機
+              WHV 税金計算機
             </h1>
 
             <p className="font-light mx-auto"
@@ -202,7 +202,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             あなたが受け取れる還付金を最大限に
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
-            この計算機は概算のみです。控除可能な経費や税額控除を見つけ出し、還付金をさらに増やせる場合が多くあります。
+            控除可能な経費や税額控除を見つけ出し、還付金をさらに増やせる場合が多くあります。
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"

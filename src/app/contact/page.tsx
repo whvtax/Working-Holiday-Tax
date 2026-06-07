@@ -80,12 +80,8 @@ const FAQS = [
   {
     question: 'Can you help me from the UK, Germany, or Japan?',
     answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries claim their Australian tax refund, super (DASP) and handle any remaining tax matters from home. The entire process is online - no travel back to Australia required.',
-  },
-  {
-    question: 'What information should I include when I first contact you?',
-    answer: 'Just a few basics to start: your visa subclass (417 or 462), roughly when you worked in Australia, what you need help with (tax return, super, TFN, ABN), and where you are now. We will let you know if any documents are needed after that.',
-  },
-]
+  }
+  ]
 
 export default function ContactPage() {
 
@@ -227,7 +223,7 @@ export default function ContactPage() {
                 color: 'rgba(10,15,13,0.7)',
                 maxWidth: '46ch',
               }}>
-              Real humans, fast replies. We will get back to you within an hour during business hours.
+              We will get back to you within an hour during business hours.
             </p>
           </div>
         </div>
@@ -238,7 +234,7 @@ export default function ContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '1,200+', label: 'Backpackers' },
+              { stat: '350+', label: 'Backpackers' },
               { stat: <GoogleRating variant="number" lang="en" />, label: 'Rating' },
               { stat: '45+',    label: 'Countries' },
               { stat: '~1 hr',  label: 'Response' },

@@ -84,17 +84,13 @@ const faqs = [
     answer: 'はい、ご指定の銀行口座（オーストラリアまたは日本を含む海外口座）に直接振り込まれます。すでに日本に帰国された方も、日本の銀行口座で問題なく受け取れます。',
   },
   {
-    question: 'ABNで請負業務をしていた場合もスーパーは受け取れますか？',
-    answer: 'ABN業務（請負業者・個人事業主）の場合、原則として雇用主からスーパー貢献はありません。スーパーは「従業員（TFNでの雇用）」として働いた期間にのみ積み立てられます。ただしABN業務でも、実態が雇用関係に近い場合はスーパーの対象となることがあるので、当社にご相談ください。',
-  },
-  {
     question: '日本に帰国後でもスーパー受取（DASP）は申請できますか？',
     answer: 'はい、日本に帰国された後でも世界中どこからでも申請できます。当社が日本語ですべての手続きを代行し、スーパー受取は直接日本の銀行口座に振り込むことが可能です。何年経っていても申請可能です。',
   },
   {
     question: 'DASPスーパー受取には税金がかかりますか？',
     answer: 'はい、DASPの支払いには、ATOが定めた固定税率で課税され、振込前に源泉徴収されます。お受け取りになるのはこの税引き後の純額です。具体的な税率はビザの種類や支払われるスーパーの種類によって異なります。',
-  },
+  }
 ]
 
 const STEPS = [
@@ -238,7 +234,7 @@ export default function JapaneseSuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['350名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -320,28 +316,33 @@ export default function JapaneseSuperannuationPage() {
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">あなたのお金です</span>
+            <span className="section-label center">当社のサービス</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
               スーパーはあなたの財産。申請するだけで取り戻せます
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-10 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 mb-8 lg:mb-10 reveal delay-1">
             {[
               {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/><path d="M11 7v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: '雇用主が自動で積立',
-                body: '雇用主はオーストラリアの法律により、給与に加えて12%をスーパーファンドに積み立てる義務があります。',
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="9.5" cy="9.5" r="6.5" stroke="currentColor" strokeWidth="1.4"/><path d="M14.3 14.3L19 19" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+                title: '複数のスーパー口座をすべて特定',
+                body: '複数の職場で働くと口座も複数に。すべて見つけ出し、取りこぼしを防ぎます。',
               },
               {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="3" y="6" width="16" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M7 6V5a4 4 0 018 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M9 12l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-                title: '帰国時に受け取れる',
-                body: 'ワーホリで働いている間に積み立てられたスーパーは、ビザ失効後にDASPで返金申請できます。',
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="8.5" stroke="currentColor" strokeWidth="1.4"/><path d="M2.5 11h17M11 2.5c2.4 2.6 2.4 13.4 0 17M11 2.5c-2.4 2.6-2.4 13.4 0 17" stroke="currentColor" strokeWidth="1.2"/></svg>,
+                title: '帰国後でも申請可能',
+                body: 'DASPはすべてオンラインで申請し、海外の口座へお振込み。帰国から数年後でも対応します。',
               },
               {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3v18M3 11h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: '当社が代理で取り戻します',
-                body: 'スーパーファンドの特定から申請まで日本語で完全代行。お振込まで責任を持って対応します。',
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 2.5l7 2.5v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9v-5l7-2.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                title: 'あなたのお金、ATOのものではありません',
+                body: '未申請のスーパーはいずれATOに移管されます。きちんとあなたの元へ戻します。',
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="4" y="3" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.4"/><path d="M7.5 8.5h7M7.5 12h4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+                title: 'DASP申請と税務までフルサポート',
+                body: '出国時スーパー受取（DASP）の申請を準備し、源泉徴収税も正しく処理します。',
               },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex flex-col" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>

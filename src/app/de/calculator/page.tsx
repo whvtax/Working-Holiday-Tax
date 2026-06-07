@@ -56,10 +56,6 @@ const faqs = [
     answer: 'Für Working Holiday Maker: 15 % auf die ersten 45.000 $, 30 % von 45.001 bis 135.000 $, 37 % von 135.001 bis 190.000 $ und 45 % über 190.000 $. Für australische Steuerresidenten: Freibetrag bis 18.200 $, dann 16 % bis 45.000 $, 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber.',
   },
   {
-    question: 'Wo finde ich mein Einkommen und die einbehaltene Steuer?',
-    answer: 'Beide Zahlen findest du auf deinem PAYG Payment Summary oder Income Statement, das dein Arbeitgeber am Ende des Steuerjahres bereitstellt. Du findest sie auch in deinem ATO-Konto, falls du eines hast.',
-  },
-  {
     question: 'Ich bekomme eine Rückzahlung, was jetzt?',
     answer: 'Schreib uns auf WhatsApp. Wir machen deine Steuererklärung für dich und sorgen dafür, dass du jede absetzbare Kostenposition geltend machst - das bedeutet oft eine höhere Rückzahlung als die Schätzung hier.',
   },
@@ -74,7 +70,7 @@ const faqs = [
   {
     question: 'Berücksichtigt der Rechner die Medicare Levy?',
     answer: 'Der Rechner konzentriert sich auf die Einkommensteuer. Die Medicare Levy ist eine separate Abgabe von 2 %, von der die meisten Working Holiday Maker befreit sind. Wenn wir deine Steuererklärung einreichen, beantragen wir die Medicare-Levy-Befreiung, sofern du dafür in Frage kommst - was bedeutet, dass deine tatsächliche Rückerstattung höher sein kann als die Schätzung des Rechners.',
-  },
+  }
 ]
 
 const faqSchema = {

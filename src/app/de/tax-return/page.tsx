@@ -70,10 +70,6 @@ const faqs = [
     answer: 'Ja. Wenn du in Australien Einkommen hattest, musst du eventuell trotzdem eine Steuererklärung einreichen, auch wenn du nur kurz gearbeitet hast. Bei kurzen Aufenthalten wird oft zu viel Steuer einbehalten - die Steuererklärung ist meistens der einzige Weg, die Differenz zurückzuholen.',
   },
   {
-    question: 'Was passiert, wenn ich meine Steuererklärung nicht einreiche?',
-    answer: 'Wenn du eine Steuererklärung machen musst und es nicht tust, kann das ATO Strafen verhängen oder weitere Schritte einleiten. Außerdem verlierst du den Anspruch auf eine mögliche Steuerrückerstattung, die dir zusteht.',
-  },
-  {
     question: 'Kann ich meine Steuerrückerstattung aus Australien beantragen, wenn ich schon zurück in Deutschland bin?',
     answer: 'Ja. Du kannst deine australische Steuererklärung aus dem Ausland einreichen - egal ob du nach Deutschland, Österreich, in die Schweiz oder sonst wohin zurückgekehrt bist. Wir erledigen den gesamten Prozess online. Deine Steuerrückerstattung muss auf ein australisches Bankkonto überwiesen werden.',
   },
@@ -88,12 +84,8 @@ const faqs = [
   {
     question: 'Wie lange dauert die Steuerrückerstattung?',
     answer: 'Nach Einreichung bearbeitet das ATO die meisten Steuererklärungen innerhalb von 7 bis 14 Werktagen. In stark frequentierten Zeiten kann es länger dauern. Die Rückerstattung wird dann direkt auf dein angegebenes Konto überwiesen.',
-  },
-  {
-    question: 'Woher weiß ich, dass meine Steuererklärung fertig ist?',
-    answer: 'Sobald deine Steuererklärung bearbeitet ist, sendet dir das ATO eine Notice of Assessment - das ist die offizielle Bestätigung mit dem Endergebnis. Wir leiten sie sofort an dich weiter.',
-  },
-]
+  }
+  ]
 
 const DEDUCTIONS = [
   { title: 'Arbeitskleidung und Uniformen',   body: 'Schutzkleidung oder vorgeschriebene Kleidung wie Stiefel, Warnwesten oder Uniformen.' },
@@ -262,7 +254,7 @@ export default function GermanTaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
+              {['350+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -346,7 +338,7 @@ export default function GermanTaxReturnPage() {
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Unser Service</span>
+            <span className="section-label center">Warum unser Service</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '28ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               Wir machen deine Working Holiday Steuererklärung von A bis Z
             </h2>

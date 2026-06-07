@@ -53,10 +53,6 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
-    question: 'メディケアに登録する必要がありますか？',
-    answer: 'オーストラリアと社会保険協定（RHCA）を結んでいる国の出身者のみ必要です。対象外の場合は登録する必要はなく、代わりにタックスリターン時にメディケア税免除を申請するべきです。',
-  },
-  {
     question: 'メディケア税免除とは何ですか？',
     answer: 'メディケア対象外（ほとんどのワーキングホリデービザ保持者）の場合、タックスリターンでメディケア税の免除を受けることができます。タックスリターンサービスの一部としてすべて対応します。',
   },
@@ -69,10 +65,6 @@ const faqs = [
     answer: '免除を申請すれば支払う必要はありません。メディケア対象外の場合、タックスリターンでメディケア税免除を申請することで、控除されなくなります。',
   },
   {
-    question: 'プライベート医療保険は必要ですか？',
-    answer: 'プライベート医療保険は、メディケアがカバーしない医療費をカバーします。メディケア対象外の方は、状況に応じてプライベート医療保険を検討すべきです。これはメディケア税とは別の話です。',
-  },
-  {
     question: 'ワーキングホリデービザはメディケア対象資格に影響しますか？',
     answer: 'はい。ほとんどのワーキングホリデービザ保持者は、社会保険協定締結国出身者を除き、メディケア対象外です。対象外の場合、タックスリターンの一部としてメディケア税免除を申請します。',
   },
@@ -83,7 +75,7 @@ const faqs = [
   {
     question: 'オーストラリアとメディケア協定がある国はどこですか？',
     answer: 'オーストラリアは11カ国と社会保険協定（RHCA）を結んでいます。具体的には、イギリス、アイルランド、イタリア、スウェーデン、オランダ、ベルギー、フィンランド、ノルウェー、マルタ、スロベニア、ニュージーランドです。日本とドイツのワーホリ参加者はRHCAの対象外ですので、タックスリターンでメディケア税免除を申請するべきです。',
-  },
+  }
 ]
 
 const faqSchema = {
@@ -189,7 +181,7 @@ export default function JapaneseMedicarePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','返信時間 1時間以内'].map((t,i) => (
+              {['350名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','返信時間 1時間以内'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

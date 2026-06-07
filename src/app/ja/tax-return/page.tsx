@@ -82,10 +82,6 @@ const faqs = [
     answer: 'はい、たとえ数週間のカジュアル業務でも、会計年度内（7月1日〜翌年6月30日）にオーストラリアで収入があった場合は提出が必要です。短期間勤務では多めに源泉徴収されていることが多く、タックスリターンが還付金を取り戻す唯一の方法となるケースが多いです。',
   },
   {
-    question: 'タックスリターンを提出しないとどうなりますか？',
-    answer: '提出義務があるのに怠ると、ATO（オーストラリア税務署）からFailure to Lodgeペナルティ（1件$330、最大$1,650）が課されます。さらに将来のオーストラリアビザ申請に影響したり、スーパー受取（DASP）が相殺されたりすることもあります。受け取るべき還付金もそのまま放置されてしまいます。',
-  },
-  {
     question: '帰国後でもタックスリターンを提出して還付金を受け取れますか？',
     answer: 'はい、日本帰国後でも世界中どこからでも提出できます。登録税理士の監督のもとでオンラインで完結します。タックスリターン還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルールにより、海外口座への振込はできません）。帰国後でも数年遡って申請できるケースもあります。',
   },
@@ -100,12 +96,8 @@ const faqs = [
   {
     question: '還付金はどのくらいの期間で振り込まれますか？',
     answer: 'タックスリターンを提出してから、ATOでの処理は通常7〜14営業日かかります。繁忙期や追加情報が必要な場合はそれ以上かかる場合もあります。処理完了後、ご指定の銀行口座に直接振り込まれます。',
-  },
-  {
-    question: 'タックスリターンが完了したことはどうやって分かりますか？',
-    answer: 'ATOで申告が処理されると、Notice of Assessment（賦課決定通知書）が発行され、最終的な納税額または還付額が確定します。当社から処理状況をお知らせし、Notice of Assessmentもお送りいたします。',
-  },
-]
+  }
+  ]
 
 const DEDUCTIONS = [
   { title: '作業着・ユニフォーム', body: '安全靴、蛍光ベスト、シェフホワイト、雇用主指定のロゴ入りユニフォームなど。' },
@@ -264,7 +256,7 @@ export default function JapaneseTaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['350名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

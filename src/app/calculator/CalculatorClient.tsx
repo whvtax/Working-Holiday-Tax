@@ -75,7 +75,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 letterSpacing: '-0.03em',
                 marginBottom: '10px',
               }}>
-              Tax calculator for Working Holiday Visa.
+              WHV Tax calculator
             </h1>
 
             <p className="font-light mx-auto"
@@ -206,7 +206,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Claim the maximum refund you are entitled to
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
-            This calculator gives you an estimate. We often find deductions and offsets that push your refund higher.
+            We often find deductions and offsets that push your refund higher.
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"

@@ -71,12 +71,8 @@ const FAQS = [
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',
     answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern dabei, ihre australische Steuerrückerstattung und Super (DASP) zu beantragen und alle offenen Steuerangelegenheiten von zu Hause aus zu regeln. Der gesamte Prozess läuft online ab - keine Rückreise nach Australien nötig.',
-  },
-  {
-    question: 'Welche Informationen brauche ich beim ersten Kontakt?',
-    answer: 'Nur ein paar Basics zum Anfang: deine Visumsklasse (417 oder 462), ungefähr wann du in Australien gearbeitet hast, womit wir dir helfen sollen (Steuererklärung, Super, TFN, ABN) und wo du dich gerade aufhältst. Falls wir Unterlagen brauchen, sagen wir dir das danach genau.',
-  },
-]
+  }
+  ]
 
 export default function GermanContactPage() {
 
@@ -206,7 +202,7 @@ export default function GermanContactPage() {
                 color: 'rgba(10,15,13,0.7)',
                 maxWidth: '46ch',
               }}>
-              Echte Menschen, schnelle Antworten. Wir melden uns innerhalb einer Stunde während der Geschäftszeiten.
+              Wir melden uns innerhalb einer Stunde während der Geschäftszeiten.
             </p>
           </div>
         </div>
@@ -217,7 +213,7 @@ export default function GermanContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '1.200+', label: 'Backpacker' },
+              { stat: '350+', label: 'Backpacker' },
               { stat: <GoogleRating variant="number" lang="de" />, label: 'Bewertung' },
               { stat: '45+',    label: 'Länder' },
               { stat: '~1 Std',  label: 'Antwortzeit' },

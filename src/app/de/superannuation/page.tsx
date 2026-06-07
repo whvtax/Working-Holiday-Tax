@@ -68,17 +68,13 @@ const faqs = [
     answer: 'Deine Super wird direkt auf dein Bankkonto überwiesen. Wir können die Auszahlung auf ein australisches oder ein ausländisches Konto arrangieren, je nachdem, was dir lieber ist.',
   },
   {
-    question: 'Bekomme ich Super, wenn ich unter einer ABN gearbeitet habe?',
-    answer: 'Normalerweise nicht. Für ABN-Arbeit (also als Contractor/Selbstständiger) wird in der Regel keine Super gezahlt. Super gibt es meistens nur, wenn du als Angestellter eingestuft bist. Als Contractor mit ABN bist du selbst dafür verantwortlich, eine Supereinzahlung zu organisieren, falls du das möchtest.',
-  },
-  {
     question: 'Kann ich meine DASP Super-Rückerstattung aus Deutschland beantragen?',
     answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit, ihre DASP-Rückerstattung komplett online zu beantragen, nachdem sie nach Hause zurückgekehrt sind. Deine Super-Rückerstattung kann direkt auf dein deutsches Bankkonto überwiesen werden.',
   },
   {
     question: 'Wie wird meine DASP Super-Rückerstattung besteuert?',
     answer: 'DASP-Auszahlungen werden zu einem festen Steuersatz besteuert, der vom ATO festgelegt ist und vor der Auszahlung einbehalten wird. Was du bekommst, ist der Nettobetrag nach Steuern. Der genaue Satz hängt von deiner Visumsklasse und der Art der ausgezahlten Super ab.',
-  },
+  }
 ]
 
 const STEPS = [
@@ -241,7 +237,7 @@ export default function GermanSuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
+              {['350+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -323,28 +319,33 @@ export default function GermanSuperannuationPage() {
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Das ist dein Geld</span>
+            <span className="section-label center">Warum unser Service</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
               Deine Super gehört dir. Du musst sie nur beantragen.
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-10 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 mb-8 lg:mb-10 reveal delay-1">
             {[
               {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/><path d="M11 7v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: 'Arbeitgeber zahlen sie für dich ein',
-                body: 'Per australischem Gesetz zahlt dein Arbeitgeber die Super zusätzlich zu deinem Lohn ein.',
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="9.5" cy="9.5" r="6.5" stroke="currentColor" strokeWidth="1.4"/><path d="M14.3 14.3L19 19" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>,
+                title: 'Wir finden jedes Superkonto',
+                body: 'Mehrere Jobs bedeuten oft mehrere Fonds. Wir finden sie alle, damit nichts von deiner Super verloren geht.',
               },
               {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="3" y="6" width="16" height="12" rx="2.5" stroke="currentColor" strokeWidth="1.4"/><path d="M7 6V5a4 4 0 018 0v1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><path d="M9 12l2 2 3.5-3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
-                title: 'Das ist dein Geld',
-                body: 'Deine Super wächst, während du in Australien arbeitest, und du kannst sie beantragen, wenn du das Land verlässt.',
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="8.5" stroke="currentColor" strokeWidth="1.4"/><path d="M2.5 11h17M11 2.5c2.4 2.6 2.4 13.4 0 17M11 2.5c-2.4 2.6-2.4 13.4 0 17" stroke="currentColor" strokeWidth="1.2"/></svg>,
+                title: 'Auch nach der Abreise beantragen',
+                body: 'Wir reichen deinen DASP komplett online ein und zahlen ihn auf dein Konto im Ausland - auch Jahre nach deiner Rückkehr.',
               },
               {
-                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 3v18M3 11h18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="11" cy="11" r="9" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: 'Wir holen sie für dich zurück',
-                body: 'Wir finden deine Super, bereiten den Antrag vor und reichen ihn ein. Sobald er bearbeitet ist, bekommst du dein Geld.',
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 2.5l7 2.5v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9v-5l7-2.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M8 11l2 2 4-4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                title: 'Es ist dein Geld, nicht das des ATO',
+                body: 'Nicht beantragte Super geht irgendwann an das ATO. Wir sorgen dafür, dass sie stattdessen zu dir zurückkommt.',
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><rect x="4" y="3" width="14" height="16" rx="2" stroke="currentColor" strokeWidth="1.4"/><path d="M7.5 8.5h7M7.5 12h4.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
+                title: 'DASP eingereicht, Steuer geregelt',
+                body: 'Wir bereiten deine Departing Australia Superannuation Payment vor und kümmern uns korrekt um die Quellensteuer.',
               },
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-2xl flex flex-col" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>

@@ -57,17 +57,16 @@ export const metadata: Metadata = {
 
 const faqs = [
   { question:'Can I start work before I receive my TFN?', answer:'Yes. You can start working, but you must provide your TFN within 28 days. Until then, your employer may withhold tax at a higher rate.' },
-  { question:'Where will my TFN be sent?', answer:'Your TFN is issued by the ATO and sent by mail to your Australian address. Make sure you provide an address where you can reliably receive post.' },
   { question:'Can I get a TFN on a tourist visa?', answer:'No. You must hold a valid work visa, such as a Working Holiday visa (Subclass 417 or 462), to apply for a TFN.' },
   { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
   { question:'What is a TFN Declaration Form?', answer:'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.' },
   { question:'Can I apply for a TFN before arriving in Australia?', answer:'You can only apply once you arrive in Australia and your working holiday visa is activated. If you apply before arrival, the ATO will need an Australian postal address to send your TFN to.' },
-  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' },
+  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' }
 ]
 
 const STEPS = [
   { n:'1', title:'Tell us about your situation', body:'Share your visa details so we can guide you correctly.' },
-  { n:'2', title:'Submit your documents in minutes',  body:'Just your passport and a few personal details - quick and simple.' },
+  { n:'2', title:'Submit your documents in minutes',  body:'Just your passport and a few personal details, quick and simple.' },
   { n:'3', title:'We process your TFN application',  body:'We prepare and submit everything accurately on your behalf.' },
   { n:'4', title:'Receive your TFN',             body:'Your TFN is issued by the ATO and sent to your Australian address within 28 days.' },
 ]
@@ -205,7 +204,7 @@ export default function TFNPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -235,15 +234,6 @@ export default function TFNPage() {
               <p className="tfn-intro-body">
                 With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference - sometimes hundreds of dollars per week.
               </p>
-              <div className="tfn-intro-note">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
-                  <path d="M12 8v5M12 16h.01" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-                <p style={{ margin: 0, fontSize: '13.5px', color: '#2A3C34', lineHeight: 1.6 }}>
-                  Your TFN is yours for life - you only need to apply once, even if you leave and return to Australia.
-                </p>
-              </div>
             </div>
 
             {/* Right: Visual - tax savings comparison */}

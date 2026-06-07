@@ -56,17 +56,16 @@ export const metadata: Metadata = {
 
 const faqs = [
   { question: 'Kann ich schon arbeiten, bevor ich meine TFN erhalten habe?', answer: 'Ja. Du kannst sofort anfangen zu arbeiten, musst deinem Arbeitgeber deine TFN aber innerhalb von 28 Tagen geben. Bis dahin behält dein Arbeitgeber Steuern zum Höchstsatz ein.' },
-  { question: 'Wohin wird meine TFN geschickt?', answer: 'Deine TFN wird vom ATO per Post an deine australische Adresse geschickt. Stell sicher, dass du eine Adresse angibst, an der du zuverlässig Post empfangen kannst.' },
   { question: 'Kann ich mit einem Touristenvisum eine TFN bekommen?', answer: 'Nein. Du brauchst ein gültiges Arbeitsvisum, zum Beispiel ein Working Holiday Visum (Subclass 417 oder 462), um eine TFN beantragen zu können.' },
   { question: 'Was passiert, wenn ich meine TFN vergesse?', answer: 'Du kannst deine TFN herausfinden, indem du den ATO direkt kontaktierst, in alten Steuerdokumenten nachschaust oder deinen Steueragenten fragst.' },
   { question: 'Was ist ein TFN Declaration Form?', answer: 'Ein Formular, das du ausfüllst, wenn du einen neuen Job anfängst. Es teilt deinem Arbeitgeber mit, wie viel Steuer er von deinem Gehalt einbehalten muss.' },
   { question: 'Kann ich die TFN schon vor meiner Ankunft in Australien beantragen?', answer: 'Du kannst die TFN erst beantragen, sobald du in Australien bist und dein Working Holiday Visum aktiviert wurde. Du brauchst dann eine australische Postanschrift, an die das ATO deine TFN schicken kann.' },
-  { question: 'Wie hängt meine TFN mit meiner Steuerrückerstattung zusammen?', answer: 'Deine TFN verbindet dich mit jedem Steuerdokument in Australien. Ohne TFN muss dein Arbeitgeber Steuern zum Spitzensatz einbehalten statt zum Working Holiday Satz von 15 % - was meist zu einer höheren Steuerrückerstattung führt, wenn du deine Steuererklärung einreichst.' },
+  { question: 'Wie hängt meine TFN mit meiner Steuerrückerstattung zusammen?', answer: 'Deine TFN verbindet dich mit jedem Steuerdokument in Australien. Ohne TFN muss dein Arbeitgeber Steuern zum Spitzensatz einbehalten statt zum Working Holiday Satz von 15 % - was meist zu einer höheren Steuerrückerstattung führt, wenn du deine Steuererklärung einreichst.' }
 ]
 
 const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation',           body: 'Teil uns deine Visumdetails mit, damit wir dich richtig beraten können.' },
-  { n: '2', title: 'Schick uns deine Unterlagen',          body: 'Nur dein Reisepass und ein paar persönliche Daten - schnell und einfach.' },
+  { n: '2', title: 'Schick uns deine Unterlagen',          body: 'Nur dein Reisepass und ein paar persönliche Daten, schnell und einfach.' },
   { n: '3', title: 'Wir bearbeiten deinen Antrag',         body: 'Wir bereiten alles vor und reichen es korrekt für dich ein.' },
   { n: '4', title: 'Du erhältst deine TFN',                body: 'Deine TFN wird vom ATO ausgestellt und innerhalb von 28 Tagen an deine australische Adresse geschickt.' },
 ]
@@ -200,7 +199,7 @@ export default function TFNPageDE() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1.200+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
+              {['350+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Std'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -229,15 +228,6 @@ export default function TFNPageDE() {
               <p className="tfn-intro-body">
                 Mit TFN zahlst du den normalen Working Holiday Steuersatz von <strong>15 %</strong> auf Einkommen bis 45.000 AUD. Das ist ein riesiger Unterschied - manchmal mehrere Hundert Dollar pro Woche.
               </p>
-              <div className="tfn-intro-note">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
-                  <path d="M12 8v5M12 16h.01" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-                <p style={{ margin: 0, fontSize: '13.5px', color: '#2A3C34', lineHeight: 1.6 }}>
-                  Deine TFN ist ein Leben lang gültig - du musst sie nur einmal beantragen, auch wenn du Australien verlässt und später zurückkommst.
-                </p>
-              </div>
             </div>
 
             <div className="tfn-intro-visual">

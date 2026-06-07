@@ -103,10 +103,10 @@ const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="n
 // ─── DATA - colors aligned with site palette ────────────────────────────
 
 const STEPS = [
-  { n: '1', title: 'Tell us about your situation', body: "TFN, ABN, working holiday tax return, super - we will guide you from the start." },
-  { n: '2', title: 'Send your details in minutes',  body: 'Quick checklist, no complicated forms or paperwork.' },
-  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your return with the ATO under the supervision of a registered tax agent.' },
-  { n: '4', title: 'Get your assessment',           body: 'Once the ATO processes your return, any refund you are owed is paid straight into your Australian bank account.' },
+  { n: '1', title: 'Tell us about your situation', body: 'TFN, ABN, tax return or super - we guide you from day one.' },
+  { n: '2', title: 'Send your details in minutes',  body: 'A quick checklist. No forms, no paperwork.' },
+  { n: '3', title: 'We handle everything for you',  body: 'Lodged by a registered tax agent and fully compliant with ATO rules.' },
+  { n: '4', title: 'Get your assessment',           body: 'Any refund you are owed goes straight to your bank account.' },
 ]
 
 const SERVICES = [
@@ -275,7 +275,7 @@ export default async function HomePage() {
 
           <p className="font-light mx-auto hero-animate-delay"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super.
+            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>.
           </p>
 
           <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4 hero-animate-delay-2">
@@ -287,7 +287,7 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1,200+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hour response time'].map((label, i) => (
+            {['350+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hour response time'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -310,15 +310,15 @@ export default async function HomePage() {
 
           <p className="font-light text-muted mx-auto"
             style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '38ch', marginBottom: '32px', textAlign: 'center' }}>
-            One focus: working holiday tax.<br />Every refund you are entitled to, properly claimed.
+            Every refund you are entitled to, properly claimed.
           </p>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-10" style={{ marginBottom: '36px' }}>
             {[
-              { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules for 417 and 462 visas inside out.' },
-              { title: 'ATO compliant.',                body: 'Lodged under the supervision of a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
+              { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules that apply to you inside out.' },
+              { title: 'ATO compliant.',                body: 'Lodged with a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
               { title: 'Clear, simple support.',        body: 'No complicated terms. We guide you through your tax return step by step, in plain English.' },
-              { title: 'We take care of everything.',   body: 'No paperwork, no stress. From your TFN to your final refund, we handle it all - in Australia or after you go home.' },
+              { title: 'We take care of everything.',   body: 'From your TFN to your final refund, we’ve got you covered - whether you’re in Australia or back home.' },
             ].map((item, i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center why-us-card" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>
@@ -341,8 +341,8 @@ export default async function HomePage() {
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">Client results</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', maxWidth: '28ch' }}>
+            <h2 className="font-serif font-black text-ink mx-auto max-w-[28ch] lg:max-w-none lg:whitespace-nowrap"
+              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px' }}>
               What backpackers say about working with us.
             </h2>
           </div>
@@ -353,7 +353,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
                 { n: <GoogleRating variant="number" lang="en" />, l: <GoogleRating variant="count" lang="en" /> },
-                { n: '1,200+', l: 'backpackers helped' },
+                { n: '350+', l: 'backpackers helped' },
                 { n: '< 1 hr', l: '~1 hour response time' },
                 { n: '100%',   l: 'Fully online, no paperwork' },
               ].map((s, i) => (
@@ -381,7 +381,7 @@ export default async function HomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '36ch', marginBottom: '4px' }}>
-              <em className="not-italic text-forest-400">Simple process. Your working holiday tax return, properly lodged.</em>
+              <em className="not-italic text-forest-400">Simple process for working holiday makers.</em>
             </p>
           </div>
 
@@ -436,7 +436,7 @@ export default async function HomePage() {
               Start your tax return →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
-              Free to start&nbsp;&bull;&nbsp;No upfront fees&nbsp;&bull;&nbsp;Personal support throughout
+              Free to start&nbsp;&bull;&nbsp;Personal support throughout
             </p>
           </div>
         </div>
@@ -449,13 +449,13 @@ export default async function HomePage() {
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">What we help with</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px', maxWidth: '24ch' }}>
+              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
               Full tax support for working holiday makers<br />
               <em className="not-italic font-normal text-forest-400">in Australia.</em>
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', textAlign: 'center', lineHeight: 1.7, maxWidth: '38ch' }}>
-              From your first job in Australia to your final working holiday tax refund.<br />We have got you covered.
+              From your first job in Australia to your final working holiday tax refund.
             </p>
           </div>
 
@@ -511,7 +511,7 @@ export default async function HomePage() {
         eyebrow="Start here"
         heading="Get your tax sorted"
         headingEm="in Australia or abroad."
-        sub={<>We handle your TFN, tax return, super and ABN<span className="hidden sm:inline">,</span><br className="sm:hidden" /> all in one place.</>}
+        sub="We handle your tax from start to finish."
         primaryLabel="Start your tax return"
         trustLine=""
         clipTop

@@ -75,7 +75,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 letterSpacing: '-0.03em',
                 marginBottom: '10px',
               }}>
-              Steuerrechner für Working Holiday Visum.
+              WHV Steuerrechner
             </h1>
 
             <p className="font-light mx-auto"
@@ -206,7 +206,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Hol dir die maximale Rückerstattung, die dir zusteht
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
-            Dieser Rechner gibt dir nur eine Schätzung. Oft finden wir absetzbare Kosten und Steuergutschriften, die deine Rückzahlung noch erhöhen.
+            Oft finden wir absetzbare Kosten und Steuergutschriften, die deine Rückzahlung noch erhöhen.
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"
