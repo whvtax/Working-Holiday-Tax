@@ -109,7 +109,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }))
 
-  // German guide pages — only those with a translated body (others are noindex)
+  // German guide pages - only those with a translated body (others are noindex)
   const germanGuides: MetadataRoute.Sitemap = guides
     .filter(g => isDeTranslated(g.slug))
     .map(g => ({
@@ -119,7 +119,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.71,
     }))
 
-  // Japanese guide pages — only those with a translated body (others are noindex)
+  // Japanese guide pages - only those with a translated body (others are noindex)
   const japaneseGuides: MetadataRoute.Sitemap = guides
     .filter(g => isJaTranslated(g.slug))
     .map(g => ({

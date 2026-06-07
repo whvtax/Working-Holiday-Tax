@@ -6,10 +6,10 @@ import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB, EMAIL } from '@/lib
 import { CtaBand } from '@/components/ui/CtaBand'
 import { getGoogleRating } from '@/lib/googleData'
 
-// ─── METADATA — rich SEO + AI optimized ─────────────────────────────────
+// ─── METADATA - rich SEO + AI optimized ─────────────────────────────────
 export const metadata: Metadata = {
   title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax Return',
-  description: 'Working holiday tax refund Australia — under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. Lodge from Australia or after you go home, all online.',
+  description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. Lodge from Australia or after you go home, all online.',
   keywords: [
     // Primary refund-focused terms
     'working holiday tax refund',
@@ -70,13 +70,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax Return',
-    description: 'Working holiday tax refund Australia — under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. All online, even after you leave Australia.',
-    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia — tax services for backpackers on 417 and 462 visas' }],
+    description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. All online, even after you leave Australia.',
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia - tax services for backpackers on 417 and 462 visas' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agents — all online, lodge from Australia or overseas.',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agents - all online, lodge from Australia or overseas.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
   },
 }
 
-// ─── ICONS — relevant per service ───────────────────────────────────────
+// ─── ICONS - relevant per service ───────────────────────────────────────
 const IconTFN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="7.5" x2="14" y2="7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="10.5" x2="11" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="13.5" x2="9" y2="13.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>)
 const IconABN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8l7-5 7 5v9a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M7.5 17v-6h5v6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
 const IconReturn  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
@@ -100,10 +100,10 @@ const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill
 
 const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
-// ─── DATA — colors aligned with site palette ────────────────────────────
+// ─── DATA - colors aligned with site palette ────────────────────────────
 
 const STEPS = [
-  { n: '1', title: 'Tell us about your situation', body: 'TFN, ABN, tax return or super — we guide you from day one.' },
+  { n: '1', title: 'Tell us about your situation', body: 'TFN, ABN, tax return or super, we guide you from day one.' },
   { n: '2', title: 'Send your details in minutes',  body: 'A quick checklist. No forms, no paperwork.' },
   { n: '3', title: 'We handle everything for you',  body: 'Lodged by a registered tax agent and fully compliant with ATO rules.' },
   { n: '4', title: 'Get your assessment',           body: 'Any refund you are owed goes straight to your bank account.' },
@@ -132,7 +132,7 @@ const FAQS = [
   },
   {
     question: 'Can you help me claim my tax refund after I have already left Australia?',
-    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries lodge their Australian tax return and claim their super (DASP) entirely online, even years after leaving. Everything is handled remotely — tax refunds are paid to your Australian bank account (ATO rule), while super refunds (DASP) can be paid to your overseas account.',
+    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries lodge their Australian tax return and claim their super (DASP) entirely online, even years after leaving. Everything is handled remotely - tax refunds are paid to your Australian bank account (ATO rule), while super refunds (DASP) can be paid to your overseas account.',
   },
   {
     question: 'What tax rate do working holiday makers pay in Australia?',
@@ -140,7 +140,7 @@ const FAQS = [
   },
   {
     question: 'Do you only handle tax returns?',
-    answer: 'No. We help with TFN applications, ABN registrations, working holiday tax returns, super withdrawal (DASP), and Medicare Levy exemption certificates — everything a working holiday maker on a 417 or 462 visa needs.',
+    answer: 'No. We help with TFN applications, ABN registrations, working holiday tax returns, super withdrawal (DASP), and Medicare Levy exemption certificates - everything a working holiday maker on a 417 or 462 visa needs.',
   },
 ]
 
@@ -186,7 +186,7 @@ export default async function HomePage() {
     })),
   }
 
-  // Organization schema — core trust signal for Google E-E-A-T
+  // Organization schema - core trust signal for Google E-E-A-T
   const organizationLd = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -208,7 +208,7 @@ export default async function HomePage() {
     ],
   }
 
-  // ProfessionalService — signals to Google this is a real business offering tax services
+  // ProfessionalService - signals to Google this is a real business offering tax services
   const professionalServiceLd = {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
@@ -227,7 +227,7 @@ export default async function HomePage() {
     availableLanguage: ['en', 'de', 'ja'],
   }
 
-  // BreadcrumbList — homepage breadcrumb (single level, but signals site structure)
+  // BreadcrumbList - homepage breadcrumb (single level, but signals site structure)
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -236,14 +236,14 @@ export default async function HomePage() {
     ],
   }
 
-  // WebSite schema with search action — lets Google show a sitelinks search box
+  // WebSite schema with search action - lets Google show a sitelinks search box
   const webSiteLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
     name: 'Working Holiday Tax',
-    description: 'Working holiday tax refund Australia — under the supervision of a registered tax agent for 417 and 462 visa holders.',
+    description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent for 417 and 462 visa holders.',
     inLanguage: ['en-AU', 'de', 'ja'],
     publisher: { '@id': `${SITE_URL}/#business` },
   }
@@ -318,7 +318,7 @@ export default async function HomePage() {
               { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules that apply to you inside out.' },
               { title: 'ATO compliant.',                body: 'Lodged with a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
               { title: 'Clear, simple support.',        body: 'No complicated terms. We guide you through your tax return step by step, in plain English.' },
-              { title: 'We take care of everything.',   body: 'From your TFN to your final refund, we’ve got you covered — whether you’re in Australia or back home.' },
+              { title: 'We take care of everything.',   body: 'From your TFN to your final refund, we’ve got you covered. Whether you’re in Australia or back home.' },
             ].map((item, i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center why-us-card" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>

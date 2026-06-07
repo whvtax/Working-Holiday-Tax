@@ -206,7 +206,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Claim the maximum refund you are entitled to
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
-            We often find deductions and offsets that push your refund higher.
+            We find deductions that boost your refund.
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary w-full sm:w-auto"

@@ -202,7 +202,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             あなたが受け取れる還付金を最大限に
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
-            控除可能な経費や税額控除を見つけ出し、還付金をさらに増やせる場合が多くあります。
+            還付金を増やす控除を見つけます。
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary w-full sm:w-auto"

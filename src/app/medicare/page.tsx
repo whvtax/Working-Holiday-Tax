@@ -6,7 +6,7 @@ import { NextStep } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
   title: 'Medicare Levy Exemption for Working Holiday Visa Holders Australia',
-  description: 'Understand Medicare eligibility and claim your Medicare levy exemption as a Working Holiday Visa holder (417/462). Increase your working holiday tax refund — handled as part of your tax return.',
+  description: 'Understand Medicare eligibility and claim your Medicare levy exemption as a Working Holiday Visa holder (417/462). Increase your working holiday tax refund - handled as part of your tax return.',
   keywords: [
     'Medicare working holiday',
     'Medicare levy exemption backpacker',
@@ -60,7 +60,7 @@ const rhca = [
 const faqs = [
   {
     question: 'What is the Medicare levy exemption?',
-    answer: 'If you are not eligible for Medicare — which applies to most Working Holiday Visa holders — you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
+    answer: 'If you are not eligible for Medicare - which applies to most Working Holiday Visa holders - you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
   },
   {
     question: 'I am from the UK. Am I eligible for Medicare?',
@@ -68,7 +68,7 @@ const faqs = [
   },
   {
     question: 'If I am not eligible for Medicare, do I still pay the levy?',
-    answer: 'Not if you apply for an exemption. If you are not eligible for Medicare, you should claim a Medicare levy exemption on your tax return — which means you will not be charged.',
+    answer: 'Not if you apply for an exemption. If you are not eligible for Medicare, you should claim a Medicare levy exemption on your tax return - which means you will not be charged.',
   },
   {
     question: 'Does my Working Holiday visa affect my Medicare eligibility?',
@@ -76,7 +76,7 @@ const faqs = [
   },
   {
     question: 'How does the Medicare levy exemption affect my working holiday tax refund?',
-    answer: 'The Medicare levy is 2% of your taxable income. If you are not eligible for Medicare and the levy was applied during the year, claiming the exemption removes it from your tax return — which can mean a larger refund. We check your eligibility and apply the exemption as part of preparing your tax return.',
+    answer: 'The Medicare levy is 2% of your taxable income. If you are not eligible for Medicare and the levy was applied during the year, claiming the exemption removes it from your tax return - which can mean a larger refund. We check your eligibility and apply the exemption as part of preparing your tax return.',
   },
   {
     question: 'Am I from a country with a Medicare agreement with Australia?',
@@ -163,7 +163,7 @@ export default function MedicarePage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines — nowrap per line */}
+              {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block', whiteSpace:'nowrap' }}>Understand your Medicare status</span>
                 <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>before lodging your tax return</span>
@@ -236,14 +236,14 @@ export default function MedicarePage() {
                 <strong>Medicare</strong> is Australia&apos;s public healthcare system. It provides access to subsidised medical services and is funded partly through a <strong>2% Medicare levy</strong> automatically deducted from your taxable income.
               </p>
               <p className="medicare-intro-body">
-                Most working holiday visa holders are <strong>not eligible</strong> for Medicare benefits. If you are not eligible, you should not be paying the levy — and you can claim it back.
+                Most working holiday visa holders are <strong>not eligible</strong> for Medicare benefits. If you are not eligible, you should not be paying the levy - and you can claim it back.
               </p>
               <p className="medicare-intro-body">
                 The way to remove the levy is through a <strong>Medicare Levy Exemption Certificate</strong>. This is applied when lodging your tax return, and can save you hundreds to thousands of dollars.
               </p>
             </div>
 
-            {/* Right: Visual — Eligibility check card */}
+            {/* Right: Visual - Eligibility check card */}
             <div className="medicare-intro-visual">
               <div className="medicare-check-card">
                 <div className="medicare-check-header">
@@ -297,7 +297,7 @@ export default function MedicarePage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We claim your Medicare levy exemption for you</h3>
-              <p className="service-cta-sub">Free initial consultation. We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return — so you get back what you should not have paid.</p>
+              <p className="service-cta-sub">Free initial consultation. We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return - so you get back what you should not have paid.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Check my exemption →
@@ -312,7 +312,7 @@ export default function MedicarePage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Your two scenarios</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px' }}>
-              You may either pay the Medicare levy or be exempt, depending on your visa and country of origin.
+              You may be exempt from the Medicare levy, depending on your country of origin.
             </h2>
           </div>
 
@@ -371,7 +371,7 @@ export default function MedicarePage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">What we do for you</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
+            <h2 className="font-serif font-black text-ink mx-auto lg:whitespace-nowrap" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
               We handle this as part of your tax return
             </h2>
           </div>
@@ -396,9 +396,9 @@ export default function MedicarePage() {
                   <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
-                  <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)', letterSpacing: '-0.01em' }}>{item.title}</p>
                 </div>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch', paddingLeft:'26px' }}>{item.body}</p>
+                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '26ch', paddingLeft:'26px' }}>{item.body}</p>
               </div>
             ))}
           </div>
@@ -459,7 +459,7 @@ export default function MedicarePage() {
             {[
               { q: 'Do I need to sign up for Medicare?', a: 'You only need to sign up if you are from an eligible RHCA country. Otherwise, we apply the exemption in your tax return.' },
               { q: 'Why is the Medicare levy showing on my tax bill?', a: 'If your Medicare status was not applied correctly, the levy may appear. We fix this when preparing your tax return.' },
-              { q: 'I do not use Medicare — why am I being charged?', a: 'If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you do not overpay.' },
+              { q: 'I do not use Medicare - why am I being charged?', a: 'If no exemption is applied, the ATO may charge the levy automatically. We apply the correct exemption so you do not overpay.' },
               { q: 'Does travel insurance replace Medicare?', a: 'No. Travel insurance and Medicare are separate systems. If you are not eligible for Medicare, you should rely on your travel insurance for medical coverage.' },
               { q: 'Does my Working Holiday visa affect Medicare?', a: 'Yes. Most Working Holiday visa holders are not eligible for Medicare, unless they are from a Reciprocal Health Care Agreement (RHCA) country. We ensure your Medicare status is correctly applied in your tax return.' },
               { q: 'Can I get a Medicare card on a Working Holiday visa?', a: 'Only if you are from an eligible RHCA country. Otherwise, we apply a Medicare levy exemption instead.' },

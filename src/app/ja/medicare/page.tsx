@@ -215,7 +215,7 @@ export default function JapaneseMedicarePage() {
               </p>
             </div>
 
-            {/* Right: Visual — Eligibility check card */}
+            {/* Right: Visual - Eligibility check card */}
             <div className="medicare-intro-visual">
               <div className="medicare-check-card">
                 <div className="medicare-check-header">
@@ -284,7 +284,7 @@ export default function JapaneseMedicarePage() {
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">2つのケース</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '8px', marginBottom: '8px' }}>
-              ビザと出身国によって、メディケア税を支払うか免除されるかが決まります。
+              出身国によって、メディケア税が免除される場合があります。
             </h2>
           </div>
 
@@ -368,9 +368,9 @@ export default function JapaneseMedicarePage() {
                   <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
-                  <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)', letterSpacing: '-0.01em' }}>{item.title}</p>
                 </div>
-                <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ maxWidth: '28ch', paddingLeft:'26px' }}>{item.body}</p>
+                <p className="font-light text-muted leading-[1.75]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '28ch', paddingLeft:'26px' }}>{item.body}</p>
               </div>
             ))}
           </div>

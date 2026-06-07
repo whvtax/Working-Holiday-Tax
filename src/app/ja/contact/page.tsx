@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'お問い合わせ — Working Holiday Tax',
+  title: 'お問い合わせ - Working Holiday Tax',
   description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
   keywords: [
     'お問い合わせ ワーホリ 税金',
@@ -78,7 +78,7 @@ const FAQS = [
   },
   {
     question: '日本に帰国後でも対応してもらえますか？',
-    answer: 'はい。日本に帰国された後でも、オーストラリアのタックスリターン還付金、スーパー（DASP）、その他の税務手続きを日本からオンラインで申請できます。すべての手続きはオンラインで完結し、オーストラリアに戻る必要はありません。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能ですが、スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
+    answer: 'はい。日本に帰国された後でも、オーストラリアのタックスリターン還付金、スーパー（DASP）、その他の税務手続きを日本からオンラインで申請できます。すべての手続きはオンラインで完結します。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能ですが、スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
   }
   ]
 
@@ -90,7 +90,7 @@ export default function JapaneseContactPage() {
     '@type': 'ContactPage',
     '@id': `${SITE_URL}/ja/contact`,
     url: `${SITE_URL}/ja/contact`,
-    name: 'お問い合わせ — Working Holiday Tax',
+    name: 'お問い合わせ - Working Holiday Tax',
     description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
     inLanguage: 'ja',
     isPartOf: {
@@ -257,7 +257,7 @@ export default function JapaneseContactPage() {
 
           <address style={{ fontStyle: 'normal' }}>
 
-            {/* WhatsApp — primary */}
+            {/* WhatsApp - primary */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="contact-option-card contact-option-primary">
               <div className="contact-option-icon" style={{ background: '#22C55E' }}>
@@ -275,7 +275,7 @@ export default function JapaneseContactPage() {
               </svg>
             </a>
 
-            {/* Email — Gmail icon */}
+            {/* Email - Gmail icon */}
             <a href={`mailto:${EMAIL}?subject=%E7%A8%8E%E9%87%91%E3%81%AE%E3%81%94%E8%B3%AA%E5%95%8F`}
               className="contact-option-card">
               <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #E2EFE9' }}>
@@ -296,7 +296,7 @@ export default function JapaneseContactPage() {
               </svg>
             </a>
 
-            {/* Social row — Instagram with gradient + TikTok with colors */}
+            {/* Social row - Instagram with gradient + TikTok with colors */}
             <div className="grid grid-cols-2 gap-3" style={{ marginTop: '12px' }}>
               <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer"
                 className="contact-option-card-small">
@@ -378,7 +378,7 @@ export default function JapaneseContactPage() {
               今すぐタックスリターンを始めましょう
             </h2>
             <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '440px' }}>
-              書類もATOポータルも不要。すべてオンラインで完結、通常24時間以内に対応します。
+              書類もATOポータルも不要。すべてオンラインで完結、24時間以内に対応します。
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary w-full sm:w-auto"

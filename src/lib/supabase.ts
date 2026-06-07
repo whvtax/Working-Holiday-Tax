@@ -45,7 +45,7 @@ export const STORAGE_BUCKETS = {
 /**
  * FAIL-CLOSED bucket-privacy guard.
  * The "uploads" bucket holds identity documents (passports, selfies, bank
- * details) and MUST be private — files are served only to authenticated CRM
+ * details) and MUST be private - files are served only to authenticated CRM
  * sessions via /api/crm/file. Previously this relied solely on a manual
  * dashboard checklist step; if anyone flipped the bucket to public, every
  * document would be reachable by URL with no auth.
@@ -64,7 +64,7 @@ export async function assertUploadsBucketPrivate(): Promise<void> {
     throw new Error(`Cannot verify uploads bucket privacy: ${error?.message ?? 'bucket not found'}`)
   }
   if (data.public) {
-    // Fail closed — never upload sensitive identity docs into a public bucket.
+    // Fail closed - never upload sensitive identity docs into a public bucket.
     throw new Error('SECURITY: "uploads" bucket is PUBLIC. It must be private. Aborting upload.')
   }
   _bucketPrivacyVerified = true
@@ -72,7 +72,7 @@ export async function assertUploadsBucketPrivate(): Promise<void> {
 
 /**
  * Returns true if URL points at an object in OUR Supabase Storage "uploads"
- * bucket. Accepts public, signed and neutral object paths — the stored value
+ * bucket. Accepts public, signed and neutral object paths - the stored value
  * is only used as a reference key (files are streamed via /api/crm/file using
  * the service role), so we must not *depend* on the "public" path segment.
  * Used to validate URLs received from clients before storing in DB (anti-SSRF).

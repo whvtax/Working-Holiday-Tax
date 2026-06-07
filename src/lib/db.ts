@@ -99,7 +99,7 @@ function toTask(r: Record<string, unknown>): Task {
 
 // ── Audit trail ──────────────────────────────────────────────────────────
 // Best-effort, fail-safe record of sensitive/destructive CRM actions. NEVER
-// throws and NEVER blocks the underlying operation — if the crm_audit table
+// throws and NEVER blocks the underlying operation - if the crm_audit table
 // doesn't exist yet (migration 003 not run) or the write fails, it's swallowed.
 // Single-admin system, so actor defaults to 'crm-admin'.
 export async function logAudit(

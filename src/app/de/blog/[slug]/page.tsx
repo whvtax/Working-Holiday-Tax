@@ -117,7 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: guide.description,
     },
     robots: {
-      // Don't index untranslated (English-bodied) posts under /de — avoids
+      // Don't index untranslated (English-bodied) posts under /de - avoids
       // duplicate content. Still follow links so equity flows to the English original.
       index: isTranslated,
       follow: true,

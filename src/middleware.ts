@@ -53,7 +53,7 @@ export function middleware(req: NextRequest) {
   requestHeaders.set('x-locale', locale)
 
   if (!CSP_NONCE_ENABLED) {
-    // Default path — unchanged behaviour. Static CSP from next.config.js applies.
+    // Default path - unchanged behaviour. Static CSP from next.config.js applies.
     return NextResponse.next({ request: { headers: requestHeaders } })
   }
 

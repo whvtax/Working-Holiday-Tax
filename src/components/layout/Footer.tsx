@@ -208,7 +208,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* ─── Bottom bar — DARK GREEN brand layer ──────────────────────────── */}
+      {/* ─── Bottom bar - DARK GREEN brand layer ──────────────────────────── */}
       <div style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">

@@ -206,7 +206,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Hol dir die maximale Rückerstattung, die dir zusteht
           </h2>
           <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
-            Oft finden wir absetzbare Kosten und Steuergutschriften, die deine Rückzahlung noch erhöhen.
+            Wir finden Abzüge, die deine Rückerstattung erhöhen.
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
             className="btn-primary w-full sm:w-auto"
