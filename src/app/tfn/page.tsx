@@ -7,8 +7,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
-  description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly under the supervision of a registered tax agent.',
+  title: 'TFN Application for Working Holiday Visa Holders — Tax Refund Ready',
+  description: 'Get your Tax File Number sorted fast — the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly under the supervision of a registered tax agent.',
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
@@ -44,13 +44,13 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
-    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
+    title: 'TFN Application for Working Holiday Visa Holders — Tax Refund Ready',
+    description: 'Get your Tax File Number sorted fast — the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TFN Application for Working Holiday Visa Holders',
-    description: 'Get your Tax File Number sorted fast - the first step to your Australian tax refund.',
+    description: 'Get your Tax File Number sorted fast — the first step to your Australian tax refund.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -61,7 +61,7 @@ const faqs = [
   { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
   { question:'What is a TFN Declaration Form?', answer:'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.' },
   { question:'Can I apply for a TFN before arriving in Australia?', answer:'You can only apply once you arrive in Australia and your working holiday visa is activated. If you apply before arrival, the ATO will need an Australian postal address to send your TFN to.' },
-  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' }
+  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate — which usually means a larger refund when you lodge your tax return.' }
 ]
 
 const STEPS = [
@@ -94,7 +94,7 @@ const breadcrumbSchema = {
   ],
 }
 
-// Service schema - signals what we offer
+// Service schema — signals what we offer
 const serviceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
@@ -108,7 +108,7 @@ const serviceSchema = {
   inLanguage: 'en-AU',
 }
 
-// HowTo schema - rich step-by-step result in Google
+// HowTo schema — rich step-by-step result in Google
 const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
@@ -124,7 +124,7 @@ const howToSchema = {
   })),
 }
 
-// Speakable - cues Google Assistant for voice answers
+// Speakable — cues Google Assistant for voice answers
 const speakableSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
@@ -167,7 +167,7 @@ export default function TFNPage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize:'clamp(24px,3.2vw,44px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'10px' }}>
-              {/* Desktop: 2 lines - line 1 black, line 2 green */}
+              {/* Desktop: 2 lines — line 1 black, line 2 green */}
               <span className="hidden lg:block">
                 <span style={{ display:'block' }}>Apply for your TFN to start working</span>
                 <span style={{ display:'block', color:'#0B5240' }}>legally in Australia.</span>
@@ -186,7 +186,7 @@ export default function TFNPage() {
 
             <p className="font-light"
               style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.65, color:'rgba(10,15,13,0.58)', maxWidth:'44ch', marginBottom:'0' }}>
-              <span>Without a TFN, Working Holiday visa holders are taxed at 45%.</span>
+              <span>Without a TFN, WHV holders are taxed at 45%.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -232,11 +232,11 @@ export default function TFNPage() {
                 Without a TFN, your employer is required by law to withhold the maximum tax rate of <strong>45%</strong> from every pay, regardless of how much you earn.
               </p>
               <p className="tfn-intro-body">
-                With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference - sometimes hundreds of dollars per week.
+                With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference — sometimes hundreds of dollars per week.
               </p>
             </div>
 
-            {/* Right: Visual - tax savings comparison */}
+            {/* Right: Visual — tax savings comparison */}
             <div className="tfn-intro-visual">
               <div className="tfn-comparison-card tfn-comparison-bad">
                 <p className="tfn-comparison-label">Without TFN</p>
@@ -260,7 +260,7 @@ export default function TFNPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We handle the entire TFN application for you</h3>
-              <p className="service-cta-sub">Free initial consultation on WhatsApp. We submit your application correctly the first time - usually within an hour.</p>
+              <p className="service-cta-sub">Free initial consultation on WhatsApp. We submit your application correctly the first time — usually within an hour.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Apply for my TFN →
@@ -445,7 +445,7 @@ export default function TFNPage() {
               </h2>
             </div>
             <div className="space-y-0">
-              {[{ n:'01', label:'Passport', hint:'Your photo ID and visa' }, { n:'02', label:'Personal details', hint:'Name and date of birth' }, { n:'03', label:'Australian address', hint:'Where the ATO sends your TFN' }, { n:'04', label:'Contact details', hint:'Email and phone for updates' }].map((item, i) => (
+              {[{ n:'01', label:'Passport', hint:'For identity verification' }, { n:'02', label:'Personal details', hint:'Name and date of birth' }, { n:'03', label:'Australian address', hint:'Where the ATO sends your TFN' }, { n:'04', label:'Contact details', hint:'Email and phone for updates' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
                   <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
                     {item.n}
@@ -482,11 +482,6 @@ export default function TFNPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Have a question? Message us directly.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                Get help now →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

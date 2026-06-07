@@ -3,8 +3,8 @@ import { SITE_URL } from '@/lib/constants'
 import { CalculatorClient } from './CalculatorClient'
 
 export const metadata: Metadata = {
-  title: 'Working Holiday Tax Refund Calculator Australia - WHV Estimator',
-  description: 'Estimate your Australian tax refund as a Working Holiday Maker (417/462). Free instant calculator using 2025-26 WHM tax rates. See how much tax back you can claim - no sign-up.',
+  title: 'Working Holiday Tax Refund Calculator Australia — WHV Estimator',
+  description: 'Estimate your Australian tax refund as a Working Holiday Maker (417/462). Free instant calculator using 2025-26 WHM tax rates. See how much tax back you can claim — no sign-up.',
   keywords: [
     'working holiday tax refund calculator',
     'working holiday tax refund calculator Australia',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/calculator`,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax Refund Calculator Australia - WHV Estimator',
+    title: 'Working Holiday Tax Refund Calculator Australia — WHV Estimator',
     description: 'Estimate your Australian tax refund as a Working Holiday Maker. Free, instant, no sign-up.',
   },
   twitter: {
@@ -64,7 +64,7 @@ const faqs = [
   },
   {
     question: 'I am getting a refund, what next?',
-    answer: 'Send us a message on WhatsApp. We prepare and lodge your tax return for you, ensuring you claim every deduction you are entitled to - which often means a bigger refund than this estimate.',
+    answer: 'Send us a message on WhatsApp. We prepare and lodge your tax return for you, ensuring you claim every deduction you are entitled to — which often means a bigger refund than this estimate.',
   },
   {
     question: 'I am showing tax owing, what should I do?',
@@ -72,11 +72,11 @@ const faqs = [
   },
   {
     question: 'Can I use this calculator to estimate my refund from the UK, Germany, or Japan?',
-    answer: 'Yes. The calculator works regardless of your country of origin or current location. The tax rates are based on your visa subclass (417 or 462) and the income earned in Australia - not where you live now. If you have returned home to the UK, Germany, Japan or elsewhere, the estimate still applies.',
+    answer: 'Yes. The calculator works regardless of your country of origin or current location. The tax rates are based on your visa subclass (417 or 462) and the income earned in Australia — not where you live now. If you have returned home to the UK, Germany, Japan or elsewhere, the estimate still applies.',
   },
   {
     question: 'Does the calculator include the Medicare levy?',
-    answer: 'The calculator focuses on income tax. The Medicare levy is a separate 2% charge that most working holiday makers are exempt from. When we lodge your tax return, we apply the Medicare levy exemption where eligible - which can mean your actual refund is higher than the calculator shows.',
+    answer: 'The calculator focuses on income tax. The Medicare levy is a separate 2% charge that most working holiday makers are exempt from. When we lodge your tax return, we apply the Medicare levy exemption where eligible — which can mean your actual refund is higher than the calculator shows.',
   }
 ]
 

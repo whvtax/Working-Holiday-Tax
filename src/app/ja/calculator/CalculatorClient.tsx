@@ -153,7 +153,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
               </a>
 
               <p className="text-[12px] text-subtle mt-4 leading-[1.6] text-center">
-                最新のATO税率に基づきます。これは見積もりです - 正確な還付額は書類確認後に確定します。
+                これは見積もりです、正確な還付額は書類確認後に確定します。
               </p>
             </div>
 
@@ -192,20 +192,20 @@ export function CalculatorClient({ faqs = [] }: Props) {
       )}
 
       {/* Final CTA */}
-      <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '60px' }}>
+      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
         <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-          <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+          <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.14em' }}>
             申告の準備はできましたか？
           </p>
-          <h2 className="font-serif font-black text-ink mx-auto"
+          <h2 className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px', maxWidth: '20ch' }}>
             あなたが受け取れる還付金を最大限に
           </h2>
-          <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
+          <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '46ch' }}>
             控除可能な経費や税額控除を見つけ出し、還付金をさらに増やせる場合が多くあります。
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-            className="service-cta-button w-full sm:w-auto"
+            className="btn-primary w-full sm:w-auto"
             style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
             タックスリターンを始める →
           </a>

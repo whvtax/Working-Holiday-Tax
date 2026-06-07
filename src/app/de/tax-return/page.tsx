@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-  description: 'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Unter Aufsicht eines registrierten Steueragenten reichen wir deine Steuererklärung online beim ATO ein - auch nach deiner Rückkehr nach Deutschland.',
+  description: 'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Unter Aufsicht eines registrierten Steueragenten reichen wir deine Steuererklärung online beim ATO ein — auch nach deiner Rückkehr nach Deutschland.',
   keywords: [
     'Steuerrückerstattung Australien',
     'Steuerrückerstattung Australien Working Holiday',
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de/tax-return`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten - alles online, auch aus Deutschland.',
+    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten — alles online, auch aus Deutschland.',
   },
   twitter: {
     card: 'summary_large_image',
@@ -63,15 +63,15 @@ export const metadata: Metadata = {
 const faqs = [
   {
     question: 'Was ist eine Working Holiday Steuerrückerstattung und bekomme ich eine?',
-    answer: 'Eine Working Holiday Steuerrückerstattung ist das Geld, das dir das ATO (australisches Finanzamt) zurückzahlt, wenn während des Jahres mehr Steuern von deinem Lohn einbehalten wurden, als du tatsächlich schuldest. Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hast du oft Anspruch - zum Beispiel wenn dein Arbeitgeber den falschen Steuersatz angewendet hat, du absetzbare Werbungskosten hast, oder du nur einen Teil des Steuerjahres gearbeitet hast. Der einzige Weg, das herauszufinden, ist eine Steuererklärung einzureichen.',
+    answer: 'Eine Working Holiday Steuerrückerstattung ist das Geld, das dir das ATO (australisches Finanzamt) zurückzahlt, wenn während des Jahres mehr Steuern von deinem Lohn einbehalten wurden, als du tatsächlich schuldest. Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hast du oft Anspruch — zum Beispiel wenn dein Arbeitgeber den falschen Steuersatz angewendet hat, du absetzbare Werbungskosten hast, oder du nur einen Teil des Steuerjahres gearbeitet hast. Der einzige Weg, das herauszufinden, ist eine Steuererklärung einzureichen.',
   },
   {
     question: 'Muss ich eine Steuererklärung machen, wenn ich nur kurz gearbeitet habe?',
-    answer: 'Ja. Wenn du in Australien Einkommen hattest, musst du eventuell trotzdem eine Steuererklärung einreichen, auch wenn du nur kurz gearbeitet hast. Bei kurzen Aufenthalten wird oft zu viel Steuer einbehalten - die Steuererklärung ist meistens der einzige Weg, die Differenz zurückzuholen.',
+    answer: 'Ja. Wenn du in Australien Einkommen hattest, musst du eventuell trotzdem eine Steuererklärung einreichen, auch wenn du nur kurz gearbeitet hast. Bei kurzen Aufenthalten wird oft zu viel Steuer einbehalten — die Steuererklärung ist meistens der einzige Weg, die Differenz zurückzuholen.',
   },
   {
     question: 'Kann ich meine Steuerrückerstattung aus Australien beantragen, wenn ich schon zurück in Deutschland bin?',
-    answer: 'Ja. Du kannst deine australische Steuererklärung aus dem Ausland einreichen - egal ob du nach Deutschland, Österreich, in die Schweiz oder sonst wohin zurückgekehrt bist. Wir erledigen den gesamten Prozess online. Deine Steuerrückerstattung muss auf ein australisches Bankkonto überwiesen werden.',
+    answer: 'Ja. Du kannst deine australische Steuererklärung aus dem Ausland einreichen — egal ob du nach Deutschland, Österreich, in die Schweiz oder sonst wohin zurückgekehrt bist. Wir erledigen den gesamten Prozess online. Deine Steuerrückerstattung muss auf ein australisches Bankkonto überwiesen werden.',
   },
   {
     question: 'Woher weiß ich, ob ich eine Steuerrückerstattung bekomme?',
@@ -79,7 +79,7 @@ const faqs = [
   },
   {
     question: 'Wie viel Steuerrückerstattung aus Australien bekomme ich?',
-    answer: 'Der Betrag hängt von deiner individuellen Situation ab: dein Einkommen, der einbehaltene Steuerbetrag, dein steuerlicher Wohnsitzstatus, deine Visumsklasse und deine absetzbaren Kosten. Wir können dir keine bestimmte Summe versprechen - was wir machen, ist deine Steuererklärung korrekt einzureichen und jeden Abzug zu beantragen, der dir zusteht.',
+    answer: 'Der Betrag hängt von deiner individuellen Situation ab: dein Einkommen, der einbehaltene Steuerbetrag, dein steuerlicher Wohnsitzstatus, deine Visumsklasse und deine absetzbaren Kosten. Wir können dir keine bestimmte Summe versprechen — was wir machen, ist deine Steuererklärung korrekt einzureichen und jeden Abzug zu beantragen, der dir zusteht.',
   },
   {
     question: 'Wie lange dauert die Steuerrückerstattung?',
@@ -98,8 +98,8 @@ const DEDUCTIONS = [
 
 const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Einkommens- und Arbeitsdaten, damit wir deine Working Holiday Steuererklärung korrekt vorbereiten können.' },
-  { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Gehaltsabrechnungen und Basisinfos - schnell und einfach, auch aus dem Ausland.' },
-  { n: '3', title: 'Wir kümmern uns um alles',  body: 'Wir reichen deine Steuererklärung unter Aufsicht eines registrierten Steueragenten direkt beim ATO ein.' },
+  { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Gehaltsabrechnungen und Basisinfos — schnell und einfach, auch aus dem Ausland.' },
+  { n: '3', title: 'Wir kümmern uns um alles',  body: 'Wir reichen deine Steuererklärung direkt beim ATO ein.' },
   { n: '4', title: 'Dein Bescheid kommt',           body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung innerhalb von 7-14 Tagen auf dein australisches Bankkonto überwiesen.' },
 ]
 
@@ -135,7 +135,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/tax-return#service`,
   name: 'Australische Steuererklärung für Working Holiday Maker',
-  description: 'Komplette Bearbeitung deiner australischen Steuererklärung - Vorbereitung, Optimierung und Einreichung beim ATO unter Aufsicht eines registrierten Steueragenten.',
+  description: 'Komplette Bearbeitung deiner australischen Steuererklärung — Vorbereitung, Optimierung und Einreichung beim ATO unter Aufsicht eines registrierten Steueragenten.',
   serviceType: 'Tax Return Preparation',
   category: 'Tax Preparation Service',
   url: `${SITE_URL}/de/tax-return`,
@@ -162,7 +162,7 @@ const howToSchema = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
   name: 'So reichst du deine Working Holiday Steuererklärung in Australien ein',
-  description: 'Schritt-für-Schritt-Anleitung für Working Holiday Maker, wie du deine australische Steuererklärung beim ATO einreichst - aus Australien oder aus dem Ausland.',
+  description: 'Schritt-für-Schritt-Anleitung für Working Holiday Maker, wie du deine australische Steuererklärung beim ATO einreichst — aus Australien oder aus dem Ausland.',
   totalTime: 'P14D',
   inLanguage: 'de',
   step: STEPS.map((s, i) => ({
@@ -209,7 +209,7 @@ export default function GermanTaxReturnPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines - nowrap per line */}
+              {/* Desktop: locked 2 lines — nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block' }}>Steuererklärung Australien</span>
                 <span style={{ display:'block', color:'#0B5240' }}>schnell &amp; stressfrei.</span>
@@ -224,7 +224,7 @@ export default function GermanTaxReturnPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              Wir erledigen deine WHV Steuererklärung mit dem ATO unter Aufsicht eines registrierten Steueragenten.
+              Deine WHV Steuererklärung, eingereicht mit einem registrierten Steueragenten.
             
             </p>
 
@@ -236,7 +236,7 @@ export default function GermanTaxReturnPage() {
                 maxWidth:'48ch',
                 marginBottom:'0',
               }}>
-              <span>Für 417 und 462 Visuminhaber. Die meisten Steuererklärungen reichen wir innerhalb von 24 Stunden ein - auch nach deiner Rückkehr aus Australien.</span>
+              <span>Für 417 und 462 Visuminhaber. Die meisten Steuererklärungen reichen wir innerhalb von 24 Stunden ein — auch nach deiner Rückkehr aus Australien.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -270,7 +270,7 @@ export default function GermanTaxReturnPage() {
         <div className="taxret-intro-container">
           <div className="taxret-intro-grid">
 
-            {/* Left: Visual - money refund */}
+            {/* Left: Visual — money refund */}
             <div className="taxret-intro-visual">
               <div className="taxret-refund-card">
                 <p className="taxret-refund-label">Durchschnittliche Rückzahlung</p>
@@ -312,7 +312,7 @@ export default function GermanTaxReturnPage() {
                 Eine <strong>Steuererklärung</strong> ist die jährliche Abrechnung zwischen dir und dem ATO (australisches Finanzamt). Du gibst an, wie viel du verdient hast, machst absetzbare Kosten geltend und gleichst das mit den Steuern ab, die schon von deinem Lohn einbehalten wurden.
               </p>
               <p className="taxret-intro-body">
-                Viele Working Holiday Maker auf 417 und 462 Visa <strong>zahlen im Laufe des Jahres zu viel Steuern</strong>. In dem Fall zahlt dir das ATO die Differenz zurück - deine Working Holiday Steuerrückerstattung.
+                Viele Working Holiday Maker auf 417 und 462 Visa <strong>zahlen im Laufe des Jahres zu viel Steuern</strong>. In dem Fall zahlt dir das ATO die Differenz zurück — deine Working Holiday Steuerrückerstattung.
               </p>
               <p className="taxret-intro-body">
                 Du kannst deine Steuererklärung von überall auf der Welt machen, auch nachdem du Australien verlassen hast und nach Deutschland oder in ein anderes Land zurückgekehrt bist. Deine Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen.
@@ -325,7 +325,7 @@ export default function GermanTaxReturnPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir bereiten deine Working Holiday Steuererklärung vor und reichen sie für dich ein</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung. Keine Formulare, keine ATO-Portale, kein Stress. Wir beantragen jeden Abzug, der dir zusteht, und erledigen alles online - auch wenn du Australien schon verlassen hast.</p>
+              <p className="service-cta-sub">Kostenlose Erstberatung. Keine Formulare, keine ATO-Portale, kein Stress. Wir beantragen jeden Abzug, der dir zusteht, und erledigen alles online — auch wenn du Australien schon verlassen hast.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Steuererklärung starten →
@@ -343,7 +343,7 @@ export default function GermanTaxReturnPage() {
               Wir machen deine Working Holiday Steuererklärung von A bis Z
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '38ch' }}>
-              Kein Stress, keine Verwirrung - eine korrekt eingereichte Steuererklärung und jede Rückerstattung, die dir zusteht.
+              Kein Stress, keine Verwirrung — eine korrekt eingereichte Steuererklärung und jede Rückerstattung, die dir zusteht.
             </p>
           </div>
 
@@ -352,7 +352,7 @@ export default function GermanTaxReturnPage() {
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Wir prüfen deine komplette Steuersituation', body:'Wir prüfen dein Einkommen, absetzbare Kosten und deinen Steuerstatus, damit alles korrekt erfasst wird.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Wir reichen deine Steuererklärung korrekt ein', body:'Wir bereiten alles vor und reichen deine Working Holiday Steuererklärung direkt beim ATO für dich ein.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Wir beantragen jeden Abzug, der dir zusteht', body:'Wir identifizieren alle absetzbaren Werbungskosten, damit nichts übersehen wird.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Kein Stress, keine Verwirrung', body:'Schick uns einfach deine Daten - wir machen den Rest. Keine ATO-Portale, kein Papierkram nötig.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Kein Stress, keine Verwirrung', body:'Schick uns einfach deine Daten — wir machen den Rest. Keine ATO-Portale, kein Papierkram nötig.' },
             ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
                 style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
@@ -659,11 +659,6 @@ export default function GermanTaxReturnPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Noch eine Frage? Schreib uns direkt.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                Jetzt Hilfe holen →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

@@ -64,7 +64,7 @@ const FAQS = [
   },
   {
     question: 'Bin ich Resident oder Working Holiday Maker für die Steuer?',
-    answer: 'Standardmäßig werden Inhaber eines 417 oder 462 Visums als Working Holiday Maker besteuert - 15 % ab dem ersten Dollar. Wenn du aber aus einem NDA-Land (Nichtdiskriminierungsabkommen) kommst und bestimmte Bedingungen erfüllst, kannst du als australischer Steuerresident besteuert werden - das heißt: Freibetrag von 18.200 $.',
+    answer: 'Standardmäßig werden Inhaber eines 417 oder 462 Visums als Working Holiday Maker besteuert - 15 % ab dem ersten Dollar. Wenn du aber aus einem NDA-Land (Nichtdiskriminierungsabkommen) kommst und bestimmte Bedingungen erfüllst, kannst du als australischer Steuerresident besteuert werden — das heißt: Freibetrag von 18.200 $.',
   },
   {
     question: 'Was sind NDA-Länder?',

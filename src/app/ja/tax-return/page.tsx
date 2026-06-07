@@ -111,8 +111,8 @@ const DEDUCTIONS = [
 const STEPS = [
   { n: '1', title: 'ご相談・お問い合わせ',   body: '日本語でお気軽にご相談ください。ワーホリ タックスリターンに必要な情報を簡単にご案内します。' },
   { n: '2', title: '必要書類のご送付',       body: 'TFN、給与明細、控除関連の領収書などを送るだけ。日本からでも簡単に対応できます。' },
-  { n: '3', title: 'ATOへ代理提出',          body: '登録税理士の監督のもとで、控除を漏れなく申告し、タックスリターンをATOへ提出します。' },
-  { n: '4', title: 'ATOからの結果通知',     body: '通常7〜14営業日でATOからの結果通知が届きます。還付金が発生する場合は、ご指定のオーストラリアの銀行口座に振り込まれます。' },
+  { n: '3', title: 'ATOへ代理提出',          body: '控除を漏れなく申告し、タックスリターンをATOへ提出します。' },
+  { n: '4', title: 'ATOからの結果通知',     body: '7〜14営業日でATOからの結果通知が届きます。還付金が発生する場合は、オーストラリアの銀行口座に振り込まれます。' },
 ]
 
 
@@ -272,7 +272,7 @@ export default function JapaneseTaxReturnPage() {
         <div className="taxret-intro-container">
           <div className="taxret-intro-grid">
 
-            {/* Left: Visual - money refund */}
+            {/* Left: Visual — money refund */}
             <div className="taxret-intro-visual">
               <div className="taxret-refund-card">
                 <p className="taxret-refund-label">平均還付金額</p>
@@ -661,11 +661,6 @@ export default function JapaneseTaxReturnPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.75, marginBottom:'24px' }}>
                 掲載されていないご質問もお気軽にお問い合わせください。
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                今すぐご相談する →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

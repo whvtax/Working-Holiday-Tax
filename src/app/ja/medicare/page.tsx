@@ -215,7 +215,7 @@ export default function JapaneseMedicarePage() {
               </p>
             </div>
 
-            {/* Right: Visual - Eligibility check card */}
+            {/* Right: Visual — Eligibility check card */}
             <div className="medicare-intro-visual">
               <div className="medicare-check-card">
                 <div className="medicare-check-header">
@@ -289,40 +289,33 @@ export default function JapaneseMedicarePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 mb-8 lg:mb-10 reveal delay-1">
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#EAF6F1' }}>
+            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#EAF6F1' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#0B5240" strokeWidth="1.4"/>
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
               <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>RHCA締結国（社会保険協定）の出身者</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ maxWidth: '30ch', marginBottom: '10px' }}>
+              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ marginBottom: '10px' }}>
                 メディケア対象の場合、タックスリターンで正しく処理し、必要以上に支払わないようにします。
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#FFFCF5' }}>
+            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#FFFCF5' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#C47E10" strokeWidth="1.4"/>
                   <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </div>
               <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>RHCA非締結国（例：日本）の出身者</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ maxWidth: '30ch', marginBottom: '10px' }}>
+              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ marginBottom: '10px' }}>
                 メディケア対象外の場合、メディケア税免除をタックスリターンで正しく適用し、税金を払い過ぎないようにします。
               </p>
             </div>
           </div>
 
-          <div className="text-center reveal delay-2" style={{ marginTop: '24px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
-              style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              どちらに該当するか分からない方へ。確認します →
-            </a>
-          </div>
         </div>
       </section>
 

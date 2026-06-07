@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'ABN Registration for Working Holiday Visa Holders | 417 & 462',
-  description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration and tax return - simple, fast, online.',
+  description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration and tax return — simple, fast, online.',
   keywords: [
     'ABN registration Australia',
     'ABN registration working holiday',
@@ -58,13 +58,13 @@ const faqs = [
   { question: 'Can I get an ABN without a TFN?', answer: 'No. You must have a TFN before applying for an ABN.' },
   { question: 'Do I need to register for GST?', answer: 'GST registration is only required if your annual turnover is over $75,000. Most Working Holiday visa holders do not need to register for GST.' },
   { question: 'What happens to my ABN when I leave Australia?', answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.' },
-  { question: 'Do I need an ABN as a working holiday maker?', answer: 'You only need an ABN if you are working as a contractor or sole trader - for example, doing rideshare, food delivery, freelance work, or being paid directly by clients rather than through PAYG employment. If you are a regular employee, you only need a TFN.' },
+  { question: 'Do I need an ABN as a working holiday maker?', answer: 'You only need an ABN if you are working as a contractor or sole trader — for example, doing rideshare, food delivery, freelance work, or being paid directly by clients rather than through PAYG employment. If you are a regular employee, you only need a TFN.' },
   { question: 'How does ABN income affect my working holiday tax return?', answer: 'ABN income is treated differently from PAYG wages. No tax is withheld upfront, so you are responsible for setting aside money for tax. When you lodge your working holiday tax return, ABN income is declared separately and you can claim related business expenses as deductions.' }
 ]
 
 const STEPS = [
   { n: '1', title: 'Tell us about your work',       body: 'Share your work and visa details so we can guide you correctly.' },
-  { n: '2', title: 'Send your details in minutes',  body: 'TFN and passport info - quick and simple.' },
+  { n: '2', title: 'Send your details in minutes',  body: 'TFN and passport info — quick and simple.' },
   { n: '3', title: 'We take care of your ABN setup',  body: 'We prepare and lodge your application accurately on your behalf.' },
   { n: '4', title: 'Get your ABN and start working', body: 'Your ABN is issued within an hour so you can start invoicing and working straight away.' },
 ]
@@ -170,7 +170,7 @@ export default function ABNPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines - nowrap per line */}
+              {/* Desktop: locked 2 lines — nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block' }}>Set up your ABN and</span>
                 <span style={{ display:'block', color:'#0B5240' }}>start working as a contractor</span>
@@ -245,11 +245,11 @@ export default function ABNPage() {
                 With an ABN you can <strong>invoice clients directly</strong>, work as a contractor or freelancer, and operate legally as a sole trader. Common ABN jobs for backpackers: farm contracting, content creation, ride-share driving, delivery, and trades.
               </p>
               <p className="abn-intro-body">
-                An ABN is not a replacement for a TFN - they serve different purposes. Many working holiday makers have both: a TFN for employment income, an ABN for contract work.
+                An ABN is not a replacement for a TFN — they serve different purposes. Many working holiday makers have both: a TFN for employment income, an ABN for contract work.
               </p>
             </div>
 
-            {/* Right: Visual - Employee vs Contractor comparison */}
+            {/* Right: Visual — Employee vs Contractor comparison */}
             <div className="abn-intro-visual">
               <div className="abn-compare-grid">
 
@@ -270,7 +270,7 @@ export default function ABNPage() {
                   </ul>
                 </div>
 
-                {/* Contractor card - highlighted */}
+                {/* Contractor card — highlighted */}
                 <div className="abn-compare-card abn-compare-contractor">
                   <div className="abn-compare-badge">You</div>
                   <div className="abn-compare-icon abn-compare-icon-active">
@@ -298,7 +298,7 @@ export default function ABNPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We register your ABN correctly for you</h3>
-              <p className="service-cta-sub">Free initial consultation on WhatsApp. We register your ABN with the correct setup for your work type - and explain your tax obligations clearly.</p>
+              <p className="service-cta-sub">Free initial consultation on WhatsApp. We register your ABN with the correct setup for your work type — and explain your tax obligations clearly.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Register my ABN →
@@ -324,11 +324,11 @@ export default function ABNPage() {
             </p>
           </div>
 
-          {/* Cards - equal height via items-stretch; mobile gap-4, desktop gap-6 */}
+          {/* Cards — equal height via items-stretch; mobile gap-4, desktop gap-6 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'We confirm you actually need an ABN', body:'Many backpackers register one they do not need. We check your work type first and give you a straight answer.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Registered to match your work', body:'Rideshare, delivery, freelance or contracting - we set your ABN up correctly for how you actually earn.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Registered to match your work', body:'Rideshare, delivery, freelance or contracting — we set your ABN up correctly for how you actually earn.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'GST handled only if it applies', body:'We tell you whether the $75,000 GST threshold affects you, so you never register for tax you do not owe.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Ready to invoice from day one', body:'Your ABN is active and Australian Business Register compliant, so you can start contracting right away.' },
             ].map((item,i) => (
@@ -434,7 +434,7 @@ export default function ABNPage() {
             </p>
           </div>
 
-          {/* Desktop - full-width spread, thicker line, bigger circles */}
+          {/* Desktop — full-width spread, thicker line, bigger circles */}
           <div className="hidden lg:block" style={{ marginBottom:'48px' }}>
             <div className="relative flex items-start">
               <div className="absolute left-[calc(12.5%)] right-[calc(12.5%)] top-5 h-[2px]"
@@ -455,7 +455,7 @@ export default function ABNPage() {
             </div>
           </div>
 
-          {/* Mobile - compact vertical, subtle line */}
+          {/* Mobile — compact vertical, subtle line */}
           <div className="lg:hidden flex flex-col" style={{ marginBottom:'28px', gap:'0' }}>
             {STEPS.map((s,i) => (
               <div key={i} className="flex gap-3.5" style={{ paddingBottom: i < STEPS.length-1 ? '18px':'0' }}>
@@ -491,7 +491,7 @@ export default function ABNPage() {
               </h2>
             </div>
             <div className="space-y-0">
-              {[{ n:'01', label:'Passport', hint:'Your photo ID' }, { n:'02', label:'Tax File Number (TFN)', hint:'Required before an ABN' }, { n:'03', label:'Personal details', hint:'Address & contact number' }, { n:'04', label:'Work details', hint:'How you plan to work' }].map((item, i) => (
+              {[{ n:'01', label:'Passport', hint:'For identity verification' }, { n:'02', label:'Tax File Number (TFN)', hint:'Required before an ABN' }, { n:'03', label:'Personal details', hint:'Address & contact number' }, { n:'04', label:'Work details', hint:'How you plan to work' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
                   <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
                     {item.n}
@@ -528,11 +528,6 @@ export default function ABNPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Have a question? Message us directly.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                Get help now →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

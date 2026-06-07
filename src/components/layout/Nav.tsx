@@ -8,10 +8,10 @@ import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 const Logo = ({ locale }: { locale: 'en' | 'de' | 'ja' }) => {
   const href = locale === 'de' ? '/de' : locale === 'ja' ? '/ja' : '/'
   const aria = locale === 'de'
-    ? 'Working Holiday Tax - Startseite'
+    ? 'Working Holiday Tax — Startseite'
     : locale === 'ja'
-    ? 'Working Holiday Tax - ホーム'
-    : 'Working Holiday Tax - Home'
+    ? 'Working Holiday Tax — ホーム'
+    : 'Working Holiday Tax — Home'
   return (
   <Link href={href} className="flex items-center gap-2.5 flex-shrink-0" aria-label={aria}>
     <svg width="32" height="32" viewBox="0 0 34 34" fill="none" aria-hidden="true">
@@ -260,10 +260,10 @@ export function Nav() {
         </div>
       </nav>
 
-      {/* Mobile Menu - flat list, no categorization */}
+      {/* Mobile Menu — flat list, no categorization */}
       <div className={`fixed inset-0 z-40 bg-white flex flex-col pt-[80px] px-5 pb-8 overflow-y-auto transition-transform duration-400 ease-spring ${open ? 'translate-x-0' : 'translate-x-full'}`}>
 
-        {/* All links - flat list */}
+        {/* All links — flat list */}
         {(locale === 'de'
           ? [
               { label: 'Steuernummer (TFN)',   href: '/de/tfn' },

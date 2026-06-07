@@ -7,7 +7,7 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'ABN登録 - ワーキングホリデー オーストラリア',
+  title: 'ABN登録 — ワーキングホリデー オーストラリア',
   description: '個人事業主として正しくABNを登録。ワーキングホリデー専門のチームが、登録税理士の監督のもとで登録から税務まですべてサポートします。',
   keywords: [
     'ABN 登録 オーストラリア',
@@ -41,12 +41,12 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABN登録 - ワーキングホリデー オーストラリア',
+    title: 'ABN登録 — ワーキングホリデー オーストラリア',
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ABN登録 - ワーキングホリデー オーストラリア',
+    title: 'ABN登録 — ワーキングホリデー オーストラリア',
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -446,7 +446,7 @@ export default function ABNPageJA() {
               </h2>
             </div>
             <div className="space-y-0">
-              {[{ n:'01', label:'パスポート', hint:'本人確認' }, { n:'02', label:'TFN（税務番号）', hint:'ABNの前に必要' }, { n:'03', label:'個人情報', hint:'住所・連絡先' }, { n:'04', label:'お仕事の概要', hint:'働き方' }].map((item, i) => (
+              {[{ n:'01', label:'パスポート', hint:'本人確認のため' }, { n:'02', label:'TFN（税務番号）', hint:'ABNの前に必要' }, { n:'03', label:'個人情報', hint:'住所・連絡先' }, { n:'04', label:'お仕事の概要', hint:'働き方' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
                   <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
                     {item.n}
@@ -483,11 +483,6 @@ export default function ABNPageJA() {
                 style={{ fontSize: '13.5px', lineHeight: 1.75, marginBottom: '24px' }}>
                 掲載されていないご質問もお気軽にお問い合わせください。
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
-                今すぐご相談する →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

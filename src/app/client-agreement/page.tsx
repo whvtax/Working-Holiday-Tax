@@ -139,7 +139,7 @@ const sections: Section[] = [
   },
   {
     title: '18. Accuracy of Information and Statutory Declaration',
-    body: 'You declare that all information provided to the Provider - including personal details, income, employment information, bank details, passport information, and Tax File Number (TFN) - is true, complete, and accurate. You acknowledge that:',
+    body: 'You declare that all information provided to the Provider — including personal details, income, employment information, bank details, passport information, and Tax File Number (TFN) - is true, complete, and accurate. You acknowledge that:',
     items: [
       'Providing false or misleading information to the Provider or the ATO may constitute an offence under Australian law, including the Taxation Administration Act 1953 (Cth), and may result in penalties, prosecution, or repayment obligations.',
       'You agree to promptly notify the Provider of any changes or corrections to the information provided.',

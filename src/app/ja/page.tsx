@@ -6,7 +6,7 @@ import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { getGoogleRating } from '@/lib/googleData'
 
-// ─── METADATA - rich SEO + AI optimized for Japanese market ─────────────
+// ─── METADATA — rich SEO + AI optimized for Japanese market ─────────────
 export const metadata: Metadata = {
   title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
   description:
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'オーストラリア タックスリターン 還付金 - 登録税理士の監督のもとでワーホリ（417・462ビザ）専門',
+      alt: 'オーストラリア タックスリターン 還付金 — 登録税理士の監督のもとでワーホリ（417・462ビザ）専門',
     }],
   },
   twitter: {
@@ -105,7 +105,7 @@ export const metadata: Metadata = {
   },
 }
 
-// ─── ICONS - relevant per service ───────────────────────────────────────
+// ─── ICONS — relevant per service ───────────────────────────────────────
 const IconTFN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="7.5" x2="14" y2="7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="10.5" x2="11" y2="10.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="13.5" x2="9" y2="13.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>)
 const IconABN     = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 8l7-5 7 5v9a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><path d="M7.5 17v-6h5v6" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
 const IconReturn  = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v12M6 10l4 4 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 16v1a1 1 0 001 1h12a1 1 0 001-1v-1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>)
@@ -113,7 +113,7 @@ const IconSuper   = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill=
 const IconMedicare = () => (<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 17.5s-6-3.5-6-8.5a3 3 0 016-2 3 3 0 016 2c0 5-6 8.5-6 8.5z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/><line x1="10" y1="7" x2="10" y2="12" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><line x1="7.5" y1="9.5" x2="12.5" y2="9.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>)
 const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M3.5 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>)
 
-// ─── TESTIMONIALS - Japanese WHV reviews ─────────────────────────────────
+// ─── TESTIMONIALS — Japanese WHV reviews ─────────────────────────────────
 
 const STEPS = [
   { n: '1', title: 'ご相談・状況の確認',     body: 'TFN、ABN、ワーホリ タックスリターン、スーパー受取など、必要なサービスを最初にご案内します。' },
@@ -210,7 +210,7 @@ export default async function JapaneseHomePage() {
     ],
   }
 
-  // Organization schema with full service catalog - critical for AI search
+  // Organization schema with full service catalog — critical for AI search
   const organizationLd = {
     '@context': 'https://schema.org',
     '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
@@ -320,21 +320,20 @@ export default async function JapaneseHomePage() {
             <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>ワーホリ専門の税務サポート</span>
           </div>
 
-          <h1 className="font-serif font-black text-ink mx-auto"
+          <h1 className="font-serif font-black text-ink mx-auto hero-animate"
             style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.12, letterSpacing: '-0.025em', marginBottom: '14px' }}>
             {/* Desktop */}
             <span style={{ display: 'block' }}>オーストラリアの</span>
               <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン、</span>
               <span style={{ display: 'block' }}>おまかせください。</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>タックスリターン</span>
           </h1>
 
-          <p className="font-light mx-auto"
+          <p className="font-light mx-auto hero-animate-delay"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
             <span style={{ whiteSpace: 'nowrap' }}>417・462ビザ</span>のワーキングホリデーメーカー専門の税務サポート。
           </p>
 
-          <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
+          <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4 hero-animate-delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
@@ -355,7 +354,7 @@ export default async function JapaneseHomePage() {
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center reveal">
 
           <span className="section-label center">選ばれる理由</span>
 
@@ -369,7 +368,7 @@ export default async function JapaneseHomePage() {
             お客様が受け取るべきタックスリターン還付金を、漏れなく申告します。
           </p>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8" style={{ marginBottom: '36px' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 reveal" style={{ marginBottom: '36px' }}>
             {[
               { title: 'ワーホリ税務の専門家', body: '417・462ビザのワーキングホリデーメーカーの税務だけを専門に扱う、登録税理士監督のもとのチーム。あなたに関わるルールを熟知しています。' },
               { title: 'ATO登録税理士の監督', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。ATOの最新ルールに完全準拠して申告します。' },
@@ -393,7 +392,7 @@ export default async function JapaneseHomePage() {
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">お客様の声</span>
@@ -427,7 +426,7 @@ export default async function JapaneseHomePage() {
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
             <span className="section-label center">ご利用の流れ</span>
@@ -500,14 +499,13 @@ export default async function JapaneseHomePage() {
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">サービス一覧</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
-              ワーホリの税務をトータルサポート<br />
-              <em className="not-italic font-normal text-forest-400">オーストラリアで安心。</em>
+              ワーホリの税務をトータルサポート。
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', textAlign: 'center', lineHeight: 1.7, maxWidth: '44ch' }}>
@@ -515,7 +513,7 @@ export default async function JapaneseHomePage() {
             </p>
           </div>
 
-          <div className="services-grid grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+          <div className="services-grid grid grid-cols-1 lg:grid-cols-5 gap-3 lg:gap-4 reveal">
             {SERVICES.map((s) => (
               <Link key={s.href} href={s.href}
                 className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"

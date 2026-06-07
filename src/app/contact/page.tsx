@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Working Holiday Tax | Registered Tax Agents Australia',
+  title: 'Contact Us — Working Holiday Tax | Registered Tax Agents Australia',
   description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
   keywords: [
     'contact working holiday tax',
@@ -75,11 +75,11 @@ const FAQS = [
   },
   {
     question: 'Can you help me if I have already left Australia?',
-    answer: 'Yes. We work with working holiday makers who are still in Australia, recently departed, or returned years ago. Everything can be handled remotely - tax returns, super claims (DASP), and ABN matters.',
+    answer: 'Yes. We work with working holiday makers who are still in Australia, recently departed, or returned years ago. Everything can be handled remotely — tax returns, super claims (DASP), and ABN matters.',
   },
   {
     question: 'Can you help me from the UK, Germany, or Japan?',
-    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries claim their Australian tax refund, super (DASP) and handle any remaining tax matters from home. The entire process is online - no travel back to Australia required.',
+    answer: 'Yes. We help working holiday makers from the UK, Germany, Japan and many other countries claim their Australian tax refund, super (DASP) and handle any remaining tax matters from home. The entire process is online — no travel back to Australia required.',
   }
   ]
 
@@ -162,7 +162,7 @@ export default function ContactPage() {
     })),
   }
 
-  // Speakable schema - cues Google Assistant for voice answers
+  // Speakable schema — cues Google Assistant for voice answers
   const speakableLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -270,7 +270,7 @@ export default function ContactPage() {
 
           <address style={{ fontStyle: 'normal' }}>
 
-            {/* WhatsApp - primary */}
+            {/* WhatsApp — primary */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="contact-option-card contact-option-primary">
               <div className="contact-option-icon" style={{ background: '#22C55E' }}>
@@ -288,7 +288,7 @@ export default function ContactPage() {
               </svg>
             </a>
 
-            {/* Email - Gmail icon */}
+            {/* Email — Gmail icon */}
             <a href={`mailto:${EMAIL}?subject=Tax%20question%20from%20website`}
               className="contact-option-card">
               <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #E2EFE9' }}>
@@ -309,7 +309,7 @@ export default function ContactPage() {
               </svg>
             </a>
 
-            {/* Social row - Instagram with gradient + TikTok with colors */}
+            {/* Social row — Instagram with gradient + TikTok with colors */}
             <div className="grid grid-cols-2 gap-3" style={{ marginTop: '12px' }}>
               <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer"
                 className="contact-option-card-small">
@@ -384,20 +384,20 @@ export default function ContactPage() {
       </section>
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
+      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-[520px] mx-auto text-center">
-            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.14em' }}>
               Ready when you are
             </p>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
+            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
               Start your tax return today
             </h2>
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '420px' }}>
-              No paperwork, no ATO portals. We handle everything online - usually within 24 hours.
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '420px' }}>
+              No paperwork, no ATO portals. We handle everything online — usually within 24 hours.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="service-cta-button w-full sm:w-auto"
+              className="btn-primary w-full sm:w-auto"
               style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
               Start your tax return →
             </a>

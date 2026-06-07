@@ -312,7 +312,7 @@ export default function JapaneseSuperannuationPage() {
         </div>
       </section>
 
-      {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
+      {/* ── CLARITY — THIS IS YOUR MONEY ──────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
@@ -476,7 +476,7 @@ export default function JapaneseSuperannuationPage() {
               </h2>
             </div>
             <div className="space-y-0">
-              {[{ n:'01', label:'パスポート', hint:'本人確認' }, { n:'02', label:'TFN（税務番号）', hint:'あなたの税務番号' }, { n:'03', label:'スーパーファンド情報', hint:'または当社が特定' }, { n:'04', label:'銀行口座', hint:'受取先（海外口座可）' }].map((item, i) => (
+              {[{ n:'01', label:'パスポート', hint:'本人確認のため' }, { n:'02', label:'TFN（税務番号）', hint:'あなたの税務番号' }, { n:'03', label:'スーパーファンド情報', hint:'または当社が特定' }, { n:'04', label:'銀行口座', hint:'受取先（海外口座可）' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
                   <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
                     {item.n}
@@ -513,11 +513,6 @@ export default function JapaneseSuperannuationPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.75, marginBottom:'24px' }}>
                 掲載されていないご質問もお気軽にお問い合わせください。
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                今すぐご相談する →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

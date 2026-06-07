@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
+  title: 'Kontakt — Steueragent für Backpacker | Working Holiday Tax',
   description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
   keywords: [
     'Kontakt Working Holiday Tax',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'ja': `${SITE_URL}/ja/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
-    title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
+    title: 'Kontakt — Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
     type: 'website',
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
+    title: 'Kontakt — Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet.',
   },
   robots: {
@@ -54,11 +54,11 @@ const FAQS = [
   },
   {
     question: 'Kostet es etwas, eine Frage zu stellen?',
-    answer: 'Nein. Erste Fragen und Beratungen sind kostenlos. Wir berechnen erst dann etwas, wenn du dich für einen Service entscheidest - z.B. Steuererklärung, TFN-Antrag oder Superauszahlung.',
+    answer: 'Nein. Erste Fragen und Beratungen sind kostenlos. Wir berechnen erst dann etwas, wenn du dich für einen Service entscheidest — z.B. Steuererklärung, TFN-Antrag oder Superauszahlung.',
   },
   {
     question: 'Welche Sprachen sprecht ihr?',
-    answer: 'Unser Team bearbeitet Anfragen auf Englisch und auf Deutsch. Wir arbeiten jedes Jahr mit Working Holiday Makern aus über 45 Ländern - egal woher du kommst, wir machen es dir einfach.',
+    answer: 'Unser Team bearbeitet Anfragen auf Englisch und auf Deutsch. Wir arbeiten jedes Jahr mit Working Holiday Makern aus über 45 Ländern — egal woher du kommst, wir machen es dir einfach.',
   },
   {
     question: 'Muss ich sofort Unterlagen schicken?',
@@ -66,11 +66,11 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir helfen, wenn ich Australien schon verlassen habe?',
-    answer: 'Ja. Wir arbeiten mit Working Holiday Makern, die noch in Australien sind, vor Kurzem abgereist sind oder schon vor Jahren zurückgekehrt sind. Alles geht aus der Ferne - Steuererklärungen, Superauszahlungen (DASP) und ABN-Angelegenheiten.',
+    answer: 'Ja. Wir arbeiten mit Working Holiday Makern, die noch in Australien sind, vor Kurzem abgereist sind oder schon vor Jahren zurückgekehrt sind. Alles geht aus der Ferne — Steuererklärungen, Superauszahlungen (DASP) und ABN-Angelegenheiten.',
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',
-    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern dabei, ihre australische Steuerrückerstattung und Super (DASP) zu beantragen und alle offenen Steuerangelegenheiten von zu Hause aus zu regeln. Der gesamte Prozess läuft online ab - keine Rückreise nach Australien nötig.',
+    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern dabei, ihre australische Steuerrückerstattung und Super (DASP) zu beantragen und alle offenen Steuerangelegenheiten von zu Hause aus zu regeln. Der gesamte Prozess läuft online ab — keine Rückreise nach Australien nötig.',
   }
   ]
 
@@ -82,7 +82,7 @@ export default function GermanContactPage() {
     '@type': 'ContactPage',
     '@id': `${SITE_URL}/de/contact`,
     url: `${SITE_URL}/de/contact`,
-    name: 'Kontakt - Working Holiday Tax',
+    name: 'Kontakt — Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet, für Hilfe mit TFN, Steuererklärung, Super und ABN.',
     inLanguage: 'de',
     isPartOf: {
@@ -249,7 +249,7 @@ export default function GermanContactPage() {
 
           <address style={{ fontStyle: 'normal' }}>
 
-            {/* WhatsApp - primary */}
+            {/* WhatsApp — primary */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="contact-option-card contact-option-primary">
               <div className="contact-option-icon" style={{ background: '#22C55E' }}>
@@ -267,7 +267,7 @@ export default function GermanContactPage() {
               </svg>
             </a>
 
-            {/* Email - Gmail icon */}
+            {/* Email — Gmail icon */}
             <a href={`mailto:${EMAIL}?subject=Steuerfrage%20von%20Website`}
               className="contact-option-card">
               <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #E2EFE9' }}>
@@ -288,7 +288,7 @@ export default function GermanContactPage() {
               </svg>
             </a>
 
-            {/* Social row - Instagram with gradient + TikTok with colors */}
+            {/* Social row — Instagram with gradient + TikTok with colors */}
             <div className="grid grid-cols-2 gap-3" style={{ marginTop: '12px' }}>
               <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer"
                 className="contact-option-card-small">
@@ -363,20 +363,20 @@ export default function GermanContactPage() {
       </section>
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
+      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-[520px] mx-auto text-center">
-            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.14em' }}>
               Bereit, wenn du es bist
             </p>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
+            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
               Starte heute deine Steuererklärung
             </h2>
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '420px' }}>
-              Kein Papierkram, keine ATO-Portale. Wir machen alles online - meistens innerhalb von 24 Stunden.
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '420px' }}>
+              Kein Papierkram, keine ATO-Portale. Wir machen alles online — meistens innerhalb von 24 Stunden.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="service-cta-button w-full sm:w-auto"
+              className="btn-primary w-full sm:w-auto"
               style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
               Steuererklärung starten →
             </a>

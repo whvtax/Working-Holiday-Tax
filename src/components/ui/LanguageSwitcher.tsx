@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from 'react'
  * LanguageSwitcher
  * Shows current language + flag, opens dropdown with the other options.
  * Smart pathing: if on /tfn, switching to DE goes to /de/tfn; to JA → /ja/tfn.
- * Used in Nav (desktop + mobile - same variant since the mobile menu now shows
+ * Used in Nav (desktop + mobile — same variant since the mobile menu now shows
  * the pill button beside the burger instead of an inline mobile variant).
  */
 export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' | 'mobile' }) {

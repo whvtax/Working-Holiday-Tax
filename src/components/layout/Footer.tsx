@@ -122,7 +122,7 @@ export function Footer() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
 
           {/* Main grid - 4 columns */}
-          <div className="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
 
             {/* Brand column */}
             <div className="footer-brand-col col-span-2 md:col-span-1">
@@ -208,7 +208,7 @@ export function Footer() {
         </div>
       </div>
 
-      {/* ─── Bottom bar - DARK GREEN brand layer ──────────────────────────── */}
+      {/* ─── Bottom bar — DARK GREEN brand layer ──────────────────────────── */}
       <div style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">

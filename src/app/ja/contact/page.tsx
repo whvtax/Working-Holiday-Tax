@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'お問い合わせ - Working Holiday Tax',
+  title: 'お問い合わせ — Working Holiday Tax',
   description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
   keywords: [
     'お問い合わせ ワーホリ 税金',
@@ -90,7 +90,7 @@ export default function JapaneseContactPage() {
     '@type': 'ContactPage',
     '@id': `${SITE_URL}/ja/contact`,
     url: `${SITE_URL}/ja/contact`,
-    name: 'お問い合わせ - Working Holiday Tax',
+    name: 'お問い合わせ — Working Holiday Tax',
     description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
     inLanguage: 'ja',
     isPartOf: {
@@ -257,7 +257,7 @@ export default function JapaneseContactPage() {
 
           <address style={{ fontStyle: 'normal' }}>
 
-            {/* WhatsApp - primary */}
+            {/* WhatsApp — primary */}
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="contact-option-card contact-option-primary">
               <div className="contact-option-icon" style={{ background: '#22C55E' }}>
@@ -275,7 +275,7 @@ export default function JapaneseContactPage() {
               </svg>
             </a>
 
-            {/* Email - Gmail icon */}
+            {/* Email — Gmail icon */}
             <a href={`mailto:${EMAIL}?subject=%E7%A8%8E%E9%87%91%E3%81%AE%E3%81%94%E8%B3%AA%E5%95%8F`}
               className="contact-option-card">
               <div className="contact-option-icon" style={{ background: '#fff', border: '1px solid #E2EFE9' }}>
@@ -296,7 +296,7 @@ export default function JapaneseContactPage() {
               </svg>
             </a>
 
-            {/* Social row - Instagram with gradient + TikTok with colors */}
+            {/* Social row — Instagram with gradient + TikTok with colors */}
             <div className="grid grid-cols-2 gap-3" style={{ marginTop: '12px' }}>
               <a href="https://instagram.com/workingholidaytax" target="_blank" rel="noopener noreferrer"
                 className="contact-option-card-small">
@@ -368,20 +368,20 @@ export default function JapaneseContactPage() {
       </section>
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
+      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-[520px] mx-auto text-center">
-            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.14em' }}>
               準備ができたら
             </p>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
+            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
               今すぐタックスリターンを始めましょう
             </h2>
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '440px' }}>
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '440px' }}>
               書類もATOポータルも不要。すべてオンラインで完結、通常24時間以内に対応します。
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="service-cta-button w-full sm:w-auto"
+              className="btn-primary w-full sm:w-auto"
               style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
               タックスリターンを依頼する →
             </a>

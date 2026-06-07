@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
-// Reuse the English form - it supports defaultLang prop
+// Reuse the English form — it supports defaultLang prop
 import { FormClient } from '@/app/tfn-form/FormClient'
 
 export const metadata: Metadata = {
   title: 'TFN-Antrag stellen | Working Holiday Tax',
-  description: 'Schick uns deine Daten, um eine Tax File Number zu beantragen. Wir reichen deinen Antrag beim ersten Mal korrekt ein - meistens innerhalb von 28 Tagen.',
+  description: 'Schick uns deine Daten, um eine Tax File Number zu beantragen. Wir reichen deinen Antrag beim ersten Mal korrekt ein — meistens innerhalb von 28 Tagen.',
   keywords: ['TFN Antrag Formular', 'TFN online beantragen', 'TFN Formular Working Holiday', 'TFN Antrag absenden', 'Tax File Number beantragen', 'TFN für Deutsche', 'australische Steuernummer Antrag', 'TFN Antragsformular Australien'],
   alternates: {
     canonical: '/de/tfn-form',

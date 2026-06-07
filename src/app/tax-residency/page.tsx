@@ -71,7 +71,7 @@ const FAQS = [
   },
   {
     question: 'Am I a resident or working holiday maker for tax?',
-    answer: 'By default, holders of 417 or 462 visas are taxed as working holiday makers at 15% from the first dollar. However, if you are from an NDA country (Non-Discrimination Agreement) and meet specific conditions, you may qualify to be taxed as an Australian resident - which means a $18,200 tax-free threshold.',
+    answer: 'By default, holders of 417 or 462 visas are taxed as working holiday makers at 15% from the first dollar. However, if you are from an NDA country (Non-Discrimination Agreement) and meet specific conditions, you may qualify to be taxed as an Australian resident — which means a $18,200 tax-free threshold.',
   },
   {
     question: 'What are NDA countries?',

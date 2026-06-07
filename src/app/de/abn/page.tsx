@@ -8,7 +8,7 @@ import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
   title: 'ABN-Registrierung für Working Holiday Visainhaber in Australien',
-  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten - einfach, schnell, online.',
+  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten — einfach, schnell, online.',
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
@@ -53,17 +53,17 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
-  { question: 'Kann ich sowohl eine TFN als auch eine ABN haben?', answer: 'Ja. Du kannst beide haben - die TFN für Anstellungen und die ABN für selbstständige Tätigkeiten.' },
+  { question: 'Kann ich sowohl eine TFN als auch eine ABN haben?', answer: 'Ja. Du kannst beide haben — die TFN für Anstellungen und die ABN für selbstständige Tätigkeiten.' },
   { question: 'Bekomme ich eine ABN ohne TFN?', answer: 'Nein. Du brauchst zuerst eine TFN, bevor du eine ABN beantragen kannst.' },
   { question: 'Muss ich mich für GST registrieren?', answer: 'Eine GST-Registrierung ist nur erforderlich, wenn dein Jahresumsatz über 75.000 AUD liegt. Die meisten Working Holiday Visainhaber müssen sich nicht für GST registrieren.' },
   { question: 'Was passiert mit meiner ABN, wenn ich Australien verlasse?', answer: 'Du kannst deine ABN online stornieren, sobald du aufhörst, in Australien zu arbeiten.' },
-  { question: 'Brauche ich als Working Holiday Maker eine ABN?', answer: 'Du brauchst eine ABN nur, wenn du als Selbstständiger oder Freelancer arbeitest - zum Beispiel Rideshare, Lieferdienste, freie Aufträge oder direkte Bezahlung durch Kunden statt PAYG-Anstellung. Als regulärer Angestellter brauchst du nur eine TFN.' },
+  { question: 'Brauche ich als Working Holiday Maker eine ABN?', answer: 'Du brauchst eine ABN nur, wenn du als Selbstständiger oder Freelancer arbeitest — zum Beispiel Rideshare, Lieferdienste, freie Aufträge oder direkte Bezahlung durch Kunden statt PAYG-Anstellung. Als regulärer Angestellter brauchst du nur eine TFN.' },
   { question: 'Wie beeinflussen ABN-Einkünfte meine Working Holiday Steuererklärung?', answer: 'ABN-Einkünfte werden anders behandelt als PAYG-Lohn. Es wird keine Steuer vorab einbehalten, du musst also selbst Geld für die Steuer zurücklegen. Bei deiner Steuererklärung werden ABN-Einkünfte separat angegeben, und du kannst entsprechende Geschäftsausgaben als Werbungskosten geltend machen.' }
 ]
 
 const STEPS = [
   { n: '1', title: 'Erzähl uns von deiner Arbeit',         body: 'Teil uns deine Arbeits- und Visumdetails mit, damit wir dich richtig beraten.' },
-  { n: '2', title: 'Schick uns deine Daten',               body: 'TFN und Reisepassinfos - schnell und einfach.' },
+  { n: '2', title: 'Schick uns deine Daten',               body: 'TFN und Reisepassinfos — schnell und einfach.' },
   { n: '3', title: 'Wir kümmern uns um die Registrierung', body: 'Wir bereiten alles vor und reichen deinen Antrag korrekt ein.' },
   { n: '4', title: 'Du erhältst deine ABN und legst los',  body: 'Deine ABN wird meist innerhalb einer Stunde ausgestellt. Du kannst sofort Rechnungen schreiben und arbeiten.' },
 ]
@@ -89,7 +89,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/abn#service`,
   name: 'ABN-Registrierung für Working Holiday Maker',
-  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten - Uber, Lieferdienste, freiberufliche Tätigkeiten.',
+  description: 'ABN-Registrierung für Working Holiday Maker, die als Sole Trader (Selbstständige) arbeiten — Uber, Lieferdienste, freiberufliche Tätigkeiten.',
   serviceType: 'ABN Registration',
   category: 'Business Registration Service',
   url: `${SITE_URL}/de/abn`,
@@ -223,7 +223,7 @@ export default function ABNPageDE() {
                 Mit einer ABN kannst du <strong>direkt Rechnungen an Kunden stellen</strong>, als Selbstständiger oder Freelancer arbeiten und legal als &bdquo;sole trader&ldquo; auftreten. Typische ABN-Jobs für Backpacker: Farmarbeit auf Vertragsbasis, Content Creation, Uber/Rideshare, Lieferdienste und Handwerk.
               </p>
               <p className="abn-intro-body">
-                Eine ABN ersetzt keine TFN - die beiden haben unterschiedliche Aufgaben. Viele Working Holiday Maker haben beide: eine TFN für Anstellungen und eine ABN für selbstständige Arbeit.
+                Eine ABN ersetzt keine TFN — die beiden haben unterschiedliche Aufgaben. Viele Working Holiday Maker haben beide: eine TFN für Anstellungen und eine ABN für selbstständige Arbeit.
               </p>
             </div>
 
@@ -271,7 +271,7 @@ export default function ABNPageDE() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir registrieren deine ABN korrekt für dich</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung auf WhatsApp. Wir registrieren deine ABN mit dem richtigen Setup für deine Tätigkeit - und erklären dir deine Steuerpflichten klar und verständlich.</p>
+              <p className="service-cta-sub">Kostenlose Erstberatung auf WhatsApp. Wir registrieren deine ABN mit dem richtigen Setup für deine Tätigkeit — und erklären dir deine Steuerpflichten klar und verständlich.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine ABN registrieren →
@@ -299,9 +299,9 @@ export default function ABNPageDE() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Wir prüfen, ob du eine ABN wirklich brauchst', body:'Viele Backpacker registrieren eine ABN, die sie gar nicht brauchen. Wir prüfen zuerst deine Tätigkeit und geben dir eine klare Antwort.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Passend zu deiner Arbeit registriert', body:'Rideshare, Lieferdienst, Freelance oder Vertrag - wir richten deine ABN korrekt für deine tatsächliche Tätigkeit ein.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'GST nur, wenn es dich betrifft', body:'Wir sagen dir, ob die 75.000 $ GST-Grenze für dich gilt - damit du dich nie für Steuern registrierst, die du nicht schuldest.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Ab Tag 1 rechnungsbereit', body:'Deine ABN ist aktiv und konform mit dem Australian Business Register - du kannst sofort loslegen.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Passend zu deiner Arbeit registriert', body:'Rideshare, Lieferdienst, Freelance oder Vertrag — wir richten deine ABN korrekt für deine tatsächliche Tätigkeit ein.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'GST nur, wenn es dich betrifft', body:'Wir sagen dir, ob die 75.000 $ GST-Grenze für dich gilt — damit du dich nie für Steuern registrierst, die du nicht schuldest.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Ab Tag 1 rechnungsbereit', body:'Deine ABN ist aktiv und konform mit dem Australian Business Register — du kannst sofort loslegen.' },
             ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
                 style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
@@ -462,7 +462,7 @@ export default function ABNPageDE() {
               </h2>
             </div>
             <div className="space-y-0">
-              {[{ n:'01', label:'Reisepass', hint:'Dein Ausweis' }, { n:'02', label:'Tax File Number (TFN)', hint:'Vor der ABN erforderlich' }, { n:'03', label:'Persönliche Daten', hint:'Adresse & Telefonnummer' }, { n:'04', label:'Angaben zur Arbeit', hint:'Wie du arbeiten möchtest' }].map((item, i) => (
+              {[{ n:'01', label:'Reisepass', hint:'Zur Identitätsprüfung' }, { n:'02', label:'Tax File Number (TFN)', hint:'Vor der ABN erforderlich' }, { n:'03', label:'Persönliche Daten', hint:'Adresse & Telefonnummer' }, { n:'04', label:'Angaben zur Arbeit', hint:'Wie du arbeiten möchtest' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
                   <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
                     {item.n}
@@ -499,11 +499,6 @@ export default function ABNPageDE() {
                 style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
                 Noch eine Frage? Schreib uns direkt.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
-                Jetzt Hilfe bekommen →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

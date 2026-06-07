@@ -4,7 +4,7 @@ import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Mandantenvereinbarung | Working Holiday Tax',
-  description: 'Mandantenvereinbarung von Working Holiday Tax - Vertragsbedingungen für unsere Steuerdienstleistungen.',
+  description: 'Mandantenvereinbarung von Working Holiday Tax — Vertragsbedingungen für unsere Steuerdienstleistungen.',
   alternates: {
     canonical: '/de/client-agreement',
     languages: {
@@ -139,7 +139,7 @@ const sections: Section[] = [
   },
   {
     title: '18. Richtigkeit der Informationen und gesetzliche Erklärung',
-    body: 'Du erklärst, dass alle dem Anbieter bereitgestellten Informationen - einschließlich persönlicher Daten, Einkommen, Beschäftigungsinformationen, Bankverbindung, Reisepassdaten und Tax File Number (TFN) - wahrheitsgemäß, vollständig und korrekt sind. Du erkennst an, dass:',
+    body: 'Du erklärst, dass alle dem Anbieter bereitgestellten Informationen — einschließlich persönlicher Daten, Einkommen, Beschäftigungsinformationen, Bankverbindung, Reisepassdaten und Tax File Number (TFN) - wahrheitsgemäß, vollständig und korrekt sind. Du erkennst an, dass:',
     items: [
       'Die Bereitstellung falscher oder irreführender Informationen an den Anbieter oder das ATO eine Straftat nach australischem Recht darstellen kann, einschließlich des Taxation Administration Act 1953 (Cth), und zu Strafen, strafrechtlicher Verfolgung oder Rückzahlungspflichten führen kann.',
       'Du den Anbieter umgehend über Änderungen oder Korrekturen der bereitgestellten Informationen informierst.',

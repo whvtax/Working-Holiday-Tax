@@ -7,8 +7,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'Super-Rückerstattung (DASP) für Working Holiday Maker - Australien',
-  description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise als Working Holiday Maker (417/462). 12 % deines Lohns wurden in Super eingezahlt - per DASP-Antrag bekommst du es zurück.',
+  title: 'Super-Rückerstattung (DASP) für Working Holiday Maker — Australien',
+  description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise als Working Holiday Maker (417/462). 12 % deines Lohns wurden in Super eingezahlt — per DASP-Antrag bekommst du es zurück.',
   keywords: [
     'Super-Rückerstattung Australien',
     'Super zurück Australien',
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/superannuation`,
     siteName: 'Working Holiday Tax',
-    title: 'Super-Rückerstattung (DASP) für Working Holiday Maker - Australien',
-    description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise. 12 % deines Lohns wurden eingezahlt - per DASP zurück.',
+    title: 'Super-Rückerstattung (DASP) für Working Holiday Maker — Australien',
+    description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise. 12 % deines Lohns wurden eingezahlt — per DASP zurück.',
   },
   twitter: {
     card: 'summary_large_image',
@@ -56,7 +56,7 @@ const faqs = [
     answer: 'Ja. Es gibt keine Frist für die Beantragung deiner Super. Auch wenn dein Guthaben schon ans ATO überwiesen wurde, kannst du es noch zurückholen.',
   },
   {
-    question: 'Ich hatte mehrere Arbeitgeber - habe ich mehrere Superkonten?',
+    question: 'Ich hatte mehrere Arbeitgeber — habe ich mehrere Superkonten?',
     answer: 'Du hast vielleicht mehrere Superkonten von verschiedenen Arbeitgebern. Wir helfen dir, alles zu finden und zu bündeln, bevor wir deinen Antrag stellen.',
   },
   {
@@ -64,7 +64,7 @@ const faqs = [
     answer: 'Superauszahlungen (DASP) werden meistens innerhalb von 2-4 Wochen nach Genehmigung des Antrags ausgezahlt. Das Geld geht direkt auf dein Bankkonto.',
   },
   {
-    question: 'Wohin wird meine Super gezahlt - australisches oder ausländisches Konto?',
+    question: 'Wohin wird meine Super gezahlt — australisches oder ausländisches Konto?',
     answer: 'Deine Super wird direkt auf dein Bankkonto überwiesen. Wir können die Auszahlung auf ein australisches oder ein ausländisches Konto arrangieren, je nachdem, was dir lieber ist.',
   },
   {
@@ -79,7 +79,7 @@ const faqs = [
 
 const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Visa- und Arbeitsdaten, damit wir dich richtig beraten können.' },
-  { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Reisepass, TFN und Superfondsinfos - schnell und einfach.' },
+  { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Reisepass, TFN und Superfondsinfos — schnell und einfach.' },
   { n: '3', title: 'Wir kümmern uns um alles',  body: 'Wir bereiten alles vor und reichen deinen Antrag korrekt ein.' },
   { n: '4', title: 'Deine Superauszahlung kommt',    body: 'Dein Geld kommt direkt auf dein australisches Bankkonto.' },
 ]
@@ -116,7 +116,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/superannuation#service`,
   name: 'DASP Superannuation Auszahlung',
-  description: 'Wir holen deine in Australien angesparte Superannuation zurück (DASP) nach deiner Abreise - auf dein Konto weltweit.',
+  description: 'Wir holen deine in Australien angesparte Superannuation zurück (DASP) nach deiner Abreise — auf dein Konto weltweit.',
   serviceType: 'DASP Application',
   category: 'Superannuation Withdrawal Service',
   url: `${SITE_URL}/de/superannuation`,
@@ -190,7 +190,7 @@ export default function GermanSuperannuationPage() {
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
               }}>
-              {/* Desktop: locked 2 lines - nowrap per line */}
+              {/* Desktop: locked 2 lines — nowrap per line */}
               <span className="hidden lg:block">
                 <span style={{ display:'block' }}>Hol dir deine Super zurück</span>
                 <span style={{ display:'block', color:'#0B5240' }}>wenn du Australien verlässt</span>
@@ -260,10 +260,10 @@ export default function GermanSuperannuationPage() {
                 Was ist Superannuation?
               </h2>
               <p className="super-intro-body">
-                <strong>Superannuation</strong> (kurz &quot;Super&quot;) ist das australische Rentensystem. Per Gesetz zahlt dein Arbeitgeber <strong>12 % deines Lohns</strong> zusätzlich zu deinem Gehalt in einen Superfonds ein - du hast also mehr verdient, als du denkst.
+                <strong>Superannuation</strong> (kurz &quot;Super&quot;) ist das australische Rentensystem. Per Gesetz zahlt dein Arbeitgeber <strong>12 % deines Lohns</strong> zusätzlich zu deinem Gehalt in einen Superfonds ein — du hast also mehr verdient, als du denkst.
               </p>
               <p className="super-intro-body">
-                Als Working Holiday Maker kannst du dieses Geld zurückbekommen, wenn du Australien verlässt. Das läuft über den sogenannten <strong>DASP - Departing Australia Superannuation Payment</strong>.
+                Als Working Holiday Maker kannst du dieses Geld zurückbekommen, wenn du Australien verlässt. Das läuft über den sogenannten <strong>DASP — Departing Australia Superannuation Payment</strong>.
               </p>
               <p className="super-intro-body">
                 Die Auszahlung wird mit 65 % besteuert, aber die restlichen 35 % sind echtes Geld in deiner Tasche. Für die meisten Backpacker sind das zwischen <strong>2.000 und 5.000 AUD</strong>, von denen sie gar nichts wussten.
@@ -306,7 +306,7 @@ export default function GermanSuperannuationPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir holen deine Super für dich zurück</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung. Vom Finden deiner Superfonds bis zur DASP-Beantragung - wir wickeln den ganzen Prozess ab, damit dein Geld nicht in Australien zurückbleibt.</p>
+              <p className="service-cta-sub">Kostenlose Erstberatung. Vom Finden deiner Superfonds bis zur DASP-Beantragung — wir wickeln den ganzen Prozess ab, damit dein Geld nicht in Australien zurückbleibt.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine Super beantragen →
@@ -315,7 +315,7 @@ export default function GermanSuperannuationPage() {
         </div>
       </section>
 
-      {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
+      {/* ── CLARITY — THIS IS YOUR MONEY ──────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
@@ -328,7 +328,7 @@ export default function GermanSuperannuationPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Wir finden jedes Superkonto', body:'Mehrere Jobs bedeuten oft mehrere Fonds. Wir finden sie alle, damit nichts von deiner Super verloren geht.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Auch nach der Abreise beantragen', body:'Wir reichen deinen DASP komplett online ein und zahlen ihn auf dein Konto im Ausland - auch Jahre nach deiner Rückkehr.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Auch nach der Abreise beantragen', body:'Wir reichen deinen DASP komplett online ein und zahlen ihn auf dein Konto im Ausland — auch Jahre nach deiner Rückkehr.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Es ist dein Geld, nicht das des ATO', body:'Nicht beantragte Super geht irgendwann an das ATO. Wir sorgen dafür, dass sie stattdessen zu dir zurückkommt.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'DASP eingereicht, Steuer geregelt', body:'Wir bereiten deine Departing Australia Superannuation Payment vor und kümmern uns korrekt um die Quellensteuer.' },
             ].map((item,i) => (
@@ -479,7 +479,7 @@ export default function GermanSuperannuationPage() {
               </h2>
             </div>
             <div className="space-y-0">
-              {[{ n:'01', label:'Reisepass', hint:'Dein Ausweis' }, { n:'02', label:'Tax File Number (TFN)', hint:'Deine Steuer-ID' }, { n:'03', label:'Superfonds-Daten', hint:'Oder wir finden sie für dich' }, { n:'04', label:'Bankkonto', hint:'Wohin deine Auszahlung geht' }].map((item, i) => (
+              {[{ n:'01', label:'Reisepass', hint:'Zur Identitätsprüfung' }, { n:'02', label:'Tax File Number (TFN)', hint:'Deine Steuer-ID' }, { n:'03', label:'Superfonds-Daten', hint:'Oder wir finden sie für dich' }, { n:'04', label:'Bankkonto', hint:'Wohin deine Auszahlung geht' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
                   <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
                     {item.n}
@@ -516,11 +516,6 @@ export default function GermanSuperannuationPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Noch eine Frage? Schreib uns direkt.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                Jetzt Hilfe holen →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

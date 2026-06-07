@@ -7,8 +7,8 @@ import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
 
 export const metadata: Metadata = {
-  title: 'TFN beantragen für Working Holiday Maker - Grundlage für Steuerrückerstattung',
-  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Unter Aufsicht eines registrierten Steueragenten.',
+  title: 'TFN beantragen für Working Holiday Maker — Grundlage für Steuerrückerstattung',
+  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt — der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Unter Aufsicht eines registrierten Steueragenten.',
   keywords: [
     'TFN beantragen Australien',
     'TFN beantragen Working Holiday',
@@ -43,13 +43,13 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN beantragen für Working Holiday Maker - Steuerrückerstattung',
-    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien.',
+    title: 'TFN beantragen für Working Holiday Maker — Steuerrückerstattung',
+    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt — der erste Schritt zu deiner Steuerrückerstattung in Australien.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TFN beantragen für Working Holiday Maker',
-    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung.',
+    description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt — der erste Schritt zu deiner Steuerrückerstattung.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -181,7 +181,7 @@ export default function TFNPageDE() {
 
             <p className="font-light"
               style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '48ch', marginBottom: '0' }}>
-              <span>Ohne TFN werden Working Holiday Visainhaber mit 45 % besteuert.</span>
+              <span>Ohne TFN werden WHV-Inhaber mit 45 % besteuert.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -223,10 +223,10 @@ export default function TFNPageDE() {
                 Eine <strong>Tax File Number (TFN)</strong> ist eine persönliche Steuernummer, die vom australischen Finanzamt (ATO) ausgegeben wird. Sie ist das Erste, was du brauchst, bevor du in Australien arbeiten kannst.
               </p>
               <p className="tfn-intro-body">
-                Ohne TFN muss dein Arbeitgeber per Gesetz den höchsten Steuersatz von <strong>45 %</strong> von jedem Gehalt einbehalten - egal wie viel du verdienst.
+                Ohne TFN muss dein Arbeitgeber per Gesetz den höchsten Steuersatz von <strong>45 %</strong> von jedem Gehalt einbehalten — egal wie viel du verdienst.
               </p>
               <p className="tfn-intro-body">
-                Mit TFN zahlst du den normalen Working Holiday Steuersatz von <strong>15 %</strong> auf Einkommen bis 45.000 AUD. Das ist ein riesiger Unterschied - manchmal mehrere Hundert Dollar pro Woche.
+                Mit TFN zahlst du den normalen Working Holiday Steuersatz von <strong>15 %</strong> auf Einkommen bis 45.000 AUD. Das ist ein riesiger Unterschied — manchmal mehrere Hundert Dollar pro Woche.
               </p>
             </div>
 
@@ -252,7 +252,7 @@ export default function TFNPageDE() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir kümmern uns um deinen gesamten TFN-Antrag</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung auf WhatsApp. Wir reichen deinen Antrag beim ersten Mal korrekt ein - meistens innerhalb einer Stunde.</p>
+              <p className="service-cta-sub">Kostenlose Erstberatung auf WhatsApp. Wir reichen deinen Antrag beim ersten Mal korrekt ein — meistens innerhalb einer Stunde.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine TFN beantragen →
@@ -277,7 +277,7 @@ export default function TFNPageDE() {
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Beim ersten Mal korrekt eingereicht.', body:'Jeder Antrag wird vor dem Einreichen geprüft, um Fehler oder Verzögerungen zu vermeiden.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Mit dem richtigen Steuersatz starten.', body:'Beantrage früh genug, damit du als Working Holiday Maker nicht zum Höchstsatz besteuert wirst.' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Keine komplizierten ATO-Formulare.', body:'Du musst dich nicht mit Behördenportalen oder Papierkram herumschlagen. Wir machen das für dich.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Schnell, einfach und komplett online.', body:'Schick uns deine Daten - wir kümmern uns um den gesamten TFN-Antrag.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Schnell, einfach und komplett online.', body:'Schick uns deine Daten — wir kümmern uns um den gesamten TFN-Antrag.' },
             ].map((item,i) => (
               <div key={i} className="bg-white rounded-2xl flex gap-4"
                 style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
@@ -329,7 +329,7 @@ export default function TFNPageDE() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems: 'stretch' }}>
             <div className="rounded-2xl" style={{ padding: '22px', background: '#fff', border: '1.5px solid #E2EFE9' }}>
               <p className="font-semibold text-muted" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '18px' }}>
-                Selbst beim ATO zu beantragen scheint einfach - führt aber oft zu Verwirrung und Verzögerungen.
+                Selbst beim ATO zu beantragen scheint einfach — führt aber oft zu Verwirrung und Verzögerungen.
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {['Komplizierte Behördenformulare und unklare Schritte', 'Kleine Fehler verzögern deine TFN-Genehmigung', 'Keine Unterstützung, wenn etwas schiefgeht', 'Du musst alles allein herausfinden'].map((item, i) => (
@@ -437,7 +437,7 @@ export default function TFNPageDE() {
               </h2>
             </div>
             <div className="space-y-0">
-              {[{ n:'01', label:'Reisepass', hint:'Dein Ausweis und Visum' }, { n:'02', label:'Persönliche Daten', hint:'Name und Geburtsdatum' }, { n:'03', label:'Australische Adresse', hint:'Wohin das ATO deine TFN schickt' }, { n:'04', label:'Kontaktdaten', hint:'E-Mail und Telefon für Updates' }].map((item, i) => (
+              {[{ n:'01', label:'Reisepass', hint:'Zur Identitätsprüfung' }, { n:'02', label:'Persönliche Daten', hint:'Name und Geburtsdatum' }, { n:'03', label:'Australische Adresse', hint:'Wohin das ATO deine TFN schickt' }, { n:'04', label:'Kontaktdaten', hint:'E-Mail und Telefon für Updates' }].map((item, i) => (
                 <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
                   <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
                     {item.n}
@@ -474,11 +474,6 @@ export default function TFNPageDE() {
                 style={{ fontSize: '13.5px', lineHeight: 1.7, marginBottom: '24px' }}>
                 Noch eine Frage? Schreib uns direkt.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
-                Jetzt Hilfe bekommen →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

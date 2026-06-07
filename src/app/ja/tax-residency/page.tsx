@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/constants'
 import BackButton from './BackButton'
 
 export const metadata: Metadata = {
-  title: '税務上の居住区分 - ワーキングホリデー オーストラリア',
+  title: '税務上の居住区分 — ワーキングホリデー オーストラリア',
   description: 'オーストラリアの税務居住区分（NDA国を含む）と、ビザの種類（417/462）が税率にどう影響するかを解説。日本人ワーホリも該当する可能性があります。',
   keywords: [
     '税務 居住 オーストラリア',
@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-residency`,
     siteName: 'Working Holiday Tax',
-    title: '税務上の居住区分 - ワーキングホリデー オーストラリア',
+    title: '税務上の居住区分 — ワーキングホリデー オーストラリア',
     description: '税務居住区分と、ビザの種類が税率に与える影響を理解しましょう。',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '税務上の居住区分 - ワーキングホリデー オーストラリア',
+    title: '税務上の居住区分 — ワーキングホリデー オーストラリア',
     description: '税務居住区分と、ビザの種類が税率に与える影響について。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -57,7 +57,7 @@ const RESIDENT_ROWS = [
   ['$190,001+',            '$51,638 + 45%'],
 ]
 
-// Japan IS in the NDA list - highlighted relevance for Japanese users
+// Japan IS in the NDA list — highlighted relevance for Japanese users
 const NDA_COUNTRIES = ['チリ', 'フィンランド', 'ドイツ', 'イスラエル', '日本', 'ノルウェー', 'トルコ', 'イギリス']
 
 const CONDITIONS = [
