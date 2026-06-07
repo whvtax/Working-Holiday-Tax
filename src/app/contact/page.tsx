@@ -397,7 +397,7 @@ export default function ContactPage() {
               No paperwork, no ATO portals. We handle everything online - usually within 24 hours.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"
+              className="service-cta-button w-full sm:w-auto"
               style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
               Start your tax return →
             </a>

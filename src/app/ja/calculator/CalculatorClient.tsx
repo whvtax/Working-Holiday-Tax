@@ -205,7 +205,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             控除可能な経費や税額控除を見つけ出し、還付金をさらに増やせる場合が多くあります。
           </p>
           <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-            className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"
+            className="service-cta-button w-full sm:w-auto"
             style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
             タックスリターンを始める →
           </a>
