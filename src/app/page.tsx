@@ -423,7 +423,7 @@ export default async function HomePage() {
                 </div>
                 <div style={{ paddingTop: '3px' }}>
                   <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '4px' }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.7 }}>{s.body}</p>
+                  <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.7 }}>{s.body}</p>
                 </div>
               </div>
             ))}

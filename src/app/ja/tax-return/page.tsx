@@ -597,7 +597,7 @@ export default function JapaneseTaxReturnPage() {
                   </div>
                   <div className="pt-1">
                     <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
-                    <p className="text-[13px] font-light text-muted leading-[1.75]">{s.body}</p>
+                    <p className="text-[12.5px] font-light text-muted leading-[1.75]">{s.body}</p>
                   </div>
                 </div>
               ))}

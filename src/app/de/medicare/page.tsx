@@ -154,7 +154,7 @@ export default function GermanMedicarePage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{
-                fontSize:'clamp(22px,2.9vw,40px)',
+                fontSize:'clamp(24px,3.2vw,44px)',
                 lineHeight:1.06,
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
@@ -320,7 +320,7 @@ export default function GermanMedicarePage() {
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>Aus einem RHCA-Land (Sozialversicherungsabkommen)</p>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>Aus einem RHCA-Land (Sozialversicherungsabkommen)</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
                 Wenn du für Medicare berechtigt bist, sorgen wir dafür, dass das korrekt in deiner Steuererklärung läuft, damit du nur zahlst, was du wirklich musst.
               </p>
@@ -333,7 +333,7 @@ export default function GermanMedicarePage() {
                   <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>Aus einem Nicht-RHCA-Land (z.B. Deutschland)</p>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>Aus einem Nicht-RHCA-Land (z.B. Deutschland)</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
                 Wenn du keinen Anspruch auf Medicare hast, sorgen wir dafür, dass deine Medicare-Levy-Befreiung korrekt angewendet wird, damit du nicht zu viel Steuern zahlst.
               </p>

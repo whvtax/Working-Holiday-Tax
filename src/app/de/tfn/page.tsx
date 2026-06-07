@@ -175,7 +175,7 @@ export default function TFNPageDE() {
             </h1>
 
             <p className="font-semibold text-ink"
-              style={{ fontSize: 'clamp(13px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
+              style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
               Wir sorgen dafür, dass deine TFN beim ersten Mal richtig beantragt wird.
             </p>
 

@@ -5,7 +5,6 @@ import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
-import { useFireworks } from '@/lib/useFireworks'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -209,8 +208,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
   // UI
   const [submitted, setSubmitted]     = useState(false)
-  // Celebration fireworks on the success screen (CSP-safe, runs as bundled JS).
-  useFireworks(submitted)
   const [loading, setLoading]         = useState(false)
   const [errors, setErrors]           = useState<Record<string, string>>({})
 
@@ -366,8 +363,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       <>
         <style>{styles}</style>
         <div className="form-success-wrap">
-
-        <canvas id="fw-canvas" className="fireworks-canvas" />
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
@@ -814,7 +809,6 @@ const styles = `
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
-  .fireworks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
   .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }

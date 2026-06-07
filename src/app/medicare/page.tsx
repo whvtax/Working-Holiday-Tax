@@ -158,7 +158,7 @@ export default function MedicarePage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{
-                fontSize:'clamp(22px,2.9vw,40px)',
+                fontSize:'clamp(24px,3.2vw,44px)',
                 lineHeight:1.06,
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
@@ -324,7 +324,7 @@ export default function MedicarePage() {
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From an RHCA country</p>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>From an RHCA country</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
                 If you are eligible for Medicare, we ensure it is correctly applied in your tax return so you only pay what you owe.
               </p>
@@ -337,7 +337,7 @@ export default function MedicarePage() {
                   <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From a non-RHCA country</p>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>From a non-RHCA country</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
                 If you are not eligible for Medicare, we ensure your Medicare levy exemption is correctly applied so you don&apos;t overpay tax.
               </p>

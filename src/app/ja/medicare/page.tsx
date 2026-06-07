@@ -141,7 +141,7 @@ export default function JapaneseMedicarePage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{
-                fontSize:'clamp(22px,2.9vw,40px)',
+                fontSize:'clamp(24px,3.2vw,44px)',
                 lineHeight:1.2,
                 letterSpacing:'-0.02em',
                 marginBottom:'10px',
@@ -296,7 +296,7 @@ export default function JapaneseMedicarePage() {
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>RHCA締結国（社会保険協定）の出身者</p>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>RHCA締結国（社会保険協定）の出身者</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ marginBottom: '10px' }}>
                 メディケア対象の場合、タックスリターンで正しく処理し、必要以上に支払わないようにします。
               </p>
@@ -309,7 +309,7 @@ export default function JapaneseMedicarePage() {
                   <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>RHCA非締結国（例：日本）の出身者</p>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>RHCA非締結国（例：日本）の出身者</p>
               <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ marginBottom: '10px' }}>
                 メディケア対象外の場合、メディケア税免除をタックスリターンで正しく適用し、税金を払い過ぎないようにします。
               </p>

@@ -162,7 +162,7 @@ export default function TFNPageJA() {
             </h1>
 
             <p className="font-semibold text-ink"
-              style={{ fontSize: 'clamp(13px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.5 }}>
+              style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.5 }}>
               TFN申請をすべて代行。最短28日でお手元に届きます。
             </p>
 

@@ -180,7 +180,7 @@ export default function TFNPage() {
             </h1>
 
             <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(13px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
+              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               We make sure your TFN is done correctly the first time.
             </p>
 
