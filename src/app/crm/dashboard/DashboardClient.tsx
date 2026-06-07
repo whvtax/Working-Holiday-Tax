@@ -848,6 +848,8 @@ export default function DashboardClient() {
             'I have read and accept the Client Agreement & Privacy Policy',
             decl2Val !== '-'
           )
+        + sec('How did you hear about us?')
+        + field('How did you hear about us?', task.howHeard)
     }
 
     else if (task.taskType === 'abn') {
@@ -883,6 +885,8 @@ export default function DashboardClient() {
             'I have read and accept the Client Agreement & Privacy Policy',
             decl2Val !== '-'
           )
+        + sec('How did you hear about us?')
+        + field('How did you hear about us?', task.howHeard)
     }
 
     else if (task.taskType === 'super') {
@@ -925,6 +929,8 @@ export default function DashboardClient() {
             'I have read and accept the Client Agreement & Privacy Policy',
             declVal !== '-'
           )
+        + sec('How did you hear about us?')
+        + field('How did you hear about us?', task.howHeard)
     }
 
     else if (task.taskType === 'tax-return') {
@@ -2214,7 +2220,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 )}
               </div>
               </div>{/* end fixed header */}
-              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 24px'}}>
+              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 24px'}}>
               {/* ── Refund summary bar (reactive to all filters) ── */}
               {visibleClients.length>0 && (()=>{
                 const totalTaxRefund = visibleClients.reduce((sum,c)=>{
@@ -2484,7 +2490,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 )}
               </div>
               </div>{/* end fixed header */}
-              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 24px'}}>
+              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 24px'}}>
               {/* Table */}
               {visibleArchived.length===0?(
                 <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div>
