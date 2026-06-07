@@ -262,7 +262,7 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── SOLUTION ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Warum unser Service</span>
@@ -317,7 +317,7 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── COMPARISON ───────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Der einfache Weg</span>
@@ -362,7 +362,7 @@ export default function TFNPageDE() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-to-apply" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Schritt für Schritt</span>

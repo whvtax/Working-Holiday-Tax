@@ -17,9 +17,6 @@
 import { useState } from 'react'
 import { useGoogleData, type RGReview, type GoogleData } from '@/lib/googleSummary'
 
-// Fallback link to your Google profile (used if the API doesn't supply one).
-const GOOGLE_PROFILE_URL = 'https://maps.app.goo.gl/UnFaHWjv1dTvqrKz8'
-
 type Lang = 'en' | 'de' | 'ja'
 
 const T: Record<Lang, { based: (n: number) => string; view: string; more: string; less: string }> = {
@@ -121,13 +118,10 @@ function ReviewCard({ r, idx, lang }: { r: RGReview; idx: number; lang: Lang }) 
 }
 
 function Carousel({ data, lang }: { data: GoogleData; lang: Lang }) {
-  const t = T[lang]
   const clean = data.reviews.filter((r) => r.comment && r.comment.trim().length > 0)
   if (clean.length === 0) return null
 
-  const count = data.count || clean.length
   const avg = data.rating || clean.reduce((s, r) => s + r.starRating, 0) / clean.length
-  const profileUrl = data.profileUrl || GOOGLE_PROFILE_URL
 
   let base = clean
   while (base.length < 6) base = base.concat(clean)
@@ -153,14 +147,10 @@ function Carousel({ data, lang }: { data: GoogleData; lang: Lang }) {
           <GoogleG size={22} />
           <span style={{ fontSize: 15, fontWeight: 600, color: '#1F2937' }}>Google Reviews</span>
         </div>
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginTop: 2 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 2 }}>
           <span style={{ fontSize: 34, fontWeight: 700, color: '#1F2937', lineHeight: 1 }}>{avg.toFixed(1)}</span>
           <Stars rating={avg} size={22} />
         </div>
-        <div style={{ fontSize: 13, color: '#70757A' }}>{t.based(count)}</div>
-        <a href={profileUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: '#1A73E8', textDecoration: 'none', marginTop: 4 }}>
-          {t.view} ↗
-        </a>
       </div>
 
       <div className="gr-wrap">
