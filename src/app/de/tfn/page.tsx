@@ -320,7 +320,7 @@ export default function TFNPageDE() {
       <section className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
-            <span className="section-label center">DER TFN-ANTRAGSPROZESS</span>
+            <span className="section-label center">Der einfache Weg</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px' }}>
               Es gibt einen einfacheren Weg, deine TFN zu bekommen
@@ -365,7 +365,7 @@ export default function TFNPageDE() {
       <section id="how-to-apply" className="py-12 lg:py-20" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
-            <span className="section-label center">So beantragst du</span>
+            <span className="section-label center">Schritt für Schritt</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
               In 4 einfachen Schritten zur TFN
@@ -422,6 +422,39 @@ export default function TFNPageDE() {
               style={{ height: '52px', padding: '0 40px', fontSize: '15px', maxWidth: '320px', width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
               TFN beantragen →
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT TO HAVE READY ── */}
+      <section className="py-10 lg:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-6 lg:mb-8">
+              <span className="section-label center">Was du brauchst</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em' }}>
+                Was du zum Start brauchst
+              </h2>
+            </div>
+            <div className="space-y-0">
+              {[{ n:'01', label:'Reisepass', hint:'Dein Ausweis und Visum' }, { n:'02', label:'Persönliche Daten', hint:'Name und Geburtsdatum' }, { n:'03', label:'Australische Adresse', hint:'Wohin das ATO deine TFN schickt' }, { n:'04', label:'Kontaktdaten', hint:'E-Mail und Telefon für Updates' }].map((item, i) => (
+                <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
+                  <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
+                    {item.n}
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing:'-0.005em', lineHeight:1.35 }}>{item.label}</p>
+                    <p className="text-[12px] font-light text-muted" style={{ lineHeight:1.4, marginTop:'1px' }}>{item.hint}</p>
+                  </div>
+                </div>
+              ))}
+              <div style={{ borderTop:'1px solid #E2EFE9' }} />
+            </div>
+            <div className="text-center mt-8">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', justifyContent:'center' }}>
+                TFN beantragen →
+              </a>
+            </div>
           </div>
         </div>
       </section>

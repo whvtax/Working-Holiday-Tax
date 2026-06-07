@@ -61,13 +61,6 @@ const faqs = [
   { question: 'Wie beeinflussen ABN-Einkünfte meine Working Holiday Steuererklärung?', answer: 'ABN-Einkünfte werden anders behandelt als PAYG-Lohn. Es wird keine Steuer vorab einbehalten, du musst also selbst Geld für die Steuer zurücklegen. Bei deiner Steuererklärung werden ABN-Einkünfte separat angegeben, und du kannst entsprechende Geschäftsausgaben als Werbungskosten geltend machen.' }
 ]
 
-const MISTAKES = [
-  { title: 'Als Angestellter mit ABN arbeiten',         body: 'Wenn dein Arbeitgeber bestimmt, wie, wann und wo du arbeitest, ist eine ABN wahrscheinlich nicht das richtige Setup für dich.' },
-  { title: 'Falsche Geschäftstätigkeit angeben',         body: 'Deine ABN-Angaben müssen die Art deiner Arbeit genau widerspiegeln.' },
-  { title: 'Einnahmen nicht dokumentieren',              body: 'Halte deine Einnahmen schriftlich fest und leg Geld für die Steuer beiseite, um später Probleme zu vermeiden.' },
-  { title: 'Steuererklärung nicht einreichen',           body: 'Deine ABN-Einnahmen müssen beim ATO deklariert werden.' },
-]
-
 const STEPS = [
   { n: '1', title: 'Erzähl uns von deiner Arbeit',         body: 'Teil uns deine Arbeits- und Visumdetails mit, damit wir dich richtig beraten.' },
   { n: '2', title: 'Schick uns deine Daten',               body: 'TFN und Reisepassinfos - schnell und einfach.' },
@@ -458,32 +451,35 @@ export default function ABNPageDE() {
         </div>
       </section>
 
-      {/* ── WHAT WE NEED ── */}
+      {/* ── WHAT TO HAVE READY ── */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
-            <span className="section-label center">Was wir von dir brauchen</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
-              Nur ein paar Angaben für den Start
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 max-w-3xl mx-auto" style={{ alignItems:'stretch' }}>
-            {[{ t:'Dein Reisepass', b:'Zur Identitätsprüfung beim Australian Business Register.' }, { t:'Deine TFN', b:'Du brauchst eine TFN, bevor eine ABN registriert werden kann.' }, { t:'Ein paar Angaben zur Arbeit', b:'Wie du arbeiten möchtest, damit wir die richtige Tätigkeit registrieren.' }].map((it,i) => (
-              <div key={i} className="rounded-2xl flex flex-col" style={{ padding:'20px', background:'#F5F9F7', border:'1px solid #E2EFE9' }}>
-                <div className="flex items-center justify-center flex-shrink-0 text-forest-500" style={{ width:'34px', height:'34px', background:'#EAF6F1', borderRadius:'8px', marginBottom:'12px' }}>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-6 lg:mb-8">
+              <span className="section-label center">Was du brauchst</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em' }}>
+                Was du zum Start brauchst
+              </h2>
+            </div>
+            <div className="space-y-0">
+              {[{ n:'01', label:'Reisepass', hint:'Dein Ausweis' }, { n:'02', label:'Tax File Number (TFN)', hint:'Vor der ABN erforderlich' }, { n:'03', label:'Persönliche Daten', hint:'Adresse & Telefonnummer' }, { n:'04', label:'Angaben zur Arbeit', hint:'Wie du arbeiten möchtest' }].map((item, i) => (
+                <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
+                  <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
+                    {item.n}
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing:'-0.005em', lineHeight:1.35 }}>{item.label}</p>
+                    <p className="text-[12px] font-light text-muted" style={{ lineHeight:1.4, marginTop:'1px' }}>{item.hint}</p>
+                  </div>
                 </div>
-                <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px,1.2vw,14px)', marginBottom:'6px', lineHeight:1.35 }}>{it.t}</p>
-                <p className="font-light text-muted leading-[1.7] flex-1" style={{ fontSize:'clamp(12px,1.1vw,13px)' }}>{it.b}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-8 lg:mt-10">
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
-              style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', justifyContent:'center' }}>
-              ABN registrieren →
-            </a>
+              ))}
+              <div style={{ borderTop:'1px solid #E2EFE9' }} />
+            </div>
+            <div className="text-center mt-8">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', justifyContent:'center' }}>
+                ABN registrieren →
+              </a>
+            </div>
           </div>
         </div>
       </section>

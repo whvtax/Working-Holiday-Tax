@@ -372,7 +372,7 @@ export default function GermanSuperannuationPage() {
       <section className="py-8 lg:py-10 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">Echte Ergebnisse</span>
+            <span className="section-label center">Was Reisende sagen</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               So haben Reisende wie du ihre Super zurückbekommen
             </h2>
@@ -383,11 +383,56 @@ export default function GermanSuperannuationPage() {
 
 
 
+      {/* ── COMPARISON ── */}
+      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
+            <span className="section-label center">Der einfache Weg</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              Es gibt einen einfacheren Weg, deine Super zu beantragen
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
+            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
+              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                Die Super (DASP) selbst zu beantragen kann langsam und verwirrend sein
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                {['Verlorene oder mehrere Superfonds aufspüren','Komplexe DASP-Formulare und ATO-Anforderungen','Die Quellensteuer falsch berechnen','Keine Hilfe, wenn dein Antrag sich verzögert'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
+              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                Nutze unseren geführten DASP-Service
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
+                {['Wir finden jeden Superfonds für dich','Wir bereiten deinen DASP vor und reichen ihn korrekt ein','Quellensteuer richtig behandelt','Unterstützung, bis das Geld auf deinem Konto ist'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
+                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
+                Super beantragen →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
-            <span className="section-label center">So funktioniert es</span>
+            <span className="section-label center">Schritt für Schritt</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               In 4 einfachen Schritten
             </h2>
@@ -435,60 +480,34 @@ export default function GermanSuperannuationPage() {
         </div>
       </section>
 
-      {/* ── ELIGIBILITY + WHAT YOU NEED ───────────────────────────────────── */}
+      {/* ── WHAT TO HAVE READY ── */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            <div className="reveal">
-              <span className="section-label center lg:text-left">Wer kann beantragen?</span>
-              <h2 className="font-serif font-black text-ink mx-auto lg:mx-0 text-center lg:text-left" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
-                Du kannst deine Super beantragen,<br />
-                <em className="not-italic font-normal text-forest-400">wenn du Australien verlässt</em>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-6 lg:mb-8">
+              <span className="section-label center">Was du brauchst</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em' }}>
+                Was du zum Start brauchst
               </h2>
-              <div className="space-y-0">
-                {[
-                  { label: 'Dein Visum ist abgelaufen oder gekündigt', body: 'Du kannst beantragen, sobald du Australien verlassen hast - keine Wartezeit.' },
-                  { label: 'Du hast kein australisches Visum mehr',   body: 'Du darfst kein anderes aktives Visum in Australien haben.' },
-                  { label: 'Du hast Supereinzahlungen',           body: 'Stell sicher, dass dein Arbeitgeber wirklich Super eingezahlt hat.' },
-                ].map((item, i) => (
-                  <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <div className="flex items-start gap-2 mb-1">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                        <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                        <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
-                    </div>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ paddingLeft: '22px' }}>{item.body}</p>
-                  </div>
-                ))}
-                <div style={{ borderTop: '1px solid #E2EFE9' }} />
-              </div>
             </div>
-
-            <div className="reveal delay-1 text-center lg:text-left">
-              <span className="section-label center lg:text-left">Was du brauchst</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
-                Was du brauchst, um deine Super zu beantragen
-              </h2>
-              <div className="space-y-3.5 mb-5">
-                {[
-                  'Deine Reisepassdaten',
-                  'Deine Tax File Number (TFN)',
-                  'Name und Mitgliedsnummer deines Superfonds',
-                  'Das Eröffnungsdatum deines Superfonds',
-                  'Deine Bankverbindung für die Auszahlung',
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                      <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <p className="text-[13.5px] font-light text-body leading-[1.65]">{item}</p>
+            <div className="space-y-0">
+              {[{ n:'01', label:'Reisepass', hint:'Dein Ausweis' }, { n:'02', label:'Tax File Number (TFN)', hint:'Deine Steuer-ID' }, { n:'03', label:'Superfonds-Daten', hint:'Oder wir finden sie für dich' }, { n:'04', label:'Bankkonto', hint:'Wohin deine Auszahlung geht' }].map((item, i) => (
+                <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
+                  <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
+                    {item.n}
                   </div>
-                ))}
-              </div>
-
+                  <div className="flex-1 text-left">
+                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing:'-0.005em', lineHeight:1.35 }}>{item.label}</p>
+                    <p className="text-[12px] font-light text-muted" style={{ lineHeight:1.4, marginTop:'1px' }}>{item.hint}</p>
+                  </div>
+                </div>
+              ))}
+              <div style={{ borderTop:'1px solid #E2EFE9' }} />
+            </div>
+            <div className="text-center mt-8">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', justifyContent:'center' }}>
+                Super beantragen →
+              </a>
             </div>
           </div>
         </div>

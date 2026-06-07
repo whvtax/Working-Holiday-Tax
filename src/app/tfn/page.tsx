@@ -328,7 +328,7 @@ export default function TFNPage() {
       <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
-            <span className="section-label center">TFN APPLICATION PROCESS</span>
+            <span className="section-label center">The easy way</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
               There is a simpler way to get your TFN sorted
@@ -373,7 +373,7 @@ export default function TFNPage() {
       <section id="how-to-apply" className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
-            <span className="section-label center">How to apply</span>
+            <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
               How it works in 4 simple steps
@@ -430,6 +430,39 @@ export default function TFNPage() {
               style={{ height:'52px', padding:'0 40px', fontSize:'15px', maxWidth:'320px', width:'100%', display:'inline-flex', alignItems:'center', justifyContent:'center' }}>
               Apply for a TFN →
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT TO HAVE READY ── */}
+      <section className="py-10 lg:py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-6 lg:mb-8">
+              <span className="section-label center">What to have ready</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em' }}>
+                What you need to get started
+              </h2>
+            </div>
+            <div className="space-y-0">
+              {[{ n:'01', label:'Passport', hint:'Your photo ID and visa' }, { n:'02', label:'Personal details', hint:'Name and date of birth' }, { n:'03', label:'Australian address', hint:'Where the ATO sends your TFN' }, { n:'04', label:'Contact details', hint:'Email and phone for updates' }].map((item, i) => (
+                <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
+                  <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
+                    {item.n}
+                  </div>
+                  <div className="flex-1 text-left">
+                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing:'-0.005em', lineHeight:1.35 }}>{item.label}</p>
+                    <p className="text-[12px] font-light text-muted" style={{ lineHeight:1.4, marginTop:'1px' }}>{item.hint}</p>
+                  </div>
+                </div>
+              ))}
+              <div style={{ borderTop:'1px solid #E2EFE9' }} />
+            </div>
+            <div className="text-center mt-8">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', justifyContent:'center' }}>
+                Apply for a TFN →
+              </a>
+            </div>
           </div>
         </div>
       </section>

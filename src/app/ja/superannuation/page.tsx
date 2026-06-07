@@ -369,7 +369,7 @@ export default function JapaneseSuperannuationPage() {
       <section className="py-8 lg:py-10 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">実績</span>
+            <span className="section-label center">お客様の声</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
               ワーホリの皆さんが取り戻したスーパー
             </h2>
@@ -379,6 +379,51 @@ export default function JapaneseSuperannuationPage() {
       </section>
 
 
+
+      {/* ── COMPARISON ── */}
+      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
+            <span className="section-label center">かんたんな方法</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              スーパー受取には、もっと簡単な方法があります
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
+            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
+              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                自分でスーパー（DASP）を申請すると、時間がかかり複雑になりがちです
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                {['複数または不明なスーパーファンドの特定','複雑なDASP書類とATOの要件','源泉徴収税の計算ミス','申請が遅れても助けがない'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
+              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                当社のサポート付きDASPサービス
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
+                {['すべてのスーパーファンドを当社が特定','DASPを正しく作成・申請','源泉徴収税を正しく処理','入金まで責任を持ってサポート'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
+                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
+                スーパーを申請する →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
@@ -432,60 +477,34 @@ export default function JapaneseSuperannuationPage() {
         </div>
       </section>
 
-      {/* ── ELIGIBILITY + WHAT YOU NEED ───────────────────────────────────── */}
+      {/* ── WHAT TO HAVE READY ── */}
       <section className="py-10 lg:py-16 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            <div className="reveal">
-              <span className="section-label center lg:text-left">対象者</span>
-              <h2 className="font-serif font-black text-ink mx-auto lg:mx-0 text-center lg:text-left" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '20px', textWrap: 'balance' }}>
-                スーパー申請の条件<br />
-                <em className="not-italic font-normal text-forest-400">オーストラリアを離れた方</em>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-6 lg:mb-8">
+              <span className="section-label center">必要なもの</span>
+              <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em' }}>
+                ご準備いただくもの
               </h2>
-              <div className="space-y-0">
-                {[
-                  { label: 'ビザが失効または取り消し済み', body: 'オーストラリアを離れたらすぐに申請できます。待機期間はありません。' },
-                  { label: '有効なオーストラリアのビザがない',   body: 'オーストラリアで別の有効なビザを保持していないこと。' },
-                  { label: 'スーパー積立がある',           body: '雇用主が実際にスーパーを積み立てていることを確認してください。' },
-                ].map((item, i) => (
-                  <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <div className="flex items-start gap-2 mb-1">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                        <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                        <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.label}</p>
-                    </div>
-                    <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ paddingLeft: '22px' }}>{item.body}</p>
-                  </div>
-                ))}
-                <div style={{ borderTop: '1px solid #E2EFE9' }} />
-              </div>
             </div>
-
-            <div className="reveal delay-1 text-center lg:text-left">
-              <span className="section-label center lg:text-left">必要なもの</span>
-              <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '24ch', marginTop: '8px', marginBottom: '18px', textWrap: 'balance' }}>
-                スーパー申請に必要なもの
-              </h2>
-              <div className="space-y-3.5 mb-5">
-                {[
-                  'パスポート情報',
-                  'TFN（タックスファイルナンバー）',
-                  'スーパーファンドの名称と会員番号',
-                  'スーパーファンドの口座開設日',
-                  '振込先銀行口座情報',
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                      <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <p className="text-[13.5px] font-light text-body leading-[1.75]">{item}</p>
+            <div className="space-y-0">
+              {[{ n:'01', label:'パスポート', hint:'本人確認' }, { n:'02', label:'TFN（税務番号）', hint:'あなたの税務番号' }, { n:'03', label:'スーパーファンド情報', hint:'または当社が特定' }, { n:'04', label:'銀行口座', hint:'受取先（海外口座可）' }].map((item, i) => (
+                <div key={i} className="flex items-center gap-3" style={{ paddingTop:'14px', paddingBottom:'14px', borderTop:'1px solid #EDF4F0' }}>
+                  <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width:'32px', height:'32px', borderRadius:'50%', background:'#EAF6F1', color:'#0B5240', fontSize:'13px', letterSpacing:'-0.02em' }}>
+                    {item.n}
                   </div>
-                ))}
-              </div>
-
+                  <div className="flex-1 text-left">
+                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing:'-0.005em', lineHeight:1.35 }}>{item.label}</p>
+                    <p className="text-[12px] font-light text-muted" style={{ lineHeight:1.4, marginTop:'1px' }}>{item.hint}</p>
+                  </div>
+                </div>
+              ))}
+              <div style={{ borderTop:'1px solid #E2EFE9' }} />
+            </div>
+            <div className="text-center mt-8">
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex" style={{ height:'52px', padding:'0 36px', fontSize:'15px', maxWidth:'320px', width:'100%', justifyContent:'center' }}>
+                スーパーを申請する →
+              </a>
             </div>
           </div>
         </div>
