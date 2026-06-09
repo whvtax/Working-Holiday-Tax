@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
-import { AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { AGENT_NAME, AGENT_ABN, AGENT_TPB, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Client Agreement',
@@ -13,6 +13,16 @@ export const metadata: Metadata = {
       'ja': '/ja/client-agreement',
       'x-default': '/client-agreement',
     },
+  },
+  // Force the same share image as the homepage for every link to this page.
+  openGraph: {
+    url: `${SITE_URL}/client-agreement`,
+    title: 'Client Agreement | Working Holiday Tax',
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [`${SITE_URL}/og-image.png`],
   },
 }
 

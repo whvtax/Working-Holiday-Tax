@@ -96,6 +96,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
+      images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
       title: guide.title,
       description: guide.description,
       url: `${SITE_URL}/blog/${guide.slug}`,
@@ -104,6 +105,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: 'en_AU',
     },
     twitter: {
+      images: [`${SITE_URL}/og-image.png`],
       card: 'summary_large_image',
       title: guide.title,
       description: guide.description,

@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tax-residency`,
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
     description: 'Understand tax residency categories and how your visa affects your rate.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Tax Residency in Australia for WHV Holders',
     description: 'Understand tax residency and how your visa affects your rate.',
@@ -259,6 +261,13 @@ export default function TaxResidencyPage() {
                 <p>🎓 Student visa (500) holders are generally treated as residents for tax purposes.</p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
+        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+            <BackButton />
           </div>
         </section>
 

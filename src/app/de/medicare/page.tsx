@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/de/medicare', languages: { 'en-AU': '/medicare', 'de': '/de/medicare', 'ja': '/ja/medicare', 'x-default': '/medicare' } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/medicare`,
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
     description: 'Verstehe Medicare und die Medicare Levy als Working Holiday Visuminhaber.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Medicare in Australien für Working Holiday Visuminhaber',
     description: 'Verstehe Medicare und die Medicare Levy in Australien.',

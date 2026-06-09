@@ -49,6 +49,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tax-return`,
@@ -57,6 +58,7 @@ export const metadata: Metadata = {
     description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online - even after you leave Australia.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
     description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent - all online.',

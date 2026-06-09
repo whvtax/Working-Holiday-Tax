@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/abn`,
@@ -46,6 +47,7 @@ export const metadata: Metadata = {
     description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'ABN Registration for Working Holiday Visa Holders',
     description: 'Set up your ABN correctly as a Working Holiday contractor.',

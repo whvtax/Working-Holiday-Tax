@@ -45,6 +45,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/de/tax-return', languages: { 'en-AU': '/tax-return', 'de': '/de/tax-return', 'ja': '/ja/tax-return', 'x-default': '/tax-return' } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/tax-return`,
@@ -53,6 +54,7 @@ export const metadata: Metadata = {
     description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten - alles online, auch aus Deutschland.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Steuerrückerstattung Australien | WHV Steuererklärung',
     description: 'Steuerrückerstattung als Working Holiday Maker (417/462) - alles online erledigt.',

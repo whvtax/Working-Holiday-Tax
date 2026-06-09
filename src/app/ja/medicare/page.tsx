@@ -36,6 +36,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/medicare`,
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
     description: 'ワーキングホリデー保持者のメディケア対象資格について。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'メディケア（Medicare）- ワーキングホリデー オーストラリア',
     description: 'メディケアとメディケア税について。',

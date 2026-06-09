@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/tax-form`,
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
     title: 'Steuererklärungsantrag stellen',
     description: 'Schick uns deine Daten zur Steuererklärung.',
   },
-  twitter: { card: 'summary', title: 'Steuererklärungsantrag stellen', description: 'Schick uns deine Daten zur Steuererklärung.' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'Steuererklärungsantrag stellen', description: 'Schick uns deine Daten zur Steuererklärung.' },
   robots: { index: false, follow: true },
 }
 

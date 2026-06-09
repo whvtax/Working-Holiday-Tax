@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/de/tax-residency', languages: { 'en-AU': '/tax-residency', 'de': '/de/tax-residency', 'x-default': '/tax-residency' } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/tax-residency`,
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
     description: 'Verstehe die Steuerresidenz-Kategorien und wie dein Visum deinen Steuersatz beeinflusst.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Steuerresidenz in Australien für WHV-Inhaber',
     description: 'Verstehe die Steuerresidenz und wie dein Visum deinen Steuersatz beeinflusst.',
@@ -253,6 +255,13 @@ export default function GermanTaxResidencyPage() {
                 <p>🎓 Inhaber eines Studentenvisums (500) werden in der Regel als Steuerresidenten behandelt.</p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
+        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+            <BackButton />
           </div>
         </section>
 

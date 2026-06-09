@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/super-form`,
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
     title: 'Superauszahlung beantragen (DASP)',
     description: 'Beantrage deine Superauszahlung, wenn du Australien verlässt.',
   },
-  twitter: { card: 'summary', title: 'Superauszahlung beantragen', description: 'Beantrage deine Superauszahlung, wenn du Australien verlässt.' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'Superauszahlung beantragen', description: 'Beantrage deine Superauszahlung, wenn du Australien verlässt.' },
   robots: { index: false, follow: true },
 }
 

@@ -57,6 +57,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-return`,
@@ -65,6 +66,7 @@ export const metadata: Metadata = {
     description: '417・462ビザのワーホリ専門。登録税理士の監督のもとで、タックスリターン還付金の手続きを日本語で代行。帰国後も対応。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門',
     description: 'ワーホリのタックスリターン還付金を、日本語で完全代行。帰国後も対応。',

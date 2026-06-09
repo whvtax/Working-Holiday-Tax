@@ -36,6 +36,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/medicare`,
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
     description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder. Claim your levy exemption.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Medicare Levy Exemption for Working Holiday Visa Holders',
     description: 'Understand Medicare eligibility and the Medicare levy. Claim your exemption.',

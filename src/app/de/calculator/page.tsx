@@ -31,6 +31,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/de/calculator', languages: { 'en-AU': '/calculator', 'de': '/de/calculator', 'ja': '/ja/calculator', 'x-default': '/calculator' } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/calculator`,
@@ -39,6 +40,7 @@ export const metadata: Metadata = {
     description: 'Berechne deine Steuerrückerstattung in Australien als Working Holiday Maker. Kostenlos, sofort, keine Anmeldung.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Steuerrückerstattung Rechner Australien für WHV',
     description: 'Berechne deine Steuerrückerstattung als Working Holiday Maker. Kostenlos und sofort.',

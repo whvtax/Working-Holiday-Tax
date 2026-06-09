@@ -282,6 +282,29 @@ export default function DashboardClient() {
   const prevArchiveCountRef = React.useRef(0)
   const prevPendingTasksRef = React.useRef(0)
   const [previewUrl, setPreviewUrl] = useState<string|null>(null)
+  // Fetch the file as a blob and render via object URL. This avoids the site's
+  // global X-Frame-Options: DENY / CSP frame-ancestors 'none' (which blocked the
+  // old <iframe src="/api/crm/file..."> with "refused to connect"), and reliably
+  // carries the CRM session cookie. blob: object URLs aren't subject to those
+  // framing headers, so PDFs render inline; images render in an <img>.
+  const [previewBlobUrl, setPreviewBlobUrl] = useState<string|null>(null)
+  const [previewLoading, setPreviewLoading] = useState(false)
+  const [previewError, setPreviewError]     = useState(false)
+  useEffect(() => {
+    if (!previewUrl) { setPreviewBlobUrl(null); setPreviewError(false); setPreviewLoading(false); return }
+    let cancelled = false
+    let objUrl: string | null = null
+    setPreviewLoading(true); setPreviewError(false); setPreviewBlobUrl(null)
+    fetch(previewUrl)
+      .then(async r => {
+        if (!r.ok) throw new Error(`status ${r.status}`)
+        const blob = await r.blob()
+        objUrl = URL.createObjectURL(blob)
+        if (!cancelled) { setPreviewBlobUrl(objUrl); setPreviewLoading(false) }
+      })
+      .catch(() => { if (!cancelled) { setPreviewError(true); setPreviewLoading(false) } })
+    return () => { cancelled = true; if (objUrl) URL.revokeObjectURL(objUrl) }
+  }, [previewUrl])
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
@@ -2944,22 +2967,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
             </div>
             <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200}}>
               {(()=>{
-                // Extract original URL from proxy to detect file type
+                // Detect file type from the original Supabase URL (before the proxy wrapper)
                 const origUrl = previewUrl.startsWith('/api/crm/file?url=')
                   ? (() => { try { return decodeURIComponent(previewUrl.slice('/api/crm/file?url='.length)) } catch { return previewUrl } })()
                   : previewUrl
-                const lower = origUrl.toLowerCase()
-                const isImage = /\.(jpg|jpeg|png|gif|webp|heic|heif)/.test(lower)
-                const isPdf   = lower.includes('.pdf')
-                if (isImage) return <img src={previewUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}}/>
-                if (isPdf)   return <iframe src={previewUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
-                return (
-                  <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
-                    <div style={{fontSize:32,marginBottom:12}}>📄</div>
-                    <div style={{fontSize:13}}>Cannot preview this file type</div>
-                    <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
-                  </div>
-                )
+                const isPdf = origUrl.toLowerCase().includes('.pdf')
+
+                if (previewLoading) {
+                  return <div style={{padding:32,textAlign:'center',color:'#7a8a82',fontSize:13}}>Loading preview…</div>
+                }
+                if (previewError || !previewBlobUrl) {
+                  return (
+                    <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
+                      <div style={{fontSize:32,marginBottom:12}}>⚠️</div>
+                      <div style={{fontSize:13,marginBottom:10}}>Couldn&apos;t load this file.</div>
+                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
+                    </div>
+                  )
+                }
+                // PDFs render in an iframe; everything else is an image. HEIC/HEIF
+                // is transcoded to JPEG by the /api/crm/file route, so the blob is
+                // always a browser-renderable format here.
+                if (isPdf) return <iframe src={previewBlobUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
+                return <img src={previewBlobUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}} onError={()=>setPreviewError(true)}/>
               })()}
             </div>
           </div>

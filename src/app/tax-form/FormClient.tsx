@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
@@ -210,6 +210,68 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [submitted, setSubmitted]     = useState(false)
   const [loading, setLoading]         = useState(false)
   const [errors, setErrors]           = useState<Record<string, string>>({})
+
+  // ── Tax-residency confirmation prompt (shown once, after the user first
+  //    picks a tax-residency status) ──────────────────────────────────────
+  const [showResidencyPrompt, setShowResidencyPrompt] = useState(false)
+  const [residencyConfirmed, setResidencyConfirmed]   = useState(false)
+  const taxStatusRef = useRef<HTMLDivElement>(null)
+  const residencyUrl = lang === 'de' ? '/de/tax-residency' : lang === 'ja' ? '/ja/tax-residency' : '/tax-residency'
+  const SNAPSHOT_KEY = 'whv_taxform_return'
+
+  // Restore the form when the user comes back from the tax-residency page (via
+  // the prompt's "No" button), so nothing they already filled is lost, and jump
+  // straight back to the tax-residency-status question where they left off.
+  useEffect(() => {
+    let raw: string | null = null
+    try { raw = sessionStorage.getItem(SNAPSHOT_KEY) } catch {}
+    if (!raw) return
+    try { sessionStorage.removeItem(SNAPSHOT_KEY) } catch {}
+    try {
+      const s = JSON.parse(raw)
+      // Ignore stale snapshots (> 2h old)
+      if (!s || typeof s.t !== 'number' || Date.now() - s.t > 2 * 60 * 60 * 1000) return
+      const d = s.data || {}
+      const setIf = (v: unknown, setter: (x: any) => void) => { if (v !== undefined) setter(v) }
+      setIf(d.waNumber, setWaNumber);   setIf(d.auPhone, setAuPhone);     setIf(d.fullName, setFullName)
+      setIf(d.lastName, setLastName);   setIf(d.address, setAddress);     setIf(d.email, setEmail)
+      setIf(d.country, setCountry);     setIf(d.dob, setDob);             setIf(d.marital, setMarital)
+      setIf(d.tfn, setTfn);             setIf(d.primaryJob, setPrimaryJob)
+      setIf(d.bankName, setBankName);   setIf(d.bankHolder, setBankHolder)
+      setIf(d.bankAccount, setBankAccount); setIf(d.bankBsb, setBankBsb)
+      setIf(d.hasExpenses, setHasExpenses); setIf(d.taxStatus, setTaxStatus)
+      setIf(d.declared, setDeclared);   setIf(d.declaredIncome, setDeclaredIncome)
+      setIf(d.taxYears, setTaxYears);   setIf(d.terms, setTerms)
+      setIf(d.hasAbn, setHasAbn);       setIf(d.abnNumber, setAbnNumber)
+      setIf(d.abnIncome, setAbnIncome); setIf(d.abnWork, setAbnWork)
+      setIf(d.howHeard, setHowHeard)
+      setResidencyConfirmed(true) // they were already sent to read it - don't prompt again
+      // Scroll back to the tax-residency question after the DOM settles
+      setTimeout(() => taxStatusRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' }), 60)
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Triggered when the user picks a tax-residency status. Shows the prompt once.
+  const handleTaxStatusPick = (val: 'resident'|'whm') => {
+    setTaxStatus(val)
+    setErrors(p => ({ ...p, taxStatus: '' }))
+    if (!residencyConfirmed) setShowResidencyPrompt(true)
+  }
+
+  // "No" → save everything and send them to the tax-residency explainer page.
+  const goReadResidency = () => {
+    try {
+      const data = {
+        waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
+        tfn, primaryJob, bankName, bankHolder, bankAccount, bankBsb, hasExpenses,
+        taxStatus, declared, declaredIncome, taxYears, terms, hasAbn, abnNumber,
+        abnIncome, abnWork, howHeard,
+      }
+      sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), data }))
+    } catch {}
+    window.location.href = residencyUrl
+  }
 
   /* ── Validation ── */
   const validate = () => {
@@ -651,7 +713,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           </div>
 
           <div className="form-section-title">{T('sectionDeclaration')}</div>
-          <div>
+          <div ref={taxStatusRef} style={{scrollMarginTop:'80px'}}>
 
             <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
@@ -670,7 +732,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 ] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`}>
                     <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
-                      onChange={() => { setTaxStatus(opt.val); setErrors(p => ({...p, taxStatus: ''})) }} className="hidden" />
+                      onChange={() => handleTaxStatusPick(opt.val)} className="hidden" />
                     <div className={`radio-dot ${taxStatus === opt.val ? 'radio-dot-active' : ''}`} />
                     {opt.label}
                   </label>
@@ -741,6 +803,46 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <p className="form-footer-note">{T('secureNote')}</p>
 
         </form>
+
+        {showResidencyPrompt && (() => {
+          const txt = lang === 'de'
+            ? { title: 'Einen Moment …',
+                body: 'Hast du die Voraussetzungen für die australische Steuerresidenz gelesen?',
+                link: 'Steuerresidenz erklärt',
+                yes: 'Ja, gelesen', no: 'Nein, dorthin' }
+            : lang === 'ja'
+            ? { title: 'ちょっと待ってください',
+                body: 'オーストラリアの税務上の居住者の条件を読みましたか？',
+                link: '税務上の居住者ステータスについて',
+                yes: 'はい、読みました', no: 'いいえ、確認する' }
+            : { title: 'One moment …',
+                body: 'Have you read the conditions for being an Australian tax resident?',
+                link: 'Tax Residency Explained',
+                yes: "Yes, I've read it", no: 'No, take me there' }
+          return (
+            <div role="dialog" aria-modal="true"
+              style={{position:'fixed',inset:0,background:'rgba(8,15,13,0.55)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2000,padding:20}}>
+              <div style={{background:'#fff',borderRadius:18,maxWidth:420,width:'100%',padding:'26px 24px',boxShadow:'0 24px 70px rgba(0,0,0,0.32)',textAlign:'center'}}>
+                <div style={{fontSize:30,marginBottom:10}}>📋</div>
+                <h3 style={{fontFamily:'inherit',fontSize:17,fontWeight:800,color:'#0B5240',margin:'0 0 10px'}}>{txt.title}</h3>
+                <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 6px'}}>{txt.body}</p>
+                <a href={residencyUrl} target="_self" style={{display:'inline-block',fontSize:13,color:'#0B5240',textDecoration:'underline',fontWeight:600,marginBottom:20}}>{txt.link} →</a>
+                <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                  <button type="button"
+                    onClick={() => { setResidencyConfirmed(true); setShowResidencyPrompt(false) }}
+                    style={{minHeight:48,borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>
+                    {txt.yes}
+                  </button>
+                  <button type="button"
+                    onClick={goReadResidency}
+                    style={{minHeight:48,borderRadius:100,border:'1.5px solid #E9A020',background:'#E9A020',color:'#1A2822',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>
+                    {txt.no}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
         </div>
       </div>
     </>

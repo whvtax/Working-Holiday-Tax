@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'ja': `${SITE_URL}/ja/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
@@ -31,6 +32,7 @@ export const metadata: Metadata = {
     locale: 'de_DE',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet.',

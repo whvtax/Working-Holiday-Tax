@@ -45,6 +45,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/superannuation`,
@@ -53,6 +54,7 @@ export const metadata: Metadata = {
     description: 'Claim your Australian superannuation refund (DASP) after leaving. Your employer paid 12% of wages into super - get it back.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Super Refund DASP for Working Holiday Visa Holders',
     description: 'Claim your Australian superannuation refund after leaving.',

@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/abn-form`,
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
     title: 'ABN-Antrag stellen',
     description: 'Schick uns deine Daten zur ABN-Registrierung.',
   },
-  twitter: { card: 'summary', title: 'ABN-Antrag stellen', description: 'Schick uns deine Daten zur ABN-Registrierung.' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'ABN-Antrag stellen', description: 'Schick uns deine Daten zur ABN-Registrierung.' },
   robots: { index: false, follow: true },
 }
 

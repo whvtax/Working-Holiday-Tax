@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tfn`,
@@ -48,6 +49,7 @@ export const metadata: Metadata = {
     description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'TFN Application for Working Holiday Visa Holders',
     description: 'Get your Tax File Number sorted fast - the first step to your Australian tax refund.',

@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/abn`,
@@ -45,6 +46,7 @@ export const metadata: Metadata = {
     description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker in Australien.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'ABN-Registrierung für Working Holiday Visainhaber',
     description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker in Australien.',

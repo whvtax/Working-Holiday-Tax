@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
-import { EMAIL } from '@/lib/constants'
+import { EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -13,6 +13,16 @@ export const metadata: Metadata = {
       'ja': '/ja/privacy',
       'x-default': '/privacy',
     },
+  },
+  // Force the same share image as the homepage for every link to this page.
+  openGraph: {
+    url: `${SITE_URL}/privacy`,
+    title: 'Privacy Policy | Working Holiday Tax',
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [`${SITE_URL}/og-image.png`],
   },
 }
 

@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ完全ガイド',
     description: 'オーストラリアのワーキングホリデーのタックスリターン還付金、TFN、ABN、スーパー受取まで、実用情報をわかりやすくお届けします。',
     url: `${SITE_URL}/ja/blog`,
@@ -45,6 +46,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'オーストラリア タックスリターン 還付金 ブログ - ワーホリ',
     description: 'オーストラリアのワーホリのタックスリターン還付金まで、実用情報をわかりやすく。',

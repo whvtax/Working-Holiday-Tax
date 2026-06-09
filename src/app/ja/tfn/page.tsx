@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tfn`,
@@ -49,6 +50,7 @@ export const metadata: Metadata = {
     description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金を受け取るための第一歩。登録税理士の監督のもとでサポート。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'TFN申請 - ワーホリ オーストラリア',
     description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金への第一歩。',

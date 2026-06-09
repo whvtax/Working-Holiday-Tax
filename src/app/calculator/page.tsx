@@ -38,6 +38,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/calculator`,
@@ -46,6 +47,7 @@ export const metadata: Metadata = {
     description: 'Estimate your Australian tax refund as a Working Holiday Maker. Free, instant, no sign-up.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Calculator Australia',
     description: 'Estimate your Australian tax refund as a Working Holiday Maker. Free, instant.',

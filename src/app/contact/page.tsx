@@ -32,6 +32,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Contact Working Holiday Tax | Registered Tax Agents Australia',
     description: 'Get in touch with our team, working under the supervision of a registered tax agent. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
     url: `${SITE_URL}/contact`,
@@ -40,6 +41,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Contact Working Holiday Tax | Registered Tax Agents',
     description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund.',

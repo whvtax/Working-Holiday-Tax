@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tax-form`,
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
     title: 'Submit Your Tax Return',
     description: 'Submit your details and documents to lodge your Australian tax return.',
   },
-  twitter: { card: 'summary', title: 'Submit Your Tax Return', description: 'Submit your details to lodge your Australian tax return.' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'Submit Your Tax Return', description: 'Submit your details to lodge your Australian tax return.' },
   robots: { index: false, follow: true },
 }
 

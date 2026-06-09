@@ -51,6 +51,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/superannuation`,
@@ -59,6 +60,7 @@ export const metadata: Metadata = {
     description: 'オーストラリアのスーパー受取をDASPで受け取り。ワーホリ専門のチームが登録税理士の監督のもとですべて代行します。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'スーパー受取（DASP） - ワーキングホリデー オーストラリア',
     description: 'オーストラリアを離れる際、スーパーを返金として受け取り。',

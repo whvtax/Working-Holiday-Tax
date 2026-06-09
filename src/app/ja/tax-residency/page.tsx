@@ -27,6 +27,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-residency`,
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
     description: '税務居住区分と、ビザの種類が税率に与える影響を理解しましょう。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: '税務上の居住区分 - ワーキングホリデー オーストラリア',
     description: '税務居住区分と、ビザの種類が税率に与える影響について。',
@@ -267,6 +269,13 @@ export default function JapaneseTaxResidencyPage() {
                 <p>🎓 学生ビザ（500）保持者は通常、税務居住者として扱われます。</p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
+        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+            <BackButton />
           </div>
         </section>
 

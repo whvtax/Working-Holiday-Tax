@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'お問い合わせ | Working Holiday Tax',
     description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。営業時間内なら1時間以内にご返信します。',
     url: `${SITE_URL}/ja/contact`,
@@ -39,6 +40,7 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'お問い合わせ | Working Holiday Tax',
     description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。',

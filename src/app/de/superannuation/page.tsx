@@ -35,6 +35,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/de/superannuation', languages: { 'en-AU': '/superannuation', 'de': '/de/superannuation', 'ja': '/ja/superannuation', 'x-default': '/superannuation' } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/superannuation`,
@@ -43,6 +44,7 @@ export const metadata: Metadata = {
     description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise. 12 % deines Lohns wurden eingezahlt - per DASP zurück.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Super-Rückerstattung (DASP) für Working Holiday Maker',
     description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise zurück.',

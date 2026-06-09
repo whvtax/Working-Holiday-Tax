@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/calculator`,
@@ -49,6 +50,7 @@ export const metadata: Metadata = {
     description: 'ワーキングホリデーのオーストラリア タックスリターン還付金を無料で見積もり。即時・登録不要。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'タックスリターン 還付金 計算機 - ワーホリ オーストラリア',
     description: 'ワーホリのオーストラリア タックスリターン還付金を無料で見積もり。',

@@ -32,6 +32,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Steuerrückerstattung Australien Blog - WHV Steuer-Guides',
     description: 'Praktische Artikel über Steuerrückerstattung in Australien für Working Holiday Maker. So holst du dir deine Steuern zurück.',
     url: `${SITE_URL}/de/blog`,
@@ -40,6 +41,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Steuerrückerstattung Australien Blog - WHV Guides',
     description: 'Praktische Artikel zur Steuerrückerstattung in Australien für Backpacker.',

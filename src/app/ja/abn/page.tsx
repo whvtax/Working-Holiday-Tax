@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/abn`,
@@ -45,6 +46,7 @@ export const metadata: Metadata = {
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'ABN登録 - ワーキングホリデー オーストラリア',
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
