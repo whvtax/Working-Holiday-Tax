@@ -1,94 +1,93 @@
-# WHV Tax CRM — הוראות התקנה והפעלה
+# WHV Tax CRM — Setup and Run Instructions
 
-## מה נבנה
+## What was built
 
-מערכת CRM מאובטחת לניהול לקוחות החזר מס עם:
+A secure CRM system for managing tax refund clients, with:
 
-- **כניסה דו-שלבית (2FA)** — סיסמה + קוד OTP במייל (דרך Resend)
-- **נעילה אחרי 3 ניסיונות** + התראת אבטחה במייל
-- **דשבורד לקוחות** — כרטיסיות ממתינים / טופל
-- **סינון לפי שנות מס** — 2019-20 עד 2024-25
-- **תיקיית לקוח** — כל הפרטים בטבלה, ניתן לעריכה
-- **מחיקת פרטים רגישים** — שומרת שם/DOB/WhatsApp בלבד
-- **✅ סמן כטופל** — מסיר מרשימת הממתינים
+- **Two-factor login (2FA)** — password + OTP code by email (via Resend)
+- **Lockout after 3 attempts** + security alert by email
+- **Client dashboard** — Pending / Done tabs
+- **Filter by tax year** — 2019-20 through 2024-25
+- **Client folder** — all details in a table, editable
+- **Delete sensitive details** — keeps only name/DOB/WhatsApp
+- **✅ Mark as done** — removes from the pending list
 
 ---
 
-## התקנה
+## Installation
 
 ```bash
 cd WHVTAX_WITH_CRM
 npm install
 cp .env.example .env.local
-# מלא את הערכים ב-.env.local
+# fill in the values in .env.local
 npm run dev
 ```
 
 ---
 
-## משתני סביבה (`.env.local`)
+## Environment variables (`.env.local`)
 
 ```env
-# מפתח Resend לשליחת מיילים
+# Resend API key for sending emails
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
 
-# מייל המנהל — לכאן ישלחו קודי OTP והתראות אבטחה
+# Admin email — OTP codes and security alerts are sent here
 CRM_ADMIN_EMAIL=your@email.com
 
-# ה-hash של הסיסמה — צור עם:
-# node -e "const c=require('crypto'); console.log(c.pbkdf2Sync('הסיסמה_שלך','whvtax-salt-2024',100000,64,'sha512').toString('hex'))"
+# Password hash — generate with:
+# node -e "const c=require('crypto'); console.log(c.pbkdf2Sync('your_password','whvtax-salt-2024',100000,64,'sha512').toString('hex'))"
 CRM_PASSWORD_HASH=
 
-# Salt לhashing (שנה בproduction!)
+# Salt for hashing (change in production!)
 PASSWORD_SALT=whvtax-salt-2024
 ```
 
-> **סיסמת ברירת מחדל לפיתוח:** `WHVAdmin2024!`  
-> **שנה אותה לפני העלאה לproduction!**
+> **Default development password:** `WHVAdmin2024!`
+> **Change it before deploying to production!**
 
 ---
 
-## נתיבי ה-CRM
+## CRM routes
 
-| נתיב | תיאור |
+| Route | Description |
 |------|--------|
-| `/crm` | דף כניסה — סיסמה + OTP |
-| `/crm/dashboard` | לוח בקרה — רשימת לקוחות |
-| `/crm/client/[id]` | תיקיית לקוח — פרטים מלאים |
+| `/crm` | Login page — password + OTP |
+| `/crm/dashboard` | Dashboard — client list |
+| `/crm/client/[id]` | Client folder — full details |
 
 ---
 
 ## API Routes
 
-| Method | Path | תיאור |
+| Method | Path | Description |
 |--------|------|--------|
-| POST | `/api/crm/login` | בדיקת סיסמה + שליחת OTP |
-| POST | `/api/crm/verify-otp` | אימות קוד OTP + יצירת session |
-| POST | `/api/crm/logout` | מחיקת session |
-| GET | `/api/crm/session` | בדיקת תקפות session |
-| GET | `/api/crm/clients` | רשימת כל הלקוחות |
-| POST | `/api/crm/clients` | הוספת לקוח חדש |
-| GET | `/api/crm/clients/[id]` | פרטי לקוח בודד |
-| PATCH | `/api/crm/clients/[id]` | עדכון / סמן טופל / מחק פרטים |
+| POST | `/api/crm/login` | Check password + send OTP |
+| POST | `/api/crm/verify-otp` | Verify OTP code + create session |
+| POST | `/api/crm/logout` | Delete session |
+| GET | `/api/crm/session` | Check session validity |
+| GET | `/api/crm/clients` | List all clients |
+| POST | `/api/crm/clients` | Add a new client |
+| GET | `/api/crm/clients/[id]` | Single client details |
+| PATCH | `/api/crm/clients/[id]` | Update / mark done / delete details |
 
 ---
 
-## אבטחה
+## Security
 
-- **PBKDF2** (100,000 iterations) לhashing סיסמה
-- **Timing-safe comparison** למניעת timing attacks
-- **HttpOnly cookies** לsession — לא נגישות ל-JavaScript
-- **OTP תוקף 10 דקות** — single-use
-- **נעילה 30 דקות** אחרי 3 ניסיונות כושלים
-- **Session TTL: 8 שעות**
-- **Nav/Footer מוסתרים** בנתיבי `/crm/*`
+- **PBKDF2** (100,000 iterations) for password hashing
+- **Timing-safe comparison** to prevent timing attacks
+- **HttpOnly cookies** for sessions — not accessible to JavaScript
+- **OTP valid for 10 minutes** — single-use
+- **30-minute lockout** after 3 failed attempts
+- **Session TTL: 8 hours**
+- **Nav/Footer hidden** on `/crm/*` routes
 
 ---
 
 ## Storage in Production
 
-ה-CRM משתמש ב-**Supabase** עבור:
-- **PostgreSQL Database** - נתוני לקוחות ומשימות
-- **Supabase Storage** - קבצים שמועלים על ידי לקוחות
-- **bcrypt** במקום PBKDF2 (npm install bcryptjs)
-
+The CRM uses **Supabase** for:
+- **PostgreSQL Database** - client and task data
+- **Supabase Storage** - files uploaded by clients
+- **bcrypt** instead of PBKDF2 (npm install bcryptjs)

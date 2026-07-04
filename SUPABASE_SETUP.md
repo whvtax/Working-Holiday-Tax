@@ -1,99 +1,99 @@
-# 🚀 מעבר מ-Vercel Storage ל-Supabase - מדריך מלא
+# 🚀 Migrating from Vercel Storage to Supabase - Full Guide
 
-האתר עבר מ-Vercel Postgres + Vercel Blob ל-**Supabase** (חינמי + יותר גמיש).
+The site moved from Vercel Postgres + Vercel Blob to **Supabase** (free + more flexible).
 
-זה מדריך step-by-step. עקוב לפי הסדר.
+This is a step-by-step guide. Follow it in order.
 
 ---
 
-# 📋 חלק 1: הגדרת Supabase (חדש)
+# 📋 Part 1: Setting up Supabase (new)
 
-## שלב 1.1: יצירת פרויקט (5 דקות)
+## Step 1.1: Create a project (5 minutes)
 
-1. כניסה: https://supabase.com/dashboard
+1. Log in: https://supabase.com/dashboard
 2. **"New project"**
-3. פרטים:
+3. Details:
    - **Name:** `working-holiday-tax`
-   - **Database Password:** בחר חזקה ושמור (תצטרך אותה)
-   - **Region:** `Southeast Asia (Singapore)` או `Asia Pacific (Sydney)` - הכי קרוב לאוסטרליה
+   - **Database Password:** choose a strong one and save it (you'll need it)
+   - **Region:** `Southeast Asia (Singapore)` or `Asia Pacific (Sydney)` - closest to Australia
 4. **"Create new project"**
-5. המתנה 1-2 דקות עד שהפרויקט מוכן
+5. Wait 1-2 minutes for the project to be ready
 
-## שלב 1.2: יצירת הטבלאות
+## Step 1.2: Create the tables
 
-1. בDashboard לחיצה על **SQL Editor** (אייקון `</>` בצד שמאל)
+1. In the Dashboard click **SQL Editor** (`</>` icon on the left)
 2. **"New query"**
-3. פותח את הקובץ `supabase/migrations/001_init_crm.sql` בקוד שלך
-4. **העתק את כל התוכן**
-5. **הדבק** ב-SQL Editor
-6. **Run** (כפתור ירוק בפינה ימנית למטה, או `Ctrl+Enter`)
-7. ✅ אמור להופיע: "Success. No rows returned"
+3. Open the file `supabase/migrations/001_init_crm.sql` in your code
+4. **Copy all the content**
+5. **Paste** into the SQL Editor
+6. **Run** (green button in the bottom right corner, or `Ctrl+Enter`)
+7. ✅ You should see: "Success. No rows returned"
 
-### 1.2.1: Migration 002 - Stats RPC (חובה לסקלה!)
+### 1.2.1: Migration 002 - Stats RPC (required for scale!)
 
-⚠️ **חובה להריץ גם את ה-migration השני** - בלי זה ה-Dashboard לא יסקלה ל-5,000+ לקוחות:
+⚠️ **You must also run the second migration** - without it the Dashboard won't scale to 5,000+ clients:
 
 1. SQL Editor → **"New query"**
-2. פותח את `supabase/migrations/002_dashboard_stats.sql`
-3. **העתק והדבק**
+2. Open `supabase/migrations/002_dashboard_stats.sql`
+3. **Copy and paste**
 4. **Run**
 5. ✅ "Success. No rows returned"
-6. בדיקה (אופציונלי): `SELECT get_dashboard_stats('2024-25', '2023-24');`
-   - אמור להחזיר JSON עם כל הסטטיסטיקות
+6. Test (optional): `SELECT get_dashboard_stats('2024-25', '2023-24');`
+   - Should return JSON with all the statistics
 
-## שלב 1.3: יצירת Storage Bucket
+## Step 1.3: Create a Storage Bucket
 
-1. בDashboard לחיצה על **Storage** (אייקון תיקייה)
+1. In the Dashboard click **Storage** (folder icon)
 2. **"New bucket"**
-3. הגדרות:
+3. Settings:
    - **Name:** `uploads`
-   - ☑ **Public bucket** (חובה!)
+   - ☑ **Public bucket** (required!)
    - **File size limit:** `10 MB`
    - **Allowed MIME types:** `image/jpeg, image/png, image/webp, image/gif, application/pdf`
 4. **"Save"**
 
-## שלב 1.4: העתקת המפתחות
+## Step 1.4: Copy the keys
 
-בDashboard → **Settings** (גלגל שיניים) → **API**:
+In the Dashboard → **Settings** (gear icon) → **API**:
 
-תעתיק 2 ערכים:
+Copy 2 values:
 
 ```
 Project URL:      https://xxxxxxxxxxx.supabase.co
 service_role key: eyJhbGc...  (long secret key)
 ```
 
-⚠️ **חשוב מאוד:**
-- `service_role` הוא **סוד**! אסור לחשוף ב-client/frontend!
-- אם דלף - מיד צור חדש ב-Settings → API → Reset
+⚠️ **Very important:**
+- `service_role` is a **secret**! Never expose it on the client/frontend!
+- If it leaks - immediately create a new one at Settings → API → Reset
 
 ---
 
-# 📋 חלק 2: הגדרת Vercel (קיים)
+# 📋 Part 2: Vercel Configuration (existing)
 
-## שלב 2.1: עדכון משתני סביבה
+## Step 2.1: Update environment variables
 
-1. כניסה ל-Vercel: https://vercel.com/dashboard
-2. **בחר את הפרויקט שלך** (workingholidaytax)
+1. Log in to Vercel: https://vercel.com/dashboard
+2. **Select your project** (workingholidaytax)
 3. **Settings** → **Environment Variables**
 
-### א. הוסף משתנים חדשים:
+### A. Add new variables:
 
-| שם משתנה | ערך |
+| Variable name | Value |
 |----------|-----|
-| `NEXT_PUBLIC_SUPABASE_URL` | ה-URL מ-Supabase (שלב 1.4) |
-| `SUPABASE_SERVICE_ROLE_KEY` | ה-Service Role Key (שלב 1.4) |
+| `NEXT_PUBLIC_SUPABASE_URL` | the URL from Supabase (step 1.4) |
+| `SUPABASE_SERVICE_ROLE_KEY` | the Service Role Key (step 1.4) |
 
-עבור כל אחד:
+For each one:
 - **Add Another**
-- שם המשתנה
-- ערך
-- **Production / Preview / Development** (תבחר את כולם)
+- Variable name
+- Value
+- **Production / Preview / Development** (select all)
 - **Save**
 
-### ב. מחק משתנים ישנים (Vercel Storage):
+### B. Delete old variables (Vercel Storage):
 
-לחיצה על ה-`...` ליד כל אחד מאלה והסרה:
+Click the `...` next to each of these and remove it:
 
 - ❌ `POSTGRES_URL`
 - ❌ `POSTGRES_PRISMA_URL`
@@ -105,52 +105,52 @@ service_role key: eyJhbGc...  (long secret key)
 - ❌ `POSTGRES_DATABASE`
 - ❌ `BLOB_READ_WRITE_TOKEN`
 
-⚠️ **לא למחוק:** `JWT_SECRET`, `CRM_PASSWORD`, `RESEND_API_KEY`, `REDIS_URL`, `REVIEWER_SALT`, וכל השאר.
+⚠️ **Do not delete:** `JWT_SECRET`, `CRM_PASSWORD`, `RESEND_API_KEY`, `REDIS_URL`, `REVIEWER_SALT`, and everything else.
 
-## שלב 2.2: ניתוק Vercel Storage Integrations
+## Step 2.2: Disconnect Vercel Storage Integrations
 
-### א. ניתוק Vercel Postgres:
+### A. Disconnect Vercel Postgres:
 
-1. **Storage** (סרגל עליון בDashboard)
-2. בחר את ה-Postgres database שלך
-3. **Settings** (טאב)
-4. גלילה למטה → **"Disconnect Project"**
-5. ✅ אישור
+1. **Storage** (top bar in the Dashboard)
+2. Select your Postgres database
+3. **Settings** (tab)
+4. Scroll down → **"Disconnect Project"**
+5. ✅ Confirm
 
-ב-Storage שלך עדיין יישאר ה-DB - תוכל **למחוק** אותו לחלוטין:
-- בStorage → ה-DB → **Settings** → **Delete Database**
-- ⚠️ זה ימחק את הנתונים לצמיתות! וודא שהעברת נתונים קודם (חלק 4 למטה).
+The DB will still remain in your Storage - you can **delete** it entirely:
+- In Storage → the DB → **Settings** → **Delete Database**
+- ⚠️ This permanently deletes the data! Make sure you've migrated the data first (Part 4 below).
 
-### ב. ניתוק Vercel Blob:
+### B. Disconnect Vercel Blob:
 
-1. **Storage** → בחר את ה-Blob store
+1. **Storage** → select the Blob store
 2. **Settings** → **"Disconnect Project"**
-3. ניתן גם **למחוק** את ה-Blob store (אחרי שוודאת שאין קבצים חשובים)
+3. You can also **delete** the Blob store (after confirming there are no important files)
 
-### ג. אופציונלי - Redis:
+### C. Optional - Redis:
 
-אם אתה משתמש ב-**Vercel KV (Redis)** - **השאר אותו!** האתר עדיין משתמש בRedis עבור OTP ו-rate limiting.
+If you're using **Vercel KV (Redis)** - **keep it!** The site still uses Redis for OTP and rate limiting.
 
-אם אתה רוצה להעביר גם את Redis - עבור ל-**Upstash** (חינמי):
+If you want to migrate Redis too - switch to **Upstash** (free):
 - https://upstash.com
-- צור Redis database
-- העתק את ה-`UPSTASH_REDIS_URL`
-- עדכן את `REDIS_URL` ב-Vercel
+- Create a Redis database
+- Copy the `UPSTASH_REDIS_URL`
+- Update `REDIS_URL` in Vercel
 
-## שלב 2.3: Redeploy
+## Step 2.3: Redeploy
 
-1. **Deployments** (טאב)
-2. הdeployment הכי עדכני → `...` → **"Redeploy"**
-3. ✅ **"Use existing Build Cache"** = OFF (לבנייה נקייה)
+1. **Deployments** (tab)
+2. The most recent deployment → `...` → **"Redeploy"**
+3. ✅ **"Use existing Build Cache"** = OFF (for a clean build)
 4. **Redeploy**
 
-המתנה 2-3 דקות לבנייה.
+Wait 2-3 minutes for the build.
 
 ---
 
-# 📋 חלק 3: העלאת הקוד החדש
+# 📋 Part 3: Deploying the new code
 
-## שלב 3.1: דרך Git
+## Step 3.1: Via Git
 
 ```bash
 cd /path/to/site-updated
@@ -159,108 +159,108 @@ git commit -m "Migrate from Vercel Storage to Supabase"
 git push
 ```
 
-Vercel יעשה auto-deploy.
+Vercel will auto-deploy.
 
-## שלב 3.2: בלי Git (Manual Upload)
+## Step 3.2: Without Git (Manual Upload)
 
-1. ב-Vercel Dashboard → **Settings** → **Git** → ראה את ה-repo
-2. עדכן את הקוד ב-GitHub/GitLab
-3. Vercel יזהה ויעשה deploy
+1. In the Vercel Dashboard → **Settings** → **Git** → see the repo
+2. Update the code on GitHub/GitLab
+3. Vercel will detect it and deploy
 
 ---
 
-# 📋 חלק 4: ייבוא נתונים מ-Vercel Postgres (אופציונלי)
+# 📋 Part 4: Importing data from Vercel Postgres (optional)
 
-⚠️ עשה את זה **לפני** שמוחק את ה-DB הישן!
+⚠️ Do this **before** deleting the old DB!
 
-## ייצוא מ-Vercel:
+## Export from Vercel:
 
-1. Vercel Dashboard → **Storage** → ה-Postgres DB → **Data**
-2. תוכל לראות את הטבלאות `crm_clients` ו-`crm_tasks`
-3. בכל טבלה → **Export** → CSV
+1. Vercel Dashboard → **Storage** → the Postgres DB → **Data**
+2. You'll see the tables `crm_clients` and `crm_tasks`
+3. In each table → **Export** → CSV
 
-## ייבוא ל-Supabase:
+## Import into Supabase:
 
 1. Supabase Dashboard → **Table Editor** → `crm_clients`
 2. **"Insert"** → **"Import data from CSV"**
-3. בחר את הCSV שיצאת
-4. אישור
-5. חזור על אותו דבר ל-`crm_tasks`
+3. Select the CSV you exported
+4. Confirm
+5. Repeat the same for `crm_tasks`
 
 ---
 
-# 📋 חלק 5: בדיקות אחרי המעבר
+# 📋 Part 5: Post-migration checks
 
-## בדיקה 1: האתר עולה
+## Check 1: The site loads
 
 ```
 https://workingholidaytax.com.au
 ```
 
-אמור לעלות בלי שגיאות.
+Should load without errors.
 
-## בדיקה 2: טופס TFN
+## Check 2: TFN form
 
-1. כניסה ל: `/tfn-form`
-2. מילוי הטופס
-3. העלאת תמונת פספורט (test)
-4. שליחה
-5. ✅ אמור להופיע אישור הצלחה
+1. Go to: `/tfn-form`
+2. Fill out the form
+3. Upload a passport photo (test)
+4. Submit
+5. ✅ A success confirmation should appear
 
-## בדיקה 3: CRM Dashboard
+## Check 3: CRM Dashboard
 
-1. כניסה ל: `/crm/login`
-2. סיסמת CRM
-3. ✅ אמור לראות את ההגשה החדשה
-4. בדוק שאפשר לראות את הקובץ שהועלה
+1. Go to: `/crm/login`
+2. CRM password
+3. ✅ You should see the new submission
+4. Check that you can view the uploaded file
 
-## בדיקה 4: Supabase Dashboard
+## Check 4: Supabase Dashboard
 
-ב-Supabase → **Table Editor** → `crm_tasks`:
-- ✅ אמורה להופיע השורה החדשה
+In Supabase → **Table Editor** → `crm_tasks`:
+- ✅ The new row should appear
 
-ב-Supabase → **Storage** → `uploads`:
-- ✅ אמור להופיע הקובץ שהעלית
+In Supabase → **Storage** → `uploads`:
+- ✅ The file you uploaded should appear
 
 ---
 
-# 💰 השוואת עלויות
+# 💰 Cost comparison
 
 | | Vercel | Supabase (Free) |
 |--|--------|-----------------|
-| Database | $20-25/חודש | חינם (500MB) |
-| Storage | $0.15/GB | חינם (1GB) |
-| API calls | מוגבל | 50K/חודש חינם |
-| Backups | בPro plan בלבד | אוטומטי |
+| Database | $20-25/month | Free (500MB) |
+| Storage | $0.15/GB | Free (1GB) |
+| API calls | Limited | 50K/month free |
+| Backups | Pro plan only | Automatic |
 
-**חיסכון:** ~$25-30/חודש = ~$300/שנה 💰
+**Savings:** ~$25-30/month = ~$300/year 💰
 
 ---
 
-# 🆘 בעיות נפוצות
+# 🆘 Common issues
 
 ## "Missing env var: NEXT_PUBLIC_SUPABASE_URL"
-→ הגדרת את המשתנה ב-Vercel? בדוק ב-Settings → Environment Variables.
+→ Did you set the variable in Vercel? Check Settings → Environment Variables.
 
 ## "Upload failed"
-→ ב-Supabase, האם יצרת את ה-bucket `uploads` כ-**Public**? בדוק ב-Storage.
+→ In Supabase, did you create the `uploads` bucket as **Public**? Check in Storage.
 
 ## "Refusing to fetch" (CSP error)
-→ הקוד החדש כבר עם CSP נכון. אבל אם עדיין שגיאה - בדוק ב-Vercel → Deployments → Latest → לחפש בlogs.
+→ The new code already has the correct CSP. But if you still get an error - check Vercel → Deployments → Latest → look in the logs.
 
-## אתה רוצה לחזור ל-Vercel Storage
-→ זה מסובך אבל אפשרי. שמור גיבוי של ה-CSV מ-Vercel **לפני** שתמחק.
+## You want to go back to Vercel Storage
+→ It's complicated but possible. Keep a backup of the CSV from Vercel **before** you delete it.
 
 ---
 
-# ✅ סיכום
+# ✅ Summary
 
-לאחר ביצוע כל השלבים:
-- ✅ האתר רץ על Supabase
-- ✅ Vercel Storage מנותק ומחוק
-- ✅ ENV vars מעודכנים
-- ✅ CSP תומך ב-Supabase domains
-- ✅ העלאות קבצים עובדות
-- ✅ CRM פועל
+After completing all the steps:
+- ✅ The site runs on Supabase
+- ✅ Vercel Storage disconnected and deleted
+- ✅ ENV vars updated
+- ✅ CSP supports Supabase domains
+- ✅ File uploads work
+- ✅ CRM works
 
-הצלחה! 🎉
+Success! 🎉

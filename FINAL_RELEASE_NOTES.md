@@ -1,72 +1,72 @@
 # Working Holiday Tax — Production-Ready Site (FINAL v7)
 
-## 🎯 גרסה סופית מלאה - מוכנה לפרודקשן
+## 🎯 Final complete version - production ready
 
-זו הגרסה הסופית של האתר אחרי **7 שלבי עבודה** מקיפים:
-- Phase 1: ניקוי תרגום ועקביות
-- Phase 2: שיפור Meta Descriptions
+This is the final version of the site after **7 comprehensive work phases**:
+- Phase 1: Translation cleanup and consistency
+- Phase 2: Meta Description improvements
 - Phase 3: AI Search Optimization
 - Phase 4: Locale-aware UI + Organization schemas
-- Phase 5: תרגום מלא של הטפסים + עמודים משפטיים + פוטר
-- Phase 6: מחשבון יפני מתורגם מלא
-- **Phase 7 (חדש)**: 3 כפתורי שפה בכל הטפסים
+- Phase 5: Full translation of forms + legal pages + footer
+- Phase 6: Fully translated Japanese calculator
+- **Phase 7 (new)**: 3 language buttons on all forms
 
 ---
 
-## 🆕 מה חדש ב-Phase 7
+## 🆕 What's new in Phase 7
 
-### FormLanguageToggle עכשיו עם 3 שפות!
+### FormLanguageToggle now has 3 languages!
 
-**הבעיה**: ה-toggle הציג רק 2 כפתורים:
-- בעמוד EN/DE: English + Deutsch
-- בעמוד JA: English + 日本語
+**The problem**: the toggle only showed 2 buttons:
+- On the EN/DE page: English + Deutsch
+- On the JA page: English + 日本語
 
-זה אומר שאם מישהו בעמוד הגרמני רצה לעבור ליפנית - לא יכול! ולהיפך.
+This meant that if someone on the German page wanted to switch to Japanese - they couldn't! And vice versa.
 
-**התיקון**: עכשיו הtoggle תמיד מציג **כל 3 השפות**:
+**The fix**: the toggle now always shows **all 3 languages**:
 
 ```
 [🇬🇧 English] [🇩🇪 Deutsch] [🇯🇵 日本語]
 ```
 
-זה אומר:
-- בעמוד EN: יכול לעבור לDE או JA ישירות
-- בעמוד DE: יכול לעבור לEN או JA ישירות
-- בעמוד JA: יכול לעבור לEN או DE ישירות
+This means:
+- On the EN page: can switch directly to DE or JA
+- On the DE page: can switch directly to EN or JA
+- On the JA page: can switch directly to EN or DE
 
-כל מי שמגיע לטופס בכל שפה יכול לעבור לכל שפה.
+Anyone who arrives at the form in any language can switch to any language.
 
 ---
 
-## ✅ הזיפ מכיל את כל ה-7 phases
+## ✅ The zip contains all 7 phases
 
-| תיקון | סטטוס |
+| Fix | Status |
 |---|---|
-| 195+ תיקוני שפה DE+JA | ✅ |
-| 8+ סוגי Schema.org | ✅ |
-| 143 פוסטים × 3 שפות | ✅ |
-| UI components מתורגמים | ✅ |
-| 4 טפסים × 3 שפות | ✅ |
-| 2 עמודי משפט × 3 שפות (4 חדשים) | ✅ |
-| מחשבון × 3 שפות (יפני חדש) | ✅ |
-| FormLanguageToggle × 3 שפות תמיד | ✅ |
-| Hreflang מלא בכל עמוד | ✅ |
-| Footer מתורגם מלא | ✅ |
+| 195+ DE+JA language fixes | ✅ |
+| 8+ Schema.org types | ✅ |
+| 143 posts × 3 languages | ✅ |
+| Translated UI components | ✅ |
+| 4 forms × 3 languages | ✅ |
+| 2 legal pages × 3 languages (4 new) | ✅ |
+| Calculator × 3 languages (new Japanese) | ✅ |
+| FormLanguageToggle × 3 languages always | ✅ |
+| Full hreflang on every page | ✅ |
+| Fully translated footer | ✅ |
 | TypeScript Exit 0 | ✅ |
 
 ---
 
-## 🚀 איך להעלות לפרודקשן
+## 🚀 How to deploy to production
 
 ```bash
-# 1. גיבוי
+# 1. Backup
 cp -r your-current-site your-current-site.backup
 
-# 2. חלץ
+# 2. Extract
 unzip working-holiday-tax-FINAL-PRODUCTION.zip -d new-site
 cd new-site
 
-# 3. בנה
+# 3. Build
 npm install
 npm run build
 
@@ -74,4 +74,4 @@ npm run build
 vercel deploy
 ```
 
-**מוכן לפרודקשן.** 🚀
+**Production ready.** 🚀

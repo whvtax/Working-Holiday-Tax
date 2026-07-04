@@ -45,7 +45,8 @@ function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = React.useState(false)
   return (
     <button
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation()
         navigator.clipboard.writeText(text).then(() => {
           setCopied(true)
           setTimeout(() => setCopied(false), 1500)
@@ -1169,6 +1170,19 @@ export default function DashboardClient() {
     }
   }, [view, taskView])
 
+  // A task matches the search box if the query appears in the client's name,
+  // email, or WhatsApp number (case-insensitive; phone numbers are matched
+  // ignoring spaces/dashes so "0412 345 678" and "0412-345-678" both work).
+  const taskMatchesSearch = (t: Task, q: string) => {
+    if (!q) return true
+    const digits = q.replace(/[\s-]/g, '')
+    return (
+      t.clientName.toLowerCase().includes(q) ||
+      (t.email || '').toLowerCase().includes(q) ||
+      (digits && (t.whatsapp || '').replace(/[\s-]/g, '').includes(digits))
+    )
+  }
+
   const pendingTasks   = useMemo(()=>{
     const q = taskSearch.trim().toLowerCase()
     const base = tasks.filter(t=>!t.done).sort((a,b)=>{
@@ -1179,12 +1193,12 @@ export default function DashboardClient() {
       if (aIP !== bIP) return aIP - bIP
       return new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()
     })
-    return q ? base.filter(t=>t.clientName.toLowerCase().includes(q)) : base
+    return q ? base.filter(t=>taskMatchesSearch(t, q)) : base
   }, [tasks, taskSearch])
   const doneTasks      = useMemo(()=>{
     const q = taskSearch.trim().toLowerCase()
     const base = tasks.filter(t=>t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime())
-    return q ? base.filter(t=>t.clientName.toLowerCase().includes(q)) : base
+    return q ? base.filter(t=>taskMatchesSearch(t, q)) : base
   }, [tasks, taskSearch])
   const visibleClients = useMemo(()=>{
     // If user is searching and we have server-side results (more clients than loaded),
@@ -1196,7 +1210,12 @@ export default function DashboardClient() {
         })()
       : clients
     return sourceClients.filter(c=>{
-    const ms = !search || c.fullName.toLowerCase().includes(search.toLowerCase()) || c.email?.includes(search) || c.whatsapp?.includes(search)
+    const q = search.trim().toLowerCase()
+    const qDigits = q.replace(/[\s-]/g, '')
+    const ms = !q
+      || c.fullName.toLowerCase().includes(q)
+      || (c.email || '').toLowerCase().includes(q)
+      || (qDigits && (c.whatsapp || '').replace(/[\s-]/g, '').includes(qDigits))
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
     const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
     const mc = checkinFilter==='all' || (checkinFilter==='done' && checkinDone) || (checkinFilter==='pending' && !checkinDone)
@@ -1245,6 +1264,8 @@ export default function DashboardClient() {
   const globalResults = useMemo(()=>{
     const q = globalSearch.trim()
     if (q.length <= 1) return null
+    const qLower = q.toLowerCase()
+    const qDigits = q.replace(/[\s-]/g, '')
     // Merge local clients with any server-side search results
     const sourceClients = (searchResults && clients.length < clientsTotal)
       ? (() => {
@@ -1254,14 +1275,14 @@ export default function DashboardClient() {
       : clients
     return {
       tasks: tasks.filter(t=>
-        t.clientName.toLowerCase().includes(q.toLowerCase()) ||
-        t.email?.toLowerCase().includes(q.toLowerCase()) ||
-        t.whatsapp?.includes(q)
+        t.clientName.toLowerCase().includes(qLower) ||
+        (t.email || '').toLowerCase().includes(qLower) ||
+        (qDigits && (t.whatsapp || '').replace(/[\s-]/g, '').includes(qDigits))
       ).slice(0,5),
       clients: sourceClients.filter(c=>
-        c.fullName.toLowerCase().includes(q.toLowerCase()) ||
-        c.email?.toLowerCase().includes(q.toLowerCase()) ||
-        c.whatsapp?.includes(q)
+        c.fullName.toLowerCase().includes(qLower) ||
+        (c.email || '').toLowerCase().includes(qLower) ||
+        (qDigits && (c.whatsapp || '').replace(/[\s-]/g, '').includes(qDigits))
       ).slice(0,5),
     }
   }, [globalSearch, tasks, clients, clientsTotal, searchResults])
@@ -1277,7 +1298,12 @@ export default function DashboardClient() {
         })()
       : archivedClients
     return source.filter(c=>{
-    const ms = !archiveSearch || c.fullName.toLowerCase().includes(archiveSearch.toLowerCase()) || c.whatsapp?.includes(archiveSearch) || c.email?.includes(archiveSearch)
+    const aq = archiveSearch.trim().toLowerCase()
+    const aqDigits = aq.replace(/[\s-]/g, '')
+    const ms = !aq
+      || c.fullName.toLowerCase().includes(aq)
+      || (c.email || '').toLowerCase().includes(aq)
+      || (aqDigits && (c.whatsapp || '').replace(/[\s-]/g, '').includes(aqDigits))
     const my = archiveYearFilter.size===0 || c.taxReturns?.some(r=>archiveYearFilter.has(r.year)) || c.superReturns?.some(r=>archiveYearFilter.has(r.year))
     const mh = archiveHowHeardFilter.size===0 || archiveHowHeardFilter.has(c.howHeard||'Unknown')
     const mc = archiveCountryFilter.size===0 || archiveCountryFilter.has(c.country||'')
@@ -1614,7 +1640,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 <svg style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#7a8a82" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#7a8a82" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 <input
                   style={{width:'100%',padding:'9px 12px 9px 36px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:10,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
-                  placeholder="Search by name…"
+                  placeholder="Search by name, email, or WhatsApp…"
                   value={taskSearch}
                   onChange={e=>setTaskSearch(e.target.value)}
                 />
@@ -1643,7 +1669,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <div key={t.id} data-task-card data-task-id={t.id} style={{...S.taskCard, ...(inProgress?{background:'#f7fbf9'}:{}), ...(wasLastViewed?{outline:'2px solid #a7f3d0',outlineOffset:-2}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
                     <button
                       onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
-                      title={inProgress ? 'הסר סימון "בטיפול"' : 'סמן "בטיפול" - יעבור לסוף התור'}
+                      title={inProgress ? 'Remove "In Progress" mark' : 'Mark "In Progress" - moves to the bottom of the queue'}
                       aria-label={inProgress ? 'Unmark in progress' : 'Mark in progress'}
                       style={{width:16,height:16,borderRadius:5,border:`1.5px solid ${inProgress?'#059669':'#d8e4dc'}`,background:inProgress?'#059669':'#fff',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0}}
                     >
@@ -1660,14 +1686,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           </span>
                         )}
                         {inProgress && (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0'}} title="בטיפול - ממתין ללקוח">
+                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0'}} title="In progress - waiting on the client">
                             🔶 In Progress
                           </span>
                         )}
                       </div>
                       {t.whatsapp && (
                         <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
-                          <span>📱 {t.whatsapp}</span>
+                          <span>{t.whatsapp}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}
@@ -1710,7 +1736,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       </div>
                       {t.whatsapp && (
                         <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
-                          <span>📱 {t.whatsapp}</span>
+                          <span>{t.whatsapp}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}

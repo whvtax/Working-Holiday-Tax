@@ -218,8 +218,8 @@
     /* Uniform hero H1 size on mobile - set per page inline */
 
     /* ── UNIFORM SECTION TYPOGRAPHY (mobile) ──────────────────────────
-       כותרת ראשית H2: 20px אחיד
-       inline style עוקף CSS - לכן משתמשים ב-!important
+       Main H2 heading: uniform 20px
+       Inline style overrides CSS - hence the use of !important
     ─────────────────────────────────────────────────────────────────── */
     section h2.font-serif.font-black {
       font-size: 20px !important;
