@@ -11,13 +11,14 @@ type UploadState = { file: File | null; preview: string | null }
 type MultiUploadState = { files: File[]; previews: (string | null)[] }
 
 /* ── Field wrapper ── */
-function Field({ label, required, children, error }: { label: string; required?: boolean; children: React.ReactNode; error?: string }) {
+function Field({ label, required, children, error, hint }: { label: string; required?: boolean; children: React.ReactNode; error?: string; hint?: string }) {
   return (
     <div style={{marginBottom:'14px'}}>
       <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
         {label}
         {required && <span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>}
       </label>
+      {hint && <div style={{fontSize:'12px',color:'#5A7B70',marginBottom:'6px',lineHeight:1.4}}>{hint}</div>}
       {children}
       {error && <span className="err-msg">{error}</span>}
     </div>
@@ -657,7 +658,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div className="form-section-title">{T('sectionDocuments')}</div>
           <div>
 
-            <Field label={T('bankStatements')} required error={errors.bankStatement}>
+            <Field label={T('bankStatements')} required error={errors.bankStatement} hint={T('bankStatementHint')}>
               <FileUpload id="bankStatement" label={T('uploadBankStatement')} accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} lang={lang} />
             </Field>

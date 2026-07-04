@@ -270,6 +270,12 @@ export default function DashboardClient() {
   const [statusFilter, setStatusFilter] = useState<Set<ClientStatus>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
   const [taskSearch, setTaskSearch] = useState('')
+  // Remembers which task card was last opened + the list's scroll position, so
+  // going back from a client's detail view returns to the same spot instead of
+  // jumping back to the top of the list.
+  const [lastViewedTaskId, setLastViewedTaskId] = useState<string|null>(null)
+  const tasksScrollRef = React.useRef<HTMLDivElement|null>(null)
+  const tasksScrollPosRef = React.useRef(0)
   const [openDropdown, setOpenDropdown] = useState<string|null>(null)
   const [archiveYearFilter, setArchiveYearFilter] = useState<Set<string>>(new Set())
   const [archiveHowHeardFilter, setArchiveHowHeardFilter] = useState<Set<string>>(new Set())
@@ -418,9 +424,9 @@ export default function DashboardClient() {
 
   useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats({force:true})]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadStats])
 
-  // Auto-poll every 60s — keeps all open sessions in sync
+  // Auto-poll every 20s — keeps all open sessions in sync and surfaces new leads faster
   useEffect(()=>{
-    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()]) }, 60_000)
+    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()]) }, 20_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients, loadArchived, loadStats])
 
@@ -562,6 +568,26 @@ export default function DashboardClient() {
     await fetch(`/api/crm/clients/${clientId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'checkin',year,done:!current})})
   }
 
+  // ── "In progress" flag ────────────────────────────────────────────────
+  // Lets the admin mark a lead as "currently working on it" (e.g. waiting on a
+  // missing document from the client) so it drops to the bottom of the pending
+  // queue and they can move on to the next lead without losing their place.
+  const isTaskInProgress = (notes: string) => (notes || '').includes('🔶 In Progress')
+
+  async function toggleInProgress(task: Task) {
+    const inProgress = isTaskInProgress(task.notes)
+    const parts = (task.notes || '').split(' | ').filter(p => p !== '🔶 In Progress')
+    if (!inProgress) parts.push('🔶 In Progress')
+    const newNotes = parts.join(' | ').trim()
+    setTasks(prev => prev.map(t => t.id === task.id ? { ...t, notes: newNotes } : t))
+    if (activeTask?.id === task.id) setActiveTask(prev => prev ? { ...prev, notes: newNotes } : prev)
+    try {
+      await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'notes',notes:newNotes})})
+    } catch (err) {
+      console.error('[toggleInProgress]', err)
+    }
+  }
+
   async function markDone(id:string) {
     const prevTasks = tasks
     setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
@@ -604,6 +630,7 @@ export default function DashboardClient() {
       p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
       || p.startsWith('📝 ')
       || p === '🔄 Returning client'
+      || p === '🔶 In Progress'
     )
     // taskNotes is the admin's own notes (stripped of 📝 prefix when loaded)
     const merged = taskNotes.trim()
@@ -730,6 +757,16 @@ export default function DashboardClient() {
   }
 
   const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST/AEDT' : '—'
+  // Formats a date of birth string to DD/MM/YYYY, regardless of whether it was stored as
+  // an ISO date (YYYY-MM-DD, from the <input type="date"> forms) or already DD/MM/YYYY.
+  const fmtDob = (dob:string) => {
+    if (!dob) return dob
+    const iso = dob.match(/^(\d{4})-(\d{2})-(\d{2})/)
+    if (iso) return `${iso[3]}/${iso[2]}/${iso[1]}`
+    const dmy = dob.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)
+    if (dmy) return `${dmy[1].padStart(2,'0')}/${dmy[2].padStart(2,'0')}/${dmy[3]}`
+    return dob
+  }
 
   // Strip structured form data from notes — return only the user-written portion
   const extractUserNotes = (raw:string) => {
@@ -826,7 +863,7 @@ export default function DashboardClient() {
         + field('Country of passport', task.country)
         + field('Passport number', passport)
         + field('Email address', task.email)
-        + field('Date of birth', task.dob)
+        + field('Date of birth', fmtDob(task.dob))
         + field('WhatsApp Number', task.whatsapp)
         + field('Australian phone number', task.auPhone)
         + radioField('Gender as shown in passport', gender, ['Female','Male'])
@@ -858,7 +895,7 @@ export default function DashboardClient() {
         sec('Personal details')
         + field('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + field('Last name', task.clientName.split(' ').pop() || '')
-        + field('Date of birth', task.dob)
+        + field('Date of birth', fmtDob(task.dob))
         + radioField('Gender as shown in passport', gender, ['Female','Male'])
         + field('Country of passport', task.country)
         + field('WhatsApp Number', task.whatsapp)
@@ -896,7 +933,7 @@ export default function DashboardClient() {
         sec('Personal details')
         + field('First name (including middle name)', task.clientName.split(' ').slice(0,-1).join(' ') || task.clientName)
         + field('Last name', task.clientName.split(' ').pop() || '')
-        + field('Date of birth', task.dob)
+        + field('Date of birth', fmtDob(task.dob))
         + field('Passport number', passport)
         + field('Country that issued the passport (with visa attached)', task.country)
         + sec('Contact details')
@@ -946,7 +983,7 @@ export default function DashboardClient() {
         + field('Full Address in Australia', task.address)
         + sec('Personal information')
         + field('Home Country', task.country)
-        + field('Date of Birth', task.dob)
+        + field('Date of Birth', fmtDob(task.dob))
         + radioField('Marital Status', task.marital, ['Single','Married'])
         + sec('Tax information')
         + field('Tax File Number (TFN)', task.tfn)
@@ -1072,9 +1109,23 @@ export default function DashboardClient() {
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
+  // Restore the task list's scroll position after returning from a task's detail view.
+  useEffect(()=>{
+    if (view==='tasks' && taskView==='list' && tasksScrollRef.current) {
+      tasksScrollRef.current.scrollTop = tasksScrollPosRef.current
+    }
+  }, [view, taskView])
+
   const pendingTasks   = useMemo(()=>{
     const q = taskSearch.trim().toLowerCase()
-    const base = tasks.filter(t=>!t.done).sort((a,b)=>new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime())
+    const base = tasks.filter(t=>!t.done).sort((a,b)=>{
+      // Leads marked "In Progress" (waiting on the client) drop to the bottom
+      // of the queue so the admin can keep working through the rest first.
+      const aIP = isTaskInProgress(a.notes) ? 1 : 0
+      const bIP = isTaskInProgress(b.notes) ? 1 : 0
+      if (aIP !== bIP) return aIP - bIP
+      return new Date(b.submittedAt).getTime()-new Date(a.submittedAt).getTime()
+    })
     return q ? base.filter(t=>t.clientName.toLowerCase().includes(q)) : base
   }, [tasks, taskSearch])
   const doneTasks      = useMemo(()=>{
@@ -1524,25 +1575,52 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               </div>{/* end fixed header */}
 
-              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 16px'}}>
+              <div
+                className="tasks-scroll"
+                ref={tasksScrollRef}
+                onScroll={e=>{ tasksScrollPosRef.current = (e.target as HTMLDivElement).scrollTop }}
+                style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 16px'}}
+              >
 
               {pendingTasks.length>0 && <>
                 {pendingTasks.map(t=>{
                   const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
                   const isMarried = (t.marital||'').toLowerCase() === 'married'
                   const isReturning = (t.notes||'').includes('🔄 Returning client')
+                  const inProgress = isTaskInProgress(t.notes)
+                  const wasLastViewed = t.id === lastViewedTaskId
                   return (
-                  <div key={t.id} data-task-card style={{...S.taskCard}} onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
+                  <div key={t.id} data-task-card data-task-id={t.id} style={{...S.taskCard, ...(inProgress?{background:'#f7fbf9'}:{}), ...(wasLastViewed?{outline:'2px solid #a7f3d0',outlineOffset:-2}:{})}} onClick={()=>{setLastViewedTaskId(t.id);setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail')}}>
+                    <button
+                      onClick={e=>{e.stopPropagation();toggleInProgress(t)}}
+                      title={inProgress ? 'הסר סימון "בטיפול"' : 'סמן "בטיפול" - יעבור לסוף התור'}
+                      aria-label={inProgress ? 'Unmark in progress' : 'Mark in progress'}
+                      style={{width:16,height:16,borderRadius:5,border:`1.5px solid ${inProgress?'#059669':'#d8e4dc'}`,background:inProgress?'#059669':'#fff',flexShrink:0,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',padding:0}}
+                    >
+                      {inProgress && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                    </button>
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:6}}>
-                        {t.clientName}
+                      <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
+                        <span>{t.clientName}</span>
+                        <CopyBtn text={t.clientName}/>
                         {isReturning && (
                           <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ECFDF5',color:'#047857',border:'1px solid #A7F3D0'}} title="This client has been with you before">
                             🔄 Returning
                           </span>
                         )}
+                        {inProgress && (
+                          <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0'}} title="בטיפול - ממתין ללקוח">
+                            🔶 In Progress
+                          </span>
+                        )}
                       </div>
+                      {t.whatsapp && (
+                        <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
+                          <span>📱 {t.whatsapp}</span>
+                          <CopyBtn text={t.whatsapp}/>
+                        </div>
+                      )}
                       <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
                         <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
                         {isWhv && (
@@ -1580,6 +1658,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         <span>{t.clientName}</span>
                         <CopyBtn text={t.clientName}/>
                       </div>
+                      {t.whatsapp && (
+                        <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
+                          <span>📱 {t.whatsapp}</span>
+                          <CopyBtn text={t.whatsapp}/>
+                        </div>
+                      )}
                       <div style={{fontSize:11,color:'#7a8a82',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}}>
                         <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
                         {isWhv && (
@@ -1738,7 +1822,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     const base:[string,string][] = [
                       ['Full name', firstName],
                       ['Last name', lastName],
-                      ['Date of birth', activeTask.dob],
+                      ['Date of birth', fmtDob(activeTask.dob)],
                     ]
                     if (activeTask.taskType==='tfn') {
                       const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim()||'—'
@@ -2571,7 +2655,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <WhatsAppQuick name={activeClient.fullName} whatsapp={activeClient.whatsapp}/>
                 </div>
                 <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',columnGap:24,rowGap:0}}>
-                  {[['Date of birth',activeClient.dob],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
+                  {[['Date of birth',fmtDob(activeClient.dob)],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
                     <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
                       <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>{l}</span>
                       <span style={{fontSize:12,color:'#0a1410',flex:1}}>{v||'—'}</span>

@@ -324,6 +324,11 @@ export const formStrings = {
     de: 'Bankauszug hochladen',
     ja: '銀行明細書をアップロード',
   },
+  bankStatementHint: {
+    en: 'Just the first page is enough. The ATO needs it to verify the refund will be paid into your account.',
+    de: 'Nur die erste Seite ist ausreichend. Das ATO benötigt sie, um zu bestätigen, dass die Rückerstattung auf dein Konto ausgezahlt wird.',
+    ja: '最初の1ページで十分です。ATO（豪州税務局）が還付金の振込先口座を確認するために必要です。',
+  },
   hasExpenses: {
     en: 'Do you have work-related or ABN expenses?',
     de: 'Hast du arbeitsbezogene oder ABN-Ausgaben?',

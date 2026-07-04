@@ -19,6 +19,16 @@ const TAX_YEARS: TaxYear[] = Array.from({length:11},(_,i)=>{
   const y = _currentTaxStart + 5 - i  // newest first
   return `${y}-${String(y+1).slice(2)}`
 })
+// Formats a date of birth string to DD/MM/YYYY for display, regardless of whether
+// it was stored as an ISO date (YYYY-MM-DD) or already DD/MM/YYYY.
+const fmtDob = (dob?:string) => {
+  if (!dob) return dob
+  const iso = dob.match(/^(\d{4})-(\d{2})-(\d{2})/)
+  if (iso) return `${iso[3]}/${iso[2]}/${iso[1]}`
+  const dmy = dob.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)
+  if (dmy) return `${dmy[1].padStart(2,'0')}/${dmy[2].padStart(2,'0')}/${dmy[3]}`
+  return dob
+}
 
 export default function ClientPageClient({ id }: { id: string }) {
   const router  = useRouter()
@@ -197,7 +207,7 @@ export default function ClientPageClient({ id }: { id: string }) {
         <div className="cp-grid">
           <Section title="Personal details">
             <Row label="Full name"     value={client.fullName}  field="fullName"  editing={editing} form={form} setForm={setForm}/>
-            <Row label="Date of birth" value={client.dob}       field="dob"       editing={editing} form={form} setForm={setForm} type="date"/>
+            <Row label="Date of birth" value={client.dob}       field="dob"       editing={editing} form={form} setForm={setForm} type="date" displayValue={fmtDob(client.dob)}/>
             <Row label="Country"       value={client.country}   field="country"   editing={editing} form={form} setForm={setForm}/>
             <Row label="Marital"       value={client.marital}   field="marital"   editing={editing} form={form} setForm={setForm}/>
           </Section>
@@ -271,17 +281,17 @@ function Section({title,children}:{title:string;children:React.ReactNode}) {
   return <div className="cp-section"><div className="cp-sec-head">{title}</div>{children}</div>
 }
 
-function Row({label,value,field,editing,form,setForm,type='text',ltr=false}:{
+function Row({label,value,field,editing,form,setForm,type='text',ltr=false,displayValue}:{
   label:string;value:string;field:string;editing:boolean
   form:Record<string,unknown>;setForm:(f:Record<string,unknown>)=>void
-  type?:string;ltr?:boolean
+  type?:string;ltr?:boolean;displayValue?:string
 }) {
   return (
     <div className="cp-row">
       <span className="cp-lbl">{label}</span>
       {editing
         ? <input type={type} className="cp-input" value={(form[field] as string)??''} onChange={e=>setForm({...form,[field]:e.target.value})} style={{direction:ltr?'ltr':'inherit'}}/>
-        : <span className={`cp-val${ltr?' ltr':''}${!value?' empty':''}`}>{value||'—'}</span>
+        : <span className={`cp-val${ltr?' ltr':''}${!value?' empty':''}`}>{(displayValue ?? value)||'—'}</span>
       }
     </div>
   )
