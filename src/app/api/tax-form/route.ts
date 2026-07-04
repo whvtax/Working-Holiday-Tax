@@ -53,6 +53,7 @@ export async function POST(req: NextRequest) {
       marital:     sanitiseShort(formData.get('marital')),
       taxStatus:   sanitiseShort(formData.get('taxStatus')),
       howHeard:    sanitiseShort(formData.get('howHeard')),
+      refCode:     sanitiseShort(formData.get('refCode')),
       submittedAt: new Date().toISOString(),
       notes:       [
         isReturning ? '🔄 Returning client' : '',
@@ -79,11 +80,11 @@ export async function POST(req: NextRequest) {
             const parts = []
             if (tfn.length > 0) {
               const total = tfn.reduce((s,i)=>s+(parseFloat(i.amount)||0),0)
-              parts.push(`💼 TFN Invoices (${tfn.length}): $${total.toFixed(2)} — ${tfn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
+              parts.push(`💼 TFN Invoices (${tfn.length}): $${total.toFixed(2)} - ${tfn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
             }
             if (abn.length > 0) {
               const total = abn.reduce((s,i)=>s+(parseFloat(i.amount)||0),0)
-              parts.push(`🏢 ABN Invoices (${abn.length}): $${total.toFixed(2)} — ${abn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
+              parts.push(`🏢 ABN Invoices (${abn.length}): $${total.toFixed(2)} - ${abn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
             }
             return parts.join(' | ')
           } catch { return '' }

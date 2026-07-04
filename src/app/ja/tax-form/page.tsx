@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 import { SITE_URL } from '@/lib/constants'
 import { FormClient } from '@/app/tax-form/FormClient'
 
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-form`,
@@ -32,7 +34,8 @@ export const metadata: Metadata = {
     title: 'タックスリターンフォーム',
     description: 'タックスリターンに必要な情報をお送りください。',
   },
-  twitter: { card: 'summary', title: 'タックスリターンフォーム', description: 'タックスリターンに必要な情報をお送りください。' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'タックスリターンフォーム', description: 'タックスリターンに必要な情報をお送りください。' },
   robots: { index: false, follow: true },
 }
 
@@ -51,7 +54,7 @@ export default function JapaneseTaxFormPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <FormClient defaultLang="ja" />
+      <Suspense fallback={null}><FormClient defaultLang="ja" /></Suspense>
     </>
   )
 }

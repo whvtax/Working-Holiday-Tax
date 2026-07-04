@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/super-form`,
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
     title: 'Submit Your Super Claim',
     description: 'Submit your details to claim your Australian superannuation (DASP).',
   },
-  twitter: { card: 'summary', title: 'Submit Your Super Claim', description: 'Submit your details to claim your Australian superannuation.' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'Submit Your Super Claim', description: 'Submit your details to claim your Australian superannuation.' },
   robots: { index: false, follow: true },
 }
 

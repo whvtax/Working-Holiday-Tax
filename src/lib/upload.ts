@@ -4,7 +4,7 @@
 // All security checks (magic bytes, dangerous patterns) preserved.
 // ──────────────────────────────────────────────────────────────────────────
 
-import { getSupabase, STORAGE_BUCKETS } from '@/lib/supabase'
+import { getSupabase, STORAGE_BUCKETS, assertUploadsBucketPrivate } from '@/lib/supabase'
 import crypto from 'crypto'
 
 const ALLOWED_MIME_TYPES = new Set([
@@ -124,6 +124,9 @@ export async function uploadFile(
 
   await validateFileContents(file)
 
+  // Fail closed: never write identity docs into a public bucket.
+  await assertUploadsBucketPrivate()
+
   const safeName = file.name
     .replace(/[^a-zA-Z0-9._-]/g, '_')
     .slice(0, 80)
@@ -146,9 +149,10 @@ export async function uploadFile(
     throw new Error(`Upload failed: ${uploadError.message}`)
   }
 
-  // Build the canonical object URL. NOTE: the bucket is PRIVATE, so this URL is
-  // used only as a stable reference key stored in the DB - it is NOT publicly
-  // accessible. Files are served to authenticated CRM sessions via /api/crm/file.
+  // Build the canonical object reference. The bucket is PRIVATE (now enforced at
+  // runtime by assertUploadsBucketPrivate above), so this URL is used only as a
+  // stable reference key stored in the DB - it does NOT resolve publicly. Files
+  // are streamed to authenticated CRM sessions via /api/crm/file (service role).
   const { data: { publicUrl } } = sb.storage
     .from(STORAGE_BUCKETS.uploads)
     .getPublicUrl(pathname)

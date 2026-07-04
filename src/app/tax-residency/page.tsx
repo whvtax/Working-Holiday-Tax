@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tax-residency`,
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
     description: 'Understand tax residency categories and how your visa affects your rate.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Tax Residency in Australia for WHV Holders',
     description: 'Understand tax residency and how your visa affects your rate.',
@@ -55,10 +57,10 @@ const RESIDENT_ROWS = [
   ['$190,001+',           '$51,638 + 45%'],
 ]
 
-const NDA_COUNTRIES = ['Chile', 'Finland', 'Germany', 'Israel', 'Japan', 'Norway', 'Turkey', 'United Kingdom']
+const NDA_COUNTRIES = ['United Kingdom', 'Germany', 'Japan', 'Chile', 'Finland', 'Israel', 'Norway', 'Turkey']
 
 const CONDITIONS = [
-  'You hold a passport from one of the NDA countries (listed below).',
+  'You hold a passport from one of the NDA countries:',
   'Your ordinary place of residence is in Australia.',
   'You have an intention to live in Australia.',
   'You stay in Australia for a cumulative 183 days in the tax year.',
@@ -68,18 +70,6 @@ const FAQS = [
   {
     question: 'What is tax residency?',
     answer: 'Tax residency determines which tax rates apply to your income in Australia. There are three categories: non-resident, working holiday maker (417/462 visa), and Australian resident for tax purposes. Each category has different rates and thresholds.',
-  },
-  {
-    question: 'Am I a resident or working holiday maker for tax?',
-    answer: 'By default, holders of 417 or 462 visas are taxed as working holiday makers at 15% from the first dollar. However, if you are from an NDA country (Non-Discrimination Agreement) and meet specific conditions, you may qualify to be taxed as an Australian resident - which means a $18,200 tax-free threshold.',
-  },
-  {
-    question: 'What are NDA countries?',
-    answer: 'NDA stands for Non-Discrimination Agreement. Citizens from these countries may be entitled to be taxed at resident rates if they meet residency tests. The countries are: Chile, Finland, Germany, Israel, Japan, Norway, Turkey, and the United Kingdom.',
-  },
-  {
-    question: 'How much can I save if I am classified as a resident?',
-    answer: 'On an income of $45,000, the difference between WHM tax ($6,750) and resident tax ($4,288) is $2,462. That is money you could be refunded if you qualify for resident status. We assess your situation and apply the correct status when lodging your return.',
   },
   {
     question: 'What about student visa (500) holders?',
@@ -154,7 +144,7 @@ export default function TaxResidencyPage() {
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-14 lg:pb-10">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-12 lg:pb-10">
 
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="mb-5 lg:mb-6">
@@ -168,22 +158,12 @@ export default function TaxResidencyPage() {
             </nav>
 
             <div className="text-center">
-              <div className="inline-flex items-center gap-2 mb-3 lg:mb-4 justify-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-                <span className="font-medium uppercase" style={{ fontSize: '11px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                  Tax Residency Explained
-                </span>
-              </div>
-
               <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '20ch' }}>
-                Understand your tax status<br />
-                <span style={{ color: '#0B5240' }}>in Australia</span>
+                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
+                Understand your <span style={{ color: '#0B5240' }}>tax residency</span>
               </h1>
-
-              <p className="font-light mx-auto"
-                style={{ fontSize: 'clamp(14.5px, 1.4vw, 17px)', lineHeight: 1.7, color: 'rgba(10,15,13,0.65)', maxWidth: '54ch' }}>
-                Your visa and circumstances determine which tax rates apply to your Australian income. Knowing your status can save you thousands of dollars.
+              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '38ch' }}>
+                If you&apos;re on a Working Holiday visa, you can absolutely be an Australian resident <strong>for tax purposes</strong>. That doesn&apos;t mean you&apos;re Australian.
               </p>
             </div>
           </div>
@@ -193,24 +173,18 @@ export default function TaxResidencyPage() {
         <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_ROWS} />
-              <TaxTable label="Australian Resident for tax purposes" rows={RESIDENT_ROWS} highlight />
-            </div>
-
-            <div className="taxres-savings-box">
-              <div className="taxres-savings-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
-                  <path d="M12 7v5l3 2" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-              </div>
+            <div className="taxres-savings-box" style={{ marginBottom: '24px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
               <div>
                 <p className="taxres-savings-heading">Potential savings</p>
                 <p className="taxres-savings-body">
                   If you qualify as an Australian resident for tax purposes, you could be entitled to up to <strong>$2,462 back</strong> in refund on an income of $45,000. We assess your eligibility when preparing your tax return.
                 </p>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_ROWS} />
+              <TaxTable label="Australian Resident for tax purposes" rows={RESIDENT_ROWS} highlight />
             </div>
           </div>
         </section>
@@ -225,7 +199,7 @@ export default function TaxResidencyPage() {
               </p>
               <h2 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.2, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '28ch' }}>
-                Can you be taxed as a resident?
+                Can you be an Australian resident for <strong>tax purposes</strong>?
               </h2>
               <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.7, maxWidth: '50ch' }}>
                 Working Holiday visa holders may be classified as Australian residents for tax purposes if they meet all of the following conditions:
@@ -237,21 +211,11 @@ export default function TaxResidencyPage() {
                 {CONDITIONS.map((c, i) => (
                   <div key={i} className="taxres-condition-item">
                     <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
+                    <p className="taxres-condition-text">
+                      {i === 0 ? `${c} ${NDA_COUNTRIES.join(', ')}.` : c}
+                    </p>
                   </div>
                 ))}
-              </div>
-
-              {/* NDA Countries */}
-              <div className="taxres-nda-box">
-                <p className="taxres-nda-label">NDA Countries (Non-Discrimination Agreement)</p>
-                <div className="flex gap-1.5 flex-wrap">
-                  {NDA_COUNTRIES.map((c) => (
-                    <span key={c} className="taxres-nda-pill">
-                      {c}
-                    </span>
-                  ))}
-                </div>
               </div>
 
               <div className="taxres-notes">
@@ -259,6 +223,13 @@ export default function TaxResidencyPage() {
                 <p>🎓 Student visa (500) holders are generally treated as residents for tax purposes.</p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
+        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+            <BackButton />
           </div>
         </section>
 

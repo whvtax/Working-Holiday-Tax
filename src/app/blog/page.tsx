@@ -32,6 +32,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Working Holiday Tax Refund Blog - WHV Tax Guides',
     description: 'Working holiday tax refund guides and tips for backpackers in Australia. Get the most from your WHV tax return.',
     url: `${SITE_URL}/blog`,
@@ -40,6 +41,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Blog - WHV Tax Guides',
     description: 'Working holiday tax refund guides for backpackers in Australia.',

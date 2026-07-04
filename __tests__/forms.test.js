@@ -113,3 +113,52 @@ describe('rate-limit: in-memory fallback when Redis is unavailable', () => {
     expect(out[6]).toBe(true)
   })
 })
+
+describe('isNdaCountry: matches official names and common real-world spellings', () => {
+  const { isNdaCountry } = require('@/lib/nda-countries')
+
+  test('matches official country names', () => {
+    expect(isNdaCountry('Germany')).toBe(true)
+    expect(isNdaCountry('Japan')).toBe(true)
+    expect(isNdaCountry('Israel')).toBe(true)
+    expect(isNdaCountry('Chile')).toBe(true)
+    expect(isNdaCountry('Finland')).toBe(true)
+    expect(isNdaCountry('Norway')).toBe(true)
+    expect(isNdaCountry('Turkey')).toBe(true)
+    expect(isNdaCountry('United Kingdom')).toBe(true)
+  })
+
+  test('matches common UK aliases people actually type', () => {
+    expect(isNdaCountry('UK')).toBe(true)
+    expect(isNdaCountry('U.K.')).toBe(true)
+    expect(isNdaCountry('England')).toBe(true)
+    expect(isNdaCountry('Scotland')).toBe(true)
+    expect(isNdaCountry('Great Britain')).toBe(true)
+  })
+
+  test('matches Germany aliases', () => {
+    expect(isNdaCountry('Deutschland')).toBe(true)
+    expect(isNdaCountry('german')).toBe(true)
+  })
+
+  test('is case-insensitive and tolerates surrounding text', () => {
+    expect(isNdaCountry('germany')).toBe(true)
+    expect(isNdaCountry('  Japan  ')).toBe(true)
+    expect(isNdaCountry('I am from Israel')).toBe(true)
+  })
+
+  test('does not match non-NDA countries', () => {
+    expect(isNdaCountry('Ireland')).toBe(false)
+    expect(isNdaCountry('France')).toBe(false)
+    expect(isNdaCountry('United States')).toBe(false)
+    expect(isNdaCountry('Canada')).toBe(false)
+    expect(isNdaCountry('South Korea')).toBe(false)
+  })
+
+  test('handles empty / null / undefined input', () => {
+    expect(isNdaCountry('')).toBe(false)
+    expect(isNdaCountry('   ')).toBe(false)
+    expect(isNdaCountry(null)).toBe(false)
+    expect(isNdaCountry(undefined)).toBe(false)
+  })
+})

@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'お問い合わせ | Working Holiday Tax',
     description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。営業時間内なら1時間以内にご返信します。',
     url: `${SITE_URL}/ja/contact`,
@@ -39,6 +40,7 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'お問い合わせ | Working Holiday Tax',
     description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。',
@@ -78,13 +80,9 @@ const FAQS = [
   },
   {
     question: '日本に帰国後でも対応してもらえますか？',
-    answer: 'はい。日本に帰国された後でも、オーストラリアのタックスリターン還付金、スーパー（DASP）、その他の税務手続きを日本からオンラインで申請できます。すべての手続きはオンラインで完結し、オーストラリアに戻る必要はありません。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能ですが、スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
-  },
-  {
-    question: '初めてのお問い合わせ時、何を伝えればいいですか？',
-    answer: '最初は簡単な情報だけで大丈夫です。ビザの種類（417または462）、オーストラリアで働いていたおおよその時期、ご相談内容（タックスリターン、スーパー、TFN、ABN）、現在のご滞在先をお知らせください。書類が必要になった場合は、その後に具体的にご案内いたします。',
-  },
-]
+    answer: 'はい。日本に帰国された後でも、オーストラリアのタックスリターン還付金、スーパー（DASP）、その他の税務手続きを日本からオンラインで申請できます。すべての手続きはオンラインで完結します。タックスリターンの還付金はオーストラリアの銀行口座への振込のみ可能ですが、スーパー受取（DASP）は日本の口座でもお受け取りいただけます。',
+  }
+  ]
 
 export default function JapaneseContactPage() {
 
@@ -214,7 +212,7 @@ export default function JapaneseContactPage() {
                 color: 'rgba(10,15,13,0.7)',
                 maxWidth: '46ch',
               }}>
-              担当者が直接対応します。営業時間内なら1時間以内にご返信します。
+              営業時間内なら1時間以内にご返信します。
             </p>
           </div>
         </div>
@@ -225,7 +223,7 @@ export default function JapaneseContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '1,200+', label: 'サポート実績' },
+              { stat: '350+', label: 'サポート実績' },
               { stat: <GoogleRating variant="number" lang="ja" />, label: '評価' },
               { stat: '45+',    label: '対応国数' },
               { stat: '~1時間', label: '返信時間' },
@@ -372,20 +370,20 @@ export default function JapaneseContactPage() {
       </section>
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
+      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-[520px] mx-auto text-center">
-            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.14em' }}>
               準備ができたら
             </p>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
+            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
               今すぐタックスリターンを始めましょう
             </h2>
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '440px' }}>
-              書類もATOポータルも不要。すべてオンラインで完結、通常24時間以内に対応します。
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '440px' }}>
+              書類もATOポータルも不要。すべてオンラインで完結、24時間以内に対応します。
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"
+              className="btn-primary w-full sm:w-auto"
               style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
               タックスリターンを依頼する →
             </a>

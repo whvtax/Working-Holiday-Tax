@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import { headers } from 'next/headers'
 import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
@@ -8,6 +9,7 @@ import { ScrollToTop } from '@/components/ui/ScrollToTop'
 import { SITE_URL, AGENT_NAME } from '@/lib/constants'
 import PublicShellClient from '@/components/layout/PublicShellClient'
 import { MobileLanguageBanner } from '@/components/ui/MobileLanguageBanner'
+import { LangSync } from '@/components/ui/LangSync'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -291,47 +293,25 @@ const schemaOrg = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // Static <html lang> keeps every route statically rendered (no headers() = no
-  // forced dynamic render). The inline script below switches documentElement.lang
-  // to de/ja per URL on the client, including on client-side route changes.
-  const lang = 'en-AU'
+  // Server-render the correct <html lang> per locale by reading the `x-locale`
+  // request header that middleware sets from the URL prefix. This fixes /de and
+  // /ja pages previously shipping lang="en-AU" in the initial HTML (bad for SEO
+  // and screen readers). TRADE-OFF: reading headers() opts routes out of static
+  // generation. If you prefer fully static pages over correct server-side lang,
+  // revert to `const lang = 'en-AU'` and rely on <LangSync/> alone.
+  const lang = headers().get('x-locale') ?? 'en-AU'
+  // Present only when CSP nonce mode is enabled (middleware). null otherwise,
+  // in which case the static 'unsafe-inline' CSP covers the inline script.
+  const nonce = headers().get('x-nonce') ?? undefined
   return (
     <html lang={lang} className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
-        {/* Performance: preconnect to Google Fonts to eliminate render-blocking latency */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* DNS prefetch for third-party origins used on most pages */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        {/* Fonts are self-hosted by next/font/google at build time, so no
+            runtime connection to Google Font origins is needed. */}
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
-        />
-        {/* Sync html[lang] with current route. /de/* → "de", /ja/* → "ja", others → "en-AU".
-            This ensures locale-specific CSS rules (hyphenation, line-break) apply correctly. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(){
-                var setLang = function(){
-                  var p = window.location.pathname || '/';
-                  var isDE = p === '/de' || p.indexOf('/de/') === 0;
-                  var isJA = p === '/ja' || p.indexOf('/ja/') === 0;
-                  document.documentElement.lang = isJA ? 'ja' : isDE ? 'de' : 'en-AU';
-                };
-                setLang();
-                // Re-run on client-side route changes (Next.js navigation)
-                var lastPath = window.location.pathname;
-                setInterval(function(){
-                  if (window.location.pathname !== lastPath) {
-                    lastPath = window.location.pathname;
-                    setLang();
-                  }
-                }, 200);
-              })();
-            `,
-          }}
         />
       </head>
       <body>
@@ -351,6 +331,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <MobileLanguageBanner />
+        <LangSync />
         <RevealObserver />
         <ScrollToTop />
       </body>

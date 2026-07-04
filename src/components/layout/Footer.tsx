@@ -31,7 +31,6 @@ export function Footer() {
           { label: 'Steuererklärungs-Artikel',    href: '/de/blog/category/tax-return' },
           { label: 'Super-Artikel',              href: '/de/blog/category/super' },
           { label: 'Arbeitsrechte',              href: '/de/blog/category/work-rights' },
-          { label: 'Steueransässigkeit',         href: '/de/tax-residency' },
         ],
         connect: 'Kontakt',
         connectLinks: [
@@ -66,7 +65,6 @@ export function Footer() {
           { label: 'タックスリターンの記事',   href: '/ja/blog/category/tax-return' },
           { label: 'スーパー受取の記事',       href: '/ja/blog/category/super' },
           { label: '労働者の権利',             href: '/ja/blog/category/work-rights' },
-          { label: '税務上の居住者判定',       href: '/ja/tax-residency' },
         ],
         connect: 'お問い合わせ',
         connectLinks: [
@@ -101,7 +99,6 @@ export function Footer() {
           { label: 'Tax Return Articles',        href: '/blog/category/tax-return' },
           { label: 'Super Articles',             href: '/blog/category/super' },
           { label: 'Work Rights',                href: '/blog/category/work-rights' },
-          { label: 'Tax Residency',              href: '/tax-residency' },
         ],
         connect: 'Connect',
         connectLinks: [
@@ -125,7 +122,7 @@ export function Footer() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
 
           {/* Main grid - 4 columns */}
-          <div className="grid grid-cols-2 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
 
             {/* Brand column */}
             <div className="footer-brand-col col-span-2 md:col-span-1">

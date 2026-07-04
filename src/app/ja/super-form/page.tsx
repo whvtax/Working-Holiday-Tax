@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/super-form`,
@@ -32,7 +33,8 @@ export const metadata: Metadata = {
     title: 'スーパー受取（DASP）申請フォーム',
     description: 'スーパー受取に必要な情報をお送りください。',
   },
-  twitter: { card: 'summary', title: 'スーパー受取（DASP）申請フォーム', description: 'スーパー受取に必要な情報をお送りください。' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'スーパー受取（DASP）申請フォーム', description: 'スーパー受取に必要な情報をお送りください。' },
   robots: { index: false, follow: true },
 }
 

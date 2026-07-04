@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/constants'
 import BackButton from './BackButton'
 
 export const metadata: Metadata = {
-  title: '税務上の居住区分 - ワーキングホリデー オーストラリア',
+  title: '税務上の居住区分｜ワーキングホリデー オーストラリア',
   description: 'オーストラリアの税務居住区分（NDA国を含む）と、ビザの種類（417/462）が税率にどう影響するかを解説。日本人ワーホリも該当する可能性があります。',
   keywords: [
     '税務 居住 オーストラリア',
@@ -27,16 +27,18 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-residency`,
     siteName: 'Working Holiday Tax',
-    title: '税務上の居住区分 - ワーキングホリデー オーストラリア',
+    title: '税務上の居住区分｜ワーキングホリデー オーストラリア',
     description: '税務居住区分と、ビザの種類が税率に与える影響を理解しましょう。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: '税務上の居住区分 - ワーキングホリデー オーストラリア',
+    title: '税務上の居住区分｜ワーキングホリデー オーストラリア',
     description: '税務居住区分と、ビザの種類が税率に与える影響について。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -57,11 +59,10 @@ const RESIDENT_ROWS = [
   ['$190,001+',            '$51,638 + 45%'],
 ]
 
-// Japan IS in the NDA list - highlighted relevance for Japanese users
-const NDA_COUNTRIES = ['チリ', 'フィンランド', 'ドイツ', 'イスラエル', '日本', 'ノルウェー', 'トルコ', 'イギリス']
+const NDA_COUNTRIES = ['イギリス', 'ドイツ', '日本', 'チリ', 'フィンランド', 'イスラエル', 'ノルウェー', 'トルコ']
 
 const CONDITIONS = [
-  'NDA国（下記参照）のパスポートを所持していること。',
+  'NDA国のパスポートを所持していること：',
   '通常の居住地がオーストラリアにあること。',
   'オーストラリアに居住する意思があること。',
   '税年度内に合計183日以上オーストラリアに滞在すること。',
@@ -73,20 +74,8 @@ const FAQS = [
     answer: '税務上の居住区分は、オーストラリアでの所得にどの税率が適用されるかを決定します。3つのカテゴリーがあります：非居住者、ワーキングホリデーメーカー（417/462ビザ）、オーストラリア税務居住者。それぞれ異なる税率と控除額が適用されます。',
   },
   {
-    question: '私は税務上「居住者」ですか、「ワーキングホリデーメーカー」ですか？',
-    answer: '通常、417または462ビザの保持者はワーキングホリデーメーカーとして課税され、最初の1ドルから15%が適用されます。ただし、NDA国（非差別協定）の出身者で特定の条件を満たす場合、オーストラリア税務居住者として課税されることがあります。その場合、$18,200の非課税枠が適用されます。',
-  },
-  {
-    question: 'NDA国とは何ですか？',
-    answer: 'NDAはNon-Discrimination Agreement（非差別協定）の略です。これらの国の国民は、居住条件を満たせば税務居住者の税率で課税されます。対象国は：チリ、フィンランド、ドイツ、イスラエル、日本、ノルウェー、トルコ、イギリスです。',
-  },
-  {
     question: '日本人ですが、税務居住者として扱われる可能性はありますか？',
     answer: 'はい。日本はNDA国に含まれているため、居住条件（オーストラリアでの実際の居住、滞在183日以上など）を満たせば、税務居住者として扱われる可能性があります。これにより、年間で大幅な税金節約につながる可能性があります。詳しくはご相談ください。',
-  },
-  {
-    question: '居住者として分類されると、いくら節約できますか？',
-    answer: '$45,000の所得の場合、WHM税額（$6,750）と居住者税額（$4,288）の差は$2,462です。居住者として分類された場合、この差額が還付される可能性があります。タックスリターン時に、状況を確認して正しい区分を適用します。',
   },
   {
     question: '学生ビザ（500）保持者の場合はどうなりますか？',
@@ -162,7 +151,7 @@ export default function JapaneseTaxResidencyPage() {
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-14 lg:pb-10">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-12 lg:pb-10">
 
             {/* Breadcrumbs */}
             <nav aria-label="パンくずリスト" className="mb-5 lg:mb-6">
@@ -176,22 +165,12 @@ export default function JapaneseTaxResidencyPage() {
             </nav>
 
             <div className="text-center">
-              <div className="inline-flex items-center gap-2 mb-3 lg:mb-4 justify-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-                <span className="font-medium uppercase" style={{ fontSize: '11px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                  税務居住区分について
-                </span>
-              </div>
-
               <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: '14px', maxWidth: '24ch' }}>
-                オーストラリアでの<br />
-                <span style={{ color: '#0B5240' }}>税務上の立場を理解しよう</span>
+                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.25, letterSpacing: '-0.02em', marginBottom: '14px', maxWidth: '24ch' }}>
+                <span style={{ color: '#0B5240' }}>税務上の居住区分</span>を理解しよう
               </h1>
-
-              <p className="font-light mx-auto"
-                style={{ fontSize: 'clamp(14.5px, 1.4vw, 17px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.65)', maxWidth: '54ch' }}>
-                ビザの種類と状況によって、オーストラリアでの所得に適用される税率が決まります。自分のステータスを知ることで、数千ドルの節約につながる可能性があります。
+              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.7, color: '#0B5240', maxWidth: '40ch' }}>
+                ワーキングホリデービザでも、<strong>税務上</strong>はオーストラリアの居住者になれる可能性があります。これは「オーストラリア人になる」という意味ではありません。
               </p>
             </div>
           </div>
@@ -201,24 +180,18 @@ export default function JapaneseTaxResidencyPage() {
         <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <TaxTable label="ワーキングホリデーメーカー（417/462）" rows={WHV_ROWS} />
-              <TaxTable label="オーストラリア税務居住者" rows={RESIDENT_ROWS} highlight />
-            </div>
-
-            <div className="taxres-savings-box">
-              <div className="taxres-savings-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
-                  <path d="M12 7v5l3 2" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-              </div>
+            <div className="taxres-savings-box" style={{ marginBottom: '24px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
               <div>
                 <p className="taxres-savings-heading">節約の可能性</p>
                 <p className="taxres-savings-body">
                   オーストラリア税務居住者として分類された場合、$45,000の所得で最大<strong>$2,462の還付</strong>を受けられます。タックスリターン時に、対象資格を確認します。
                 </p>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              <TaxTable label="ワーキングホリデーメーカー（417/462）" rows={WHV_ROWS} />
+              <TaxTable label="オーストラリア税務居住者" rows={RESIDENT_ROWS} highlight />
             </div>
           </div>
         </section>
@@ -233,7 +206,7 @@ export default function JapaneseTaxResidencyPage() {
               </p>
               <h2 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.25, letterSpacing: '-0.02em', marginBottom: '10px', maxWidth: '30ch' }}>
-                税務居住者として課税される可能性はありますか？
+                <strong>税務上</strong>のオーストラリア居住者になれますか？
               </h2>
               <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.75, maxWidth: '54ch' }}>
                 ワーキングホリデービザ保持者は、以下のすべての条件を満たす場合、オーストラリア税務居住者として分類される可能性があります：
@@ -245,21 +218,11 @@ export default function JapaneseTaxResidencyPage() {
                 {CONDITIONS.map((c, i) => (
                   <div key={i} className="taxres-condition-item">
                     <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
+                    <p className="taxres-condition-text">
+                      {i === 0 ? `${c}${NDA_COUNTRIES.join('、')}。` : c}
+                    </p>
                   </div>
                 ))}
-              </div>
-
-              {/* NDA Countries */}
-              <div className="taxres-nda-box">
-                <p className="taxres-nda-label">NDA国（非差別協定締結国）</p>
-                <div className="flex gap-1.5 flex-wrap">
-                  {NDA_COUNTRIES.map((c) => (
-                    <span key={c} className="taxres-nda-pill">
-                      {c}
-                    </span>
-                  ))}
-                </div>
               </div>
 
               <div className="taxres-notes">
@@ -267,6 +230,13 @@ export default function JapaneseTaxResidencyPage() {
                 <p>🎓 学生ビザ（500）保持者は通常、税務居住者として扱われます。</p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
+        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+            <BackButton />
           </div>
         </section>
 

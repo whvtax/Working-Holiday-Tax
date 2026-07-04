@@ -8,7 +8,7 @@ function auth(req: NextRequest) {
 }
 
 // In-memory cache: stats are expensive at scale.
-// 10s TTL — short enough to feel "live" yet absorbs polling from multiple tabs.
+// 10s TTL - short enough to feel "live" yet absorbs polling from multiple tabs.
 let _cache: { data: unknown; expiresAt: number } | null = null
 const CACHE_TTL_MS = 10_000
 

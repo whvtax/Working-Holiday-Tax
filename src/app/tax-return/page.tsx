@@ -49,6 +49,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tax-return`,
@@ -57,6 +58,7 @@ export const metadata: Metadata = {
     description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online - even after you leave Australia.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
     description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent - all online.',
@@ -74,10 +76,6 @@ const faqs = [
     answer: 'Yes. If you earned income in Australia on your working holiday visa, you may still need to lodge a tax return, even if you only worked for a short period. A short stay often means tax was overwithheld, so lodging is usually the only way to claim back what you are owed.',
   },
   {
-    question: 'What happens if I do not lodge my tax return?',
-    answer: 'If you are required to lodge and do not do so, the ATO may apply penalties or take further action. You also miss the chance to claim any tax refund you are entitled to.',
-  },
-  {
     question: 'Can I claim my tax refund after leaving Australia?',
     answer: 'Yes. You can lodge your Australian tax return from overseas after leaving the country - whether you have returned to the UK, Germany, Japan, or anywhere else. We handle the entire process online. Your tax refund must be paid to an Australian bank account.',
   },
@@ -92,12 +90,8 @@ const faqs = [
   {
     question: 'How long does a working holiday tax refund take?',
     answer: 'Once your return is lodged, the ATO usually processes it within 7 to 14 business days. Processing can be longer during busy periods or if the ATO requires extra information. Your refund is then paid directly into your chosen bank account.',
-  },
-  {
-    question: 'How do I know my tax return has been completed?',
-    answer: 'Once your tax return is processed, the ATO issues a Notice of Assessment confirming the final outcome. We forward this to you as soon as it is available.',
-  },
-]
+  }
+  ]
 
 const DEDUCTIONS = [
   { title: 'Work uniforms and clothing',   body: 'Protective or required clothing like boots, high-vis, or uniforms.' },
@@ -110,9 +104,9 @@ const DEDUCTIONS = [
 
 const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can prepare your working holiday tax return correctly.' },
-  { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info - quick and simple, even from overseas.' },
-  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your tax return directly with the ATO under the supervision of a registered tax agent.' },
-  { n: '4', title: 'Get your assessment',           body: 'Once your tax return is processed by the ATO, any refund you are owed is paid into your nominated Australian bank account, usually within 7-14 days.' },
+  { n: '2', title: 'Send your details in minutes',  body: 'Payment summaries and basic info, quick and simple, even from overseas.' },
+  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your tax return directly with the ATO' },
+  { n: '4', title: 'Get your assessment',           body: 'Once your tax return is processed by the ATO, any refund you are owed is paid into your Australian bank account within 7-14 days.' },
 ]
 
 
@@ -190,7 +184,7 @@ export default function TaxReturnPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -231,7 +225,7 @@ export default function TaxReturnPage() {
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              Your WHV tax return prepared and lodged under the supervision of a registered tax agent.
+              Your WHV tax return lodged with registered tax agent.
             
             </p>
 
@@ -243,8 +237,7 @@ export default function TaxReturnPage() {
                 maxWidth:'46ch',
                 marginBottom:'0',
               }}>
-              <span className="hidden lg:inline">For 417 and 462 visa holders. Most tax returns are lodged within 24 hours - even after you have left Australia.</span>
-              <span className="lg:hidden" style={{ fontSize:'12.5px' }}>For 417 &amp; 462 visa holders. Most returns lodged within 24 hours even after you leave.</span>
+              <span>For 417 and 462 visa holders. Most tax returns are lodged within 24 hours - even after you have left Australia.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -262,7 +255,7 @@ export default function TaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -320,7 +313,7 @@ export default function TaxReturnPage() {
                 A <strong>tax return</strong> is the annual settlement between you and the Australian Taxation Office. You declare how much you earned, claim deductions you are entitled to, and reconcile against the tax already withheld from your pay.
               </p>
               <p className="taxret-intro-body">
-                Many working holiday makers on 417 and 462 visas <strong>overpay tax during the year</strong>. When that happens, the ATO refunds the excess back to you - your working holiday tax refund.
+                Many working holiday makers on 417 and 462 visas <strong>overpay tax during the year</strong>. When that happens, the ATO refunds the excess back to you, your working holiday tax refund.
               </p>
               <p className="taxret-intro-body">
                 You can lodge from anywhere in the world, even after you have left Australia and gone back to the UK, Germany, Japan, or any other country. Your tax refund is paid into your Australian bank account.
@@ -343,48 +336,34 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Our Service</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              We handle your working holiday tax return from start to finish
+            <span className="section-label center">Why choose our service</span>
+            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
+              We handle your working holiday tax return<br className="hidden lg:block" /> from start to finish
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '36ch' }}>
               No stress, no confusion - a correctly lodged tax return and every refund you are entitled to.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10 reveal delay-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10l4.5 4.5 7.5-9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: 'We review your full tax situation',
-                body: 'We assess your income, eligible deductions, and residency status to ensure everything is correctly accounted for.',
-              },
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><line x1="6" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><line x1="6" y1="11.5" x2="11" y2="11.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>,
-                title: 'We lodge your tax return correctly',
-                body: 'We prepare and submit your working holiday tax return directly to the ATO on your behalf.',
-              },
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>,
-                title: 'We claim every deduction you are entitled to',
-                body: <>  <span className="hidden lg:inline">We identify all eligible work-related deductions so nothing you are entitled to is missed.</span><span className="lg:hidden">We identify all eligible work-related deductions so nothing you are entitled to is missed.</span></>,
-              },
-              {
-                icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2C5.58 2 2 5.58 2 10s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>,
-                title: 'No stress, no confusion',
-                body: 'Simply send your details and we take care of your tax return from start to finish. No ATO portals or paperwork required.',
-              },
-            ].map((item, i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-3" style={{ padding: '22px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-forest-500" style={{ background: '#EAF6F1' }}>
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'We review your full tax situation', body:'We assess your income, eligible deductions, and residency status to ensure everything is correctly accounted for.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'We lodge your tax return correctly', body:'We prepare and submit your working holiday tax return directly to the ATO on your behalf.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'We claim every deduction you are entitled to', body:'We identify every eligible work-related deduction, so nothing gets missed.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'No stress, no confusion', body:'Simply send your details and we take care of your tax return from start to finish. No ATO portals or paperwork required.' },
+            ].map((item,i) => (
+              <div key={i} className="bg-white rounded-2xl flex gap-4"
+                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
+                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
+                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
                   {item.icon}
                 </div>
-                <div>
-                  <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '6px' }}>{item.title}</p>
-                  <p className="text-[13px] font-light text-muted leading-[1.7]">{item.body}</p>
+                <div style={{ paddingTop:'2px' }}>
+                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
                 </div>
               </div>
             ))}
@@ -405,7 +384,7 @@ export default function TaxReturnPage() {
       <section className="py-8 lg:py-10 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center mb-8 reveal">
-            <span className="section-label center">Real results</span>
+            <span className="section-label center">What travellers say</span>
             <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
               What working holiday makers say about us
             </h2>
@@ -415,80 +394,61 @@ export default function TaxReturnPage() {
         </div>
       </section>
 
-      {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center mb-10 reveal">
-            <span className="section-label center">why choose us?</span>
-            <h2 className="font-serif font-black text-ink mt-2" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-              Get your working holiday tax return done properly
+      {/* ── COMPARISON ── */}
+      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">The easy way</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              There is a simpler way to lodge your tax return
             </h2>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto reveal delay-1">
-            <div className="rounded-2xl" style={{ padding: '18px 20px', background: '#fff', border: '1px solid #E2EFE9' }}>
-              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-muted mb-4">Lodging it yourself via the ATO</p>
-              <div className="space-y-3">
-                {[
-                  'Confusing ATO forms and systems',
-                  'Easy to miss deductions you\'re entitled to',
-                  'Takes time and effort to get it right',
-                  'No support if something goes wrong',
-                ].map((item, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
+            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
+              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                Lodging your tax return yourself can go wrong
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                {['Confusing ATO forms and systems','Easy to miss deductions you are entitled to','Takes time and effort to get it right','No support if something goes wrong'].map((item,i) => (
                   <div key={i} className="flex items-start gap-2.5">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/>
-                      <path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/>
-                    </svg>
-                    <p className="text-[13px] font-light text-muted leading-[1.65]">{item}</p>
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
                   </div>
                 ))}
               </div>
             </div>
-
-            <div className="rounded-2xl" style={{ padding: '18px 20px', background: '#EAF6F1', border: '1px solid #C8EAE0' }}>
-              <p className="text-[12px] font-semibold tracking-[0.08em] uppercase text-forest-500 mb-4">Use our service</p>
-              <div className="space-y-3">
-                {[
-                  'Done correctly from the start',
-                  'All eligible deductions identified',
-                  'No stress or confusion',
-                  'Real support every step of the way',
-                ].map((item, i) => (
+            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
+              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                Use our guided tax return service
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
+                {['Done correctly from the start','All eligible deductions identified','No stress or confusion','Real support every step of the way'].map((item,i) => (
                   <div key={i} className="flex items-start gap-2.5">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="flex-shrink-0 mt-0.5">
-                      <circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/>
-                      <path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <p className="text-[13px] font-semibold text-ink leading-[1.65]">{item}</p>
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop: '20px' }}>
-                <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                  className="btn-primary inline-flex"
-                  style={{ height: '46px', padding: '0 20px', fontSize: '13.5px', maxWidth: '240px', width: '100%' }}>
-              Start your tax return →
-                </a>
-              </div>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
+                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
+                Start your tax return →
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-
-
       {/* ── TAX RATES ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14 bg-white">
+      <section className="py-10 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Tax rates</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               Working holiday maker tax rates in Australia
             </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13px', lineHeight: 1.65, maxWidth: '40ch' }}>
-              <span className="hidden lg:inline">Tax rates for 417 and 462 visa holders are different from Australian residents.</span>
-              <span className="lg:hidden">Tax rates for 417 &amp; 462 visa holders<br />are different from Australian residents.</span>
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '40ch' }}>
+              <span>Tax rates for 417 and 462 visa holders are different from Australian residents.</span>
             </p>
           </div>
 
@@ -554,7 +514,7 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Deductions</span>
@@ -573,9 +533,9 @@ export default function TaxReturnPage() {
                   <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
-                  <p className="text-[13px] font-semibold text-ink">{d.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)' }}>{d.title}</p>
                 </div>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', paddingLeft:'26px' }}>{d.body}</p>
+                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '28ch', paddingLeft:'26px' }}>{d.body}</p>
               </div>
             ))}
           </div>
@@ -587,8 +547,8 @@ export default function TaxReturnPage() {
           </div>
 
           <div className="text-center mt-8 reveal delay-3">
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '14px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '16px' }}>
-              Not sure what you can claim on your working holiday tax return? We check everything for you and claim every deduction you are entitled to.
+            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '16px' }}>
+              Not sure what you can claim? We review your situation and apply every deduction that fits.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
@@ -600,14 +560,14 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-10 lg:py-14 bg-white">
+      <section id="how-it-works" className="py-10 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '48px' }}>
-            <span className="section-label center">How it works</span>
+            <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
               How it works in 4 simple steps
             </h2>
-            <p className="font-light text-muted" style={{ fontSize: '14px' }}>
+            <p className="font-light text-muted" style={{ fontSize: '13.5px' }}>
               Simple, guided process from start to finish
             </p>
           </div>
@@ -635,15 +595,15 @@ export default function TaxReturnPage() {
                     {i < STEPS.length - 1 && <div className="flex-1 w-px mt-2 min-h-[20px]" style={{ background: 'linear-gradient(180deg, #0B5240 0%, #C8EAE0 100%)' }} aria-hidden="true" />}
                   </div>
                   <div className="pt-1">
-                    <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
-                    <p className="text-[13px] font-light text-muted leading-[1.65]">{s.body}</p>
+                    <p className="text-[14px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{s.title}</p>
+                    <p className="text-[12.5px] font-light text-muted leading-[1.65]">{s.body}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="text-center mt-10 reveal delay-2">
+          <div className="text-center mt-8 reveal delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 32px', fontSize: '15px' }}>
               Start your tax return →
             </a>
@@ -652,64 +612,12 @@ export default function TaxReturnPage() {
         </div>
       </section>
 
-      {/* ── TIMING + DOCUMENTS ───────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-
-            <div className="reveal text-center lg:text-left">
-              <span className="section-label center lg:text-left">Timing</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                When you&apos;ll get your refund
-              </h2>
-              <div className="space-y-0">
-                {[
-                  { label: 'Our preparation',  body: <><span className="hidden lg:inline">We prepare your return within 24 hours of receiving your details.</span><span className="lg:hidden">We prepare your return within 24 hours<br />of receiving your details.</span></> },
-                  { label: 'ATO processing',   body: 'The ATO usually processes returns within 7-14 business days. This can be longer during busy periods.' },
-                  { label: 'Final outcome',    body: <><span className="hidden lg:inline">Once your return is processed, your refund is paid directly to your Australian bank account.</span><span className="lg:hidden">Once your return is processed, your refund is paid directly<br />to your Australian bank account.</span></> },
-                ].map((item, i) => (
-                  <div key={i} style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <p className="text-[13px] font-semibold text-ink" style={{ letterSpacing: '-0.01em', marginBottom: '4px' }}>{item.label}</p>
-                    <p className="text-[13px] font-light text-muted leading-[1.75]">{item.body}</p>
-                  </div>
-                ))}
-                <div style={{ borderTop: '1px solid #E2EFE9' }} />
-              </div>
-            </div>
-
-            <div className="reveal delay-1 text-center lg:text-left">
-              <span className="section-label center lg:text-left">What to have ready</span>
-              <h2 className="font-serif font-black text-ink mt-2 mb-6" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em' }}>
-                What you need to get started
-              </h2>
-              <div className="space-y-0">
-                {[
-                  { n: '01', label: 'Tax File Number (TFN)',     hint: 'Your unique tax ID' },
-                  { n: '02', label: 'Personal details',           hint: 'Address & contact number' },
-                  { n: '03', label: 'Australian Bank Account',    hint: 'Where to send your refund' },
-                  { n: '04', label: 'Work expense receipts',      hint: 'For deductions you want to claim' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3" style={{ paddingTop: '14px', paddingBottom: '14px', borderTop: '1px solid #EDF4F0' }}>
-                    <div className="flex items-center justify-center font-serif font-black flex-shrink-0" style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#EAF6F1', color: '#0B5240', fontSize: '13px', letterSpacing: '-0.02em' }}>
-                      {item.n}
-                    </div>
-                    <div className="flex-1 text-left">
-                      <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.005em', lineHeight: 1.35 }}>{item.label}</p>
-                      <p className="text-[12px] font-light text-muted" style={{ lineHeight: 1.4, marginTop: '1px' }}>{item.hint}</p>
-                    </div>
-                  </div>
-                ))}
-                <div style={{ borderTop: '1px solid #E2EFE9' }} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ── WHAT TO HAVE READY ── */}
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
 
             <div className="text-center">
               <span className="section-label center">FAQs</span>
@@ -721,11 +629,6 @@ export default function TaxReturnPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Have a question? Message us directly.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                Get help now →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

@@ -41,6 +41,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/calculator`,
@@ -49,6 +50,7 @@ export const metadata: Metadata = {
     description: 'ワーキングホリデーのオーストラリア タックスリターン還付金を無料で見積もり。即時・登録不要。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'タックスリターン 還付金 計算機 - ワーホリ オーストラリア',
     description: 'ワーホリのオーストラリア タックスリターン還付金を無料で見積もり。',
@@ -66,10 +68,6 @@ const faqs = [
     answer: 'ワーキングホリデーメーカー：最初の$45,000まで15%、$45,001〜$135,000は30%、$135,001〜$190,000は37%、$190,000超は45%。オーストラリア税務居住者：$18,200まで非課税、$45,000まで16%、$135,000まで30%、$190,000まで37%、それ以上は45%。',
   },
   {
-    question: '収入と源泉徴収額はどこで確認できますか？',
-    answer: 'どちらの数字も、雇用主が税年度末に発行するPAYG Payment SummaryまたはIncome Statementに記載されています。ATOアカウントをお持ちの方は、そちらでも確認できます。',
-  },
-  {
     question: '還付金が出る結果になりました。次はどうすればいいですか？',
     answer: 'WhatsAppでご連絡ください。タックスリターンを代行し、すべての控除可能な経費を申請します。多くの場合、ここでの見積もりよりも高額な還付金を取り戻せます。',
   },
@@ -84,7 +82,7 @@ const faqs = [
   {
     question: 'この計算機にメディケア税は含まれていますか？',
     answer: 'この計算機は所得税に焦点を当てています。メディケア税は別途2%の課税ですが、ほとんどのワーキングホリデーメーカーは免除対象です。当社がタックスリターンを提出する際、対象資格があれば免除申請を行います。そのため実際の還付金は計算機の見積もりより高くなる場合があります。',
-  },
+  }
 ]
 
 const faqSchema = {

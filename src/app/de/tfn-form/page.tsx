@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/tfn-form`,
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
     title: 'TFN-Antrag stellen',
     description: 'Schick uns deine Daten zur TFN-Beantragung.',
   },
-  twitter: { card: 'summary', title: 'TFN-Antrag stellen', description: 'Schick uns deine Daten zur TFN-Beantragung.' },
+  twitter: {
+    images: [`${SITE_URL}/og-image.png`], card: 'summary', title: 'TFN-Antrag stellen', description: 'Schick uns deine Daten zur TFN-Beantragung.' },
   robots: { index: false, follow: true },
 }
 

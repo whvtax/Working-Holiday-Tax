@@ -21,6 +21,7 @@ export type ClientRecord = {
   taxReturns: TaxReturn[]; superReturns: SuperReturn[]
   tfnService: ServiceRecord; abnService: ServiceRecord
   archived: boolean; yearlyCheckins: Record<string, boolean>
+  referred_by?: string | null
 }
 
 export type Task = {
@@ -30,6 +31,7 @@ export type Task = {
   address: string; tfn: string; bankDetails: string; primaryJob: string
   marital: string; taxStatus: string; howHeard: string; auPhone: string; notes: string
   fileUrls: string[]; reviewStatus: ReviewStatus; reviewerNote: string; reviewedAt: string
+  refCode?: string
 }
 
 // ── DB init ────────────────────────────────────────────────────────────────
@@ -65,6 +67,7 @@ function toClient(r: Record<string, unknown>): ClientRecord {
     abnService:     parse(r.abn_service, { done: false, completedAt: '', notes: '' }),
     archived:       (r.archived as boolean) ?? false,
     yearlyCheckins: parse(r.yearly_checkins, {}),
+    referred_by:    (r.referred_by as string | null) ?? null,
   }
 }
 
@@ -94,16 +97,43 @@ function toTask(r: Record<string, unknown>): Task {
     reviewStatus: ((r.review_status as string) ?? 'pending') as ReviewStatus,
     reviewerNote: (r.reviewer_note as string) ?? '',
     reviewedAt:   (r.reviewed_at as string) ?? '',
+    refCode:      (r.ref_code as string) || undefined,
   }
 }
 
-// ── Returning client lookup ────────────────────────────────────────────────
+// ── Audit trail ──────────────────────────────────────────────────────────
+// Best-effort, fail-safe record of sensitive/destructive CRM actions. NEVER
+// throws and NEVER blocks the underlying operation - if the crm_audit table
+// doesn't exist yet (migration 003 not run) or the write fails, it's swallowed.
+// Single-admin system, so actor defaults to 'crm-admin'.
+export async function logAudit(
+  action: string,
+  targetId: string,
+  detail = '',
+  actor = 'crm-admin',
+): Promise<void> {
+  try {
+    const sb = getSupabase()
+    await sb.from('crm_audit').insert({
+      actor,
+      action,
+      target_id: targetId ?? '',
+      detail: typeof detail === 'string' ? detail.slice(0, 2000) : '',
+    })
+  } catch (err) {
+    console.error('[audit] failed to record', action, err)
+  }
+}
+
+
 
 export async function findExistingClient(email: string, whatsapp: string): Promise<{ id: string } | null> {
   const sb = getSupabase()
   const norm = (s: string) => (s ?? '').trim().toLowerCase().replace(/\s+/g, '')
-  const e = norm(email)
-  const w = norm(whatsapp)
+  // Escape ILIKE wildcards so a value like "%@%" can't match unrelated clients.
+  const escapeLike = (s: string) => s.replace(/[\\%_]/g, ch => '\\' + ch)
+  const e = escapeLike(norm(email))
+  const w = escapeLike(norm(whatsapp))
   if (!e && !w) return null
 
   // Search crm_clients - case-insensitive match via ilike on each field separately.
@@ -181,6 +211,7 @@ export async function createTask(data: Omit<Task, 'id' | 'done'>): Promise<Task>
     au_phone: data.auPhone,
     notes: data.notes,
     file_urls: JSON.stringify(data.fileUrls ?? []),
+    ref_code: data.refCode ?? null,
     review_status: 'pending',
     reviewer_note: '',
     reviewed_at: '',
@@ -259,6 +290,18 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       notes: newNotes,
     }
 
+    // Carry referral partner from task to client (only set if not already set)
+    if (task.refCode && !existing.referred_by) {
+      try {
+        const { data: partner } = await sb
+          .from('partners')
+          .select('id')
+          .eq('code', task.refCode)
+          .maybeSingle()
+        if (partner?.id) updates.referred_by = partner.id
+      } catch { /* non-blocking */ }
+    }
+
     // Add task to appropriate service history
     if (task.taskType === 'tfn') {
       updates.tfn_service = JSON.stringify({ done: true, completedAt: today, notes: '' })
@@ -311,6 +354,7 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       country: task.country,
       how_heard: task.howHeard,
       notes: cleanedNotes,
+      referred_by: null, // will be set below if refCode exists
       tax_returns: '[]',
       super_returns: '[]',
       tfn_service: '{"done":false,"completedAt":"","notes":""}',
@@ -345,6 +389,18 @@ export async function deleteTaskAndArchive(taskId: string): Promise<void> {
       })))
     }
 
+    // Set referred_by for new client from task refCode
+    if (task.refCode) {
+      try {
+        const { data: partner } = await sb
+          .from('partners')
+          .select('id')
+          .eq('code', task.refCode)
+          .maybeSingle()
+        if (partner?.id) initialUpdates.referred_by = partner.id
+      } catch { /* non-blocking */ }
+    }
+
     await sb.from('crm_clients').insert(initialUpdates)
   }
 
@@ -356,6 +412,7 @@ export async function deleteTaskPermanent(taskId: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('crm_tasks').delete().eq('id', taskId)
   if (error) throw error
+  await logAudit('task.delete_permanent', taskId)
 }
 
 // ── Clients ────────────────────────────────────────────────────────────────
@@ -411,6 +468,7 @@ export async function deleteClient(id: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('crm_clients').delete().eq('id', id)
   if (error) throw error
+  await logAudit('client.delete', id)
 }
 
 export async function updateClientNotes(id: string, notes: string): Promise<void> {
@@ -441,6 +499,7 @@ export async function removeTaxReturn(clientId: string, year: string): Promise<v
     .update({ tax_returns: JSON.stringify(updated) })
     .eq('id', clientId)
   if (error) throw error
+  await logAudit('client.remove_tax_return', clientId, `year=${year}`)
 }
 
 export async function addSuperReturn(clientId: string, r: SuperReturn): Promise<void> {
@@ -463,6 +522,7 @@ export async function removeSuperReturn(clientId: string, year: string): Promise
     .update({ super_returns: JSON.stringify(updated) })
     .eq('id', clientId)
   if (error) throw error
+  await logAudit('client.remove_super_return', clientId, `year=${year}`)
 }
 
 // ── TFN / ABN services ────────────────────────────────────────────────────
@@ -528,6 +588,7 @@ export async function clearClientSensitiveData(id: string): Promise<ClientRecord
     : `[PII CLEARED ${new Date().toISOString().slice(0, 10)}] ${client.notes}`.trim()
 
   await sb.from('crm_clients').update({ notes: clearedNote }).eq('id', id)
+  await logAudit('client.clear_sensitive_data', id)
   return getClientById(id)
 }
 
@@ -546,6 +607,7 @@ export async function archiveClient(id: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('crm_clients').update({ archived: true }).eq('id', id)
   if (error) throw error
+  await logAudit('client.archive', id)
 }
 
 export async function unarchiveClient(id: string): Promise<void> {

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
@@ -36,6 +37,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/abn`,
@@ -44,6 +46,7 @@ export const metadata: Metadata = {
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'ABN登録 - ワーキングホリデー オーストラリア',
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
@@ -56,16 +59,8 @@ const faqs = [
   { question: 'TFNなしでABNを取得できますか？', answer: 'いいえ、ABNを申請する前に、まずTFN（タックスファイルナンバー）を取得する必要があります。TFNがあなたの本人確認の基礎となるからです。当社では、必要に応じてTFNとABNを同時に申請することも可能です。' },
   { question: 'GST（消費税）の登録は必要ですか？', answer: '年間売上（収入）が75,000ドルを超える場合のみGST登録が義務付けられています。ほとんどのワーキングホリデーメーカーはこの基準を超えないため、GST登録は不要です。ただし、Uber・DiDiなどの配車サービスドライバーは収入額に関わらずGST登録が必須です（フードデリバリーは75,000ドル基準が適用）。' },
   { question: 'オーストラリアを離れる時、ABNはどうなりますか？', answer: 'オーストラリアでの業務を終了する際は、ABNを取り消す必要があります。当社にご依頼いただければ、最終的なタックスリターン・スーパー受取（DASP）と合わせてABN取消も代行いたします。' },
-  { question: 'ABN申請が却下されることはありますか？', answer: 'はい、申請内容が実際の業務実態と一致しない場合や、雇用関係に近い働き方なのにABNで申請した場合、却下されることがあります。だからこそ、登録税理士の監督のもとで最初から正しく設定することが重要です。' },
   { question: 'ワーホリでABNは必要ですか？', answer: 'ABNが必要なのは、個人事業主や請負業者として働く場合のみです。例えば、Uberやフードデリバリー、フリーランス業務、PAYG雇用ではなくクライアントから直接支払いを受ける場合などです。通常の従業員として働くだけなら、TFNだけで十分です。' },
-  { question: 'ABN収入はワーホリのタックスリターン還付金にどう影響しますか？', answer: 'ABN収入はPAYG給与とは扱いが異なります。源泉徴収が行われないため、税金分を自分で取り置く必要があります。タックスリターン提出時にはABN収入を別途申告し、関連する業務経費を控除として申請できます。' },
-]
-
-const MISTAKES = [
-  { title: '雇用関係なのにABNで働く', body: '雇用主が労働時間や場所を指示している場合、本来は従業員（TFN）で契約すべきです。ABNで働かされていると、スーパーや有給休暇など本来の権利を失います。' },
-  { title: '誤った業種を登録する', body: 'ABNの事業内容は実際の業務に合った正確なものを登録する必要があります。誤った業種ではタックスリターン時に問題が発生します。' },
-  { title: '収入記録を残さない', body: '請求書、入金記録、経費レシートは必ず保存。税金分（収入の15-20%が目安）を別の口座に取り分けておくと安心です。' },
-  { title: 'タックスリターンを怠る', body: 'ABN収入は会計年度末（6月30日）にATOへ申告が必須です。提出を怠ると延滞ペナルティが発生します。' },
+  { question: 'ABN収入はワーホリのタックスリターン還付金にどう影響しますか？', answer: 'ABN収入はPAYG給与とは扱いが異なります。源泉徴収が行われないため、税金分を自分で取り置く必要があります。タックスリターン提出時にはABN収入を別途申告し、関連する業務経費を控除として申請できます。' }
 ]
 
 const STEPS = [
@@ -136,7 +131,7 @@ export default function ABNPageJA() {
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize: '12px', color: 'rgba(10,15,13,0.35)' }}>
@@ -186,7 +181,7 @@ export default function ABNPageJA() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
+              {['350名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((t, i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize: '12px', color: 'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -272,37 +267,38 @@ export default function ABNPageJA() {
       </section>
 
       {/* ── HOW WE HELP ──────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
-            <span className="section-label center">当社のサポート</span>
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">当社のサービス</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
-                登録から税務まで、ABN業務をフルサポート
+                ABNを最初から正しく設定します
             </h2>
             <p className="font-light text-muted"
-              style={{ fontSize: 'clamp(12.5px,1.1vw,13.5px)', lineHeight: 1.75, maxWidth: '34ch', margin: '0 auto', color: 'rgba(10,15,13,0.5)' }}>
+              style={{ fontSize: '13.5px', lineHeight: 1.75, maxWidth: '34ch', margin: '0 auto', color: 'rgba(10,15,13,0.5)' }}>
               登録だけでなく、請求書の発行方法や税金分の取り分けまで日本語でアドバイス。
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6" style={{ marginBottom: '28px', alignItems: 'stretch' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
-              { n: '01', title: 'ABNが必要か判断', body: '雇用契約と請負契約の違いをご説明し、本当にABNが必要かを判断します。' },
-              { n: '02', title: '正しい業種コードで登録', body: 'あなたの業務に合致した業種でABRに代理登録。後の税務問題を未然に防ぎます。' },
-              { n: '03', title: '初日から税務を整える', body: '請求書の発行方法、税金分の取り分け、年度末タックスリターンまで日本語でガイド。' },
-            ].map((item, i) => (
-              <div key={i} className="rounded-2xl flex flex-col"
-                style={{ padding: '18px', background: '#F5F9F7', border: '1px solid #C8EAE0' }}>
-                <span className="text-[10px] font-medium tracking-[0.12em] uppercase text-subtle block"
-                  style={{ marginBottom: '10px' }}>{item.n}</span>
-                <h3 className="font-semibold text-ink"
-                  style={{ fontSize: 'clamp(13px,1.2vw,14px)', letterSpacing: '-0.01em', marginBottom: '6px', lineHeight: 1.4 }}>
-                  {item.title}
-                </h3>
-                <p className="font-light text-muted leading-[1.75] flex-1"
-                  style={{ fontSize: 'clamp(12px,1.1vw,13px)' }}>{item.body}</p>
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'ABNが本当に必要か判断', body:'不要なのにABNを登録する人は少なくありません。まず業務内容を確認し、正直にお伝えします。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'業務に合った内容で登録', body:'ライドシェア、配達、フリーランス、請負など、実際の働き方に合わせてABNを正しく登録します。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'GSTは必要な場合だけ', body:'年間売上75,000ドルのGST基準が当てはまるかをお伝えし、不要な登録を避けます。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'初日から請求書発行OK', body:'ABRに準拠したABNをすぐに有効化。受け取り後すぐに請求書発行・業務を開始できます。' },
+            ].map((item,i) => (
+              <div key={i} className="bg-white rounded-2xl flex gap-4"
+                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
+                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
+                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
+                  {item.icon}
+                </div>
+                <div style={{ paddingTop:'2px' }}>
+                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -320,52 +316,77 @@ export default function ABNPageJA() {
         </div>
       </section>
 
-      {/* ── COMMON MISTAKES ──────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      {/* ── SOCIAL PROOF ── */}
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-
-          <div className="max-w-xl mx-auto text-center mb-7 lg:mb-10">
-            <span className="section-label center">よくあるミス</span>
+          <div className="text-center mb-7 lg:mb-10">
+            <span className="section-label center">お客様の声</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '28ch', marginTop: '8px', marginBottom: '8px' }}>
-              ABN関連の落とし穴<br /><em className="not-italic font-normal text-forest-400">最初に知っておくべきこと</em>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em', marginTop:'10px', maxWidth:'34ch' }}>
+              当社でABNを登録したワーホの皆さん
             </h2>
-            <p className="font-light text-muted mx-auto"
-              style={{ fontSize: 'clamp(12.5px,1.1vw,13.5px)', lineHeight: 1.75, maxWidth: '38ch' }}>
-              ワーホリが陥りがちなミス。最初から正しく設定することが大切です。
-            </p>
           </div>
+          <GoogleReviews lang="ja" />
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5" style={{ alignItems: 'stretch' }}>
-            {MISTAKES.map((m, i) => (
-              <div key={i} className="rounded-xl flex flex-col"
-                style={{ padding: '16px', background: '#FFFCF5', border: '1.5px solid #F0D99A', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-                <div className="flex items-center justify-center rounded-lg flex-shrink-0"
-                  style={{ width: '28px', height: '28px', background: '#FDF0D5', border: '1px solid #F0D99A', marginBottom: '10px' }}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M6 2v4M6 8.5v.5" stroke="#C47E10" strokeWidth="1.8" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <p className="font-semibold text-ink" style={{ fontSize: '13px', marginBottom: '5px', lineHeight: 1.4 }}>{m.title}</p>
-                <p className="font-light text-muted leading-[1.75] flex-1" style={{ fontSize: '12px' }}>{m.body}</p>
+      {/* ── COMPARISON ── */}
+      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">かんたんな方法</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              ABN登録には、もっと簡単な方法があります
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
+            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
+              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                自分でABNを登録すると、高くつくミスにつながりがちです
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                {['本来は従業員なのにABNを登録してしまう','誤った業種で登録してしまう','収入記録や税金の取り分けの仕組みがない','タックスリターンでABN収入の申告を忘れる'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
+              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                当社のサポート付きABNサービス
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
+                {['ABNが本当に必要かをまず確認','正しい業種コードで登録','記録の取り方と税金の取り分けを明確にご案内','タックスリターンまで一貫してサポート'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
+                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
+                ABNを登録する →
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── HOW TO REGISTER ──────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-to-register" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
-            <span className="section-label center">登録の流れ</span>
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">ご利用の流れ</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px' }}>
               4ステップでABNを取得
             </h2>
             <p className="font-light text-muted"
-              style={{ fontSize: 'clamp(13px,1.2vw,14.5px)', lineHeight: 1.75 }}>
+              style={{ fontSize: '13.5px', lineHeight: 1.75 }}>
               ご相談から発行まで、日本語ですべて対応します
             </p>
           </div>
@@ -407,7 +428,7 @@ export default function ABNPageJA() {
                   )}
                 </div>
                 <div style={{ paddingTop: '3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '3px', letterSpacing: '-0.01em', lineHeight: 1.35 }}>{s.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '3px', letterSpacing: '-0.01em', lineHeight: 1.35 }}>{s.title}</p>
                   <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.75 }}>{s.body}</p>
                 </div>
               </div>
@@ -416,10 +437,12 @@ export default function ABNPageJA() {
         </div>
       </section>
 
+      {/* ── WHAT TO HAVE READY ── */}
+
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
 
             <div className="text-center">
               <span className="section-label center">よくあるご質問</span>
@@ -431,11 +454,6 @@ export default function ABNPageJA() {
                 style={{ fontSize: '13.5px', lineHeight: 1.75, marginBottom: '24px' }}>
                 掲載されていないご質問もお気軽にお問い合わせください。
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height: '48px', padding: '0 28px', fontSize: '14px', width: '100%', maxWidth: '240px' }}>
-                今すぐご相談する →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

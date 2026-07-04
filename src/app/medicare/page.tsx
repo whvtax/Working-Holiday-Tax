@@ -36,6 +36,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/medicare`,
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
     description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder. Claim your levy exemption.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Medicare Levy Exemption for Working Holiday Visa Holders',
     description: 'Understand Medicare eligibility and the Medicare levy. Claim your exemption.',
@@ -59,10 +61,6 @@ const rhca = [
 
 const faqs = [
   {
-    question: 'Do I need to register for Medicare?',
-    answer: 'Only if you are from a country with a Reciprocal Health Care Agreement (RHCA) with Australia. If you are not eligible, you do not need to register and should apply for a Medicare levy exemption when lodging your tax return.',
-  },
-  {
     question: 'What is the Medicare levy exemption?',
     answer: 'If you are not eligible for Medicare - which applies to most Working Holiday Visa holders - you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
   },
@@ -75,10 +73,6 @@ const faqs = [
     answer: 'Not if you apply for an exemption. If you are not eligible for Medicare, you should claim a Medicare levy exemption on your tax return - which means you will not be charged.',
   },
   {
-    question: 'What is private health insurance and do I need it?',
-    answer: 'Private health insurance covers medical costs not covered by Medicare. If you are not eligible for Medicare, you may want to consider private health cover depending on your situation. This is separate from the Medicare levy.',
-  },
-  {
     question: 'Does my Working Holiday visa affect my Medicare eligibility?',
     answer: 'Yes. Most Working Holiday visa holders are not eligible for Medicare unless they are from a country with a Reciprocal Health Care Agreement. If you are not eligible, we apply a Medicare levy exemption as part of your tax return.',
   },
@@ -89,7 +83,7 @@ const faqs = [
   {
     question: 'Am I from a country with a Medicare agreement with Australia?',
     answer: 'Australia has Reciprocal Health Care Agreements with 11 countries including the UK, Ireland, Italy, Sweden, the Netherlands, Belgium, Finland, Norway, Malta, Slovenia and New Zealand. Working holiday makers from Germany and Japan are not covered by an RHCA and should claim a Medicare levy exemption on their tax return.',
-  },
+  }
 ]
 
 const faqSchema = {
@@ -145,7 +139,7 @@ export default function MedicarePage() {
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -166,7 +160,7 @@ export default function MedicarePage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{
-                fontSize:'clamp(22px,2.9vw,40px)',
+                fontSize:'clamp(24px,3.2vw,44px)',
                 lineHeight:1.06,
                 letterSpacing:'-0.03em',
                 marginBottom:'10px',
@@ -207,7 +201,7 @@ export default function MedicarePage() {
               <a href={WA_URL} target="_blank" rel="noopener noreferrer"
                 className="btn-primary inline-flex justify-center"
                 style={{ height:'54px', padding:'0 36px', fontSize:'15px', borderRadius:'100px', flex:'1', width:'100%' }}>
-                Check your Medicare eligibility →
+                Check your eligibility →
               </a>
               <a href="#how-it-works"
                 className="inline-flex btn-ghost-dark justify-center"
@@ -217,7 +211,7 @@ export default function MedicarePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -315,54 +309,43 @@ export default function MedicarePage() {
       </section>
 
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">Your two scenarios</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px' }}>
-              You may either pay the Medicare levy or be exempt, depending on your visa and country of origin.
+              You may be exempt from the Medicare levy, depending on your country of origin.
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 mb-8 lg:mb-10 reveal delay-1">
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#EAF6F1' }}>
+            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#EAF6F1' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#0B5240" strokeWidth="1.4"/>
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From an RHCA (Reciprocal Health Care Agreement) country</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>From an RHCA country</p>
+              <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
                 If you are eligible for Medicare, we ensure it is correctly applied in your tax return so you only pay what you owe.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#FFFCF5' }}>
+            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#FFFCF5' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#C47E10" strokeWidth="1.4"/>
                   <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>From a non-RHCA country</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '28ch', marginBottom: '10px' }}>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>From a non-RHCA country</p>
+              <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ marginBottom: '10px' }}>
                 If you are not eligible for Medicare, we ensure your Medicare levy exemption is correctly applied so you don&apos;t overpay tax.
               </p>
             </div>
           </div>
 
-          <div className="text-center reveal delay-2" style={{ marginTop: '24px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
-              style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              <span className="hidden lg:inline">Not sure what applies to you? We will check for you →</span>
-              <span className="lg:hidden" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
-                <span>Not sure what applies to you?</span>
-                <span>We will check for you →</span>
-              </span>
-            </a>
-          </div>
         </div>
       </section>
 
@@ -379,18 +362,18 @@ export default function MedicarePage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center justify-center font-semibold"
               style={{ height: '46px', padding: '0 24px', background: '#E9A020', color: '#1A2822', borderRadius: '100px', fontSize: '14px' }}>
-              Check your Medicare eligibility →
+              Check your eligibility →
             </a>
           </div>
         </div>
       </section>
 
       {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
-      <section className="py-9 lg:py-14 bg-white">
+      <section className="py-9 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">What we do for you</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
+            <h2 className="font-serif font-black text-ink mx-auto lg:whitespace-nowrap" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
               We handle this as part of your tax return
             </h2>
           </div>
@@ -415,9 +398,9 @@ export default function MedicarePage() {
                   <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
-                  <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)', letterSpacing: '-0.01em' }}>{item.title}</p>
                 </div>
-                <p className="text-[12.5px] font-light text-muted leading-[1.65]" style={{ maxWidth: '26ch', paddingLeft:'26px' }}>{item.body}</p>
+                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '26ch', paddingLeft:'26px' }}>{item.body}</p>
               </div>
             ))}
           </div>
@@ -425,7 +408,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-2xl mx-auto text-center reveal">
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -466,7 +449,7 @@ export default function MedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
             <span className="section-label center">FAQs</span>

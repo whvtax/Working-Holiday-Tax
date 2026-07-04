@@ -40,6 +40,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/tfn`,
@@ -48,6 +49,7 @@ export const metadata: Metadata = {
     description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'TFN Application for Working Holiday Visa Holders',
     description: 'Get your Tax File Number sorted fast - the first step to your Australian tax refund.',
@@ -57,17 +59,16 @@ export const metadata: Metadata = {
 
 const faqs = [
   { question:'Can I start work before I receive my TFN?', answer:'Yes. You can start working, but you must provide your TFN within 28 days. Until then, your employer may withhold tax at a higher rate.' },
-  { question:'Where will my TFN be sent?', answer:'Your TFN is issued by the ATO and sent by mail to your Australian address. Make sure you provide an address where you can reliably receive post.' },
   { question:'Can I get a TFN on a tourist visa?', answer:'No. You must hold a valid work visa, such as a Working Holiday visa (Subclass 417 or 462), to apply for a TFN.' },
   { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
   { question:'What is a TFN Declaration Form?', answer:'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.' },
   { question:'Can I apply for a TFN before arriving in Australia?', answer:'You can only apply once you arrive in Australia and your working holiday visa is activated. If you apply before arrival, the ATO will need an Australian postal address to send your TFN to.' },
-  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' },
+  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' }
 ]
 
 const STEPS = [
   { n:'1', title:'Tell us about your situation', body:'Share your visa details so we can guide you correctly.' },
-  { n:'2', title:'Submit your documents in minutes',  body:'Just your passport and a few personal details - quick and simple.' },
+  { n:'2', title:'Submit your documents in minutes',  body:'Just your passport and a few personal details, quick and simple.' },
   { n:'3', title:'We process your TFN application',  body:'We prepare and submit everything accurately on your behalf.' },
   { n:'4', title:'Receive your TFN',             body:'Your TFN is issued by the ATO and sent to your Australian address within 28 days.' },
 ]
@@ -147,7 +148,7 @@ export default function TFNPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -181,14 +182,13 @@ export default function TFNPage() {
             </h1>
 
             <p className="font-semibold text-ink"
-              style={{ fontSize:'clamp(13px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
+              style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               We make sure your TFN is done correctly the first time.
             </p>
 
             <p className="font-light"
               style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.65, color:'rgba(10,15,13,0.58)', maxWidth:'44ch', marginBottom:'0' }}>
-              <span className="lg:hidden">Without a TFN, WHV holders are taxed at 45%.</span>
-              <span className="hidden lg:inline">Without a TFN, Working Holiday visa holders are taxed at 45%.</span>
+              <span>Without a TFN, WHV holders are taxed at 45%.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -206,7 +206,7 @@ export default function TFNPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -234,17 +234,8 @@ export default function TFNPage() {
                 Without a TFN, your employer is required by law to withhold the maximum tax rate of <strong>45%</strong> from every pay, regardless of how much you earn.
               </p>
               <p className="tfn-intro-body">
-                With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference - sometimes hundreds of dollars per week.
+                With a TFN, you are taxed at the standard working holiday rate of <strong>15%</strong> on income up to $45,000. That is a huge difference, sometimes hundreds of dollars per week.
               </p>
-              <div className="tfn-intro-note">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
-                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
-                  <path d="M12 8v5M12 16h.01" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-                <p style={{ margin: 0, fontSize: '13.5px', color: '#2A3C34', lineHeight: 1.6 }}>
-                  Your TFN is yours for life - you only need to apply once, even if you leave and return to Australia.
-                </p>
-              </div>
             </div>
 
             {/* Right: Visual - tax savings comparison */}
@@ -281,13 +272,13 @@ export default function TFNPage() {
       </section>
 
       {/* ── SOLUTION ──────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-14">
+          <div className="max-w-xl lg:max-w-2xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Why choose our service</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
-              We manage your TFN application from start to finish, accurately and without delays.
+              We manage your entire TFN application for you
             </h2>
           </div>
 
@@ -322,7 +313,7 @@ export default function TFNPage() {
       </section>
 
       {/* ── SOCIAL PROOF ──────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-18 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="text-center mb-7 lg:mb-10">
             <span className="section-label center">What travellers say</span>
@@ -336,10 +327,10 @@ export default function TFNPage() {
       </section>
 
       {/* ── COMPARISON ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
-            <span className="section-label center">TFN APPLICATION PROCESS</span>
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">The easy way</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
               There is a simpler way to get your TFN sorted
@@ -381,15 +372,15 @@ export default function TFNPage() {
       </section>
 
       {/* ── HOW IT WORKS ──────────────────────────────────────────────────── */}
-      <section id="how-to-apply" className="py-12 lg:py-20" style={{ background:'#F5F9F7' }}>
+      <section id="how-to-apply" className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="max-w-xl mx-auto text-center mb-10 lg:mb-16">
-            <span className="section-label center">How to apply</span>
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'10px' }}>
               How it works in 4 simple steps
             </h2>
-            <p className="font-light text-muted" style={{ fontSize:'clamp(13px, 1.3vw, 15px)', lineHeight:1.7 }}>
+            <p className="font-light text-muted" style={{ fontSize:'13.5px', lineHeight:1.7 }}>
               Simple, guided process from start to finish.
             </p>
           </div>
@@ -429,14 +420,14 @@ export default function TFNPage() {
                   )}
                 </div>
                 <div style={{ paddingTop:'3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'13.5px', marginBottom:'3px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize:'14px', marginBottom:'3px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
                   <p className="font-light text-muted" style={{ fontSize:'12.5px', lineHeight:1.65 }}>{s.body}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="text-center mt-8 lg:mt-12">
+          <div className="text-center mt-8 lg:mt-10">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary"
               style={{ height:'52px', padding:'0 40px', fontSize:'15px', maxWidth:'320px', width:'100%', display:'inline-flex', alignItems:'center', justifyContent:'center' }}>
               Apply for a TFN →
@@ -445,10 +436,12 @@ export default function TFNPage() {
         </div>
       </section>
 
+      {/* ── WHAT TO HAVE READY ── */}
+
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
 
             <div className="text-center">
               <span className="section-label center">FAQs</span>
@@ -460,11 +453,6 @@ export default function TFNPage() {
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Have a question? Message us directly.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                Get help now →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

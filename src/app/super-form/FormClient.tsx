@@ -144,117 +144,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       <>
         <style>{css}</style>
         <div className="form-success-wrap">
-
-        <canvas id="fw-canvas" className="fireworks-canvas" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-  var c=document.getElementById('fw-canvas');
-  if(!c)return;
-  var ctx=c.getContext('2d');
-  var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
-  window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
-  var particles=[];
-  var trails=[];
-  var colors=['#FFD700','#FF6B35','#FF6B6B','#E91E8C','#4ECDC4','#45B7D1','#7C4DFF','#00E676','#FFEA00','#FF1744','#00BCD4','#76FF03','#FF9800','#E040FB','#00BFA5'];
-  function Particle(x,y,color,type){
-    this.x=x; this.y=y; this.color=color; this.type=type||'circle';
-    this.r=Math.random()*5+2;
-    var angle=Math.random()*Math.PI*2;
-    var speed=Math.random()*13+4;
-    this.vx=Math.cos(angle)*speed;
-    this.vy=Math.sin(angle)*speed-5;
-    this.alpha=1;
-    this.gravity=0.2;
-    this.spin=Math.random()*0.4-0.2;
-    this.rot=Math.random()*Math.PI*2;
-    this.trail=[];
-  }
-  Particle.prototype.update=function(){
-    this.trail.push({x:this.x,y:this.y,a:this.alpha});
-    if(this.trail.length>6)this.trail.shift();
-    this.x+=this.vx; this.y+=this.vy;
-    this.vy+=this.gravity;
-    this.vx*=0.97;
-    this.alpha-=0.012;
-    this.rot+=this.spin;
-  };
-  Particle.prototype.draw=function(){
-    for(var t=0;t<this.trail.length;t++){
-      var tr=this.trail[t];
-      ctx.save();ctx.globalAlpha=tr.a*0.3*(t/this.trail.length);
-      ctx.fillStyle=this.color;
-      ctx.beginPath();ctx.arc(tr.x,tr.y,this.r*0.5,0,Math.PI*2);ctx.fill();
-      ctx.restore();
-    }
-    ctx.save(); ctx.globalAlpha=Math.max(0,this.alpha);
-    ctx.fillStyle=this.color;
-    ctx.translate(this.x,this.y); ctx.rotate(this.rot);
-    if(this.type==='star'){
-      ctx.beginPath();
-      for(var i=0;i<5;i++){
-        ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*this.r, -Math.sin((18+i*72)*Math.PI/180)*this.r);
-        ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*this.r*0.4, -Math.sin((54+i*72)*Math.PI/180)*this.r*0.4);
-      }
-      ctx.closePath(); ctx.fill();
-    } else if(this.type==='spark'){
-      ctx.fillRect(-this.r*2.5,-this.r*0.4,this.r*5,this.r*0.8);
-    } else if(this.type==='ring'){
-      ctx.strokeStyle=this.color;ctx.lineWidth=2;
-      ctx.beginPath();ctx.arc(0,0,this.r,0,Math.PI*2);ctx.stroke();
-    } else {
-      ctx.beginPath(); ctx.arc(0,0,this.r,0,Math.PI*2); ctx.fill();
-    }
-    ctx.restore();
-  };
-  function Trail(x,y,tx,ty,color){
-    this.x=x;this.y=y;this.tx=tx;this.ty=ty;this.color=color;
-    this.progress=0;this.speed=0.06;
-  }
-  Trail.prototype.update=function(){this.progress=Math.min(1,this.progress+this.speed);};
-  Trail.prototype.draw=function(){
-    var cx=this.x+(this.tx-this.x)*this.progress;
-    var cy=this.y+(this.ty-this.y)*this.progress;
-    ctx.save();ctx.strokeStyle=this.color;ctx.lineWidth=2;
-    ctx.globalAlpha=1-this.progress;
-    ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(cx,cy);ctx.stroke();
-    ctx.restore();
-    if(this.progress>=1){
-      burst(this.tx,this.ty);return true;
-    }
-    return false;
-  };
-  function burst(x,y){
-    var count=110;
-    var types=['circle','circle','circle','star','star','spark','ring'];
-    for(var i=0;i<count;i++){
-      var type=types[Math.floor(Math.random()*types.length)];
-      particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)],type));
-    }
-  }
-  var shots=0; var maxShots=16; var shotInterval=280;
-  function fireRandom(){
-    if(shots>=maxShots)return;
-    var tx=Math.random()*W*0.8+W*0.1;
-    var ty=Math.random()*H*0.5+H*0.05;
-    if(shots<3){
-      burst(tx,ty);
-    } else {
-      trails.push(new Trail(tx,H,tx,ty,colors[Math.floor(Math.random()*colors.length)]));
-    }
-    shots++;
-    if(shots<maxShots) setTimeout(fireRandom, shotInterval);
-  }
-  setTimeout(fireRandom, 60);
-  function loop(){
-    ctx.clearRect(0,0,W,H);
-    trails=trails.filter(function(tr){return !tr.update()&&(tr.draw(),true)||(tr.draw(),false);});
-    particles=particles.filter(function(p){return p.alpha>0;});
-    particles.forEach(function(p){p.update();p.draw();});
-    if(particles.length>0||shots<maxShots||trails.length>0) requestAnimationFrame(loop);
-  }
-  loop();
-})();
-        ` }} />
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
@@ -461,7 +350,6 @@ const css = `
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
-  .fireworks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
   .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }

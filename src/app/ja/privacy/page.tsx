@@ -117,11 +117,11 @@ export default function JapanesePrivacyPage() {
         breadcrumbs={[{ label: 'ホーム', href: '/ja' }, { label: 'プライバシーポリシー' }]}
       />
 
-      <section className="pt-0 pb-10 lg:pb-14 bg-white">
+      <section className="pt-0 pb-10 lg:pb-12 bg-white">
         <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-10">
           <div className="max-w-2xl">
 
-            <p className="text-[13px] font-light text-body leading-[1.75] mb-10">
+            <p className="text-[13px] font-light text-body leading-[1.75] mb-8">
               当社はお客様のプライバシー保護に努め、個人情報を責任を持って取り扱います。
             </p>
 

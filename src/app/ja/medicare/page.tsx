@@ -36,6 +36,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/medicare`,
@@ -44,6 +45,7 @@ export const metadata: Metadata = {
     description: 'ワーキングホリデー保持者のメディケア対象資格について。',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'メディケア（Medicare）- ワーキングホリデー オーストラリア',
     description: 'メディケアとメディケア税について。',
@@ -52,10 +54,6 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
-  {
-    question: 'メディケアに登録する必要がありますか？',
-    answer: 'オーストラリアと社会保険協定（RHCA）を結んでいる国の出身者のみ必要です。対象外の場合は登録する必要はなく、代わりにタックスリターン時にメディケア税免除を申請するべきです。',
-  },
   {
     question: 'メディケア税免除とは何ですか？',
     answer: 'メディケア対象外（ほとんどのワーキングホリデービザ保持者）の場合、タックスリターンでメディケア税の免除を受けることができます。タックスリターンサービスの一部としてすべて対応します。',
@@ -69,10 +67,6 @@ const faqs = [
     answer: '免除を申請すれば支払う必要はありません。メディケア対象外の場合、タックスリターンでメディケア税免除を申請することで、控除されなくなります。',
   },
   {
-    question: 'プライベート医療保険は必要ですか？',
-    answer: 'プライベート医療保険は、メディケアがカバーしない医療費をカバーします。メディケア対象外の方は、状況に応じてプライベート医療保険を検討すべきです。これはメディケア税とは別の話です。',
-  },
-  {
     question: 'ワーキングホリデービザはメディケア対象資格に影響しますか？',
     answer: 'はい。ほとんどのワーキングホリデービザ保持者は、社会保険協定締結国出身者を除き、メディケア対象外です。対象外の場合、タックスリターンの一部としてメディケア税免除を申請します。',
   },
@@ -83,7 +77,7 @@ const faqs = [
   {
     question: 'オーストラリアとメディケア協定がある国はどこですか？',
     answer: 'オーストラリアは11カ国と社会保険協定（RHCA）を結んでいます。具体的には、イギリス、アイルランド、イタリア、スウェーデン、オランダ、ベルギー、フィンランド、ノルウェー、マルタ、スロベニア、ニュージーランドです。日本とドイツのワーホリ参加者はRHCAの対象外ですので、タックスリターンでメディケア税免除を申請するべきです。',
-  },
+  }
 ]
 
 const faqSchema = {
@@ -128,7 +122,7 @@ export default function JapaneseMedicarePage() {
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="パンくずリスト" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -149,7 +143,7 @@ export default function JapaneseMedicarePage() {
 
             <h1 className="font-serif font-black text-ink"
               style={{
-                fontSize:'clamp(22px,2.9vw,40px)',
+                fontSize:'clamp(24px,3.2vw,44px)',
                 lineHeight:1.2,
                 letterSpacing:'-0.02em',
                 marginBottom:'10px',
@@ -189,7 +183,7 @@ export default function JapaneseMedicarePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','返信時間 1時間以内'].map((t,i) => (
+              {['350名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','返信時間 1時間以内'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -287,50 +281,43 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── SIMPLE DECISION ───────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">2つのケース</span>
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '8px', marginBottom: '8px' }}>
-              ビザと出身国によって、メディケア税を支払うか免除されるかが決まります。
+              出身国によって、メディケア税が免除される場合があります。
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 mb-8 lg:mb-10 reveal delay-1">
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#EAF6F1' }}>
+            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#EAF6F1' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#0B5240" strokeWidth="1.4"/>
                   <path d="M7 10l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>RHCA締結国（社会保険協定）の出身者</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ maxWidth: '30ch', marginBottom: '10px' }}>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>RHCA締結国（社会保険協定）の出身者</p>
+              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ marginBottom: '10px' }}>
                 メディケア対象の場合、タックスリターンで正しく処理し、必要以上に支払わないようにします。
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '20px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ marginBottom: '12px', background: '#FFFCF5' }}>
+            <div className="bg-white rounded-2xl flex flex-col" style={{ padding: '18px', border: '1px solid #C8EAE0', boxShadow: '0 1px 4px rgba(0,0,0,.03)' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ marginBottom: '10px', background: '#FFFCF5' }}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <circle cx="10" cy="10" r="8" stroke="#C47E10" strokeWidth="1.4"/>
                   <path d="M10 6v5M10 13.5v.5" stroke="#C47E10" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
               </div>
-              <p className="text-[14px] font-bold text-ink" style={{ marginBottom: '6px' }}>RHCA非締結国（例：日本）の出身者</p>
-              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ maxWidth: '30ch', marginBottom: '10px' }}>
+              <p className="text-[14px] font-semibold text-ink" style={{ marginBottom: '6px' }}>RHCA非締結国（例：日本）の出身者</p>
+              <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ marginBottom: '10px' }}>
                 メディケア対象外の場合、メディケア税免除をタックスリターンで正しく適用し、税金を払い過ぎないようにします。
               </p>
             </div>
           </div>
 
-          <div className="text-center reveal delay-2" style={{ marginTop: '24px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
-              style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              どちらに該当するか分からない方へ。確認します →
-            </a>
-          </div>
         </div>
       </section>
 
@@ -354,7 +341,7 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── WHAT WE DO ────────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-9 lg:py-14 bg-white">
+      <section id="how-it-works" className="py-9 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
             <span className="section-label center">私たちが対応すること</span>
@@ -383,9 +370,9 @@ export default function JapaneseMedicarePage() {
                   <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#C8EAE0', border:'1px solid #A8D5C5' }}>
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </span>
-                  <p className="text-[13.5px] font-semibold text-ink" style={{ letterSpacing: '-0.01em' }}>{item.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)', letterSpacing: '-0.01em' }}>{item.title}</p>
                 </div>
-                <p className="text-[12.5px] font-light text-muted leading-[1.75]" style={{ maxWidth: '28ch', paddingLeft:'26px' }}>{item.body}</p>
+                <p className="font-light text-muted leading-[1.75]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '28ch', paddingLeft:'26px' }}>{item.body}</p>
               </div>
             ))}
           </div>
@@ -393,7 +380,7 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── MEDICARE LEVY EXEMPTION + VIDEO ───────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-2xl mx-auto text-center reveal">
             <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '24ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
@@ -434,7 +421,7 @@ export default function JapaneseMedicarePage() {
       </section>
 
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '28px' }}>
             <span className="section-label center">よくある質問</span>

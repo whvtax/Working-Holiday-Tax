@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
@@ -37,6 +38,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'en_AU',
     url: `${SITE_URL}/abn`,
@@ -45,6 +47,7 @@ export const metadata: Metadata = {
     description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'ABN Registration for Working Holiday Visa Holders',
     description: 'Set up your ABN correctly as a Working Holiday contractor.',
@@ -57,16 +60,8 @@ const faqs = [
   { question: 'Can I get an ABN without a TFN?', answer: 'No. You must have a TFN before applying for an ABN.' },
   { question: 'Do I need to register for GST?', answer: 'GST registration is only required if your annual turnover is over $75,000. Most Working Holiday visa holders do not need to register for GST.' },
   { question: 'What happens to my ABN when I leave Australia?', answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.' },
-  { question: 'Can my ABN be rejected?', answer: 'Yes. If your details do not accurately reflect your work situation, your ABN application may be delayed or rejected. That is why we recommend using a tax agent to avoid mistakes and ensure everything is set up correctly from the start.' },
   { question: 'Do I need an ABN as a working holiday maker?', answer: 'You only need an ABN if you are working as a contractor or sole trader - for example, doing rideshare, food delivery, freelance work, or being paid directly by clients rather than through PAYG employment. If you are a regular employee, you only need a TFN.' },
-  { question: 'How does ABN income affect my working holiday tax return?', answer: 'ABN income is treated differently from PAYG wages. No tax is withheld upfront, so you are responsible for setting aside money for tax. When you lodge your working holiday tax return, ABN income is declared separately and you can claim related business expenses as deductions.' },
-]
-
-const MISTAKES = [
-  { title: 'Working as an employee with an ABN', body: 'If your employer directs how, when, and where you work, an ABN may not be the correct setup for you.' },
-  { title: 'Incorrect business activity selection', body: 'Your ABN details must accurately reflect the type of work you perform.' },
-  { title: 'Not keeping track of your income',   body: 'You should record your earnings and set aside money for tax to avoid issues later.' },
-  { title: 'Not lodging your tax return',         body: 'Your ABN income must be declared to the ATO.' },
+  { question: 'How does ABN income affect my working holiday tax return?', answer: 'ABN income is treated differently from PAYG wages. No tax is withheld upfront, so you are responsible for setting aside money for tax. When you lodge your working holiday tax return, ABN income is declared separately and you can claim related business expenses as deductions.' }
 ]
 
 const STEPS = [
@@ -151,7 +146,7 @@ export default function ABNPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-16 lg:pb-16">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
 
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4 lg:mb-6"
             style={{ fontSize:'12px', color:'rgba(10,15,13,0.35)' }}>
@@ -223,7 +218,7 @@ export default function ABNPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['1,200+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -252,7 +247,7 @@ export default function ABNPage() {
                 With an ABN you can <strong>invoice clients directly</strong>, work as a contractor or freelancer, and operate legally as a sole trader. Common ABN jobs for backpackers: farm contracting, content creation, ride-share driving, delivery, and trades.
               </p>
               <p className="abn-intro-body">
-                An ABN is not a replacement for a TFN - they serve different purposes. Many working holiday makers have both: a TFN for employment income, an ABN for contract work.
+                An ABN is not a replacement for a TFN, they serve different purposes. Many working holiday makers have both: a TFN for employment income, an ABN for contract work.
               </p>
             </div>
 
@@ -316,42 +311,39 @@ export default function ABNPage() {
 
       {/* ── HOW WE HELP ───────────────────────────────────────────────────── */}
       {/* Mobile: py-10 · Desktop: py-16 */}
-      <section className="py-10 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-12">
-            <span className="section-label center">How we help</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
-              Simple, clear, and done properly from the start.
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">Why choose our service</span>
+            <h2 className="font-serif font-black text-ink mx-auto lg:whitespace-nowrap"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
+              We set up your ABN properly from the start
             </h2>
-            <p className="font-semibold mx-auto"
-              style={{ fontSize:'clamp(14px,1.4vw,16px)', lineHeight:1.4, color:'#0B5240', maxWidth:'28ch', margin:'6px auto 10px', letterSpacing:'-0.01em' }}>
-            </p>
             <p className="font-light text-muted"
-              style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'30ch', margin:'0 auto', color:'rgba(10,15,13,0.5)' }}>
-              Simple, clear, and done properly from the start.
+              style={{ fontSize:'13.5px', lineHeight:1.7, maxWidth:'30ch', margin:'0 auto', color:'rgba(10,15,13,0.5)' }}>
+              From checking whether you need one to getting you invoice-ready.
             </p>
           </div>
 
           {/* Cards - equal height via items-stretch; mobile gap-4, desktop gap-6 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
-              { n:'01', title:'We help you choose the right setup', body:'Not sure if you need an ABN? We check your situation and give you a clear answer.' },
-              { n:'02', title:'We set up your ABN correctly', body:'We manage the registration to ensure your ABN is aligned with your work, avoiding delays or issues.' },
-              { n:'03', title:'Set up correctly from day one', body:'Everything is done properly so you can start working without issues.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'We confirm you actually need an ABN', body:'Many backpackers register one they do not need. We check your work type first and give you a straight answer.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Registered to match your work', body:'Rideshare, delivery, freelance or contracting - we set your ABN up correctly for how you actually earn.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'GST handled only if it applies', body:'We tell you whether the $75,000 GST threshold affects you, so you never register for tax you do not owe.' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'Ready to invoice from day one', body:'Your ABN is active and Australian Business Register compliant, so you can start contracting right away.' },
             ].map((item,i) => (
-              <div key={i} className="rounded-2xl flex flex-col"
-                style={{ padding:'18px', background:'#F5F9F7', border:'1px solid #C8EAE0' }}
-                /* Desktop: larger padding */>
-                <span className="text-[10px] font-medium tracking-[0.12em] uppercase text-subtle block"
-                  style={{ marginBottom:'10px' }}>{item.n}</span>
-                <h3 className="font-semibold text-ink"
-                  style={{ fontSize:'clamp(13px,1.2vw,14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>
-                  {item.title}
-                </h3>
-                <p className="font-light text-muted leading-[1.7] flex-1"
-                  style={{ fontSize:'clamp(12px,1.1vw,13px)' }}>{item.body}</p>
+              <div key={i} className="bg-white rounded-2xl flex gap-4"
+                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
+                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
+                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
+                  {item.icon}
+                </div>
+                <div style={{ paddingTop:'2px' }}>
+                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
+                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -369,53 +361,77 @@ export default function ABNPage() {
         </div>
       </section>
 
-      {/* ── COMMON MISTAKES ───────────────────────────────────────────────── */}
+      {/* ── SOCIAL PROOF ── */}
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
+          <div className="text-center mb-7 lg:mb-10">
+            <span className="section-label center">What travellers say</span>
+            <h2 className="font-serif font-black text-ink mx-auto"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.15, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              See how backpackers got their ABN sorted<br className="hidden lg:block" /> the right way
+            </h2>
+          </div>
+          <GoogleReviews lang="en" />
+        </div>
+      </section>
+
+      {/* ── COMPARISON ── */}
       <section className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-
-          <div className="max-w-xl mx-auto text-center mb-7 lg:mb-10">
-            <span className="section-label center">Common mistakes</span>
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
+            <span className="section-label center">The easy way</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
-              Setting up your ABN incorrectly<br /><em className="not-italic font-normal text-forest-400">can cause issues later</em>
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              There is a simpler way to register your ABN
             </h2>
-            <p className="font-light text-muted mx-auto"
-              style={{ fontSize:'clamp(12.5px,1.1vw,13.5px)', lineHeight:1.7, maxWidth:'32ch' }}>
-              These are common mistakes that can delay your application or lead to complications later.
-            </p>
           </div>
-
-          {/* Mobile: gap-3; desktop: gap-5, equal height */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5" style={{ alignItems:'stretch' }}>
-            {MISTAKES.map((m,i) => (
-              <div key={i} className="rounded-xl flex flex-col"
-                style={{ padding:'16px', background:'#FFFCF5', border:'1.5px solid #F0D99A', boxShadow:'0 1px 4px rgba(0,0,0,.03)' }}>
-                <div className="flex items-center justify-center rounded-lg flex-shrink-0"
-                  style={{ width:'28px', height:'28px', background:'#FDF0D5', border:'1px solid #F0D99A', marginBottom:'10px' }}>
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                    <path d="M6 2v4M6 8.5v.5" stroke="#C47E10" strokeWidth="1.8" strokeLinecap="round"/>
-                  </svg>
-                </div>
-                <p className="font-semibold text-ink" style={{ fontSize:'13px', marginBottom:'5px', lineHeight:1.35 }}>{m.title}</p>
-                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize:'12px' }}>{m.body}</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems:'stretch' }}>
+            <div className="rounded-2xl" style={{ padding:'22px', background:'#fff', border:'1.5px solid #E2EFE9' }}>
+              <p className="font-semibold text-muted" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                Registering an ABN yourself can lead to costly mistakes
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                {['Registering an ABN when you should be an employee','Choosing the wrong business activity','No system to track income or set aside tax','Forgetting to declare ABN income at tax time'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#FEF3F0" stroke="#FBD0BB" strokeWidth="0.5"/><path d="M5.5 10.5l5-5M10.5 10.5l-5-5" stroke="#9A3412" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                    <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+            <div className="rounded-2xl flex flex-col" style={{ padding:'22px', background:'#EAF6F1', border:'1.5px solid #C8EAE0' }}>
+              <p className="font-semibold text-forest-500" style={{ fontSize:'11px', letterSpacing:'0.08em', textTransform:'uppercase', marginBottom:'18px' }}>
+                Use our guided ABN service
+              </p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px', marginBottom:'24px', flex:'1' }}>
+                {['We confirm an ABN is actually right for you','Registered with the correct business activity','Clear guidance on records and tax to set aside','Support all the way through to your tax return'].map((item,i) => (
+                  <div key={i} className="flex items-start gap-2.5">
+                    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true" style={{ flexShrink:0, marginTop:'3px' }}><circle cx="8" cy="8" r="7.5" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M5 8l2.5 2.5 4-4" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <p className="font-semibold text-ink" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.75 }}>{item}</p>
+                  </div>
+                ))}
+              </div>
+              <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary inline-flex"
+                style={{ height:'50px', padding:'0 24px', fontSize:'14px', width:'100%', justifyContent:'center' }}>
+                Register your ABN →
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── HOW TO REGISTER ───────────────────────────────────────────────── */}
-      <section id="how-to-register" className="py-10 lg:py-16" style={{ background:'#F5F9F7' }}>
+      <section id="how-to-register" className="py-10 lg:py-14" style={{ background:'#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-14">
+          <div className="max-w-xl mx-auto text-center mb-8 lg:mb-10">
             <span className="section-label center">Step by step</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', maxWidth:'22ch', marginTop:'8px', marginBottom:'8px', textWrap:'balance' }}>
               How it works in 4 simple steps
             </h2>
             <p className="font-light text-muted"
-              style={{ fontSize:'clamp(13px,1.2vw,14.5px)', lineHeight:1.7 }}>
+              style={{ fontSize:'13.5px', lineHeight:1.7 }}>
               Simple, guided process from start to finish
             </p>
           </div>
@@ -457,7 +473,7 @@ export default function ABNPage() {
                   )}
                 </div>
                 <div style={{ paddingTop:'3px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'13.5px', marginBottom:'3px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
+                  <p className="font-semibold text-ink" style={{ fontSize:'14px', marginBottom:'3px', letterSpacing:'-0.01em', lineHeight:1.3 }}>{s.title}</p>
                   <p className="font-light text-muted" style={{ fontSize:'12.5px', lineHeight:1.65 }}>{s.body}</p>
                 </div>
               </div>
@@ -466,26 +482,23 @@ export default function ABNPage() {
         </div>
       </section>
 
+      {/* ── WHAT TO HAVE READY ── */}
+
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 lg:gap-8 lg:items-center">
 
             <div className="text-center">
               <span className="section-label center">FAQs</span>
               <h2 className="font-serif font-black text-ink"
                 style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
-                ABN questions answered.
+                ABN questions answered
               </h2>
               <p className="font-light text-muted"
                 style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'24px' }}>
                 Have a question? Message us directly.
               </p>
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="btn-primary inline-flex items-center justify-center"
-                style={{ height:'48px', padding:'0 28px', fontSize:'14px', width:'100%', maxWidth:'220px' }}>
-                Get help now →
-              </a>
             </div>
 
             <div className="max-w-[700px]">

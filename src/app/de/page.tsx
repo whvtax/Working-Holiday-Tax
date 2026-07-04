@@ -94,7 +94,7 @@ const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill=
 // ─── TESTIMONIALS - real backpacker reviews ─────────────────────────────
 
 const STEPS = [
-  { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super - wir helfen dir von Anfang an weiter.' },
+  { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super, wir helfen dir von Anfang an weiter.' },
   { n: '2', title: 'Schick uns deine Daten',         body: 'Kurze Checkliste, keine komplizierten Formulare oder Papierkram.' },
   { n: '3', title: 'Wir kümmern uns um alles',       body: 'Wir bereiten alles vor und reichen es unter Aufsicht eines registrierten Steueragenten beim ATO ein.' },
   { n: '4', title: 'Dein Bescheid kommt',            body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung direkt auf dein australisches Bankkonto überwiesen.' },
@@ -118,10 +118,6 @@ const FAQS = [
     answer: 'Die erste Anfrage und unser Kostenvoranschlag sind kostenlos. Unsere Gebühren sind pauschal und hängen vom Service ab. Bei Steuererklärungen können die Gebühren direkt von der Rückzahlung abgezogen werden - du musst also nichts im Voraus bezahlen. Wir bestätigen den Preis immer, bevor wir loslegen.',
   },
   {
-    question: 'Wie schnell antwortet ihr?',
-    answer: 'Während der Geschäftszeiten (Mo-Fr, 9-18 Uhr AEST/AEDT) antworten wir meistens innerhalb einer Stunde. Außerhalb der Geschäftszeiten melden wir uns gleich am nächsten Morgen bei dir.',
-  },
-  {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
     answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit dabei, ihre Steuererklärung einzureichen und ihre Super (DASP) zu beantragen - alles komplett online, auch Jahre nach der Rückkehr. Wir wickeln alles aus der Ferne ab. Deine Steuerrückerstattung wird auf dein australisches Bankkonto überwiesen (ATO-Vorschrift), die Super-Rückerstattung (DASP) kann aber auf dein deutsches Konto gehen.',
   },
@@ -136,7 +132,7 @@ const FAQS = [
   {
     question: 'Macht ihr nur Steuererklärungen?',
     answer: 'Nein. Wir helfen bei TFN-Anträgen, ABN-Registrierungen, Working Holiday Steuererklärungen, Superauszahlungen (DASP) und Medicare-Levy-Befreiungen - also bei allem, was du als Working Holiday Maker auf einem 417 oder 462 Visum brauchst.',
-  },
+  }
 ]
 
 export default async function GermanHomePage() {
@@ -285,26 +281,26 @@ export default async function GermanHomePage() {
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-14 lg:pb-12 text-center">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-12 lg:pb-12 text-center">
 
           <div className="inline-flex items-center gap-2 mb-4 lg:mb-6 hero-animate">
             <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
             <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Steuererklärungs-Spezialisten</span>
           </div>
 
-          <h1 className="font-serif font-black text-ink mx-auto"
+          <h1 className="font-serif font-black text-ink mx-auto hero-animate"
             style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.12, letterSpacing: '-0.025em', marginBottom: '14px' }}>
             {/* Desktop */}
             <span style={{ display: 'block' }}>Steuererklärung Australien?</span>
-            <span style={{ display: 'block', color: '#0B5240' }}>Wir kümmern uns drum.</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>Wir kümmern uns drum.</span>
           </h1>
 
-          <p className="font-light mx-auto"
+          <p className="font-light mx-auto hero-animate-delay"
             style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
-            Steuerexperten für Working Holiday Maker auf <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 Visum</span>.<br />TFN, ABN, Steuererklärung &amp; Super
+            Steuerexperten für Working Holiday Maker auf <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 Visum</span>.
           </p>
 
-          <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4">
+          <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4 hero-animate-delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
               style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
@@ -313,7 +309,7 @@ export default async function GermanHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['1.200+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Stunde'].map((label, i) => (
+            {['350+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Stunde'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -324,8 +320,8 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center">
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center reveal">
 
           <span className="section-label center">Warum wir?</span>
 
@@ -336,15 +332,15 @@ export default async function GermanHomePage() {
 
           <p className="font-light text-muted mx-auto"
             style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '42ch', marginBottom: '32px', textAlign: 'center' }}>
-            Ein Fokus: Working Holiday Steuern.<br />Jede Steuerrückerstattung, die dir zusteht - korrekt beantragt.
+            Jede Steuerrückerstattung, die dir zusteht - korrekt beantragt.
           </p>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-10" style={{ marginBottom: '36px' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 reveal" style={{ marginBottom: '36px' }}>
             {[
-              { title: 'Backpackersteuer-Experten.',       body: 'Wir arbeiten ausschließlich mit Working Holiday Makern. Die Regeln für 417 und 462 Visa kennen wir in- und auswendig.' },
+              { title: 'Backpackersteuer-Experten.',       body: 'Wir arbeiten ausschließlich mit Working Holiday Makern. Die Regeln, die für dich gelten, kennen wir in- und auswendig.' },
               { title: 'ATO-konform.',                     body: 'Eingereicht über einen registrierten Steueragenten und voll konform mit den aktuellen ATO-Regeln für Working Holiday Maker.' },
               { title: 'Klare, einfache Hilfe.',           body: 'Keine komplizierten Begriffe. Wir führen dich Schritt für Schritt durch deine Steuererklärung - in einfacher Sprache.' },
-              { title: 'Wir kümmern uns um alles.',        body: 'Kein Papierkram, kein Stress. Von der TFN bis zur Steuerrückerstattung - wir erledigen alles, in Australien oder nach deiner Rückkehr.' },
+              { title: 'Wir kümmern uns um alles.',        body: 'Von der TFN bis zur Steuerrückerstattung sind wir für dich da. Egal ob in Australien oder wieder zu Hause.' },
             ].map((item, i) => (
               <div key={i} className="why-us-card pt-4 lg:pt-6 text-center" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>
@@ -362,8 +358,8 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">Erfolge unserer Kunden</span>
@@ -379,7 +375,7 @@ export default async function GermanHomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
                 { n: <GoogleRating variant="number" lang="de" />, l: <GoogleRating variant="count" lang="de" /> },
-                { n: '1.200+',  l: 'Backpacker geholfen' },
+                { n: '350+',  l: 'Backpacker geholfen' },
                 { n: '< 1 Std', l: 'Antwortzeit' },
                 { n: '100 %',   l: 'Komplett online, ohne Papierkram' },
               ].map((s, i) => (
@@ -396,8 +392,8 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+      <section id="how-it-works" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
             <span className="section-label center">So funktioniert&apos;s</span>
@@ -407,7 +403,7 @@ export default async function GermanHomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '40ch', marginBottom: '4px' }}>
-              <em className="not-italic text-forest-400">Einfacher Ablauf. Deine Working Holiday Steuerrückerstattung - korrekt beantragt.</em>
+              <em className="not-italic text-forest-400">Einfacher Ablauf für Working Holiday Maker.</em>
             </p>
           </div>
 
@@ -449,7 +445,7 @@ export default async function GermanHomePage() {
                 </div>
                 <div style={{ paddingTop: '3px' }}>
                   <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '4px' }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.7 }}>{s.body}</p>
+                  <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.7 }}>{s.body}</p>
                 </div>
               </div>
             ))}
@@ -462,30 +458,29 @@ export default async function GermanHomePage() {
               Steuererklärung starten →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
-              Kostenloser Start&nbsp;&bull;&nbsp;Keine Vorabzahlung&nbsp;&bull;&nbsp;Persönliche Betreuung
+              Kostenloser Start&nbsp;&bull;&nbsp;Persönliche Betreuung
             </p>
           </div>
         </div>
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10">
+      <section className="py-10 lg:py-14 bg-white">
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">Womit wir dir helfen</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px', maxWidth: '28ch' }}>
-              Komplette Steuerbetreuung für Working Holiday Maker<br />
-              <em className="not-italic font-normal text-forest-400">in Australien.</em>
+              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
+              Komplette Steuerbetreuung für Working Holiday Maker.
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', textAlign: 'center', lineHeight: 1.7, maxWidth: '44ch' }}>
-              Vom ersten Job in Australien bis zur Steuerrückerstattung.<br />Wir kümmern uns drum.
+              Vom ersten Job in Australien bis zur Steuerrückerstattung.
             </p>
           </div>
 
-          <div className="services-grid grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+          <div className="services-grid grid grid-cols-1 lg:grid-cols-5 gap-3 lg:gap-4 reveal">
             {SERVICES.map((s) => (
               <Link key={s.href} href={s.href}
                 className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
@@ -505,7 +500,7 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="text-center mb-8">
             <span className="section-label center">Häufige Fragen</span>
@@ -537,7 +532,7 @@ export default async function GermanHomePage() {
         eyebrow="Jetzt starten"
         heading="Deine Steuer geregelt"
         headingEm="in Australien oder im Ausland."
-        sub={<>Wir kümmern uns um deine TFN, Steuererklärung, Super und ABN<span className="hidden sm:inline">,</span><br className="sm:hidden" /> alles aus einer Hand.</>}
+        sub="Wir erledigen deine Steuer von Anfang bis Ende."
         primaryLabel="Steuererklärung starten"
         trustLine=""
         clipTop

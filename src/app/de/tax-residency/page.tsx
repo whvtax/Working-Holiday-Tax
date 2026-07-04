@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: '/de/tax-residency', languages: { 'en-AU': '/tax-residency', 'de': '/de/tax-residency', 'x-default': '/tax-residency' } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     type: 'website',
     locale: 'de_DE',
     url: `${SITE_URL}/de/tax-residency`,
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
     description: 'Verstehe die Steuerresidenz-Kategorien und wie dein Visum deinen Steuersatz beeinflusst.',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Steuerresidenz in Australien für WHV-Inhaber',
     description: 'Verstehe die Steuerresidenz und wie dein Visum deinen Steuersatz beeinflusst.',
@@ -48,10 +50,10 @@ const RESIDENT_ROWS = [
   ['190.001 $+',           '51.638 $ + 45 %'],
 ]
 
-const NDA_COUNTRIES = ['Chile', 'Finnland', 'Deutschland', 'Israel', 'Japan', 'Norwegen', 'Türkei', 'Großbritannien']
+const NDA_COUNTRIES = ['Großbritannien', 'Deutschland', 'Japan', 'Chile', 'Finnland', 'Israel', 'Norwegen', 'Türkei']
 
 const CONDITIONS = [
-  'Du hast einen Reisepass aus einem der NDA-Länder (siehe unten).',
+  'Du hast einen Reisepass aus einem der NDA-Länder:',
   'Dein gewöhnlicher Wohnsitz ist in Australien.',
   'Du hast die Absicht, in Australien zu leben.',
   'Du hältst dich insgesamt 183 Tage im Steuerjahr in Australien auf.',
@@ -61,18 +63,6 @@ const FAQS = [
   {
     question: 'Was ist Steuerresidenz?',
     answer: 'Die Steuerresidenz bestimmt, welche Steuersätze auf dein Einkommen in Australien angewendet werden. Es gibt drei Kategorien: Nicht-Resident, Working Holiday Maker (417/462 Visum) und australischer Steuerresident. Jede Kategorie hat andere Steuersätze und Freibeträge.',
-  },
-  {
-    question: 'Bin ich Resident oder Working Holiday Maker für die Steuer?',
-    answer: 'Standardmäßig werden Inhaber eines 417 oder 462 Visums als Working Holiday Maker besteuert - 15 % ab dem ersten Dollar. Wenn du aber aus einem NDA-Land (Nichtdiskriminierungsabkommen) kommst und bestimmte Bedingungen erfüllst, kannst du als australischer Steuerresident besteuert werden - das heißt: Freibetrag von 18.200 $.',
-  },
-  {
-    question: 'Was sind NDA-Länder?',
-    answer: 'NDA steht für Non-Discrimination Agreement (Nichtdiskriminierungsabkommen). Bürger dieser Länder können zu Residenten-Sätzen besteuert werden, wenn sie die Residenz-Bedingungen erfüllen. Die Länder sind: Chile, Finnland, Deutschland, Israel, Japan, Norwegen, Türkei und Großbritannien.',
-  },
-  {
-    question: 'Wie viel spare ich, wenn ich als Resident eingestuft werde?',
-    answer: 'Bei einem Einkommen von 45.000 $ ist der Unterschied zwischen WHM-Steuer (6.750 $) und Residenten-Steuer (4.288 $) genau 2.462 $. Das ist Geld, das du zurückbekommen kannst, wenn du als Resident eingestuft wirst. Wir prüfen deine Situation und wenden den richtigen Status bei deiner Steuererklärung an.',
   },
   {
     question: 'Was ist mit Inhabern eines Studentenvisums (500)?',
@@ -148,7 +138,7 @@ export default function GermanTaxResidencyPage() {
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-14 lg:pb-10">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-12 lg:pb-10">
 
             {/* Breadcrumbs */}
             <nav aria-label="Brotkrümelnavigation" className="mb-5 lg:mb-6">
@@ -162,22 +152,12 @@ export default function GermanTaxResidencyPage() {
             </nav>
 
             <div className="text-center">
-              <div className="inline-flex items-center gap-2 mb-3 lg:mb-4 justify-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
-                <span className="font-medium uppercase" style={{ fontSize: '11px', letterSpacing: '0.16em', color: 'rgba(11,82,64,0.65)' }}>
-                  Steuerresidenz erklärt
-                </span>
-              </div>
-
               <h1 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '20ch' }}>
-                Verstehe deinen Steuerstatus<br />
-                <span style={{ color: '#0B5240' }}>in Australien</span>
+                style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
+                Verstehe deine <span style={{ color: '#0B5240' }}>Steuerresidenz</span>
               </h1>
-
-              <p className="font-light mx-auto"
-                style={{ fontSize: 'clamp(14.5px, 1.4vw, 17px)', lineHeight: 1.7, color: 'rgba(10,15,13,0.65)', maxWidth: '54ch' }}>
-                Dein Visum und deine Umstände bestimmen, welche Steuersätze auf dein australisches Einkommen angewendet werden. Wenn du deinen Status kennst, kannst du Tausende Dollar sparen.
+              <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '40ch' }}>
+                Mit einem Working-Holiday-Visum kannst du durchaus ein australischer Steuerresident <strong>für steuerliche Zwecke</strong> sein. Das bedeutet nicht, dass du Australier bist.
               </p>
             </div>
           </div>
@@ -187,24 +167,18 @@ export default function GermanTaxResidencyPage() {
         <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_ROWS} />
-              <TaxTable label="Australischer Steuerresident" rows={RESIDENT_ROWS} highlight />
-            </div>
-
-            <div className="taxres-savings-box">
-              <div className="taxres-savings-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="1.6"/>
-                  <path d="M12 7v5l3 2" stroke="#0B5240" strokeWidth="1.8" strokeLinecap="round"/>
-                </svg>
-              </div>
+            <div className="taxres-savings-box" style={{ marginBottom: '24px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
               <div>
                 <p className="taxres-savings-heading">Mögliche Ersparnis</p>
                 <p className="taxres-savings-body">
                   Wenn du als australischer Steuerresident eingestuft wirst, kannst du bei einem Einkommen von 45.000 $ bis zu <strong>2.462 $ zurück</strong> bekommen. Wir prüfen deine Berechtigung, wenn wir deine Steuererklärung machen.
                 </p>
               </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_ROWS} />
+              <TaxTable label="Australischer Steuerresident" rows={RESIDENT_ROWS} highlight />
             </div>
           </div>
         </section>
@@ -219,7 +193,7 @@ export default function GermanTaxResidencyPage() {
               </p>
               <h2 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.2, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '28ch' }}>
-                Kannst du als Resident besteuert werden?
+                Kannst du ein australischer Steuerresident für <strong>steuerliche Zwecke</strong> sein?
               </h2>
               <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.7, maxWidth: '50ch' }}>
                 Working Holiday Visum-Inhaber können als australische Steuerresidenten eingestuft werden, wenn sie ALLE folgenden Bedingungen erfüllen:
@@ -231,21 +205,11 @@ export default function GermanTaxResidencyPage() {
                 {CONDITIONS.map((c, i) => (
                   <div key={i} className="taxres-condition-item">
                     <span className="taxres-condition-num">{i + 1}</span>
-                    <p className="taxres-condition-text">{c}</p>
+                    <p className="taxres-condition-text">
+                      {i === 0 ? `${c} ${NDA_COUNTRIES.join(', ')}.` : c}
+                    </p>
                   </div>
                 ))}
-              </div>
-
-              {/* NDA Countries */}
-              <div className="taxres-nda-box">
-                <p className="taxres-nda-label">NDA-Länder (Nichtdiskriminierungsabkommen)</p>
-                <div className="flex gap-1.5 flex-wrap">
-                  {NDA_COUNTRIES.map((c) => (
-                    <span key={c} className="taxres-nda-pill">
-                      {c}
-                    </span>
-                  ))}
-                </div>
               </div>
 
               <div className="taxres-notes">
@@ -253,6 +217,13 @@ export default function GermanTaxResidencyPage() {
                 <p>🎓 Inhaber eines Studentenvisums (500) werden in der Regel als Steuerresidenten behandelt.</p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
+        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+            <BackButton />
           </div>
         </section>
 

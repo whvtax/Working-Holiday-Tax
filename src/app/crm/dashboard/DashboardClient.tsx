@@ -22,6 +22,7 @@ type Client = {
   tfnService:ServiceRecord; abnService:ServiceRecord
   archived?: boolean
   yearlyCheckins?: Record<string, boolean>
+  referred_by?: string | null
 }
 type View = 'tasks'|'clients'|'client-detail'|'archive'
 
@@ -124,7 +125,7 @@ const WA_TEMPLATES = [
   { id: 'received', icon: '📨', label: 'Received', text: (n:string) => `Hi ${n}! Just letting you know I received your form and started processing it. I'll get back to you soon with updates 👍` },
   { id: 'docs', icon: '📋', label: 'Docs submitted', text: (n:string) => `Hi ${n}! Your documents have been submitted to the ATO ✅ I'll let you know once they're processed.` },
   { id: 'refund', icon: '💰', label: 'Refund processed', text: (n:string) => `Great news ${n}! Your refund has been processed and should arrive in your bank account within 1-2 weeks 🎉` },
-  { id: 'followup', icon: '🔔', label: 'Yearly follow-up', text: (n:string) => `Hi ${n}! Hope you're well. Just a reminder — it's tax season again. If you'd like to file this year's return, send me a message and I'll send you the link 🙂` },
+  { id: 'followup', icon: '🔔', label: 'Yearly follow-up', text: (n:string) => `Hi ${n}! Hope you're well. Just a reminder - it's tax season again. If you'd like to file this year's return, send me a message and I'll send you the link 🙂` },
   { id: 'super', icon: '💼', label: 'Super reminder', text: (n:string) => `Hi ${n}! Are you planning to leave Australia soon? You may be eligible to claim back your superannuation. Let me know if you'd like help with this!` },
 ]
 
@@ -197,7 +198,7 @@ function BankCard({ bankDetails }: { bankDetails: string }) {
       <div style={{ padding: '8px 14px', background: '#EAF6F1', borderBottom: '1px solid #D4EAE2', display: 'flex', alignItems: 'center', gap: 6 }}>
         <span style={{ fontSize: 11, fontWeight: 700, color: '#0E5C42', textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>🏦 Bank account details</span>
       </div>
-      {fields.filter(([,, v]) => v && v !== '—').map(([icon, label, value]) => (
+      {fields.filter(([,, v]) => v && v !== '-').map(([icon, label, value]) => (
         <div key={label} style={{ display: 'flex', alignItems: 'center', padding: '11px 14px', borderBottom: '1px solid #f0f4f1', gap: 10 }}>
           <span style={{ fontSize: 16, flexShrink: 0 }}>{icon}</span>
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -228,9 +229,24 @@ function CopyFieldBtn({ text }: { text: string }) {
   )
 }
 
+
+function SbButton({label, icon, badge, style, badgeStyle, onClick}: {
+  label: string; icon: React.ReactNode; badge?: number
+  style: React.CSSProperties; badgeStyle: React.CSSProperties; onClick: () => void
+}) {
+  return (
+    <button style={style} onClick={onClick}>
+      {icon}{label}
+      {badge != null && badge > 0 && <span style={badgeStyle}>{badge}</span>}
+    </button>
+  )
+}
+
+
 export default function DashboardClient() {
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
+  const [referralPartners, setReferralPartners] = useState<{id:string;name:string}[]>([])
   const [checkinYear, setCheckinYear] = useState(() => {
     // Auto-select current AU tax year (Jul-Jun cycle)
     const now = new Date()
@@ -238,11 +254,11 @@ export default function DashboardClient() {
     return now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
   })
   const [checkinFilter, setCheckinFilter] = useState<'all'|'done'|'pending'>('all')
-  // Dismissed birthday reminders — persisted so 'Done' survives reloads (keyed per client+occurrence)
-  const [dismissedBdays, setDismissedBdays] = useState<Set<string>>(() => {
-    if (typeof window === 'undefined') return new Set()
-    try { return new Set(JSON.parse(localStorage.getItem('whv_dismissed_bdays') || '[]')) } catch { return new Set() }
-  })
+  // Dismissed birthday reminders - persisted so 'Done' survives reloads (keyed per client+occurrence)
+  const [dismissedBdays, setDismissedBdays] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    try { setDismissedBdays(new Set(JSON.parse(localStorage.getItem('whv_dismissed_bdays') || '[]'))) } catch { /* ignore */ }
+  }, [])
   const dismissBday = useCallback((bkey: string) => {
     setDismissedBdays(prev => {
       const next = new Set(prev); next.add(bkey)
@@ -263,7 +279,6 @@ export default function DashboardClient() {
   const [globalSearch, setGlobalSearch] = useState('')
   const [yearFilter, setYearFilter] = useState<Set<string>>(new Set())
   const [howHeardFilter, setHowHeardFilter] = useState<Set<string>>(new Set())
-  const [commissionFilter, setCommissionFilter] = useState<'all'|'unpaid'|'paid'>('all')
   const [superFilter, setSuperFilter] = useState<'all'|'no-super'>('all')
   const [noReturnFilter, setNoReturnFilter] = useState<'all'|'didnt-return'>('all')
   const [countryFilter, setCountryFilter] = useState<Set<string>>(new Set())
@@ -288,14 +303,38 @@ export default function DashboardClient() {
   const prevArchiveCountRef = React.useRef(0)
   const prevPendingTasksRef = React.useRef(0)
   const [previewUrl, setPreviewUrl] = useState<string|null>(null)
+  // Fetch the file as a blob and render via object URL. This avoids the site's
+  // global X-Frame-Options: DENY / CSP frame-ancestors 'none' (which blocked the
+  // old <iframe src="/api/crm/file..."> with "refused to connect"), and reliably
+  // carries the CRM session cookie. blob: object URLs aren't subject to those
+  // framing headers, so PDFs render inline; images render in an <img>.
+  const [previewBlobUrl, setPreviewBlobUrl] = useState<string|null>(null)
+  const [previewLoading, setPreviewLoading] = useState(false)
+  const [previewError, setPreviewError]     = useState(false)
+  useEffect(() => {
+    if (!previewUrl) { setPreviewBlobUrl(null); setPreviewError(false); setPreviewLoading(false); return }
+    let cancelled = false
+    let objUrl: string | null = null
+    setPreviewLoading(true); setPreviewError(false); setPreviewBlobUrl(null)
+    fetch(previewUrl)
+      .then(async r => {
+        if (!r.ok) throw new Error(`status ${r.status}`)
+        const blob = await r.blob()
+        objUrl = URL.createObjectURL(blob)
+        if (!cancelled) { setPreviewBlobUrl(objUrl); setPreviewLoading(false) }
+      })
+      .catch(() => { if (!cancelled) { setPreviewError(true); setPreviewLoading(false) } })
+    return () => { cancelled = true; if (objUrl) URL.revokeObjectURL(objUrl) }
+  }, [previewUrl])
   const [showAddModal, setShowAddModal] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
+  const [permDeleteText, setPermDeleteText] = useState('')
   const [confirmArchive, setConfirmArchive] = useState<string|null>(null)
 
   // Reused AudioContext for the new-task notification beep.
-  // Creating a new context per beep leaks resources — browsers cap at ~6 concurrent
+  // Creating a new context per beep leaks resources - browsers cap at ~6 concurrent
   // contexts, after which subsequent creations fail silently.
   const audioCtxRef = React.useRef<AudioContext | null>(null)
   useEffect(() => {
@@ -422,9 +461,9 @@ export default function DashboardClient() {
     } catch(e){ console.error('[loadStats]', e) }
   },[])
 
-  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats({force:true})]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadStats])
+  useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats({force:true}),loadReferralPartners()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadStats])
 
-  // Auto-poll every 20s — keeps all open sessions in sync and surfaces new leads faster
+  // Auto-poll every 20s - keeps all open sessions in sync and surfaces new leads faster
   useEffect(()=>{
     const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()]) }, 20_000)
     return ()=> clearInterval(id)
@@ -484,7 +523,7 @@ export default function DashboardClient() {
     // Play notification sound when new task arrives (not on initial load)
     if (prevPendingTasksRef.current > 0 && pending > prevPendingTasksRef.current) {
       try {
-        // Web Audio API beep — works without external file.
+        // Web Audio API beep - works without external file.
         // Reuse one AudioContext for all beeps (creating a new one per beep leaks).
         if (!audioCtxRef.current) {
           const Ctor = window.AudioContext || (window as unknown as {webkitAudioContext: typeof AudioContext}).webkitAudioContext
@@ -528,6 +567,14 @@ export default function DashboardClient() {
 
   async function lockAndExit() { await fetch('/api/crm/logout',{method:'POST'}); window.location.replace('/crm') }
 
+  const loadReferralPartners = async () => {
+    try {
+      const r = await fetchWithTimeout('/api/crm/partners', { cache: 'no-store' })
+      const d = await r.json()
+      if (d.ok) setReferralPartners(d.partners.map((p: {id:string;name:string}) => ({ id: p.id, name: p.name })))
+    } catch (e) { console.error('[loadReferralPartners]', e) }
+  }
+
   async function updateClientStatus(clientId: string, status: ClientStatus) {
     const client = clients.find(c => c.id === clientId)
     if (!client) return
@@ -551,7 +598,7 @@ export default function DashboardClient() {
   async function archiveClient(id: string) {
     setClients(prev => prev.filter(c => c.id !== id))
     await fetch(`/api/crm/clients/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'archive'})})
-    // Trigger archive badge — client moved to archive
+    // Trigger archive badge - client moved to archive
     setNewArchiveCount(n => n + 1)
     await Promise.all([loadClients(), loadArchived()])
     setActiveClient(null)
@@ -609,7 +656,7 @@ export default function DashboardClient() {
     setTasks(prev => prev.filter(t => t.id !== task.id))
     setActiveTask(null); setTaskView('list')
     await fetch(`/api/crm/tasks/${task.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete'})})
-    // Trigger badge explicitly — user is on Tasks tab, client was added to Clients
+    // Trigger badge explicitly - user is on Tasks tab, client was added to Clients
     setNewClientsCount(n => n + 1)
     await Promise.all([loadClients(), loadArchived()])
   }
@@ -756,7 +803,7 @@ export default function DashboardClient() {
     setShowAddModal(false); await loadTasks()
   }
 
-  const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST/AEDT' : '—'
+  const fmtDate = (iso:string) => iso ? new Date(iso).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'}) + ' AEST/AEDT' : '-'
   // Formats a date of birth string to DD/MM/YYYY, regardless of whether it was stored as
   // an ISO date (YYYY-MM-DD, from the <input type="date"> forms) or already DD/MM/YYYY.
   const fmtDob = (dob:string) => {
@@ -768,13 +815,13 @@ export default function DashboardClient() {
     return dob
   }
 
-  // Strip structured form data from notes — return only the user-written portion
+  // Strip structured form data from notes - return only the user-written portion
   const extractUserNotes = (raw:string) => {
     if (!raw) return ''
     const parts = raw.split(' | ')
     const userParts = parts
       .filter(p =>
-        // Strip ALL auto-generated form data — only keep human-written admin notes
+        // Strip ALL auto-generated form data - only keep human-written admin notes
         !p.match(/^(Passport No:|Super Funds:|Super Fund Name:|Super Member Number:|Super Opening Date:|Home Country Address:|Gender:|ABN:|ABN Number:|ABN Income:|ABN Work:|Expenses:|💼 TFN Invoices|🏢 ABN Invoices|→|I confirm|I declare|I have read|Working Holiday)/i)
         && !p.startsWith('📝 ')
         && p !== '🔄 Returning client'
@@ -785,7 +832,7 @@ export default function DashboardClient() {
   const downloadTaskPdf = (task: Task) => {
     const G = '#0B5240'
     const GL = '#EAF6F1'
-    const esc = (s: string) => (s||'—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;')
+    const esc = (s: string) => (s||'-').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;')
 
     const sec = (title: string) =>
       `<div style="font-size:11px;font-weight:700;color:${G};text-transform:uppercase;letter-spacing:0.06em;margin:22px 0 12px;border-bottom:1.5px solid ${GL};padding-bottom:8px">${title}</div>`
@@ -831,17 +878,17 @@ export default function DashboardClient() {
 
     const notes = task.notes || ''
     const parts = notes.split(' | ')
-    const getNote = (prefix: string) => notes.match(new RegExp(prefix + ': ([^|]+)'))?.[1]?.trim() || '—'
+    const getNote = (prefix: string) => notes.match(new RegExp(prefix + ': ([^|]+)'))?.[1]?.trim() || '-'
     const findDecl = (prefixes: string[]) => {
       const hit = parts.find(p => prefixes.some(px => p.startsWith(px)))
-      return hit ? hit.replace('→ ','') : '—'
+      return hit ? hit.replace('→ ','') : '-'
     }
 
     const bkParts = (task.bankDetails||'').split(' | ')
-    const bkName    = bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')    || task.bankDetails || '—'
-    const bkHolder  = bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')    || '—'
-    const bkAccount = bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','') || '—'
-    const bkBsb     = bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')      || '—'
+    const bkName    = bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')    || task.bankDetails || '-'
+    const bkHolder  = bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')    || '-'
+    const bkAccount = bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','') || '-'
+    const bkBsb     = bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')      || '-'
 
     const titles: Record<string,string> = {
       'tfn':'TFN Application','abn':'ABN Application',
@@ -876,14 +923,16 @@ export default function DashboardClient() {
         + sec('Declaration')
         + declBox(
             '',
-            decl1Val !== '—' ? decl1Val.replace('✓ ','') : 'I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.',
-            decl1Val !== '—'
+            decl1Val !== '-' ? decl1Val.replace('✓ ','') : 'I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.',
+            decl1Val !== '-'
           )
         + declBox(
             '',
             'I have read and accept the Client Agreement & Privacy Policy',
-            decl2Val !== '—'
+            decl2Val !== '-'
           )
+        + sec('How did you hear about us?')
+        + field('How did you hear about us?', task.howHeard)
     }
 
     else if (task.taskType === 'abn') {
@@ -911,14 +960,16 @@ export default function DashboardClient() {
         + sec('Declaration')
         + declBox(
             '',
-            decl1Val !== '—' ? decl1Val.replace('→ ✓ ','') : 'I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
-            decl1Val !== '—'
+            decl1Val !== '-' ? decl1Val.replace('→ ✓ ','') : 'I declare that I do not own any assets in Australia and have never been issued an ABN. I intend to establish a business as a sole trader, where I will be the sole owner, with operations based in Australia.',
+            decl1Val !== '-'
           )
         + declBox(
             '',
             'I have read and accept the Client Agreement & Privacy Policy',
-            decl2Val !== '—'
+            decl2Val !== '-'
           )
+        + sec('How did you hear about us?')
+        + field('How did you hear about us?', task.howHeard)
     }
 
     else if (task.taskType === 'super') {
@@ -959,8 +1010,10 @@ export default function DashboardClient() {
         + declBox(
             '',
             'I have read and accept the Client Agreement & Privacy Policy',
-            declVal !== '—'
+            declVal !== '-'
           )
+        + sec('How did you hear about us?')
+        + field('How did you hear about us?', task.howHeard)
     }
 
     else if (task.taskType === 'tax-return') {
@@ -969,7 +1022,7 @@ export default function DashboardClient() {
         if (v === 'whm' || v === '→ whm') return 'Working holiday maker for tax purposes'
         return v.replace('→ ','')
       }
-      const rawStatus   = parts.find(p => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || task.taxStatus || '—'
+      const rawStatus   = parts.find(p => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || task.taxStatus || '-'
       const taxStatus   = normStatus(rawStatus)
       const declaredVal = findDecl(['→ ✓ I declare that all','→ ✓ Yes','→ ✗ No','→ ✓ I agree','→ Yes'])
       const incomeDecl   = findDecl(['→ ✓ I declare under my full legal'])
@@ -996,9 +1049,9 @@ export default function DashboardClient() {
             const abnIncomePdf = (task.notes||'').match(/ABN Income: ([^|]+)/)?.[1]?.trim()||''
             if (!abnValPdf) return radioField('Has ABN?', '', ['Yes','No'])
             return radioField('Has ABN?', abnValPdf, ['Yes','No'])
-              + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'—') : '')
-              + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'—') : '')
-              + (abnValPdf==='Yes' ? field('Work done under ABN', (task.notes||'').match(/ABN Work: ([^|]+)/)?.[1]?.trim()||'—') : '')
+              + (abnValPdf==='Yes' ? field('ABN number', abnNumPdf||'-') : '')
+              + (abnValPdf==='Yes' ? field('Annual ABN income (AUD)', abnIncomePdf||'-') : '')
+              + (abnValPdf==='Yes' ? field('Work done under ABN', (task.notes||'').match(/ABN Work: ([^|]+)/)?.[1]?.trim()||'-') : '')
           })()
         + sec('Work-related expenses')
         + (() => {
@@ -1007,10 +1060,10 @@ export default function DashboardClient() {
           })()
         + (() => {
             // Parse and display TFN/ABN invoices stored in notes by the tax-form route.
-            // Format: "💼 TFN Invoices (N): $TOTAL — $AMT DESC; $AMT DESC; ..."
+            // Format: "💼 TFN Invoices (N): $TOTAL - $AMT DESC; $AMT DESC; ..."
             const notes = task.notes || ''
-            const tfnMatch = notes.match(/💼 TFN Invoices \(\d+\): \$[\d.]+ — ([^|]+)/)
-            const abnMatch = notes.match(/🏢 ABN Invoices \(\d+\): \$[\d.]+ — ([^|]+)/)
+            const tfnMatch = notes.match(/💼 TFN Invoices \(\d+\): \$[\d.]+ - ([^|]+)/)
+            const abnMatch = notes.match(/🏢 ABN Invoices \(\d+\): \$[\d.]+ - ([^|]+)/)
             if (!tfnMatch && !abnMatch) return ''
             const renderList = (raw: string) => raw.trim().split(';').map(s => s.trim()).filter(Boolean)
               .map(line => `<div style="padding:8px 12px;background:#F5F9F7;border:1px solid #D4EAE2;border-radius:8px;margin-bottom:6px;font-size:12px;color:#1A2822">${esc(line)}</div>`)
@@ -1039,10 +1092,10 @@ export default function DashboardClient() {
         + `<div style="font-size:12px;color:#587066;margin-bottom:6px">Tax residency status:</div>`
         + `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;border:1.5px solid ${G};background:#EAF6F1;margin-bottom:10px">` +
           `<div style="width:16px;height:16px;border-radius:50%;background:${G};flex-shrink:0"></div>` +
-          `<span style="font-size:13px;font-weight:600;color:${G}">${esc(taxStatus||'—')}</span>` +
+          `<span style="font-size:13px;font-weight:600;color:${G}">${esc(taxStatus||'-')}</span>` +
           `</div>`
-        + declBox('', declaredVal !== '—' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I declare that all information provided is true and accurate.') : '—', declaredVal !== '—')
-        + declBox('', incomeDecl !== '—' ? (incomeDecl.replace('✓ ','').replace('→ ','') || 'I declare income truthfully disclosed.') : '—', incomeDecl !== '—')
+        + declBox('', declaredVal !== '-' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I declare that all information provided is true and accurate.') : '-', declaredVal !== '-')
+        + declBox('', incomeDecl !== '-' ? (incomeDecl.replace('✓ ','').replace('→ ','') || 'I declare income truthfully disclosed.') : '-', incomeDecl !== '-')
         + sec('How did you hear about us?')
         + field('How did you hear about us?', task.howHeard)
     }
@@ -1050,7 +1103,7 @@ export default function DashboardClient() {
     const html =
       `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/>` +
       `<meta name="viewport" content="width=device-width,initial-scale=1"/>` +
-      `<title>${esc(titles[task.taskType]??task.taskType)} — ${esc(task.clientName)}</title>` +
+      `<title>${esc(titles[task.taskType]??task.taskType)} - ${esc(task.clientName)}</title>` +
       `<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#fff;color:#0a1410;padding:32px 28px;max-width:520px;margin:0 auto}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.no-print{display:none!important}}</style>` +
       `</head><body>` +
 
@@ -1067,7 +1120,7 @@ export default function DashboardClient() {
       `<span style="font-family:Georgia,serif;font-size:20px;font-weight:800;color:#080F0D;letter-spacing:-0.02em">Working Holiday Tax</span>` +
       `</div>` +
       `<h1 style="font-size:24px;font-weight:800;color:#080F0D;letter-spacing:-0.02em;margin-bottom:6px">${esc(titles[task.taskType]??task.taskType)}</h1>` +
-      `<p style="font-size:12px;color:#6b7f76">Submitted: ${task.submittedAt ? new Date(task.submittedAt).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'})+' AEST/AEDT' : '—'}</p>` +
+      `<p style="font-size:12px;color:#6b7f76">Submitted: ${task.submittedAt ? new Date(task.submittedAt).toLocaleString('en-AU',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',timeZone:'Australia/Sydney'})+' AEST/AEDT' : '-'}</p>` +
       `</div>` +
 
       formBody +
@@ -1085,7 +1138,7 @@ export default function DashboardClient() {
     const a = document.createElement('a')
     a.href = url
     // Build filename: ClientName_TaskType_Date.html (e.g., "John_Doe_Tax_Return_2026-05-20.html")
-    // Allow Unicode letters (Hebrew, Spanish accents, etc) — only strip filesystem-unsafe chars
+    // Allow Unicode letters (Hebrew, Spanish accents, etc) - only strip filesystem-unsafe chars
     let safeName = (task.clientName || 'form').trim().replace(/\s+/g, '_').replace(/[<>:"/\\|?*\x00-\x1f]/g, '')
     if (!safeName || safeName === '_') safeName = 'client'
     const typeLabels: Record<string, string> = {
@@ -1149,12 +1202,6 @@ export default function DashboardClient() {
     const mc = checkinFilter==='all' || (checkinFilter==='done' && checkinDone) || (checkinFilter==='pending' && !checkinDone)
     const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
     const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
-    // Commission filter (only applies to referrals)
-    const src = (c.howHeard||'').trim().toLowerCase()
-    const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(src)
-    const isReferral = !isSocial && src.length > 1
-    const isPaid = (c.notes||'').includes('💰 Commission paid')
-    const mcom = commissionFilter==='all' || (commissionFilter==='unpaid' && isReferral && !isPaid) || (commissionFilter==='paid' && isReferral && isPaid)
     // Super filter: no-super = clients with tax returns but no super refund
     const msuper = superFilter==='all' || (superFilter==='no-super' && c.taxReturns.length > 0 && c.superReturns.length === 0)
     // No-return filter: clients who had tax return last year but didn't return this year
@@ -1166,9 +1213,9 @@ export default function DashboardClient() {
     const hasThisYear = c.taxReturns.some(r => r.year === thisYearStr)
     const mNoReturn = noReturnFilter==='all' || (noReturnFilter==='didnt-return' && hadLastYear && !hasThisYear)
     const mStatus = statusFilter.size===0 || statusFilter.has(getClientStatus(c.notes || ''))
-    return ms && my && mc && mh && mcountry && mcom && msuper && mNoReturn && mStatus
+    return ms && my && mc && mh && mcountry && msuper && mNoReturn && mStatus
   }).sort((a,b)=>new Date(b.createdAt).getTime()-new Date(a.createdAt).getTime())
-  }, [clients, clientsTotal, searchResults, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, commissionFilter, superFilter, noReturnFilter, statusFilter])
+  }, [clients, clientsTotal, searchResults, search, yearFilter, checkinYear, checkinFilter, howHeardFilter, countryFilter, superFilter, noReturnFilter, statusFilter])
   const DropBtn = ({id,label,icon,active,onClear,children}:{id:string;label:string;icon:React.ReactNode;active:boolean;onClear:()=>void;children:React.ReactNode}) => {
     const isOpen = openDropdown === id
     return (
@@ -1279,13 +1326,6 @@ export default function DashboardClient() {
     mDel:{flex:2,padding:10,border:'none',borderRadius:10,fontSize:13,fontWeight:600,cursor:'pointer',background:'#c0392b',color:'#fff',fontFamily:'inherit'},
   }
 
-  const SbButton = ({v,label,icon,badge}:{v:View,label:string,icon:React.ReactNode,badge?:number})=>(
-    <button style={{...S.sbBtn,...(view===v?S.sbBtnOn:{})}} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v);setTaskView('list');setActiveTask(null);setActiveClient(null); if(v==='clients') setNewClientsCount(0) } }}>
-      {icon}{label}
-      {badge!=null && badge>0 && <span style={S.sbBadge}>{badge}</span>}
-    </button>
-  )
-
   return (
     <>
       <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}} @keyframes donePulse{0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,0.55)}60%{box-shadow:0 0 0 6px rgba(5,150,105,0)}} @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}} .grain{display:none!important} [data-task-card]:hover{border-color:#0E5C42!important;box-shadow:0 4px 14px rgba(11,82,64,0.08)!important;transform:translateY(-1px)}
@@ -1393,12 +1433,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
             </div>
 
             <nav style={S.sbNav}>
-              <SbButton v="tasks" label="Tasks" badge={pendingTasks.length}
+              <SbButton label="Tasks" badge={pendingTasks.length}
+                style={view==='tasks' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
+                onClick={()=>{ setView('tasks');setTaskView('list');setActiveTask(null);setActiveClient(null) }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
-              <SbButton v="clients" label="Clients" badge={newClientsCount||undefined}
+              <SbButton label="Clients" badge={newClientsCount||undefined}
+                style={view==='clients' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
+                onClick={()=>{ setView('clients');setTaskView('list');setActiveTask(null);setActiveClient(null);setNewClientsCount(0) }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
-              <SbButton v="archive" label="Archive" badge={newArchiveCount||undefined}
+              <SbButton label="Archive" badge={newArchiveCount||undefined}
+                style={view==='archive' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
+                onClick={openArchive}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
+              <SbButton label="Partners"
+                style={S.sbBtn} badgeStyle={S.sbBadge}
+                onClick={()=>{ window.location.href = '/crm/partners' }}
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
             </nav>
           </div>
           <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'20px'}}>
@@ -1535,7 +1585,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         {upcoming.map(({client:c,days,bkey})=>{
                           const sanitized = (c.whatsapp||'').replace(/[^0-9+]/g,'')
                           const firstName = c.fullName.split(' ')[0] || 'there'
-                          const msg = `Happy birthday ${firstName}! 🎉🎂 Wishing you an amazing year ahead — Working Holiday Tax`
+                          const msg = `Happy birthday ${firstName}! 🎉🎂 Wishing you an amazing year ahead - Working Holiday Tax`
                           return (
                             <div key={c.id} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.5)',padding:'6px 10px',borderRadius:8}}>
                               <span style={{fontSize:11,fontWeight:600,color:'#831843',flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis' as const,whiteSpace:'nowrap' as const}}>{c.fullName}</span>
@@ -1546,7 +1596,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                   🎁 Send wish
                                 </a>
                               )}
-                              <button type="button" onClick={()=>dismissBday(bkey)} title="Mark as done — dismiss this reminder"
+                              <button type="button" onClick={()=>dismissBday(bkey)} title="Mark as done - dismiss this reminder"
                                 style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:600,padding:'3px 8px',background:'#fff',color:'#9d174d',border:'1px solid #f9a8d4',borderRadius:6,cursor:'pointer',whiteSpace:'nowrap' as const}}>
                                 ✓ Done
                               </button>
@@ -1625,12 +1675,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         <span>{t.country} · <span style={{background:TASK_COLORS[t.taskType]+'22',color:TASK_COLORS[t.taskType],borderRadius:5,padding:'1px 6px',fontSize:10,fontWeight:700}}>{TASK_LABELS[t.taskType]}</span></span>
                         {isWhv && (
                           <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FEF3C7',color:'#92400E',border:'1px solid #FDE68A'}} title="Client filled as Working Holiday Visa - verify residency status">
-                            ⚠️ WHV — Verify Residency
+                            ⚠️ WHV - Verify Residency
                           </span>
                         )}
                         {isMarried && (
                           <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#FCE7F3',color:'#9D174D',border:'1px solid #F9A8D4'}} title="Client marked as Married - may affect tax processing">
-                            💑 Married — Verify
+                            💑 Married - Verify
                           </span>
                         )}
                       </div>
@@ -1645,7 +1695,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               {doneTasks.length>0 && <>
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',margin:'14px 0 8px',display:'flex',alignItems:'center',gap:6}}>
-                  <span style={{color:'#059669',fontSize:8}}>●</span> Done — {doneTasks.length}
+                  <span style={{color:'#059669',fontSize:8}}>●</span> Done - {doneTasks.length}
                 </div>
                 {doneTasks.map(t=>{
                   const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
@@ -1718,13 +1768,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
               <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'0 26px 24px'}}>
 
-              {/* ── DONE: locked view — only name + 2 actions ── */}
+              {/* ── DONE: locked view - only name + 2 actions ── */}
               {activeTask.done && (
                 <div style={{...S.card,padding:'32px 28px',textAlign:'center' as const}}>
                   <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#ecfdf5,#a7f3d0)',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,margin:'0 auto 16px',color:'#059669'}}>✓</div>
                   <div style={{fontSize:20,fontWeight:700,color:'#0a1410',marginBottom:6,letterSpacing:'-0.3px'}}>{activeTask.clientName}</div>
                   <div style={{fontSize:13,color:'#7a8a82',marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
-                  <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'5px 16px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Completed — sensitive data cleared</span>
+                  <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'5px 16px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Completed - sensitive data cleared</span>
                   <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:10,padding:'10px 14px',marginBottom:20,fontSize:11,color:'#7a8a82',textAlign:'left'}}>
                     <div style={{fontWeight:600,color:'#0E5C42',marginBottom:4}}>📋 What you have:</div>
                     <div>• Name, DOB, Email, WhatsApp, Country</div>
@@ -1754,7 +1804,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 return (
                   <div style={{background:'#fffbeb',border:'1.5px solid #fde68a',borderLeft:'4px solid #d97706',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
                     <span style={{fontSize:14,flexShrink:0}}>⚠️</span>
-                    <span style={{fontSize:13,fontWeight:600,color:'#92400e'}}>WHV — Verify Tax Residency</span>
+                    <span style={{fontSize:13,fontWeight:600,color:'#92400e'}}>WHV - Verify Tax Residency</span>
                   </div>
                 )
               })()}
@@ -1762,7 +1812,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               {(activeTask.marital||'').toLowerCase() === 'married' && (
                 <div style={{background:'#fdf2f8',border:'1.5px solid #f9a8d4',borderLeft:'4px solid #db2777',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
                   <span style={{fontSize:14,flexShrink:0}}>💑</span>
-                  <span style={{fontSize:13,fontWeight:600,color:'#9d174d'}}>Married — Verify Status</span>
+                  <span style={{fontSize:13,fontWeight:600,color:'#9d174d'}}>Married - Verify Status</span>
                 </div>
               )}
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,background:'#fff'}}>
@@ -1780,7 +1830,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'#fef3e8',border:'1px solid #fed7aa',borderRadius:8,padding:'4px 10px',marginTop:4}}>
                         <span style={{fontSize:11}}>⚠️</span>
                         <span style={{fontSize:11,fontWeight:600,color:'#c2410c'}}>
-                          Returning client — last: {lastTax.year}
+                          Returning client - last: {lastTax.year}
                           {lastTax.refundAmount>0 ? ` · ${fmtCur(lastTax.refundAmount)} refund` : ''}
                           {lastSuper ? ` · Super ${lastSuper.year}` : ''}
                         </span>
@@ -1806,7 +1856,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 </div>
               </div>
 
-              {/* 4 sections — adapted per taskType */}
+              {/* 4 sections - adapted per taskType */}
               <div style={{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',gap:12,marginBottom:12}}>
 
 
@@ -1825,21 +1875,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       ['Date of birth', fmtDob(activeTask.dob)],
                     ]
                     if (activeTask.taskType==='tfn') {
-                      const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim()||'—'
-                      const gender   = notes.match(/Gender: ([^|]+)/)?.[1]?.trim()||'—'
+                      const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim()||'-'
+                      const gender   = notes.match(/Gender: ([^|]+)/)?.[1]?.trim()||'-'
                       return [...base,['Country of passport',activeTask.country],['Passport No 🔒',passport],['Gender',gender],['Marital',activeTask.marital]] as [string,string][]
                     }
                     if (activeTask.taskType==='super') {
-                      const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim()||'—'
+                      const passport = notes.match(/Passport No: ([^|]+)/)?.[1]?.trim()||'-'
                       return [...base,['Country (passport)',activeTask.country],['Passport No 🔒',passport]] as [string,string][]
                     }
                     if (activeTask.taskType==='abn') {
-                      const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim()||'—'
+                      const gender = notes.match(/Gender: ([^|]+)/)?.[1]?.trim()||'-'
                       return [...base,['Country',activeTask.country],['Gender',gender],['Marital',activeTask.marital]] as [string,string][]
                     }
                     return [...base,['Country',activeTask.country],['Marital',activeTask.marital]] as [string,string][]
                   })().map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={S.val}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={S.val}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
 
@@ -1854,7 +1904,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     }
                     return rows
                   })().map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
 
@@ -1863,7 +1913,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {activeTask.taskType==='tax-return' && <>
                     <div style={S.secHead}><span>Tax & employment</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Employer',activeTask.primaryJob],['Tax Year',activeTask.taxYear],['Tax status',activeTask.taxStatus]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                     {(()=>{
                       const abnVal    = (activeTask.notes||'').match(/ABN: ([^|]+)/)?.[1]?.trim()||''
@@ -1874,9 +1924,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         <>
                           <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#c2410c',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏢 ABN</span></div>
                           <div style={S.row}><span style={S.lbl}>Has ABN</span><span style={{...S.val,color:abnVal==='Yes'?'#0E5C42':'#c0392b',fontWeight:600}}>{abnVal==='Yes'?'Yes ✓':abnVal==='No'?'No':'Not specified'}</span></div>
-                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'—'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
-                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'—'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
-                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork||'—'}</span>{abnWork&&<CopyBtn text={abnWork}/>}</div>}
+                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN number</span><span style={{...S.val,direction:'ltr'}}>{abnNum||'-'}</span>{abnNum&&<CopyBtn text={abnNum}/>}</div>}
+                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN income</span><span style={{...S.val,direction:'ltr'}}>{abnIncome||'-'}</span>{abnIncome&&<CopyBtn text={abnIncome}/>}</div>}
+                          {abnVal==='Yes' && <div style={S.row}><span style={S.lbl}>ABN work type</span><span style={{...S.val,direction:'ltr'}}>{abnWork||'-'}</span>{abnWork&&<CopyBtn text={abnWork}/>}</div>}
                         </>
                       )
                     })()}
@@ -1886,20 +1936,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       return (
                         <div style={{...S.row,background: expVal==='Yes'?'#fffbeb':'#f7fbf9',borderTop:'1px solid #e4ede8'}}>
                           <span style={{...S.lbl,fontWeight:700}}>📎 Work expenses</span>
-                          <span style={{...S.val,color:expVal==='Yes'?'#b45309':'#0E5C42',fontWeight:600}}>{expVal==='Yes'?'Yes — needs receipts':'No'}</span>
+                          <span style={{...S.val,color:expVal==='Yes'?'#b45309':'#0E5C42',fontWeight:600}}>{expVal==='Yes'?'Yes - needs receipts':'No'}</span>
                         </div>
                       )
                     })()}
                     {(()=>{
                       const bkParts=(activeTask.bankDetails||'').split(' | ')
-                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'—'
-                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'—'
-                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'—'
-                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'—'
+                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'-'
+                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'-'
+                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'-'
+                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'-'
                       return(<>
                         <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
                         {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
-                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                         ))}
                       </>)
                     })()}
@@ -1909,9 +1959,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     {(()=>{
                       const notes = activeTask.notes||''
                       const sfName = notes.match(/Super Fund Name: ([^|]+)/)?.[1]?.trim()
-                        || notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '—'
-                      const sfMember = notes.match(/Super Member Number: ([^|]+)/)?.[1]?.trim() || '—'
-                      const sfDate = notes.match(/Super Opening Date: ([^|]+)/)?.[1]?.trim() || '—'
+                        || notes.match(/Super Funds: ([^|]+)/)?.[1]?.trim() || '-'
+                      const sfMember = notes.match(/Super Member Number: ([^|]+)/)?.[1]?.trim() || '-'
+                      const sfDate = notes.match(/Super Opening Date: ([^|]+)/)?.[1]?.trim() || '-'
                       return([
                         ['TFN 🔒',activeTask.tfn],
                         ['Super fund name',sfName],
@@ -1919,18 +1969,18 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         ['Account opening date',sfDate],
                       ] as [string,string][])
                     })().map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                     {(()=>{
                       const bkParts=(activeTask.bankDetails||'').split(' | ')
-                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'—'
-                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'—'
-                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'—'
-                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'—'
+                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'-'
+                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'-'
+                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'-'
+                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'-'
                       return(<>
                         <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
                         {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
-                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                         ))}
                       </>)
                     })()}
@@ -1938,13 +1988,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {activeTask.taskType==='tfn' && <>
                     <div style={S.secHead}><span>Tax details</span></div>
                     {([['TFN (if existing) 🔒',activeTask.tfn],['Tax Year',activeTask.taxYear],['How heard',activeTask.howHeard]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                   </>}
                   {activeTask.taskType==='abn' && <>
                     <div style={S.secHead}><span>Business details</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Business activity',activeTask.primaryJob],['How heard',activeTask.howHeard]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'—'}</span>{v&&v!=='—'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                   </>}
                 </div>
@@ -1985,7 +2035,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               </div>
               {/* Declaration + Notes side by side */}
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-                {/* Declaration card — per form type */}
+                {/* Declaration card - per form type */}
                 <div style={{...S.card,minWidth:0,overflow:'hidden'}}>
                   {(()=>{
                     const parts = (activeTask.notes||'').split(' | ')
@@ -1993,12 +2043,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     // TAX RETURN: Tax Residency + 2 Declarations
                     if (activeTask.taskType === 'tax-return') {
                       const normaliseTaxStatus = (v: string) => {
-                        if (!v || v === '—') return v
+                        if (!v || v === '-') return v
                         if (v === 'resident') return 'Australian resident for tax purposes'
                         if (v === 'whm') return 'Working holiday maker for tax purposes'
                         return v.replace('→ ','')
                       }
-                      const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '—'
+                      const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '-'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
                       const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
                       const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare under my full legal'))
@@ -2006,14 +2056,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         <div style={S.secHead}><span>Tax Residency</span></div>
                         <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>
                           <div style={{width:10,height:10,borderRadius:'50%',background:'#0B5240',flexShrink:0}}/>
-                          <span style={{fontSize:13,color:'#0B5240',fontWeight:600}}>{taxStatusValue||'—'}</span>
+                          <span style={{fontSize:13,color:'#0B5240',fontWeight:600}}>{taxStatusValue||'-'}</span>
                         </div>
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>General Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {declaredPart
                             ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace('→ ✓ ','')}</span></>
-                            : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
+                            : <span style={{fontSize:12,color:'#aabab2'}}>-</span>
                           }
                         </div>
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
@@ -2021,7 +2071,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {incomePart
                             ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{incomePart.replace('→ ✓ ','')}</span></>
-                            : <span style={{fontSize:12,color:'#aabab2'}}>—</span>
+                            : <span style={{fontSize:12,color:'#aabab2'}}>-</span>
                           }
                         </div>
                       </>
@@ -2029,7 +2079,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
                     // SUPER: Client Agreement only
                     if (activeTask.taskType === 'super') {
-                      const declVal = parts.find((p:string)=>p.startsWith('→')) || '—'
+                      const declVal = parts.find((p:string)=>p.startsWith('→')) || '-'
                       return <>
                         <div style={S.secHead}><span>Declaration</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I have read and accept the Client Agreement & Privacy Policy.</div>
@@ -2044,8 +2094,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
                     // TFN: Personal declaration + Client Agreement
                     if (activeTask.taskType === 'tfn') {
-                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm I am')) || parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
-                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
+                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm I am')) || parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '-'
+                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '-'
                       return <>
                         <div style={S.secHead}><span>Personal Declaration</span></div>
                         <div style={{fontSize:11,color:'#7a8a82',padding:'6px 14px 8px',lineHeight:1.5,borderBottom:'1px solid #f0f4f1'}}>I confirm that I am currently in Australia on my first visit, have never changed my name or gender, do not own any assets in Australia, and have not been issued a TFN.</div>
@@ -2069,8 +2119,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
                     // ABN: Business declaration + Client Agreement
                     if (activeTask.taskType === 'abn') {
-                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '—'
-                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '—'
+                      const declVal  = parts.find((p:string)=>p.startsWith('→ ✓ I confirm')) || parts.find((p:string)=>p.startsWith('→ ✓')) || '-'
+                      const termsVal = parts.filter((p:string)=>p.startsWith('→')).slice(-1)[0] || '-'
                       return <>
                         <div style={S.secHead}><span>Business Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
@@ -2191,15 +2241,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <button
                     style={{padding:'8px 14px',fontSize:13,background:'#fff',color:'#0E5C42',border:'1.5px solid #d4eae2',borderRadius:9,fontWeight:600,cursor:'pointer',fontFamily:'inherit',display:'inline-flex',alignItems:'center',gap:6}}
                     onClick={()=>{
-                      const headers = ['Name','DOB','Country','WhatsApp','Email','Source','Commission','Created','Last Tax Year','Total Refunds','Total Super','TFN','ABN','Notes']
+                      const headers = ['Name','DOB','Country','WhatsApp','Email','Source','Created','Last Tax Year','Total Refunds','Total Super','TFN','ABN','Notes']
                       const rows = visibleClients.map(c=>{
                         const lastTax = c.taxReturns?.length ? [...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0] : null
                         const totalRefunds = c.taxReturns.filter(r=>r.type==='refund').reduce((s,r)=>s+r.refundAmount,0)
                         const totalSuper = c.superReturns.reduce((s,r)=>s+r.amount,0)
-                        const isPaid = (c.notes||'').includes('💰 Commission paid')
                         return [
                           c.fullName, c.dob, c.country, c.whatsapp, c.email, c.howHeard,
-                          isPaid?'Paid':'',
                           c.createdAt?.slice(0,10), lastTax?.year||'',
                           totalRefunds||'', totalSuper||'',
                           c.tfnService?.done?'✓':'', c.abnService?.done?'✓':'',
@@ -2228,7 +2276,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 </div>
               </div>
 
-              {/* Filters row — same layout as Archive */}
+              {/* Filters row - same layout as Archive */}
               <div style={{display:'flex',gap:8,marginBottom:14,flexWrap:'wrap' as const,alignItems:'center'}}>
                 <div style={{position:'relative',flex:3,minWidth:200}}>
                   <svg style={{position:'absolute',left:10,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
@@ -2266,16 +2314,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     )})}
                     {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
-                {/* Commission filter */}
-                <div style={{display:'inline-flex',alignItems:'center',gap:0,height:'38px',background:'#fff',border:'1px solid #e4ede8',borderRadius:9,padding:'0 4px',flexShrink:0}}>
-                  <span style={{fontSize:11,color:'#7a8a82',fontWeight:600,padding:'0 8px',borderRight:'1px solid #f0f4f1'}}>💰</span>
-                  {([['all','All'],['unpaid','Unpaid'],['paid','Paid']] as const).map(([val,label])=>(
-                    <button key={val} onClick={()=>setCommissionFilter(val)}
-                      style={{background:commissionFilter===val?'#0E5C42':'transparent',color:commissionFilter===val?'#fff':'#7a8a82',border:'none',borderRadius:7,padding:'6px 10px',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',margin:'0 2px'}}>
-                      {label}
-                    </button>
-                  ))}
-                </div>
+
                 {/* Status filter */}
                 <div style={{display:'inline-flex',alignItems:'center',gap:0,height:'38px',background:'#fff',border:'1px solid #e4ede8',borderRadius:9,padding:'0 4px',flexShrink:0}}>
                   <span style={{fontSize:11,color:'#7a8a82',fontWeight:600,padding:'0 8px',borderRight:'1px solid #f0f4f1'}}>📋</span>
@@ -2290,14 +2329,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     )
                   })}
                 </div>
-                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||commissionFilter!=='all'||statusFilter.size>0) && (
-                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setCommissionFilter('all');setStatusFilter(new Set())}}>
+                {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||statusFilter.size>0) && (
+                  <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setStatusFilter(new Set())}}>
                     ✕ Clear
                   </button>
                 )}
               </div>
               </div>{/* end fixed header */}
-              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 24px'}}>
+              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 24px'}}>
               {/* ── Refund summary bar (reactive to all filters) ── */}
               {visibleClients.length>0 && (()=>{
                 const totalTaxRefund = visibleClients.reduce((sum,c)=>{
@@ -2373,7 +2412,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <table style={{width:'100%',borderCollapse:'collapse'}}>
                     <thead>
                       <tr>
-                        {['Name','Status','WhatsApp','Email','Country','Source','💰','Last refund',''].map(h=>(
+                        {['Name','Status','WhatsApp','Email','Country','Source','Last refund',''].map(h=>(
                           <th key={h} style={{padding:'9px 14px',fontSize:10,fontWeight:600,color:'#7a8a82',textAlign:'left',background:'#f7fbf9',borderBottom:'1px solid #e4ede8',textTransform:'uppercase',letterSpacing:'0.4px',...(h===''?{paddingLeft:0}:{})}}>{h}</th>
                         ))}
                       </tr>
@@ -2411,15 +2450,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
                                   </a>
                                 )}
-                                <span>{cl.whatsapp||'—'}</span>
+                                <span>{cl.whatsapp||'-'}</span>
                               </div>
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'}}>{cl.country||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'}}>{cl.country||'-'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11}}>
                               {(()=>{
                                 const src = (cl.howHeard||'').trim()
-                                if (!src) return <span style={{color:'#aabab2'}}>—</span>
+                                if (!src) return <span style={{color:'#aabab2'}}>-</span>
                                 const lower = src.toLowerCase()
                                 const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(lower)
                                 const isReferral = !isSocial && src.length > 1
@@ -2431,36 +2470,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                 )
                               })()}
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
-                              {(()=>{
-                                const src = (cl.howHeard||'').trim()
-                                const lower = src.toLowerCase()
-                                const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(lower)
-                                const isReferral = !isSocial && src.length > 1
-                                if (!isReferral) return <span style={{color:'#d1d5d3',fontSize:10}}>—</span>
-                                const paid = (cl.notes||'').includes('💰 Commission paid')
-                                return (
-                                  <button
-                                    onClick={()=>{
-                                      const newNotes = paid
-                                        ? (cl.notes||'').replace(/\s*💰 Commission paid\s*\|?/g,'').trim().replace(/^\|\s*/,'').replace(/\s*\|$/,'')
-                                        : ((cl.notes||'').trim() ? `${(cl.notes||'').trim()} | 💰 Commission paid` : '💰 Commission paid')
-                                      setClients(prev=>prev.map(c=>c.id===cl.id?{...c,notes:newNotes}:c))
-                                      fetch(`/api/crm/clients/${cl.id}/notes`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({notes:newNotes})})
-                                    }}
-                                    style={{width:24,height:24,borderRadius:6,border:`1.5px solid ${paid?'#16a34a':'#e4ede8'}`,background:paid?'#16a34a':'#fff',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',fontSize:10,padding:0,transition:'all 0.15s'}}
-                                    title={paid?'Commission paid - click to undo':'Click to mark commission paid'}>
-                                    {paid && <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                                  </button>
-                                )
-                              })()}
-                            </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
                               {(()=>{
                                 const lastTax = cl.taxReturns?.length
                                   ? [...cl.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0]
                                   : null
-                                if (!lastTax) return <span style={{color:'#aabab2'}}>—</span>
+                                if (!lastTax) return <span style={{color:'#aabab2'}}>-</span>
                                 return (
                                   <div>
                                     <div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div>
@@ -2567,7 +2582,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 )}
               </div>
               </div>{/* end fixed header */}
-              <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'8px 26px 24px'}}>
+              <div className="tasks-scroll" style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 24px'}}>
               {/* Table */}
               {visibleArchived.length===0?(
                 <div style={{...S.card,padding:48,textAlign:'center',color:'#aabab2',fontSize:14}}>{archivedClients.length===0?'No archived clients yet.':'No clients match the current filters.'}</div>
@@ -2594,14 +2609,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
                               {cl.whatsapp
                                 ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none'}}>{cl.whatsapp}</a>
-                                : '—'}
+                                : '-'}
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'—'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'—'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'-'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
                               {lastTax
                                 ? <div><div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div><div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div></div>
-                                : <span style={{color:'#aabab2'}}>—</span>}
+                                : <span style={{color:'#aabab2'}}>-</span>}
                             </td>
                             <td style={{padding:'11px 10px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',gap:6,alignItems:'center'}}>
@@ -2637,18 +2652,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap' as const}}>
                       <div style={{fontSize:20,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px'}}>{activeClient.fullName}</div>
-                      {(()=>{
-                        const src = (activeClient.howHeard||'').trim().toLowerCase()
-                        const isSocial = /tiktok|instagram|facebook|google|youtube|twitter|x\.com|linkedin|snapchat|reddit/i.test(src)
-                        const isReferral = !isSocial && src.length > 1
-                        const isPaid = (activeClient.notes||'').includes('💰 Commission paid')
-                        if (!isReferral) return null
-                        return (
-                          <span style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:11,fontWeight:600,padding:'3px 9px',borderRadius:100,background:isPaid?'#ecfdf5':'#fef3c7',color:isPaid?'#059669':'#92400e',border:`1px solid ${isPaid?'#a7f3d0':'#fde68a'}`}}>
-                            {isPaid ? '✓ Commission Paid' : '⏳ Commission Owed'}
-                          </span>
-                        )
-                      })()}
                     </div>
                     <div style={{fontSize:12,color:'#7a8a82',marginTop:4}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>
@@ -2658,10 +2661,32 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {[['Date of birth',fmtDob(activeClient.dob)],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
                     <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
                       <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>{l}</span>
-                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{v||'—'}</span>
-                      {v && v!=='—' && <CopyBtn text={v}/>}
+                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{v||'-'}</span>
+                      {v && v!=='-' && <CopyBtn text={v}/>}
                     </div>
                   ))}
+                  {/* Referred by - optional partner assignment */}
+                  <div style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
+                    <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>🔗 Referred by</span>
+                    <select
+                      value={activeClient.referred_by ?? ''}
+                      onChange={async e => {
+                        const val = e.target.value || null
+                        setActiveClient(prev => prev ? {...prev, referred_by: val} : prev)
+                        await fetch(`/api/crm/clients/${activeClient.id}/referral`, {
+                          method: 'PATCH',
+                          headers: {'Content-Type': 'application/json'},
+                          body: JSON.stringify({ partnerId: val })
+                        })
+                      }}
+                      style={{flex:1,border:'1px solid #e4ede8',borderRadius:8,padding:'5px 8px',fontSize:12,color:'#0a1410',background:'#f7fbf9',fontFamily:'inherit',cursor:'pointer',outline:'none'}}
+                    >
+                      <option value="">— None —</option>
+                      {referralPartners.map(p => (
+                        <option key={p.id} value={p.id}>{p.name}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
@@ -2688,11 +2713,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     </div>
                     <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
                       <div style={{fontSize:9.5,fontWeight:700,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>🆔 TFN</div>
-                      <div style={{fontSize:14,fontWeight:600,color:tfnDone?'#059669':'#aabab2',marginTop:6}}>{tfnDone?'✓ Done':'—'}</div>
+                      <div style={{fontSize:14,fontWeight:600,color:tfnDone?'#059669':'#aabab2',marginTop:6}}>{tfnDone?'✓ Done':'-'}</div>
                     </div>
                     <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
                       <div style={{fontSize:9.5,fontWeight:700,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>🏢 ABN</div>
-                      <div style={{fontSize:14,fontWeight:600,color:abnDone?'#059669':'#aabab2',marginTop:6}}>{abnDone?'✓ Done':'—'}</div>
+                      <div style={{fontSize:14,fontWeight:600,color:abnDone?'#059669':'#aabab2',marginTop:6}}>{abnDone?'✓ Done':'-'}</div>
                     </div>
                   </div>
                 )
@@ -2878,7 +2903,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
         </div>
       )}
 
-      {/* Confirm delete task */}
+
       {/* ── Complete task confirmation modal ──────────────────────────── */}
 
 
@@ -2952,16 +2977,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
       {/* Confirm permanent delete */}
       {confirmPermDelete && (
-        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget)setConfirmPermDelete(null)}}>
+        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget){setConfirmPermDelete(null);setPermDeleteText('')}}}>
           <div style={{...S.modal,maxWidth:360,textAlign:'center'}}>
             <div style={{fontSize:34,marginBottom:10}}>⚠️</div>
             <div style={S.mTitle}>Delete permanently?</div>
-            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:18}}>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:14}}>
               All data will be deleted with <strong>no client card created</strong>. This cannot be undone.
             </div>
+            <div style={{fontSize:12,color:'#7a8a82',marginBottom:6,textAlign:'left'}}>Type <strong>DELETE</strong> to confirm:</div>
+            <input
+              autoFocus
+              value={permDeleteText}
+              onChange={e=>setPermDeleteText(e.target.value)}
+              placeholder="DELETE"
+              style={{width:'100%',padding:'9px 12px',border:'1.5px solid #e4ede8',borderRadius:9,fontSize:14,marginBottom:18,fontFamily:'inherit',outline:'none',boxSizing:'border-box'}}
+            />
             <div style={S.mFooter}>
-              <button style={S.mCancel} onClick={()=>setConfirmPermDelete(null)}>Cancel</button>
-              <button style={S.mDel} onClick={()=>deleteTaskPermanently(confirmPermDelete)}>Yes, delete permanently</button>
+              <button style={S.mCancel} onClick={()=>{setConfirmPermDelete(null);setPermDeleteText('')}}>Cancel</button>
+              <button
+                style={{...S.mDel, opacity: permDeleteText.trim().toUpperCase()==='DELETE'?1:0.4, cursor: permDeleteText.trim().toUpperCase()==='DELETE'?'pointer':'not-allowed'}}
+                disabled={permDeleteText.trim().toUpperCase()!=='DELETE'}
+                onClick={()=>{deleteTaskPermanently(confirmPermDelete);setPermDeleteText('')}}>Yes, delete permanently</button>
             </div>
           </div>
         </div>
@@ -3010,22 +3046,29 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
             </div>
             <div style={{flex:1,overflow:'auto',display:'flex',alignItems:'center',justifyContent:'center',background:'#f0f4f1',minHeight:200}}>
               {(()=>{
-                // Extract original URL from proxy to detect file type
+                // Detect file type from the original Supabase URL (before the proxy wrapper)
                 const origUrl = previewUrl.startsWith('/api/crm/file?url=')
                   ? (() => { try { return decodeURIComponent(previewUrl.slice('/api/crm/file?url='.length)) } catch { return previewUrl } })()
                   : previewUrl
-                const lower = origUrl.toLowerCase()
-                const isImage = /\.(jpg|jpeg|png|gif|webp|heic|heif)/.test(lower)
-                const isPdf   = lower.includes('.pdf')
-                if (isImage) return <img src={previewUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}}/>
-                if (isPdf)   return <iframe src={previewUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
-                return (
-                  <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
-                    <div style={{fontSize:32,marginBottom:12}}>📄</div>
-                    <div style={{fontSize:13}}>Cannot preview this file type</div>
-                    <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
-                  </div>
-                )
+                const isPdf = origUrl.toLowerCase().includes('.pdf')
+
+                if (previewLoading) {
+                  return <div style={{padding:32,textAlign:'center',color:'#7a8a82',fontSize:13}}>Loading preview…</div>
+                }
+                if (previewError || !previewBlobUrl) {
+                  return (
+                    <div style={{padding:32,textAlign:'center',color:'#7a8a82'}}>
+                      <div style={{fontSize:32,marginBottom:12}}>⚠️</div>
+                      <div style={{fontSize:13,marginBottom:10}}>Couldn&apos;t load this file.</div>
+                      <a href={previewUrl} target="_blank" rel="noopener noreferrer" style={{color:'#0E5C42',fontSize:13,fontWeight:600}}>Open in new tab ↗</a>
+                    </div>
+                  )
+                }
+                // PDFs render in an iframe; everything else is an image. HEIC/HEIF
+                // is transcoded to JPEG by the /api/crm/file route, so the blob is
+                // always a browser-renderable format here.
+                if (isPdf) return <iframe src={previewBlobUrl} style={{width:'100%',height:'60vh',border:'none'}} title="PDF preview"/>
+                return <img src={previewBlobUrl} alt="preview" style={{maxWidth:'100%',maxHeight:'60vh',objectFit:'contain'}} onError={()=>setPreviewError(true)}/>
               })()}
             </div>
           </div>

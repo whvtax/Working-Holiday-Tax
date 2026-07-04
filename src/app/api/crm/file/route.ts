@@ -22,6 +22,18 @@ function auth(req: NextRequest): boolean {
   return validateSession(req.cookies.get('crm_session')?.value)
 }
 
+// iPhone photos arrive as HEIC/HEIF, which browsers cannot display. iOS uploads
+// are tagged image/jpeg even when the bytes are HEIC, so we sniff the actual
+// container by magic bytes ('ftyp' box + a HEIF brand) rather than trust the
+// content-type or extension.
+function isHeicBuffer(buf: ArrayBuffer): boolean {
+  if (buf.byteLength < 12) return false
+  const b = new Uint8Array(buf, 0, 16)
+  if (b[4] !== 0x66 || b[5] !== 0x74 || b[6] !== 0x79 || b[7] !== 0x70) return false // 'ftyp'
+  const brand = String.fromCharCode(b[8], b[9], b[10], b[11]).toLowerCase()
+  return brand.startsWith('hei') || brand.startsWith('mif') || brand.startsWith('msf') || brand === 'hevc' || brand === 'hevx'
+}
+
 // Validates the URL is from our Supabase project and extracts the object path
 // inside the uploads bucket. Returns null if not one of ours.
 function extractBucketPath(url: URL): string | null {
@@ -86,12 +98,27 @@ export async function GET(req: NextRequest) {
   }
 
   const ext = objectPath.split('.').pop()?.toLowerCase() ?? ''
-  const baseType = (blob.type && blob.type.split(';')[0].trim()) || EXT_TYPES[ext] || ''
+  let baseType = (blob.type && blob.type.split(';')[0].trim()) || EXT_TYPES[ext] || ''
   if (!ALLOWED_CONTENT_TYPES.has(baseType)) {
     return NextResponse.json({ ok: false, error: 'forbidden_type' }, { status: 403 })
   }
 
-  const body = await blob.arrayBuffer()
+  let body: ArrayBuffer = await blob.arrayBuffer()
+
+  // Transcode HEIC/HEIF → JPEG so the browser can actually render the image.
+  // Detected by magic bytes (or extension). On failure we serve the original
+  // bytes and the client falls back to an "open in new tab" link.
+  if (isHeicBuffer(body) || ext === 'heic' || ext === 'heif') {
+    try {
+      const convert = (await import('heic-convert')).default
+      const out = await convert({ buffer: Buffer.from(body), format: 'JPEG', quality: 0.85 })
+      body = new Uint8Array(out).slice().buffer
+      baseType = 'image/jpeg'
+    } catch (err) {
+      console.error('[crm/file] HEIC→JPEG conversion failed:', err)
+    }
+  }
+
   return new NextResponse(body, {
     status: 200,
     headers: {

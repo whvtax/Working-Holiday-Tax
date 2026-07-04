@@ -1,6 +1,14 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { guides, categoryMeta } from './blog/data'
+import { dePostTranslations } from './de/blog/data'
+import { jaPostTranslations } from './ja/blog/data'
+
+// A localized blog post is only "real" (indexable, sitemap-worthy) when it has a
+// translated body. Title/description-only entries still render English bodies,
+// which we now noindex + canonical to the English source, so they're excluded here.
+const isDeTranslated = (slug: string) => !!dePostTranslations[slug]?.body
+const isJaTranslated = (slug: string) => !!jaPostTranslations[slug]?.body
 
 // Parse a guide date string ("1 July 2024") into a Date for accurate <lastmod>.
 // Stable last-content-update date for static & category pages, so <lastmod>
@@ -101,21 +109,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.75,
   }))
 
-  // German guide pages (will be populated as articles are translated)
-  const germanGuides: MetadataRoute.Sitemap = guides.map(g => ({
-    url: `${SITE_URL}/de/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.71,
-  }))
+  // German guide pages - only those with a translated body (others are noindex)
+  const germanGuides: MetadataRoute.Sitemap = guides
+    .filter(g => isDeTranslated(g.slug))
+    .map(g => ({
+      url: `${SITE_URL}/de/blog/${g.slug}`,
+      lastModified: parseGuideDate(g.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.71,
+    }))
 
-  // Japanese guide pages (will be populated as articles are translated)
-  const japaneseGuides: MetadataRoute.Sitemap = guides.map(g => ({
-    url: `${SITE_URL}/ja/blog/${g.slug}`,
-    lastModified: parseGuideDate(g.date),
-    changeFrequency: 'monthly' as const,
-    priority: 0.71,
-  }))
+  // Japanese guide pages - only those with a translated body (others are noindex)
+  const japaneseGuides: MetadataRoute.Sitemap = guides
+    .filter(g => isJaTranslated(g.slug))
+    .map(g => ({
+      url: `${SITE_URL}/ja/blog/${g.slug}`,
+      lastModified: parseGuideDate(g.date),
+      changeFrequency: 'monthly' as const,
+      priority: 0.71,
+    }))
 
   return [
     ...englishStatic,

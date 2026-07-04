@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: `${SITE_URL}/de/contact`, languages: { 'en-AU': `${SITE_URL}/contact`, 'de': `${SITE_URL}/de/contact`, 'ja': `${SITE_URL}/ja/contact`, 'x-default': `${SITE_URL}/contact` } },
   openGraph: {
+    images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
@@ -31,6 +32,7 @@ export const metadata: Metadata = {
     locale: 'de_DE',
   },
   twitter: {
+    images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
     description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet.',
@@ -70,13 +72,9 @@ const FAQS = [
   },
   {
     question: 'Könnt ihr mir aus Deutschland, Österreich oder der Schweiz helfen?',
-    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern dabei, ihre australische Steuerrückerstattung und Super (DASP) zu beantragen und alle offenen Steuerangelegenheiten von zu Hause aus zu regeln. Der gesamte Prozess läuft online ab - keine Rückreise nach Australien nötig.',
-  },
-  {
-    question: 'Welche Informationen brauche ich beim ersten Kontakt?',
-    answer: 'Nur ein paar Basics zum Anfang: deine Visumsklasse (417 oder 462), ungefähr wann du in Australien gearbeitet hast, womit wir dir helfen sollen (Steuererklärung, Super, TFN, ABN) und wo du dich gerade aufhältst. Falls wir Unterlagen brauchen, sagen wir dir das danach genau.',
-  },
-]
+    answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und vielen anderen Ländern dabei, ihre australische Steuerrückerstattung und Super (DASP) zu beantragen und alle offenen Steuerangelegenheiten von zu Hause aus zu regeln. Der gesamte Prozess läuft online ab.',
+  }
+  ]
 
 export default function GermanContactPage() {
 
@@ -206,7 +204,7 @@ export default function GermanContactPage() {
                 color: 'rgba(10,15,13,0.7)',
                 maxWidth: '46ch',
               }}>
-              Echte Menschen, schnelle Antworten. Wir melden uns innerhalb einer Stunde während der Geschäftszeiten.
+              Wir melden uns innerhalb einer Stunde während der Geschäftszeiten.
             </p>
           </div>
         </div>
@@ -217,7 +215,7 @@ export default function GermanContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '1.200+', label: 'Backpacker' },
+              { stat: '350+', label: 'Backpacker' },
               { stat: <GoogleRating variant="number" lang="de" />, label: 'Bewertung' },
               { stat: '45+',    label: 'Länder' },
               { stat: '~1 Std',  label: 'Antwortzeit' },
@@ -367,20 +365,20 @@ export default function GermanContactPage() {
       </section>
 
       {/* ── FINAL CTA ───────────────────────────────────────────────────── */}
-      <section style={{ background: '#F5F9F7', paddingTop: '50px', paddingBottom: '60px' }}>
+      <section style={{ background: '#0B5240', paddingTop: '50px', paddingBottom: '60px' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">
           <div className="max-w-[520px] mx-auto text-center">
-            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
+            <p className="font-semibold uppercase mb-3" style={{ fontSize: '10.5px', color: 'rgba(255,255,255,0.55)', letterSpacing: '0.14em' }}>
               Bereit, wenn du es bist
             </p>
-            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
+            <h2 className="font-serif font-black text-white" style={{ fontSize: 'clamp(24px, 2.8vw, 34px)', lineHeight: 1.15, letterSpacing: '-0.025em', marginBottom: '14px' }}>
               Starte heute deine Steuererklärung
             </h2>
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: '#587066', lineHeight: 1.7, marginBottom: '24px', maxWidth: '420px' }}>
-              Kein Papierkram, keine ATO-Portale. Wir machen alles online - meistens innerhalb von 24 Stunden.
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, marginBottom: '24px', maxWidth: '420px' }}>
+              Kein Papierkram, keine ATO-Portale. Wir machen alles online innerhalb von 24 Stunden.
             </p>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex items-center justify-center w-full sm:w-auto"
+              className="btn-primary w-full sm:w-auto"
               style={{ minHeight: '54px', padding: '0 36px', fontSize: '15px', minWidth: '260px' }}>
               Steuererklärung starten →
             </a>

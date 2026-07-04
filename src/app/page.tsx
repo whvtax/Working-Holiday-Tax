@@ -103,10 +103,10 @@ const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="n
 // ─── DATA - colors aligned with site palette ────────────────────────────
 
 const STEPS = [
-  { n: '1', title: 'Tell us about your situation', body: "TFN, ABN, working holiday tax return, super - we will guide you from the start." },
-  { n: '2', title: 'Send your details in minutes',  body: 'Quick checklist, no complicated forms or paperwork.' },
-  { n: '3', title: 'We handle everything for you',  body: 'We prepare and lodge your return with the ATO under the supervision of a registered tax agent.' },
-  { n: '4', title: 'Get your assessment',           body: 'Once the ATO processes your return, any refund you are owed is paid straight into your Australian bank account.' },
+  { n: '1', title: 'Tell us about your situation', body: 'TFN, ABN, tax return or super, we guide you from day one.' },
+  { n: '2', title: 'Send your details in minutes',  body: 'A quick checklist. No forms, no paperwork.' },
+  { n: '3', title: 'We handle everything for you',  body: 'Lodged by a registered tax agent and fully compliant with ATO rules.' },
+  { n: '4', title: 'Get your assessment',           body: 'Any refund you are owed goes straight to your bank account.' },
 ]
 
 const SERVICES = [
@@ -259,40 +259,37 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(160deg, #fff 0%, #F5FBF8 60%, #EDF7F2 100%)' }}>
-        {/* decorative layers */}
-        <div className="hero-mesh" aria-hidden="true" />
-        <div className="hero-dots" aria-hidden="true" />
-        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-12 lg:pt-16 lg:pb-16 text-center relative z-10">
+      <section className="relative overflow-hidden pt-[68px]" style={{ background: 'linear-gradient(180deg, #fff 0%, #F8FBF9 100%)' }}>
+        <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 pt-12 pb-10 lg:pt-12 lg:pb-12 text-center">
 
-          <div className="hero-badge mb-5 lg:mb-7 hero-animate inline-flex">
-            <span className="hero-badge-dot" aria-hidden="true" />
-            <span className="font-semibold uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: '#0B5240' }}>Working Holiday Tax Return Specialists</span>
+          <div className="inline-flex items-center gap-2 mb-4 lg:mb-6 hero-animate">
+            <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-dot" aria-hidden="true" />
+            <span className="font-medium uppercase" style={{ fontSize: '10px', letterSpacing: '0.18em', color: 'rgba(11,82,64,0.65)' }}>Working Holiday Tax Return Specialists</span>
           </div>
 
           <h1 className="font-serif font-black text-ink mx-auto hero-animate"
-            style={{ fontSize: 'clamp(30px, 5.5vw, 48px)', lineHeight: 1.09, letterSpacing: '-0.03em', marginBottom: '16px' }}>
+            style={{ fontSize: 'clamp(28px, 5vw, 42px)', lineHeight: 1.12, letterSpacing: '-0.025em', marginBottom: '14px' }}>
             <span style={{ display: 'block' }}>Your working holiday tax,</span>
             <span style={{ display: 'block', color: '#0B5240' }}>sorted properly.</span>
           </h1>
 
           <p className="font-light mx-auto hero-animate-delay"
-            style={{ fontSize: 'clamp(15px, 1.6vw, 17px)', lineHeight: 1.75, color: 'rgba(10,15,13,0.55)', maxWidth: '50ch', marginBottom: '0' }}>
-            Tax return specialists for working holiday makers on{` `}
-            <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>. TFN, ABN, tax return &amp; super.
+            style={{ fontSize: '16px', lineHeight: 1.7, color: 'rgba(10,15,13,0.55)', maxWidth: '54ch', marginBottom: '10px' }}>
+            Tax return specialists for working holiday makers on <span style={{ whiteSpace: 'nowrap' }}>417 &amp; 462 visas</span>.
           </p>
 
-          <div style={{ marginTop: '28px', marginBottom: '20px' }} className="hero-animate-delay">
+          <div style={{ marginTop: '24px', marginBottom: '16px' }} className="lg:mt-8 lg:mb-4 hero-animate-delay-2">
             <a href={WA_URL} target="_blank" rel="noopener noreferrer"
               className="btn-primary inline-flex"
-              style={{ height: '54px', padding: '0 40px', fontSize: '15.5px', borderRadius: '100px', maxWidth: '320px', width: '100%', marginLeft: 'auto', marginRight: 'auto', boxShadow: '0 4px 24px rgba(233,160,32,0.32), 0 1px 4px rgba(0,0,0,0.08)' }}>
+              style={{ height: '52px', padding: '0 36px', fontSize: '15px', borderRadius: '100px', maxWidth: '300px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
               Start your tax return →
             </a>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-2 hero-animate-delay-2" style={{ maxWidth: '560px', margin: '0 auto' }}>
-            {['1,200+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hr response'].map((label, i) => (
-              <span key={i} className="hero-trust-item">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
+            {['350+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hour response time'].map((label, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
+                style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
               </span>
             ))}
@@ -301,7 +298,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── WHY US ───────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 text-center reveal">
 
           <span className="section-label center">Why us?</span>
@@ -313,15 +310,15 @@ export default async function HomePage() {
 
           <p className="font-light text-muted mx-auto"
             style={{ fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.7, maxWidth: '38ch', marginBottom: '32px', textAlign: 'center' }}>
-            One focus: working holiday tax.<br />Every refund you are entitled to, properly claimed.
+            Every refund you are entitled to, properly claimed.
           </p>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-10" style={{ marginBottom: '36px' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 reveal" style={{ marginBottom: '36px' }}>
             {[
-              { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules for 417 and 462 visas inside out.' },
-              { title: 'ATO compliant.',                body: 'Lodged under the supervision of a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
+              { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules that apply to you inside out.' },
+              { title: 'ATO compliant.',                body: 'Lodged with a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
               { title: 'Clear, simple support.',        body: 'No complicated terms. We guide you through your tax return step by step, in plain English.' },
-              { title: 'We take care of everything.',   body: 'No paperwork, no stress. From your TFN to your final refund, we handle it all - in Australia or after you go home.' },
+              { title: 'We take care of everything.',   body: 'From your TFN to your final refund, we’ve got you covered. Whether you’re in Australia or back home.' },
             ].map((item, i) => (
               <div key={i} className="pt-4 lg:pt-6 text-center why-us-card" style={{ borderTop: '1px solid #E2EFE9' }}>
                 <h3 className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 13.5px)', marginBottom: '6px', lineHeight: 1.35 }}>{item.title}</h3>
@@ -339,13 +336,13 @@ export default async function HomePage() {
       </section>
 
       {/* ── SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">Client results</span>
-            <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', maxWidth: '28ch' }}>
+            <h2 className="font-serif font-black text-ink mx-auto max-w-[28ch] lg:max-w-none lg:whitespace-nowrap"
+              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px' }}>
               What backpackers say about working with us.
             </h2>
           </div>
@@ -356,7 +353,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
                 { n: <GoogleRating variant="number" lang="en" />, l: <GoogleRating variant="count" lang="en" /> },
-                { n: '1,200+', l: 'backpackers helped' },
+                { n: '350+', l: 'backpackers helped' },
                 { n: '< 1 hr', l: '~1 hour response time' },
                 { n: '100%',   l: 'Fully online, no paperwork' },
               ].map((s, i) => (
@@ -373,7 +370,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
-      <section id="how-it-works" className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
+      <section id="how-it-works" className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '36px' }}>
@@ -384,7 +381,7 @@ export default async function HomePage() {
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(14px, 1.4vw, 16px)', lineHeight: 1.7, maxWidth: '36ch', marginBottom: '4px' }}>
-              <em className="not-italic text-forest-400">Simple process. Your working holiday tax return, properly lodged.</em>
+              <em className="not-italic text-forest-400">Simple process for working holiday makers.</em>
             </p>
           </div>
 
@@ -426,7 +423,7 @@ export default async function HomePage() {
                 </div>
                 <div style={{ paddingTop: '3px' }}>
                   <p className="font-semibold text-ink" style={{ fontSize: '14px', marginBottom: '4px' }}>{s.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize: '13px', lineHeight: 1.7 }}>{s.body}</p>
+                  <p className="font-light text-muted" style={{ fontSize: '12.5px', lineHeight: 1.7 }}>{s.body}</p>
                 </div>
               </div>
             ))}
@@ -439,42 +436,40 @@ export default async function HomePage() {
               Start your tax return →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
-              Free to start&nbsp;&bull;&nbsp;No upfront fees&nbsp;&bull;&nbsp;Personal support throughout
+              Free to start&nbsp;&bull;&nbsp;Personal support throughout
             </p>
           </div>
         </div>
       </section>
 
       {/* ── SERVICES ─────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-10 reveal">
 
           <div className="text-center" style={{ marginBottom: '28px' }}>
             <span className="section-label center">What we help with</span>
             <h2 className="font-serif font-black text-ink mx-auto"
-              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px', maxWidth: '24ch' }}>
-              Full tax support for working holiday makers<br />
-              <em className="not-italic font-normal text-forest-400">in Australia.</em>
+              style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '10px', marginBottom: '10px' }}>
+              Full tax support for working holiday makers.
             </h2>
             <p className="font-light text-muted mx-auto"
               style={{ fontSize: 'clamp(13px, 1.3vw, 15px)', textAlign: 'center', lineHeight: 1.7, maxWidth: '38ch' }}>
-              From your first job in Australia to your final working holiday tax refund.<br />We have got you covered.
+              From your first job in Australia to your final working holiday tax refund.
             </p>
           </div>
 
-          <div className="services-grid grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
+          <div className="services-grid grid grid-cols-1 lg:grid-cols-5 gap-3 lg:gap-4 reveal">
             {SERVICES.map((s) => (
               <Link key={s.href} href={s.href}
-                className="group bg-white rounded-2xl flex flex-col transition-all"
-                style={{ padding: '20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 16px rgba(11,82,64,.07)', border: '1px solid rgba(205,227,219,0.5)' }}>
-                <span className="service-num font-medium uppercase text-subtle" style={{ fontSize: '10px', letterSpacing: '0.12em', marginBottom: '12px' }}>{s.n}</span>
-                <span className="service-icon-wrap w-9 h-9 rounded-xl flex items-center justify-center text-forest-500 bg-forest-100 group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
-                  style={{ marginBottom: '12px' }}>{s.icon}</span>
-                <h3 className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '6px', lineHeight: 1.3 }}>{s.title}</h3>
-                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize: '12.5px', marginBottom: '14px' }}>{s.desc}</p>
-                <span className="flex items-center gap-1.5 font-semibold text-forest-500 transition-all group-hover:gap-3" style={{ fontSize: '12px' }}>
-                  Learn more
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                className="group bg-white rounded-2xl flex flex-col transition-all hover:shadow-lg"
+                style={{ padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+                <span className="font-medium uppercase text-subtle" style={{ fontSize: '10px', letterSpacing: '0.1em', marginBottom: '10px' }}>{s.n}</span>
+                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-forest-500 bg-forest-50 transition-all group-hover:bg-forest-500 group-hover:text-white flex-shrink-0"
+                  style={{ marginBottom: '10px' }}>{s.icon}</span>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '13.5px', marginBottom: '5px' }}>{s.title}</h3>
+                <p className="font-light text-muted leading-[1.65] flex-1" style={{ fontSize: '12px', marginBottom: '12px' }}>{s.desc}</p>
+                <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3" style={{ fontSize: '12px' }}>
+                  Learn more →
                 </span>
               </Link>
             ))}
@@ -483,7 +478,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-20 bg-white">
+      <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="text-center mb-8">
             <span className="section-label center">Frequently asked</span>
@@ -515,7 +510,7 @@ export default async function HomePage() {
         eyebrow="Start here"
         heading="Get your tax sorted"
         headingEm="in Australia or abroad."
-        sub={<>We handle your TFN, tax return, super and ABN<span className="hidden sm:inline">,</span><br className="sm:hidden" /> all in one place.</>}
+        sub="We handle your tax from start to finish."
         primaryLabel="Start your tax return"
         trustLine=""
         clipTop

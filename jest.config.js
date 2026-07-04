@@ -15,7 +15,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  testMatch: ['**/__tests__/**/*.test.js'],
+  testMatch: ['**/__tests__/**/*.test.js', '**/__tests__/**/*.test.tsx'],
   setupFiles: ['<rootDir>/__tests__/setup.js'],
   testTimeout: 15000,
   verbose: true,

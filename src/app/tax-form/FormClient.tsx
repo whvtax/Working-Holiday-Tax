@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { WA_URL } from '@/lib/constants'
+import { useState, useRef, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { WA_URL, WA_NUMBER } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
+import { isNdaCountry } from '@/lib/nda-countries'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -205,12 +207,78 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [abnWork, setAbnWork]         = useState('')
   const [howHeard, setHowHeard]       = useState('')
 
-
+  // Referral: read ?ref= from URL
+  const searchParams = useSearchParams()
+  const refCode = searchParams.get('ref') ?? ''
 
   // UI
   const [submitted, setSubmitted]     = useState(false)
   const [loading, setLoading]         = useState(false)
   const [errors, setErrors]           = useState<Record<string, string>>({})
+
+  // ── Tax-residency confirmation prompt (shown for the one risky pick:
+  //    NDA country selecting Working Holiday Maker) ──────────────────────
+  const [showResidencyPrompt, setShowResidencyPrompt] = useState(false)
+  const taxStatusRef = useRef<HTMLDivElement>(null)
+  const residencyUrl = lang === 'de' ? '/de/tax-residency' : lang === 'ja' ? '/ja/tax-residency' : '/tax-residency'
+  const SNAPSHOT_KEY = 'whv_taxform_return'
+
+  // Restore the form when the user comes back from the tax-residency page (via
+  // the prompt's "No" button), so nothing they already filled is lost, and jump
+  // straight back to the tax-residency-status question where they left off.
+  useEffect(() => {
+    let raw: string | null = null
+    try { raw = sessionStorage.getItem(SNAPSHOT_KEY) } catch {}
+    if (!raw) return
+    try { sessionStorage.removeItem(SNAPSHOT_KEY) } catch {}
+    try {
+      const s = JSON.parse(raw)
+      // Ignore stale snapshots (> 2h old)
+      if (!s || typeof s.t !== 'number' || Date.now() - s.t > 2 * 60 * 60 * 1000) return
+      const d = s.data || {}
+      const setIf = (v: unknown, setter: (x: any) => void) => { if (v !== undefined) setter(v) }
+      setIf(d.waNumber, setWaNumber);   setIf(d.auPhone, setAuPhone);     setIf(d.fullName, setFullName)
+      setIf(d.lastName, setLastName);   setIf(d.address, setAddress);     setIf(d.email, setEmail)
+      setIf(d.country, setCountry);     setIf(d.dob, setDob);             setIf(d.marital, setMarital)
+      setIf(d.tfn, setTfn);             setIf(d.primaryJob, setPrimaryJob)
+      setIf(d.bankName, setBankName);   setIf(d.bankHolder, setBankHolder)
+      setIf(d.bankAccount, setBankAccount); setIf(d.bankBsb, setBankBsb)
+      setIf(d.hasExpenses, setHasExpenses); setIf(d.taxStatus, setTaxStatus)
+      setIf(d.declared, setDeclared);   setIf(d.declaredIncome, setDeclaredIncome)
+      setIf(d.taxYears, setTaxYears);   setIf(d.terms, setTerms)
+      setIf(d.hasAbn, setHasAbn);       setIf(d.abnNumber, setAbnNumber)
+      setIf(d.abnIncome, setAbnIncome); setIf(d.abnWork, setAbnWork)
+      setIf(d.howHeard, setHowHeard)
+      // Scroll back to the tax-residency question after the DOM settles
+      setTimeout(() => taxStatusRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' }), 60)
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Triggered when the user picks a tax-residency status.
+  // Only one combination needs an interruption: picking "Working Holiday
+  // Maker" while being from an NDA country, since that's the costly mistake
+  // this feature exists to catch (a bigger refund being left on the table).
+  // Picking "Resident" is always the desired outcome, so it never prompts.
+  const handleTaxStatusPick = (val: 'resident'|'whm') => {
+    setTaxStatus(val)
+    setErrors(p => ({ ...p, taxStatus: '' }))
+    if (val === 'whm' && isNdaCountry(country)) setShowResidencyPrompt(true)
+  }
+
+  // "No" → save everything and send them to the tax-residency explainer page.
+  const goReadResidency = () => {
+    try {
+      const data = {
+        waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
+        tfn, primaryJob, bankName, bankHolder, bankAccount, bankBsb, hasExpenses,
+        taxStatus, declared, declaredIncome, taxYears, terms, hasAbn, abnNumber,
+        abnIncome, abnWork, howHeard,
+      }
+      sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), data }))
+    } catch {}
+    window.location.href = residencyUrl
+  }
 
   /* ── Validation ── */
   const validate = () => {
@@ -331,6 +399,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYears.join(', '))
     fd.append('howHeard',    howHeard)
+    if (refCode) fd.append('refCode', refCode)
     fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
     if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
@@ -360,121 +429,12 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   /* ── Success screen ── */
   if (submitted) {
     const firstName = fullName.split(' ')[0]
+    const waMsg = encodeURIComponent("Hi! I just filled out the form and I'd love a free eligibility check 😊")
+    const waHref = `https://wa.me/${WA_NUMBER}?text=${waMsg}`
     return (
       <>
         <style>{styles}</style>
         <div className="form-success-wrap">
-
-        <canvas id="fw-canvas" className="fireworks-canvas" />
-        <script dangerouslySetInnerHTML={{ __html: `
-          (function(){
-  var c=document.getElementById('fw-canvas');
-  if(!c)return;
-  var ctx=c.getContext('2d');
-  var W=c.width=window.innerWidth,H=c.height=window.innerHeight;
-  window.addEventListener('resize',function(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
-  var particles=[];
-  var trails=[];
-  var colors=['#FFD700','#FF6B35','#FF6B6B','#E91E8C','#4ECDC4','#45B7D1','#7C4DFF','#00E676','#FFEA00','#FF1744','#00BCD4','#76FF03','#FF9800','#E040FB','#00BFA5'];
-  function Particle(x,y,color,type){
-    this.x=x; this.y=y; this.color=color; this.type=type||'circle';
-    this.r=Math.random()*5+2;
-    var angle=Math.random()*Math.PI*2;
-    var speed=Math.random()*13+4;
-    this.vx=Math.cos(angle)*speed;
-    this.vy=Math.sin(angle)*speed-5;
-    this.alpha=1;
-    this.gravity=0.2;
-    this.spin=Math.random()*0.4-0.2;
-    this.rot=Math.random()*Math.PI*2;
-    this.trail=[];
-  }
-  Particle.prototype.update=function(){
-    this.trail.push({x:this.x,y:this.y,a:this.alpha});
-    if(this.trail.length>6)this.trail.shift();
-    this.x+=this.vx; this.y+=this.vy;
-    this.vy+=this.gravity;
-    this.vx*=0.97;
-    this.alpha-=0.012;
-    this.rot+=this.spin;
-  };
-  Particle.prototype.draw=function(){
-    for(var t=0;t<this.trail.length;t++){
-      var tr=this.trail[t];
-      ctx.save();ctx.globalAlpha=tr.a*0.3*(t/this.trail.length);
-      ctx.fillStyle=this.color;
-      ctx.beginPath();ctx.arc(tr.x,tr.y,this.r*0.5,0,Math.PI*2);ctx.fill();
-      ctx.restore();
-    }
-    ctx.save(); ctx.globalAlpha=Math.max(0,this.alpha);
-    ctx.fillStyle=this.color;
-    ctx.translate(this.x,this.y); ctx.rotate(this.rot);
-    if(this.type==='star'){
-      ctx.beginPath();
-      for(var i=0;i<5;i++){
-        ctx.lineTo(Math.cos((18+i*72)*Math.PI/180)*this.r, -Math.sin((18+i*72)*Math.PI/180)*this.r);
-        ctx.lineTo(Math.cos((54+i*72)*Math.PI/180)*this.r*0.4, -Math.sin((54+i*72)*Math.PI/180)*this.r*0.4);
-      }
-      ctx.closePath(); ctx.fill();
-    } else if(this.type==='spark'){
-      ctx.fillRect(-this.r*2.5,-this.r*0.4,this.r*5,this.r*0.8);
-    } else if(this.type==='ring'){
-      ctx.strokeStyle=this.color;ctx.lineWidth=2;
-      ctx.beginPath();ctx.arc(0,0,this.r,0,Math.PI*2);ctx.stroke();
-    } else {
-      ctx.beginPath(); ctx.arc(0,0,this.r,0,Math.PI*2); ctx.fill();
-    }
-    ctx.restore();
-  };
-  function Trail(x,y,tx,ty,color){
-    this.x=x;this.y=y;this.tx=tx;this.ty=ty;this.color=color;
-    this.progress=0;this.speed=0.06;
-  }
-  Trail.prototype.update=function(){this.progress=Math.min(1,this.progress+this.speed);};
-  Trail.prototype.draw=function(){
-    var cx=this.x+(this.tx-this.x)*this.progress;
-    var cy=this.y+(this.ty-this.y)*this.progress;
-    ctx.save();ctx.strokeStyle=this.color;ctx.lineWidth=2;
-    ctx.globalAlpha=1-this.progress;
-    ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(cx,cy);ctx.stroke();
-    ctx.restore();
-    if(this.progress>=1){
-      burst(this.tx,this.ty);return true;
-    }
-    return false;
-  };
-  function burst(x,y){
-    var count=110;
-    var types=['circle','circle','circle','star','star','spark','ring'];
-    for(var i=0;i<count;i++){
-      var type=types[Math.floor(Math.random()*types.length)];
-      particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)],type));
-    }
-  }
-  var shots=0; var maxShots=16; var shotInterval=280;
-  function fireRandom(){
-    if(shots>=maxShots)return;
-    var tx=Math.random()*W*0.8+W*0.1;
-    var ty=Math.random()*H*0.5+H*0.05;
-    if(shots<3){
-      burst(tx,ty);
-    } else {
-      trails.push(new Trail(tx,H,tx,ty,colors[Math.floor(Math.random()*colors.length)]));
-    }
-    shots++;
-    if(shots<maxShots) setTimeout(fireRandom, shotInterval);
-  }
-  setTimeout(fireRandom, 60);
-  function loop(){
-    ctx.clearRect(0,0,W,H);
-    trails=trails.filter(function(tr){return !tr.update()&&(tr.draw(),true)||(tr.draw(),false);});
-    particles=particles.filter(function(p){return p.alpha>0;});
-    particles.forEach(function(p){p.update();p.draw();});
-    if(particles.length>0||shots<maxShots||trails.length>0) requestAnimationFrame(loop);
-  }
-  loop();
-})();
-        ` }} />
           <div className="success-icon">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <circle cx="20" cy="20" r="19" stroke="#0B5240" strokeWidth="1.5"/>
@@ -484,7 +444,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <h1 className="success-title">{T('thankYou')}, {firstName}! 🎉</h1>
           <p className="success-body">{T('successBody')}</p>
 
-          <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="success-wa-btn">
+          <a href={waHref} target="_blank" rel="noopener noreferrer" className="success-wa-btn">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
               <path d="M10 2C5.6 2 2 5.6 2 10c0 1.4.36 2.72.99 3.87L2 18l4.18-.98C7.3 17.65 8.62 18 10 18c4.4 0 8-3.6 8-8s-3.6-8-8-8z" fill="rgba(255,255,255,0.25)"/>
               <path d="M13.1 12.8c-.12.32-.77.64-1.06.67-.28.03-.55.14-1.83-.48-1.56-.73-2.57-2.32-2.64-2.43-.07-.11-.66-.98-.66-1.87s.48-1.32.64-1.5c.16-.18.36-.22.48-.22h.35c.11 0 .25 0 .37.3l.46 1.35c.04.09.05.2 0 .32l-.33.44c-.09.11-.18.23-.07.44.11.21.48.86 1.01 1.34.53.48.99.68 1.19.76.2.09.28.07.37-.05l.34-.48c.09-.13.2-.11.33-.06.13.06.86.48 1.01.57.15.09.25.14.28.21.04.3-.07.83-.18 1.12z" fill="white"/>
@@ -763,7 +723,21 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           </div>
 
           <div className="form-section-title">{T('sectionDeclaration')}</div>
-          <div>
+          <div ref={taxStatusRef} style={{scrollMarginTop:'80px'}}>
+
+            {isNdaCountry(country) && (
+              <div style={{display:'flex',gap:10,alignItems:'flex-start',background:'#FFF8E8',border:'1.5px solid #F3D88A',borderRadius:12,padding:'12px 14px',marginBottom:14}}>
+                <span style={{fontSize:18,lineHeight:1}}>🎉</span>
+                <p style={{fontSize:12.5,color:'#6B5215',lineHeight:1.55,margin:0}}>
+                  {lang === 'de'
+                    ? <>Basierend auf deinem Heimatland (<strong>{country}</strong>) könntest du als australischer Steuerresident für steuerliche Zwecke gelten. Das bedeutet, dass du möglicherweise eine vollständige Rückerstattung der Steuer erhältst, die du auf ein Einkommen bis zu $18.200 gezahlt hast. Bitte lies die Bedingungen sorgfältig, bevor du unten deine Auswahl triffst.</>
+                    : lang === 'ja'
+                    ? <>あなたの出身国（<strong>{country}</strong>）に基づくと、税務上のオーストラリア居住者として認定される可能性があります。これは、$18,200までの所得にかかった税金が全額還付される可能性があることを意味します。下記で選択する前に、条件をよくお読みください。</>
+                    : <>Based on your home country (<strong>{country}</strong>), you may qualify as an Australian resident for tax purposes. This means you may be entitled to a full refund of the tax you paid on income up to $18,200. Please read the conditions carefully before making your selection below.</>
+                  }
+                </p>
+              </div>
+            )}
 
             <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
@@ -777,14 +751,23 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               </label>
               <div className="radio-group radio-group-col">
                 {([
-                  { val: 'resident', label: T('australianTaxResident') },
-                  { val: 'whm',      label: T('workingHolidayMakerTax') },
+                  { val: 'resident', label: T('australianTaxResident'),
+                    hint: lang === 'de' ? 'Steuerfrei bis $18.200, nur falls du die Bedingungen erfüllst (NDA-Land etc.)'
+                        : lang === 'ja' ? '$18,200まで非課税。条件（NDA加盟国など）を満たす場合のみ'
+                        : 'Tax-free up to $18,200, only if you meet the conditions (NDA country, etc.)' },
+                  { val: 'whm',      label: T('workingHolidayMakerTax'),
+                    hint: lang === 'de' ? 'Besteuerung ab dem ersten Dollar mit 15%, kein Steuerfreibetrag'
+                        : lang === 'ja' ? '$0から15%課税。非課税枠なし'
+                        : 'Taxed from the first dollar at 15%, no tax-free threshold' },
                 ] as const).map(opt => (
-                  <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`}>
-                    <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
-                      onChange={() => { setTaxStatus(opt.val); setErrors(p => ({...p, taxStatus: ''})) }} className="hidden" />
-                    <div className={`radio-dot ${taxStatus === opt.val ? 'radio-dot-active' : ''}`} />
-                    {opt.label}
+                  <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`} style={{flexDirection:'column',alignItems:'flex-start',gap:2}}>
+                    <span style={{display:'flex',alignItems:'center',gap:10}}>
+                      <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
+                        onChange={() => handleTaxStatusPick(opt.val)} className="hidden" />
+                      <span className={`radio-dot ${taxStatus === opt.val ? 'radio-dot-active' : ''}`} />
+                      {opt.label}
+                    </span>
+                    <span style={{fontSize:11,color:'#7a8a82',marginLeft:24,fontWeight:400}}>{opt.hint}</span>
                   </label>
                 ))}
               </div>
@@ -853,6 +836,46 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <p className="form-footer-note">{T('secureNote')}</p>
 
         </form>
+
+        {showResidencyPrompt && (() => {
+          const txt = lang === 'de'
+            ? { icon: '💰', title: 'Warte, das solltest du wissen',
+                body: <>Basierend auf deinem Heimatland (<strong>{country}</strong>) könntest du als australischer Steuerresident für steuerliche Zwecke gelten. Wenn du den Working Holiday Maker Steuerstatus wählst, zahlst du in der Regel 15% Steuer ab dem ersten verdienten Dollar. Zum Beispiel könntest du bei einem zu versteuernden Einkommen von $45.000 etwa $2.462 mehr Steuer zahlen als jemand, der als australischer Steuerresident gilt. Bist du sicher, dass der Working Holiday Maker Steuerstatus richtig für dich ist?</>,
+                link: 'Steuerresidenz erklärt', yes: 'Ja, ich bin sicher', no: 'Nein, Resident-Status prüfen' }
+            : lang === 'ja'
+            ? { icon: '💰', title: '待ってください',
+                body: <>あなたの出身国（<strong>{country}</strong>）に基づくと、税務上のオーストラリア居住者として認定される可能性があります。Working Holiday Makerの税務ステータスを選択すると、通常は最初の1ドルから15%の税金が課されます。例えば、課税所得が$45,000の場合、オーストラリア税務居住者として認定される人と比べて、約$2,462多く税金を支払う可能性があります。本当にWorking Holiday Makerの税務ステータスで正しいですか？</>,
+                link: '税務上の居住者ステータスについて', yes: 'はい、確実です', no: 'いいえ、居住者資格を確認する' }
+            : { icon: '💰', title: 'Wait, check this first',
+                body: <>Based on your home country (<strong>{country}</strong>), you may qualify as an Australian resident for tax purposes. If you choose the Working Holiday Maker tax status, you will generally pay tax at 15% from the first dollar earned. For example, on a taxable income of $45,000, you could pay approximately $2,462 more in tax compared to someone who qualifies as an Australian tax resident. Are you sure the Working Holiday Maker tax status is right for you?</>,
+                link: 'Tax Residency Explained', yes: "Yes, I'm sure", no: 'No, let me check Resident status' }
+
+          // The "go check" path is the prominent green button, and "I'm sure"
+          // is demoted to a plain low-emphasis button - so the path of least
+          // resistance is to actually go check, not to reflexively dismiss.
+          const dismissBtnStyle: React.CSSProperties =
+            {minHeight:44,borderRadius:100,border:'1.5px solid #E2E8E4',background:'#fff',color:'#587066',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}
+          const goCheckBtnStyle: React.CSSProperties =
+            {minHeight:50,borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}
+
+          return (
+            <div role="dialog" aria-modal="true"
+              style={{position:'fixed',inset:0,background:'rgba(8,15,13,0.55)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2000,padding:20}}>
+              <div style={{background:'#fff',borderRadius:18,maxWidth:440,width:'100%',padding:'26px 24px',boxShadow:'0 24px 70px rgba(0,0,0,0.32)',textAlign:'center'}}>
+                <div style={{fontSize:30,marginBottom:10}}>{txt.icon}</div>
+                <h3 style={{fontFamily:'inherit',fontSize:17,fontWeight:800,color:'#92400e',margin:'0 0 10px'}}>{txt.title}</h3>
+                <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 6px'}}>{txt.body}</p>
+                <a href={residencyUrl} target="_self" style={{display:'inline-block',fontSize:13,color:'#0B5240',textDecoration:'underline',fontWeight:600,marginBottom:20}}>{txt.link} →</a>
+                <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                  <button type="button" onClick={goReadResidency} style={goCheckBtnStyle}>{txt.no}</button>
+                  <button type="button" onClick={() => setShowResidencyPrompt(false)} style={dismissBtnStyle}>
+                    {txt.yes}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )
+        })()}
         </div>
       </div>
     </>
@@ -921,7 +944,6 @@ const styles = `
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
-  .fireworks-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
   .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }

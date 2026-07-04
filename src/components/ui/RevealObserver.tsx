@@ -1,7 +1,9 @@
 'use client'
 import { useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 export function RevealObserver() {
+  const pathname = usePathname()
   useEffect(() => {
     const selectors = '.reveal,.reveal-left,.reveal-right'
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -29,6 +31,8 @@ export function RevealObserver() {
     })
 
     return () => obs.disconnect()
-  }, [])
+    // Re-run on client-side route changes so reveal animations fire on every
+    // page, not just the first server-rendered one.
+  }, [pathname])
   return null
 }

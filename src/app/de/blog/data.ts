@@ -10564,7 +10564,7 @@ Business Activity Statements sind vierteljährlich fällig:
 - Quartal 3 (Januar bis März): fällig 28. April
 - Quartal 4 (April bis Juni): fällig 28. Juli
 
-Einreichung durch einen registrierten Steueragenten verlängert die Frist typischerweise um 4 Wochen. Eine BAS-Einreichung zu verpassen löst Failure-to-Lodge-Strafen ähnlich denen für späte Steuererklärungen aus. Siehe unseren Artikel zu [Späten Steuererklärungsstrafen](/de/blog/late-tax-return-penalty-working-holiday) für das Rahmenwerk.
+Einreichung unter Aufsicht eines registrierten Steueragenten verlängert die Frist typischerweise um 4 Wochen. Eine BAS-Einreichung zu verpassen löst Failure-to-Lodge-Strafen ähnlich denen für späte Steuererklärungen aus. Siehe unseren Artikel zu [Späten Steuererklärungsstrafen](/de/blog/late-tax-return-penalty-working-holiday) für das Rahmenwerk.
 
 ## Welche Absetzungen können Ridesharefahrer beanspruchen?
 
