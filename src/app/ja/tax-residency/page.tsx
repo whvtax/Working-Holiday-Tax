@@ -65,7 +65,7 @@ const CONDITIONS = [
   'NDA国のパスポートを所持していること：',
   '通常の居住地がオーストラリアにあること。',
   'オーストラリアに居住する意思があること。',
-  '税年度内に合計183日以上オーストラリアに滞在すること。',
+  '家、定期的な仕事、個人的なつながりなど、オーストラリアとの継続的な関係を築いていること。',
 ]
 
 const FAQS = [
@@ -198,12 +198,9 @@ export default function JapaneseTaxResidencyPage() {
 
             <div className="text-center mb-6">
               <h2 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.25, letterSpacing: '-0.02em', marginBottom: '10px', maxWidth: '30ch' }}>
-                居住者の分類
-              </h2>
-              <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.75, maxWidth: '54ch' }}>
+                style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.25, letterSpacing: '-0.02em', maxWidth: '54ch' }}>
                 ワーキングホリデービザ保持者は、以下の要素が当てはまる場合、オーストラリア税務居住者とみなされることがあります：
-              </p>
+              </h2>
             </div>
 
             <div className="max-w-[680px] mx-auto">

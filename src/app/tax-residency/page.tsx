@@ -63,7 +63,7 @@ const CONDITIONS = [
   'You hold a passport from one of the NDA countries:',
   'Your ordinary place of residence is in Australia.',
   'You have an intention to live in Australia.',
-  'You stay in Australia for a cumulative 183 days in the tax year.',
+  'You have established ongoing ties to Australia, such as a home, regular work or personal connections.',
 ]
 
 const FAQS = [
@@ -195,12 +195,9 @@ export default function TaxResidencyPage() {
 
             <div className="text-center mb-6">
               <h2 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.2, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '28ch' }}>
-                Resident classification
-              </h2>
-              <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.7, maxWidth: '50ch' }}>
+                style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.2, letterSpacing: '-0.025em', maxWidth: '50ch' }}>
                 Working Holiday visa holders may qualify as Australian residents for tax purposes if the following factors apply:
-              </p>
+              </h2>
             </div>
 
             <div className="max-w-[680px] mx-auto">
