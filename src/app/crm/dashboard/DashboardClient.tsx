@@ -1168,12 +1168,34 @@ export default function DashboardClient() {
     const rest = parts.slice(0,-1).join(' ')
     return `${last}, ${rest}`
   }
-  // Groups digits into blocks of 3 for readability (TFN, WhatsApp, AU phone), preserving a leading "+"
+  // Groups digits into blocks of 3 for readability (TFN), preserving a leading "+"
   const groupDigits = (val:string) => {
     if (!val) return val
     const hasPlus = val.trim().startsWith('+')
     const digits = val.replace(/\D/g,'')
     if (!digits) return val
+    const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
+    return hasPlus ? `+${groups}` : groups
+  }
+  // Formats phone numbers (WhatsApp, AU phone) the way Australians actually write them:
+  // international "+61 492 820 350" or domestic "0492 820 350". Falls back to plain
+  // 3-digit grouping for numbers that don't match an AU mobile shape (e.g. overseas numbers).
+  const formatPhoneNumber = (val:string) => {
+    if (!val) return val
+    const hasPlus = val.trim().startsWith('+')
+    const digits = val.replace(/\D/g,'')
+    if (!digits) return val
+    // International AU format: +61 followed by 9 digits -> +61 XXX XXX XXX
+    if (hasPlus && digits.startsWith('61') && digits.length === 11) {
+      const rest = digits.slice(2)
+      const groups = rest.match(/.{1,3}/g)?.join(' ') || rest
+      return `+61 ${groups}`
+    }
+    // Domestic AU format: 0 followed by 9 digits (10 total) -> 0XXX XXX XXX
+    if (!hasPlus && digits.startsWith('0') && digits.length === 10) {
+      return `${digits.slice(0,4)} ${digits.slice(4,7)} ${digits.slice(7,10)}`
+    }
+    // Fallback: plain 3-digit grouping for non-AU numbers
     const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
     return hasPlus ? `+${groups}` : groups
   }
@@ -1710,7 +1732,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       </div>
                       {t.whatsapp && (
                         <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
-                          <span>{groupDigits(t.whatsapp)}</span>
+                          <span>{formatPhoneNumber(t.whatsapp)}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}
@@ -1753,7 +1775,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       </div>
                       {t.whatsapp && (
                         <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
-                          <span>{groupDigits(t.whatsapp)}</span>
+                          <span>{formatPhoneNumber(t.whatsapp)}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}
@@ -1947,7 +1969,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     }
                     return rows
                   })().map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{(l==='WhatsApp'||l==='AU Phone') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{(l==='WhatsApp'||l==='AU Phone') ? formatPhoneNumber(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
 
@@ -2500,7 +2522,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
                                   </a>
                                 )}
-                                <span>{groupDigits(cl.whatsapp)||"-"}</span>
+                                <span>{formatPhoneNumber(cl.whatsapp)||"-"}</span>
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
@@ -2658,7 +2680,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
                               {cl.whatsapp
-                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none'}}>{groupDigits(cl.whatsapp)}</a>
+                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none'}}>{formatPhoneNumber(cl.whatsapp)}</a>
                                 : '-'}
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
@@ -2711,7 +2733,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {[['Date of birth',fmtDob(activeClient.dob)],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
                     <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
                       <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>{l}</span>
-                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{l==='WhatsApp' ? groupDigits(v)||'-' : (v||'-')}</span>
+                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{l==='WhatsApp' ? formatPhoneNumber(v)||'-' : (v||'-')}</span>
                       {v && v!=='-' && <CopyBtn text={v}/>}
                     </div>
                   ))}

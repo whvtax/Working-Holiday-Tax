@@ -271,12 +271,31 @@ function Section({title,children}:{title:string;children:React.ReactNode}) {
   return <div className="cp-section"><div className="cp-sec-head">{title}</div>{children}</div>
 }
 
-// Groups digits into blocks of 3 for readability (TFN, WhatsApp, AU phone), preserving a leading "+"
+// Groups digits into blocks of 3 for readability (TFN), preserving a leading "+"
 function groupDigits(val:string) {
   if (!val) return val
   const hasPlus = val.trim().startsWith('+')
   const digits = val.replace(/\D/g,'')
   if (!digits) return val
+  const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
+  return hasPlus ? `+${groups}` : groups
+}
+// Formats phone numbers (WhatsApp, AU phone) the way Australians actually write them:
+// international "+61 492 820 350" or domestic "0492 820 350". Falls back to plain
+// 3-digit grouping for numbers that don't match an AU mobile shape (e.g. overseas numbers).
+function formatPhoneNumber(val:string) {
+  if (!val) return val
+  const hasPlus = val.trim().startsWith('+')
+  const digits = val.replace(/\D/g,'')
+  if (!digits) return val
+  if (hasPlus && digits.startsWith('61') && digits.length === 11) {
+    const rest = digits.slice(2)
+    const groups = rest.match(/.{1,3}/g)?.join(' ') || rest
+    return `+61 ${groups}`
+  }
+  if (!hasPlus && digits.startsWith('0') && digits.length === 10) {
+    return `${digits.slice(0,4)} ${digits.slice(4,7)} ${digits.slice(7,10)}`
+  }
   const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
   return hasPlus ? `+${groups}` : groups
 }
@@ -286,8 +305,8 @@ function Row({label,value,field,editing,form,setForm,type='text',ltr=false}:{
   form:Record<string,unknown>;setForm:(f:Record<string,unknown>)=>void
   type?:string;ltr?:boolean
 }) {
-  const groupedFields = ['whatsapp','auPhone','tfn']
-  const display = groupedFields.includes(field) ? groupDigits(value) : value
+  const phoneFields = ['whatsapp','auPhone']
+  const display = phoneFields.includes(field) ? formatPhoneNumber(value) : field === 'tfn' ? groupDigits(value) : value
   return (
     <div className="cp-row">
       <span className="cp-lbl">{label}</span>

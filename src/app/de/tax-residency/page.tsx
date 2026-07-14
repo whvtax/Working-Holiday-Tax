@@ -62,7 +62,7 @@ const CONDITIONS = [
 const FAQS = [
   {
     question: 'Was ist Steuerresidenz?',
-    answer: 'Die Steuerresidenz bestimmt, welche Steuersätze auf dein Einkommen in Australien angewendet werden. Es gibt drei Kategorien: Nicht-Resident, Working Holiday Maker (417/462 Visum) und australischer Steuerresident. Jede Kategorie hat andere Steuersätze und Freibeträge.',
+    answer: 'Die Steuerresidenz bestimmt, welche Steuersätze auf dein Einkommen in Australien angewendet werden. Du kannst als australischer Steuerresident für steuerliche Zwecke gelten, auch wenn du kein australischer Staatsbürger oder permanenter Resident bist.',
   },
   {
     question: 'Was ist mit Inhabern eines Studentenvisums (500)?',
@@ -138,10 +138,10 @@ export default function GermanTaxResidencyPage() {
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-12 lg:pb-10">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
 
             {/* Breadcrumbs */}
-            <nav aria-label="Brotkrümelnavigation" className="mb-5 lg:mb-6">
+            <nav aria-label="Brotkrümelnavigation" className="mb-4 lg:mb-5">
               <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
                 <li>
                   <Link href="/de" style={{ color: '#587066' }}>Startseite</Link>
@@ -154,24 +154,24 @@ export default function GermanTaxResidencyPage() {
             <div className="text-center">
               <h1 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
-                Verstehe deine <span style={{ color: '#0B5240' }}>Steuerresidenz</span>
+                Bist du ein australischer Steuerresident für <span style={{ color: '#0B5240' }}>steuerliche Zwecke</span>?
               </h1>
               <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '40ch' }}>
-                Mit einem Working-Holiday-Visum kannst du durchaus ein australischer Steuerresident <strong>für steuerliche Zwecke</strong> sein. Das bedeutet nicht, dass du Australier bist.
+                Die Steuerresidenz bestimmt, welche Steuersätze auf dein Einkommen in Australien angewendet werden. Sie unterscheidet sich von deinem Visum- oder Aufenthaltsstatus.
               </p>
             </div>
           </div>
         </section>
 
         {/* ── TAX TABLES COMPARISON ─────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
+        <section style={{ background: '#F5F9F7', paddingTop: '32px', paddingBottom: '38px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="taxres-savings-box" style={{ marginBottom: '24px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <div className="taxres-savings-box" style={{ marginBottom: '18px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
               <div>
-                <p className="taxres-savings-heading">Mögliche Ersparnis</p>
+                <p className="taxres-savings-heading">Warum das wichtig ist</p>
                 <p className="taxres-savings-body">
-                  Wenn du als australischer Steuerresident eingestuft wirst, kannst du bei einem Einkommen von 45.000 $ bis zu <strong>2.462 $ zurück</strong> bekommen. Wir prüfen deine Berechtigung, wenn wir deine Steuererklärung machen.
+                  Deine Steuerresidenz bestimmt, welche Steuersätze auf dein Einkommen angewendet werden.
                 </p>
               </div>
             </div>
@@ -184,24 +184,21 @@ export default function GermanTaxResidencyPage() {
         </section>
 
         {/* ── RESIDENCY CONDITIONS ──────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
+        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="text-center mb-8">
-              <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
-                Residenten-Klassifizierung
-              </p>
+            <div className="text-center mb-6">
               <h2 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.2, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '28ch' }}>
-                Kannst du ein australischer Steuerresident für <strong>steuerliche Zwecke</strong> sein?
+                Residenten-Klassifizierung
               </h2>
               <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.7, maxWidth: '50ch' }}>
-                Working Holiday Visum-Inhaber können als australische Steuerresidenten eingestuft werden, wenn sie ALLE folgenden Bedingungen erfüllen:
+                Working Holiday Visum-Inhaber können als australische Steuerresidenten gelten, wenn die folgenden Faktoren zutreffen:
               </p>
             </div>
 
             <div className="max-w-[680px] mx-auto">
-              <div className="flex flex-col gap-3 mb-6">
+              <div className="flex flex-col gap-3">
                 {CONDITIONS.map((c, i) => (
                   <div key={i} className="taxres-condition-item">
                     <span className="taxres-condition-num">{i + 1}</span>
@@ -210,11 +207,6 @@ export default function GermanTaxResidencyPage() {
                     </p>
                   </div>
                 ))}
-              </div>
-
-              <div className="taxres-notes">
-                <p>📅 Das australische Steuerjahr läuft vom <strong>1. Juli bis 30. Juni</strong>.</p>
-                <p>🎓 Inhaber eines Studentenvisums (500) werden in der Regel als Steuerresidenten behandelt.</p>
               </div>
             </div>
           </div>
@@ -228,9 +220,9 @@ export default function GermanTaxResidencyPage() {
         </section>
 
         {/* ── FAQ ───────────────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
+        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
               <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
                 Häufige Fragen
               </p>
@@ -255,9 +247,9 @@ export default function GermanTaxResidencyPage() {
         </section>
 
         {/* ── BACK TO FORM ─────────────────────────────────────────────────── */}
-        <section style={{ background: '#0B5240', paddingTop: '40px', paddingBottom: '40px' }}>
+        <section style={{ background: '#0B5240', paddingTop: '32px', paddingBottom: '32px' }}>
           <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center reveal">
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '20px', maxWidth: '40ch' }}>
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '16px', maxWidth: '40ch' }}>
               Jetzt, wo du deine Residenz verstehst, fülle deine Steuererklärung weiter aus.
             </p>
             <BackButton />

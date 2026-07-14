@@ -71,11 +71,7 @@ const CONDITIONS = [
 const FAQS = [
   {
     question: '税務上の居住区分とは何ですか？',
-    answer: '税務上の居住区分は、オーストラリアでの所得にどの税率が適用されるかを決定します。3つのカテゴリーがあります：非居住者、ワーキングホリデーメーカー（417/462ビザ）、オーストラリア税務居住者。それぞれ異なる税率と控除額が適用されます。',
-  },
-  {
-    question: '日本人ですが、税務居住者として扱われる可能性はありますか？',
-    answer: 'はい。日本はNDA国に含まれているため、居住条件（オーストラリアでの実際の居住、滞在183日以上など）を満たせば、税務居住者として扱われる可能性があります。これにより、年間で大幅な税金節約につながる可能性があります。詳しくはご相談ください。',
+    answer: '税務上の居住区分は、オーストラリアでの所得にどの税率が適用されるかを決定します。オーストラリアの市民権や永住権を持っていなくても、税務上のオーストラリア居住者とみなされる場合があります。',
   },
   {
     question: '学生ビザ（500）保持者の場合はどうなりますか？',
@@ -151,10 +147,10 @@ export default function JapaneseTaxResidencyPage() {
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-12 lg:pb-10">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
 
             {/* Breadcrumbs */}
-            <nav aria-label="パンくずリスト" className="mb-5 lg:mb-6">
+            <nav aria-label="パンくずリスト" className="mb-4 lg:mb-5">
               <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
                 <li>
                   <Link href="/ja" style={{ color: '#587066' }}>ホーム</Link>
@@ -167,24 +163,24 @@ export default function JapaneseTaxResidencyPage() {
             <div className="text-center">
               <h1 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.25, letterSpacing: '-0.02em', marginBottom: '14px', maxWidth: '24ch' }}>
-                <span style={{ color: '#0B5240' }}>税務上の居住区分</span>を理解しよう
+                あなたは<span style={{ color: '#0B5240' }}>税務上</span>のオーストラリア居住者ですか？
               </h1>
               <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.7, color: '#0B5240', maxWidth: '40ch' }}>
-                ワーキングホリデービザでも、<strong>税務上</strong>はオーストラリアの居住者になれる可能性があります。これは「オーストラリア人になる」という意味ではありません。
+                税務上の居住区分は、オーストラリアでの所得にどの税率が適用されるかを決定します。ビザや在留資格の種類とは異なるものです。
               </p>
             </div>
           </div>
         </section>
 
         {/* ── TAX TABLES COMPARISON ─────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
+        <section style={{ background: '#F5F9F7', paddingTop: '32px', paddingBottom: '38px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="taxres-savings-box" style={{ marginBottom: '24px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <div className="taxres-savings-box" style={{ marginBottom: '18px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
               <div>
-                <p className="taxres-savings-heading">節約の可能性</p>
+                <p className="taxres-savings-heading">重要な理由</p>
                 <p className="taxres-savings-body">
-                  オーストラリア税務居住者として分類された場合、$45,000の所得で最大<strong>$2,462の還付</strong>を受けられます。タックスリターン時に、対象資格を確認します。
+                  税務上の居住区分によって、所得に適用される税率が決まります。
                 </p>
               </div>
             </div>
@@ -197,24 +193,21 @@ export default function JapaneseTaxResidencyPage() {
         </section>
 
         {/* ── RESIDENCY CONDITIONS ──────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
+        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="text-center mb-8">
-              <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
-                居住者の分類
-              </p>
+            <div className="text-center mb-6">
               <h2 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.25, letterSpacing: '-0.02em', marginBottom: '10px', maxWidth: '30ch' }}>
-                <strong>税務上</strong>のオーストラリア居住者になれますか？
+                居住者の分類
               </h2>
               <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.75, maxWidth: '54ch' }}>
-                ワーキングホリデービザ保持者は、以下のすべての条件を満たす場合、オーストラリア税務居住者として分類される可能性があります：
+                ワーキングホリデービザ保持者は、以下の要素が当てはまる場合、オーストラリア税務居住者とみなされることがあります：
               </p>
             </div>
 
             <div className="max-w-[680px] mx-auto">
-              <div className="flex flex-col gap-3 mb-6">
+              <div className="flex flex-col gap-3">
                 {CONDITIONS.map((c, i) => (
                   <div key={i} className="taxres-condition-item">
                     <span className="taxres-condition-num">{i + 1}</span>
@@ -223,11 +216,6 @@ export default function JapaneseTaxResidencyPage() {
                     </p>
                   </div>
                 ))}
-              </div>
-
-              <div className="taxres-notes">
-                <p>📅 オーストラリアの税年度は<strong>7月1日から6月30日</strong>までです。</p>
-                <p>🎓 学生ビザ（500）保持者は通常、税務居住者として扱われます。</p>
               </div>
             </div>
           </div>
@@ -241,9 +229,9 @@ export default function JapaneseTaxResidencyPage() {
         </section>
 
         {/* ── FAQ ───────────────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
+        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
               <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
                 よくある質問
               </p>
@@ -268,9 +256,9 @@ export default function JapaneseTaxResidencyPage() {
         </section>
 
         {/* ── BACK TO FORM ─────────────────────────────────────────────────── */}
-        <section style={{ background: '#0B5240', paddingTop: '40px', paddingBottom: '40px' }}>
+        <section style={{ background: '#0B5240', paddingTop: '32px', paddingBottom: '32px' }}>
           <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center reveal">
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.75, marginBottom: '20px', maxWidth: '44ch' }}>
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.75, marginBottom: '16px', maxWidth: '44ch' }}>
               税務居住について理解できたら、タックスリターンフォームの記入を続けましょう。
             </p>
             <BackButton />

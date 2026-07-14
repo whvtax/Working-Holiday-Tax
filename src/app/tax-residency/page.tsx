@@ -194,15 +194,12 @@ export default function TaxResidencyPage() {
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
             <div className="text-center mb-6">
-              <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
-                Resident classification
-              </p>
               <h2 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.2, letterSpacing: '-0.025em', marginBottom: '10px', maxWidth: '28ch' }}>
-                Can you be an Australian resident for <strong>tax purposes</strong>?
+                Resident classification
               </h2>
               <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.7, maxWidth: '50ch' }}>
-                Working Holiday visa holders may be classified as Australian residents for tax purposes if they meet the following conditions:
+                Working Holiday visa holders may qualify as Australian residents for tax purposes if the following factors apply:
               </p>
             </div>
 
