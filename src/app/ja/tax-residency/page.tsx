@@ -197,10 +197,9 @@ export default function JapaneseTaxResidencyPage() {
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
             <div className="text-center mb-6">
-              <h2 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.25, letterSpacing: '-0.02em', maxWidth: '54ch' }}>
+              <p className="font-bold mx-auto" style={{ fontSize: '14.5px', color: '#1A2822', lineHeight: 1.75, maxWidth: '54ch' }}>
                 ワーキングホリデービザ保持者は、以下の要素が当てはまる場合、オーストラリア税務居住者とみなされることがあります：
-              </h2>
+              </p>
             </div>
 
             <div className="max-w-[680px] mx-auto">
