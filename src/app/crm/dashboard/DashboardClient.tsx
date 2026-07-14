@@ -1160,6 +1160,23 @@ export default function DashboardClient() {
 
   const fmtCur    = (n:number)   => new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD',maximumFractionDigits:0}).format(n)
   const initials  = (name:string) => name.split(' ').map((n:string)=>n[0]).join('').slice(0,2).toUpperCase()
+  // Displays a stored "First Middle... Last" name as "Last, First Middle..." for consistent CRM display
+  const displayName = (name:string) => {
+    const parts = (name||'').trim().split(/\s+/).filter(Boolean)
+    if (parts.length < 2) return name
+    const last = parts[parts.length-1]
+    const rest = parts.slice(0,-1).join(' ')
+    return `${last}, ${rest}`
+  }
+  // Groups digits into blocks of 3 for readability (TFN, WhatsApp, AU phone), preserving a leading "+"
+  const groupDigits = (val:string) => {
+    if (!val) return val
+    const hasPlus = val.trim().startsWith('+')
+    const digits = val.replace(/\D/g,'')
+    if (!digits) return val
+    const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
+    return hasPlus ? `+${groups}` : groups
+  }
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
@@ -1423,7 +1440,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         <div key={t.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
                           onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail');setView('tasks');setGlobalSearch('')}}>
                           <div>
-                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{t.clientName}</div>
+                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{displayName(t.clientName)}</div>
                             <div style={{fontSize:10,color:'#7a8a82'}}>{t.taskType} · {t.taxYear}</div>
                           </div>
                           {t.done ? <span style={{fontSize:10,color:'#059669',fontWeight:600}}>✓ Done</span>
@@ -1439,7 +1456,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         <div key={c.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
                           onClick={()=>{setActiveClient(c);setClientNotes(c.notes||'');setView('clients');setGlobalSearch('')}}>
                           <div>
-                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{c.fullName}</div>
+                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{displayName(c.fullName)}</div>
                             <div style={{fontSize:10,color:'#7a8a82'}}>{c.country} · {c.taxReturns.length} returns</div>
                           </div>
                           {c.taxReturns.length>0 && (
@@ -1614,7 +1631,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           const msg = `Happy birthday ${firstName}! 🎉🎂 Wishing you an amazing year ahead - Working Holiday Tax`
                           return (
                             <div key={c.id} style={{display:'flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.5)',padding:'6px 10px',borderRadius:8}}>
-                              <span style={{fontSize:11,fontWeight:600,color:'#831843',flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis' as const,whiteSpace:'nowrap' as const}}>{c.fullName}</span>
+                              <span style={{fontSize:11,fontWeight:600,color:'#831843',flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis' as const,whiteSpace:'nowrap' as const}}>{displayName(c.fullName)}</span>
                               <span style={{fontSize:10,color:'#9d174d',whiteSpace:'nowrap' as const}}>{fmtDays(days)}</span>
                               {sanitized && (
                                 <a href={`https://wa.me/${sanitized}?text=${encodeURIComponent(msg)}`} target="_blank" rel="noopener noreferrer"
@@ -1678,7 +1695,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#f59e0b',flexShrink:0}}/>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
-                        <span>{t.clientName}</span>
+                        <span>{displayName(t.clientName)}</span>
                         <CopyBtn text={t.clientName}/>
                         {isReturning && (
                           <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ECFDF5',color:'#047857',border:'1px solid #A7F3D0'}} title="This client has been with you before">
@@ -1693,7 +1710,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       </div>
                       {t.whatsapp && (
                         <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
-                          <span>{t.whatsapp}</span>
+                          <span>{groupDigits(t.whatsapp)}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}
@@ -1731,12 +1748,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     <div style={{width:9,height:9,borderRadius:'50%',background:'#059669',flexShrink:0,animation:'donePulse 2s ease-in-out infinite'}}/>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4}}>
-                        <span>{t.clientName}</span>
+                        <span>{displayName(t.clientName)}</span>
                         <CopyBtn text={t.clientName}/>
                       </div>
                       {t.whatsapp && (
                         <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>
-                          <span>{t.whatsapp}</span>
+                          <span>{groupDigits(t.whatsapp)}</span>
                           <CopyBtn text={t.whatsapp}/>
                         </div>
                       )}
@@ -1798,7 +1815,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               {activeTask.done && (
                 <div style={{...S.card,padding:'32px 28px',textAlign:'center' as const}}>
                   <div style={{width:64,height:64,borderRadius:18,background:'linear-gradient(135deg,#ecfdf5,#a7f3d0)',border:'2px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:26,margin:'0 auto 16px',color:'#059669'}}>✓</div>
-                  <div style={{fontSize:20,fontWeight:700,color:'#0a1410',marginBottom:6,letterSpacing:'-0.3px'}}>{activeTask.clientName}</div>
+                  <div style={{fontSize:20,fontWeight:700,color:'#0a1410',marginBottom:6,letterSpacing:'-0.3px'}}>{displayName(activeTask.clientName)}</div>
                   <div style={{fontSize:13,color:'#7a8a82',marginBottom:10}}>{TASK_LABELS[activeTask.taskType]} · {activeTask.taxYear}</div>
                   <span style={{display:'inline-block',background:'#ecfdf5',color:'#059669',border:'1px solid #a7f3d0',borderRadius:8,padding:'5px 16px',fontSize:12,fontWeight:600,marginBottom:24}}>✓ Completed - sensitive data cleared</span>
                   <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:10,padding:'10px 14px',marginBottom:20,fontSize:11,color:'#7a8a82',textAlign:'left'}}>
@@ -1844,7 +1861,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               <div style={{...S.card,padding:'18px 20px',marginBottom:14,display:'flex',alignItems:'center',gap:14,background:'#fff'}}>
                 <div style={{width:50,height:50,borderRadius:14,background:TASK_COLORS[activeTask.taskType],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:700,flexShrink:0}}>{initials(activeTask.clientName)}</div>
                 <div style={{flex:1}}>
-                  <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{activeTask.clientName}</div>
+                  <div style={{fontSize:18,fontWeight:600,color:'#0a1410',letterSpacing:'-0.2px'}}>{displayName(activeTask.clientName)}</div>
                   {(()=>{
                     const existing = clients.find(c=>c.id===activeTask.clientId)
                     if (!existing || existing.taxReturns.length===0) return null
@@ -1930,7 +1947,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     }
                     return rows
                   })().map(([l,v])=>(
-                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                    <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{(l==='WhatsApp'||l==='AU Phone') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                   ))}
                 </div>
 
@@ -1939,8 +1956,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {activeTask.taskType==='tax-return' && <>
                     <div style={S.secHead}><span>Tax & employment</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Employer',activeTask.primaryJob],['Tax Year',activeTask.taxYear],['Tax status',activeTask.taxStatus]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
+                    {(()=>{
+                      const medicareVal = (activeTask.notes||'').match(/Medicare: ([^|]+)/)?.[1]?.trim()||''
+                      if (!medicareVal) return null
+                      return (
+                        <div style={S.row}><span style={S.lbl}>Medicare</span><span style={{...S.val,color:medicareVal==='Yes'?'#0E5C42':'#c0392b',fontWeight:600,textAlign:'right'}}>{medicareVal==='Yes'?'Yes ✓':'No'}</span></div>
+                      )
+                    })()}
                     {(()=>{
                       const abnVal    = (activeTask.notes||'').match(/ABN: ([^|]+)/)?.[1]?.trim()||''
                       const abnNum    = (activeTask.notes||'').match(/ABN Number: ([^|]+)/)?.[1]?.trim()||''
@@ -1995,7 +2019,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         ['Account opening date',sfDate],
                       ] as [string,string][])
                     })().map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                     {(()=>{
                       const bkParts=(activeTask.bankDetails||'').split(' | ')
@@ -2014,13 +2038,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {activeTask.taskType==='tfn' && <>
                     <div style={S.secHead}><span>Tax details</span></div>
                     {([['TFN (if existing) 🔒',activeTask.tfn],['Tax Year',activeTask.taxYear],['How heard',activeTask.howHeard]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                   </>}
                   {activeTask.taskType==='abn' && <>
                     <div style={S.secHead}><span>Business details</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Business activity',activeTask.primaryJob],['How heard',activeTask.howHeard]] as [string,string][]).map(([l,v])=>(
-                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
+                      <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
                   </>}
                 </div>
@@ -2451,7 +2475,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={{fontSize:12,fontWeight:500,color:'#0a1410'}}>{cl.fullName}</div>
+                                <div style={{fontSize:12,fontWeight:500,color:'#0a1410'}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
@@ -2476,7 +2500,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.096.546 4.122 1.588 5.905L.057 23.813a.5.5 0 00.63.63l5.908-1.531A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.6a9.555 9.555 0 01-4.87-1.336l-.35-.208-3.624.94.96-3.524-.228-.363A9.6 9.6 0 0112 2.4c5.295 0 9.6 4.305 9.6 9.6S17.295 21.6 12 21.6z"/></svg>
                                   </a>
                                 )}
-                                <span>{cl.whatsapp||'-'}</span>
+                                <span>{groupDigits(cl.whatsapp)||"-"}</span>
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
@@ -2629,12 +2653,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={{fontSize:12,fontWeight:500,color:'#7a8a82'}}>{cl.fullName}</div>
+                                <div style={{fontSize:12,fontWeight:500,color:'#7a8a82'}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
                               {cl.whatsapp
-                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none'}}>{cl.whatsapp}</a>
+                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none'}}>{groupDigits(cl.whatsapp)}</a>
                                 : '-'}
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
@@ -2677,7 +2701,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <div style={{width:56,height:56,borderRadius:16,background:'linear-gradient(135deg,#0E5C42,#1a9a6a)',color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:19,fontWeight:700,flexShrink:0,boxShadow:'0 4px 12px rgba(14,92,66,0.18)'}}>{initials(activeClient.fullName)}</div>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{display:'flex',alignItems:'center',gap:10,flexWrap:'wrap' as const}}>
-                      <div style={{fontSize:20,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px'}}>{activeClient.fullName}</div>
+                      <div style={{fontSize:20,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px'}}>{displayName(activeClient.fullName)}</div>
                     </div>
                     <div style={{fontSize:12,color:'#7a8a82',marginTop:4}}>{activeClient.country} · Client since {fmtDate(activeClient.createdAt)}</div>
                   </div>
@@ -2687,7 +2711,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {[['Date of birth',fmtDob(activeClient.dob)],['WhatsApp',activeClient.whatsapp],['Email',activeClient.email],['Country',activeClient.country],['How they heard',activeClient.howHeard]].map(([l,v])=>(
                     <div key={l} style={{display:'flex',padding:'8px 0',borderBottom:'1px solid #f5f5f5',gap:12,alignItems:'center'}}>
                       <span style={{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110}}>{l}</span>
-                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{v||'-'}</span>
+                      <span style={{fontSize:12,color:'#0a1410',flex:1}}>{l==='WhatsApp' ? groupDigits(v)||'-' : (v||'-')}</span>
                       {v && v!=='-' && <CopyBtn text={v}/>}
                     </div>
                   ))}

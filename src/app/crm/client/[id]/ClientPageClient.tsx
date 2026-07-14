@@ -271,17 +271,29 @@ function Section({title,children}:{title:string;children:React.ReactNode}) {
   return <div className="cp-section"><div className="cp-sec-head">{title}</div>{children}</div>
 }
 
+// Groups digits into blocks of 3 for readability (TFN, WhatsApp, AU phone), preserving a leading "+"
+function groupDigits(val:string) {
+  if (!val) return val
+  const hasPlus = val.trim().startsWith('+')
+  const digits = val.replace(/\D/g,'')
+  if (!digits) return val
+  const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
+  return hasPlus ? `+${groups}` : groups
+}
+
 function Row({label,value,field,editing,form,setForm,type='text',ltr=false}:{
   label:string;value:string;field:string;editing:boolean
   form:Record<string,unknown>;setForm:(f:Record<string,unknown>)=>void
   type?:string;ltr?:boolean
 }) {
+  const groupedFields = ['whatsapp','auPhone','tfn']
+  const display = groupedFields.includes(field) ? groupDigits(value) : value
   return (
     <div className="cp-row">
       <span className="cp-lbl">{label}</span>
       {editing
         ? <input type={type} className="cp-input" value={(form[field] as string)??''} onChange={e=>setForm({...form,[field]:e.target.value})} style={{direction:ltr?'ltr':'inherit'}}/>
-        : <span className={`cp-val${ltr?' ltr':''}${!value?' empty':''}`}>{value||'-'}</span>
+        : <span className={`cp-val${ltr?' ltr':''}${!value?' empty':''}`}>{display||'-'}</span>
       }
     </div>
   )

@@ -175,6 +175,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [country, setCountry]         = useState('')
   const [dob, setDob]                 = useState('')
   const [marital, setMarital]         = useState<'Single'|'Married'|''>('')
+  const [hasMedicare, setHasMedicare] = useState<'yes'|'no'|''>('')
   const [tfn, setTfn]                 = useState('')
   const [primaryJob, setPrimaryJob]   = useState('')
   const [bankName, setBankName]           = useState('')
@@ -240,6 +241,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       setIf(d.waNumber, setWaNumber);   setIf(d.auPhone, setAuPhone);     setIf(d.fullName, setFullName)
       setIf(d.lastName, setLastName);   setIf(d.address, setAddress);     setIf(d.email, setEmail)
       setIf(d.country, setCountry);     setIf(d.dob, setDob);             setIf(d.marital, setMarital)
+      setIf(d.hasMedicare, setHasMedicare)
       setIf(d.tfn, setTfn);             setIf(d.primaryJob, setPrimaryJob)
       setIf(d.bankName, setBankName);   setIf(d.bankHolder, setBankHolder)
       setIf(d.bankAccount, setBankAccount); setIf(d.bankBsb, setBankBsb)
@@ -271,6 +273,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     try {
       const data = {
         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
+        hasMedicare,
         tfn, primaryJob, bankName, bankHolder, bankAccount, bankBsb, hasExpenses,
         taxStatus, declared, declaredIncome, taxYears, terms, hasAbn, abnNumber,
         abnIncome, abnWork, howHeard,
@@ -292,6 +295,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!country.trim())     e.country     = T('required')
     if (!dob.trim())         e.dob         = T('required')
     if (!marital)            e.marital     = T('required')
+    if (!hasMedicare)        e.hasMedicare = T('required')
     if (!tfn.trim())         e.tfn         = T('required')
     if (!primaryJob.trim())  e.primaryJob  = T('required')
     if (!hasAbn)             e.hasAbn      = T('required')
@@ -331,9 +335,29 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
         return null
       }
       const attempt = async () => {
-        // Normalize content-type for iOS HEIC photos
-        let contentType = f.type || 'image/jpeg'
-        if (!contentType || contentType === 'application/octet-stream') contentType = 'image/jpeg'
+        // Normalize content-type for upload. Some browsers/file-pickers (esp. on
+        // Android, e.g. picking a PDF from Google Drive/Downloads) report an
+        // empty or generic 'application/octet-stream' MIME type. Previously we
+        // defaulted that straight to 'image/jpeg', which meant a real PDF bank
+        // statement would be declared as a JPEG - the server's magic-byte check
+        // then correctly rejected it ("File content does not match declared
+        // type"), failing the upload. Fall back to the file extension instead so
+        // PDFs (and other non-JPEG types) are labelled correctly.
+        let contentType = f.type
+        if (!contentType || contentType === 'application/octet-stream') {
+          const name = f.name.toLowerCase()
+          if (name.endsWith('.pdf'))               contentType = 'application/pdf'
+          else if (name.endsWith('.png'))           contentType = 'image/png'
+          else if (name.endsWith('.webp'))          contentType = 'image/webp'
+          else if (name.endsWith('.gif'))           contentType = 'image/gif'
+          else if (name.endsWith('.heic'))          contentType = 'image/heic'
+          else if (name.endsWith('.heif'))          contentType = 'image/heif'
+          else                                      contentType = 'image/jpeg' // covers .jpg/.jpeg and unknown extensions
+        }
+        // iOS sends HEIC photos with a .heic/.heif type even after our client-side
+        // JPEG re-encode step normally converts them; if compression didn't run
+        // (e.g. decode unsupported), send the true bytes but declare them as jpeg
+        // since the server accepts HEIC signatures under an image/jpeg label.
         if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
         const r = await fetch(
           `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
@@ -386,6 +410,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('country',     country)
     fd.append('dob',         dob)
     fd.append('marital',     marital)
+    fd.append('hasMedicare', hasMedicare === 'yes' ? 'Yes' : hasMedicare === 'no' ? 'No' : '')
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
     fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
@@ -545,6 +570,19 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                       onChange={() => { setMarital(opt); setErrors(p => ({...p, marital: ''})) }} className="hidden" />
                     <div className={`radio-dot ${marital === opt ? 'radio-dot-active' : ''}`} />
                     {opt}
+                  </label>
+                ))}
+              </div>
+            </Field>
+
+            <Field label={T('hasMedicare')} required error={errors.hasMedicare}>
+              <div className="radio-group">
+                {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
+                  <label key={opt.val} className={`radio-card ${hasMedicare === opt.val ? 'radio-card-active' : ''}`}>
+                    <input type="radio" name="hasMedicare" value={opt.val} checked={hasMedicare === opt.val}
+                      onChange={() => { setHasMedicare(opt.val); setErrors(p => ({...p, hasMedicare: ''})) }} className="hidden" />
+                    <div className={`radio-dot ${hasMedicare === opt.val ? 'radio-dot-active' : ''}`} />
+                    {opt.label}
                   </label>
                 ))}
               </div>
@@ -812,7 +850,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === T('required') ? `${({
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
-                    dob:'Date of Birth',marital:'Marital Status',tfn:'TFN',
+                    dob:'Date of Birth',marital:'Marital Status',hasMedicare:'Medicare',tfn:'TFN',
                     primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',abnWork:'ABN Work Type',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
                     bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'

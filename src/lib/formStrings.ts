@@ -299,6 +299,11 @@ export const formStrings = {
     de: 'Hast du eine ABN?',
     ja: 'ABNをお持ちですか？',
   },
+  hasMedicare: {
+    en: 'Do you have Medicare in Australia?',
+    de: 'Hast du Medicare in Australien?',
+    ja: 'オーストラリアでメディケア（Medicare）に加入していますか？',
+  },
   abnNumber: {
     en: 'ABN number',
     de: 'ABN-Nummer',

@@ -69,7 +69,7 @@ const CONDITIONS = [
 const FAQS = [
   {
     question: 'What is tax residency?',
-    answer: 'Tax residency determines which tax rates apply to your income in Australia. There are three categories: non-resident, working holiday maker (417/462 visa), and Australian resident for tax purposes. Each category has different rates and thresholds.',
+    answer: 'Tax residency determines which tax rates apply to your income in Australia. You can be considered an Australian resident for tax purposes even if you are not an Australian citizen or a permanent resident.',
   },
   {
     question: 'What about student visa (500) holders?',
@@ -144,10 +144,10 @@ export default function TaxResidencyPage() {
 
         {/* ── HERO ─────────────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
-          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-8 pb-6 lg:pt-12 lg:pb-10">
+          <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-5 lg:pt-9 lg:pb-7">
 
             {/* Breadcrumbs */}
-            <nav aria-label="Breadcrumb" className="mb-5 lg:mb-6">
+            <nav aria-label="Breadcrumb" className="mb-4 lg:mb-5">
               <ol className="flex items-center gap-2" style={{ fontSize: '12.5px', color: '#587066' }}>
                 <li>
                   <Link href="/" style={{ color: '#587066' }}>Home</Link>
@@ -160,24 +160,24 @@ export default function TaxResidencyPage() {
             <div className="text-center">
               <h1 className="font-serif font-black text-ink mx-auto"
                 style={{ fontSize: 'clamp(28px, 4.5vw, 44px)', lineHeight: 1.08, letterSpacing: '-0.03em', marginBottom: '14px', maxWidth: '22ch' }}>
-                Understand your <span style={{ color: '#0B5240' }}>tax residency</span>
+                Are you an Australian resident for <span style={{ color: '#0B5240' }}>tax purposes</span>?
               </h1>
               <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '38ch' }}>
-                If you&apos;re on a Working Holiday visa, you can absolutely be an Australian resident <strong>for tax purposes</strong>. That doesn&apos;t mean you&apos;re Australian.
+                Tax residency determines which tax rates apply to your income in Australia. It is different from your visa or immigration status.
               </p>
             </div>
           </div>
         </section>
 
         {/* ── TAX TABLES COMPARISON ─────────────────────────────────────── */}
-        <section style={{ background: '#F5F9F7', paddingTop: '40px', paddingBottom: '50px' }}>
+        <section style={{ background: '#F5F9F7', paddingTop: '32px', paddingBottom: '38px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="taxres-savings-box" style={{ marginBottom: '24px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <div className="taxres-savings-box" style={{ marginBottom: '18px', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
               <div>
-                <p className="taxres-savings-heading">Potential savings</p>
+                <p className="taxres-savings-heading">Why it matters</p>
                 <p className="taxres-savings-body">
-                  If you qualify as an Australian resident for tax purposes, you could be entitled to up to <strong>$2,462 back</strong> in refund on an income of $45,000. We assess your eligibility when preparing your tax return.
+                  Your tax residency determines which tax rates apply to your income.
                 </p>
               </div>
             </div>
@@ -190,10 +190,10 @@ export default function TaxResidencyPage() {
         </section>
 
         {/* ── RESIDENCY CONDITIONS ──────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
+        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
           <div className="max-w-[900px] mx-auto px-5 md:px-8 lg:px-12 reveal">
 
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
               <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
                 Resident classification
               </p>
@@ -202,12 +202,12 @@ export default function TaxResidencyPage() {
                 Can you be an Australian resident for <strong>tax purposes</strong>?
               </h2>
               <p className="font-light mx-auto" style={{ fontSize: '14.5px', color: '#587066', lineHeight: 1.7, maxWidth: '50ch' }}>
-                Working Holiday visa holders may be classified as Australian residents for tax purposes if they meet all of the following conditions:
+                Working Holiday visa holders may be classified as Australian residents for tax purposes if they meet the following conditions:
               </p>
             </div>
 
             <div className="max-w-[680px] mx-auto">
-              <div className="flex flex-col gap-3 mb-6">
+              <div className="flex flex-col gap-3">
                 {CONDITIONS.map((c, i) => (
                   <div key={i} className="taxres-condition-item">
                     <span className="taxres-condition-num">{i + 1}</span>
@@ -216,11 +216,6 @@ export default function TaxResidencyPage() {
                     </p>
                   </div>
                 ))}
-              </div>
-
-              <div className="taxres-notes">
-                <p>📅 The Australian tax year runs from <strong>1 July to 30 June</strong>.</p>
-                <p>🎓 Student visa (500) holders are generally treated as residents for tax purposes.</p>
               </div>
             </div>
           </div>
@@ -234,9 +229,9 @@ export default function TaxResidencyPage() {
         </section>
 
         {/* ── FAQ ───────────────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '50px', paddingBottom: '50px' }}>
+        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-8">
+            <div className="text-center mb-6">
               <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
                 Frequently asked
               </p>
@@ -261,9 +256,9 @@ export default function TaxResidencyPage() {
         </section>
 
         {/* ── BACK TO FORM ─────────────────────────────────────────────────── */}
-        <section style={{ background: '#0B5240', paddingTop: '40px', paddingBottom: '40px' }}>
+        <section style={{ background: '#0B5240', paddingTop: '32px', paddingBottom: '32px' }}>
           <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center reveal">
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '20px', maxWidth: '40ch' }}>
+            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '16px', maxWidth: '40ch' }}>
               Now that you understand your residency, continue filling out your tax return.
             </p>
             <BackButton />
