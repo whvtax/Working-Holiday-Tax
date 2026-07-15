@@ -1026,7 +1026,6 @@ export default function DashboardClient() {
       const rawStatus   = parts.find(p => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || task.taxStatus || '-'
       const taxStatus   = normStatus(rawStatus)
       const declaredVal = findDecl(['→ ✓ I declare that all','→ ✓ Yes','→ ✗ No','→ ✓ I agree','→ Yes'])
-      const incomeDecl   = findDecl(['→ ✓ I declare under my full legal'])
 
       formBody =
         sec('Contact details')
@@ -1085,7 +1084,6 @@ export default function DashboardClient() {
           `<span style="font-size:13px;font-weight:600;color:${G}">${esc(taxStatus||'-')}</span>` +
           `</div>`
         + declBox('', declaredVal !== '-' ? (declaredVal.replace('✓ ','').replace('→ ','') || 'I declare that all information provided is true and accurate.') : '-', declaredVal !== '-')
-        + declBox('', incomeDecl !== '-' ? (incomeDecl.replace('✓ ','').replace('→ ','') || 'I declare income truthfully disclosed.') : '-', incomeDecl !== '-')
         + sec('How did you hear about us?')
         + field('How did you hear about us?', task.howHeard)
     }
@@ -2097,7 +2095,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '-'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
                       const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
-                      const incomePart   = parts.find((p:string) => p.startsWith('→ ✓ I declare under my full legal'))
                       return <>
                         <div style={S.secHead}><span>Tax Residency</span></div>
                         <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>
@@ -2105,18 +2102,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                           <span style={{fontSize:13,color:'#0B5240',fontWeight:600}}>{taxStatusValue||'-'}</span>
                         </div>
                         <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
-                        <div style={S.secHead}><span>General Declaration</span></div>
+                        <div style={S.secHead}><span>Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {declaredPart
                             ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{declaredPart.replace('→ ✓ ','')}</span></>
-                            : <span style={{fontSize:12,color:'#aabab2'}}>-</span>
-                          }
-                        </div>
-                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
-                        <div style={S.secHead}><span>Income Declaration</span></div>
-                        <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
-                          {incomePart
-                            ? <><div style={{width:22,height:22,borderRadius:6,background:'#0B5240',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,marginTop:1}}><svg width={11} height={11} viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg></div><span style={{fontSize:12,color:'#1A2822',lineHeight:1.55,fontWeight:500}}>{incomePart.replace('→ ✓ ','')}</span></>
                             : <span style={{fontSize:12,color:'#aabab2'}}>-</span>
                           }
                         </div>

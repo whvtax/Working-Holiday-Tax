@@ -54,7 +54,7 @@ const CONDITIONS = [
   'Du hast einen Reisepass aus einem der NDA-Länder:',
   'Dein gewöhnlicher Wohnsitz ist in Australien.',
   'Du hast die Absicht, in Australien zu leben.',
-  'Du hast dauerhafte Bindungen zu Australien aufgebaut, wie ein Zuhause, regelmäßige Arbeit oder persönliche Beziehungen.',
+  'Du hast dauerhafte Bindungen zu Australien aufgebaut, wie ein Zuhause, dauerhafte Beschäftigung oder persönliche Beziehungen.',
 ]
 
 const breadcrumbSchema = {
@@ -140,7 +140,7 @@ export default function GermanTaxResidencyPage() {
               <div>
                 <p className="taxres-savings-heading">Warum das wichtig ist</p>
                 <p className="taxres-savings-body">
-                  Wenn du als australischer Steuerresident giltst, sind die ersten $18.200 deines zu versteuernden Einkommens steuerfrei - das bedeutet, dass jede darauf gezahlte 15%-Steuer erstattet werden kann. Einkommen darüber wird mit 16% besteuert.
+                  Wenn du als australischer Steuerresident giltst, sind die ersten $18.200 deines zu versteuernden Einkommens steuerfrei - das bedeutet, dass die darauf gezahlte 15%-Steuer erstattet werden kann. Einkommen über $18.200 wird mit 16% besteuert.
                 </p>
               </div>
             </div>
@@ -158,7 +158,7 @@ export default function GermanTaxResidencyPage() {
 
             <div className="text-center mb-6">
               <p className="font-bold mx-auto" style={{ fontSize: '14.5px', color: '#1A2822', lineHeight: 1.7, maxWidth: '50ch' }}>
-                Working Holiday Visum-Inhaber können als australische Steuerresidenten gelten, wenn die folgenden Faktoren zutreffen:
+                Working Holiday Visum-Inhaber können als australische Steuerresidenten gelten, wenn sie die folgenden Kriterien erfüllen:
               </p>
             </div>
 
@@ -178,7 +178,7 @@ export default function GermanTaxResidencyPage() {
         </section>
 
         {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+        <section className="bg-white" style={{ paddingTop: '32px', paddingBottom: '32px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <BackButton />
           </div>

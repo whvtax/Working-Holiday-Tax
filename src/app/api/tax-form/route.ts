@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
         isReturning ? '🔄 Returning client' : '',
         formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
-        formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',
         formData.get('hasMedicare') ? `Medicare: ${sanitiseShort(formData.get('hasMedicare'))}` : '',
         formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
         (()=>{

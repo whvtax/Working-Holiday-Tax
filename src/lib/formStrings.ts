@@ -34,9 +34,9 @@ export const formStrings = {
   sectionBusiness:     { en: 'Business details',          de: 'Geschäftsdaten',             ja: '事業情報' },
   sectionBank:         { en: 'Bank details',              de: 'Bankverbindung',             ja: '銀行情報' },
   bankDetailsHint: {
-    en: 'To have your tax refund paid directly into your Australian bank account, please fill in the details below.',
-    de: 'Damit deine Steuerrückerstattung direkt auf dein australisches Bankkonto ausgezahlt werden kann, fülle bitte die folgenden Angaben aus.',
-    ja: '税還付金をオーストラリアの銀行口座に直接受け取るために、以下の情報をご入力ください。',
+    en: 'To have your tax refund paid directly into your Australian bank account.',
+    de: 'Damit deine Steuerrückerstattung direkt auf dein australisches Bankkonto ausgezahlt werden kann.',
+    ja: '税還付金をオーストラリアの銀行口座に直接受け取るために。',
   },
   sectionSuper:        { en: 'Super fund details',        de: 'Superfondsdaten',            ja: 'スーパーファンド情報' },
   sectionEmployers:    { en: 'Employers',                 de: 'Arbeitgeber',                ja: '雇用主情報' },
@@ -114,11 +114,8 @@ export const formStrings = {
   followGuides:        { en: 'Free guides below ⬇️',                de: 'Kostenlose Anleitungen unten ⬇️', ja: '無料ガイドはこちら ⬇️' },
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
 
-  // ─ Expenses email block (tax form) ─
-  emailInvoicesTitle:  { en: 'Please email your invoices / receipts', de: 'Bitte sende deine Rechnungen / Belege per E-Mail', ja: '請求書・領収書をメールでお送りください' },
-  emailInvoicesTo:     { en: 'Send all your invoices and receipts to:', de: 'Sende alle Rechnungen und Belege an:', ja: 'すべての請求書・領収書を次の宛先へ送付してください：' },
-  emailSubjectName:    { en: 'Use your full name as the email subject.', de: 'Verwende deinen vollständigen Namen als E-Mail-Betreff.', ja: 'メールの件名にはフルネームをご記入ください。' },
-  emailSendAnytime:    { en: 'You can send this before or after submitting the form.', de: 'Du kannst dies vor oder nach dem Absenden des Formulars schicken.', ja: 'このメールはフォーム送信の前後どちらでも送信できます。' },
+  // ─ Expenses WhatsApp block (tax form) ─
+  emailInvoicesTitle:  { en: 'WhatsApp us any invoices directly related to earning your income.', de: 'Schicke uns per WhatsApp alle Rechnungen, die direkt mit deinem Einkommen zusammenhängen.', ja: '収入に直接関連する請求書はWhatsAppでお送りください。' },
 
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
@@ -315,14 +312,14 @@ export const formStrings = {
     ja: '銀行明細書をアップロード',
   },
   bankStatementHint: {
-    en: 'Just the first page is enough. The ATO needs it to verify the refund will be paid into your account.',
-    de: 'Nur die erste Seite ist ausreichend. Das ATO benötigt sie, um zu bestätigen, dass die Rückerstattung auf dein Konto ausgezahlt wird.',
-    ja: '最初の1ページで十分です。ATO（豪州税務局）が還付金の振込先口座を確認するために必要です。',
+    en: 'Just the first page is enough to verify your bank account details.',
+    de: 'Nur die erste Seite ist ausreichend, um deine Bankkontodaten zu bestätigen.',
+    ja: '最初の1ページで十分です。銀行口座情報の確認に使用します。',
   },
   selfieHint: {
-    en: 'This verifies your identity, as required by the ATO. Your photo is kept private and secure, and deleted immediately after verification.',
-    de: 'Damit wird deine Identität überprüft, wie vom ATO vorgeschrieben. Dein Foto wird vertraulich und sicher behandelt und sofort nach der Überprüfung gelöscht.',
-    ja: 'ATO（豪州税務局）の規定により、本人確認のために使用されます。写真は厳重に保護・安全に管理され、確認完了後すぐに削除されます。',
+    en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',
+    de: 'Damit wird deine Identität überprüft. Dein Foto wird vertraulich und sicher behandelt und sofort nach der Überprüfung gelöscht.',
+    ja: '本人確認のために使用されます。写真は厳重に保護・安全に管理され、確認完了後すぐに削除されます。',
   },
   hasExpenses: {
     en: 'Do you have work-related expenses?',
@@ -341,11 +338,6 @@ export const formStrings = {
     ja: 'オーストラリアに資産を所有しておらず、ABNが発行されたことがないことを宣言します。オーストラリアに拠点を置く個人事業主（Sole Trader）として事業を運営する意向です。',
   },
   // Tax form income disclosure declaration
-  declTaxIncome: {
-    en: 'I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed. I understand that any false, misleading, or incomplete declaration may constitute a tax offence under Australian law, and that Working Holiday Tax bears no liability for inaccuracies arising from information provided by me.',
-    de: 'Ich erkläre unter meiner vollen rechtlichen Verantwortung, dass alle Einkommen, die im betreffenden Steuerjahr in Australien und im Ausland erzielt wurden, wahrheitsgemäß und vollständig offengelegt sind. Ich verstehe, dass jede falsche, irreführende oder unvollständige Erklärung eine Steuerstraftat nach australischem Recht darstellen kann und dass Working Holiday Tax keine Haftung für Ungenauigkeiten in den von mir bereitgestellten Informationen übernimmt.',
-    ja: '私は法的責任を持って、当該税務年度中にオーストラリアおよび海外で得たすべての所得を、真実かつ完全に開示することを宣言します。虚偽、誤解を招く、または不完全な申告はオーストラリア法上の税務犯罪となる可能性があること、およびWorking Holiday Taxは私が提供した情報の不正確さについて責任を負わないことを理解しています。',
-  },
 
 } as const
 

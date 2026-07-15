@@ -63,7 +63,7 @@ const CONDITIONS = [
   'NDA国のパスポートを所持していること：',
   '通常の居住地がオーストラリアにあること。',
   'オーストラリアに居住する意思があること。',
-  '家、定期的な仕事、個人的なつながりなど、オーストラリアとの継続的な関係を築いていること。',
+  '家、継続的な雇用、個人的なつながりなど、オーストラリアとの継続的な関係を築いていること。',
 ]
 
 const breadcrumbSchema = {
@@ -149,7 +149,7 @@ export default function JapaneseTaxResidencyPage() {
               <div>
                 <p className="taxres-savings-heading">重要な理由</p>
                 <p className="taxres-savings-body">
-                  税務上のオーストラリア居住者に該当する場合、課税所得の最初の$18,200は非課税となります。つまり、その金額に対して支払った15%の税金が還付される可能性があります。それを超える所得には16%の税率が適用されます。
+                  税務上のオーストラリア居住者に該当する場合、課税所得の最初の$18,200は非課税となります。つまり、その金額に対して支払った15%の税金が還付される可能性があります。$18,200を超える所得には16%の税率が適用されます。
                 </p>
               </div>
             </div>
@@ -167,7 +167,7 @@ export default function JapaneseTaxResidencyPage() {
 
             <div className="text-center mb-6">
               <p className="font-bold mx-auto" style={{ fontSize: '14.5px', color: '#1A2822', lineHeight: 1.75, maxWidth: '54ch' }}>
-                ワーキングホリデービザ保持者は、以下の要素が当てはまる場合、オーストラリア税務居住者とみなされることがあります：
+                ワーキングホリデービザ保持者は、以下の基準を満たす場合、オーストラリア税務居住者とみなされることがあります：
               </p>
             </div>
 
@@ -187,7 +187,7 @@ export default function JapaneseTaxResidencyPage() {
         </section>
 
         {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+        <section className="bg-white" style={{ paddingTop: '32px', paddingBottom: '32px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <BackButton />
           </div>

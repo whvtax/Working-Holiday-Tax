@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 
 const WHV_EXAMPLE_ROWS = [
   ['Income',       '$45,000'],
-  ['Tax bracket',  '15%'],
+  ['Tax rate',     '15%'],
   ['Tax to pay',   '$6,750'],
 ]
 
@@ -61,7 +61,7 @@ const CONDITIONS = [
   'You hold a passport from one of the NDA countries:',
   'Your ordinary place of residence is in Australia.',
   'You have an intention to live in Australia.',
-  'You have established ongoing ties to Australia, such as a home, regular work or personal connections.',
+  'You have established ongoing ties to Australia, such as a home, ongoing employment, or personal connections.',
 ]
 
 const breadcrumbSchema = {
@@ -147,14 +147,14 @@ export default function TaxResidencyPage() {
               <div>
                 <p className="taxres-savings-heading">Why it matters</p>
                 <p className="taxres-savings-body">
-                  If you qualify as an Australian resident for tax purposes, the first $18,200 of your taxable income is tax-free, meaning any 15% tax you paid on that amount may be refunded. Any income above is taxed at 16%.
+                  If you qualify as an Australian resident for tax purposes, the first $18,200 of your taxable income is tax-free, meaning any 15% tax paid on that amount may be refunded. Income above $18,200 is taxed at 16%.
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
               <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_EXAMPLE_ROWS} />
-              <TaxTable label="Australian Resident for tax purposes" rows={RESIDENT_EXAMPLE_ROWS} highlight />
+              <TaxTable label="Australian Resident for Tax Purposes" rows={RESIDENT_EXAMPLE_ROWS} highlight />
             </div>
           </div>
         </section>
@@ -165,7 +165,7 @@ export default function TaxResidencyPage() {
 
             <div className="text-center mb-6">
               <p className="font-bold mx-auto" style={{ fontSize: '14.5px', color: '#1A2822', lineHeight: 1.7, maxWidth: '50ch' }}>
-                Working Holiday visa holders may qualify as Australian residents for tax purposes if the following factors apply:
+                Working Holiday visa holders may qualify as Australian residents for tax purposes if they meet the following criteria:
               </p>
             </div>
 
@@ -185,7 +185,7 @@ export default function TaxResidencyPage() {
         </section>
 
         {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
+        <section className="bg-white" style={{ paddingTop: '32px', paddingBottom: '32px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <BackButton />
           </div>

@@ -192,7 +192,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
   const [declared, setDeclared]       = useState<'yes'|'no'|''>('')
-  const [declaredIncome, setDeclaredIncome] = useState(false)
   // Default to current AU tax year (Jul-Jun cycle). User can select multiple years.
   const [taxYears, setTaxYears] = useState<string[]>(() => {
     const now = new Date()
@@ -242,7 +241,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       setIf(d.bankName, setBankName);   setIf(d.bankHolder, setBankHolder)
       setIf(d.bankAccount, setBankAccount); setIf(d.bankBsb, setBankBsb)
       setIf(d.hasExpenses, setHasExpenses); setIf(d.taxStatus, setTaxStatus)
-      setIf(d.declared, setDeclared);   setIf(d.declaredIncome, setDeclaredIncome)
+      setIf(d.declared, setDeclared)
       setIf(d.taxYears, setTaxYears);   setIf(d.terms, setTerms)
       setIf(d.howHeard, setHowHeard)
       // Scroll back to the tax-residency question after the DOM settles
@@ -269,7 +268,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
         hasMedicare,
         tfn, primaryJob, bankName, bankHolder, bankAccount, bankBsb, hasExpenses,
-        taxStatus, declared, declaredIncome, taxYears, terms, howHeard,
+        taxStatus, declared, taxYears, terms, howHeard,
       }
       sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), data }))
     } catch {}
@@ -300,7 +299,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!taxStatus)           e.taxStatus      = T('required')
     if (!declared)            e.declared       = T('required')
     if (declared === 'no')    e.declared       = 'You must agree to submit'
-    if (!declaredIncome)      e.declaredIncome = T('mustConfirmDecl')
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
     return e
@@ -405,8 +403,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('taxYear',     taxYears.join(', '))
     fd.append('howHeard',    howHeard)
     if (refCode) fd.append('refCode', refCode)
-    fd.append('declared',    declared === 'yes' ? '✓ I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the Client Agreement & Privacy Policy.' : declared === 'no' ? '✗ No' : '')
-    fd.append('declaredIncome', declaredIncome ? '✓ I declare under my full legal responsibility that all income earned in Australia and abroad during the relevant tax year has been truthfully and completely disclosed.' : '')
+    fd.append('declared',    declared === 'yes' ? '✓ I declare that all information I have provided is true, complete, and accurate, including all income earned in Australia and overseas during the relevant tax year. I understand that providing false, misleading, or incomplete information may result in penalties under Australian tax law. I accept full responsibility for the information I have provided and acknowledge that Working Holiday Tax is not liable for any errors or omissions resulting from incorrect or incomplete information supplied by me. I have read and accept the Client Agreement and Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
@@ -631,22 +628,15 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
             {hasExpenses === 'yes' && (
               <div style={{ background: '#EAF6F1', border: '1.5px solid #A7D9C5', borderRadius: 14, padding: '16px', marginTop: 10 }}>
-                <div style={{ fontSize: 20, marginBottom: 8, textAlign: 'center' }}>📧</div>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#0B5240', marginBottom: 6, textAlign: 'center' }}>
+                <div style={{ fontSize: 20, marginBottom: 8, textAlign: 'center' }}>💬</div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#0B5240', marginBottom: 10, textAlign: 'center' }}>
                   {T('emailInvoicesTitle')}
                 </p>
-                <p style={{ fontSize: 12, color: '#587066', lineHeight: 1.65, textAlign: 'center', marginBottom: 10 }}>
-                  {T('emailInvoicesTo')}
-                </p>
-                <div style={{ background: '#fff', border: '1.5px solid #C8EAE0', borderRadius: 10, padding: '10px 14px', textAlign: 'center', marginBottom: 10 }}>
+                <div style={{ background: '#fff', border: '1.5px solid #C8EAE0', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: '#0B5240', letterSpacing: '0.01em' }}>
-                    info@workingholidaytax.com.au
+                    0424-513-998
                   </span>
                 </div>
-                <p style={{ fontSize: 11, color: '#587066', lineHeight: 1.65, textAlign: 'center' }}>
-                  {T('emailSubjectName')}<br />
-                  {T('emailSendAnytime')}
-                </p>
               </div>
             )}
           </div>
@@ -688,13 +678,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div className="radio-group radio-group-col">
                 {([
                   { val: 'resident', label: T('australianTaxResident'),
-                    hint: lang === 'de' ? 'Steuerfrei bis $18.200, nur falls du die Bedingungen erfüllst (NDA-Land etc.)'
-                        : lang === 'ja' ? '$18,200まで非課税。条件（NDA加盟国など）を満たす場合のみ'
-                        : 'Tax-free up to $18,200, only if you meet the conditions (NDA country, etc.)' },
+                    hint: lang === 'de' ? 'Steuerfrei bis $18.200'
+                        : lang === 'ja' ? '$18,200まで非課税'
+                        : 'Tax-free up to $18,200' },
                   { val: 'whm',      label: T('workingHolidayMakerTax'),
-                    hint: lang === 'de' ? 'Besteuerung ab dem ersten Dollar mit 15%, kein Steuerfreibetrag'
-                        : lang === 'ja' ? '$0から15%課税。非課税枠なし'
-                        : 'Taxed from the first dollar at 15%, no tax-free threshold' },
+                    hint: lang === 'de' ? 'Besteuerung mit 15% ab dem ersten Dollar'
+                        : lang === 'ja' ? '$0から15%課税'
+                        : 'Taxed at 15% from the first dollar' },
                 ] as const).map(opt => (
                   <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`} style={{flexDirection:'column',alignItems:'flex-start',gap:2}}>
                     <span style={{display:'flex',alignItems:'center',gap:10}}>
@@ -713,27 +703,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
                 <p className="decl-text">
                   {lang === 'de' ? (
-                    <>Ich erkläre, dass alle Angaben wahr, vollständig und korrekt sind. Ich verstehe, dass falsche Angaben zu Strafen nach australischem Steuerrecht führen können, und bestätige, dass ich die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen habe und akzeptiere.</>
+                    <>Ich erkläre, dass alle von mir gemachten Angaben wahr, vollständig und korrekt sind, einschließlich aller Einkommen, die im betreffenden Steuerjahr in Australien und im Ausland erzielt wurden. Ich verstehe, dass falsche, irreführende oder unvollständige Angaben zu Strafen nach australischem Steuerrecht führen können. Ich übernehme die volle Verantwortung für die von mir bereitgestellten Informationen und bestätige, dass Working Holiday Tax nicht für Fehler oder Auslassungen haftet, die aus falschen oder unvollständigen Angaben von mir resultieren. Ich habe die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen und akzeptiere sie.</>
                   ) : lang === 'ja' ? (
-                    <>提供されたすべての情報が真実、完全、かつ正確であることを宣言します。虚偽の情報を提供することはオーストラリア税法上のペナルティとなる可能性があることを理解し、{' '}<a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">クライアント規約</a>{' '}および{' '}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">プライバシーポリシー</a>を読み、同意することを確認します。</>
+                    <>私が提供したすべての情報が真実、完全、かつ正確であることを宣言します。これには、当該税務年度中にオーストラリアおよび海外で得たすべての所得が含まれます。虚偽、誤解を招く、または不完全な情報を提供した場合、オーストラリア税法上のペナルティが科される可能性があることを理解しています。私は自分が提供した情報について全責任を負い、私が提供した不正確または不完全な情報に起因する誤りや漏れについて、Working Holiday Taxが責任を負わないことを了承します。{' '}<a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">クライアント規約</a>{' '}および{' '}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">プライバシーポリシー</a>を読み、同意します。</>
                   ) : (
-                    <>I declare that all information provided is true, complete, and accurate. I understand that providing false information may result in penalties under Australian tax law, and confirm that I have read and accept the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}&amp;{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>
+                    <>I declare that all information I have provided is true, complete, and accurate, including all income earned in Australia and overseas during the relevant tax year. I understand that providing false, misleading, or incomplete information may result in penalties under Australian tax law. I accept full responsibility for the information I have provided and acknowledge that Working Holiday Tax is not liable for any errors or omissions resulting from incorrect or incomplete information supplied by me. I have read and accept the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}and{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>
                   )}
                 </p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
                   <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-                  <span className="check-label">{T('declConfirm')}</span>
-                </label>
-              </div>
-            </Field>
-
-            <Field label="" required error={errors.declaredIncome}>
-              <div className={`declaration-box${errors.declaredIncome ? ' decl-error' : ''}`}>
-                <p className="decl-text">{T('declTaxIncome')}</p>
-                <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
-                  <input type="checkbox" checked={declaredIncome} onChange={e => { setDeclaredIncome(e.target.checked); setErrors(p => ({...p, declaredIncome: ''})) }} className="hidden"/>
-                  <div className={`check-box${declaredIncome ? ' checked' : ''}`}>{declaredIncome && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
                   <span className="check-label">{T('declConfirm')}</span>
                 </label>
               </div>
