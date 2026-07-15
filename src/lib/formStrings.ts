@@ -34,9 +34,9 @@ export const formStrings = {
   sectionBusiness:     { en: 'Business details',          de: 'Geschäftsdaten',             ja: '事業情報' },
   sectionBank:         { en: 'Bank details',              de: 'Bankverbindung',             ja: '銀行情報' },
   bankDetailsHint: {
-    en: 'To have your tax refund paid directly into your Australian bank account.',
-    de: 'Damit deine Steuerrückerstattung direkt auf dein australisches Bankkonto ausgezahlt werden kann.',
-    ja: '税還付金をオーストラリアの銀行口座に直接受け取るために。',
+    en: 'To have your tax refund paid directly into your bank account.',
+    de: 'Damit deine Steuerrückerstattung direkt auf dein Bankkonto ausgezahlt werden kann.',
+    ja: '税還付金を銀行口座に直接受け取るために。',
   },
   sectionSuper:        { en: 'Super fund details',        de: 'Superfondsdaten',            ja: 'スーパーファンド情報' },
   sectionEmployers:    { en: 'Employers',                 de: 'Arbeitgeber',                ja: '雇用主情報' },
@@ -115,7 +115,7 @@ export const formStrings = {
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
 
   // ─ Expenses WhatsApp block (tax form) ─
-  emailInvoicesTitle:  { en: 'WhatsApp us any invoices directly related to earning your income.', de: 'Schicke uns per WhatsApp alle Rechnungen, die direkt mit deinem Einkommen zusammenhängen.', ja: '収入に直接関連する請求書はWhatsAppでお送りください。' },
+  emailInvoicesTitle:  { en: 'WhatsApp us any invoices or receipts directly related to earning your income.', de: 'Schicke uns per WhatsApp alle Rechnungen oder Belege, die direkt mit deinem Einkommen zusammenhängen.', ja: '収入に直接関連する請求書または領収書はWhatsAppでお送りください。' },
 
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
@@ -312,9 +312,9 @@ export const formStrings = {
     ja: '銀行明細書をアップロード',
   },
   bankStatementHint: {
-    en: 'Just the first page is enough to verify your bank account details.',
-    de: 'Nur die erste Seite ist ausreichend, um deine Bankkontodaten zu bestätigen.',
-    ja: '最初の1ページで十分です。銀行口座情報の確認に使用します。',
+    en: 'Just the first page is enough to verify your bank account.',
+    de: 'Nur die erste Seite ist ausreichend, um dein Bankkonto zu bestätigen.',
+    ja: '最初の1ページで十分です。銀行口座の確認に使用します。',
   },
   selfieHint: {
     en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',

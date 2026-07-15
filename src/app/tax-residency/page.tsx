@@ -52,7 +52,7 @@ const RESIDENT_EXAMPLE_ROWS = [
   ['Income',                 '$45,000'],
   ['$0 - $18,200',           'Free'],
   ['$18,201 - $45,000',      '16%'],
-  ['Total tax to pay',       '$4,288'],
+  ['Tax to pay',             '$4,288'],
 ]
 
 const NDA_COUNTRIES = ['United Kingdom', 'Germany', 'Japan', 'Chile', 'Finland', 'Israel', 'Norway', 'Turkey']

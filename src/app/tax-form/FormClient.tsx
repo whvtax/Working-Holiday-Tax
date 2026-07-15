@@ -628,13 +628,12 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
             {hasExpenses === 'yes' && (
               <div style={{ background: '#EAF6F1', border: '1.5px solid #A7D9C5', borderRadius: 14, padding: '16px', marginTop: 10 }}>
-                <div style={{ fontSize: 20, marginBottom: 8, textAlign: 'center' }}>💬</div>
                 <p style={{ fontSize: 13, fontWeight: 700, color: '#0B5240', marginBottom: 10, textAlign: 'center' }}>
                   {T('emailInvoicesTitle')}
                 </p>
                 <div style={{ background: '#fff', border: '1.5px solid #C8EAE0', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
                   <span style={{ fontSize: 14, fontWeight: 700, color: '#0B5240', letterSpacing: '0.01em' }}>
-                    0424-513-998
+                    +61 424 513 998
                   </span>
                 </div>
               </div>
