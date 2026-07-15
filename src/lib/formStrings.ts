@@ -15,9 +15,9 @@ export const formStrings = {
   },
   // The MUST-FILL-IN-ENGLISH notice
   englishOnlyNotice: {
-    en: 'Please fill out the form in English only.',
-    de: 'Bitte fülle alle Felder auf Englisch aus. Die deutsche Übersetzung ist nur zur Hilfe.',
-    ja: 'すべての項目を英語でご記入ください。日本語の表示は補助のみです。',
+    en: 'Choose your language to see instructions - but please type your answers in English.',
+    de: 'Wähle deine Sprache, um die Anleitung zu sehen - aber bitte gib deine Antworten auf Englisch ein.',
+    ja: '説明を表示する言語を選択できますが、回答は英語でご入力ください。',
   },
   englishOnlyShort: {
     en: 'English only',
@@ -33,6 +33,11 @@ export const formStrings = {
   sectionTax:          { en: 'Tax details',               de: 'Steuerdaten',                ja: '税務情報' },
   sectionBusiness:     { en: 'Business details',          de: 'Geschäftsdaten',             ja: '事業情報' },
   sectionBank:         { en: 'Bank details',              de: 'Bankverbindung',             ja: '銀行情報' },
+  bankDetailsHint: {
+    en: 'To have your tax refund paid directly into your Australian bank account, please fill in the details below.',
+    de: 'Damit deine Steuerrückerstattung direkt auf dein australisches Bankkonto ausgezahlt werden kann, fülle bitte die folgenden Angaben aus.',
+    ja: '税還付金をオーストラリアの銀行口座に直接受け取るために、以下の情報をご入力ください。',
+  },
   sectionSuper:        { en: 'Super fund details',        de: 'Superfondsdaten',            ja: 'スーパーファンド情報' },
   sectionEmployers:    { en: 'Employers',                 de: 'Arbeitgeber',                ja: '雇用主情報' },
 
@@ -294,30 +299,10 @@ export const formStrings = {
     de: 'Hauptjob im letzten Jahr',
     ja: '過去1年間の主な仕事',
   },
-  hasAbn: {
-    en: 'Do you have an ABN?',
-    de: 'Hast du eine ABN?',
-    ja: 'ABNをお持ちですか？',
-  },
   hasMedicare: {
     en: 'Do you have Medicare in Australia?',
     de: 'Hast du Medicare in Australien?',
     ja: 'オーストラリアでメディケア（Medicare）に加入していますか？',
-  },
-  abnNumber: {
-    en: 'ABN number',
-    de: 'ABN-Nummer',
-    ja: 'ABN番号',
-  },
-  abnIncome: {
-    en: 'Total annual income under ABN (AUD)',
-    de: 'Jahres-Gesamteinkommen unter ABN (AUD)',
-    ja: 'ABNでの年間総収入（AUD）',
-  },
-  abnWork: {
-    en: 'What work did you do under your ABN?',
-    de: 'Welche Arbeit hast du unter ABN gemacht?',
-    ja: 'ABNでどのような仕事をしましたか？',
   },
   bankStatements: {
     en: 'Bank statements',
@@ -334,30 +319,15 @@ export const formStrings = {
     de: 'Nur die erste Seite ist ausreichend. Das ATO benötigt sie, um zu bestätigen, dass die Rückerstattung auf dein Konto ausgezahlt wird.',
     ja: '最初の1ページで十分です。ATO（豪州税務局）が還付金の振込先口座を確認するために必要です。',
   },
+  selfieHint: {
+    en: 'This verifies your identity, as required by the ATO. Your photo is kept private and secure, and deleted immediately after verification.',
+    de: 'Damit wird deine Identität überprüft, wie vom ATO vorgeschrieben. Dein Foto wird vertraulich und sicher behandelt und sofort nach der Überprüfung gelöscht.',
+    ja: 'ATO（豪州税務局）の規定により、本人確認のために使用されます。写真は厳重に保護・安全に管理され、確認完了後すぐに削除されます。',
+  },
   hasExpenses: {
-    en: 'Do you have work-related or ABN expenses?',
-    de: 'Hast du arbeitsbezogene oder ABN-Ausgaben?',
-    ja: '業務関連またはABN関連の経費はありますか？',
-  },
-  taxYear: {
-    en: 'Tax year',
-    de: 'Steuerjahr',
-    ja: '税務年度',
-  },
-  taxYearSelect: {
-    en: 'Please select the tax year(s) you want to file',
-    de: 'Wähle das/die Steuerjahr(e), für die du einreichst',
-    ja: '申告する税務年度を選択してください',
-  },
-  yearCurrent: {
-    en: ' (current)',
-    de: ' (aktuell)',
-    ja: '（現在）',
-  },
-  taxYearsSelected: {
-    en: 'tax years selected',
-    de: 'Steuerjahre ausgewählt',
-    ja: '税務年度を選択済み',
+    en: 'Do you have work-related expenses?',
+    de: 'Hast du arbeitsbezogene Ausgaben?',
+    ja: '業務関連の経費はありますか？',
   },
   workingHolidayMakerTax: {
     en: 'Working holiday maker for tax purposes',

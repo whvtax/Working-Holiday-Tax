@@ -42,19 +42,17 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const WHV_ROWS = [
-  ['$0 - $45,000',        '15%'],
-  ['$45,001 - $135,000',  '$6,750 + 30%'],
-  ['$135,001 - $190,000', '$33,750 + 37%'],
-  ['$190,001+',           '$54,100 + 45%'],
+const WHV_EXAMPLE_ROWS = [
+  ['Income',       '$45,000'],
+  ['Tax bracket',  '15%'],
+  ['Tax to pay',   '$6,750'],
 ]
 
-const RESIDENT_ROWS = [
-  ['$0 - $18,200',        'Nil'],
-  ['$18,201 - $45,000',   '16%'],
-  ['$45,001 - $135,000',  '$4,288 + 30%'],
-  ['$135,001 - $190,000', '$31,288 + 37%'],
-  ['$190,001+',           '$51,638 + 45%'],
+const RESIDENT_EXAMPLE_ROWS = [
+  ['Income',                 '$45,000'],
+  ['$0 - $18,200',           'Free'],
+  ['$18,201 - $45,000',      '16%'],
+  ['Total tax to pay',       '$4,288'],
 ]
 
 const NDA_COUNTRIES = ['United Kingdom', 'Germany', 'Japan', 'Chile', 'Finland', 'Israel', 'Norway', 'Turkey']
@@ -65,27 +63,6 @@ const CONDITIONS = [
   'You have an intention to live in Australia.',
   'You have established ongoing ties to Australia, such as a home, regular work or personal connections.',
 ]
-
-const FAQS = [
-  {
-    question: 'What is tax residency?',
-    answer: 'Tax residency determines which tax rates apply to your income in Australia. You can be considered an Australian resident for tax purposes even if you are not an Australian citizen or a permanent resident.',
-  },
-  {
-    question: 'What about student visa (500) holders?',
-    answer: 'Student visa (500) holders are generally treated as Australian residents for tax purposes, meaning they benefit from the $18,200 tax-free threshold and lower marginal rates.',
-  },
-]
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQS.map(f => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
-}
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -114,12 +91,6 @@ function TaxTable({ label, rows, highlight }: { label: string; rows: string[][];
         {label}
       </h3>
       <table className="taxres-table">
-        <thead>
-          <tr>
-            <th>Taxable income</th>
-            <th>Tax on this income</th>
-          </tr>
-        </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
@@ -136,7 +107,6 @@ function TaxTable({ label, rows, highlight }: { label: string; rows: string[][];
 export default function TaxResidencyPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
@@ -177,14 +147,14 @@ export default function TaxResidencyPage() {
               <div>
                 <p className="taxres-savings-heading">Why it matters</p>
                 <p className="taxres-savings-body">
-                  Your tax residency determines which tax rates apply to your income.
+                  If you qualify as an Australian resident for tax purposes, the first $18,200 of your taxable income is tax-free, meaning any 15% tax you paid on that amount may be refunded. Any income above is taxed at 16%.
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_ROWS} />
-              <TaxTable label="Australian Resident for tax purposes" rows={RESIDENT_ROWS} highlight />
+              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_EXAMPLE_ROWS} />
+              <TaxTable label="Australian Resident for tax purposes" rows={RESIDENT_EXAMPLE_ROWS} highlight />
             </div>
           </div>
         </section>
@@ -217,43 +187,6 @@ export default function TaxResidencyPage() {
         {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
         <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <BackButton />
-          </div>
-        </section>
-
-        {/* ── FAQ ───────────────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
-                Frequently asked
-              </p>
-              <h2 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(24px, 2.6vw, 32px)', lineHeight: 1.15, letterSpacing: '-0.025em' }}>
-                Tax residency questions
-              </h2>
-            </div>
-
-            <div className="flex flex-col" style={{ gap: '4px' }}>
-              {FAQS.map((f, i) => (
-                <details key={i} name="taxres-faq" className="contact-faq-item">
-                  <summary className="contact-faq-summary">
-                    <span style={{ flex: 1 }}>{f.question}</span>
-                    <span className="contact-faq-plus" aria-hidden="true">+</span>
-                  </summary>
-                  <p className="contact-faq-answer">{f.answer}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── BACK TO FORM ─────────────────────────────────────────────────── */}
-        <section style={{ background: '#0B5240', paddingTop: '32px', paddingBottom: '32px' }}>
-          <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center reveal">
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '16px', maxWidth: '40ch' }}>
-              Now that you understand your residency, continue filling out your tax return.
-            </p>
             <BackButton />
           </div>
         </section>

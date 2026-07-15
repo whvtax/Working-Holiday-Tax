@@ -35,19 +35,17 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
-const WHV_ROWS = [
-  ['0 $ - 45.000 $',        '15 %'],
-  ['45.001 $ - 135.000 $',  '6.750 $ + 30 %'],
-  ['135.001 $ - 190.000 $', '33.750 $ + 37 %'],
-  ['190.001 $+',           '54.100 $ + 45 %'],
+const WHV_EXAMPLE_ROWS = [
+  ['Einkommen',                  '$45.000'],
+  ['Steuersatz',                 '15 %'],
+  ['Zu zahlende Steuer',         '$6.750'],
 ]
 
-const RESIDENT_ROWS = [
-  ['0 $ - 18.200 $',        '0 %'],
-  ['18.201 $ - 45.000 $',   '16 %'],
-  ['45.001 $ - 135.000 $',  '4.288 $ + 30 %'],
-  ['135.001 $ - 190.000 $', '31.288 $ + 37 %'],
-  ['190.001 $+',           '51.638 $ + 45 %'],
+const RESIDENT_EXAMPLE_ROWS = [
+  ['Einkommen',                  '$45.000'],
+  ['0 $ - 18.200 $',             'Steuerfrei'],
+  ['18.201 $ - 45.000 $',        '16 %'],
+  ['Gesamte zu zahlende Steuer', '$4.288'],
 ]
 
 const NDA_COUNTRIES = ['Großbritannien', 'Deutschland', 'Japan', 'Chile', 'Finnland', 'Israel', 'Norwegen', 'Türkei']
@@ -58,28 +56,6 @@ const CONDITIONS = [
   'Du hast die Absicht, in Australien zu leben.',
   'Du hast dauerhafte Bindungen zu Australien aufgebaut, wie ein Zuhause, regelmäßige Arbeit oder persönliche Beziehungen.',
 ]
-
-const FAQS = [
-  {
-    question: 'Was ist Steuerresidenz?',
-    answer: 'Die Steuerresidenz bestimmt, welche Steuersätze auf dein Einkommen in Australien angewendet werden. Du kannst als australischer Steuerresident für steuerliche Zwecke gelten, auch wenn du kein australischer Staatsbürger oder permanenter Resident bist.',
-  },
-  {
-    question: 'Was ist mit Inhabern eines Studentenvisums (500)?',
-    answer: 'Inhaber eines Studentenvisums (500) werden in der Regel als australische Steuerresidenten behandelt. Das heißt, sie profitieren vom Freibetrag von 18.200 $ und niedrigeren Grenzsteuersätzen.',
-  },
-]
-
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  inLanguage: 'de',
-  mainEntity: FAQS.map(f => ({
-    '@type': 'Question',
-    name: f.question,
-    acceptedAnswer: { '@type': 'Answer', text: f.answer },
-  })),
-}
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -108,12 +84,6 @@ function TaxTable({ label, rows, highlight }: { label: string; rows: string[][];
         {label}
       </h3>
       <table className="taxres-table">
-        <thead>
-          <tr>
-            <th>Zu versteuerndes Einkommen</th>
-            <th>Steuer auf dieses Einkommen</th>
-          </tr>
-        </thead>
         <tbody>
           {rows.map((row, i) => (
             <tr key={i}>
@@ -130,7 +100,6 @@ function TaxTable({ label, rows, highlight }: { label: string; rows: string[][];
 export default function GermanTaxResidencyPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
 
@@ -171,14 +140,14 @@ export default function GermanTaxResidencyPage() {
               <div>
                 <p className="taxres-savings-heading">Warum das wichtig ist</p>
                 <p className="taxres-savings-body">
-                  Deine Steuerresidenz bestimmt, welche Steuersätze auf dein Einkommen angewendet werden.
+                  Wenn du als australischer Steuerresident giltst, sind die ersten $18.200 deines zu versteuernden Einkommens steuerfrei - das bedeutet, dass jede darauf gezahlte 15%-Steuer erstattet werden kann. Einkommen darüber wird mit 16% besteuert.
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
-              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_ROWS} />
-              <TaxTable label="Australischer Steuerresident" rows={RESIDENT_ROWS} highlight />
+              <TaxTable label="Working Holiday Maker (417/462)" rows={WHV_EXAMPLE_ROWS} />
+              <TaxTable label="Australischer Steuerresident" rows={RESIDENT_EXAMPLE_ROWS} highlight />
             </div>
           </div>
         </section>
@@ -211,43 +180,6 @@ export default function GermanTaxResidencyPage() {
         {/* ── BACK TO FORM (above questions) ─────────────────────────────── */}
         <section className="bg-white" style={{ paddingTop: '8px', paddingBottom: '8px' }}>
           <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 text-center">
-            <BackButton />
-          </div>
-        </section>
-
-        {/* ── FAQ ───────────────────────────────────────────────────────── */}
-        <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '38px' }}>
-          <div className="max-w-[820px] mx-auto px-5 md:px-8 lg:px-12 reveal">
-            <div className="text-center mb-6">
-              <p className="font-semibold uppercase mb-2" style={{ fontSize: '10.5px', color: '#2FA880', letterSpacing: '0.14em' }}>
-                Häufige Fragen
-              </p>
-              <h2 className="font-serif font-black text-ink mx-auto"
-                style={{ fontSize: 'clamp(24px, 2.6vw, 32px)', lineHeight: 1.15, letterSpacing: '-0.025em' }}>
-                Fragen zur Steuerresidenz
-              </h2>
-            </div>
-
-            <div className="flex flex-col" style={{ gap: '4px' }}>
-              {FAQS.map((f, i) => (
-                <details key={i} name="taxres-faq" className="contact-faq-item">
-                  <summary className="contact-faq-summary">
-                    <span style={{ flex: 1 }}>{f.question}</span>
-                    <span className="contact-faq-plus" aria-hidden="true">+</span>
-                  </summary>
-                  <p className="contact-faq-answer">{f.answer}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ── BACK TO FORM ─────────────────────────────────────────────────── */}
-        <section style={{ background: '#0B5240', paddingTop: '32px', paddingBottom: '32px' }}>
-          <div className="max-w-[640px] mx-auto px-5 md:px-8 lg:px-12 text-center reveal">
-            <p className="font-light mx-auto" style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.6, marginBottom: '16px', maxWidth: '40ch' }}>
-              Jetzt, wo du deine Residenz verstehst, fülle deine Steuererklärung weiter aus.
-            </p>
             <BackButton />
           </div>
         </section>

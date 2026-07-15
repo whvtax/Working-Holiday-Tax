@@ -60,11 +60,7 @@ export async function POST(req: NextRequest) {
         formData.get('taxStatus')     ? `→ ${sanitiseField(formData.get('taxStatus'))}` : '',
         formData.get('declared')      ? `→ ${sanitiseField(formData.get('declared'))}` : '',
         formData.get('declaredIncome') ? `→ ${sanitiseField(formData.get('declaredIncome'))}` : '',
-        formData.get('hasAbn') ? `ABN: ${sanitiseShort(formData.get('hasAbn'))}` : '',
         formData.get('hasMedicare') ? `Medicare: ${sanitiseShort(formData.get('hasMedicare'))}` : '',
-        formData.get('abnNumber') ? `ABN Number: ${sanitiseShort(formData.get('abnNumber'))}` : '',
-        formData.get('abnIncome') ? `ABN Income: ${sanitiseShort(formData.get('abnIncome'))}` : '',
-        formData.get('abnWork')   ? `ABN Work: ${sanitiseShort(formData.get('abnWork'))}`   : '',
         formData.get('hasExpenses') ? `Expenses: ${sanitiseShort(formData.get('hasExpenses'))}` : '',
         (()=>{
           const raw = formData.get('invoiceDetails')

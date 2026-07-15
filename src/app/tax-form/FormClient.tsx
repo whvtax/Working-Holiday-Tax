@@ -202,10 +202,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   })
   const [terms, setTerms]             = useState(false)
   // ABN
-  const [hasAbn, setHasAbn]           = useState<'yes'|'no'|''>('')
-  const [abnNumber, setAbnNumber]     = useState('')
-  const [abnIncome, setAbnIncome]     = useState('')
-  const [abnWork, setAbnWork]         = useState('')
   const [howHeard, setHowHeard]       = useState('')
 
   // Referral: read ?ref= from URL
@@ -248,8 +244,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       setIf(d.hasExpenses, setHasExpenses); setIf(d.taxStatus, setTaxStatus)
       setIf(d.declared, setDeclared);   setIf(d.declaredIncome, setDeclaredIncome)
       setIf(d.taxYears, setTaxYears);   setIf(d.terms, setTerms)
-      setIf(d.hasAbn, setHasAbn);       setIf(d.abnNumber, setAbnNumber)
-      setIf(d.abnIncome, setAbnIncome); setIf(d.abnWork, setAbnWork)
       setIf(d.howHeard, setHowHeard)
       // Scroll back to the tax-residency question after the DOM settles
       setTimeout(() => taxStatusRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' }), 60)
@@ -275,8 +269,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
         hasMedicare,
         tfn, primaryJob, bankName, bankHolder, bankAccount, bankBsb, hasExpenses,
-        taxStatus, declared, declaredIncome, taxYears, terms, hasAbn, abnNumber,
-        abnIncome, abnWork, howHeard,
+        taxStatus, declared, declaredIncome, taxYears, terms, howHeard,
       }
       sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), data }))
     } catch {}
@@ -298,12 +291,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!hasMedicare)        e.hasMedicare = T('required')
     if (!tfn.trim())         e.tfn         = T('required')
     if (!primaryJob.trim())  e.primaryJob  = T('required')
-    if (!hasAbn)             e.hasAbn      = T('required')
-    if (hasAbn === 'yes') {
-      if (!abnNumber.trim()) e.abnNumber   = T('required')
-      if (!abnIncome.trim()) e.abnIncome   = T('required')
-      if (!abnWork.trim())   e.abnWork     = T('required')
-    }
     if (!bankName.trim())    e.bankName    = T('required')
     if (!bankHolder.trim())  e.bankHolder  = T('required')
     if (!bankAccount.trim()) e.bankAccount = T('required')
@@ -316,7 +303,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!declaredIncome)      e.declaredIncome = T('mustConfirmDecl')
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
-    if (taxYears.length === 0) e.taxYear       = 'Please select at least one tax year'
     return e
   }
 
@@ -413,13 +399,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('hasMedicare', hasMedicare === 'yes' ? 'Yes' : hasMedicare === 'no' ? 'No' : '')
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
-    fd.append('hasAbn',      hasAbn === 'yes' ? 'Yes' : hasAbn === 'no' ? 'No' : '')
     fd.append('hasExpenses',  hasExpenses === 'yes' ? 'Yes' : hasExpenses === 'no' ? 'No' : '')
-    if (hasAbn === 'yes') {
-      fd.append('abnNumber',   abnNumber)
-      fd.append('abnIncome',   abnIncome)
-      fd.append('abnWork',     abnWork)
-    }
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYears.join(', '))
@@ -602,39 +582,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
             </Field>
 
-          <div className="form-section-title">ABN (Australian Business Number)</div>
-
-            <Field label={T('hasAbn')} required error={errors.hasAbn}>
-              <div className="radio-group">
-                {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
-                  <label key={opt.val} className={`radio-card ${hasAbn === opt.val ? 'radio-card-active' : ''}`}>
-                    <input type="radio" name="hasAbn" value={opt.val} checked={hasAbn === opt.val}
-                      onChange={() => { setHasAbn(opt.val); setErrors(p => ({...p, hasAbn: ''})) }} className="hidden" />
-                    <div className={`radio-dot ${hasAbn === opt.val ? 'radio-dot-active' : ''}`} />
-                    {opt.label}
-                  </label>
-                ))}
-              </div>
-            </Field>
-
-            {hasAbn === 'yes' && (<>
-              <Field label={T('abnNumber')} required error={errors.abnNumber}>
-                <input className={`inp ${errors.abnNumber ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 345 678 901" inputMode="numeric"
-                  value={abnNumber} onChange={e => { setAbnNumber(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, abnNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
-              </Field>
-
-              <Field label={T('abnIncome')} required error={errors.abnIncome}>
-                <input className={`inp ${errors.abnIncome ? 'inp-err' : ''}`} type="text" placeholder="e.g. 15,000" inputMode="numeric"
-                  value={abnIncome} onChange={e => { setAbnIncome(e.target.value.replace(/[^0-9.]/g, '')); setErrors(p => ({...p, abnIncome: ''})) }}  onKeyDown={e=>{if(!/^[0-9.]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
-              </Field>
-
-              <Field label={T('abnWork')} required error={errors.abnWork}>
-                <input className={`inp ${errors.abnWork ? 'inp-err' : ''}`} type="text" placeholder="e.g. Delivery driver, Freelance photographer"
-                  value={abnWork} onChange={e => { setAbnWork(e.target.value); setErrors(p => ({...p, abnWork: ''})) }} />
-              </Field>
-            </>)}
-
           <div className="form-section-title">{T('sectionBank')}</div>
+            <p className="form-section-hint">{T('bankDetailsHint')}</p>
             <Field label={T('bankName')} required error={errors.bankName}>
               <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
                 value={bankName} onChange={e => { setBankName(e.target.value); setErrors(p => ({...p, bankName: ''})) }} />
@@ -661,7 +610,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} lang={lang} />
             </Field>
 
-            <Field label={T('selfieWithPassport')} required error={errors.selfiePassport}>
+            <Field label={T('selfieWithPassport')} required error={errors.selfiePassport} hint={T('selfieHint')}>
               <FileUpload id="selfiePassport" label={T('uploadSelfie')} accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} lang={lang} />
             </Field>
@@ -700,57 +649,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 </p>
               </div>
             )}
-          </div>
-
-          <div className="form-section-title">{T('taxYear')}</div>
-          <div>
-            <Field label={T('taxYearSelect')} required error={errors.taxYear}>
-              <div style={{fontSize:12,color:'#587066',marginBottom:10,lineHeight:1.55,background:'#f7fbf9',border:'1px solid #d4eae2',borderRadius:8,padding:'10px 12px'}}>
-                {lang === 'de' ? (
-                  <>💡 In Australien läuft das Steuerjahr vom <strong>1. Juli bis 30. Juni</strong>.<br/>Du kannst <strong>mehrere Jahre</strong> auswählen, falls du in vorigen Jahren nicht eingereicht hast.</>
-                ) : lang === 'ja' ? (
-                  <>💡 オーストラリアの税務年度は<strong>7月1日から6月30日</strong>までです。<br/>過去の年度で申告していない場合は、<strong>複数年度</strong>を選択できます。</>
-                ) : (
-                  <>💡 In Australia, the tax year runs from <strong>1 July to 30 June</strong>.<br/>You can select <strong>more than one year</strong> if you haven&apos;t filed in previous years.</>
-                )}
-              </div>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(180px, 1fr))',gap:8}}>
-                {(() => {
-                  const now = new Date()
-                  const y = now.getFullYear()
-                  const currentYear = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
-                  const startYear = parseInt(currentYear.split('-')[0], 10)
-                  const years = Array.from({length: 4}, (_, i) => {
-                    const yy = startYear - i
-                    return { code: `${yy}-${String(yy+1).slice(2)}`, range: `1.7.${yy} - 30.6.${yy+1}` }
-                  })
-                  return years.map(({code, range}) => {
-                    const isSelected = taxYears.includes(code)
-                    return (
-                      <label key={code} className={`radio-card ${isSelected ? 'radio-card-active' : ''}`} style={{flexDirection:'column',alignItems:'flex-start',gap:4,padding:'10px 12px'}}>
-                        <input type="checkbox" name="taxYear" value={code} checked={isSelected}
-                          onChange={() => {
-                            setTaxYears(prev => isSelected ? prev.filter(y => y !== code) : [...prev, code])
-                            setErrors(p => ({...p, taxYear: ''}))
-                          }} className="hidden" />
-                        <div style={{display:'flex',alignItems:'center',gap:8,width:'100%'}}>
-                          <div className={`check-box${isSelected ? ' checked' : ''}`} style={{flexShrink:0}}>
-                            {isSelected && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                          </div>
-                          <span style={{fontWeight:600,fontSize:13}}>FY {code}{code === currentYear ? T('yearCurrent') : ''}</span>
-                        </div>
-                        <span style={{fontSize:10.5,color:'#587066',marginLeft:24}}>{range}</span>
-                      </label>
-                    )
-                  })
-                })()}
-              </div>
-              {taxYears.length > 1 && (
-                <div style={{fontSize:11,color:'#0E5C42',marginTop:8,fontWeight:500}}>
-                  ✓ {taxYears.length} {T('taxYearsSelected')}: {taxYears.sort().join(', ')}
-                </div>
-              )}
-            </Field>
           </div>
 
           <div>
@@ -851,7 +749,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',hasMedicare:'Medicare',tfn:'TFN',
-                    primaryJob:'Primary Job',hasAbn:'Has ABN',abnNumber:'ABN Number',abnIncome:'ABN Annual Income',abnWork:'ABN Work Type',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
+                    primaryJob:'Primary Job',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
                     bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>
@@ -933,6 +831,7 @@ const styles = `
   .form-intro { font-size: 13px; color: #587066; line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
   form { padding: 20px 24px 32px; }
   .form-section-title { font-size: 11px; font-weight: 700; color: #0B5240; text-transform: uppercase; letter-spacing: 0.06em; margin: 20px 0 12px; border-bottom: 1px solid #EAF6F1; padding-bottom: 8px; }
+  .form-section-hint { font-size: 12px; color: #7A8A82; line-height: 1.55; margin: -6px 0 14px; }
   .field-group { margin-bottom: 14px; }
   .field-label { display: block; font-size: 13px; font-weight: 600; color: #1A2822; margin-bottom: 6px; }
   .req-dot { color: #0B5240; margin-left: 3px; }
