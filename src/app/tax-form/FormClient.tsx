@@ -499,6 +499,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <Field label={T('whatsapp')} required error={errors.waNumber}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+61 4XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30}
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+              <div style={{fontSize:'11.5px',color:'#7A8A82',marginTop:'6px',lineHeight:1.4}}>
+                {lang === 'de' ? 'Die WhatsApp-Nummer, die du gerade nutzt, oder eine, unter der wir dich erreichen können.'
+                  : lang === 'ja' ? '現在お使いのWhatsApp番号、または連絡が取れる番号をご記入ください。'
+                  : 'The WhatsApp number you\u2019re currently using, or one we can reach you on.'}
+              </div>
             </Field>
 
             <Field label={T('auPhone')} required error={errors.auPhone}>
