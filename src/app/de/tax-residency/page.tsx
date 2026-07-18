@@ -174,7 +174,7 @@ export default function GermanTaxResidencyPage() {
                 ))}
               </div>
               <p className="font-light mx-auto" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch', marginTop: '16px', textAlign: 'center' }}>
-                Wenn du keinen Reisepass aus einem NDA-Land besitzt, aber alle anderen Voraussetzungen erfüllst, kannst du dennoch als australischer Steuerresident gelten und Anspruch auf eine Steuerrückerstattung von bis zu $700 haben, wenn du ein niedriges Einkommen hast.
+                Wenn du nicht aus einem NDA-Land kommst, aber alle anderen Voraussetzungen erfüllst, kannst du dennoch als australischer Steuerresident gelten und eine Steuerrückerstattung von bis zu $700 erhalten.
               </p>
             </div>
           </div>

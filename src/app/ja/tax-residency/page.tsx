@@ -183,7 +183,7 @@ export default function JapaneseTaxResidencyPage() {
                 ))}
               </div>
               <p className="font-light mx-auto" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.75, maxWidth: '58ch', marginTop: '16px', textAlign: 'center' }}>
-                NDA国のパスポートをお持ちでない場合でも、その他の条件をすべて満たしていれば、税務上のオーストラリア居住者とみなされる可能性があり、低所得の場合は最大$700の税還付を受けられることがあります。
+                NDA国出身でない場合でも、その他の条件をすべて満たしていれば、税務上のオーストラリア居住者とみなされ、最大$700の税還付を受けられることがあります。
               </p>
             </div>
           </div>

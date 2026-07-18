@@ -806,17 +806,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
         {showWhmBlockModal && (() => {
           const txt = lang === 'de'
             ? { icon: '🛑', title: 'Bevor du absendest',
-                body: <>Deine Visumart und deine Einkommenshöhe haben nichts mit deiner Steuerresidenz zu tun. Was deine Steuerresidenz bestimmt, sind die Steuerresidenz-Tests, wie sie auf der Seite zur Steuerresidenz erklärt werden.</>,
-                body2: <>Da du für steuerliche Zwecke als Working Holiday Maker giltst und während des Jahres 15% Steuer gezahlt hast, hast du keinen Anspruch auf eine Steuerrückerstattung - vielleicht nächstes Jahr.</>,
+                body: <>Deine Visumart und deine Einkommenshöhe bestimmen nicht deine Steuerresidenz. Deine Steuerresidenz wird durch die Steuerresidenz-Tests bestimmt, die auf der Seite zur Steuerresidenz erklärt werden.</>,
+                body2: <>Basierend auf deinen Angaben giltst du für steuerliche Zwecke als Working Holiday Maker. Da du während des Jahres die korrekten 15% Steuer gezahlt hast, hast du dieses Jahr keinen Anspruch auf eine Steuerrückerstattung.</>,
                 thanks: 'Danke!', link: 'Steuerresidenz erklärt', close: 'Schließen' }
             : lang === 'ja'
             ? { icon: '🛑', title: '送信する前に',
-                body: <>あなたのビザの種類や所得額は、税務上の居住区分とは関係ありません。あなたの税務上の居住区分を決定するのは、税務居住区分ページに記載されている居住テストです。</>,
-                body2: <>税法上ワーキングホリデーメーカーとみなされ、年間を通じて15%の税金を支払っているため、今回は税金の還付を受ける資格がありません。来年は対象になるかもしれません。</>,
+                body: <>あなたのビザの種類や所得額は、税務上の居住区分を決定するものではありません。あなたの税務上の居住区分は、税務居住区分ページに記載されている居住テストによって決定されます。</>,
+                body2: <>ご回答の内容に基づき、税法上ワーキングホリデーメーカーとみなされます。年間を通じて正しい15%の税金を納めているため、今回は税金の還付を受ける資格がありません。</>,
                 thanks: 'ありがとうございます！', link: '税務上の居住区分について', close: '閉じる' }
             : { icon: '🛑', title: 'Before you submit',
-                body: <>Your visa and income level aren&apos;t related to your tax residency status. What determines your tax residency status are the tax residency tests, as shown on the Tax Residency page.</>,
-                body2: <>Since you&apos;re considered a Working Holiday Maker for tax purposes and paid 15% tax during the year, you&apos;re not eligible for a tax refund - maybe next year.</>,
+                body: <>Your visa and income level don&apos;t determine your tax residency. Your tax residency is determined by the tax residency tests explained on the Tax Residency page.</>,
+                body2: <>Based on your answers, you&apos;re considered a Working Holiday Maker for tax purposes. Since you paid the correct 15% tax during the year, you aren&apos;t eligible for a tax refund this year.</>,
                 thanks: 'Thank you!', link: 'Tax Residency Explained', close: 'Close' }
 
           return (
