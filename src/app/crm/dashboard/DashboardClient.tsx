@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'
 type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -331,6 +332,7 @@ export default function DashboardClient() {
   const [confirmDelete, setConfirmDelete] = useState<string|null>(null)
   const [confirmDeleteClient, setConfirmDeleteClient] = useState<string|null>(null)
   const [confirmPermDelete, setConfirmPermDelete] = useState<string|null>(null)
+  const [editingNoteId, setEditingNoteId] = useState<string|null>(null)
   const [permDeleteText, setPermDeleteText] = useState('')
   const [confirmArchive, setConfirmArchive] = useState<string|null>(null)
 
@@ -636,9 +638,25 @@ export default function DashboardClient() {
     }
   }
 
+  // Staff-only scratch note on a lead - a quick "waiting on X" / "call back re: Y"
+  // reminder that lives only while the lead is pending. It's cleared automatically
+  // the moment the lead is marked Done (see markTaskDone), so there's never any
+  // stale internal note lingering on a finished client.
+  async function saveReviewerNote(taskId: string, note: string) {
+    const trimmed = note.trim()
+    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, reviewerNote: trimmed } : t))
+    if (activeTask?.id === taskId) setActiveTask(prev => prev ? { ...prev, reviewerNote: trimmed } : prev)
+    setEditingNoteId(null)
+    try {
+      await fetch(`/api/crm/tasks/${taskId}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'reviewerNote',reviewerNote:trimmed})})
+    } catch (err) {
+      console.error('[saveReviewerNote]', err)
+    }
+  }
+
   async function markDone(id:string) {
     const prevTasks = tasks
-    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[]} : t))
+    setTasks(prev => prev.map(t => t.id===id ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], reviewerNote:''} : t))
     setConfirmComplete(null)
     setActiveTask(null)
     setTaskView('list')
@@ -1164,27 +1182,29 @@ export default function DashboardClient() {
     const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
     return hasPlus ? `+${groups}` : groups
   }
-  // Formats phone numbers (WhatsApp, AU phone) the way Australians actually write them:
-  // international "+61 492 820 350" or domestic "0492 820 350". Falls back to plain
-  // 3-digit grouping for numbers that don't match an AU mobile shape (e.g. overseas numbers).
+  // Formats phone numbers the way they actually appear in WhatsApp/real life, using each
+  // country's own convention (e.g. +44 7432 131956, +49 163 1762085, +353 85 729 7457).
+  // NANP numbers (+1, US/Canada) are a special case: WhatsApp shows them as
+  // "+1 (XXX) XXX-XXXX" rather than the plain international grouping.
   const formatPhoneNumber = (val:string) => {
     if (!val) return val
-    const hasPlus = val.trim().startsWith('+')
-    const digits = val.replace(/\D/g,'')
-    if (!digits) return val
-    // International AU format: +61 followed by 9 digits -> +61 XXX XXX XXX
-    if (hasPlus && digits.startsWith('61') && digits.length === 11) {
-      const rest = digits.slice(2)
-      const groups = rest.match(/.{1,3}/g)?.join(' ') || rest
-      return `+61 ${groups}`
+    const trimmed = val.trim()
+    if (trimmed.startsWith('+')) {
+      const p = parsePhoneNumberFromString(trimmed)
+      if (p) return p.countryCallingCode === '1' ? `+1 ${p.formatNational()}` : p.formatInternational()
+      // Unparseable - fall back to plain 3-digit grouping
+      const digits = trimmed.replace(/\D/g,'')
+      const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
+      return `+${groups}`
     }
-    // Domestic AU format: 0 followed by 9 digits (10 total) -> 0XXX XXX XXX
-    if (!hasPlus && digits.startsWith('0') && digits.length === 10) {
-      return `${digits.slice(0,4)} ${digits.slice(4,7)} ${digits.slice(7,10)}`
+    // No leading "+" - most likely a local AU number (e.g. 0492 820 350)
+    const digits = trimmed.replace(/\D/g,'')
+    if (digits.startsWith('0')) {
+      const p = parsePhoneNumberFromString(digits, 'AU')
+      if (p) return p.formatNational()
     }
-    // Fallback: plain 3-digit grouping for non-AU numbers
-    const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
-    return hasPlus ? `+${groups}` : groups
+    // Fallback: plain 3-digit grouping
+    return digits.match(/.{1,3}/g)?.join(' ') || digits
   }
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
@@ -1240,6 +1260,7 @@ export default function DashboardClient() {
     const qDigits = q.replace(/[\s-]/g, '')
     const ms = !q
       || c.fullName.toLowerCase().includes(q)
+      || displayName(c.fullName).toLowerCase().includes(q)
       || (c.email || '').toLowerCase().includes(q)
       || (qDigits && (c.whatsapp || '').replace(/[\s-]/g, '').includes(qDigits))
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
@@ -1302,11 +1323,13 @@ export default function DashboardClient() {
     return {
       tasks: tasks.filter(t=>
         t.clientName.toLowerCase().includes(qLower) ||
+        displayName(t.clientName).toLowerCase().includes(qLower) ||
         (t.email || '').toLowerCase().includes(qLower) ||
         (qDigits && (t.whatsapp || '').replace(/[\s-]/g, '').includes(qDigits))
       ).slice(0,5),
       clients: sourceClients.filter(c=>
         c.fullName.toLowerCase().includes(qLower) ||
+        displayName(c.fullName).toLowerCase().includes(qLower) ||
         (c.email || '').toLowerCase().includes(qLower) ||
         (qDigits && (c.whatsapp || '').replace(/[\s-]/g, '').includes(qDigits))
       ).slice(0,5),
@@ -1705,7 +1728,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4,flexWrap:'wrap'}}>
                         <span>{displayName(t.clientName)}</span>
-                        <CopyBtn text={t.clientName}/>
+                        <CopyBtn text={displayName(t.clientName)}/>
                         {isReturning && (
                           <span style={{display:'inline-flex',alignItems:'center',gap:3,fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:100,background:'#ECFDF5',color:'#047857',border:'1px solid #A7F3D0'}} title="This client has been with you before">
                             🔄 Returning
@@ -1737,6 +1760,37 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         )}
                       </div>
                     </div>
+                    <div style={{flex:'0 1 220px',minWidth:0}} onClick={e=>e.stopPropagation()}>
+                      {editingNoteId === t.id ? (
+                        <input
+                          autoFocus
+                          defaultValue={t.reviewerNote || ''}
+                          placeholder="Add a note…"
+                          onBlur={e=>saveReviewerNote(t.id, e.target.value)}
+                          onKeyDown={e=>{
+                            if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
+                            if (e.key === 'Escape') setEditingNoteId(null)
+                          }}
+                          style={{width:'100%',fontSize:11.5,padding:'5px 9px',border:'1.5px solid #a7f3d0',borderRadius:7,outline:'none',fontFamily:'inherit',background:'#fff',boxSizing:'border-box' as const}}
+                        />
+                      ) : t.reviewerNote ? (
+                        <button
+                          onClick={()=>setEditingNoteId(t.id)}
+                          title="Click to edit note"
+                          style={{width:'100%',textAlign:'left',fontSize:11.5,padding:'5px 9px',border:'1px solid #fde68a',borderRadius:7,background:'#fffbeb',color:'#92400e',cursor:'pointer',fontFamily:'inherit',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}
+                        >
+                          📝 {t.reviewerNote}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={()=>setEditingNoteId(t.id)}
+                          title="Add a note (only visible while this lead is pending)"
+                          style={{fontSize:11,padding:'5px 9px',border:'1px dashed #d8e4dc',borderRadius:7,background:'transparent',color:'#aabab2',cursor:'pointer',fontFamily:'inherit'}}
+                        >
+                          + Note
+                        </button>
+                      )}
+                    </div>
                     <div style={{display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
                       <div style={{fontSize:11,color:'#aabab2',whiteSpace:'nowrap'}}>{fmtDate(t.submittedAt)}</div>
                       <button onClick={e=>{e.stopPropagation();setConfirmPermDelete(t.id)}} style={{padding:'4px 8px',background:'#fff',border:'1px solid #fca5a5',borderRadius:7,fontSize:11,fontWeight:600,color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}} title="Delete lead permanently" aria-label={`Delete lead for ${t.clientName}`}>🗑️</button>
@@ -1758,7 +1812,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:500,color:'#0a1410',marginBottom:2,display:'flex',alignItems:'center',gap:4}}>
                         <span>{displayName(t.clientName)}</span>
-                        <CopyBtn text={t.clientName}/>
+                        <CopyBtn text={displayName(t.clientName)}/>
                       </div>
                       {t.whatsapp && (
                         <div style={{fontSize:11,color:'#4a5a52',display:'flex',alignItems:'center',gap:3,marginBottom:2,direction:'ltr' as const,justifyContent:'flex-start'}}>

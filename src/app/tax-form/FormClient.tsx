@@ -215,6 +215,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   // ── Tax-residency confirmation prompt (shown for the one risky pick:
   //    NDA country selecting Working Holiday Maker) ──────────────────────
   const [showResidencyPrompt, setShowResidencyPrompt] = useState(false)
+  const [showWhmBlockModal, setShowWhmBlockModal] = useState(false)
   const taxStatusRef = useRef<HTMLDivElement>(null)
   const residencyUrl = lang === 'de' ? '/de/tax-residency' : lang === 'ja' ? '/ja/tax-residency' : '/tax-residency'
   const SNAPSHOT_KEY = 'whv_taxform_return'
@@ -309,6 +310,14 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
+
+    // Hard block: clients who select "Working Holiday Maker" tax status cannot
+    // submit the form. Visa type and income level don't determine tax residency -
+    // only the actual residency tests do - so this stops people from locking in
+    // a worse tax outcome (15% flat, no refund) without at least reading the
+    // tax-residency explainer first. The form stays fully filled either way.
+    if (taxStatus === 'whm') { setShowWhmBlockModal(true); return }
+
     setLoading(true)
 
     // Pre-upload all files client-side for faster, more reliable submission
@@ -399,7 +408,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('primaryJob',  primaryJob)
     fd.append('hasExpenses',  hasExpenses === 'yes' ? 'Yes' : hasExpenses === 'no' ? 'No' : '')
     fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
-    fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus === 'whm' ? 'Working holiday maker for tax purposes' : taxStatus)
+    fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYears.join(', '))
     fd.append('howHeard',    howHeard)
     if (refCode) fd.append('refCode', refCode)
@@ -496,14 +505,12 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div className="form-section-title">{T('contactDetails')}</div>
           <div>
 
-            <Field label={T('whatsapp')} required error={errors.waNumber}>
+            <Field label={T('whatsapp')} required error={errors.waNumber}
+              hint={lang === 'de' ? 'Die WhatsApp-Nummer, die du gerade nutzt.'
+                : lang === 'ja' ? '現在お使いのWhatsApp番号をご記入ください。'
+                : 'The WhatsApp number you\u2019re currently using.'}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+44 7XXX XXXXXX" autoComplete="tel" inputMode="tel" maxLength={30}
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
-              <div style={{fontSize:'11.5px',color:'#7A8A82',marginTop:'6px',lineHeight:1.4}}>
-                {lang === 'de' ? 'Die WhatsApp-Nummer, die du gerade nutzt.'
-                  : lang === 'ja' ? '現在お使いのWhatsApp番号をご記入ください。'
-                  : 'The WhatsApp number you\u2019re currently using.'}
-              </div>
             </Field>
 
             <Field label={T('auPhone')} required error={errors.auPhone}>
@@ -791,6 +798,42 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                     {txt.yes}
                   </button>
                 </div>
+              </div>
+            </div>
+          )
+        })()}
+
+        {showWhmBlockModal && (() => {
+          const txt = lang === 'de'
+            ? { icon: '🛑', title: 'Bevor du absendest',
+                body: <>Deine Visumart und deine Einkommenshöhe haben nichts mit deiner Steuerresidenz zu tun. Was deine Steuerresidenz bestimmt, sind die Steuerresidenz-Tests, wie sie auf der Seite zur Steuerresidenz erklärt werden.</>,
+                body2: <>Da du für steuerliche Zwecke als Working Holiday Maker giltst und während des Jahres 15% Steuer gezahlt hast, hast du keinen Anspruch auf eine Steuerrückerstattung - vielleicht nächstes Jahr.</>,
+                thanks: 'Danke!', link: 'Steuerresidenz erklärt', close: 'Schließen' }
+            : lang === 'ja'
+            ? { icon: '🛑', title: '送信する前に',
+                body: <>あなたのビザの種類や所得額は、税務上の居住区分とは関係ありません。あなたの税務上の居住区分を決定するのは、税務居住区分ページに記載されている居住テストです。</>,
+                body2: <>税法上ワーキングホリデーメーカーとみなされ、年間を通じて15%の税金を支払っているため、今回は税金の還付を受ける資格がありません。来年は対象になるかもしれません。</>,
+                thanks: 'ありがとうございます！', link: '税務上の居住区分について', close: '閉じる' }
+            : { icon: '🛑', title: 'Before you submit',
+                body: <>Your visa and income level aren&apos;t related to your tax residency status. What determines your tax residency status are the tax residency tests, as shown on the Tax Residency page.</>,
+                body2: <>Since you&apos;re considered a Working Holiday Maker for tax purposes and paid 15% tax during the year, you&apos;re not eligible for a tax refund - maybe next year.</>,
+                thanks: 'Thank you!', link: 'Tax Residency Explained', close: 'Close' }
+
+          return (
+            <div role="dialog" aria-modal="true"
+              style={{position:'fixed',inset:0,background:'rgba(8,15,13,0.55)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2000,padding:20}}>
+              <div style={{background:'#fff',borderRadius:18,maxWidth:440,width:'100%',padding:'26px 24px',boxShadow:'0 24px 70px rgba(0,0,0,0.32)',textAlign:'center'}}>
+                <div style={{fontSize:30,marginBottom:10}}>{txt.icon}</div>
+                <h3 style={{fontFamily:'inherit',fontSize:17,fontWeight:800,color:'#92400e',margin:'0 0 10px'}}>{txt.title}</h3>
+                <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 10px'}}>{txt.body}</p>
+                <button type="button" onClick={goReadResidency}
+                  style={{display:'inline-block',fontSize:13,color:'#0B5240',textDecoration:'underline',fontWeight:600,marginBottom:14,background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',padding:0}}>{txt.link} →</button>
+                <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 10px'}}>{txt.body2}</p>
+                <p style={{fontSize:14,color:'#1A2822',fontWeight:600,margin:'0 0 20px'}}>{txt.thanks}</p>
+                <button type="button" onClick={() => setShowWhmBlockModal(false)}
+                  style={{minHeight:50,width:'100%',borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>
+                  {txt.close}
+                </button>
               </div>
             </div>
           )

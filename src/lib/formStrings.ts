@@ -15,8 +15,8 @@ export const formStrings = {
   },
   // The MUST-FILL-IN-ENGLISH notice
   englishOnlyNotice: {
-    en: 'Choose your language to see instructions - but please type your answers in English.',
-    de: 'Wähle deine Sprache, um die Anleitung zu sehen - aber bitte gib deine Antworten auf Englisch ein.',
+    en: 'Choose your language to see instructions but please type your answers in English.',
+    de: 'Wähle deine Sprache, um die Anleitung zu sehen, aber bitte gib deine Antworten auf Englisch ein.',
     ja: '説明を表示する言語を選択できますが、回答は英語でご入力ください。',
   },
   englishOnlyShort: {
@@ -42,7 +42,7 @@ export const formStrings = {
   sectionEmployers:    { en: 'Employers',                 de: 'Arbeitgeber',                ja: '雇用主情報' },
 
   // ─ Field labels - shared ─
-  firstName:           { en: 'First name (including middle name)', de: 'Vorname (inkl. Zweitname)', ja: '名（ミドルネーム含む）' },
+  firstName:           { en: 'First name (including middle names)', de: 'Vorname (inkl. Zweitnamen)', ja: '名（ミドルネーム含む）' },
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { parsePhoneNumberFromString } from 'libphonenumber-js'
 
 type TaxYear = string
 type Client = {
@@ -184,7 +185,7 @@ export default function ClientPageClient({ id }: { id: string }) {
         <div className="cp-profile">
           <div className="cp-avatar">{initials}</div>
           <div>
-            <div className="cp-name">{client.fullName}</div>
+            <div className="cp-name">{displayName(client.fullName)}</div>
             <div className="cp-meta">
               <span>🌍 {client.country}</span>
               <span>Tax year: <strong>{client.taxYear}</strong></span>
@@ -271,6 +272,15 @@ function Section({title,children}:{title:string;children:React.ReactNode}) {
   return <div className="cp-section"><div className="cp-sec-head">{title}</div>{children}</div>
 }
 
+// Displays a stored "First Middle... Last" name as "Last, First Middle..." for consistent CRM display
+function displayName(name:string) {
+  const parts = (name||'').trim().split(/\s+/).filter(Boolean)
+  if (parts.length < 2) return name
+  const last = parts[parts.length-1]
+  const rest = parts.slice(0,-1).join(' ')
+  return `${last}, ${rest}`
+}
+
 // Groups digits into blocks of 3 for readability (TFN), preserving a leading "+"
 function groupDigits(val:string) {
   if (!val) return val
@@ -283,21 +293,25 @@ function groupDigits(val:string) {
 // Formats phone numbers (WhatsApp, AU phone) the way Australians actually write them:
 // international "+61 492 820 350" or domestic "0492 820 350". Falls back to plain
 // 3-digit grouping for numbers that don't match an AU mobile shape (e.g. overseas numbers).
+// Formats phone numbers the way they actually appear in WhatsApp/real life, using each
+// country's own convention. NANP numbers (+1, US/Canada) are a special case: WhatsApp
+// shows them as "+1 (XXX) XXX-XXXX" rather than the plain international grouping.
 function formatPhoneNumber(val:string) {
   if (!val) return val
-  const hasPlus = val.trim().startsWith('+')
-  const digits = val.replace(/\D/g,'')
-  if (!digits) return val
-  if (hasPlus && digits.startsWith('61') && digits.length === 11) {
-    const rest = digits.slice(2)
-    const groups = rest.match(/.{1,3}/g)?.join(' ') || rest
-    return `+61 ${groups}`
+  const trimmed = val.trim()
+  if (trimmed.startsWith('+')) {
+    const p = parsePhoneNumberFromString(trimmed)
+    if (p) return p.countryCallingCode === '1' ? `+1 ${p.formatNational()}` : p.formatInternational()
+    const digits = trimmed.replace(/\D/g,'')
+    const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
+    return `+${groups}`
   }
-  if (!hasPlus && digits.startsWith('0') && digits.length === 10) {
-    return `${digits.slice(0,4)} ${digits.slice(4,7)} ${digits.slice(7,10)}`
+  const digits = trimmed.replace(/\D/g,'')
+  if (digits.startsWith('0')) {
+    const p = parsePhoneNumberFromString(digits, 'AU')
+    if (p) return p.formatNational()
   }
-  const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
-  return hasPlus ? `+${groups}` : groups
+  return digits.match(/.{1,3}/g)?.join(' ') || digits
 }
 
 function Row({label,value,field,editing,form,setForm,type='text',ltr=false}:{
@@ -306,7 +320,7 @@ function Row({label,value,field,editing,form,setForm,type='text',ltr=false}:{
   type?:string;ltr?:boolean
 }) {
   const phoneFields = ['whatsapp','auPhone']
-  const display = phoneFields.includes(field) ? formatPhoneNumber(value) : field === 'tfn' ? groupDigits(value) : value
+  const display = phoneFields.includes(field) ? formatPhoneNumber(value) : field === 'tfn' ? groupDigits(value) : field === 'fullName' ? displayName(value) : value
   return (
     <div className="cp-row">
       <span className="cp-lbl">{label}</span>

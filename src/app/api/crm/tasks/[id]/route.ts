@@ -8,9 +8,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!auth(req)) return NextResponse.json({ ok:false }, { status:401 })
   try {
     const body = await req.json()
-    const { markTaskDone, updateTaskNotes, deleteTaskAndArchive, deleteTaskPermanent } = await import('@/lib/db')
+    const { markTaskDone, updateTaskNotes, updateTaskReviewerNote, deleteTaskAndArchive, deleteTaskPermanent } = await import('@/lib/db')
     if (body.action === 'done')             { await markTaskDone(params.id); return NextResponse.json({ ok:true, archived:true }) }
     if (body.action === 'notes')            { const notes = typeof body.notes === 'string' ? body.notes.slice(0, 10_000) : ''; await updateTaskNotes(params.id, notes); return NextResponse.json({ ok:true }) }
+    if (body.action === 'reviewerNote')     { const note = typeof body.reviewerNote === 'string' ? body.reviewerNote.slice(0, 2_000) : ''; await updateTaskReviewerNote(params.id, note); return NextResponse.json({ ok:true }) }
     if (body.action === 'delete')           { await deleteTaskAndArchive(params.id);  return NextResponse.json({ ok:true }) }
     if (body.action === 'delete_permanent') { await deleteTaskPermanent(params.id);   return NextResponse.json({ ok:true }) }
     return NextResponse.json({ ok:false, error: 'unknown_action' }, { status:400 })

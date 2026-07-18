@@ -180,6 +180,9 @@ export default function TaxResidencyPage() {
                   </div>
                 ))}
               </div>
+              <p className="font-light mx-auto" style={{ fontSize: '13px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch', marginTop: '16px', textAlign: 'center' }}>
+                If you don&apos;t hold a passport from an NDA country but still meet all the other requirements, you may still qualify as an Australian resident for tax purposes and be eligible for a tax refund of up to $700 if you&apos;re a low-income earner.
+              </p>
             </div>
           </div>
         </section>

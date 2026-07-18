@@ -244,6 +244,7 @@ export async function markTaskDone(id: string): Promise<void> {
     address: '', tfn: '', bank_details: '',
     primary_job: '', marital: '', au_phone: '', file_urls: '[]',
     notes: cleanedNotes,
+    reviewer_note: '',
   }).eq('id', id)
   if (error) throw error
 }
@@ -251,6 +252,17 @@ export async function markTaskDone(id: string): Promise<void> {
 export async function updateTaskNotes(id: string, notes: string): Promise<void> {
   const sb = getSupabase()
   const { error } = await sb.from('crm_tasks').update({ notes }).eq('id', id)
+  if (error) throw error
+}
+
+// Staff-only scratch note on a lead (e.g. "waiting on a clearer passport photo").
+// Deliberately separate from `notes` (which stores the client's submitted form
+// data) so editing one never risks clobbering the other. It's only ever shown
+// on pending leads - once a lead is marked Done the locked view doesn't
+// surface it, so it's effectively gone the moment the client's work is done.
+export async function updateTaskReviewerNote(id: string, reviewerNote: string): Promise<void> {
+  const sb = getSupabase()
+  const { error } = await sb.from('crm_tasks').update({ reviewer_note: reviewerNote }).eq('id', id)
   if (error) throw error
 }
 
@@ -796,15 +808,28 @@ export async function searchClients(
   const safe = q.replace(/[\\%_]/g, ch => '\\' + ch)
   const pattern = `%${safe}%`
 
+  // Names are stored as "First Middle... Last" (no comma). The CRM displays
+  // them as "Last, First Middle..." so people naturally search that way too -
+  // build a second pattern with the comma-separated parts reversed and
+  // rejoined without the comma, so "Nishibuchi, Akari" also matches a stored
+  // "Akari Nishibuchi".
+  let namePatterns = [pattern]
+  if (safe.includes(',')) {
+    const [beforeComma, ...restParts] = safe.split(',')
+    const rest = restParts.join(',').trim()
+    const last = beforeComma.trim()
+    if (rest && last) namePatterns.push(`%${rest} ${last}%`)
+  }
+
   // Search in parallel across name, email, whatsapp - merge & dedupe
-  const fields: ('full_name' | 'email' | 'whatsapp')[] = ['full_name', 'email', 'whatsapp']
-  const results = await Promise.all(fields.map(f =>
-    sb.from('crm_clients')
-      .select('*')
-      .eq('archived', archived)
-      .ilike(f, pattern)
-      .limit(limit)
-  ))
+  const nameQueries = namePatterns.map(p =>
+    sb.from('crm_clients').select('*').eq('archived', archived).ilike('full_name', p).limit(limit)
+  )
+  const otherFields: ('email' | 'whatsapp')[] = ['email', 'whatsapp']
+  const otherQueries = otherFields.map(f =>
+    sb.from('crm_clients').select('*').eq('archived', archived).ilike(f, pattern).limit(limit)
+  )
+  const results = await Promise.all([...nameQueries, ...otherQueries])
 
   const seen = new Set<string>()
   const merged: ClientRecord[] = []
