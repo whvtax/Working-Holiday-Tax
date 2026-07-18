@@ -1188,23 +1188,46 @@ export default function DashboardClient() {
   // "+1 (XXX) XXX-XXXX" rather than the plain international grouping.
   const formatPhoneNumber = (val:string) => {
     if (!val) return val
-    const trimmed = val.trim()
-    if (trimmed.startsWith('+')) {
-      const p = parsePhoneNumberFromString(trimmed)
-      if (p) return p.countryCallingCode === '1' ? `+1 ${p.formatNational()}` : p.formatInternational()
-      // Unparseable - fall back to plain 3-digit grouping
-      const digits = trimmed.replace(/\D/g,'')
-      const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
-      return `+${groups}`
+    let cleaned = val.trim()
+    if (!cleaned) return val
+
+    // "00" is the common international dialing prefix used outside the NANP
+    // (North America) - treat it the same as a leading "+".
+    if (/^00\d/.test(cleaned)) cleaned = `+${cleaned.slice(2)}`
+
+    const applyFormat = (p: ReturnType<typeof parsePhoneNumberFromString>) =>
+      p!.countryCallingCode === '1' ? `+1 ${p!.formatNational()}` : p!.formatInternational()
+
+    if (cleaned.startsWith('+')) {
+      const p = parsePhoneNumberFromString(cleaned)
+      if (p) return applyFormat(p)
+    } else {
+      const digits = cleaned.replace(/\D/g, '')
+      // Looks like a local AU number (starts with a trunk "0")
+      if (digits.startsWith('0')) {
+        const p = parsePhoneNumberFromString(digits, 'AU')
+        if (p && p.isValid()) return p.formatNational()
+      }
+      // No "+" and no leading "0" - people often type/paste the number with
+      // the country code but forget the "+" (e.g. "61491570156"). Try
+      // treating the digits as an international number with an implied "+".
+      if (digits.length >= 8) {
+        const p = parsePhoneNumberFromString(`+${digits}`)
+        if (p && p.isValid()) return applyFormat(p)
+      }
+      // Last resort AU parse without requiring strict validity, in case it's
+      // a slightly malformed but clearly AU-shaped number.
+      if (digits.startsWith('0')) {
+        const p = parsePhoneNumberFromString(digits, 'AU')
+        if (p) return p.formatNational()
+      }
     }
-    // No leading "+" - most likely a local AU number (e.g. 0492 820 350)
-    const digits = trimmed.replace(/\D/g,'')
-    if (digits.startsWith('0')) {
-      const p = parsePhoneNumberFromString(digits, 'AU')
-      if (p) return p.formatNational()
-    }
-    // Fallback: plain 3-digit grouping
-    return digits.match(/.{1,3}/g)?.join(' ') || digits
+
+    // Nothing parsed - fall back to plain 3-digit grouping so it's at least readable
+    const hasPlus = cleaned.startsWith('+')
+    const digits = cleaned.replace(/\D/g, '')
+    const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
+    return hasPlus ? `+${groups}` : groups
   }
   const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
