@@ -51,6 +51,7 @@ function Field({ label, value }: { label: string; value: string }) {
 
 export default function ConnectClient() {
   const [sdkReady, setSdkReady] = useState(false)
+  const [sdkError, setSdkError] = useState('')
   const [status, setStatus] = useState<'idle' | 'connecting' | 'exchanging' | 'done' | 'error'>('idle')
   const [error, setError] = useState('')
   const [wabaId, setWabaId] = useState('')
@@ -61,17 +62,44 @@ export default function ConnectClient() {
   // Load the Facebook JS SDK once.
   useEffect(() => {
     if (!APP_ID) return
+
+    // If the script already loaded (e.g. from a previous navigation) and FB
+    // is already on window, skip straight to init instead of waiting for a
+    // callback that will never fire again.
+    if (window.FB) {
+      window.FB.init({ appId: APP_ID, autoLogAppEvents: true, xfbml: true, version: 'v21.0' })
+      setSdkReady(true)
+      return
+    }
+
     window.fbAsyncInit = () => {
       window.FB?.init({ appId: APP_ID, autoLogAppEvents: true, xfbml: true, version: 'v21.0' })
       setSdkReady(true)
     }
-    if (document.getElementById('fb-sdk')) { setSdkReady(true); return }
-    const script = document.createElement('script')
-    script.id = 'fb-sdk'
-    script.src = 'https://connect.facebook.net/en_US/sdk.js'
-    script.async = true
-    script.defer = true
-    document.body.appendChild(script)
+
+    if (!document.getElementById('fb-sdk')) {
+      const script = document.createElement('script')
+      script.id = 'fb-sdk'
+      script.src = 'https://connect.facebook.net/en_US/sdk.js'
+      script.async = true
+      script.defer = true
+      script.onerror = () => setSdkError('Failed to load Facebook\u2019s script. This is usually an ad blocker or browser privacy extension blocking connect.facebook.net \u2014 try disabling it for this site, or use a private/incognito window.')
+      document.body.appendChild(script)
+    }
+
+    // If nothing has called back within 8 seconds, something is silently
+    // blocking the SDK (ad blocker, tracker blocker, corporate firewall).
+    // Show that on the page itself instead of requiring devtools.
+    const timeout = setTimeout(() => {
+      setSdkReady(ready => {
+        if (!ready) {
+          setSdkError('The Facebook signup script did not load after 8 seconds. This is usually caused by an ad blocker, privacy extension, or corporate network filter blocking connect.facebook.net. Try disabling any ad/privacy blocker for this site, or open this page in a private/incognito window, then reload.')
+        }
+        return ready
+      })
+    }, 8000)
+
+    return () => clearTimeout(timeout)
   }, [])
 
   // Meta posts progress/result events to the window during the signup
@@ -174,6 +202,16 @@ export default function ConnectClient() {
           {status === 'exchanging' && 'Finishing up…'}
           {(status === 'idle' || status === 'done' || status === 'error') && 'Connect WhatsApp Number'}
         </button>
+
+        {!sdkReady && !sdkError && (
+          <div style={{fontSize:12.5, color:'#7a8a72', marginTop:10}}>Loading Facebook signup script…</div>
+        )}
+
+        {sdkError && (
+          <div style={{...S.warn, background:'#fdeceb', borderColor:'#f3b7b0', color:'#8a2318'}}>
+            <strong>The button isn&rsquo;t working because:</strong> {sdkError}
+          </div>
+        )}
 
         {status === 'error' && (
           <div style={{...S.warn, background:'#fdeceb', borderColor:'#f3b7b0', color:'#8a2318'}}>{error}</div>
