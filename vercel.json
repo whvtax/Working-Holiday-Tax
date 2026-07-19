@@ -4,6 +4,12 @@
   "outputDirectory": ".next",
   "installCommand": "npm install",
   "regions": ["syd1"],
+  "crons": [
+    {
+      "path": "/api/cron/wa-health",
+      "schedule": "*/30 * * * *"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
