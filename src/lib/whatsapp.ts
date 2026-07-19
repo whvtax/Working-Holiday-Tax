@@ -87,6 +87,37 @@ export async function sendTemplateMessage(
 }
 
 /**
+ * Downloads a media file (image/document) a client sent, given the media
+ * ID from the webhook payload. Two-step process per Meta's API: first
+ * resolve the ID to a temporary download URL + mime type, then fetch the
+ * actual bytes from that URL (also requires the access token — the URL
+ * alone isn't public).
+ */
+export async function downloadMedia(mediaId: string): Promise<{ buffer: Buffer; mimeType: string } | null> {
+  try {
+    const token = requiredEnv('WHATSAPP_ACCESS_TOKEN')
+
+    const metaRes = await fetch(`${GRAPH_BASE}/${mediaId}`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    })
+    if (!metaRes.ok) return null
+    const meta = await metaRes.json()
+    const url: string | undefined = meta?.url
+    const mimeType: string = meta?.mime_type ?? 'application/octet-stream'
+    if (!url) return null
+
+    const fileRes = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } })
+    if (!fileRes.ok) return null
+    const arrayBuffer = await fileRes.arrayBuffer()
+
+    return { buffer: Buffer.from(arrayBuffer), mimeType }
+  } catch (err) {
+    console.error('[downloadMedia]', err)
+    return null
+  }
+}
+
+/**
  * Lightweight heartbeat: confirms the access token still works and the
  * phone number is still connected, without sending any message to a real
  * contact. Call this from the monitoring cron (see /api/cron/wa-health).

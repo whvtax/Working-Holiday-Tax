@@ -3,6 +3,7 @@ export const maxDuration = 60
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
+import { linkFormSubmissionToConversation } from '@/lib/wa-store'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
       } catch { return [] }
     })().filter(isValidSupabaseStorageUrl)
 
-    await createTask({
+    const task = await createTask({
       clientId,
       clientName:  sanitiseShort(formData.get('fullName')),
       taskType:    'tax-return',
@@ -91,6 +92,15 @@ export async function POST(req: NextRequest) {
       reviewerNote: '',
       reviewedAt:   '',
     })
+
+    // Link back to an open WhatsApp conversation for this number, if one
+    // exists — see role doc Section 2 (Phase 1 → Phase 2 handoff). Never
+    // let this block or fail the actual form submission.
+    if (whatsapp) {
+      linkFormSubmissionToConversation(whatsapp, task.id).catch(err =>
+        console.error('[tax-form] wa link failed (non-fatal):', err)
+      )
+    }
 
     return NextResponse.json({ ok: true })
   } catch (err) {

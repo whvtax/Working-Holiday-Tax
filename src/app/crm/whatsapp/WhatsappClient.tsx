@@ -94,6 +94,258 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs =
   try { return await fetch(url, { ...init, signal: ctrl.signal }) } finally { clearTimeout(id) }
 }
 
+function ReplyBox({ conversationId, onSent }: { conversationId: string; onSent: () => void }) {
+  const [text, setText] = useState('')
+  const [saveToKb, setSaveToKb] = useState(true)
+  const [sending, setSending] = useState(false)
+  const [err, setErr] = useState('')
+
+  async function send() {
+    if (!text.trim() || sending) return
+    setSending(true)
+    setErr('')
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/respond', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, answerText: text.trim(), saveToKnowledgeBase: saveToKb }),
+      })
+      const d = await r.json()
+      if (!d.ok) { setErr(d.error || 'Failed to send'); return }
+      setText('')
+      onSent()
+    } catch (e) {
+      console.error('[ReplyBox.send]', e)
+      setErr('Network error sending reply.')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <div style={{marginTop:8, paddingTop:10, borderTop:'1px dashed #f0d4d0'}} onClick={e => e.stopPropagation()}>
+      <textarea
+        value={text}
+        onChange={e => setText(e.target.value)}
+        placeholder="Type the real answer to send back to the client…"
+        rows={2}
+        style={{width:'100%', fontSize:12.5, fontFamily:'inherit', padding:'8px 10px', borderRadius:8, border:'1px solid #e4ede8', resize:'vertical' as const}}
+      />
+      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:6}}>
+        <label style={{display:'flex', alignItems:'center', gap:6, fontSize:11, color:'#7a8a82', cursor:'pointer'}}>
+          <input type="checkbox" checked={saveToKb} onChange={e => setSaveToKb(e.target.checked)} />
+          Save to knowledge base for next time
+        </label>
+        <button
+          onClick={send}
+          disabled={sending || !text.trim()}
+          style={{
+            padding:'6px 14px', borderRadius:7, border:'none', fontSize:12, fontWeight:600, fontFamily:'inherit',
+            background: sending || !text.trim() ? '#cde3db' : '#0E5C42', color:'#fff', cursor: sending ? 'default' : 'pointer',
+          }}
+        >
+          {sending ? 'Sending…' : 'Send & Resolve'}
+        </button>
+      </div>
+      {err && <div style={{fontSize:11, color:'#dc2626', marginTop:4}}>{err}</div>}
+    </div>
+  )
+}
+
+type PendingItem = {
+  id: number; conversationId: string; phone: string; firstName: string
+  proposedText: string; scriptKey: string | null; createdAt: string
+}
+
+function PendingApprovalPanel() {
+  const [items, setItems] = useState<PendingItem[]>([])
+  const [shadowMode, setShadowMode] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [drafts, setDrafts] = useState<Record<number, string>>({})
+  const [busyId, setBusyId] = useState<number | null>(null)
+  const [togglingMode, setTogglingMode] = useState(false)
+
+  const load = useCallback(async () => {
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/pending', { cache: 'no-store' })
+      const d = await r.json()
+      if (d.ok) { setItems(d.items); setShadowMode(d.shadowMode) }
+    } catch (e) {
+      console.error('[PendingApprovalPanel.load]', e)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => { load() }, [load])
+  useEffect(() => { const t = setInterval(load, 20_000); return () => clearInterval(t) }, [load])
+
+  async function respond(id: number, action: 'approve' | 'reject') {
+    setBusyId(id)
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/pending', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action, editedText: drafts[id] }),
+      })
+      const d = await r.json()
+      if (d.ok) { setItems(prev => prev.filter(i => i.id !== id)); load() }
+    } catch (e) {
+      console.error('[PendingApprovalPanel.respond]', e)
+    } finally {
+      setBusyId(null)
+    }
+  }
+
+  async function toggleShadowMode() {
+    setTogglingMode(true)
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/shadow-mode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: !shadowMode }),
+      })
+      const d = await r.json()
+      if (d.ok) setShadowMode(d.shadowMode)
+    } catch (e) {
+      console.error('[PendingApprovalPanel.toggleShadowMode]', e)
+    } finally {
+      setTogglingMode(false)
+    }
+  }
+
+  if (loading) return null
+
+  return (
+    <div style={{...S.card, marginBottom:18, borderColor: shadowMode ? '#f0d99a' : '#cde3db'}}>
+      <div style={{padding:'14px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom: items.length ? '1px solid #f0f4f1' : 'none'}}>
+        <div>
+          <div style={{fontSize:13.5, fontWeight:700, color:'#0a1410'}}>
+            {shadowMode ? '🛡️ Shadow Mode: ON' : '⚡ Shadow Mode: OFF'}
+          </div>
+          <div style={{fontSize:11.5, color:'#7a8a82', marginTop:2}}>
+            {shadowMode
+              ? 'Every automated reply waits for your approval below before it sends.'
+              : 'Automated replies send themselves — no approval needed.'}
+            {items.length > 0 && ` · ${items.length} waiting for review`}
+          </div>
+        </div>
+        <button
+          onClick={toggleShadowMode}
+          disabled={togglingMode}
+          style={{
+            padding:'8px 16px', borderRadius:8, border:'none', fontSize:12, fontWeight:600, fontFamily:'inherit', cursor: togglingMode ? 'default' : 'pointer',
+            background: shadowMode ? '#0E5C42' : '#fff7e8', color: shadowMode ? '#fff' : '#7a5a10',
+            ...(shadowMode ? {} : { border: '1px solid #f0d99a' }),
+          }}
+        >
+          {togglingMode ? '…' : shadowMode ? 'Turn Off (go live)' : 'Turn On (require approval)'}
+        </button>
+      </div>
+
+      {items.map(item => (
+        <div key={item.id} style={{padding:'14px 18px', borderBottom:'1px solid #f0f4f1'}}>
+          <div style={{display:'flex', justifyContent:'space-between', fontSize:11.5, color:'#7a8a82', marginBottom:6}}>
+            <span>{item.firstName || 'Unknown'} · {item.phone}{item.scriptKey ? ` · ${item.scriptKey}` : ''}</span>
+            <span>{timeAgo(item.createdAt)}</span>
+          </div>
+          <textarea
+            defaultValue={item.proposedText}
+            onChange={e => setDrafts(prev => ({ ...prev, [item.id]: e.target.value }))}
+            rows={3}
+            style={{width:'100%', fontSize:12.5, fontFamily:'inherit', padding:'8px 10px', borderRadius:8, border:'1px solid #e4ede8', resize:'vertical' as const}}
+          />
+          <div style={{display:'flex', gap:8, marginTop:8, justifyContent:'flex-end'}}>
+            <button
+              onClick={() => respond(item.id, 'reject')}
+              disabled={busyId === item.id}
+              style={{padding:'6px 14px', borderRadius:7, border:'1px solid #f3b7b0', background:'#fff', color:'#dc2626', fontSize:12, fontWeight:600, fontFamily:'inherit', cursor: busyId === item.id ? 'default' : 'pointer'}}
+            >
+              Reject
+            </button>
+            <button
+              onClick={() => respond(item.id, 'approve')}
+              disabled={busyId === item.id}
+              style={{padding:'6px 14px', borderRadius:7, border:'none', background:'#0E5C42', color:'#fff', fontSize:12, fontWeight:600, fontFamily:'inherit', cursor: busyId === item.id ? 'default' : 'pointer'}}
+            >
+              {busyId === item.id ? 'Sending…' : 'Approve & Send'}
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+type ScriptStat = {
+  scriptKey: string; approvedUnedited: number; approvedEdited: number
+  rejected: number; total: number; readinessScore: number
+}
+
+function readinessLabel(score: number, total: number): { text: string; color: string } {
+  if (total < 5) return { text: 'Not enough data yet', color: '#7a8a82' }
+  if (score >= 0.9) return { text: 'Looks ready to graduate', color: '#059669' }
+  if (score >= 0.6) return { text: 'Getting there', color: '#d97706' }
+  return { text: 'Still needs work', color: '#dc2626' }
+}
+
+function ReadinessStatsPanel() {
+  const [stats, setStats] = useState<ScriptStat[]>([])
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await fetchWithTimeout('/api/crm/whatsapp/stats', { cache: 'no-store' })
+        const d = await r.json()
+        if (d.ok) setStats(d.stats)
+      } catch (e) {
+        console.error('[ReadinessStatsPanel]', e)
+      } finally {
+        setLoading(false)
+      }
+    })()
+  }, [])
+
+  if (loading || stats.length === 0) return null
+
+  return (
+    <div style={{...S.card, marginBottom:18}}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{width:'100%', padding:'12px 18px', display:'flex', alignItems:'center', justifyContent:'space-between', background:'none', border:'none', cursor:'pointer', fontFamily:'inherit'}}
+      >
+        <span style={{fontSize:13, fontWeight:700, color:'#0a1410'}}>📊 Script Readiness ({stats.length} scripts tracked)</span>
+        <span style={{fontSize:12, color:'#7a8a82'}}>{open ? 'Hide' : 'Show'}</span>
+      </button>
+      {open && (
+        <div style={{padding:'0 18px 14px'}}>
+          <p style={{fontSize:11.5, color:'#7a8a82', marginBottom:10}}>
+            How often each script gets approved untouched vs edited or rejected — this is what tells you which
+            scripts are ready to run without approval, and which still need work.
+          </p>
+          {stats.map(s => {
+            const label = readinessLabel(s.readinessScore, s.total)
+            return (
+              <div key={s.scriptKey} style={{padding:'8px 0', borderBottom:'1px solid #f0f4f1'}}>
+                <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                  <span style={{fontSize:12, fontWeight:600, color:'#0a1410', fontFamily:'Consolas,monospace'}}>{s.scriptKey}</span>
+                  <span style={{fontSize:11, fontWeight:600, color:label.color}}>{label.text}</span>
+                </div>
+                <div style={{fontSize:11, color:'#7a8a82', marginTop:2}}>
+                  ✓ {s.approvedUnedited} sent as-is · ✎ {s.approvedEdited} edited · ✕ {s.rejected} rejected
+                  {' '}({Math.round(s.readinessScore * 100)}% approved untouched)
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function WhatsappClient() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [loading, setLoading] = useState(true)
@@ -131,6 +383,19 @@ export default function WhatsappClient() {
     <div style={S.shell}>
       <aside style={S.sb}>
         <div style={S.sbLogoRow}>
+          <div style={{width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'}}>
+            <svg width="34" height="34" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="100" r="100" fill="#0B5240"/>
+              <g transform="translate(100,100) scale(3.57) translate(-17,-17)">
+                <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
+                <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
+                <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.4" strokeLinecap="round"/>
+                <circle cx="2" cy="2" r="1.8" fill="#E9A020"/>
+                <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.3" strokeLinejoin="round"/>
+                <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+              </g>
+            </svg>
+          </div>
           <div>
             <div style={S.sbTitle}>Working Holiday Tax</div>
             <div style={S.sbSub}>Admin Console</div>
@@ -142,10 +407,12 @@ export default function WhatsappClient() {
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
           <NavLink href="/crm/dashboard" label="Clients" active={false}
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
-          <NavLink href="/crm/whatsapp" label="WhatsApp Leads" active={true}
-            icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20.5 3.5a10.5 10.5 0 00-17.9 10.9L2 21l6.8-.6A10.5 10.5 0 1020.5 3.5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>}/>
+          <NavLink href="/crm/dashboard" label="Archive" active={false}
+            icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
           <NavLink href="/crm/partners" label="Partners" active={false}
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
+          <NavLink href="/crm/whatsapp" label="WhatsApp Leads" active={true}
+            icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
         </nav>
       </aside>
 
@@ -157,6 +424,9 @@ export default function WhatsappClient() {
               Everyone who's messaged on WhatsApp, before they become a client task.
             </p>
           </div>
+
+          <PendingApprovalPanel />
+          <ReadinessStatsPanel />
 
           <div style={S.tabRow}>
             {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
@@ -188,27 +458,31 @@ export default function WhatsappClient() {
             {!loading && !error && visible.map(c => (
               <div key={c.id} style={{
                 padding:'14px 18px', borderBottom:'1px solid #f0f4f1',
-                display:'flex', alignItems:'center', justifyContent:'space-between', gap:12,
               }}>
-                <div style={{minWidth:0}}>
-                  <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410'}}>
-                    {c.firstName || 'Unknown name'}
-                    {c.language === 'ja' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇯🇵 JA</span>}
+                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:12}}>
+                  <div style={{minWidth:0}}>
+                    <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410'}}>
+                      {c.firstName || 'Unknown name'}
+                      {c.language === 'ja' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇯🇵 JA</span>}
+                    </div>
+                    <div style={{fontSize:11.5, color:'#7a8a82', marginTop:2}}>{c.phone}</div>
+                    {c.needsHuman && c.escalationReason && (
+                      <div style={{fontSize:11.5, color:'#dc2626', marginTop:4, fontWeight:500}}>⚠ {c.escalationReason}</div>
+                    )}
+                    {c.hasAbn && (
+                      <span style={{display:'inline-block', marginTop:4, fontSize:10, fontWeight:600, color:'#7c3aed', background:'#f3ebfd', padding:'2px 7px', borderRadius:5}}>ABN</span>
+                    )}
                   </div>
-                  <div style={{fontSize:11.5, color:'#7a8a82', marginTop:2}}>{c.phone}</div>
-                  {c.needsHuman && c.escalationReason && (
-                    <div style={{fontSize:11.5, color:'#dc2626', marginTop:4, fontWeight:500}}>⚠ {c.escalationReason}</div>
-                  )}
-                  {c.hasAbn && (
-                    <span style={{display:'inline-block', marginTop:4, fontSize:10, fontWeight:600, color:'#7c3aed', background:'#f3ebfd', padding:'2px 7px', borderRadius:5}}>ABN</span>
-                  )}
+                  <div style={{textAlign:'right' as const, flexShrink:0}}>
+                    <div style={{fontSize:11.5, color:'#4a5a52', fontWeight:500}}>{timeAgo(c.lastInboundAt)}</div>
+                    {c.crmTaskId && (
+                      <a href={`/crm/dashboard`} style={{fontSize:10.5, color:'#0E5C42', fontWeight:600}}>View task →</a>
+                    )}
+                  </div>
                 </div>
-                <div style={{textAlign:'right' as const, flexShrink:0}}>
-                  <div style={{fontSize:11.5, color:'#4a5a52', fontWeight:500}}>{timeAgo(c.lastInboundAt)}</div>
-                  {c.crmTaskId && (
-                    <a href={`/crm/dashboard`} style={{fontSize:10.5, color:'#0E5C42', fontWeight:600}}>View task →</a>
-                  )}
-                </div>
+                {tab === 'urgent' && c.needsHuman && (
+                  <ReplyBox conversationId={c.id} onSent={load} />
+                )}
               </div>
             ))}
           </div>

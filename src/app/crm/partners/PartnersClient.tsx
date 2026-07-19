@@ -137,6 +137,10 @@ export default function PartnersClient() {
               <g transform="translate(100,100) scale(3.57) translate(-17,-17)">
                 <rect x="2" y="2" width="19" height="19" rx="4.5" stroke="#5BB88A" strokeWidth="2" fill="none"/>
                 <rect x="13" y="13" width="19" height="19" rx="4.5" fill="white"/>
+                <line x1="2" y1="2" x2="13" y2="13" stroke="#E9A020" strokeWidth="1.4" strokeLinecap="round"/>
+                <circle cx="2" cy="2" r="1.8" fill="#E9A020"/>
+                <path d="M22.5 16.5L27.3 18.7L27.3 23.5Q27.3 27.3 22.5 29.3Q17.7 27.3 17.7 23.5L17.7 18.7Z" fill="rgba(11,82,64,0.12)" stroke="#0B5240" strokeWidth="1.3" strokeLinejoin="round"/>
+                <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
               </g>
             </svg>
           </div>
@@ -156,7 +160,7 @@ export default function PartnersClient() {
           <NavLink href="/crm/partners" label="Partners" active={true}
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
           <NavLink href="/crm/whatsapp" label="WhatsApp Leads" active={false}
-            icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20.5 3.5a10.5 10.5 0 00-17.9 10.9L2 21l6.8-.6A10.5 10.5 0 1020.5 3.5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/></svg>}/>
+            icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
         </nav>
       </aside>
 

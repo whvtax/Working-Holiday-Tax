@@ -172,6 +172,59 @@ export async function uploadFiles(
 }
 
 /**
+ * Uploads a raw buffer (e.g. an image or PDF a client sent on WhatsApp,
+ * already downloaded via downloadMedia() in lib/whatsapp.ts) to Supabase
+ * Storage. Separate from uploadFile() above because that one validates a
+ * browser File object from a form; this one starts from bytes we already
+ * fetched server-side. Same magic-byte and size checks apply — WhatsApp
+ * media is still untrusted input.
+ */
+export async function uploadWhatsappMedia(
+  buffer: Buffer,
+  mimeType: string,
+  conversationId: string,
+): Promise<string | null> {
+  if (!ALLOWED_MIME_TYPES.has(mimeType)) {
+    console.error('[uploadWhatsappMedia] rejected mime type', mimeType)
+    return null
+  }
+  if (buffer.length === 0 || buffer.length > MAX_FILE_SIZE_BYTES) {
+    console.error('[uploadWhatsappMedia] rejected size', buffer.length)
+    return null
+  }
+
+  const bytes = new Uint8Array(buffer.buffer, buffer.byteOffset, Math.min(buffer.length, 1024))
+  if (containsDangerousPattern(bytes)) {
+    console.error('[uploadWhatsappMedia] rejected: dangerous content pattern')
+    return null
+  }
+  const signatures = MAGIC_SIGNATURES.filter(s => s.mime === mimeType)
+  const validSignature = signatures.length === 0 || signatures.some(sig => matchesMagicBytes(bytes, sig))
+  if (!validSignature) {
+    console.error('[uploadWhatsappMedia] rejected: content does not match declared mime type', mimeType)
+    return null
+  }
+
+  await assertUploadsBucketPrivate()
+
+  const ext = mimeType.split('/')[1]?.replace('jpeg', 'jpg') ?? 'bin'
+  const pathname = `whatsapp/${conversationId}/${Date.now()}_${crypto.randomUUID().slice(0, 8)}.${ext}`
+
+  const sb = getSupabase()
+  const { error: uploadError } = await sb.storage
+    .from(STORAGE_BUCKETS.uploads)
+    .upload(pathname, buffer, { contentType: mimeType, cacheControl: '3600', upsert: false })
+
+  if (uploadError) {
+    console.error('[uploadWhatsappMedia] upload failed', uploadError.message)
+    return null
+  }
+
+  const { data: { publicUrl } } = sb.storage.from(STORAGE_BUCKETS.uploads).getPublicUrl(pathname)
+  return publicUrl
+}
+
+/**
  * Delete files from Supabase Storage by their public URLs.
  * Extracts the storage path from URLs and removes them.
  */

@@ -1,6 +1,7 @@
 export const runtime = 'nodejs'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
+import { linkFormSubmissionToConversation } from '@/lib/wa-store'
 import { isRateLimited } from '@/lib/rate-limit'
 import { uploadFiles } from '@/lib/upload'
 import { getClientIp } from '@/lib/get-ip'
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'invalid_file', message: msg }, { status: 400 })
     }
 
-    await createTask({
+    const task = await createTask({
       clientId,
       clientName:  fullName,
       taskType:    'tfn',
@@ -63,6 +64,15 @@ export async function POST(req: NextRequest) {
       reviewerNote: '',
       reviewedAt:   '',
     })
+
+    // Link back to an open WhatsApp conversation for this number, if one
+    // exists — see role doc Section 2 (Phase 1 → Phase 2 handoff). Never
+    // let this block or fail the actual form submission.
+    if (whatsapp) {
+      linkFormSubmissionToConversation(whatsapp, task.id).catch(err =>
+        console.error('[form] wa link failed (non-fatal):', err)
+      )
+    }
 
     return NextResponse.json({ ok: true })
   } catch (err) {
