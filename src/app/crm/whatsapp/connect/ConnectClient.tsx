@@ -144,44 +144,64 @@ export default function ConnectClient() {
       })
     }, 25_000)
 
-    window.FB.login(
-      async (response) => {
-        clearTimeout(stuckTimeout)
-        const code = response.authResponse?.code
-        if (!code) {
-          setStatus('error')
-          setError('No authorization code returned. The signup window may have been closed early.')
-          return
+    try {
+      window.FB.login(
+        async (response) => {
+          clearTimeout(stuckTimeout)
+          const code = response.authResponse?.code
+          const respStatus = (response as { status?: string }).status
+          if (!code) {
+            setStatus('error')
+            setError(
+              respStatus
+                ? `Signup did not complete (status: "${respStatus}"). If a popup never appeared at all, your browser or an OS-level pop-up blocker likely blocked it silently before it could open — check your browser's pop-up settings for this site, and check the taskbar/dock for a hidden window.`
+                : 'No authorization code returned. The signup window may have been closed early.'
+            )
+            return
+          }
+          setStatus('exchanging')
+          try {
+            const r = await fetch('/api/whatsapp/exchange-code', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                code,
+                wabaId: sessionData.current.wabaId,
+                phoneNumberId: sessionData.current.phoneNumberId,
+              }),
+            })
+            const d = await r.json()
+            if (!d.ok) throw new Error(d.error || 'Token exchange failed')
+            setAccessToken(d.accessToken)
+            if (d.wabaId) setWabaId(d.wabaId)
+            if (d.phoneNumberId) setPhoneNumberId(d.phoneNumberId)
+            setStatus('done')
+          } catch (e) {
+            setStatus('error')
+            setError(e instanceof Error ? e.message : 'Token exchange failed')
+          }
+        },
+        {
+          config_id: CONFIG_ID,
+          response_type: 'code',
+          override_default_response_type: true,
+          extras: { setup: {}, sessionInfoVersion: '3' },
         }
-        setStatus('exchanging')
-        try {
-          const r = await fetch('/api/whatsapp/exchange-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              code,
-              wabaId: sessionData.current.wabaId,
-              phoneNumberId: sessionData.current.phoneNumberId,
-            }),
-          })
-          const d = await r.json()
-          if (!d.ok) throw new Error(d.error || 'Token exchange failed')
-          setAccessToken(d.accessToken)
-          if (d.wabaId) setWabaId(d.wabaId)
-          if (d.phoneNumberId) setPhoneNumberId(d.phoneNumberId)
-          setStatus('done')
-        } catch (e) {
-          setStatus('error')
-          setError(e instanceof Error ? e.message : 'Token exchange failed')
-        }
-      },
-      {
-        config_id: CONFIG_ID,
-        response_type: 'code',
-        override_default_response_type: true,
-        extras: { setup: {}, sessionInfoVersion: '3' },
-      }
-    )
+      )
+    } catch (e) {
+      // FB.login() threw synchronously — this happens if the popup was
+      // blocked before it could even open (some OS-level or enterprise
+      // pop-up blockers do this), or if the config_id / app setup is
+      // invalid. Either way, nothing will ever open, so fail fast instead
+      // of waiting out the 25s timeout with a misleading message.
+      clearTimeout(stuckTimeout)
+      setStatus('error')
+      setError(
+        `The signup window could not be opened at all: ${e instanceof Error ? e.message : String(e)}. ` +
+        'This usually means a pop-up blocker (browser or OS-level) stopped it before it could appear. ' +
+        'Check your browser\u2019s address bar for a "pop-up blocked" icon and allow pop-ups for this site, then try again.'
+      )
+    }
   }, [])
 
   if (!APP_ID || !CONFIG_ID) {
