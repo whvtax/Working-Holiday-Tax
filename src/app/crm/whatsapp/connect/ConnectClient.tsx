@@ -144,42 +144,53 @@ export default function ConnectClient() {
       })
     }, 25_000)
 
+    // Handles the exchange after we already have the code — kept as a
+    // separate async function so the callback passed to FB.login itself is
+    // a plain (non-async) function. Meta's SDK does an internal type check
+    // that rejects native async functions passed directly as the callback
+    // ("Expression is of type asyncfunction, not function") — this sidesteps
+    // that entirely.
+    async function handleLoginResponse(response: { authResponse?: { code?: string } }) {
+      clearTimeout(stuckTimeout)
+      const code = response.authResponse?.code
+      const respStatus = (response as { status?: string }).status
+      if (!code) {
+        setStatus('error')
+        setError(
+          respStatus
+            ? `Signup did not complete (status: "${respStatus}"). If a popup never appeared at all, your browser or an OS-level pop-up blocker likely blocked it silently before it could open — check your browser's pop-up settings for this site, and check the taskbar/dock for a hidden window.`
+            : 'No authorization code returned. The signup window may have been closed early.'
+        )
+        return
+      }
+      setStatus('exchanging')
+      try {
+        const r = await fetch('/api/whatsapp/exchange-code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            code,
+            wabaId: sessionData.current.wabaId,
+            phoneNumberId: sessionData.current.phoneNumberId,
+          }),
+        })
+        const d = await r.json()
+        if (!d.ok) throw new Error(d.error || 'Token exchange failed')
+        setAccessToken(d.accessToken)
+        if (d.wabaId) setWabaId(d.wabaId)
+        if (d.phoneNumberId) setPhoneNumberId(d.phoneNumberId)
+        setStatus('done')
+      } catch (e) {
+        setStatus('error')
+        setError(e instanceof Error ? e.message : 'Token exchange failed')
+      }
+    }
+
     try {
       window.FB.login(
-        async (response) => {
-          clearTimeout(stuckTimeout)
-          const code = response.authResponse?.code
-          const respStatus = (response as { status?: string }).status
-          if (!code) {
-            setStatus('error')
-            setError(
-              respStatus
-                ? `Signup did not complete (status: "${respStatus}"). If a popup never appeared at all, your browser or an OS-level pop-up blocker likely blocked it silently before it could open — check your browser's pop-up settings for this site, and check the taskbar/dock for a hidden window.`
-                : 'No authorization code returned. The signup window may have been closed early.'
-            )
-            return
-          }
-          setStatus('exchanging')
-          try {
-            const r = await fetch('/api/whatsapp/exchange-code', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                code,
-                wabaId: sessionData.current.wabaId,
-                phoneNumberId: sessionData.current.phoneNumberId,
-              }),
-            })
-            const d = await r.json()
-            if (!d.ok) throw new Error(d.error || 'Token exchange failed')
-            setAccessToken(d.accessToken)
-            if (d.wabaId) setWabaId(d.wabaId)
-            if (d.phoneNumberId) setPhoneNumberId(d.phoneNumberId)
-            setStatus('done')
-          } catch (e) {
-            setStatus('error')
-            setError(e instanceof Error ? e.message : 'Token exchange failed')
-          }
+        // Plain function — do NOT make this `async` (see comment above).
+        function (response) {
+          void handleLoginResponse(response)
         },
         {
           config_id: CONFIG_ID,
