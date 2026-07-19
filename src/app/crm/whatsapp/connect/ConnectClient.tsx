@@ -67,13 +67,13 @@ export default function ConnectClient() {
     // is already on window, skip straight to init instead of waiting for a
     // callback that will never fire again.
     if (window.FB) {
-      window.FB.init({ appId: APP_ID, autoLogAppEvents: true, xfbml: true, version: 'v21.0' })
+      window.FB.init({ appId: APP_ID, autoLogAppEvents: true, xfbml: true, cookie: true, version: 'v21.0' })
       setSdkReady(true)
       return
     }
 
     window.fbAsyncInit = () => {
-      window.FB?.init({ appId: APP_ID, autoLogAppEvents: true, xfbml: true, version: 'v21.0' })
+      window.FB?.init({ appId: APP_ID, autoLogAppEvents: true, xfbml: true, cookie: true, version: 'v21.0' })
       setSdkReady(true)
     }
 
@@ -130,8 +130,23 @@ export default function ConnectClient() {
     setStatus('connecting')
     setError('')
 
+    // If the callback below hasn't fired within 25s, the popup almost
+    // certainly opened but couldn't "phone home" — the classic symptom of
+    // third-party cookies being blocked (Chrome's default posture as of
+    // 2025+). Surface that on the page instead of hanging forever.
+    const stuckTimeout = setTimeout(() => {
+      setStatus(s => {
+        if (s === 'connecting') {
+          setError('The signup window opened but never completed. This is almost always third-party cookies being blocked for facebook.com in this browser. Try: Chrome address bar \u2192 the icon left of the URL (site info) \u2192 Cookies \u2192 allow third-party cookies for this site, then reload and try again. Also check you don\u2019t have a popup window hidden behind this one.')
+          return 'error'
+        }
+        return s
+      })
+    }, 25_000)
+
     window.FB.login(
       async (response) => {
+        clearTimeout(stuckTimeout)
         const code = response.authResponse?.code
         if (!code) {
           setStatus('error')
