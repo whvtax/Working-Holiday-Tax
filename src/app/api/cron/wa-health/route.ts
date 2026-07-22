@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
 import { NextRequest, NextResponse } from 'next/server'
+import crypto from 'crypto'
 import { getSupabase } from '@/lib/supabase'
 import { checkConnectionHealth } from '@/lib/whatsapp'
 
@@ -34,7 +35,7 @@ const ALERT_COOLDOWN_MINUTES = 60        // don't re-alert on the same issue mor
 export async function GET(req: NextRequest) {
   const cronSecret = process.env.CRON_SECRET
   const auth = req.headers.get('authorization')
-  if (cronSecret && auth !== `Bearer ${cronSecret}`) {
+  if (cronSecret && !timingSafeAuthMatch(auth, `Bearer ${cronSecret}`)) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
@@ -147,4 +148,17 @@ async function sendHealthAlertEmail(problems: string[]): Promise<boolean> {
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string))
+}
+
+/**
+ * Constant-time comparison for the cron auth header — prevents a timing
+ * attack from being able to guess CRON_SECRET one byte at a time by
+ * measuring response time differences, same principle as the webhook
+ * signature check.
+ */
+function timingSafeAuthMatch(provided: string | null, expected: string): boolean {
+  if (!provided) return false
+  const a = Buffer.from(provided)
+  const b = Buffer.from(expected)
+  return a.length === b.length && crypto.timingSafeEqual(a, b)
 }

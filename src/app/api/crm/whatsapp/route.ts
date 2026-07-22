@@ -14,11 +14,26 @@ export async function GET(req: NextRequest) {
 
   const sb = getSupabase()
 
-  const { data, error } = await sb
+  const { data, error, status, statusText, count } = await sb
     .from('wa_conversations')
-    .select('*')
+    .select('*', { count: 'exact' })
     .order('last_inbound_at', { ascending: false })
     .limit(500)
+
+  // TEMP DIAGNOSTIC — remove after debugging the empty-list issue.
+  if (req.nextUrl.searchParams.get('debug') === '1') {
+    return NextResponse.json({
+      ok: true,
+      debug: true,
+      supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      rowCountReturned: data?.length ?? null,
+      countHeader: count ?? null,
+      pgStatus: status,
+      pgStatusText: statusText,
+      error: error ? { message: error.message, details: error.details, hint: error.hint, code: error.code } : null,
+      rawData: data,
+    })
+  }
 
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
 

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 
 type Stage =
   | 'opening_sent' | 'pitch_sent' | 'reminder_1_sent' | 'reminder_2_sent'
@@ -396,12 +396,151 @@ function LabelPicker({ conversationId, currentLabel, onChanged }: { conversation
   )
 }
 
+type ThreadMessage = {
+  id: number; direction: 'inbound' | 'outbound'; body: string
+  scriptKey: string | null; createdAt: string
+}
+
+// Detects the special media-message format the webhook logs (see
+// route.ts): "[📷 Image] https://... — "caption"" or "[📎 Document] https://...".
+function parseMediaMessage(body: string): { label: string; url: string; caption: string } | null {
+  const match = body.match(/^\[(📷 Image|📎 Document)\]\s+(\S+)(?:\s+—\s+"([^"]*)")?/)
+  if (!match) return null
+  return { label: match[1], url: match[2], caption: match[3] || '' }
+}
+
+function formatThreadTime(iso: string): string {
+  const d = new Date(iso)
+  return d.toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+}
+
+function ThreadModal({ conversationId, name, phone, onClose }: { conversationId: string; name: string; phone: string; onClose: () => void }) {
+  const [messages, setMessages] = useState<ThreadMessage[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+  const [replyText, setReplyText] = useState('')
+  const [sending, setSending] = useState(false)
+  const [saveToKb, setSaveToKb] = useState(false)
+  const bottomRef = useRef<HTMLDivElement | null>(null)
+
+  const load = useCallback(async () => {
+    try {
+      const r = await fetchWithTimeout(`/api/crm/whatsapp/messages?conversationId=${encodeURIComponent(conversationId)}`, { cache: 'no-store' })
+      const d = await r.json()
+      if (d.ok) setMessages(d.messages)
+      else setError(d.error || 'Failed to load messages')
+    } catch (e) {
+      console.error('[ThreadModal.load]', e)
+      setError('Network error loading messages.')
+    } finally {
+      setLoading(false)
+    }
+  }, [conversationId])
+
+  useEffect(() => { load() }, [load])
+  useEffect(() => { bottomRef.current?.scrollIntoView({ block: 'end' }) }, [messages])
+
+  async function send() {
+    if (!replyText.trim() || sending) return
+    setSending(true)
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/respond', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, answerText: replyText.trim(), saveToKnowledgeBase: saveToKb }),
+      })
+      const d = await r.json()
+      if (d.ok) { setReplyText(''); load() }
+      else setError(d.error || 'Failed to send')
+    } catch (e) {
+      console.error('[ThreadModal.send]', e)
+      setError('Network error sending reply.')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  return (
+    <div style={{position:'fixed', inset:0, background:'rgba(10,20,16,0.45)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:100, padding:20}}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}>
+      <div style={{background:'#f0f4f1', borderRadius:16, width:'100%', maxWidth:560, height:'85vh', display:'flex', flexDirection:'column' as const, overflow:'hidden'}}>
+        <div style={{background:'#0E5C42', padding:'16px 20px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0}}>
+          <div>
+            <div style={{color:'#fff', fontSize:14.5, fontWeight:700}}>{name || 'Unknown'}</div>
+            <div style={{color:'rgba(255,255,255,0.7)', fontSize:11.5}}>{phone}</div>
+          </div>
+          <button onClick={onClose} style={{background:'none', border:'none', color:'#fff', fontSize:20, cursor:'pointer', lineHeight:1, padding:4}}>✕</button>
+        </div>
+
+        <div style={{flex:1, overflowY:'auto' as const, padding:'16px 18px', display:'flex', flexDirection:'column' as const, gap:10}}>
+          {loading && <div style={{textAlign:'center' as const, color:'#7a8a82', fontSize:13, marginTop:20}}>Loading…</div>}
+          {error && <div style={{textAlign:'center' as const, color:'#dc2626', fontSize:13}}>{error}</div>}
+          {!loading && !error && messages.length === 0 && (
+            <div style={{textAlign:'center' as const, color:'#aabab2', fontSize:13, marginTop:20}}>No messages yet.</div>
+          )}
+          {messages.map(m => {
+            const media = parseMediaMessage(m.body)
+            const isOut = m.direction === 'outbound'
+            return (
+              <div key={m.id} style={{alignSelf: isOut ? 'flex-end' : 'flex-start', maxWidth:'78%'}}>
+                <div style={{
+                  background: isOut ? '#0E5C42' : '#fff', color: isOut ? '#fff' : '#0a1410',
+                  border: isOut ? 'none' : '1px solid #e4ede8', borderRadius:12,
+                  padding:'9px 12px', fontSize:13, lineHeight:1.5, whiteSpace:'pre-wrap' as const, wordBreak:'break-word' as const,
+                }}>
+                  {media ? (
+                    <>
+                      <a href={media.url} target="_blank" rel="noopener noreferrer" style={{color: isOut ? '#fff' : '#0E5C42', fontWeight:600, textDecoration:'underline'}}>
+                        {media.label} — open file
+                      </a>
+                      {media.caption && <div style={{marginTop:4, opacity:0.85}}>&ldquo;{media.caption}&rdquo;</div>}
+                    </>
+                  ) : m.body}
+                </div>
+                <div style={{fontSize:10, color:'#9aada3', marginTop:3, textAlign: isOut ? 'right' as const : 'left' as const}}>
+                  {formatThreadTime(m.createdAt)}
+                  {m.scriptKey && ` · ${m.scriptKey}`}
+                </div>
+              </div>
+            )
+          })}
+          <div ref={bottomRef} />
+        </div>
+
+        <div style={{borderTop:'1px solid #e4ede8', background:'#fff', padding:'12px 16px', flexShrink:0}}>
+          <textarea
+            value={replyText}
+            onChange={e => setReplyText(e.target.value)}
+            placeholder="Type a reply…"
+            rows={2}
+            style={{width:'100%', fontSize:13, fontFamily:'inherit', padding:'8px 10px', borderRadius:8, border:'1px solid #e4ede8', resize:'vertical' as const, boxSizing:'border-box' as const}}
+          />
+          <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:6}}>
+            <label style={{display:'flex', alignItems:'center', gap:6, fontSize:11, color:'#7a8a82', cursor:'pointer'}}>
+              <input type="checkbox" checked={saveToKb} onChange={e => setSaveToKb(e.target.checked)} />
+              Save to knowledge base
+            </label>
+            <button
+              onClick={send}
+              disabled={sending || !replyText.trim()}
+              style={{padding:'7px 16px', borderRadius:7, border:'none', fontSize:12.5, fontWeight:600, fontFamily:'inherit', background: sending || !replyText.trim() ? '#cde3db' : '#0E5C42', color:'#fff', cursor: sending ? 'default' : 'pointer'}}
+            >
+              {sending ? 'Sending…' : 'Send'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function WhatsappClient() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [tab, setTab] = useState<Tab>('new')
   const [manualFilter, setManualFilter] = useState<string | null>(null)
+  const [openThread, setOpenThread] = useState<{ id: string; name: string; phone: string } | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -533,8 +672,8 @@ export default function WhatsappClient() {
             )}
             {!loading && !error && visible.map(c => (
               <div key={c.id} style={{
-                padding:'14px 18px', borderBottom:'1px solid #f0f4f1',
-              }}>
+                padding:'14px 18px', borderBottom:'1px solid #f0f4f1', cursor:'pointer',
+              }} onClick={() => setOpenThread({ id: c.id, name: c.firstName, phone: c.phone })}>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:12}}>
                   <div style={{minWidth:0}}>
                     <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410'}}>
@@ -558,7 +697,7 @@ export default function WhatsappClient() {
                   <div style={{textAlign:'right' as const, flexShrink:0, display:'flex', flexDirection:'column' as const, alignItems:'flex-end', gap:6}}>
                     <div style={{fontSize:11.5, color:'#4a5a52', fontWeight:500}}>{timeAgo(c.lastInboundAt)}</div>
                     {c.crmTaskId && (
-                      <a href={`/crm/dashboard`} style={{fontSize:10.5, color:'#0E5C42', fontWeight:600}}>View task →</a>
+                      <a href={`/crm/dashboard`} onClick={e => e.stopPropagation()} style={{fontSize:10.5, color:'#0E5C42', fontWeight:600}}>View task →</a>
                     )}
                     <LabelPicker conversationId={c.id} currentLabel={c.manualLabel} onChanged={load} />
                   </div>
@@ -571,6 +710,15 @@ export default function WhatsappClient() {
           </div>
         </div>
       </main>
+
+      {openThread && (
+        <ThreadModal
+          conversationId={openThread.id}
+          name={openThread.name}
+          phone={openThread.phone}
+          onClose={() => setOpenThread(null)}
+        />
+      )}
     </div>
   )
 }
