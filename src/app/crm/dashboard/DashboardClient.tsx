@@ -371,6 +371,11 @@ export default function DashboardClient() {
   const [captureRefundType, setCaptureRefundType] = useState<'refund'|'owed'>('refund')
   const [captureSuperAmt, setCaptureSuperAmt] = useState('')
   const [confirmComplete, setConfirmComplete] = useState<string|null>(null)
+  const [notifyModal, setNotifyModal] = useState<{ taskId: string; taskName: string } | null>(null)
+  const [notifyAmount, setNotifyAmount] = useState('')
+  const [notifyInvoiceLink, setNotifyInvoiceLink] = useState('')
+  const [notifySending, setNotifySending] = useState(false)
+  const [notifyError, setNotifyError] = useState('')
   const [showAddTax, setShowAddTax]     = useState(false)
   const [showAddSuper, setShowAddSuper] = useState(false)
   const [newTaxYear, setNewTaxYear]     = useState('')
@@ -668,6 +673,42 @@ export default function DashboardClient() {
       // Restore state on failure so admin knows it didn't save
       setTasks(prevTasks)
       alert('Failed to mark as done. Please try again.')
+    }
+  }
+
+  async function completeAndNotify() {
+    if (!notifyModal || notifySending) return
+    if (!notifyAmount.trim() || !notifyInvoiceLink.trim()) {
+      setNotifyError('Please fill in both the refund amount and invoice link.')
+      return
+    }
+    setNotifySending(true)
+    setNotifyError('')
+    const { taskId } = notifyModal
+    const prevTasks = tasks
+    setTasks(prev => prev.map(t => t.id===taskId ? {...t, done:true, tfn:'', bankDetails:'', address:'', primaryJob:'', marital:'', auPhone:'', fileUrls:[], reviewerNote:''} : t))
+    try {
+      const res = await fetch(`/api/crm/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'complete_and_notify', refundAmount: notifyAmount.trim(), invoiceLink: notifyInvoiceLink.trim() }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok || !data.ok) throw new Error(data.error || 'server_error')
+      setNotifyModal(null)
+      setNotifyAmount('')
+      setNotifyInvoiceLink('')
+      setActiveTask(null)
+      setTaskView('list')
+      if (data.notified === false) {
+        alert('Task marked done, but the WhatsApp message failed to send. Please send it manually.')
+      }
+    } catch (err) {
+      console.error('[completeAndNotify]', err)
+      setTasks(prevTasks)
+      setNotifyError('Failed to send. Please try again.')
+    } finally {
+      setNotifySending(false)
     }
   }
 
@@ -1610,30 +1651,25 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               {(()=>{
                 // Use server-computed stats for accurate values at any scale.
                 // Falls back to local computation only on first render before stats load.
-                const now = new Date()
-                const y = now.getFullYear()
-                const thisYearLocal = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
                 const allClients = clients.filter(c => !c.archived)
 
-                // Prefer server-computed stats (correct for 5k+ clients)
-                const thisYear = stats?.currentTaxYear ?? thisYearLocal
-                const seasonClients = allClients.filter(c=>c.taxReturns.some(r=>r.year===thisYear))
+                // "Ready to go": pending tasks with no note and not flagged
+                // In Progress — genuinely untouched, ready to pick up.
+                // "In Process": pending tasks that DO have a note or ARE
+                // flagged In Progress — someone's already partway through them.
+                const readyToGoCount = pendingTasks.filter(t => !isTaskInProgress(t.notes) && !(t.reviewerNote && t.reviewerNote.trim())).length
+                const inProcessCount = pendingTasks.filter(t => isTaskInProgress(t.notes) || (t.reviewerNote && t.reviewerNote.trim())).length
 
-                const seasonCount = Math.max(stats?.seasonClientsCount ?? 0, seasonClients.length)
-
-                // Prefer the larger of (server count, local count) so a stale cache
-                // never shows 0 when local state has real data.
-                const pendingCount = Math.max(stats?.totalTasksPending ?? 0, pendingTasks.length)
                 const doneCount = Math.max(stats?.totalTasksDone ?? 0, doneTasks.length)
                 // Always show stats - even if no tasks yet (provides motivation + overview)
                 const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
                 return (<>
                   <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:10}}>
                     {[
-                      {label:'Pending',value:pendingCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
-                      {label:'Done',value:doneCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✓'},
+                      {label:'Ready to go',value:readyToGoCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✅'},
+                      {label:'In Process',value:inProcessCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
                       {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
-                      {label:'Season',value:seasonCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'📊'},
+                      {label:'Done',value:doneCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'✓'},
                     ].map(stat=>(
                       <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'14px 16px',transition:'transform 0.15s'}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
@@ -2302,7 +2338,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
                   Download PDF
                 </button>
-                <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>markDone(activeTask.id)}>✓ Mark as done</button>
+                <button style={{flex:1,padding:'12px',border:'1.5px solid #d8e4dc',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#0a1410',cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setNotifyModal({ taskId: activeTask.id, taskName: activeTask.clientName })}>✓ Mark as done</button>
                 <button
                   style={{padding:'12px 16px',border:'1px solid #fca5a5',borderRadius:11,fontSize:13,fontWeight:600,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit'}}
                   onClick={()=>setConfirmPermDelete(activeTask.id)}
@@ -3114,6 +3150,42 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 style={{...S.mDel, opacity: permDeleteText.trim().toUpperCase()==='DELETE'?1:0.4, cursor: permDeleteText.trim().toUpperCase()==='DELETE'?'pointer':'not-allowed'}}
                 disabled={permDeleteText.trim().toUpperCase()!=='DELETE'}
                 onClick={()=>{deleteTaskPermanently(confirmPermDelete);setPermDeleteText('')}}>Yes, delete permanently</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Complete task + notify client via WhatsApp */}
+      {notifyModal && (
+        <div style={S.overlay} onClick={e=>{if(e.target===e.currentTarget && !notifySending){setNotifyModal(null);setNotifyAmount('');setNotifyInvoiceLink('');setNotifyError('')}}}>
+          <div style={{...S.modal,maxWidth:420}}>
+            <div style={{fontSize:30,marginBottom:8}}>🎉</div>
+            <div style={S.mTitle}>Mark {notifyModal.taskName}&rsquo;s return as done</div>
+            <div style={{fontSize:13,color:'#7a8a82',lineHeight:1.6,marginBottom:16}}>
+              This sends the client a WhatsApp message right away with the refund amount and invoice link below.
+            </div>
+            <div style={{fontSize:12,fontWeight:600,color:'#4a5a52',marginBottom:5,textAlign:'left'}}>Estimated refund ($)</div>
+            <input
+              autoFocus
+              value={notifyAmount}
+              onChange={e=>setNotifyAmount(e.target.value)}
+              placeholder="3,052"
+              style={{width:'100%',padding:'9px 12px',border:'1.5px solid #e4ede8',borderRadius:9,fontSize:14,marginBottom:12,fontFamily:'inherit',outline:'none',boxSizing:'border-box'}}
+            />
+            <div style={{fontSize:12,fontWeight:600,color:'#4a5a52',marginBottom:5,textAlign:'left'}}>Invoice link</div>
+            <input
+              value={notifyInvoiceLink}
+              onChange={e=>setNotifyInvoiceLink(e.target.value)}
+              placeholder="https://in.xero.com/..."
+              style={{width:'100%',padding:'9px 12px',border:'1.5px solid #e4ede8',borderRadius:9,fontSize:14,marginBottom:notifyError?8:18,fontFamily:'inherit',outline:'none',boxSizing:'border-box'}}
+            />
+            {notifyError && <div style={{fontSize:12,color:'#c0392b',marginBottom:10,textAlign:'left'}}>{notifyError}</div>}
+            <div style={S.mFooter}>
+              <button style={S.mCancel} disabled={notifySending} onClick={()=>{setNotifyModal(null);setNotifyAmount('');setNotifyInvoiceLink('');setNotifyError('')}}>Cancel</button>
+              <button
+                style={{...S.mDel,background:'#0E5C42',border:'1px solid #0B5240',opacity:notifySending?0.6:1,cursor:notifySending?'default':'pointer'}}
+                disabled={notifySending}
+                onClick={completeAndNotify}>{notifySending ? 'Sending…' : 'Send & Mark Done'}</button>
             </div>
           </div>
         </div>

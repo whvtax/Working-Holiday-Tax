@@ -11,7 +11,18 @@ type Conversation = {
   needsHuman: boolean; escalationReason: string | null
   lastInboundAt: string; lastOutboundAt: string | null
   crmTaskId: string | null; createdAt: string
+  manualLabel: string | null
 }
+
+// Manual labels — completely separate from the automated stage pipeline
+// above. Pure sorting tool for the tax agent, mirrors the labels already
+// used in the WhatsApp Business App. No bot logic touches these. Add more
+// here any time — no migration needed, the column is free text.
+const MANUAL_LABELS: { key: string; label: string; color: string }[] = [
+  { key: 'medicare',           label: 'Medicare',          color: '#0891b2' },
+  { key: 'signature_payment',  label: 'Signature & Payment', color: '#b45309' },
+  { key: 'done_2026',          label: 'Done 2026',          color: '#4d7c0f' },
+]
 
 // Groups the raw DB stages into the tabs the role doc describes:
 // New client → Reminder 1 → Reminder 2 → (ABN pending) → Ready / Not Relevant / Urgent
@@ -346,11 +357,51 @@ function ReadinessStatsPanel() {
   )
 }
 
+function LabelPicker({ conversationId, currentLabel, onChanged }: { conversationId: string; currentLabel: string | null; onChanged: () => void }) {
+  const [saving, setSaving] = useState(false)
+
+  async function setLabel(newLabel: string | null) {
+    setSaving(true)
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/label', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, label: newLabel }),
+      })
+      const d = await r.json()
+      if (d.ok) onChanged()
+    } catch (e) {
+      console.error('[LabelPicker.setLabel]', e)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <select
+      value={currentLabel ?? ''}
+      disabled={saving}
+      onChange={e => setLabel(e.target.value || null)}
+      onClick={e => e.stopPropagation()}
+      style={{
+        fontSize:11, fontFamily:'inherit', padding:'4px 8px', borderRadius:6,
+        border:'1px solid #e4ede8', background:'#fff', color:'#4a5a52', cursor: saving ? 'default' : 'pointer',
+      }}
+    >
+      <option value="">Move to…</option>
+      {MANUAL_LABELS.map(l => (
+        <option key={l.key} value={l.key}>{l.label}</option>
+      ))}
+    </select>
+  )
+}
+
 export default function WhatsappClient() {
   const [conversations, setConversations] = useState<Conversation[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [tab, setTab] = useState<Tab>('new')
+  const [manualFilter, setManualFilter] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -375,8 +426,12 @@ export default function WhatsappClient() {
   const counts: Record<Tab, number> = { new:0, reminder1:0, reminder2:0, abn:0, ready:0, urgent:0, not_relevant:0 }
   for (const c of conversations) counts[tabForStage(c.stage)]++
 
+  const manualCounts: Record<string, number> = {}
+  for (const l of MANUAL_LABELS) manualCounts[l.key] = 0
+  for (const c of conversations) if (c.manualLabel && manualCounts[c.manualLabel] !== undefined) manualCounts[c.manualLabel]++
+
   const visible = conversations
-    .filter(c => tabForStage(c.stage) === tab)
+    .filter(c => manualFilter ? c.manualLabel === manualFilter : tabForStage(c.stage) === tab)
     .sort((a, b) => new Date(b.lastInboundAt).getTime() - new Date(a.lastInboundAt).getTime())
 
   return (
@@ -428,21 +483,42 @@ export default function WhatsappClient() {
           <PendingApprovalPanel />
           <ReadinessStatsPanel />
 
+          <div style={{fontSize:11, fontWeight:700, color:'#9aada3', textTransform:'uppercase' as const, letterSpacing:'0.05em', marginBottom:6}}>Pipeline</div>
           <div style={S.tabRow}>
             {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
-              <button key={t} onClick={() => setTab(t)}
+              <button key={t} onClick={() => { setTab(t); setManualFilter(null) }}
                 style={{
                   display:'flex', alignItems:'center', gap:6, padding:'8px 14px', borderRadius:9,
                   fontSize:12.5, fontWeight:600, cursor:'pointer', fontFamily:'inherit',
-                  border: tab===t ? `1.5px solid ${TAB_COLORS[t]}` : '1.5px solid #e4ede8',
-                  background: tab===t ? `${TAB_COLORS[t]}12` : '#fff',
-                  color: tab===t ? TAB_COLORS[t] : '#4a5a52',
+                  border: !manualFilter && tab===t ? `1.5px solid ${TAB_COLORS[t]}` : '1.5px solid #e4ede8',
+                  background: !manualFilter && tab===t ? `${TAB_COLORS[t]}12` : '#fff',
+                  color: !manualFilter && tab===t ? TAB_COLORS[t] : '#4a5a52',
                 }}>
                 {TAB_LABELS[t]}
                 <span style={{
-                  background: tab===t ? TAB_COLORS[t] : '#eef3f0', color: tab===t ? '#fff' : '#7a8a82',
+                  background: !manualFilter && tab===t ? TAB_COLORS[t] : '#eef3f0', color: !manualFilter && tab===t ? '#fff' : '#7a8a82',
                   borderRadius: 999, fontSize:10.5, fontWeight:700, padding:'1px 7px', minWidth:18, textAlign:'center' as const,
                 }}>{counts[t]}</span>
+              </button>
+            ))}
+          </div>
+
+          <div style={{fontSize:11, fontWeight:700, color:'#9aada3', textTransform:'uppercase' as const, letterSpacing:'0.05em', marginBottom:6}}>Manual Labels</div>
+          <div style={S.tabRow}>
+            {MANUAL_LABELS.map(l => (
+              <button key={l.key} onClick={() => setManualFilter(l.key)}
+                style={{
+                  display:'flex', alignItems:'center', gap:6, padding:'8px 14px', borderRadius:9,
+                  fontSize:12.5, fontWeight:600, cursor:'pointer', fontFamily:'inherit',
+                  border: manualFilter===l.key ? `1.5px solid ${l.color}` : '1.5px solid #e4ede8',
+                  background: manualFilter===l.key ? `${l.color}12` : '#fff',
+                  color: manualFilter===l.key ? l.color : '#4a5a52',
+                }}>
+                {l.label}
+                <span style={{
+                  background: manualFilter===l.key ? l.color : '#eef3f0', color: manualFilter===l.key ? '#fff' : '#7a8a82',
+                  borderRadius: 999, fontSize:10.5, fontWeight:700, padding:'1px 7px', minWidth:18, textAlign:'center' as const,
+                }}>{manualCounts[l.key] ?? 0}</span>
               </button>
             ))}
           </div>
@@ -452,7 +528,7 @@ export default function WhatsappClient() {
             {error && <div style={{padding:40, textAlign:'center' as const, color:'#dc2626', fontSize:13}}>{error}</div>}
             {!loading && !error && visible.length === 0 && (
               <div style={{padding:40, textAlign:'center' as const, color:'#aabab2', fontSize:13}}>
-                Nobody in &ldquo;{TAB_LABELS[tab]}&rdquo; right now.
+                Nobody in &ldquo;{manualFilter ? MANUAL_LABELS.find(l => l.key === manualFilter)?.label : TAB_LABELS[tab]}&rdquo; right now.
               </div>
             )}
             {!loading && !error && visible.map(c => (
@@ -464,6 +540,7 @@ export default function WhatsappClient() {
                     <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410'}}>
                       {c.firstName || 'Unknown name'}
                       {c.language === 'ja' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇯🇵 JA</span>}
+                      {c.language === 'de' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇩🇪 DE</span>}
                     </div>
                     <div style={{fontSize:11.5, color:'#7a8a82', marginTop:2}}>{c.phone}</div>
                     {c.needsHuman && c.escalationReason && (
@@ -472,15 +549,21 @@ export default function WhatsappClient() {
                     {c.hasAbn && (
                       <span style={{display:'inline-block', marginTop:4, fontSize:10, fontWeight:600, color:'#7c3aed', background:'#f3ebfd', padding:'2px 7px', borderRadius:5}}>ABN</span>
                     )}
+                    {c.manualLabel && (
+                      <span style={{display:'inline-block', marginTop:4, marginLeft: c.hasAbn ? 6 : 0, fontSize:10, fontWeight:600, color:'#4a5a52', background:'#eef3f0', padding:'2px 7px', borderRadius:5}}>
+                        {MANUAL_LABELS.find(l => l.key === c.manualLabel)?.label ?? c.manualLabel}
+                      </span>
+                    )}
                   </div>
-                  <div style={{textAlign:'right' as const, flexShrink:0}}>
+                  <div style={{textAlign:'right' as const, flexShrink:0, display:'flex', flexDirection:'column' as const, alignItems:'flex-end', gap:6}}>
                     <div style={{fontSize:11.5, color:'#4a5a52', fontWeight:500}}>{timeAgo(c.lastInboundAt)}</div>
                     {c.crmTaskId && (
                       <a href={`/crm/dashboard`} style={{fontSize:10.5, color:'#0E5C42', fontWeight:600}}>View task →</a>
                     )}
+                    <LabelPicker conversationId={c.id} currentLabel={c.manualLabel} onChanged={load} />
                   </div>
                 </div>
-                {tab === 'urgent' && c.needsHuman && (
+                {!manualFilter && tab === 'urgent' && c.needsHuman && (
                   <ReplyBox conversationId={c.id} onSent={load} />
                 )}
               </div>

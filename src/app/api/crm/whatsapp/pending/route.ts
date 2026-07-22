@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateSession } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 import { sendTextMessage } from '@/lib/whatsapp'
-import { logMessage, updateStage } from '@/lib/wa-store'
+import { logMessage, updateStage, tagIfCompletionMessage } from '@/lib/wa-store'
 
 function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
 
@@ -87,6 +87,8 @@ export async function POST(req: NextRequest) {
   await sb.from('wa_pending_messages').update({
     status: 'approved', final_text: finalText, reviewed_at: new Date().toISOString(),
   }).eq('id', id)
+
+  await tagIfCompletionMessage(item.conversation_id, finalText)
 
   return NextResponse.json({ ok: true, sent: true })
 }

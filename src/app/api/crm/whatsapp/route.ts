@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
     lastOutboundAt:        row.last_outbound_at,
     crmTaskId:             row.crm_task_id,
     createdAt:             row.created_at,
+    manualLabel:           row.manual_label,
   }))
 
   return NextResponse.json({ ok: true, conversations })

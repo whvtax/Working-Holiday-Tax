@@ -9,7 +9,7 @@ import crypto from 'crypto'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { getSupabase } from '@/lib/supabase'
 import { sendTextMessage } from '@/lib/whatsapp'
-import { translateToNaturalJapanese, looksJapanese } from '@/lib/translate'
+import { translateToNaturalJapanese, translateToNaturalGerman, looksJapanese, looksGerman } from '@/lib/translate'
 
 export type ConversationStage =
   | 'opening_sent'
@@ -26,7 +26,7 @@ export interface Conversation {
   id: string
   phone: string
   firstName: string
-  language: 'en' | 'ja'
+  language: 'en' | 'de' | 'ja'
   stage: ConversationStage
   hasAbn: boolean | null
   abnIncomeConfirmed: boolean | null
@@ -151,7 +151,7 @@ function mapRow(row: Record<string, unknown>): Conversation {
     id:                     row.id as string,
     phone:                  row.phone as string,
     firstName:              row.first_name as string,
-    language:               (row.language as 'en' | 'ja') ?? 'en',
+    language:               (row.language as 'en' | 'de' | 'ja') ?? 'en',
     stage:                  row.stage as ConversationStage,
     hasAbn:                 row.has_abn as boolean | null,
     abnIncomeConfirmed:      row.abn_income_confirmed as boolean | null,
@@ -184,7 +184,7 @@ export async function dispatchMessage(
   text: string,
   scriptKey: string | null = null,
   stageUpdate?: { stage: ConversationStage; extra?: Record<string, unknown> },
-  language: 'en' | 'ja' = 'en'
+  language: 'en' | 'de' | 'ja' = 'en'
 ): Promise<{ ok: boolean; pending: boolean; error?: string }> {
   const sb = getSupabase()
 
@@ -192,7 +192,10 @@ export async function dispatchMessage(
   // translation of the same fixed script, never a different message. This
   // happens before shadow mode queues or sends it, so the tax agent
   // reviewing the queue sees exactly what the client will receive.
-  const outboundText = language === 'ja' ? await translateToNaturalJapanese(text) : text
+  const outboundText =
+    language === 'ja' ? await translateToNaturalJapanese(text) :
+    language === 'de' ? await translateToNaturalGerman(text) :
+    text
 
   let shadowMode = true // fail-safe default: if we can't check, don't auto-send
   try {
@@ -218,6 +221,7 @@ export async function dispatchMessage(
   if (result.ok) {
     await logMessage(conversationId, 'outbound', outboundText, scriptKey, result.messageId)
     if (stageUpdate) await updateStage(conversationId, stageUpdate.stage, stageUpdate.extra)
+    await tagIfCompletionMessage(conversationId, outboundText)
     return { ok: true, pending: false }
   }
   return { ok: false, pending: false, error: result.error }
@@ -230,12 +234,45 @@ export async function dispatchMessage(
  * doc). Only moves en → ja, never back, so one stray message doesn't
  * flip a client's language mid-conversation.
  */
-export async function detectAndSetLanguage(conversationId: string, currentLanguage: 'en' | 'ja', inboundText: string): Promise<void> {
-  if (currentLanguage === 'ja') return
-  if (!looksJapanese(inboundText)) return
+export async function detectAndSetLanguage(conversationId: string, currentLanguage: 'en' | 'de' | 'ja', inboundText: string): Promise<void> {
+  if (currentLanguage === 'ja' || currentLanguage === 'de') return
+
+  let detected: 'ja' | 'de' | null = null
+  if (looksJapanese(inboundText)) detected = 'ja'
+  else if (looksGerman(inboundText)) detected = 'de'
+  if (!detected) return
 
   const sb = getSupabase()
-  await sb.from('wa_conversations').update({ language: 'ja', updated_at: new Date().toISOString() }).eq('id', conversationId)
+  await sb.from('wa_conversations').update({ language: detected, updated_at: new Date().toISOString() }).eq('id', conversationId)
+}
+
+/**
+ * If a sent message matches the known "return lodged" completion script —
+ * whichever channel it went out through (manual app send, CRM reply box,
+ * or a future automated script) — auto-tags that conversation's
+ * manual_label as "Done 2026", exactly what the tax agent would otherwise
+ * set by hand. Deliberately narrow match so an unrelated message
+ * mentioning similar words never mis-tags a conversation. Purely
+ * additive: never touches the automated `stage` pipeline, silently does
+ * nothing if the conversation isn't found.
+ */
+const COMPLETION_MESSAGE_MARKER = /lodged successfully/i
+
+export async function tagIfCompletionMessage(conversationId: string, text: string): Promise<void> {
+  if (!COMPLETION_MESSAGE_MARKER.test(text)) return
+  const sb = getSupabase()
+  await sb
+    .from('wa_conversations')
+    .update({ manual_label: 'done_2026', updated_at: new Date().toISOString() })
+    .eq('id', conversationId)
+}
+
+export async function tagIfCompletionMessageByPhone(phone: string, text: string): Promise<void> {
+  if (!COMPLETION_MESSAGE_MARKER.test(text)) return
+  const sb = getSupabase()
+  const { data: conversation } = await sb.from('wa_conversations').select('id').eq('phone', phone).maybeSingle()
+  if (!conversation) return
+  await tagIfCompletionMessage(conversation.id, text)
 }
 
 /**

@@ -58,6 +58,36 @@ export default function ConnectClient() {
   const [phoneNumberId, setPhoneNumberId] = useState('')
   const [accessToken, setAccessToken] = useState('')
   const sessionData = useRef<{ wabaId?: string; phoneNumberId?: string }>({})
+  const [regPin, setRegPin] = useState('')
+  const [regPinConfirm, setRegPinConfirm] = useState('')
+  const [regStatus, setRegStatus] = useState<'idle' | 'sending' | 'done' | 'error'>('idle')
+  const [regError, setRegError] = useState('')
+
+  async function registerNumber() {
+    setRegError('')
+    if (!/^\d{6}$/.test(regPin)) {
+      setRegError('PIN must be exactly 6 digits.')
+      return
+    }
+    if (regPin !== regPinConfirm) {
+      setRegError('PINs don\u2019t match — please re-enter both.')
+      return
+    }
+    setRegStatus('sending')
+    try {
+      const r = await fetch('/api/crm/whatsapp/register-number', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: regPin }),
+      })
+      const d = await r.json()
+      if (!d.ok) throw new Error(d.error || 'Registration failed')
+      setRegStatus('done')
+    } catch (e) {
+      setRegStatus('error')
+      setRegError(e instanceof Error ? e.message : 'Registration failed')
+    }
+  }
 
   // Load the Facebook JS SDK once.
   useEffect(() => {
@@ -275,6 +305,65 @@ export default function ConnectClient() {
               This access token will not be shown again. Copy it into your hosting platform&rsquo;s environment
               variables (e.g. Vercel → Settings → Environment Variables) right now, then redeploy. This page never
               saves it anywhere.
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div style={{...S.card, maxWidth:640, margin:'24px auto 0'}}>
+        <div style={S.title}>Register number for Cloud API</div>
+        <div style={S.sub}>
+          Meta&rsquo;s own documentation confirms this can <strong>only</strong> be done via a direct API call —
+          never through the App Dashboard or WhatsApp Manager wizards (which lead to a different, non-coexistence
+          flow). This calls that API endpoint directly, using the token already configured in your environment
+          variables. It does not touch your WhatsApp Business App connection.
+        </div>
+        <div style={{...S.warn, marginTop:0, marginBottom:20}}>
+          If your number has never had two-step verification (a 6-digit PIN) set in the WhatsApp Business App, this
+          will set it for the first time — pick any 6 digits and remember them. If it already has a PIN, enter that
+          exact one.
+        </div>
+
+        <div style={S.field}>
+          <div style={S.label}>6-digit PIN</div>
+          <input
+            value={regPin}
+            onChange={e => setRegPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
+            placeholder="123456"
+            inputMode="numeric"
+            style={{...S.value, cursor:'text', fontSize:14, letterSpacing:'0.2em'}}
+          />
+        </div>
+        <div style={S.field}>
+          <div style={S.label}>Confirm PIN</div>
+          <input
+            value={regPinConfirm}
+            onChange={e => setRegPinConfirm(e.target.value.replace(/\D/g, '').slice(0, 6))}
+            placeholder="123456"
+            inputMode="numeric"
+            style={{...S.value, cursor:'text', fontSize:14, letterSpacing:'0.2em'}}
+          />
+        </div>
+
+        <button
+          onClick={registerNumber}
+          disabled={regStatus === 'sending'}
+          style={{...S.btn, ...(regStatus === 'sending' ? S.btnDisabled : {})}}
+        >
+          {regStatus === 'sending' ? 'Registering…' : 'Register Number'}
+        </button>
+
+        {regError && (
+          <div style={{...S.warn, background:'#fdeceb', borderColor:'#f3b7b0', color:'#8a2318'}}>{regError}</div>
+        )}
+        {regStatus === 'done' && (
+          <div style={{...S.resultBox}}>
+            <div style={{fontSize:13, fontWeight:700, color:'#0E5C42'}}>
+              ✓ Registered — the number should now be able to send and receive via the Cloud API.
+            </div>
+            <div style={{fontSize:12, color:'#4a5a52', marginTop:8}}>
+              Send a test WhatsApp message from your own phone to the business number now, then check
+              /crm/whatsapp to confirm it arrived.
             </div>
           </div>
         )}

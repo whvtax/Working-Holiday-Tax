@@ -4,14 +4,14 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { getSupabase } from '@/lib/supabase'
-import { getOrCreateConversation, touchInbound, logMessage, flagForHuman, dispatchMessage, detectAndSetLanguage } from '@/lib/wa-store'
+import { getOrCreateConversation, touchInbound, logMessage, flagForHuman, dispatchMessage, detectAndSetLanguage, tagIfCompletionMessageByPhone } from '@/lib/wa-store'
 import { downloadMedia } from '@/lib/whatsapp'
 import { uploadWhatsappMedia } from '@/lib/upload'
 import { personalizeOpeningLine } from '@/lib/ai-personalize'
 import { classifyLodgeIntent, classifyResidencyAnswer } from '@/lib/residency-classifier'
 import { classifyAbnIncome } from '@/lib/abn-classifier'
 import { findKnowledgeBaseAnswer } from '@/lib/knowledge-base'
-import { looksJapanese } from '@/lib/translate'
+import { looksJapanese, looksGerman } from '@/lib/translate'
 
 // ──────────────────────────────────────────────────────────────────────────
 // GET: Meta's one-time webhook verification handshake.
@@ -87,6 +87,14 @@ async function recordWebhookReceived(): Promise<void> {
     .eq('id', 1)
 }
 
+async function recordAppEcho(): Promise<void> {
+  const sb = getSupabase()
+  await sb
+    .from('wa_system_status')
+    .update({ last_app_echo_at: new Date().toISOString() })
+    .eq('id', 1)
+}
+
 // ──────────────────────────────────────────────────────────────────────────
 // Minimal shape of a WhatsApp Cloud API webhook payload. Meta sends more
 // fields than this; we only type what we currently use.
@@ -94,6 +102,7 @@ async function recordWebhookReceived(): Promise<void> {
 interface WhatsAppWebhookPayload {
   entry?: Array<{
     changes?: Array<{
+      field?: string
       value?: {
         messages?: Array<{
           from: string
@@ -103,6 +112,13 @@ interface WhatsAppWebhookPayload {
           document?: { id: string; mime_type?: string; caption?: string; filename?: string }
         }>
         contacts?: Array<{ profile?: { name?: string } }>
+        // Coexistence only: echoes of messages the tax agent sent manually
+        // from the WhatsApp Business App itself (field === 'smb_message_echoes').
+        message_echoes?: Array<{
+          to: string
+          type: string
+          text?: { body: string }
+        }>
       }
     }>
   }>
@@ -118,9 +134,27 @@ interface WhatsAppWebhookPayload {
 // ──────────────────────────────────────────────────────────────────────────
 async function handleWebhookPayload(payload: unknown): Promise<void> {
   const body = payload as WhatsAppWebhookPayload
-  const change = body.entry?.[0]?.changes?.[0]?.value
+  const changeEntry = body.entry?.[0]?.changes?.[0]
+  const change = changeEntry?.value
+
+  // ────────────────────────────────────────────────────────────────────
+  // Coexistence echo: a message the tax agent sent manually from the
+  // WhatsApp Business App itself (not through our API). We don't reply to
+  // these — we only watch for one specific, known completion message and
+  // auto-tag the conversation "Done 2026" when it goes out, exactly like
+  // the tax agent would do by hand otherwise.
+  // ────────────────────────────────────────────────────────────────────
+  if (changeEntry?.field === 'smb_message_echoes') {
+    await recordAppEcho()
+    const echo = change?.message_echoes?.[0]
+    if (echo?.type === 'text' && echo.text?.body) {
+      await tagIfCompletionMessageByPhone(`+${echo.to}`, echo.text.body)
+    }
+    return
+  }
+
   const message = change?.messages?.[0]
-  if (!message) return  // status update / echo with no actual message — nothing to do
+  if (!message) return  // status update with no actual message — nothing to do
 
   const phone = `+${message.from}`
   const firstName = change?.contacts?.[0]?.profile?.name?.split(' ')[0] ?? ''
@@ -175,37 +209,55 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
   // message (before the flag is saved) gets a translated response instead
   // of waiting until the next round-trip.
   await detectAndSetLanguage(conversation.id, conversation.language, text)
-  const language = conversation.language === 'ja' || looksJapanese(text) ? 'ja' : 'en'
+  const language: 'en' | 'de' | 'ja' =
+    conversation.language === 'ja' || looksJapanese(text) ? 'ja' :
+    conversation.language === 'de' || looksGerman(text) ? 'de' :
+    'en'
 
   // ────────────────────────────────────────────────────────────────────
-  // Section 10.1 → 10.2 — opening and standard pitch.
+  // Section 10.1+10.2 — combined into a single opening message. Testing
+  // showed the two-step "ask if they've done a return before, wait, then
+  // pitch" flow didn't actually improve conversion — it just added a
+  // round-trip. Goes straight from hello to the form now.
   // ────────────────────────────────────────────────────────────────────
   if (conversation.stage === 'opening_sent' && !conversation.lastOutboundAt) {
-    // Brand new conversation, we haven't said anything yet → Script 10.1
+    // Brand new conversation, we haven't said anything yet.
     // Line 1 (name) is fixed. Line 2 is personalised to what they actually
     // wrote, via a tightly-scoped AI call — see ai-personalize.ts for the
-    // guardrails. Line 3 (the actual question) is always the fixed script.
+    // guardrails. Everything after that is always the fixed script.
     const greetingName = firstName || 'there'
     const ackLine = await personalizeOpeningLine(text)
-    const opening = `Hey ${greetingName}! 😊\n${ackLine}\nHave you done a tax return in Australia before, or would this be your first one?`
-    // Stays in "opening_sent" — we've sent the opener but not the pitch yet.
-    await dispatchMessage(conversation.id, phone, opening, '10.1_opening', undefined, language)
-    return
-  }
-
-  if (conversation.stage === 'opening_sent' && conversation.lastOutboundAt) {
-    // They replied to our opener (any answer) → always send Script 10.2
-    const pitch =
-      "Perfect, thanks!\nHere's a 2-minute form so we can check your eligibility and estimate your tax refund:\n" +
+    const opening =
+      `Hey ${greetingName}! 😊\n${ackLine}\n` +
+      "Here's a 2-minute form so we can check your eligibility and estimate your tax refund:\n" +
       'https://workingholidaytax.com.au/tax-form\n' +
       "Our fee is $220 and only applies if you're eligible for a tax refund.\n" +
       "We've helped 350+ backpackers from 45+ countries, so you're in good hands 🙌🏽"
-    await dispatchMessage(conversation.id, phone, pitch, '10.2_standard_pitch', { stage: 'pitch_sent' }, language)
+    await dispatchMessage(conversation.id, phone, opening, '10.1_10.2_combined_opening', { stage: 'pitch_sent' }, language)
     return
   }
 
   if (conversation.stage === 'pitch_sent' || conversation.stage === 'abn_pending') {
     const lower = text.toLowerCase()
+
+    // ────────────────────────────────────────────────────────────────────
+    // Complex split-year / visa-transition residency questions (e.g.
+    // "I was on a working holiday visa, got sponsored 4 months later, is
+    // that first period considered resident?"). Learned from a real
+    // incident: this class of question is easy to mistake for the simple
+    // myGov/self-lodge flow, but it needs individual senior-agent
+    // assessment every time — never a script, never a knowledge-base
+    // match, no matter how similar a past question looked. Checked first,
+    // before anything else in this block, and skips the knowledge base
+    // entirely on purpose.
+    // ────────────────────────────────────────────────────────────────────
+    const COMPLEX_RESIDENCY_TRIGGER = /\b(sponsor(ed|ship)? visa|visa (changed|switched|transition|status change)|before (my|i) (got|received|had) (my )?(visa|sponsorship)|part.?year resident|split.?year|first \d+ months?.{0,20}(resident|residency)|resident for (part|the first))\b/i
+    if (COMPLEX_RESIDENCY_TRIGGER.test(text)) {
+      const holding = "Great question! Let me just double check that for you and I'll get right back to you 🙌"
+      await dispatchMessage(conversation.id, phone, holding, '10.14_holding_message', undefined, language)
+      await flagForHuman(conversation.id, `Complex visa-transition / split-year residency question — needs senior tax agent review, do not use a standard script: "${text.slice(0, 200)}"`)
+      return
+    }
 
     // ────────────────────────────────────────────────────────────────────
     // Section 10.6 — self-lodging / residency check (red flag). Checked
@@ -280,11 +332,24 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
       return
     }
 
+    // ────────────────────────────────────────────────────────────────────
+    // myGov — deliberately simple, on purpose. This came up as too nuanced
+    // to safely script or classify (real client replies didn't fit either
+    // "wants full service" or "wants estimate" cleanly), so every myGov
+    // mention just goes straight to a human. No scripted reply, no
+    // classification — the tax agent decides case by case.
+    // ────────────────────────────────────────────────────────────────────
+    const MYGOV_TRIGGER = /\bmy ?gov\b/i
+    if (MYGOV_TRIGGER.test(text)) {
+      await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
+      return
+    }
+
     // No residency flow in progress yet — check whether THIS message is a
     // new trigger for one. Keyword-based on purpose (see the ABN section
     // below): this only decides whether to open the flow, it doesn't
     // author anything the client reads.
-    const RESIDENCY_TRIGGER = /\b(tax resident|mygov|my gov|lodge (it |this )?myself|lodge on my own|do my own (tax|return)|file (it )?myself)\b/i
+    const RESIDENCY_TRIGGER = /\b(tax resident|lodge (it |this )?myself|lodge on my own|do my own (tax|return)|file (it )?myself)\b/i
     if (RESIDENCY_TRIGGER.test(text)) {
       const clarify = 'Just to check - are you planning to lodge this yourself, or would you like to use our service?'
       await dispatchMessage(conversation.id, phone, clarify, '10.6_clarify_intent', {
@@ -387,7 +452,7 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
  * feature existed. Both paths still go through dispatchMessage, so shadow
  * mode is respected even here.
  */
-async function sendHoldingMessageAndFlag(conversationId: string, phone: string, clientText: string, language: 'en' | 'ja' = 'en'): Promise<void> {
+async function sendHoldingMessageAndFlag(conversationId: string, phone: string, clientText: string, language: 'en' | 'de' | 'ja' = 'en'): Promise<void> {
   const kbMatch = await findKnowledgeBaseAnswer(clientText)
   if (kbMatch) {
     await dispatchMessage(conversationId, phone, kbMatch.answer, `kb_match_${kbMatch.id}`, undefined, language)

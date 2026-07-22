@@ -118,6 +118,38 @@ export async function downloadMedia(mediaId: string): Promise<{ buffer: Buffer; 
 }
 
 /**
+ * Registers the business phone number for Cloud API messaging — the one
+ * step Meta's own docs say can ONLY be done via a direct API call, never
+ * through WhatsApp Manager or the App Dashboard ("you cannot register a
+ * number through WhatsApp Manager (WAM) or the App Dashboard"). This is
+ * exactly why the in-dashboard "Register your WhatsApp phone number"
+ * wizard kept leading to the wrong (non-coexistence) flow.
+ *
+ * pin: a 6-digit two-step-verification PIN. If the number has never had
+ * 2FA enabled, this call sets it as the new PIN. If it already has one,
+ * this must match it exactly.
+ */
+export async function registerPhoneNumber(pin: string): Promise<{ ok: boolean; error?: string }> {
+  try {
+    const token = requiredEnv('WHATSAPP_ACCESS_TOKEN')
+    const phoneNumberId = requiredEnv('WHATSAPP_PHONE_NUMBER_ID')
+
+    const res = await fetch(`${GRAPH_BASE}/${phoneNumberId}/register`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messaging_product: 'whatsapp', pin }),
+    })
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) {
+      return { ok: false, error: data?.error?.message ?? `HTTP ${res.status}` }
+    }
+    return { ok: true }
+  } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : 'unknown error' }
+  }
+}
+
+/**
  * Lightweight heartbeat: confirms the access token still works and the
  * phone number is still connected, without sending any message to a real
  * contact. Call this from the monitoring cron (see /api/cron/wa-health).

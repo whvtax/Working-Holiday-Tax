@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { validateSession } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 import { sendTextMessage } from '@/lib/whatsapp'
-import { logMessage } from '@/lib/wa-store'
+import { logMessage, tagIfCompletionMessage } from '@/lib/wa-store'
 import { saveKnowledgeBaseAnswer } from '@/lib/knowledge-base'
 
 function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
@@ -41,6 +41,7 @@ export async function POST(req: NextRequest) {
   }
 
   await logMessage(conversationId, 'outbound', answerText, 'human_reply', result.messageId)
+  await tagIfCompletionMessage(conversationId, answerText)
 
   // Clear the escalation flag — this conversation no longer needs attention.
   await sb.from('wa_conversations').update({
