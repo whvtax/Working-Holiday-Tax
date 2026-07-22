@@ -438,6 +438,12 @@ function ThreadModal({ conversationId, name, phone, onClose }: { conversationId:
   }, [conversationId])
 
   useEffect(() => { load() }, [load])
+  // Live refresh: poll for new messages every 4s while this thread is open,
+  // so incoming client messages appear without closing/reopening the modal.
+  useEffect(() => {
+    const t = setInterval(load, 4_000)
+    return () => clearInterval(t)
+  }, [load])
   useEffect(() => { bottomRef.current?.scrollIntoView({ block: 'end' }) }, [messages])
 
   async function send() {
@@ -560,7 +566,7 @@ export default function WhatsappClient() {
 
   useEffect(() => { load() }, [load])
   // Light auto-refresh so the board feels live without a full websocket setup.
-  useEffect(() => { const t = setInterval(load, 60_000); return () => clearInterval(t) }, [load])
+  useEffect(() => { const t = setInterval(load, 15_000); return () => clearInterval(t) }, [load])
 
   const counts: Record<Tab, number> = { new:0, reminder1:0, reminder2:0, abn:0, ready:0, urgent:0, not_relevant:0 }
   for (const c of conversations) counts[tabForStage(c.stage)]++
