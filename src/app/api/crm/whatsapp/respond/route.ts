@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   const sb = getSupabase()
   const { data: conversation } = await sb
     .from('wa_conversations')
-    .select('id, phone')
+    .select('id, phone, stage')
     .eq('id', conversationId)
     .maybeSingle()
 
@@ -42,6 +42,18 @@ export async function POST(req: NextRequest) {
 
   await logMessage(conversationId, 'outbound', answerText, 'human_reply', result.messageId)
   await tagIfCompletionMessage(conversationId, answerText)
+
+  // BUGFIX: logMessage() always stamps last_outbound_at, but a manual reply
+  // sent while the conversation is still 'opening_sent' left the state
+  // machine in an impossible combination (opening_sent + lastOutboundAt
+  // set) that no branch in the webhook handler matches — every future
+  // inbound message from that client was silently dropped, with no error
+  // logged anywhere. If we've now manually replied to a brand-new
+  // conversation, treat it the same as the automated opening message: the
+  // client has received a reply, so move them into the normal pipeline.
+  if (conversation.stage === 'opening_sent') {
+    await sb.from('wa_conversations').update({ stage: 'pitch_sent' }).eq('id', conversationId)
+  }
 
   // Clear the escalation flag — this conversation no longer needs attention.
   await sb.from('wa_conversations').update({

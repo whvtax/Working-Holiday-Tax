@@ -473,6 +473,15 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
   // now. Next increment: creating the real crm_tasks row automatically
   // once a client reaches "ready" via chat alone (today this only happens
   // through the website form — see linkFormSubmissionToConversation).
+  //
+  // SAFETY NET: this used to be a true no-op, which meant any conversation
+  // stuck in a stage combination none of the branches above match (see the
+  // opening_sent + lastOutboundAt bug fixed in respond/route.ts) had its
+  // inbound messages silently dropped — logged nowhere, no reply, no flag.
+  // Falling through to the same human-queue path as an unrecognised
+  // message guarantees a real inbound message is never lost, even if we
+  // hit an unexpected state combination again in the future.
+  await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
 }
 
 /**
