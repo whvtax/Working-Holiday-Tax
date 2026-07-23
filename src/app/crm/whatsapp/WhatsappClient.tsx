@@ -12,6 +12,7 @@ type Conversation = {
   lastInboundAt: string; lastOutboundAt: string | null
   crmTaskId: string | null; createdAt: string
   manualLabel: string | null
+  unread: boolean
 }
 
 // Manual labels — completely separate from the automated stage pipeline
@@ -401,6 +402,47 @@ type ThreadMessage = {
   scriptKey: string | null; createdAt: string
 }
 
+// Manual, human-only override — works from ANY stage (new, reminders,
+// abn_pending, ready, urgent, even already not_relevant), regardless of
+// what the automated pipeline is doing with this conversation. A simple
+// confirm() guards against accidental clicks, since this pulls the
+// conversation out of the active flow immediately.
+function NotRelevantButton({ conversationId, currentStage, onChanged }: { conversationId: string; currentStage: Stage; onChanged: () => void }) {
+  const [saving, setSaving] = useState(false)
+  if (currentStage === 'not_relevant') return null
+
+  async function markNotRelevant() {
+    if (!window.confirm('Mark this conversation as Not Relevant? This overrides whatever stage it\'s currently in.')) return
+    setSaving(true)
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/mark-not-relevant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId }),
+      })
+      const d = await r.json()
+      if (d.ok) onChanged()
+    } catch (e) {
+      console.error('[NotRelevantButton.markNotRelevant]', e)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <button
+      onClick={e => { e.stopPropagation(); markNotRelevant() }}
+      disabled={saving}
+      style={{
+        fontSize:11, fontFamily:'inherit', padding:'4px 9px', borderRadius:6,
+        border:'1px solid #f3d0d0', background:'#fff', color:'#b91c1c', cursor: saving ? 'default' : 'pointer', fontWeight:600,
+      }}
+    >
+      {saving ? '…' : 'Not Relevant'}
+    </button>
+  )
+}
+
 // Detects the special media-message format the webhook logs (see
 // route.ts): "[📷 Image] https://... — "caption"" or "[📎 Document] https://...".
 function parseMediaMessage(body: string): { label: string; url: string; caption: string } | null {
@@ -414,7 +456,7 @@ function formatThreadTime(iso: string): string {
   return d.toLocaleString('en-AU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
 }
 
-function ThreadModal({ conversationId, name, phone, onClose }: { conversationId: string; name: string; phone: string; onClose: () => void }) {
+function ThreadModal({ conversationId, name, phone, stage, onClose, onChanged }: { conversationId: string; name: string; phone: string; stage: Stage; onClose: () => void; onChanged: () => void }) {
   const [messages, setMessages] = useState<ThreadMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -475,7 +517,12 @@ function ThreadModal({ conversationId, name, phone, onClose }: { conversationId:
             <div style={{color:'#fff', fontSize:14.5, fontWeight:700}}>{name || 'Unknown'}</div>
             <div style={{color:'rgba(255,255,255,0.7)', fontSize:11.5}}>{phone}</div>
           </div>
-          <button onClick={onClose} style={{background:'none', border:'none', color:'#fff', fontSize:20, cursor:'pointer', lineHeight:1, padding:4}}>✕</button>
+          <div style={{display:'flex', alignItems:'center', gap:10}}>
+            {stage !== 'not_relevant' && (
+              <NotRelevantButton conversationId={conversationId} currentStage={stage} onChanged={() => { onChanged(); onClose() }} />
+            )}
+            <button onClick={onClose} style={{background:'none', border:'none', color:'#fff', fontSize:20, cursor:'pointer', lineHeight:1, padding:4}}>✕</button>
+          </div>
         </div>
 
         <div style={{flex:1, overflowY:'auto' as const, padding:'16px 18px', display:'flex', flexDirection:'column' as const, gap:10}}>
@@ -546,7 +593,8 @@ export default function WhatsappClient() {
   const [error, setError] = useState('')
   const [tab, setTab] = useState<Tab>('new')
   const [manualFilter, setManualFilter] = useState<string | null>(null)
-  const [openThread, setOpenThread] = useState<{ id: string; name: string; phone: string } | null>(null)
+  const [openThread, setOpenThread] = useState<{ id: string; name: string; phone: string; stage: Stage } | null>(null)
+  const [phoneSearch, setPhoneSearch] = useState('')
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -575,12 +623,24 @@ export default function WhatsappClient() {
   for (const l of MANUAL_LABELS) manualCounts[l.key] = 0
   for (const c of conversations) if (c.manualLabel && manualCounts[c.manualLabel] !== undefined) manualCounts[c.manualLabel]++
 
+  const normalizedSearch = phoneSearch.replace(/[^\d]/g, '')
+
   const visible = conversations
-    .filter(c => manualFilter ? c.manualLabel === manualFilter : tabForStage(c.stage) === tab)
+    .filter(c => {
+      if (normalizedSearch) return c.phone.replace(/[^\d]/g, '').includes(normalizedSearch)
+      return manualFilter ? c.manualLabel === manualFilter : tabForStage(c.stage) === tab
+    })
     .sort((a, b) => new Date(b.lastInboundAt).getTime() - new Date(a.lastInboundAt).getTime())
 
   return (
     <div style={S.shell}>
+      <style>{`
+        @keyframes waUnreadPulse {
+          0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
+          70%  { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+          100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+      `}</style>
       <aside style={S.sb}>
         <div style={S.sbLogoRow}>
           <div style={{width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'}}>
@@ -623,6 +683,34 @@ export default function WhatsappClient() {
             <p style={{fontSize:13, color:'#7a8a82', marginTop:2}}>
               Everyone who's messaged on WhatsApp, before they become a client task.
             </p>
+          </div>
+
+          <div style={{position:'relative', marginBottom:16, maxWidth:360}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{position:'absolute', left:12, top:'50%', transform:'translateY(-50%)', pointerEvents:'none'}}>
+              <circle cx="11" cy="11" r="7" stroke="#9aada3" strokeWidth="2"/>
+              <path d="M21 21l-4.3-4.3" stroke="#9aada3" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+            <input
+              type="text"
+              inputMode="tel"
+              value={phoneSearch}
+              onChange={e => setPhoneSearch(e.target.value)}
+              placeholder="Search by WhatsApp number…"
+              style={{
+                width:'100%', boxSizing:'border-box' as const, padding:'9px 34px 9px 34px', borderRadius:9,
+                border:'1.5px solid #e4ede8', fontSize:13, fontFamily:'inherit', background:'#fff', color:'#0a1410',
+              }}
+            />
+            {phoneSearch && (
+              <button
+                onClick={() => setPhoneSearch('')}
+                aria-label="Clear search"
+                style={{
+                  position:'absolute', right:8, top:'50%', transform:'translateY(-50%)',
+                  background:'none', border:'none', cursor:'pointer', color:'#9aada3', fontSize:15, padding:4, lineHeight:1,
+                }}
+              >✕</button>
+            )}
           </div>
 
           <PendingApprovalPanel />
@@ -673,16 +761,28 @@ export default function WhatsappClient() {
             {error && <div style={{padding:40, textAlign:'center' as const, color:'#dc2626', fontSize:13}}>{error}</div>}
             {!loading && !error && visible.length === 0 && (
               <div style={{padding:40, textAlign:'center' as const, color:'#aabab2', fontSize:13}}>
-                Nobody in &ldquo;{manualFilter ? MANUAL_LABELS.find(l => l.key === manualFilter)?.label : TAB_LABELS[tab]}&rdquo; right now.
+                {normalizedSearch
+                  ? <>No leads match &ldquo;{phoneSearch}&rdquo;.</>
+                  : <>Nobody in &ldquo;{manualFilter ? MANUAL_LABELS.find(l => l.key === manualFilter)?.label : TAB_LABELS[tab]}&rdquo; right now.</>
+                }
               </div>
             )}
             {!loading && !error && visible.map(c => (
               <div key={c.id} style={{
                 padding:'14px 18px', borderBottom:'1px solid #f0f4f1', cursor:'pointer',
-              }} onClick={() => setOpenThread({ id: c.id, name: c.firstName, phone: c.phone })}>
+              }} onClick={() => setOpenThread({ id: c.id, name: c.firstName, phone: c.phone, stage: c.stage })}>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:12}}>
                   <div style={{minWidth:0}}>
-                    <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410'}}>
+                    <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410', display:'flex', alignItems:'center', gap:7}}>
+                      {c.unread && (
+                        <span
+                          title="Unread"
+                          style={{
+                            width:9, height:9, borderRadius:'50%', background:'#22c55e', flexShrink:0,
+                            animation:'waUnreadPulse 1.6s infinite',
+                          }}
+                        />
+                      )}
                       {c.firstName || 'Unknown name'}
                       {c.language === 'ja' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇯🇵 JA</span>}
                       {c.language === 'de' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇩🇪 DE</span>}
@@ -705,7 +805,10 @@ export default function WhatsappClient() {
                     {c.crmTaskId && (
                       <a href={`/crm/dashboard`} onClick={e => e.stopPropagation()} style={{fontSize:10.5, color:'#0E5C42', fontWeight:600}}>View task →</a>
                     )}
-                    <LabelPicker conversationId={c.id} currentLabel={c.manualLabel} onChanged={load} />
+                    <div style={{display:'flex', gap:6}}>
+                      <NotRelevantButton conversationId={c.id} currentStage={c.stage} onChanged={load} />
+                      <LabelPicker conversationId={c.id} currentLabel={c.manualLabel} onChanged={load} />
+                    </div>
                   </div>
                 </div>
                 {!manualFilter && tab === 'urgent' && c.needsHuman && (
@@ -722,7 +825,9 @@ export default function WhatsappClient() {
           conversationId={openThread.id}
           name={openThread.name}
           phone={openThread.phone}
-          onClose={() => setOpenThread(null)}
+          stage={openThread.stage}
+          onClose={() => { setOpenThread(null); load() }}
+          onChanged={load}
         />
       )}
     </div>

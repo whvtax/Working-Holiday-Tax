@@ -4,12 +4,15 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { validateSession } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
+import { markConversationRead } from '@/lib/wa-store'
 
 function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
 
 // GET /api/crm/whatsapp/messages?conversationId=WA-xxx
 // Full chronological message thread for one conversation — what the
-// "open a conversation" view in the CRM renders.
+// "open a conversation" view in the CRM renders. Also marks the
+// conversation as read (see markConversationRead), since opening the
+// thread is the natural "I've seen this" signal.
 export async function GET(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ ok: false }, { status: 401 })
 
@@ -17,59 +20,6 @@ export async function GET(req: NextRequest) {
   if (!conversationId) return NextResponse.json({ ok: false, error: 'Missing conversationId' }, { status: 400 })
 
   const sb = getSupabase()
-
-  // TEMP DIAGNOSTIC — remove once the "SQL shows more messages than this
-  // endpoint returns" mystery is resolved. Reports ground truth from the
-  // live server itself: which project it's actually talking to, and raw
-  // counts, bypassing any query-shape assumptions.
-  if (req.nextUrl.searchParams.get('debug') === '1') {
-    const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '(unset)'
-    const rawKey = process.env.SUPABASE_SERVICE_ROLE_KEY ?? ''
-    const keyMasked = rawKey ? `${rawKey.slice(0, 12)}...${rawKey.slice(-6)} (len=${rawKey.length})` : '(unset)'
-
-    const { count: matchingCount, error: matchErr } = await sb
-      .from('wa_messages')
-      .select('*', { count: 'exact', head: true })
-      .eq('conversation_id', conversationId)
-
-    const { count: totalCount, error: totalErr } = await sb
-      .from('wa_messages')
-      .select('*', { count: 'exact', head: true })
-
-    const { data: sampleRows, error: sampleErr } = await sb
-      .from('wa_messages')
-      .select('id, conversation_id, body, created_at')
-      .eq('conversation_id', conversationId)
-      .order('created_at', { ascending: true })
-      .limit(500)
-
-    // Side-by-side: the EXACT query shape used by the production (non-debug)
-    // path below, run in this same request, to isolate whether the column
-    // selection itself is somehow the differentiator.
-    const { data: prodShapeRows, error: prodShapeErr } = await sb
-      .from('wa_messages')
-      .select('id, direction, body, script_key, created_at')
-      .eq('conversation_id', conversationId)
-      .order('created_at', { ascending: true })
-      .limit(500)
-
-    return NextResponse.json({
-      ok: true,
-      debug: true,
-      resolvedSupabaseUrl: rawUrl,
-      resolvedServiceRoleKey: keyMasked,
-      conversationIdReceived: conversationId,
-      matchingRowCount: matchingCount,
-      matchingRowCountError: matchErr?.message ?? null,
-      totalMessagesInTable: totalCount,
-      totalMessagesError: totalErr?.message ?? null,
-      sampleRowsReturned: sampleRows?.length ?? 0,
-      sampleRowsError: sampleErr?.message ?? null,
-      prodShapeRowsReturned: prodShapeRows?.length ?? 0,
-      prodShapeError: prodShapeErr?.message ?? null,
-      sampleRows,
-    })
-  }
 
   const { data, error } = await sb
     .from('wa_messages')
@@ -79,6 +29,10 @@ export async function GET(req: NextRequest) {
     .limit(500)
 
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
+
+  // Fire-and-forget: marking read should never block the thread from
+  // loading, even if this write fails for some reason.
+  markConversationRead(conversationId).catch(err => console.error('[messages.GET] markConversationRead failed', err))
 
   const messages = (data ?? []).map(m => ({
     id: m.id,

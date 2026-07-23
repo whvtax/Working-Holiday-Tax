@@ -4,13 +4,14 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { getSupabase } from '@/lib/supabase'
-import { getOrCreateConversation, touchInbound, logMessage, flagForHuman, dispatchMessage, detectAndSetLanguage, tagIfCompletionMessage } from '@/lib/wa-store'
+import { getOrCreateConversation, touchInbound, logMessage, flagForHuman, dispatchMessage, detectAndSetLanguage, tagIfCompletionMessage, getMessageHistory, type Conversation } from '@/lib/wa-store'
 import { downloadMedia } from '@/lib/whatsapp'
 import { uploadWhatsappMedia } from '@/lib/upload'
 import { personalizeOpeningLine } from '@/lib/ai-personalize'
 import { classifyLodgeIntent, classifyResidencyAnswer } from '@/lib/residency-classifier'
 import { classifyAbnIncome } from '@/lib/abn-classifier'
 import { findKnowledgeBaseAnswer } from '@/lib/knowledge-base'
+import { draftContextAwareReply } from '@/lib/ai-reply-draft'
 import { looksJapanese, looksGerman } from '@/lib/translate'
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -347,7 +348,7 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
       }
 
       // Unclear — don't guess on something that decides eligibility.
-      await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
+      await sendHoldingMessageAndFlag(conversation, phone, text, language)
       return
     }
 
@@ -375,7 +376,7 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
       }
 
       // Unclear — same rule: fall through to a human, never guess.
-      await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
+      await sendHoldingMessageAndFlag(conversation, phone, text, language)
       return
     }
 
@@ -388,7 +389,7 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
     // ────────────────────────────────────────────────────────────────────
     const MYGOV_TRIGGER = /\bmy ?gov\b/i
     if (MYGOV_TRIGGER.test(text)) {
-      await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
+      await sendHoldingMessageAndFlag(conversation, phone, text, language)
       return
     }
 
@@ -436,7 +437,7 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
       }
 
       // Unclear — same rule as everywhere else: don't guess, ask a human.
-      await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
+      await sendHoldingMessageAndFlag(conversation, phone, text, language)
       return
     }
 
@@ -481,7 +482,7 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
 
     // Anything else here (an ABN follow-up reply, or an unrelated message)
     // isn't something the bot should interpret on its own — see Section 8.
-    await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
+    await sendHoldingMessageAndFlag(conversation, phone, text, language)
     return
   }
 
@@ -497,7 +498,7 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
   // Falling through to the same human-queue path as an unrecognised
   // message guarantees a real inbound message is never lost, even if we
   // hit an unexpected state combination again in the future.
-  await sendHoldingMessageAndFlag(conversation.id, phone, text, language)
+  await sendHoldingMessageAndFlag(conversation, phone, text, language)
 }
 
 /**
@@ -508,14 +509,32 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
  * feature existed. Both paths still go through dispatchMessage, so shadow
  * mode is respected even here.
  */
-async function sendHoldingMessageAndFlag(conversationId: string, phone: string, clientText: string, language: 'en' | 'de' | 'ja' = 'en'): Promise<void> {
+/**
+ * Shared fallback for Section 8/9 ("new/undefined question"): checks the
+ * knowledge base first (Section 9's "every question gets asked once"
+ * loop) — an exact saved answer always wins, since those are previously
+ * human-approved. Only if nothing matches does it read the FULL
+ * conversation history and draft a context-aware reply (ai-reply-draft.ts)
+ * instead of the old static "let me check" line, so the suggestion in the
+ * Shadow Mode queue actually reflects where this client is — whether it's
+ * their 1st message or their 100th. Falls back to the original fixed
+ * holding line if drafting fails for any reason. Both paths still go
+ * through dispatchMessage, so shadow mode is respected either way.
+ */
+async function sendHoldingMessageAndFlag(conversation: Conversation, phone: string, clientText: string, language: 'en' | 'de' | 'ja' = 'en'): Promise<void> {
   const kbMatch = await findKnowledgeBaseAnswer(clientText)
   if (kbMatch) {
-    await dispatchMessage(conversationId, phone, kbMatch.answer, `kb_match_${kbMatch.id}`, undefined, language)
+    await dispatchMessage(conversation.id, phone, kbMatch.answer, `kb_match_${kbMatch.id}`, undefined, language)
     return
   }
 
-  const holding = "Great question! Let me just double check that for you and I'll get right back to you 🙌"
-  await dispatchMessage(conversationId, phone, holding, '10.14_holding_message', undefined, language)
-  await flagForHuman(conversationId, `Message needs manual review: "${clientText.slice(0, 200)}"`)
+  const history = await getMessageHistory(conversation.id)
+  const draft = await draftContextAwareReply({
+    history,
+    clientText,
+    stage: conversation.stage,
+    hasAbn: conversation.hasAbn,
+  })
+  await dispatchMessage(conversation.id, phone, draft, '10.14_ai_context_reply', undefined, language)
+  await flagForHuman(conversation.id, `Message needs manual review: "${clientText.slice(0, 200)}"`)
 }

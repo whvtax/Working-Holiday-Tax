@@ -36,6 +36,7 @@ export interface Conversation {
   crmTaskId: string | null
   lastInboundAt: string
   lastOutboundAt: string | null
+  lastReadAt: string | null
   needsHuman: boolean
   escalationReason: string | null
 }
@@ -105,6 +106,21 @@ export async function flagForHuman(conversationId: string, reason: string): Prom
 }
 
 /**
+ * Marks a conversation as read — called whenever the tax agent opens its
+ * thread in the CRM. Drives the unread indicator on the conversation list:
+ * a conversation is "unread" when last_inbound_at is newer than
+ * last_read_at (see the GET handlers in api/crm/whatsapp and
+ * api/crm/whatsapp/messages).
+ */
+export async function markConversationRead(conversationId: string): Promise<void> {
+  const sb = getSupabase()
+  await sb
+    .from('wa_conversations')
+    .update({ last_read_at: new Date().toISOString() })
+    .eq('id', conversationId)
+}
+
+/**
  * Logs a message (either direction) to the transcript. `scriptKey` should
  * match the section numbers in the role doc (e.g. '10.2') for outbound
  * scripted messages, so the CRM can show which script was used — leave
@@ -134,6 +150,43 @@ export async function logMessage(
   }
 }
 
+export interface HistoryMessage {
+  direction: 'inbound' | 'outbound'
+  body: string
+  createdAt: string
+}
+
+/**
+ * Full (capped) chronological transcript for a conversation — used to give
+ * the context-aware reply drafter (ai-reply-draft.ts) the whole picture
+ * before it suggests what to say, rather than reacting to only the latest
+ * message. Capped at `limit` most-recent messages (oldest of that window
+ * first) so the prompt sent to the model stays a sane size on very long
+ * conversations.
+ */
+export async function getMessageHistory(conversationId: string, limit = 60): Promise<HistoryMessage[]> {
+  const sb = getSupabase()
+  const { data, error } = await sb
+    .from('wa_messages')
+    .select('direction, body, created_at')
+    .eq('conversation_id', conversationId)
+    .order('created_at', { ascending: false })
+    .limit(limit)
+
+  if (error) {
+    console.error('[getMessageHistory]', error.message)
+    return []
+  }
+
+  return (data ?? [])
+    .reverse() // we fetched newest-first to cap correctly; return oldest-first for a natural transcript
+    .map(m => ({
+      direction: m.direction as 'inbound' | 'outbound',
+      body: m.body as string,
+      createdAt: m.created_at as string,
+    }))
+}
+
 export async function getConversationsByStage(stage: ConversationStage, limit = 200): Promise<Conversation[]> {
   const sb = getSupabase()
   const { data, error } = await sb
@@ -161,6 +214,7 @@ function mapRow(row: Record<string, unknown>): Conversation {
     crmTaskId:               row.crm_task_id as string | null,
     lastInboundAt:           row.last_inbound_at as string,
     lastOutboundAt:          row.last_outbound_at as string | null,
+    lastReadAt:              row.last_read_at as string | null,
     needsHuman:              Boolean(row.needs_human),
     escalationReason:        row.escalation_reason as string | null,
   }

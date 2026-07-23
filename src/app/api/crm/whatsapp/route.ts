@@ -37,22 +37,29 @@ export async function GET(req: NextRequest) {
 
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 })
 
-  const conversations = (data ?? []).map(row => ({
-    id:                    row.id,
-    phone:                 row.phone,
-    firstName:             row.first_name,
-    language:              row.language,
-    stage:                 row.stage,
-    hasAbn:                row.has_abn,
-    residencyCheckResult:  row.residency_check_result,
-    needsHuman:            row.needs_human,
-    escalationReason:      row.escalation_reason,
-    lastInboundAt:         row.last_inbound_at,
-    lastOutboundAt:        row.last_outbound_at,
-    crmTaskId:             row.crm_task_id,
-    createdAt:             row.created_at,
-    manualLabel:           row.manual_label,
-  }))
+  const conversations = (data ?? []).map(row => {
+    const lastInboundAt = row.last_inbound_at as string
+    const lastReadAt = row.last_read_at as string | null
+    const unread = !lastReadAt || new Date(lastInboundAt).getTime() > new Date(lastReadAt).getTime()
+    return {
+      id:                    row.id,
+      phone:                 row.phone,
+      firstName:             row.first_name,
+      language:              row.language,
+      stage:                 row.stage,
+      hasAbn:                row.has_abn,
+      residencyCheckResult:  row.residency_check_result,
+      needsHuman:            row.needs_human,
+      escalationReason:      row.escalation_reason,
+      lastInboundAt,
+      lastOutboundAt:        row.last_outbound_at,
+      lastReadAt,
+      unread,
+      crmTaskId:             row.crm_task_id,
+      createdAt:             row.created_at,
+      manualLabel:           row.manual_label,
+    }
+  })
 
   return NextResponse.json({ ok: true, conversations })
 }
