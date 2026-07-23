@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { getSupabase } from '@/lib/supabase'
-import { getOrCreateConversation, touchInbound, logMessage, flagForHuman, dispatchMessage, detectAndSetLanguage, tagIfCompletionMessageByPhone } from '@/lib/wa-store'
+import { getOrCreateConversation, touchInbound, logMessage, flagForHuman, dispatchMessage, detectAndSetLanguage, tagIfCompletionMessage } from '@/lib/wa-store'
 import { downloadMedia } from '@/lib/whatsapp'
 import { uploadWhatsappMedia } from '@/lib/upload'
 import { personalizeOpeningLine } from '@/lib/ai-personalize'
@@ -170,16 +170,32 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
 
   // ────────────────────────────────────────────────────────────────────
   // Coexistence echo: a message the tax agent sent manually from the
-  // WhatsApp Business App itself (not through our API). We don't reply to
-  // these — we only watch for one specific, known completion message and
-  // auto-tag the conversation "Done 2026" when it goes out, exactly like
-  // the tax agent would do by hand otherwise.
+  // WhatsApp Business App itself (not through our API/CRM). We don't
+  // reply to these, but we DO log them into wa_messages as a normal
+  // outbound message — otherwise the CRM thread only ever showed the
+  // client's half of the conversation, unlike the WhatsApp app itself
+  // which shows both sides. We also still watch for the known completion
+  // message and auto-tag the conversation "Done 2026" when it goes out,
+  // exactly like the tax agent would do by hand otherwise.
   // ────────────────────────────────────────────────────────────────────
   if (changeEntry?.field === 'smb_message_echoes') {
     await recordAppEcho()
     const echo = change?.message_echoes?.[0]
-    if (echo?.type === 'text' && echo.text?.body) {
-      await tagIfCompletionMessageByPhone(`+${echo.to}`, echo.text.body)
+    if (echo?.to) {
+      const echoPhone = `+${echo.to}`
+      const isText = echo.type === 'text' && !!echo.text?.body
+      const echoBody = isText ? (echo.text as { body: string }).body : `[${echo.type} sent from WhatsApp app]`
+
+      // Reuses the existing conversation if one exists; only creates a new
+      // one in the rare case the agent messages a number first, before the
+      // client ever wrote in. firstName is unknown from an echo, so leave
+      // it blank rather than overwrite anything already on record.
+      const conversation = await getOrCreateConversation(echoPhone, '')
+      await logMessage(conversation.id, 'outbound', echoBody, 'phone_app_echo')
+
+      if (isText) {
+        await tagIfCompletionMessage(conversation.id, echoBody)
+      }
     }
     return
   }
