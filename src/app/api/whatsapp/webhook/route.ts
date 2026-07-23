@@ -57,15 +57,46 @@ export async function POST(req: NextRequest) {
     return new NextResponse('Bad JSON', { status: 400 })
   }
 
+  // TEMP DIAGNOSTIC — full visibility into every webhook call while we track
+  // down why some real inbound messages weren't reaching wa_conversations.
+  // Logs the field type + a truncated raw body, unconditionally, before any
+  // processing logic runs. Safe to remove once the issue is confirmed fixed.
+  logRawWebhookEvent(rawBody).catch(() => {})
+
   try {
     await handleWebhookPayload(payload)
   } catch (err) {
     // Log but still return 200 — if we 4xx/5xx, Meta will retry the same
     // event repeatedly, which can cause duplicate replies to the client.
     console.error('[whatsapp webhook] processing error', err)
+    logProcessingError(err, rawBody).catch(() => {})
   }
 
   return NextResponse.json({ ok: true })
+}
+
+async function logRawWebhookEvent(rawBody: string): Promise<void> {
+  const sb = getSupabase()
+  let field = 'unknown'
+  try {
+    const parsed = JSON.parse(rawBody)
+    field = parsed?.entry?.[0]?.changes?.[0]?.field ?? 'unknown'
+  } catch { /* ignore */ }
+  await sb.from('wa_system_events').insert({
+    event_type: 'webhook_raw',
+    severity: 'info',
+    detail: `field=${field} body=${rawBody.slice(0, 1500)}`,
+  })
+}
+
+async function logProcessingError(err: unknown, rawBody: string): Promise<void> {
+  const sb = getSupabase()
+  const message = err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err)
+  await sb.from('wa_system_events').insert({
+    event_type: 'webhook_processing_error',
+    severity: 'critical',
+    detail: `${message}\n---body---\n${rawBody.slice(0, 1500)}`,
+  })
 }
 
 function verifySignature(req: NextRequest, rawBody: string): boolean {
