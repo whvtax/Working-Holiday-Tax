@@ -43,6 +43,16 @@ export async function GET(req: NextRequest) {
       .order('created_at', { ascending: true })
       .limit(500)
 
+    // Side-by-side: the EXACT query shape used by the production (non-debug)
+    // path below, run in this same request, to isolate whether the column
+    // selection itself is somehow the differentiator.
+    const { data: prodShapeRows, error: prodShapeErr } = await sb
+      .from('wa_messages')
+      .select('id, direction, body, script_key, created_at')
+      .eq('conversation_id', conversationId)
+      .order('created_at', { ascending: true })
+      .limit(500)
+
     return NextResponse.json({
       ok: true,
       debug: true,
@@ -55,6 +65,8 @@ export async function GET(req: NextRequest) {
       totalMessagesError: totalErr?.message ?? null,
       sampleRowsReturned: sampleRows?.length ?? 0,
       sampleRowsError: sampleErr?.message ?? null,
+      prodShapeRowsReturned: prodShapeRows?.length ?? 0,
+      prodShapeError: prodShapeErr?.message ?? null,
       sampleRows,
     })
   }
