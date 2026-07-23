@@ -6,19 +6,19 @@ import { validateSession } from '@/lib/crm-store'
 import { getSupabase } from '@/lib/supabase'
 import { sendTextMessage } from '@/lib/whatsapp'
 import { logMessage, tagIfCompletionMessage } from '@/lib/wa-store'
-import { saveKnowledgeBaseAnswer } from '@/lib/knowledge-base'
 
 function auth(req: NextRequest) { return validateSession(req.cookies.get('crm_session')?.value) }
 
 // POST /api/crm/whatsapp/respond
 // The tax agent's manual reply from the "Urgent" tab (Section 8/9 handoff).
-// This sends the message, clears the escalation flag, AND — this is the
-// "every question gets asked once" loop — saves the Q&A pair to the
-// knowledge base so the bot can answer the same question itself next time.
+// Sends the message and clears the escalation flag. Deliberately does NOT
+// save to a knowledge base anymore — every future message is always
+// re-drafted fresh from the full conversation history (see
+// ai-reply-draft.ts), never short-circuited by a previously saved answer.
 export async function POST(req: NextRequest) {
   if (!auth(req)) return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
 
-  const { conversationId, answerText, saveToKnowledgeBase = true } = await req.json().catch(() => ({}))
+  const { conversationId, answerText } = await req.json().catch(() => ({}))
   if (!conversationId || typeof conversationId !== 'string') {
     return NextResponse.json({ ok: false, error: 'Missing conversationId' }, { status: 400 })
   }
@@ -61,23 +61,6 @@ export async function POST(req: NextRequest) {
     escalation_reason: null,
     updated_at: new Date().toISOString(),
   }).eq('id', conversationId)
-
-  // Save to the knowledge base using the most recent inbound message as
-  // the "question" — that's what actually triggered the escalation.
-  if (saveToKnowledgeBase) {
-    const { data: lastInbound } = await sb
-      .from('wa_messages')
-      .select('body')
-      .eq('conversation_id', conversationId)
-      .eq('direction', 'inbound')
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
-
-    if (lastInbound?.body) {
-      await saveKnowledgeBaseAnswer(lastInbound.body, answerText)
-    }
-  }
 
   return NextResponse.json({ ok: true })
 }

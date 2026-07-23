@@ -64,6 +64,19 @@ function tabForStage(stage: Stage): Tab {
   }
 }
 
+// Mirrors CANONICAL_STAGE_FOR_TAB on the server (api/crm/whatsapp/stage) —
+// used only for optimistic UI updates right after a manual drag-and-drop
+// move, before the server's response comes back.
+const CANONICAL_STAGE_FOR_TAB: Record<Tab, Stage> = {
+  new:          'pitch_sent',
+  reminder1:    'reminder_1_sent',
+  reminder2:    'reminder_2_sent',
+  abn:          'abn_pending',
+  ready:        'ready',
+  urgent:       'urgent',
+  not_relevant: 'not_relevant',
+}
+
 const S = {
   shell: { display:'flex', height:'100vh', overflow:'hidden', fontFamily:'"DM Sans",system-ui,sans-serif' } as React.CSSProperties,
   sb: { width:260, background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)', display:'flex', flexDirection:'column' as const, flexShrink:0, position:'fixed' as const, top:0, left:0, height:'100vh', overflowY:'auto' as const, zIndex:50 },
@@ -100,6 +113,35 @@ function timeAgo(iso: string | null): string {
   return `${Math.floor(hrs / 24)}d ago`
 }
 
+/**
+ * Urgency indicator: a client is "waiting on us" whenever their most recent
+ * inbound message is newer than our most recent outbound one (or we've
+ * never replied at all). Returns null when we're not the one holding
+ * things up — most recently sent message was ours. Thresholds are a
+ * starting point, not a business rule from anywhere else in the app;
+ * adjust freely.
+ */
+function waitingBadge(c: Conversation): { label: string; level: 'ok' | 'warn' | 'critical' } | null {
+  const inboundMs = new Date(c.lastInboundAt).getTime()
+  const outboundMs = c.lastOutboundAt ? new Date(c.lastOutboundAt).getTime() : -Infinity
+  if (inboundMs <= outboundMs) return null // we already replied more recently — not waiting on us
+
+  const elapsedMs = Date.now() - inboundMs
+  const mins = Math.floor(elapsedMs / 60_000)
+  if (mins < 30) return null // don't clutter the board over something a minute old
+
+  const hrs = Math.floor(mins / 60)
+  const label = hrs < 1 ? `${mins}m` : hrs < 24 ? `${hrs}h` : `${Math.floor(hrs / 24)}d`
+  const level: 'ok' | 'warn' | 'critical' = hrs >= 24 ? 'critical' : hrs >= 2 ? 'warn' : 'ok'
+  return { label, level }
+}
+
+const WAITING_COLORS: Record<'ok' | 'warn' | 'critical', { bg: string; fg: string }> = {
+  ok:       { bg: '#eef3f0', fg: '#7a8a82' },
+  warn:     { bg: '#fef3c7', fg: '#b45309' },
+  critical: { bg: '#fee2e2', fg: '#dc2626' },
+}
+
 async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs = 30_000): Promise<Response> {
   const ctrl = new AbortController()
   const id = setTimeout(() => ctrl.abort(), timeoutMs)
@@ -108,7 +150,6 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs =
 
 function ReplyBox({ conversationId, onSent }: { conversationId: string; onSent: () => void }) {
   const [text, setText] = useState('')
-  const [saveToKb, setSaveToKb] = useState(true)
   const [sending, setSending] = useState(false)
   const [err, setErr] = useState('')
 
@@ -120,7 +161,7 @@ function ReplyBox({ conversationId, onSent }: { conversationId: string; onSent: 
       const r = await fetchWithTimeout('/api/crm/whatsapp/respond', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversationId, answerText: text.trim(), saveToKnowledgeBase: saveToKb }),
+        body: JSON.stringify({ conversationId, answerText: text.trim() }),
       })
       const d = await r.json()
       if (!d.ok) { setErr(d.error || 'Failed to send'); return }
@@ -143,11 +184,7 @@ function ReplyBox({ conversationId, onSent }: { conversationId: string; onSent: 
         rows={2}
         style={{width:'100%', fontSize:12.5, fontFamily:'inherit', padding:'8px 10px', borderRadius:8, border:'1px solid #e4ede8', resize:'vertical' as const}}
       />
-      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:6}}>
-        <label style={{display:'flex', alignItems:'center', gap:6, fontSize:11, color:'#7a8a82', cursor:'pointer'}}>
-          <input type="checkbox" checked={saveToKb} onChange={e => setSaveToKb(e.target.checked)} />
-          Save to knowledge base for next time
-        </label>
+      <div style={{display:'flex', alignItems:'center', justifyContent:'flex-end', marginTop:6}}>
         <button
           onClick={send}
           disabled={sending || !text.trim()}
@@ -462,7 +499,6 @@ function ThreadModal({ conversationId, name, phone, stage, onClose, onChanged }:
   const [error, setError] = useState('')
   const [replyText, setReplyText] = useState('')
   const [sending, setSending] = useState(false)
-  const [saveToKb, setSaveToKb] = useState(false)
   const bottomRef = useRef<HTMLDivElement | null>(null)
 
   const load = useCallback(async () => {
@@ -495,7 +531,7 @@ function ThreadModal({ conversationId, name, phone, stage, onClose, onChanged }:
       const r = await fetchWithTimeout('/api/crm/whatsapp/respond', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversationId, answerText: replyText.trim(), saveToKnowledgeBase: saveToKb }),
+        body: JSON.stringify({ conversationId, answerText: replyText.trim() }),
       })
       const d = await r.json()
       if (d.ok) { setReplyText(''); load() }
@@ -568,11 +604,7 @@ function ThreadModal({ conversationId, name, phone, stage, onClose, onChanged }:
             rows={2}
             style={{width:'100%', fontSize:13, fontFamily:'inherit', padding:'8px 10px', borderRadius:8, border:'1px solid #e4ede8', resize:'vertical' as const, boxSizing:'border-box' as const}}
           />
-          <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:6}}>
-            <label style={{display:'flex', alignItems:'center', gap:6, fontSize:11, color:'#7a8a82', cursor:'pointer'}}>
-              <input type="checkbox" checked={saveToKb} onChange={e => setSaveToKb(e.target.checked)} />
-              Save to knowledge base
-            </label>
+          <div style={{display:'flex', alignItems:'center', justifyContent:'flex-end', marginTop:6}}>
             <button
               onClick={send}
               disabled={sending || !replyText.trim()}
@@ -595,19 +627,31 @@ export default function WhatsappClient() {
   const [manualFilter, setManualFilter] = useState<string | null>(null)
   const [openThread, setOpenThread] = useState<{ id: string; name: string; phone: string; stage: Stage } | null>(null)
   const [phoneSearch, setPhoneSearch] = useState('')
+  const [dragOverTab, setDragOverTab] = useState<Tab | null>(null)
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
+  const [listTruncated, setListTruncated] = useState(false)
+  const hasLoadedOnce = useRef(false)
 
   const load = useCallback(async () => {
-    setLoading(true)
+    // Only the very first load shows the full-page spinner — the 15s
+    // background refresh should never make the whole board flash/reset,
+    // it just quietly updates in place.
+    if (!hasLoadedOnce.current) setLoading(true)
     setError('')
     try {
       const r = await fetchWithTimeout('/api/crm/whatsapp', { cache: 'no-store' })
       const d = await r.json()
-      if (d.ok) setConversations(d.conversations)
-      else setError(d.error || `Failed to load WhatsApp leads (HTTP ${r.status})`)
+      if (d.ok) {
+        setConversations(d.conversations)
+        setListTruncated(Boolean(d.truncated))
+      } else {
+        setError(d.error || `Failed to load WhatsApp leads (HTTP ${r.status})`)
+      }
     } catch (e) {
       console.error('[WhatsappClient.load]', e)
       setError('Network error loading WhatsApp leads. Check your connection and try again.')
     } finally {
+      hasLoadedOnce.current = true
       setLoading(false)
     }
   }, [])
@@ -615,6 +659,71 @@ export default function WhatsappClient() {
   useEffect(() => { load() }, [load])
   // Light auto-refresh so the board feels live without a full websocket setup.
   useEffect(() => { const t = setInterval(load, 15_000); return () => clearInterval(t) }, [load])
+
+  // Manual pipeline override: the tax agent dragging a lead onto a stage
+  // in the pipeline bar. Independent of whatever the automated flow thinks
+  // — the agent's call always wins, immediately, no confirmation needed
+  // (mirrors how a physical kanban board works).
+  async function moveConversationToTab(conversationId: string, tab: Tab) {
+    // Optimistic UI: reflect the move immediately rather than waiting on
+    // the round-trip, then reconcile with the server's response.
+    setConversations(prev => prev.map(c =>
+      c.id === conversationId ? { ...c, stage: CANONICAL_STAGE_FOR_TAB[tab] } : c
+    ))
+    try {
+      const r = await fetchWithTimeout('/api/crm/whatsapp/stage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId, tab }),
+      })
+      const d = await r.json()
+      if (!d.ok) { console.error('[moveConversationToTab]', d.error); load() } // reconcile on failure
+    } catch (e) {
+      console.error('[moveConversationToTab]', e)
+      load() // reconcile on network error
+    }
+  }
+
+  // Bulk actions: apply a single-item action to every currently-selected
+  // conversation. Deliberately reuses the same single-conversation
+  // endpoints (stage move, label) rather than adding new bulk-specific
+  // API routes — at real-world selection sizes (tens of conversations,
+  // not thousands at once) a handful of parallel requests is simpler and
+  // lower-risk than a new server code path, and the UX is identical.
+  async function bulkMoveToTab(tab: Tab) {
+    const ids = Array.from(selectedIds)
+    if (!ids.length) return
+    setConversations(prev => prev.map(c => ids.includes(c.id) ? { ...c, stage: CANONICAL_STAGE_FOR_TAB[tab] } : c))
+    setSelectedIds(new Set())
+    await Promise.all(ids.map(id =>
+      fetchWithTimeout('/api/crm/whatsapp/stage', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId: id, tab }),
+      }).catch(e => console.error('[bulkMoveToTab]', id, e))
+    ))
+    load()
+  }
+
+  async function bulkApplyLabel(labelKey: string | null) {
+    const ids = Array.from(selectedIds)
+    if (!ids.length) return
+    setSelectedIds(new Set())
+    await Promise.all(ids.map(id =>
+      fetchWithTimeout('/api/crm/whatsapp/label', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ conversationId: id, label: labelKey }),
+      }).catch(e => console.error('[bulkApplyLabel]', id, e))
+    ))
+    load()
+  }
+
+  function toggleSelected(id: string) {
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id); else next.add(id)
+      return next
+    })
+  }
 
   const counts: Record<Tab, number> = { new:0, reminder1:0, reminder2:0, abn:0, ready:0, urgent:0, not_relevant:0 }
   for (const c of conversations) counts[tabForStage(c.stage)]++
@@ -624,13 +733,23 @@ export default function WhatsappClient() {
   for (const c of conversations) if (c.manualLabel && manualCounts[c.manualLabel] !== undefined) manualCounts[c.manualLabel]++
 
   const normalizedSearch = phoneSearch.replace(/[^\d]/g, '')
+  const searchText = phoneSearch.trim().toLowerCase()
 
   const visible = conversations
     .filter(c => {
-      if (normalizedSearch) return c.phone.replace(/[^\d]/g, '').includes(normalizedSearch)
+      if (searchText) {
+        const phoneMatch = normalizedSearch && c.phone.replace(/[^\d]/g, '').includes(normalizedSearch)
+        const nameMatch = c.firstName && c.firstName.toLowerCase().includes(searchText)
+        return Boolean(phoneMatch || nameMatch)
+      }
       return manualFilter ? c.manualLabel === manualFilter : tabForStage(c.stage) === tab
     })
-    .sort((a, b) => new Date(b.lastInboundAt).getTime() - new Date(a.lastInboundAt).getTime())
+    .sort((a, b) => {
+      // Unread leads always float above ones you've already opened —
+      // opening a conversation sinks it to the end of the queue.
+      if (a.unread !== b.unread) return a.unread ? -1 : 1
+      return new Date(b.lastInboundAt).getTime() - new Date(a.lastInboundAt).getTime()
+    })
 
   return (
     <div style={S.shell}>
@@ -695,7 +814,7 @@ export default function WhatsappClient() {
               inputMode="tel"
               value={phoneSearch}
               onChange={e => setPhoneSearch(e.target.value)}
-              placeholder="Search by WhatsApp number…"
+              placeholder="Search by name or WhatsApp number…"
               style={{
                 width:'100%', boxSizing:'border-box' as const, padding:'9px 34px 9px 34px', borderRadius:9,
                 border:'1.5px solid #e4ede8', fontSize:13, fontFamily:'inherit', background:'#fff', color:'#0a1410',
@@ -713,26 +832,54 @@ export default function WhatsappClient() {
             )}
           </div>
 
+          {listTruncated && (
+            <div style={{padding:'10px 14px', borderRadius:9, background:'#fef3c7', color:'#92400e', fontSize:12.5, fontWeight:600, marginBottom:14}}>
+              ⚠ Showing the 3,000 most recent leads only — you have more than that in total. Time to add real pagination; let your developer know.
+            </div>
+          )}
+
           <PendingApprovalPanel />
           <ReadinessStatsPanel />
 
-          <div style={{fontSize:11, fontWeight:700, color:'#9aada3', textTransform:'uppercase' as const, letterSpacing:'0.05em', marginBottom:6}}>Pipeline</div>
-          <div style={S.tabRow}>
-            {(Object.keys(TAB_LABELS) as Tab[]).map(t => (
-              <button key={t} onClick={() => { setTab(t); setManualFilter(null) }}
-                style={{
-                  display:'flex', alignItems:'center', gap:6, padding:'8px 14px', borderRadius:9,
-                  fontSize:12.5, fontWeight:600, cursor:'pointer', fontFamily:'inherit',
-                  border: !manualFilter && tab===t ? `1.5px solid ${TAB_COLORS[t]}` : '1.5px solid #e4ede8',
-                  background: !manualFilter && tab===t ? `${TAB_COLORS[t]}12` : '#fff',
-                  color: !manualFilter && tab===t ? TAB_COLORS[t] : '#4a5a52',
-                }}>
-                {TAB_LABELS[t]}
-                <span style={{
-                  background: !manualFilter && tab===t ? TAB_COLORS[t] : '#eef3f0', color: !manualFilter && tab===t ? '#fff' : '#7a8a82',
-                  borderRadius: 999, fontSize:10.5, fontWeight:700, padding:'1px 7px', minWidth:18, textAlign:'center' as const,
-                }}>{counts[t]}</span>
-              </button>
+          <div style={{fontSize:11, fontWeight:700, color:'#9aada3', textTransform:'uppercase' as const, letterSpacing:'0.05em', marginBottom:6}}>
+            Pipeline <span style={{fontWeight:500, textTransform:'none' as const, letterSpacing:'normal', color:'#aabab2'}}>— click to filter, or drag a lead onto a stage to move it manually</span>
+          </div>
+          <div style={{display:'flex', alignItems:'center', overflowX:'auto' as const, padding:'6px 2px 14px', marginBottom:4}}>
+            {(Object.keys(TAB_LABELS) as Tab[]).map((t, i) => (
+              <React.Fragment key={t}>
+                {i > 0 && (
+                  <svg width="20" height="14" viewBox="0 0 20 14" fill="none" style={{flexShrink:0, margin:'0 2px'}}>
+                    <path d="M1 7h16M12 2l6 5-6 5" stroke="#d5e0da" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                )}
+                <button
+                  onClick={() => { setTab(t); setManualFilter(null) }}
+                  onDragOver={e => { e.preventDefault(); if (dragOverTab !== t) setDragOverTab(t) }}
+                  onDragLeave={() => setDragOverTab(prev => prev === t ? null : prev)}
+                  onDrop={e => {
+                    e.preventDefault()
+                    setDragOverTab(null)
+                    const id = e.dataTransfer.getData('text/plain')
+                    if (id) moveConversationToTab(id, t)
+                  }}
+                  style={{
+                    display:'flex', flexDirection:'column' as const, alignItems:'center', gap:5, padding:'6px 10px',
+                    borderRadius:10, cursor:'pointer', fontFamily:'inherit', flexShrink:0, minWidth:74,
+                    border: dragOverTab===t ? `1.5px dashed ${TAB_COLORS[t]}` : '1.5px solid transparent',
+                    background: dragOverTab===t ? `${TAB_COLORS[t]}12` : 'transparent',
+                  }}>
+                  <span style={{
+                    width:34, height:34, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center',
+                    fontSize:13.5, fontWeight:700,
+                    background: !manualFilter && tab===t ? TAB_COLORS[t] : `${TAB_COLORS[t]}18`,
+                    color: !manualFilter && tab===t ? '#fff' : TAB_COLORS[t],
+                  }}>{counts[t]}</span>
+                  <span style={{
+                    fontSize:11, fontWeight: !manualFilter && tab===t ? 700 : 500, textAlign:'center' as const, lineHeight:1.2,
+                    color: !manualFilter && tab===t ? TAB_COLORS[t] : '#7a8a82',
+                  }}>{TAB_LABELS[t]}</span>
+                </button>
+              </React.Fragment>
             ))}
           </div>
 
@@ -757,51 +904,116 @@ export default function WhatsappClient() {
           </div>
 
           <div style={S.card}>
+            {selectedIds.size > 0 && (
+              <div style={{
+                display:'flex', alignItems:'center', gap:10, padding:'10px 18px',
+                background:'#0E5C4208', borderBottom:'1px solid #e4ede8', flexWrap:'wrap' as const,
+              }}>
+                <span style={{fontSize:12.5, fontWeight:700, color:'#0E5C42'}}>{selectedIds.size} selected</span>
+                <select
+                  defaultValue=""
+                  onChange={e => { if (e.target.value) bulkMoveToTab(e.target.value as Tab); e.target.value = '' }}
+                  style={{fontSize:12, fontFamily:'inherit', padding:'5px 8px', borderRadius:6, border:'1px solid #d5e0da', color:'#4a5a52', background:'#fff'}}
+                >
+                  <option value="" disabled>Move to…</option>
+                  {(Object.keys(TAB_LABELS) as Tab[]).map(t => <option key={t} value={t}>{TAB_LABELS[t]}</option>)}
+                </select>
+                <select
+                  defaultValue=""
+                  onChange={e => { bulkApplyLabel(e.target.value === '__clear__' ? null : e.target.value || null); e.target.value = '' }}
+                  style={{fontSize:12, fontFamily:'inherit', padding:'5px 8px', borderRadius:6, border:'1px solid #d5e0da', color:'#4a5a52', background:'#fff'}}
+                >
+                  <option value="" disabled>Apply label…</option>
+                  {MANUAL_LABELS.map(l => <option key={l.key} value={l.key}>{l.label}</option>)}
+                  <option value="__clear__">— Clear label —</option>
+                </select>
+                <button
+                  onClick={() => setSelectedIds(new Set())}
+                  style={{marginLeft:'auto', fontSize:12, color:'#7a8a82', background:'none', border:'none', cursor:'pointer', fontFamily:'inherit'}}
+                >Clear selection</button>
+              </div>
+            )}
+            {!loading && !error && visible.length > 0 && (
+              <div style={{display:'flex', alignItems:'center', gap:8, padding:'8px 18px', borderBottom:'1px solid #f0f4f1'}}>
+                <input
+                  type="checkbox"
+                  checked={visible.every(c => selectedIds.has(c.id))}
+                  onChange={e => setSelectedIds(e.target.checked ? new Set(visible.map(c => c.id)) : new Set())}
+                />
+                <span style={{fontSize:11, color:'#9aada3'}}>Select all ({visible.length})</span>
+              </div>
+            )}
             {loading && <div style={{padding:40, textAlign:'center' as const, color:'#7a8a82', fontSize:13}}>Loading…</div>}
             {error && <div style={{padding:40, textAlign:'center' as const, color:'#dc2626', fontSize:13}}>{error}</div>}
             {!loading && !error && visible.length === 0 && (
               <div style={{padding:40, textAlign:'center' as const, color:'#aabab2', fontSize:13}}>
-                {normalizedSearch
+                {searchText
                   ? <>No leads match &ldquo;{phoneSearch}&rdquo;.</>
                   : <>Nobody in &ldquo;{manualFilter ? MANUAL_LABELS.find(l => l.key === manualFilter)?.label : TAB_LABELS[tab]}&rdquo; right now.</>
                 }
               </div>
             )}
-            {!loading && !error && visible.map(c => (
-              <div key={c.id} style={{
-                padding:'14px 18px', borderBottom:'1px solid #f0f4f1', cursor:'pointer',
-              }} onClick={() => setOpenThread({ id: c.id, name: c.firstName, phone: c.phone, stage: c.stage })}>
-                <div style={{display:'flex', alignItems:'center', justifyContent:'space-between', gap:12}}>
-                  <div style={{minWidth:0}}>
-                    <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410', display:'flex', alignItems:'center', gap:7}}>
-                      {c.unread && (
-                        <span
-                          title="Unread"
-                          style={{
-                            width:9, height:9, borderRadius:'50%', background:'#22c55e', flexShrink:0,
-                            animation:'waUnreadPulse 1.6s infinite',
-                          }}
-                        />
+            {!loading && !error && visible.map(c => {
+              const badge = waitingBadge(c)
+              return (
+              <div key={c.id}
+                draggable
+                onDragStart={e => { e.dataTransfer.setData('text/plain', c.id); e.dataTransfer.effectAllowed = 'move' }}
+                style={{
+                  padding:'14px 18px', borderBottom:'1px solid #f0f4f1', cursor:'pointer',
+                  background: selectedIds.has(c.id) ? '#0E5C4208' : 'transparent',
+                }} onClick={() => setOpenThread({ id: c.id, name: c.firstName, phone: c.phone, stage: c.stage })}>
+                <div style={{display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:12}}>
+                  <div style={{display:'flex', alignItems:'flex-start', gap:10, minWidth:0}}>
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(c.id)}
+                      onClick={e => e.stopPropagation()}
+                      onChange={() => toggleSelected(c.id)}
+                      style={{marginTop:3, flexShrink:0, cursor:'pointer'}}
+                    />
+                    <div style={{minWidth:0}}>
+                      <div style={{fontSize:13.5, fontWeight:600, color:'#0a1410', display:'flex', alignItems:'center', gap:7}}>
+                        {c.unread && (
+                          <span
+                            title="Unread"
+                            style={{
+                              width:9, height:9, borderRadius:'50%', background:'#22c55e', flexShrink:0,
+                              animation:'waUnreadPulse 1.6s infinite',
+                            }}
+                          />
+                        )}
+                        {c.firstName || 'Unknown name'}
+                        {c.language === 'ja' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇯🇵 JA</span>}
+                        {c.language === 'de' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇩🇪 DE</span>}
+                      </div>
+                      <div style={{fontSize:11.5, color:'#7a8a82', marginTop:2}}>{c.phone}</div>
+                      {c.needsHuman && c.escalationReason && (
+                        <div style={{fontSize:11.5, color:'#dc2626', marginTop:4, fontWeight:500}}>⚠ {c.escalationReason}</div>
                       )}
-                      {c.firstName || 'Unknown name'}
-                      {c.language === 'ja' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇯🇵 JA</span>}
-                      {c.language === 'de' && <span style={{marginLeft:6, fontSize:10, color:'#7a8a82', fontWeight:500}}>🇩🇪 DE</span>}
+                      {c.hasAbn && (
+                        <span style={{display:'inline-block', marginTop:4, fontSize:10, fontWeight:600, color:'#7c3aed', background:'#f3ebfd', padding:'2px 7px', borderRadius:5}}>ABN</span>
+                      )}
+                      {c.manualLabel && (
+                        <span style={{display:'inline-block', marginTop:4, marginLeft: c.hasAbn ? 6 : 0, fontSize:10, fontWeight:600, color:'#4a5a52', background:'#eef3f0', padding:'2px 7px', borderRadius:5}}>
+                          {MANUAL_LABELS.find(l => l.key === c.manualLabel)?.label ?? c.manualLabel}
+                        </span>
+                      )}
                     </div>
-                    <div style={{fontSize:11.5, color:'#7a8a82', marginTop:2}}>{c.phone}</div>
-                    {c.needsHuman && c.escalationReason && (
-                      <div style={{fontSize:11.5, color:'#dc2626', marginTop:4, fontWeight:500}}>⚠ {c.escalationReason}</div>
-                    )}
-                    {c.hasAbn && (
-                      <span style={{display:'inline-block', marginTop:4, fontSize:10, fontWeight:600, color:'#7c3aed', background:'#f3ebfd', padding:'2px 7px', borderRadius:5}}>ABN</span>
-                    )}
-                    {c.manualLabel && (
-                      <span style={{display:'inline-block', marginTop:4, marginLeft: c.hasAbn ? 6 : 0, fontSize:10, fontWeight:600, color:'#4a5a52', background:'#eef3f0', padding:'2px 7px', borderRadius:5}}>
-                        {MANUAL_LABELS.find(l => l.key === c.manualLabel)?.label ?? c.manualLabel}
-                      </span>
-                    )}
                   </div>
                   <div style={{textAlign:'right' as const, flexShrink:0, display:'flex', flexDirection:'column' as const, alignItems:'flex-end', gap:6}}>
-                    <div style={{fontSize:11.5, color:'#4a5a52', fontWeight:500}}>{timeAgo(c.lastInboundAt)}</div>
+                    <div style={{display:'flex', alignItems:'center', gap:6}}>
+                      {badge && (
+                        <span
+                          title="Time waiting on a reply from us"
+                          style={{
+                            fontSize:10.5, fontWeight:700, padding:'2px 7px', borderRadius:5,
+                            background: WAITING_COLORS[badge.level].bg, color: WAITING_COLORS[badge.level].fg,
+                          }}
+                        >⏱ {badge.label}</span>
+                      )}
+                      <div style={{fontSize:11.5, color:'#4a5a52', fontWeight:500}}>{timeAgo(c.lastInboundAt)}</div>
+                    </div>
                     {c.crmTaskId && (
                       <a href={`/crm/dashboard`} onClick={e => e.stopPropagation()} style={{fontSize:10.5, color:'#0E5C42', fontWeight:600}}>View task →</a>
                     )}
@@ -815,7 +1027,8 @@ export default function WhatsappClient() {
                   <ReplyBox conversationId={c.id} onSent={load} />
                 )}
               </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </main>

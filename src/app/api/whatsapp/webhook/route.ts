@@ -10,7 +10,6 @@ import { uploadWhatsappMedia } from '@/lib/upload'
 import { personalizeOpeningLine } from '@/lib/ai-personalize'
 import { classifyLodgeIntent, classifyResidencyAnswer } from '@/lib/residency-classifier'
 import { classifyAbnIncome } from '@/lib/abn-classifier'
-import { findKnowledgeBaseAnswer } from '@/lib/knowledge-base'
 import { draftContextAwareReply } from '@/lib/ai-reply-draft'
 import { looksJapanese, looksGerman } from '@/lib/translate'
 
@@ -502,32 +501,17 @@ async function handleWebhookPayload(payload: unknown): Promise<void> {
 }
 
 /**
- * Shared fallback for Section 8/9 ("new/undefined question"): first checks
- * the knowledge base for a saved answer to something similar (Section 9's
- * "every question gets asked once" loop). Only if nothing matches does it
- * fall back to the holding message + human flag, exactly as before this
- * feature existed. Both paths still go through dispatchMessage, so shadow
- * mode is respected even here.
- */
-/**
- * Shared fallback for Section 8/9 ("new/undefined question"): checks the
- * knowledge base first (Section 9's "every question gets asked once"
- * loop) — an exact saved answer always wins, since those are previously
- * human-approved. Only if nothing matches does it read the FULL
- * conversation history and draft a context-aware reply (ai-reply-draft.ts)
- * instead of the old static "let me check" line, so the suggestion in the
- * Shadow Mode queue actually reflects where this client is — whether it's
- * their 1st message or their 100th. Falls back to the original fixed
- * holding line if drafting fails for any reason. Both paths still go
- * through dispatchMessage, so shadow mode is respected either way.
+ * Shared fallback for Section 8/9 ("new/undefined question"): always reads
+ * the FULL conversation history and drafts a fresh, context-aware reply
+ * (ai-reply-draft.ts) — no static saved-answer shortcut. Per instruction,
+ * this deliberately does NOT check the knowledge base for a pre-saved
+ * answer anymore; every message, whether it's the client's 1st or their
+ * 100th, gets a suggestion drafted fresh from the current conversation.
+ * Falls back to the original fixed holding line only if drafting itself
+ * fails (API error, empty output, etc.) — see ai-reply-draft.ts. Still
+ * goes through dispatchMessage, so Shadow Mode is respected either way.
  */
 async function sendHoldingMessageAndFlag(conversation: Conversation, phone: string, clientText: string, language: 'en' | 'de' | 'ja' = 'en'): Promise<void> {
-  const kbMatch = await findKnowledgeBaseAnswer(clientText)
-  if (kbMatch) {
-    await dispatchMessage(conversation.id, phone, kbMatch.answer, `kb_match_${kbMatch.id}`, undefined, language)
-    return
-  }
-
   const history = await getMessageHistory(conversation.id)
   const draft = await draftContextAwareReply({
     history,
