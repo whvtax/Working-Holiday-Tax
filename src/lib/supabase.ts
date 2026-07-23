@@ -30,6 +30,20 @@ export function getSupabase(): SupabaseClient {
       persistSession: false,
       autoRefreshToken: false,
     },
+    global: {
+      // CRITICAL: explicitly disable caching on every request this client
+      // makes. We were relying on each route's `dynamic = 'force-dynamic'`
+      // export to propagate Next.js's no-store behaviour down into
+      // @supabase/supabase-js's internal fetch calls, but evidence from
+      // production (identical requests returning stale results only for
+      // certain column selections, unaffected by redeploys, env var
+      // changes, or a PostgREST schema cache reload) points to those
+      // internal fetches being cached somewhere outside our route's
+      // control. Forcing `cache: 'no-store'` here removes that layer
+      // entirely, regardless of the cause.
+      fetch: (input: RequestInfo | URL, init?: RequestInit) =>
+        fetch(input, { ...init, cache: 'no-store' }),
+    },
   })
 
   return _supabase
