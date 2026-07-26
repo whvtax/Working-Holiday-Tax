@@ -182,38 +182,6 @@ function WhatsAppQuick({ name, whatsapp }: { name: string; whatsapp: string }) {
 }
 
 
-function BankCard({ bankDetails }: { bankDetails: string }) {
-  const bkParts = (bankDetails || '').split(' | ')
-  const bkName   = bkParts.find(p => p.startsWith('Bank:'))?.replace('Bank: ', '') || ''
-  const bkHolder = bkParts.find(p => p.startsWith('Name:'))?.replace('Name: ', '') || ''
-  const bkAcct   = bkParts.find(p => p.startsWith('Account:'))?.replace('Account: ', '') || ''
-  const bkBsb    = bkParts.find(p => p.startsWith('BSB:'))?.replace('BSB: ', '') || ''
-  if (!bkName && !bkHolder && !bkAcct && !bkBsb) return null
-  const fields: [string, string, string][] = [
-    ['🏦', 'Bank name', bkName],
-    ['👤', 'Account holder', bkHolder],
-    ['🔢', 'Account number', bkAcct],
-    ['📍', 'BSB / Branch', bkBsb],
-  ]
-  return (
-    <div style={{ background: '#fff', border: '1.5px solid #D4EAE2', borderRadius: 13, overflow: 'hidden', marginBottom: 12 }}>
-      <div style={{ padding: '8px 14px', background: '#EAF6F1', borderBottom: '1px solid #D4EAE2', display: 'flex', alignItems: 'center', gap: 6 }}>
-        <span style={{ fontSize: 11, fontWeight: 700, color: '#0E5C42', textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>🏦 Bank account details</span>
-      </div>
-      {fields.filter(([,, v]) => v && v !== '-').map(([icon, label, value]) => (
-        <div key={label} style={{ display: 'flex', alignItems: 'center', padding: '11px 14px', borderBottom: '1px solid #f0f4f1', gap: 10 }}>
-          <span style={{ fontSize: 16, flexShrink: 0 }}>{icon}</span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 10, color: '#8DA89A', fontWeight: 600, textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginBottom: 2 }}>{label}</div>
-            <div style={{ fontSize: 14, color: '#0a1410', fontWeight: 600, direction: 'ltr', letterSpacing: '0.01em' }}>{value}</div>
-          </div>
-          <CopyFieldBtn text={value} />
-        </div>
-      ))}
-    </div>
-  )
-}
-
 function CopyFieldBtn({ text }: { text: string }) {
   const [copied, setCopied] = React.useState(false)
   return (
@@ -903,12 +871,6 @@ export default function DashboardClient() {
       return hit ? hit.replace('→ ','') : '-'
     }
 
-    const bkParts = (task.bankDetails||'').split(' | ')
-    const bkName    = bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')    || task.bankDetails || '-'
-    const bkHolder  = bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')    || '-'
-    const bkAccount = bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','') || '-'
-    const bkBsb     = bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')      || '-'
-
     const titles: Record<string,string> = {
       'tfn':'TFN Application','abn':'ABN Application',
       'super':'Superannuation Refund','tax-return':'Tax Return Form'
@@ -1016,11 +978,6 @@ export default function DashboardClient() {
         + field('Super fund name', superFundName)
         + field('Member number', superMemberNumber)
         + field('Account opening date', superOpeningDate)
-        + sec('Bank account details')
-        + field('Bank name', bkName)
-        + field('Account holder full name', bkHolder)
-        + field('Account number', bkAccount)
-        + field('BSB', bkBsb)
         + sec('Documents')
         + ((task.fileUrls??[]).length > 0
           ? (task.fileUrls??[]).map(fileItem).join('')
@@ -1086,11 +1043,6 @@ export default function DashboardClient() {
             }
             return out
           })()
-        + sec('Bank account details')
-        + field('Bank name', bkName)
-        + field('Account holder full name', bkHolder)
-        + field('Account number', bkAccount)
-        + field('BSB', bkBsb)
         + sec('Documents')
         + ((task.fileUrls??[]).length > 0
           ? (task.fileUrls??[]).map(fileItem).join('')
@@ -2060,19 +2012,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                         </div>
                       )
                     })()}
-                    {(()=>{
-                      const bkParts=(activeTask.bankDetails||'').split(' | ')
-                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'-'
-                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'-'
-                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'-'
-                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'-'
-                      return(<>
-                        <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
-                        {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
-                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
-                        ))}
-                      </>)
-                    })()}
                   </>}
                   {activeTask.taskType==='super' && <>
                     <div style={S.secHead}><span>Super details</span></div>
@@ -2091,19 +2030,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                     })().map(([l,v])=>(
                       <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
                     ))}
-                    {(()=>{
-                      const bkParts=(activeTask.bankDetails||'').split(' | ')
-                      const bkName   =bkParts.find(p=>p.startsWith('Bank:'))?.replace('Bank: ','')||activeTask.bankDetails||'-'
-                      const bkHolder =bkParts.find(p=>p.startsWith('Name:'))?.replace('Name: ','')||'-'
-                      const bkAcct   =bkParts.find(p=>p.startsWith('Account:'))?.replace('Account: ','')||'-'
-                      const bkBsb    =bkParts.find(p=>p.startsWith('BSB:'))?.replace('BSB: ','')||'-'
-                      return(<>
-                        <div style={{...S.row,background:'#f7fbf9',borderTop:'1px solid #e4ede8'}}><span style={{...S.lbl,fontWeight:700,color:'#0E5C42',fontSize:10,textTransform:'uppercase',letterSpacing:'0.04em'}}>🏦 Bank account</span></div>
-                        {([['Bank name',bkName],['Account holder',bkHolder],['Account number',bkAcct],['BSB / Branch code',bkBsb]] as [string,string][]).map(([l,v])=>(
-                          <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr'}}>{v||'-'}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
-                        ))}
-                      </>)
-                    })()}
                   </>}
                   {activeTask.taskType==='tfn' && <>
                     <div style={S.secHead}><span>Tax details</span></div>

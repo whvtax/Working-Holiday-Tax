@@ -170,6 +170,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [auPhone, setAuPhone]         = useState('')
   const [fullName, setFullName]       = useState('')
   const [lastName, setLastName]        = useState('')
+  const [step, setStep] = useState<1 | 2>(1)
   const [address, setAddress]         = useState('')
   const [email, setEmail]             = useState('')
   const [country, setCountry]         = useState('')
@@ -178,13 +179,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [hasMedicare, setHasMedicare] = useState<'yes'|'no'|''>('')
   const [tfn, setTfn]                 = useState('')
   const [primaryJob, setPrimaryJob]   = useState('')
-  const [bankName, setBankName]           = useState('')
-  const [bankHolder, setBankHolder]       = useState('')
-  const [bankAccount, setBankAccount]     = useState('')
-  const [bankBsb, setBankBsb]             = useState('')
 
   // Files
-  const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
 
   const [hasExpenses, setHasExpenses] = useState<'yes'|'no'|''>('')
@@ -211,6 +207,29 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [submitted, setSubmitted]     = useState(false)
   const [loading, setLoading]         = useState(false)
   const [errors, setErrors]           = useState<Record<string, string>>({})
+
+  // ── Funnel analytics (no external service — logs straight into Supabase,
+  //    see form_funnel_events / migration 012). One stable id per form
+  //    visit, generated once, so a view → step1_complete → submit_success
+  //    chain can be tied together and the conversion rate measured. Never
+  //    allowed to affect the actual form — every call is fire-and-forget.
+  const sessionIdRef = useRef<string>('')
+  if (!sessionIdRef.current) {
+    sessionIdRef.current = (typeof crypto !== 'undefined' && crypto.randomUUID)
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  }
+  const trackFunnelEvent = (eventType: 'view' | 'step1_complete' | 'submit_success') => {
+    try {
+      fetch('/api/analytics/funnel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formName: 'tax-form', eventType, sessionId: sessionIdRef.current, lang }),
+        keepalive: true,
+      }).catch(() => {})
+    } catch {}
+  }
+  useEffect(() => { trackFunnelEvent('view') }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Tax-residency confirmation prompt (shown for the one risky pick:
   //    NDA country selecting Working Holiday Maker) ──────────────────────
@@ -239,12 +258,14 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       setIf(d.country, setCountry);     setIf(d.dob, setDob);             setIf(d.marital, setMarital)
       setIf(d.hasMedicare, setHasMedicare)
       setIf(d.tfn, setTfn);             setIf(d.primaryJob, setPrimaryJob)
-      setIf(d.bankName, setBankName);   setIf(d.bankHolder, setBankHolder)
-      setIf(d.bankAccount, setBankAccount); setIf(d.bankBsb, setBankBsb)
       setIf(d.hasExpenses, setHasExpenses); setIf(d.taxStatus, setTaxStatus)
       setIf(d.declared, setDeclared)
       setIf(d.taxYears, setTaxYears);   setIf(d.terms, setTerms)
       setIf(d.howHeard, setHowHeard)
+      // This snapshot only ever gets saved from within the step-2 section
+      // (the residency question), so restoring it must also jump back to
+      // step 2 — otherwise the scroll target below doesn't even exist yet.
+      setStep(2)
       // Scroll back to the tax-residency question after the DOM settles
       setTimeout(() => taxStatusRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' }), 60)
     } catch {}
@@ -268,7 +289,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       const data = {
         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
         hasMedicare,
-        tfn, primaryJob, bankName, bankHolder, bankAccount, bankBsb, hasExpenses,
+        tfn, primaryJob, hasExpenses,
         taxStatus, declared, taxYears, terms, howHeard,
       }
       sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), data }))
@@ -291,11 +312,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!hasMedicare)        e.hasMedicare = T('required')
     if (!tfn.trim())         e.tfn         = T('required')
     if (!primaryJob.trim())  e.primaryJob  = T('required')
-    if (!bankName.trim())    e.bankName    = T('required')
-    if (!bankHolder.trim())  e.bankHolder  = T('required')
-    if (!bankAccount.trim()) e.bankAccount = T('required')
-    if (!bankBsb.trim())     e.bankBsb     = T('required')
-    if (!bankStatement.file)  e.bankStatement  = T('required')
     if (!selfiePassport.file) e.selfiePassport = T('required')
     if (!taxStatus)           e.taxStatus      = T('required')
     if (!declared)            e.declared       = T('required')
@@ -303,6 +319,31 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
     return e
+  }
+
+  // Step 1 covers just the quick-entry fields (contact + identity + TFN);
+  // everything else (residency, expenses, declaration, documents) is step 2.
+  const validateStep1 = () => {
+    const e: Record<string, string> = {}
+    if (!waNumber.trim())    e.waNumber    = T('required')
+    if (!auPhone.trim())     e.auPhone     = T('required')
+    if (!fullName.trim())    e.fullName    = T('required')
+    if (!lastName.trim())    e.lastName    = T('required')
+    if (!dob.trim())         e.dob         = T('required')
+    if (!tfn.trim())         e.tfn         = T('required')
+    if (!email.trim())       e.email       = T('required')
+    if (!address.trim())     e.address     = T('required')
+    if (!primaryJob.trim())  e.primaryJob  = T('required')
+    return e
+  }
+
+  const goToStep2 = () => {
+    const errs = validateStep1()
+    if (Object.keys(errs).length) { setErrors(errs); return }
+    setErrors({})
+    trackFunnelEvent('step1_complete')
+    setStep(2)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   /* ── Submit ── */
@@ -374,9 +415,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       return null
     }
 
-    // Upload bankStatement + selfiePassport sequentially to avoid rate-limiting
+    // Upload selfiePassport (bank statement no longer collected here — bank
+    // details are now gathered separately via WhatsApp instead)
     const coreUploads: { label: string; file: File }[] = []
-    if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
     if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
     const coreResults: (string | null)[] = []
     for (const { file: f } of coreUploads) {
@@ -407,13 +448,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('tfn',         tfn)
     fd.append('primaryJob',  primaryJob)
     fd.append('hasExpenses',  hasExpenses === 'yes' ? 'Yes' : hasExpenses === 'no' ? 'No' : '')
-    fd.append('bankDetails', `Bank: ${bankName} | Name: ${bankHolder} | Account: ${bankAccount} | BSB: ${bankBsb}`)
     fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus)
     fd.append('taxYear',     taxYears.join(', '))
     fd.append('howHeard',    howHeard)
     if (refCode) fd.append('refCode', refCode)
-    fd.append('declared',    declared === 'yes' ? '✓ I declare that all information I have provided is true, complete, and accurate, including all income earned in Australia and overseas during the relevant tax year. I understand that providing false, misleading, or incomplete information may result in penalties under Australian tax law. I accept full responsibility for the information I have provided and acknowledge that Working Holiday Tax is not liable for any errors or omissions resulting from incorrect or incomplete information supplied by me. I have read and accept the Client Agreement and Privacy Policy.' : declared === 'no' ? '✗ No' : '')
-    if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
+    fd.append('declared',    declared === 'yes' ? '✓ I confirm I\u2019ve read and agree to the Client Agreement and Privacy Policy.' : declared === 'no' ? '✗ No' : '')
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
     // Combine all uploaded URLs (core files only - invoices are sent by email)
@@ -423,6 +462,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     try {
       const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
       if (res.ok) {
+        trackFunnelEvent('submit_success')
         window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
       } else {
         const data = await res.json().catch(() => ({}))
@@ -494,15 +534,34 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
         <div className="form-card">
           <div className="form-header">
             <FormLanguageToggle lang={lang} onChange={setLang} />
-            <div className="form-brand">Working Holiday Tax</div>
 
           <h1 className="form-title">{T('titleTax')}</h1>
-            <p className="form-intro">{T('englishOnlyNotice')}</p>
+
+            <div className="form-trust-row">
+              <div className="form-trust-item">
+                <div className="form-trust-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0B5240" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </div>
+                <span>{T('registeredTaxAgent')}</span>
+              </div>
+              <div className="form-trust-item">
+                <div className="form-trust-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#0B5240" strokeWidth="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#0B5240" strokeWidth="2" strokeLinecap="round"/></svg>
+                </div>
+                <span>{T('secureForm')}</span>
+              </div>
+              <div className="form-trust-item">
+                <div className="form-trust-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="2"/><path d="M3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9Z" stroke="#0B5240" strokeWidth="2"/></svg>
+                </div>
+                <span>{T('fullyOnline')}</span>
+              </div>
+            </div>
           </div>
 
         <form onSubmit={handleSubmit} noValidate>
 
-          <div className="form-section-title">{T('contactDetails')}</div>
+          {step === 1 && (
           <div>
 
             <Field label={T('whatsapp')} required error={errors.waNumber}
@@ -518,7 +577,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={auPhone} onChange={e => { setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({...p, auPhone: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
 
-            <Field label={T('firstName')} required error={errors.fullName}>
+            <Field label={T('givenNames')} required error={errors.fullName}>
               <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport" autoComplete="given-name" maxLength={60}
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
             </Field>
@@ -527,28 +586,57 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 
+            <Field label={T('dob')} required error={errors.dob}>
+              <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date" autoComplete="bday"
+                value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
+            </Field>
+
+            <Field label={T('tfn')} required error={errors.tfn}>
+              <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
+                value={tfn} onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, tfn: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
+            </Field>
+
             <Field label={T('email')} required error={errors.email}>
               <input className={`inp ${errors.email ? 'inp-err' : ''}`} type="email" placeholder="your@email.com" autoComplete="email" inputMode="email" maxLength={200}
                 value={email} onChange={e => { setEmail(e.target.value); setErrors(p => ({...p, email: ''})) }} />
             </Field>
 
-            <Field label={T('address')} required error={errors.address}>
-              <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="Street, suburb, state, postcode" autoComplete="street-address" maxLength={300}
+            <Field label={T('addressShort')} required error={errors.address}>
+              <input className={`inp ${errors.address ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12 Smith Street, Bondi NSW 2026" autoComplete="street-address" maxLength={300}
                 value={address} onChange={e => { setAddress(e.target.value); setErrors(p => ({...p, address: ''})) }} />
             </Field>
-          </div>
 
-          <div className="form-section-title">{T('personalInfo')}</div>
+            <Field label={T('primaryJob')} required error={errors.primaryJob}>
+              <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
+                value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
+            </Field>
+
+            {Object.values(errors).some(v => v) && (
+              <div className="errors-banner">
+                <strong>{T('fixBeforeSubmit')}</strong>
+                <ul style={{margin:'6px 0 0',paddingLeft:'18px'}}>
+                  {(Object.entries(errors) as [string, string][]).filter(([,v]) => v).map(([k, v]) => (
+                    <li key={k} style={{fontSize:'12px',marginBottom:'2px'}}>{v === T('required') ? `${({
+                      waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',lastName:'Last Name',
+                      dob:'Date of Birth',tfn:'TFN',email:'Email Address',address:'Australian Address',primaryJob:'Primary Job',
+                    } as Record<string,string>)[k] || k} is required` : v}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <button type="button" className="submit-btn" onClick={goToStep2}>
+              {T('continueButton')}
+            </button>
+          </div>
+          )}
+
+          {step === 2 && (
           <div>
 
             <Field label={T('homeCountry')} required error={errors.country}>
               <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60}
                 value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
-            </Field>
-
-            <Field label={T('dob')} required error={errors.dob}>
-              <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date"
-                value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
             </Field>
 
             <Field label={T('marital')} required error={errors.marital}>
@@ -577,47 +665,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               </div>
             </Field>
           </div>
+          )}
 
-          <div className="form-section-title">{T('taxInfo')}</div>
+          {step === 2 && (
           <div>
-
-            <Field label={T('tfn')} required error={errors.tfn}>
-              <input className={`inp ${errors.tfn ? 'inp-err' : ''}`} type="text" placeholder="XXX XXX XXX" inputMode="numeric"
-                value={tfn} onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, tfn: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
-            </Field>
-
-            <Field label={T('primaryJob')} required error={errors.primaryJob}>
-              <input className={`inp ${errors.primaryJob ? 'inp-err' : ''}`} type="text" placeholder="e.g. Farm worker, Barista"
-                value={primaryJob} onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({...p, primaryJob: ''})) }} />
-            </Field>
-
-          <div className="form-section-title">{T('sectionBank')}</div>
-            <p className="form-section-hint">{T('bankDetailsHint')}</p>
-            <Field label={T('bankName')} required error={errors.bankName}>
-              <input className={`inp ${errors.bankName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Commonwealth Bank, NAB, ANZ"
-                value={bankName} onChange={e => { setBankName(e.target.value); setErrors(p => ({...p, bankName: ''})) }} />
-            </Field>
-            <Field label={T('bankHolderFull')} required error={errors.bankHolder}>
-              <input className={`inp ${errors.bankHolder ? 'inp-err' : ''}`} type="text" placeholder="As it appears on the bank account"
-                value={bankHolder} onChange={e => { setBankHolder(e.target.value); setErrors(p => ({...p, bankHolder: ''})) }} />
-            </Field>
-            <Field label={T('bankAccount')} required error={errors.bankAccount}>
-              <input className={`inp ${errors.bankAccount ? 'inp-err' : ''}`} type="text" placeholder="e.g. 12345678" inputMode="numeric"
-                value={bankAccount} onChange={e => { setBankAccount(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankAccount: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
-            </Field>
-            <Field label={T('bankBSB')} required error={errors.bankBsb}>
-              <input className={`inp ${errors.bankBsb ? 'inp-err' : ''}`} type="text" placeholder="e.g. 062-000" inputMode="numeric"
-                value={bankBsb} onChange={e => { setBankBsb(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({...p, bankBsb: ''})) }}  onKeyDown={e=>{if(!/^[0-9\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
-            </Field>
-          </div>
-
-          <div className="form-section-title">{T('sectionDocuments')}</div>
-          <div>
-
-            <Field label={T('bankStatements')} required error={errors.bankStatement} hint={T('bankStatementHint')}>
-              <FileUpload id="bankStatement" label={T('uploadBankStatement')} accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
-                value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} lang={lang} />
-            </Field>
 
             <Field label={T('selfieWithPassport')} required error={errors.selfiePassport} hint={T('selfieHint')}>
               <FileUpload id="selfiePassport" label={T('uploadSelfie')} accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
@@ -651,7 +702,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               </div>
             )}
           </div>
+          )}
 
+          {step === 2 && (
+          <>
           <div>
             <Field label={T('howHeard')} required error={errors.howHeard}>
               <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
@@ -659,7 +713,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
           </div>
 
-          <div className="form-section-title">{T('sectionDeclaration')}</div>
           <div ref={taxStatusRef} style={{scrollMarginTop:'80px'}}>
 
             {isNdaCountry(country) && (
@@ -679,11 +732,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
                 {lang === 'de' ? (
-                  <>Ich bestätige, dass ich den Abschnitt{' '}<a href="/de/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Steuerresidenz erklärt</a>{' '}und alle relevanten ATO-Informationen gelesen habe, und erkläre, dass ich bin:</>
+                  <>Nach Prüfung des Abschnitts{' '}<a href="/de/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Steuerresidenz erklärt</a>{' '}und der relevanten ATO-Informationen erkläre ich, dass ich bin:</>
                 ) : lang === 'ja' ? (
-                  <>{'「'}<a href="/ja/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>税務上の居住者ステータスについて</a>{'」'}のセクションとATOの関連情報をすべて確認したことを認め、以下に該当することを宣言します：</>
+                  <>{'「'}<a href="/ja/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>税務上の居住者ステータスについて</a>{'」'}のセクションと関連するATO情報を確認した上で、以下に該当することを宣言します：</>
                 ) : (
-                  <>I confirm that I have reviewed the{' '}<a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>{' '}section and all relevant ATO information, and I declare that I am:</>
+                  <>Having reviewed the{' '}<a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>{' '}page and the relevant ATO information, I declare that I am:</>
                 )}<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
               </label>
               <div className="radio-group radio-group-col">
@@ -714,11 +767,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
                 <p className="decl-text">
                   {lang === 'de' ? (
-                    <>Ich erkläre, dass alle von mir gemachten Angaben wahr, vollständig und korrekt sind, einschließlich aller Einkommen, die im betreffenden Steuerjahr in Australien und im Ausland erzielt wurden. Ich verstehe, dass falsche, irreführende oder unvollständige Angaben zu Strafen nach australischem Steuerrecht führen können. Ich übernehme die volle Verantwortung für die von mir bereitgestellten Informationen und bestätige, dass Working Holiday Tax nicht für Fehler oder Auslassungen haftet, die aus falschen oder unvollständigen Angaben von mir resultieren. Ich habe die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen und akzeptiere sie.</>
+                    <>Ich bestätige, dass ich die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen habe und ihnen zustimme.</>
                   ) : lang === 'ja' ? (
-                    <>私が提供したすべての情報が真実、完全、かつ正確であることを宣言します。これには、当該税務年度中にオーストラリアおよび海外で得たすべての所得が含まれます。虚偽、誤解を招く、または不完全な情報を提供した場合、オーストラリア税法上のペナルティが科される可能性があることを理解しています。私は自分が提供した情報について全責任を負い、私が提供した不正確または不完全な情報に起因する誤りや漏れについて、Working Holiday Taxが責任を負わないことを了承します。{' '}<a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">クライアント規約</a>{' '}および{' '}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">プライバシーポリシー</a>を読み、同意します。</>
+                    <>{'私は'}<a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">クライアント規約</a>{'および'}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">プライバシーポリシー</a>{'を読み、同意することを確認します。'}</>
                   ) : (
-                    <>I declare that all information I have provided is true, complete, and accurate, including all income earned in Australia and overseas during the relevant tax year. I understand that providing false, misleading, or incomplete information may result in penalties under Australian tax law. I accept full responsibility for the information I have provided and acknowledge that Working Holiday Tax is not liable for any errors or omissions resulting from incorrect or incomplete information supplied by me. I have read and accept the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}and{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>
+                    <>I confirm I&apos;ve read and agree to the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}and{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>
                   )}
                 </p>
                 <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
@@ -739,14 +792,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',hasMedicare:'Medicare',tfn:'TFN',
-                    primaryJob:'Primary Job',bankName:'Bank Name',bankHolder:'Account Holder Name',bankAccount:'Account Number',bankBsb:'BSB',
-                    bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
+                    primaryJob:'Primary Job',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>
                 ))}
               </ul>
             </div>
           )}
+
+          <button type="button" className="back-btn" onClick={() => { setStep(1); setErrors({}); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
+            {T('backButton')}
+          </button>
 
           <button type="submit" className="submit-btn" disabled={loading}>
             {loading ? (
@@ -760,6 +816,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           </button>
 
           <p className="form-footer-note">{T('secureNote')}</p>
+          </>
+          )}
 
         </form>
 
@@ -850,8 +908,11 @@ const styles = `
   .hidden { display: none !important; }
   .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
-  .form-header { background: #fff; padding: 32px 24px 24px; text-align: center; border-bottom: 1px solid #EAF6F1; }
-  .form-brand { font-size: 11px; font-weight: 600; color: #0B5240; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 10px; }
+  .form-header { background: #fff; padding: 22px 24px 22px; text-align: center; border-bottom: 1px solid #EAF6F1; }
+  .form-trust-row { display: flex; align-items: flex-start; justify-content: center; gap: 22px; margin-top: 14px; }
+  .form-trust-item { display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 78px; }
+  .form-trust-circle { width: 40px; height: 40px; border-radius: 50%; background: #EAF6F1; border: 1px solid #C8EAE0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .form-trust-item span { font-size: 10.5px; font-weight: 600; color: #4a5a52; line-height: 1.25; }
   .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(11,82,64,0.65); text-transform: uppercase; margin-bottom: 8px; }
   .form-title { font-size: 24px; font-weight: 800; color: #080F0D; letter-spacing: -0.02em; margin-bottom: 10px; }
   .form-intro { font-size: 13px; color: #587066; line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
@@ -903,6 +964,8 @@ const styles = `
   .submit-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: #0B5240; color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; margin-top: 24px; transition: opacity .15s, transform .1s; }
   .submit-btn:active { transform: scale(.98); opacity: .9; }
   .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
+  .back-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 48px; background: #fff; color: #0B5240; font-size: 14px; font-weight: 600; font-family: inherit; border: 1.5px solid #D4EAE2; border-radius: 100px; cursor: pointer; margin-top: 14px; transition: opacity .15s, transform .1s; }
+  .back-btn:active { transform: scale(.98); opacity: .85; }
   .btn-loading { display: flex; align-items: center; gap: 8px; }
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }

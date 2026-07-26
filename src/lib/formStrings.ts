@@ -43,6 +43,7 @@ export const formStrings = {
 
   // ─ Field labels - shared ─
   firstName:           { en: 'First name (including middle names)', de: 'Vorname (inkl. Zweitnamen)', ja: '名（ミドルネーム含む）' },
+  givenNames:          { en: 'Given Name(s)',                       de: 'Vorname(n)',                ja: '名' },
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
@@ -53,6 +54,7 @@ export const formStrings = {
   gender:              { en: 'Gender as shown in passport',        de: 'Geschlecht laut Reisepass', ja: 'パスポートに記載の性別' },
   marital:             { en: 'Marital status',                     de: 'Familienstand',             ja: '配偶者の有無' },
   address:             { en: 'Full Australian address (street, suburb, state, postcode)', de: 'Vollständige australische Adresse (Straße, Vorort, Bundesstaat, Postleitzahl)', ja: 'オーストラリアの完全な住所（番地、サバーブ、州、郵便番号）' },
+  addressShort:        { en: 'Full Australian Address', de: 'Vollständige australische Adresse', ja: 'オーストラリアの完全な住所' },
   howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?', ja: '当社をどこで知りましたか？' },
   selfieWithPassport:  { en: 'Selfie holding your passport',        de: 'Selfie mit deinem Reisepass in der Hand', ja: 'パスポートを持った自撮り写真' },
   uploadSelfie:        { en: 'Upload selfie holding your passport', de: 'Selfie mit Reisepass in der Hand hochladen', ja: 'パスポートを持った自撮り写真をアップロード' },
@@ -67,6 +69,11 @@ export const formStrings = {
   submitTax:           { en: 'Submit Tax Return →',                de: 'Steuererklärung abschicken →', ja: 'タックスリターンを送信 →' },
   submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →',  ja: 'スーパー申請を送信 →' },
   submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…' },
+  continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
+  backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },
+  registeredTaxAgent:  { en: 'Registered Tax Agent',                de: 'Registrierter Steuerberater', ja: '登録税理士' },
+  secureForm:          { en: 'Secure Form',                         de: 'Sicheres Formular',           ja: '安全なフォーム' },
+  fullyOnline:         { en: '100% Online',                         de: '100% Online',                 ja: '完全オンライン' },
 
   // ─ Radio options ─
   female:              { en: 'Female',                              de: 'Female',                   ja: 'Female' },

@@ -111,6 +111,21 @@ export async function GET(req: NextRequest) {
 }
 
 async function sendHealthAlertEmail(problems: string[]): Promise<boolean> {
+  // Kill switch for JUST this alert — e.g. while WhatsApp is deliberately
+  // paused (Meta App set to "In development"), the health check will
+  // correctly detect silence and would otherwise alert every hour about
+  // an "issue" that's actually expected. This does NOT affect the CRM
+  // login OTP email, which is a separate code path (api/crm/login) even
+  // though both use the same RESEND_API_KEY.
+  //
+  // To re-enable: remove WA_HEALTH_ALERTS_DISABLED from Vercel env vars
+  // (or set it to anything other than "true") — nothing else needs to
+  // change, the health check itself keeps running and logging either way.
+  if (process.env.WA_HEALTH_ALERTS_DISABLED === 'true') {
+    console.log('[wa-health alert] Skipped — WA_HEALTH_ALERTS_DISABLED is set.')
+    return false
+  }
+
   const apiKey = process.env.RESEND_API_KEY
   const to = process.env.CRM_ADMIN_EMAIL
   if (!apiKey || !to) return false
