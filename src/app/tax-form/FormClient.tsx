@@ -538,23 +538,22 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <h1 className="form-title">{T('titleTax')}</h1>
 
             <div className="form-trust-row">
-              <div className="form-trust-item">
-                <div className="form-trust-circle">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#0B5240" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </div>
-                <span>{T('registeredTaxAgent')}</span>
+              <div className="form-trust-circle" title={T('secureForm')}>
+                <svg width="19" height="21" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
+                  <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
-              <div className="form-trust-item">
-                <div className="form-trust-circle">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="10" rx="2" stroke="#0B5240" strokeWidth="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="#0B5240" strokeWidth="2" strokeLinecap="round"/></svg>
-                </div>
-                <span>{T('secureForm')}</span>
+              <div className="form-trust-circle" title={T('registeredTaxAgent')}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={26} height={26} style={{ objectFit: 'contain' }} />
               </div>
-              <div className="form-trust-item">
-                <div className="form-trust-circle">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0B5240" strokeWidth="2"/><path d="M3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9Z" stroke="#0B5240" strokeWidth="2"/></svg>
-                </div>
-                <span>{T('fullyOnline')}</span>
+              <div className="form-trust-circle" title={T('fullyOnline')}>
+                <svg width="21" height="21" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="9" cy="9" r="7.3" stroke="#0B5240" strokeWidth="1.2"/>
+                  <path d="M9 1.7c3 2.9 3 11.7 0 14.6M9 1.7c-3 2.9-3 11.7 0 14.6" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
+                  <path d="M1.9 9h14.2" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
+                </svg>
               </div>
             </div>
           </div>
@@ -634,9 +633,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           {step === 2 && (
           <div>
 
-            <Field label={T('homeCountry')} required error={errors.country}>
-              <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60}
-                value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
+            <Field label={T('hasMedicare')} required error={errors.hasMedicare}>
+              <div className="radio-group">
+                {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
+                  <label key={opt.val} className={`radio-card ${hasMedicare === opt.val ? 'radio-card-active' : ''}`}>
+                    <input type="radio" name="hasMedicare" value={opt.val} checked={hasMedicare === opt.val}
+                      onChange={() => { setHasMedicare(opt.val); setErrors(p => ({...p, hasMedicare: ''})) }} className="hidden" />
+                    <div className={`radio-dot ${hasMedicare === opt.val ? 'radio-dot-active' : ''}`} />
+                    {opt.label}
+                  </label>
+                ))}
+              </div>
             </Field>
 
             <Field label={T('marital')} required error={errors.marital}>
@@ -651,30 +658,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 ))}
               </div>
             </Field>
-
-            <Field label={T('hasMedicare')} required error={errors.hasMedicare}>
-              <div className="radio-group">
-                {([{ val: 'no', label: 'No' }, { val: 'yes', label: 'Yes' }] as const).map(opt => (
-                  <label key={opt.val} className={`radio-card ${hasMedicare === opt.val ? 'radio-card-active' : ''}`}>
-                    <input type="radio" name="hasMedicare" value={opt.val} checked={hasMedicare === opt.val}
-                      onChange={() => { setHasMedicare(opt.val); setErrors(p => ({...p, hasMedicare: ''})) }} className="hidden" />
-                    <div className={`radio-dot ${hasMedicare === opt.val ? 'radio-dot-active' : ''}`} />
-                    {opt.label}
-                  </label>
-                ))}
-              </div>
-            </Field>
-          </div>
-          )}
-
-          {step === 2 && (
-          <div>
-
-            <Field label={T('selfieWithPassport')} required error={errors.selfiePassport} hint={T('selfieHint')}>
-              <FileUpload id="selfiePassport" label={T('uploadSelfie')} accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
-                value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} lang={lang} />
-            </Field>
-
 
             <Field label={T('hasExpenses')} required error={errors.hasExpenses}>
               <div className="radio-group">
@@ -705,29 +688,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           )}
 
           {step === 2 && (
-          <>
-          <div>
-            <Field label={T('howHeard')} required error={errors.howHeard}>
-              <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
-                value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
-            </Field>
-          </div>
-
           <div ref={taxStatusRef} style={{scrollMarginTop:'80px'}}>
-
-            {isNdaCountry(country) && (
-              <div style={{display:'flex',gap:10,alignItems:'flex-start',background:'#FFF8E8',border:'1.5px solid #F3D88A',borderRadius:12,padding:'12px 14px',marginBottom:14}}>
-                <span style={{fontSize:18,lineHeight:1}}>🎉</span>
-                <p style={{fontSize:12.5,color:'#6B5215',lineHeight:1.55,margin:0}}>
-                  {lang === 'de'
-                    ? <>Basierend auf deinem Heimatland (<strong>{country}</strong>) könntest du als australischer Steuerresident für steuerliche Zwecke gelten. Das bedeutet, dass du möglicherweise eine vollständige Rückerstattung der Steuer erhältst, die du auf ein Einkommen bis zu $18.200 gezahlt hast. Bitte lies die Bedingungen sorgfältig, bevor du unten deine Auswahl triffst.</>
-                    : lang === 'ja'
-                    ? <>あなたの出身国（<strong>{country}</strong>）に基づくと、税務上のオーストラリア居住者として認定される可能性があります。これは、$18,200までの所得にかかった税金が全額還付される可能性があることを意味します。下記で選択する前に、条件をよくお読みください。</>
-                    : <>Based on your home country (<strong>{country}</strong>), you may qualify as an Australian resident for tax purposes. This means you may be entitled to a full refund of the tax you paid on income up to $18,200. Please read the conditions carefully before making your selection below.</>
-                  }
-                </p>
-              </div>
-            )}
 
             <Field label="" required error={errors.taxStatus}>
               <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
@@ -762,6 +723,33 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 ))}
               </div>
             </Field>
+          </div>
+          )}
+
+          {step === 2 && (
+          <div>
+
+            <Field label={T('homeCountry')} required error={errors.country}>
+              <input className={`inp ${errors.country ? 'inp-err' : ''}`} type="text" placeholder="e.g. United Kingdom" autoComplete="country-name" maxLength={60}
+                value={country} onChange={e => { setCountry(e.target.value); setErrors(p => ({...p, country: ''})) }} />
+            </Field>
+
+            <Field label={T('howHeard')} required error={errors.howHeard}>
+              <input className={`inp ${errors.howHeard ? 'inp-err' : ''}`} type="text" placeholder="e.g. Instagram, TikTok, friend..."
+                value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
+            </Field>
+
+            <Field label={T('selfieWithPassport')} required error={errors.selfiePassport} hint={T('selfieHint')}>
+              <FileUpload id="selfiePassport" label={T('uploadSelfie')} accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
+                value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} lang={lang} />
+            </Field>
+
+          </div>
+          )}
+
+          {step === 2 && (
+          <>
+          <div>
 
             <Field label="" required error={errors.declared}>
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
@@ -908,17 +896,13 @@ const styles = `
   .hidden { display: none !important; }
   .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
-  .form-header { background: #fff; padding: 22px 24px 22px; text-align: center; border-bottom: 1px solid #EAF6F1; }
-  .form-trust-row { display: flex; align-items: flex-start; justify-content: center; gap: 22px; margin-top: 14px; }
-  .form-trust-item { display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 78px; }
-  .form-trust-circle { width: 40px; height: 40px; border-radius: 50%; background: #EAF6F1; border: 1px solid #C8EAE0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .form-trust-item span { font-size: 10.5px; font-weight: 600; color: #4a5a52; line-height: 1.25; }
+  .form-header { background: #fff; padding: 22px 24px 22px; text-align: center; }
+  .form-trust-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; }
+  .form-trust-circle { width: 44px; height: 44px; border-radius: 50%; background: #EAF6F1; border: 1px solid #C8EAE0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(11,82,64,0.65); text-transform: uppercase; margin-bottom: 8px; }
   .form-title { font-size: 24px; font-weight: 800; color: #080F0D; letter-spacing: -0.02em; margin-bottom: 10px; }
   .form-intro { font-size: 13px; color: #587066; line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
   form { padding: 20px 24px 32px; }
-  .form-section-title { font-size: 11px; font-weight: 700; color: #0B5240; text-transform: uppercase; letter-spacing: 0.06em; margin: 20px 0 12px; border-bottom: 1px solid #EAF6F1; padding-bottom: 8px; }
-  .form-section-hint { font-size: 12px; color: #7A8A82; line-height: 1.55; margin: -6px 0 14px; }
   .field-group { margin-bottom: 14px; }
   .field-label { display: block; font-size: 13px; font-weight: 600; color: #1A2822; margin-bottom: 6px; }
   .req-dot { color: #0B5240; margin-left: 3px; }

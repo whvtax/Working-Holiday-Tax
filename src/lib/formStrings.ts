@@ -127,7 +127,7 @@ export const formStrings = {
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung',        ja: 'ABN登録' },
-  titleTax:            { en: 'Tax Return Application',              de: 'Steuererklärungsantrag',   ja: 'タックスリターン申請' },
+  titleTax:            { en: 'Claim Your Tax Refund',               de: 'Hol dir deine Steuerrückerstattung', ja: '税金の還付金を受け取る' },
   titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
 
   // ─ Tax form specific ─

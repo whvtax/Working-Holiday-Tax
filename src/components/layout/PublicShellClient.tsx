@@ -15,6 +15,12 @@ export default function PublicShellClient({
 }) {
   const pathname = usePathname()
   const isCrm = pathname?.startsWith('/crm')
+  // Tax-form: hide only the footer (not the top nav) — a focused form
+  // shouldn't offer easy escape routes at the bottom (blog links, social
+  // icons, other pages), but the top nav/logo staying visible still gives
+  // people a sense of "I'm on a real, navigable site" if they want it.
+  const isTaxForm = pathname === '/tax-form' || pathname === '/de/tax-form' || pathname === '/ja/tax-form'
+  const hideFooter = isCrm || isTaxForm
 
   // Scroll to top on every page navigation
   useEffect(() => {
@@ -25,7 +31,7 @@ export default function PublicShellClient({
     <>
       {!isCrm && nav}
       {children}
-      {!isCrm && footer}
+      {!hideFooter && footer}
       {!isCrm && <SecurityNotice />}
     </>
   )
