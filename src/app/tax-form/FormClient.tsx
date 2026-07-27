@@ -546,7 +546,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               </div>
               <div className="form-trust-circle" title={T('registeredTaxAgent')}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={26} height={26} style={{ objectFit: 'contain' }} />
+                <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={36} height={36} style={{ objectFit: 'contain' }} />
               </div>
               <div className="form-trust-circle" title={T('fullyOnline')}>
                 <svg width="21" height="21" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -627,6 +627,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <button type="button" className="submit-btn" onClick={goToStep2}>
               {T('continueButton')}
             </button>
+            <p className="form-footer-note" style={{marginTop:10}}>{T('timeEstimate')}</p>
           </div>
           )}
 
@@ -908,6 +909,7 @@ const styles = `
   .req-dot { color: #0B5240; margin-left: 3px; }
   .field-error { display: block; font-size: 11px; color: #DC2626; margin-top: 4px; }
   .inp { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+  input[type="date"].inp { min-height: 47px; line-height: 1.4; }
   .inp:focus { border-color: #0B5240; background: #fff; }
   .inp-err { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
   .form-textarea { min-height: 80px; resize: vertical; }

@@ -70,6 +70,7 @@ export const formStrings = {
   submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →',  ja: 'スーパー申請を送信 →' },
   submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…' },
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
+  timeEstimate:        { en: '⏱ Takes about 2 minutes',            de: '⏱ Dauert etwa 2 Minuten',    ja: '⏱ 約2分で完了' },
   backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },
   registeredTaxAgent:  { en: 'Registered Tax Agent',                de: 'Registrierter Steuerberater', ja: '登録税理士' },
   secureForm:          { en: 'Secure Form',                         de: 'Sicheres Formular',           ja: '安全なフォーム' },
