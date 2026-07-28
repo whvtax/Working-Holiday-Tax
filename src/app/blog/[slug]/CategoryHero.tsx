@@ -13,15 +13,17 @@ export default function CategoryHero({ category, title }: { category: Category; 
   // hash-positioned accent ring. Same article always renders the same art (SSR-safe).
   let hash = 0
   for (let i = 0; i < title.length; i++) hash = (hash * 31 + title.charCodeAt(i)) >>> 0
-  const rot = ((hash % 7) - 3) * 3          // -9..9 degrees
-  const sc = 0.9 + ((hash >> 3) % 5) * 0.04 // 0.90..1.06
-  const tx = (((hash >> 5) % 5) - 2) * 7    // -14..14 px
-  const ty = (((hash >> 7) % 3) - 1) * 6    // -6..6 px
+  // NOTE: use unsigned shifts (>>>) - a signed shift on a hash above 2^31
+  // yields a negative value, which produced a negative array index.
+  const rot = ((hash % 7) - 3) * 3            // -9..9 degrees
+  const sc = 0.9 + ((hash >>> 3) % 5) * 0.04  // 0.90..1.06
+  const tx = (((hash >>> 5) % 5) - 2) * 7     // -14..14 px
+  const ty = (((hash >>> 7) % 3) - 1) * 6     // -6..6 px
   const accents = [
     { cx: 48, cy: 52 }, { cx: 272, cy: 48 }, { cx: 276, cy: 178 }, { cx: 44, cy: 182 },
   ]
-  const accent = accents[(hash >> 9) % 4]
-  const accentR = 7 + ((hash >> 11) % 3) * 3
+  const accent = accents[(hash >>> 9) % accents.length] ?? accents[0]
+  const accentR = 7 + ((hash >>> 11) % 3) * 3
 
   // Each category gets a different visual motif to feel distinct
   const renderMotif = () => {

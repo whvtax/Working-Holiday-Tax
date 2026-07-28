@@ -34,3 +34,18 @@ Body expansions are ENGLISH ONLY. DE/JA retain their original full translated bo
 - 6 per-category OG images generated (public/assets/og/og-*.png, 1200x630, brand palette per category).
 - All 3 article page.tsx files: og:image, twitter image and schema primaryImageOfPage now category-specific (ogForCategory helper). Fallback to /og-image.png.
 - Verified: tsc --noEmit clean.
+
+---
+
+# BUGFIX (29 July 2026) — CategoryHero crash
+Symptom: "TypeError: Cannot read properties of undefined (reading 'cx')" -> Next.js
+"Application error: a client-side exception has occurred" on pages rendering blog cards.
+
+Cause: the per-article art variation used SIGNED right shifts (>>). For any title whose
+32-bit hash exceeded 2^31, `hash >> 9` was negative, and JS `%` keeps the sign of the
+dividend, so `accents[negative]` returned undefined -> reading `.cx` threw.
+Affected 48 of 119 titles (~40%).
+
+Fix: unsigned shifts (>>>) everywhere + `?? accents[0]` fallback on the array lookup.
+Verified by simulating the hash over every real article title: 0 out-of-range indexes.
+tsc --noEmit clean.

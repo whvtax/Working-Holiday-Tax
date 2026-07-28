@@ -17,7 +17,7 @@ CODE:
 IMAGES:
 - public/assets/og/og-{tfn,abn,tax-return,super,work-rights,medicare}.png (1200x630)
 
-## Verified
+## Verified (final, post-hotfix)
 - tsc --noEmit: CLEAN (whole project)
 - eslint on all changed files: CLEAN
 - Data integrity: 154 unique slugs, balanced template literals, no ${} in bodies,
@@ -33,3 +33,15 @@ IMAGES:
 1. Google Search Console -> Sitemaps -> resubmit sitemap.xml
 2. Request indexing for the 5 new /blog/ URLs
 3. In 2-3 weeks: export a fresh GSC performance report for comparison against baseline (27 July 2026)
+
+---
+
+## FINAL BUILD — includes CategoryHero hotfix (29 July 2026)
+The client-side crash ("Cannot read properties of undefined (reading 'cx')") is fixed.
+Cause: signed bit-shifts produced negative array indexes for ~40% of titles.
+Fix: unsigned shifts + fallback. Runtime-simulated against all 420 titles across
+EN/DE/JA: 0 failures. tsc clean, eslint clean.
+
+## Expenses page (29 July 2026)
+All 17 em-dashes removed from /expenses copy and replaced with natural punctuation
+(commas, colons, full stops). No layout or logic changes. tsc + eslint clean.

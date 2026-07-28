@@ -44,22 +44,22 @@ export const metadata: Metadata = {
 
 const GOLDEN_RULES = [
   'You must have spent the money yourself, and not been reimbursed for it by your employer.',
-  'The expense must be directly related to earning your income — not a private or domestic expense.',
-  'You need a record to prove it — a receipt, invoice, or bank statement showing what you bought and when.',
+  'The expense must be directly related to earning your income, not a private or domestic expense.',
+  'You need a record to prove it: a receipt, invoice, or bank statement showing what you bought and when.',
 ]
 
 const CAR_METHOD_ROWS = [
   ['Rate (2024-25 & 2025-26)', '88c / km'],
   ['Rate (2026-27, from 1 Jul 2026)', '91c / km'],
   ['Maximum claimable', '5,000 km / car / year'],
-  ['Receipts required?', 'No — but you need to show how you worked out your kilometres'],
+  ['Receipts required?', 'No, but you need to show how you worked out your kilometres'],
 ]
 
 const LOGBOOK_ROWS = [
   ['How it works', 'Claim the work-related % of all actual running costs'],
   ['Logbook period', '12 continuous weeks, valid for 5 years'],
-  ['Maximum claimable', 'No cap — based on your actual work-use percentage'],
-  ['Receipts required?', 'Yes — for every expense you claim'],
+  ['Maximum claimable', 'No cap, based on your actual work-use percentage'],
+  ['Receipts required?', 'Yes, for every expense you claim'],
 ]
 
 type Occupation = {
@@ -82,7 +82,7 @@ const OCCUPATIONS: Occupation[] = [
       'A First Aid certificate, if your role requires you to hold one',
     ],
     cannot: [
-      'Plain black clothing or shoes with no logo — even if your venue requires it, the ATO treats this as ordinary clothing, not a uniform',
+      'Plain black clothing or shoes with no logo. Even if your venue requires it, the ATO treats this as ordinary clothing, not a uniform',
     ],
   },
   {
@@ -96,7 +96,7 @@ const OCCUPATIONS: Occupation[] = [
     ],
     cannot: [
       'General clothing like jeans or t-shirts, even if they get worn out or dirty on the job',
-      'The trip from home to your first farm each day — that\u2019s treated as ordinary commuting',
+      'The trip from home to your first farm each day, which is treated as ordinary commuting',
     ],
   },
   {
@@ -106,7 +106,7 @@ const OCCUPATIONS: Occupation[] = [
     can: [
       'Renewing your White Card (Construction Induction Card)',
       'Steel-cap boots and hi-vis clothing',
-      'Tools and equipment — items under $300 are an immediate deduction; items over $300 are claimed over their effective life',
+      'Tools and equipment. Items under $300 are an immediate deduction; items over $300 are claimed over their effective life',
       'Sun protection for outdoor site work',
     ],
     cannot: [
@@ -120,7 +120,7 @@ const OCCUPATIONS: Occupation[] = [
     subtitle: 'Commercial kitchens, restaurants',
     can: [
       'Chef\u2019s knives and other kitchen tools you buy yourself',
-      'Chef whites or checked chef pants — these count as occupation-specific clothing',
+      'Chef whites or checked chef pants, which count as occupation-specific clothing',
       'Non-slip kitchen shoes',
       'A Food Safety Supervisor certificate, if your role requires one',
     ],
@@ -133,14 +133,14 @@ const OCCUPATIONS: Occupation[] = [
     title: 'Rideshare & Delivery Driving',
     subtitle: 'Uber, Uber Eats, DoorDash and similar',
     can: [
-      'Car running costs for the work-related portion of your driving — via the cents-per-km or logbook method (see below)',
+      'Car running costs for the work-related portion of your driving, via the cents-per-km or logbook method (see below)',
       'The work-use percentage of your mobile phone plan',
       'Car cleaning, to keep the car in a suitable state for passengers',
       'Parking fees incurred while working',
     ],
     cannot: [
       'The private portion of any trip, or your everyday commute',
-      'Parking or speeding fines — these are never deductible, no matter the reason',
+      'Parking or speeding fines, which are never deductible, no matter the reason',
     ],
   },
   {
@@ -246,7 +246,7 @@ export default function ExpensesPage() {
                 What can backpackers actually <span style={{ color: '#0B5240' }}>claim on tax</span>?
               </h1>
               <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '46ch' }}>
-                Work-related deductions can add hundreds of dollars to your refund — but only if the expense genuinely qualifies. Here&apos;s exactly what does, by occupation.
+                Work-related deductions can add hundreds of dollars to your refund, but only if the expense genuinely qualifies. Here&apos;s exactly what does, by occupation.
               </p>
             </div>
           </div>
@@ -280,7 +280,7 @@ export default function ExpensesPage() {
               <div>
                 <p className="taxres-savings-heading">Keeping records</p>
                 <p className="taxres-savings-body">
-                  Keep a receipt, invoice, or bank statement for anything you plan to claim — a photo on your phone is fine. If your total work-related claims for the year are under $300, the ATO doesn&apos;t require written evidence, but you still need to be able to explain how you arrived at the amount.
+                  Keep a receipt, invoice, or bank statement for anything you plan to claim. A photo on your phone is fine. If your total work-related claims for the year are under $300, the ATO doesn&apos;t require written evidence, but you still need to be able to explain how you arrived at the amount.
                 </p>
               </div>
             </div>
@@ -295,7 +295,7 @@ export default function ExpensesPage() {
                 Car expenses: two ways to claim
               </h2>
               <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                Only work-related driving counts — never your regular commute from home. There are two methods; you can only use one per car per year.
+                Only work-related driving counts, never your regular commute from home. There are two methods; you can only use one per car per year.
               </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
@@ -303,7 +303,7 @@ export default function ExpensesPage() {
               <CompareTable label="Logbook method" rows={LOGBOOK_ROWS} />
             </div>
             <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch', marginTop: '18px' }}>
-              If you drive more than 5,000 work km a year, the logbook method usually gets you a bigger refund — but it does require keeping a 12-week logbook and all your receipts.
+              If you drive more than 5,000 work km a year, the logbook method usually gets you a bigger refund, but it does require keeping a 12-week logbook and all your receipts.
             </p>
           </div>
         </section>
@@ -316,7 +316,7 @@ export default function ExpensesPage() {
                 Deductions by occupation
               </h2>
               <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                The most common jobs backpackers work in Australia, and exactly what tends to qualify — and what doesn&apos;t.
+                The most common jobs backpackers work in Australia, and exactly what tends to qualify, and what doesn&apos;t.
               </p>
             </div>
             <div className="exp-grid">
@@ -329,7 +329,7 @@ export default function ExpensesPage() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              This is general information, not personal tax advice — everyone&apos;s situation is a little different. When you lodge with us, we&apos;ll go through your specific occupation and circumstances to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
+              This is general information, not personal tax advice. Everyone&apos;s situation is a little different. When you lodge with us, we&apos;ll go through your specific occupation and circumstances to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
             </p>
             <Link href="/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
