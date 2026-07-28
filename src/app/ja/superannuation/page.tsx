@@ -494,6 +494,37 @@ export default function JapaneseSuperannuationPage() {
       </section>
 
 
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">関連記事</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              スーパー受取に関するガイド
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/ja/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'DASP申請する？オーストラリアに残す？メリット比較' },
+              { href: '/ja/blog/super-for-casual-and-part-time-workers', label: 'カジュアル・パートタイマーもスーパーがもらえる？' },
+              { href: '/ja/blog/how-to-choose-super-fund', label: 'スーパーファンドの選び方：手数料・運用成績で比較' },
+              { href: '/ja/blog/what-is-dasp-super-withdrawal', label: 'DASPとは？スーパー受取の仕組みをワーホリ向けに解説' },
+              { href: '/ja/blog/dasp-tax-rate-65-percent-explained', label: 'なぜDASPには65%の税金？高税率の理由と背景' },
+              { href: '/ja/blog/how-long-does-dasp-take', label: 'DASP（スーパー受取）の処理期間：通常28日以内' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="次のステップ"

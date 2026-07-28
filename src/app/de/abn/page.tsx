@@ -455,6 +455,37 @@ export default function ABNPageDE() {
 
       {/* ── WHAT TO HAVE READY ── */}
 
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">Mehr erfahren</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              Ratgeber zur ABN für Working Holiday Maker
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/de/blog/what-is-an-abn', label: 'Was ist eine ABN und brauchst du eine mit Working Holiday Visum?' },
+              { href: '/de/blog/how-to-register-for-an-abn', label: 'Wie du als Backpacker eine ABN in Australien registrierst' },
+              { href: '/de/blog/employee-vs-contractor-australia', label: 'Angestellter oder Contractor: was Working Holiday Maker wissen müssen' },
+              { href: '/de/blog/gst-and-abn-for-working-holiday-makers', label: 'GST und ABN: müssen sich Working Holiday Maker registrieren?' },
+              { href: '/de/blog/sole-trader-vs-company-australia-working-holiday', label: 'Sole Trader vs. Company: was ist die richtige Struktur für deine ABN?' },
+              { href: '/de/blog/uber-doordash-rideshare-abn-working-holiday', label: 'Uber, DoorDash oder Rideshare: ABN- und Steuerregeln' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">

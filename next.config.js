@@ -12,7 +12,8 @@ const staticCsp = {
       // needed for dev HMR, so it's excluded from production builds.
       // connect.facebook.net: Meta's Embedded Signup SDK, used only on the
       // admin-only /crm/whatsapp/connect page to onboard the WhatsApp number.
-      `script-src 'self' 'unsafe-inline' https://connect.facebook.net${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
+      // https://www.googletagmanager.com: GA4's gtag.js loader script.
+      `script-src 'self' 'unsafe-inline' https://connect.facebook.net https://www.googletagmanager.com${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
       // Tailwind inline styles + Google Fonts stylesheet
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Google Fonts files
@@ -24,7 +25,8 @@ const staticCsp = {
       "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.facebook.com https://web.facebook.com",
       // Supabase API calls + same-origin + Meta Graph API (Embedded Signup /
       // WhatsApp Cloud API calls made from the connect page and server routes)
-      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://graph.facebook.com https://connect.facebook.net",
+      // + GA4 beacons (google-analytics.com + regional subdomains, googletagmanager.com config fetch)
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://graph.facebook.com https://connect.facebook.net https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
       "media-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",

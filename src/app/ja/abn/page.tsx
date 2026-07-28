@@ -439,6 +439,37 @@ export default function ABNPageJA() {
 
       {/* ── WHAT TO HAVE READY ── */}
 
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">関連記事</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              ABNに関するガイド
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/ja/blog/what-is-an-abn', label: 'ABNとは？ワーホリでABNが必要なケースを徹底解説' },
+              { href: '/ja/blog/how-to-register-for-an-abn', label: 'ABN登録方法：オーストラリアで個人事業主になるステップ' },
+              { href: '/ja/blog/employee-vs-contractor-australia', label: '従業員と請負業者（コントラクター）の違いとは？' },
+              { href: '/ja/blog/gst-and-abn-for-working-holiday-makers', label: 'GST（消費税）登録は必要？ABN保持者の判断基準' },
+              { href: '/ja/blog/sole-trader-vs-company-australia-working-holiday', label: '個人事業主（Sole Trader）と法人（Company）の違い' },
+              { href: '/ja/blog/uber-doordash-rideshare-abn-working-holiday', label: 'Uber・DoorDash・配車サービスで働く：ABNと税金のルール' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">

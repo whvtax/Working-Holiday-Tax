@@ -430,6 +430,31 @@ export default function TFNPageDE() {
 
       {/* ── WHAT TO HAVE READY ── */}
 
+      {/* ── ONCE YOUR TFN IS SORTED (internal links) ────────────────────────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 text-center">
+          <span className="section-label center">Was kommt als nächstes?</span>
+          <h2 className="font-serif font-black text-ink"
+            style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px', marginBottom:'12px' }}>
+            Sobald deine TFN steht
+          </h2>
+          <p className="font-light text-muted max-w-[640px] mx-auto" style={{ fontSize:'13.5px', lineHeight:1.7, marginBottom:'20px' }}>
+            Deine TFN ist die Basis für den Rest deiner Steuersituation in Australien. Das prüfen die meisten Working Holiday Maker als nächstes.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            <Link href="/de/tax-return" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
+              Steuererklärung einreichen
+            </Link>
+            <Link href="/de/superannuation" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
+              Super zurückholen, wenn du gehst (DASP)
+            </Link>
+            <Link href="/de/abn" className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500">
+              Als Contractor? ABN beantragen
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 reveal">

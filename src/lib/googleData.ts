@@ -11,10 +11,19 @@ const WIDGET_ID =
 export type GoogleRatingData = {
   rating: number
   count: number
+  // true only when this came from a real, successful Featurable/Google
+  // Reviews API response this request. false = the FALLBACK below.
+  // Callers should NOT emit AggregateRating structured data when this is
+  // false — showing a static number to Google as if it were the current
+  // live rating violates Google's structured-data policy if the real
+  // number has since changed.
+  live: boolean
 }
 
-// Fallback values shown if the API is unreachable at build/render time
-const FALLBACK: GoogleRatingData = { rating: 4.9, count: 80 }
+// Used only to avoid breaking layout while the live rating is unavailable
+// (e.g. UI display). NEVER put this in JSON-LD structured data — check
+// `live` first.
+const FALLBACK: GoogleRatingData = { rating: 4.9, count: 80, live: false }
 
 export async function getGoogleRating(): Promise<GoogleRatingData> {
   try {
@@ -25,10 +34,10 @@ export async function getGoogleRating(): Promise<GoogleRatingData> {
     if (!res.ok) return FALLBACK
     const d: any = await res.json()
     if (!d || d.success === false) return FALLBACK
-    const rating = Number(d.averageRating) || FALLBACK.rating
-    const count  = Number(d.totalReviewCount) || FALLBACK.count
-    if (rating < 1 || rating > 5 || count < 1) return FALLBACK
-    return { rating, count }
+    const rating = Number(d.averageRating)
+    const count  = Number(d.totalReviewCount)
+    if (!rating || !count || rating < 1 || rating > 5 || count < 1) return FALLBACK
+    return { rating, count, live: true }
   } catch {
     return FALLBACK
   }

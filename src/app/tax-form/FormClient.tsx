@@ -181,6 +181,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [primaryJob, setPrimaryJob]   = useState('')
 
   // Files
+  const [bankStatement, setBankStatement] = useState<UploadState>({ file: null, preview: null })
   const [selfiePassport, setSelfiePassport] = useState<UploadState>({ file: null, preview: null })
 
   const [hasExpenses, setHasExpenses] = useState<'yes'|'no'|''>('')
@@ -312,6 +313,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!hasMedicare)        e.hasMedicare = T('required')
     if (!tfn.trim())         e.tfn         = T('required')
     if (!primaryJob.trim())  e.primaryJob  = T('required')
+    if (!bankStatement.file)  e.bankStatement  = T('required')
     if (!selfiePassport.file) e.selfiePassport = T('required')
     if (!taxStatus)           e.taxStatus      = T('required')
     if (!declared)            e.declared       = T('required')
@@ -415,9 +417,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       return null
     }
 
-    // Upload selfiePassport (bank statement no longer collected here — bank
-    // details are now gathered separately via WhatsApp instead)
+    // Upload bankStatement + selfiePassport sequentially to avoid rate-limiting
     const coreUploads: { label: string; file: File }[] = []
+    if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
     if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
     const coreResults: (string | null)[] = []
     for (const { file: f } of coreUploads) {
@@ -453,6 +455,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     fd.append('howHeard',    howHeard)
     if (refCode) fd.append('refCode', refCode)
     fd.append('declared',    declared === 'yes' ? '✓ I confirm I\u2019ve read and agree to the Client Agreement and Privacy Policy.' : declared === 'no' ? '✗ No' : '')
+    if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
     if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
 
     // Combine all uploaded URLs (core files only - invoices are sent by email)
@@ -660,7 +663,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               </div>
             </Field>
 
-            <Field label={T('hasExpenses')} required error={errors.hasExpenses}>
+            <Field label="" required error={errors.hasExpenses}>
+              <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
+                {lang === 'de' ? (
+                  <>Hast du{' '}<a href="/de/expenses" target="_blank" rel="noopener noreferrer" style={{color:'#0B5240',textDecoration:'underline'}}>arbeitsbezogene Ausgaben</a>?</>
+                ) : lang === 'ja' ? (
+                  <><a href="/ja/expenses" target="_blank" rel="noopener noreferrer" style={{color:'#0B5240',textDecoration:'underline'}}>業務関連の経費</a>はありますか？</>
+                ) : (
+                  <>Do you have{' '}<a href="/expenses" target="_blank" rel="noopener noreferrer" style={{color:'#0B5240',textDecoration:'underline'}}>work-related expenses</a>?</>
+                )}<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
+              </label>
               <div className="radio-group">
                 {(['yes','no'] as const).map(opt => (
                   <label key={opt} className={`radio-card ${hasExpenses === opt ? 'radio-card-active' : ''}`}>
@@ -740,6 +752,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={howHeard} onChange={e => { setHowHeard(e.target.value); setErrors(p => ({...p, howHeard: ''})) }} />
             </Field>
 
+            <Field label={T('bankStatements')} required error={errors.bankStatement} hint={T('bankStatementHint')}>
+              <FileUpload id="bankStatement" label={T('uploadBankStatement')} accept=".pdf,.jpg,.jpeg,.png,.heic,.heif,.webp"
+                value={bankStatement} onChange={(v) => { setBankStatement(v); setErrors(p => ({...p, bankStatement: ''})) }} lang={lang} />
+            </Field>
+
             <Field label={T('selfieWithPassport')} required error={errors.selfiePassport} hint={T('selfieHint')}>
               <FileUpload id="selfiePassport" label={T('uploadSelfie')} accept=".jpg,.jpeg,.png,.pdf,.heic,.heif,.webp"
                 value={selfiePassport} onChange={(v) => { setSelfiePassport(v); setErrors(p => ({...p, selfiePassport: ''})) }} lang={lang} />
@@ -781,7 +798,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                     waNumber:'Phone Number',auPhone:'Australian Phone',fullName:'Full Name',
                     email:'Email Address',address:'Australian Address',country:'Home Country',
                     dob:'Date of Birth',marital:'Marital Status',hasMedicare:'Medicare',tfn:'TFN',
-                    primaryJob:'Primary Job',selfiePassport:'Selfie with Passport',
+                    primaryJob:'Primary Job',bankStatement:'Bank Statement',selfiePassport:'Selfie with Passport',
                     taxStatus:'Tax Residency Status',declared:'Declaration',howHeard:'How did you hear about us'
                   } as Record<string,string>)[k] || k} is required` : v}</li>
                 ))}

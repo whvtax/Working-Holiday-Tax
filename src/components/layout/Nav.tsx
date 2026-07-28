@@ -38,6 +38,7 @@ const SERVICES_LINKS = [
 
 // Top-level links (Services is a dropdown, others are direct)
 const TOP_LINKS = [
+  { label: 'Expenses',   href: '/expenses' },
   { label: 'Calculator', href: '/calculator' },
   { label: 'Blog',       href: '/blog' },
   { label: 'Contact',    href: '/contact' },
@@ -78,12 +79,14 @@ export function Nav() {
   const topLinks =
     locale === 'de'
       ? [
+          { label: 'Ausgaben', href: '/de/expenses' },
           { label: 'Rechner',  href: '/de/calculator' },
           { label: 'Blog',     href: '/de/blog' },
           { label: 'Kontakt',  href: '/de/contact' },
         ]
       : locale === 'ja'
       ? [
+          { label: '経費',             href: '/ja/expenses' },
           { label: '計算機',           href: '/ja/calculator' },
           { label: 'ブログ',           href: '/ja/blog' },
           { label: 'お問い合わせ',     href: '/ja/contact' },
@@ -271,6 +274,7 @@ export function Nav() {
               { label: 'Steuererklärung',      href: '/de/tax-return' },
               { label: 'Super (DASP)',         href: '/de/superannuation' },
               { label: 'Medicare',             href: '/de/medicare' },
+              { label: 'Ausgaben',             href: '/de/expenses' },
               { label: 'Rechner',              href: '/de/calculator' },
               { label: 'Blog',                 href: '/de/blog' },
               { label: 'Kontakt',              href: '/de/contact' },
@@ -282,6 +286,7 @@ export function Nav() {
               { label: 'タックスリターン',   href: '/ja/tax-return' },
               { label: 'スーパー受取',       href: '/ja/superannuation' },
               { label: 'メディケア',         href: '/ja/medicare' },
+              { label: '経費',               href: '/ja/expenses' },
               { label: '計算機',             href: '/ja/calculator' },
               { label: 'ブログ',             href: '/ja/blog' },
               { label: 'お問い合わせ',       href: '/ja/contact' },
@@ -292,6 +297,7 @@ export function Nav() {
               { label: 'Tax Return',  href: '/tax-return' },
               { label: 'Super',       href: '/superannuation' },
               { label: 'Medicare',    href: '/medicare' },
+              { label: 'Expenses',    href: '/expenses' },
               { label: 'Calculator',  href: '/calculator' },
               { label: 'Blog',        href: '/blog' },
               { label: 'Contact',     href: '/contact' },

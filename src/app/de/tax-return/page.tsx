@@ -615,6 +615,37 @@ export default function GermanTaxReturnPage() {
 
       {/* ── WHAT TO HAVE READY ── */}
 
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">Mehr erfahren</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              Ratgeber zu deiner Steuererklärung
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/de/blog/how-to-lodge-tax-return-working-holiday', label: 'Working Holiday Steuererklärung einreichen: Schritt-für-Schritt' },
+              { href: '/de/blog/backpacker-tax-rate-australia', label: 'Backpacker-Steuersatz Australien: Erklärung für 417 & 462 Visum' },
+              { href: '/de/blog/tax-deductions-working-holiday-makers', label: 'Werbungskosten für Working Holiday Maker: vollständige Anleitung' },
+              { href: '/de/blog/how-long-does-tax-refund-take-australia', label: 'Wie lange dauert eine Steuerrückerstattung in Australien?' },
+              { href: '/de/blog/tax-residency-working-holiday-makers', label: 'Sind Working Holiday Maker Steuerresidenten Australiens?' },
+              { href: '/de/blog/what-is-a-tax-refund-australia', label: 'Was ist eine Steuerrückerstattung und steht dir eine zu?' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">

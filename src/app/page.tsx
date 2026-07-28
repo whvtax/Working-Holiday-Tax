@@ -160,7 +160,9 @@ export default async function HomePage() {
     about: { '@id': `${SITE_URL}/#business` },
   }
 
-  const aggregateRatingLd = {
+  // Only built when gRating.live — see googleData.ts. Never emit a fabricated
+  // rating to Google as structured data.
+  const aggregateRatingLd = gRating.live ? {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': `${SITE_URL}/#business`,
@@ -174,7 +176,7 @@ export default async function HomePage() {
       bestRating: '5',
       worstRating: '1',
     },
-  }
+  } : null
 
   const faqLd = {
     '@context': 'https://schema.org',
@@ -215,6 +217,9 @@ export default async function HomePage() {
     '@id': `${SITE_URL}/#professionalservice`,
     name: 'Working Holiday Tax',
     url: SITE_URL,
+    telephone: '+61424513998',
+    priceRange: '$$',
+    image: `${SITE_URL}/og-image.png`,
     description: 'Registered tax agent for working holiday makers in Australia (417 and 462 visa holders). Tax returns, TFN, ABN, super refund (DASP).',
     areaServed: { '@type': 'Country', name: 'Australia' },
     serviceType: ['Tax return preparation', 'TFN application', 'ABN registration', 'Superannuation refund (DASP)', 'Medicare levy exemption'],
@@ -254,7 +259,7 @@ export default async function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aggregateRatingLd) }} />
+      {aggregateRatingLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(aggregateRatingLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
 

@@ -497,6 +497,37 @@ export default function GermanSuperannuationPage() {
       </section>
 
 
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">Mehr erfahren</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              Ratgeber zur Rückholung deiner Super
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/de/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'Solltest du DASP beantragen oder deine Super in Australien lassen?' },
+              { href: '/de/blog/super-for-casual-and-part-time-workers', label: 'Haben Casual- und Teilzeitarbeiter Anspruch auf Super?' },
+              { href: '/de/blog/how-to-choose-super-fund', label: 'Was ist ein Superfonds und wie wählst du einen?' },
+              { href: '/de/blog/what-is-dasp-super-withdrawal', label: 'Was ist DASP und wie funktioniert der Superauszahlungsprozess?' },
+              { href: '/de/blog/dasp-tax-rate-65-percent-explained', label: 'Warum wird DASP mit 65 % besteuert?' },
+              { href: '/de/blog/how-long-does-dasp-take', label: 'Wie lange dauert die Bearbeitung eines DASP-Antrags?' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="Was kommt als nächstes?"

@@ -8,6 +8,21 @@ import { type Category, getCategoryColor } from '../data'
 export default function CategoryHero({ category, title }: { category: Category; title: string }) {
   const colors = getCategoryColor(category)
 
+  // Deterministic per-article variation so cards in the same category don't look identical.
+  // Derived from the title: subtle rotation, scale and offset of the motif, plus a
+  // hash-positioned accent ring. Same article always renders the same art (SSR-safe).
+  let hash = 0
+  for (let i = 0; i < title.length; i++) hash = (hash * 31 + title.charCodeAt(i)) >>> 0
+  const rot = ((hash % 7) - 3) * 3          // -9..9 degrees
+  const sc = 0.9 + ((hash >> 3) % 5) * 0.04 // 0.90..1.06
+  const tx = (((hash >> 5) % 5) - 2) * 7    // -14..14 px
+  const ty = (((hash >> 7) % 3) - 1) * 6    // -6..6 px
+  const accents = [
+    { cx: 48, cy: 52 }, { cx: 272, cy: 48 }, { cx: 276, cy: 178 }, { cx: 44, cy: 182 },
+  ]
+  const accent = accents[(hash >> 9) % 4]
+  const accentR = 7 + ((hash >> 11) % 3) * 3
+
   // Each category gets a different visual motif to feel distinct
   const renderMotif = () => {
     switch (category) {
@@ -120,8 +135,14 @@ export default function CategoryHero({ category, title }: { category: Category; 
         </defs>
         <rect width="320" height="240" fill={`url(#dots-${category.replace(/\s|&/g, '')})`} />
 
-        {/* Category-specific motif */}
-        {renderMotif()}
+        {/* Category-specific motif - per-article transform variation */}
+        <g transform={`translate(${160 + tx} ${120 + ty}) rotate(${rot}) scale(${sc}) translate(-160 -120)`}>
+          {renderMotif()}
+        </g>
+
+        {/* Per-article accent ring */}
+        <circle cx={accent.cx} cy={accent.cy} r={accentR} fill="none" stroke={colors.text} strokeWidth="1.5" opacity="0.35" />
+        <circle cx={accent.cx} cy={accent.cy} r={2.5} fill={colors.text} opacity="0.45" />
 
         {/* Category label */}
         <text

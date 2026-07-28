@@ -444,6 +444,37 @@ export default function GermanMedicarePage() {
         </div>
       </section>
 
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">Mehr erfahren</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              Ratgeber zu Medicare und Krankenversicherung
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/de/blog/what-is-medicare-working-holiday-makers', label: 'Was ist Medicare und sind Working Holiday Maker abgedeckt?' },
+              { href: '/de/blog/medicare-levy-working-holiday-makers', label: 'Was ist die Medicare Levy und zahlen Working Holiday Maker sie?' },
+              { href: '/de/blog/countries-with-medicare-agreement-australia', label: 'Welche Länder haben ein Medicareabkommen mit Australien?' },
+              { href: '/de/blog/private-health-insurance-working-holiday-australia', label: 'Brauchen Working Holiday Maker eine private Krankenversicherung?' },
+              { href: '/de/blog/emergency-medical-care-working-holiday-no-medicare', label: 'Was tun in einem medizinischen Notfall ohne Medicareabdeckung?' },
+              { href: '/de/blog/uk-medicare-reciprocal-agreement-australia', label: 'Das UK-Australien Medicareabkommen für britische Working Holiday Maker' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── COMMON CONFUSION ─────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">

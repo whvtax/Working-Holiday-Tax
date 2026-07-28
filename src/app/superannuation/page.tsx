@@ -502,6 +502,37 @@ export default function SuperannuationPage() {
       </section>
 
 
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">Learn more</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              Guides on claiming your super back
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/blog/dasp-vs-leaving-super-in-australia-pros-cons', label: 'DASP vs leaving your super in Australia: pros and cons' },
+              { href: '/blog/super-for-casual-and-part-time-workers', label: 'Super for casual and part-time working holiday makers' },
+              { href: '/blog/how-to-choose-super-fund', label: 'How to choose a super fund on a working holiday visa' },
+              { href: '/blog/what-is-dasp-super-withdrawal', label: 'What is DASP? Departing Australia Superannuation Payment explained' },
+              { href: '/blog/dasp-tax-rate-65-percent-explained', label: 'Why DASP is taxed at 65% and what it means for your refund' },
+              { href: '/blog/how-long-does-dasp-take', label: 'How long does a DASP super refund take to arrive?' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── NEXT STEP ─────────────────────────────────────────────────────── */}
       <NextStep
         eyebrow="What is next?"

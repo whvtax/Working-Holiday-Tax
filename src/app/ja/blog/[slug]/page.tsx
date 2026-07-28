@@ -9,6 +9,19 @@ import StickyBreadcrumbs from '@/app/blog/[slug]/StickyBreadcrumbs'
 import CategoryHero from '@/app/blog/[slug]/CategoryHero'
 import { getJapaneseGuide, getJapaneseCategoryMeta, jaCategoryMeta, blogUI } from '../data'
 
+
+const OG_BY_CATEGORY: Record<string, string> = {
+  'TFN': '/assets/og/og-tfn.png',
+  'ABN': '/assets/og/og-abn.png',
+  'Tax Return': '/assets/og/og-tax-return.png',
+  'Super': '/assets/og/og-super.png',
+  'Work Rights': '/assets/og/og-work-rights.png',
+  'Medicare & Other': '/assets/og/og-medicare.png',
+}
+function ogForCategory(category: string): string {
+  return OG_BY_CATEGORY[category] ?? '/og-image.png'
+}
+
 interface Props {
   params: { slug: string }
 }
@@ -104,7 +117,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
     },
     openGraph: {
-      images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
+      images: [{ url: `${SITE_URL}${ogForCategory(guide.category)}`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
       title: guide.title,
       description: guide.description,
       url: `${SITE_URL}/ja/blog/${guide.slug}`,
@@ -113,7 +126,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale: 'ja_JP',
     },
     twitter: {
-      images: [`${SITE_URL}/og-image.png`],
+      images: [`${SITE_URL}${ogForCategory(guide.category)}`],
       card: 'summary_large_image',
       title: guide.title,
       description: guide.description,
@@ -497,7 +510,7 @@ export default function JapaneseGuidePage({ params }: Props) {
     description: guide.description,
     inLanguage: articleLang,
     isPartOf: { '@type': 'WebSite', name: 'Working Holiday Tax', url: `${SITE_URL}` },
-    primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}/og-image.png` },
+    primaryImageOfPage: { '@type': 'ImageObject', url: `${SITE_URL}${ogForCategory(guide.category)}` },
     speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.guide-lead'] },
   }
 
@@ -569,7 +582,7 @@ export default function JapaneseGuidePage({ params }: Props) {
                       <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                     </>
                   )}
-                  <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>{guide.date}</span>
+                  <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>最終更新：{guide.date}</span>
                   <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                   <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>{readTime}分で読めます</span>
                 </div>
@@ -623,6 +636,10 @@ export default function JapaneseGuidePage({ params }: Props) {
             <meta itemProp="author" content="Working Holiday Tax" />
             <GuideArticle guide={guide} locale="ja" />
           </article>
+
+          <p style={{ fontSize: '12.5px', color: '#8AADA3', fontWeight: 500, maxWidth: '780px', margin: '0 0 2rem 0' }}>
+            Written by Working Holiday Tax
+          </p>
 
           {relatedGuides.length > 0 && (
             <div style={{ borderTop: '1px solid #E2EFE9', paddingTop: '2.5rem', paddingBottom: '3rem', maxWidth: '780px' }}>

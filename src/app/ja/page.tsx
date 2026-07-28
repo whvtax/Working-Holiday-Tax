@@ -173,7 +173,9 @@ export default async function JapaneseHomePage() {
     about: { '@id': `${SITE_URL}/#business` },
   }
 
-  const serviceLd = {
+  // Only built when gRating.live — see googleData.ts. Never emit a fabricated
+  // rating to Google as structured data.
+  const serviceLd = gRating.live ? {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': `${SITE_URL}/#business`,
@@ -188,7 +190,7 @@ export default async function JapaneseHomePage() {
       bestRating: '5',
       worstRating: '1',
     },
-  }
+  } : null
 
   const faqLd = {
     '@context': 'https://schema.org',
@@ -218,6 +220,9 @@ export default async function JapaneseHomePage() {
     name: 'Working Holiday Tax',
     legalName: AGENT_NAME,
     url: SITE_URL,
+    telephone: '+61424513998',
+    priceRange: '$$',
+    image: `${SITE_URL}/og-image.png`,
     logo: {
       '@type': 'ImageObject',
       url: `${SITE_URL}/icon-512.png`,
@@ -306,7 +311,7 @@ export default async function JapaneseHomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
+      {serviceLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }} />

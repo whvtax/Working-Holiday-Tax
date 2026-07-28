@@ -90,6 +90,18 @@ const faqs = [
   {
     question: 'How long does a working holiday tax refund take?',
     answer: 'Once your return is lodged, the ATO usually processes it within 7 to 14 business days. Processing can be longer during busy periods or if the ATO requires extra information. Your refund is then paid directly into your chosen bank account.',
+  },
+  {
+    question: 'What is the backpacker tax rate?',
+    answer: 'The backpacker tax rate is a flat 15% on the first $45,000 you earn in a financial year on a 417 or 462 visa, with no tax-free threshold. It applies from your very first dollar of income, unlike the resident tax-free threshold of $18,200. Refunds usually come from periods where the wrong rate was withheld or from eligible work-related deductions.',
+  },
+  {
+    question: 'What documents do I need to lodge my tax return?',
+    answer: 'At minimum, we need your payment summaries or income statements from each employer for the financial year, your TFN, and your Australian bank account details for the refund. If you are claiming work-related deductions, receipts or records for those expenses help maximise your refund, though we can still lodge without every receipt in hand.',
+  },
+  {
+    question: 'What happens if I do not lodge a tax return?',
+    answer: 'If you earned income in Australia, you are generally required to lodge a tax return or a non-lodgment advice for that financial year, even after you have left the country. Skipping it does not make the obligation disappear, and it also means leaving any refund you are owed unclaimed. Outstanding tax obligations can also affect future visa applications to Australia.',
   }
   ]
 
@@ -237,7 +249,7 @@ export default function TaxReturnPage() {
                 maxWidth:'46ch',
                 marginBottom:'0',
               }}>
-              <span>For 417 and 462 visa holders. Most tax returns are lodged within 24 hours - even after you have left Australia.</span>
+              <span>For 417 and 462 visa holders. Your backpacker tax return is lodged within 24 hours - even after you have left Australia.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -613,6 +625,37 @@ export default function TaxReturnPage() {
       </section>
 
       {/* ── WHAT TO HAVE READY ── */}
+
+      {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
+      <section className="py-10 lg:py-14">
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="text-center mb-6">
+            <span className="section-label center">Learn more</span>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(19px, 2.04vw, 26px)', lineHeight:1.1, letterSpacing:'-0.025em', marginTop:'10px' }}>
+              Guides on lodging your tax return
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
+            {[
+              { href: '/blog/how-to-lodge-tax-return-working-holiday', label: 'How to lodge a working holiday tax return in Australia' },
+              { href: '/blog/backpacker-tax-rate-australia', label: 'Backpacker tax rate Australia: full breakdown for 417 & 462 visas' },
+              { href: '/blog/tax-deductions-working-holiday-makers', label: 'Tax deductions for working holiday makers: full guide' },
+              { href: '/blog/how-long-does-tax-refund-take-australia', label: 'How long does a working holiday tax refund take?' },
+              { href: '/blog/tax-residency-working-holiday-makers', label: 'Are working holiday makers tax residents of Australia?' },
+              { href: '/blog/what-is-a-tax-refund-australia', label: 'What is a tax refund and how do you know if you are owed one?' },
+            ].map((g) => (
+              <Link
+                key={g.href}
+                href={g.href}
+                className="block rounded-xl border border-ink/10 p-4 text-[13.5px] font-light text-ink leading-[1.5] transition-colors hover:border-forest-500 hover:text-forest-500"
+              >
+                {g.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14 bg-white">

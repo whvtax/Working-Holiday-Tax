@@ -1321,6 +1321,68 @@
   font-weight: 600;
 }
 
+/* Expenses page — occupation cards */
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding-bottom: 20px;
+}
+@media (min-width: 768px) {
+  .exp-grid { grid-template-columns: 1fr 1fr; }
+}
+.exp-card {
+  background: #fff;
+  border: 1.5px solid #E2EFE9;
+  border-radius: 16px;
+  padding: 20px 20px 22px;
+}
+.exp-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.exp-card-emoji { font-size: 28px; line-height: 1; flex-shrink: 0; }
+.exp-card-title {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #080F0D;
+  letter-spacing: -0.01em;
+  margin: 0;
+  line-height: 1.25;
+}
+.exp-card-subtitle {
+  font-size: 12px;
+  color: #8AADA3;
+  margin: 2px 0 0;
+  font-weight: 500;
+}
+.exp-card-section { margin-top: 14px; }
+.exp-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.exp-card-label-yes { color: #0B5240; }
+.exp-card-label-no { color: #B54708; }
+.exp-card-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.exp-card-list li {
+  font-size: 12.5px;
+  color: #2A3C34;
+  line-height: 1.55;
+  font-weight: 300;
+}
+
 
 /* ============================================
    CONTACT PAGE STYLES - MOBILE FIRST

@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from 'next'
 import { headers } from 'next/headers'
+import Script from 'next/script'
 import { Playfair_Display, DM_Sans } from 'next/font/google'
 import './globals.css'
 import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { SITE_URL, AGENT_NAME } from '@/lib/constants'
+import { SITE_URL, AGENT_NAME, GA_MEASUREMENT_ID } from '@/lib/constants'
 import PublicShellClient from '@/components/layout/PublicShellClient'
 import { MobileLanguageBanner } from '@/components/ui/MobileLanguageBanner'
 import { LangSync } from '@/components/ui/LangSync'
@@ -303,6 +304,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // Present only when CSP nonce mode is enabled (middleware). null otherwise,
   // in which case the static 'unsafe-inline' CSP covers the inline script.
   const nonce = headers().get('x-nonce') ?? undefined
+  // Don't tag the internal CRM/admin area — it's staff usage, not public
+  // traffic, and would otherwise pollute GA4's acquisition/behaviour data.
+  // (/crm is also disallowed in robots.ts for the same "not public" reason.)
+  const isAdminArea = (headers().get('x-pathname') ?? '').startsWith('/crm')
   return (
     <html lang={lang} className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
@@ -313,6 +318,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
         />
+        {/* Google Analytics 4. Loaded afterInteractive so it never blocks
+            first paint / LCP. Skipped entirely on /crm (see isAdminArea). */}
+        {!isAdminArea && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
+              nonce={nonce}
+            />
+            <Script id="ga4-init" strategy="afterInteractive" nonce={nonce}>
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_MEASUREMENT_ID}');
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body>
         {/* Skip-to-content link for keyboard users. CSS-only (no JS event handlers
