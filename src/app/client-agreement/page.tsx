@@ -40,6 +40,7 @@ const sections: Section[] = [
       'Client means the individual who uses the Service and enters into this Agreement.',
       'Provider means Working Holiday Tax, operating under the supervision of a registered tax agent as outlined above.',
       'Service means the tax-related services provided by the Provider, including tax return preparation, lodgment, and related support for Australian tax matters.',
+      'Eligibility Assessment means the review carried out by the Provider of the Client\u2019s income, residency position and entitlements, in order to identify available deductions, offsets and exemptions and to estimate the Client\u2019s likely Refund.',
       'Tax Return means the Australian income tax return prepared and lodged on behalf of the Client with the Australian Taxation Office (ATO).',
       "Refund means any refund, payment, or credit issued by the ATO and paid to the Client's nominated account.",
     ],
@@ -50,7 +51,7 @@ const sections: Section[] = [
   },
   {
     title: '3. Nature of Service',
-    body: 'Our service includes preparation and lodgment of tax returns based on information you provide. All final tax assessments, refunds, or decisions are made solely by the ATO. We do not guarantee:',
+    body: 'Our service is provided in two stages: an Eligibility Assessment, in which we review your circumstances and identify what you are entitled to claim, and, if you choose to proceed, the preparation and lodgment of your tax return based on the information you provide. Each stage is separately priced under clause 6, and you will be told the applicable fee before any chargeable work begins. All final tax assessments, refunds, or decisions are made solely by the ATO. We do not guarantee:',
     items: [
       'Any tax refund amount.',
       'Any specific tax outcome.',
@@ -72,32 +73,40 @@ const sections: Section[] = [
   },
   {
     title: '6. Fees and Charges',
+    body: 'Our service is delivered in two stages, each with its own fee. Both fees are disclosed to you and accepted by you before any chargeable work begins.',
     items: [
-      'Standard tax return service fees start from AUD $200 + GST, depending on complexity.',
-      'Any additional fees will be communicated before work is completed.',
-      'All fees are non-refundable once work has commenced.',
+      'Eligibility Assessment (AUD $110, GST inclusive): a review of your income, residency position and entitlements, identifying the deductions, offsets and exemptions available to you and estimating your likely refund. This fee is charged for the professional time spent on that review. It is not a charge for lodgment, which is a separate service.',
+      'No entitlement, no fee: if the Eligibility Assessment concludes that you are not entitled to a refund, the $110 fee is waived in full and nothing is payable by you.',
+      'Full service (AUD $220, GST inclusive): if the Eligibility Assessment identifies an entitlement and you instruct us to prepare and lodge your return, the total fee for the engagement is $220. The $110 Eligibility Assessment fee is credited in full towards that amount, so the total payable never exceeds $220.',
+      'If you choose to lodge independently or through another provider: where the Eligibility Assessment has been completed and identifies an entitlement, the $110 Eligibility Assessment fee remains payable for the work already performed. No further amount is payable and you remain free to lodge your return however you choose.',
+      'Return prepared and awaiting your approval: if you have instructed us to proceed to preparation and we have completed your Tax Return and made it available to you for review, approval or signature, the full engagement fee of $220 is payable, whether or not you subsequently authorise us to lodge it. At that point the work has been performed and delivered; only lodgment, which is an administrative step, remains outstanding. This does not apply where you withdraw because we have failed to provide the Service with due care and skill, or otherwise failed to meet the consumer guarantees under the Australian Consumer Law.',
+      'Where the full engagement fee becomes payable under the paragraph above, no additional charge applies and the prepared Tax Return remains available to you.',
+      'Work outside the scope of a standard individual return (for example prior-year returns, business or ABN schedules, or amendments to a previously lodged return) will be separately quoted and agreed in writing before that work begins.',
+      'Invoices are payable within 7 days of issue.',
+      'Nothing in this clause limits, excludes or modifies any right or remedy you may have under the Australian Consumer Law.',
     ],
   },
   {
     title: '7. Payment Terms',
-    body: 'Payment is required upon lodgment of your tax return. Payment does not affect or guarantee your refund or ATO outcome.',
+    body: 'Payment is required upon lodgment of your Tax Return, or, where clause 6 provides that a fee becomes payable before lodgment, upon the completion of the relevant stage of work. Payment does not affect or guarantee your refund or ATO outcome.',
   },
   {
     title: '8. Limitation of Liability',
-    body: 'To the maximum extent permitted by law, the Provider is not responsible for:',
+    body: 'Certain guarantees under the Australian Consumer Law cannot be excluded, restricted or modified, and nothing in this Agreement attempts to do so. Subject to those guarantees, and to the maximum extent permitted by law, the Provider is not responsible for:',
     items: [
       'Any decisions, delays, audits, or assessments made by the ATO.',
       'Any financial loss, penalties, or outcomes resulting from ATO actions.',
       'Any issues arising from incorrect, incomplete, or misleading information provided by the Client.',
+      'Where the Provider is liable and the relevant consumer guarantees permit it, the Provider\u2019s liability is limited, at the Provider\u2019s election, to re-supplying the Service or to refunding the fees paid by the Client for the Service.',
     ],
   },
   {
     title: '9. Indemnity',
-    body: 'You agree to indemnify and hold harmless the Provider, including its directors, employees, contractors, and affiliates, from and against any claims, losses, or expenses arising out of or in connection with:',
+    body: 'You agree to indemnify the Provider, including its directors, employees and contractors, against reasonable claims, losses and expenses to the extent they are caused by:',
     items: [
       'Any inaccurate, incomplete, or misleading information provided by you.',
       'Your failure to comply with your tax obligations.',
-      'Any ATO assessments, audits, reviews, or enforcement actions.',
+      'This indemnity does not apply to the extent that any claim, loss or expense is caused or contributed to by the Provider\u2019s own negligence, breach of this Agreement, or breach of law.',
     ],
   },
   {
@@ -110,7 +119,7 @@ const sections: Section[] = [
   },
   {
     title: '11. Disclaimer of Warranties',
-    body: 'Use of the Service is at your own risk. The Provider does not guarantee any tax refund or specific financial outcome. Our responsibility is limited to preparing and lodging your tax return based on the information you provide. The Provider may also suspend, modify, or discontinue any part of the Service at any time without prior notice.',
+    body: 'The Provider will supply the Service with due care and skill, as required by the Australian Consumer Law. The Provider does not, however, guarantee any tax refund, refund amount, or specific financial outcome, as these are determined solely by the ATO. Our responsibility is limited to preparing and lodging your tax return based on the information you provide. The Provider may suspend, modify, or discontinue parts of the Service, and where this affects a Service you have already paid for, you will be offered a refund of the affected fees.',
   },
   {
     title: '12. Privacy',
@@ -126,7 +135,7 @@ const sections: Section[] = [
   },
   {
     title: '15. Termination',
-    body: 'Either party may terminate this Agreement at any time. The Provider may immediately suspend or terminate the Service if:',
+    body: 'Either party may terminate this Agreement at any time. Termination does not affect any fee that has already become payable under clause 6 for work completed before termination. The Provider may immediately suspend or terminate the Service if:',
     items: [
       'There is a breach of these Terms.',
       'Fraudulent, misleading, or unlawful behaviour is suspected.',
@@ -173,6 +182,45 @@ const sections: Section[] = [
     title: '21. Service Provider Information',
     body: `All services provided via workingholidaytax.com.au are delivered by Working Holiday Tax, operating under the supervision of a registered tax agent: ${AGENT_NAME}, ABN: ${AGENT_ABN}, Tax Agent Number: ${AGENT_TPB}.`,
   },
+  {
+    title: '22. Refunds, ATO Debts and Offsets',
+    body: 'Your Refund is paid by the ATO, not by the Provider. You should be aware that:',
+    items: [
+      'The ATO may reduce or withhold your Refund to offset an existing debt, including a tax debt, a Higher Education Loan Program (HELP) debt, a Child Support liability, or a debt owed to another government agency.',
+      'An offset of this kind does not change the fees payable under clause 6, because those fees are charged for the professional work performed, not for the size of the Refund you ultimately receive.',
+      'The Refund is paid directly into the bank account you nominate. The Provider does not receive, hold or deduct fees from your Refund.',
+      'You are responsible for the accuracy of the bank account details you provide. The Provider is not liable for a Refund paid to an incorrect account where those details were supplied by you.',
+      'Where you nominate an overseas account, payment timing and any bank charges are determined by the ATO and the financial institutions involved.',
+    ],
+  },
+  {
+    title: '23. Cancellation and Cooling-off',
+    body: 'You may cancel this Agreement at any time by notifying us in writing. The consequences are as follows:',
+    items: [
+      'Before the Eligibility Assessment begins, no fee is payable.',
+      'After the Eligibility Assessment has been completed, clause 6 determines what is payable.',
+      'If this Agreement is an unsolicited consumer agreement under the Australian Consumer Law (for example, where we first approached you), you have a statutory cooling-off period of 10 business days during which you may terminate the Agreement, and we will not supply chargeable services or accept payment during that period unless you ask us to and the law permits it.',
+      'Nothing in this clause limits your statutory rights to a remedy where the Service is not supplied with due care and skill.',
+    ],
+  },
+  {
+    title: '24. Complaints and Concerns',
+    body: 'If you are not satisfied with any aspect of the Service, we want to hear about it and we will work with you to resolve it:',
+    items: [
+      'Contact us in the first instance using the details on our contact page. We will acknowledge your complaint and aim to respond within 14 days.',
+      'If your complaint remains unresolved, you may raise it with the Tax Practitioners Board (TPB), which maintains a public register of registered tax agents and handles complaints about registered practitioners, at tpb.gov.au.',
+      'You may also seek assistance from the ATO or from the consumer protection agency in your state or territory.',
+      'Nothing in this Agreement prevents or discourages you from making a complaint to any regulator.',
+    ],
+  },
+  {
+    title: '25. Records and Documents',
+    body: 'The Provider retains client records for the periods required by Australian taxation law and TPB obligations, generally at least five years. You may request a copy of the documents you have provided to us, and of the Tax Return prepared for you, at any time and at no charge.',
+  },
+  {
+    title: '26. Changes to this Agreement',
+    body: 'The Provider may update these Terms from time to time. The version of these Terms in force at the time you engage us for a particular service applies to that engagement. Material changes will be published on this page with an updated revision date, and any engagement already underway continues under the Terms that applied when it began.',
+  },
 ]
 
 export default function ClientAgreementPage() {
@@ -182,7 +230,7 @@ export default function ClientAgreementPage() {
         kicker="Legal"
         title="Client Agreement"
         titleEm=""
-        sub="Last updated: May 2026. By using our services you agree to these terms."
+        sub="Last updated: July 2026. By using our services you agree to these terms."
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Client Agreement' }]}
       />
 

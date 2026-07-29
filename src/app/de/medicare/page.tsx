@@ -295,7 +295,7 @@ export default function GermanMedicarePage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir holen für dich die Medicare-Levy-Befreiung</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung. Wir prüfen deine Berechtigung, bereiten dein Befreiungszertifikat vor und reichen es korrekt mit deiner Steuererklärung ein - damit du zurückbekommst, was du gar nicht zahlen musstest.</p>
+              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung. Wir prüfen deinen Anspruch, bereiten dein Befreiungszertifikat vor und reichen es korrekt mit deiner Steuererklärung ein - damit du zurückbekommst, was du gar nicht zahlen musstest.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine Befreiung prüfen →

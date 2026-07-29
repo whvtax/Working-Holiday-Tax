@@ -257,7 +257,7 @@ export default function ABNPageJA() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">ABN登録を当社が代行いたします</h3>
-              <p className="service-cta-sub">無料相談から、業務内容に合わせた正しい業種コードで登録。GSTやBASなどの税務義務もわかりやすくご説明します。</p>
+              <p className="service-cta-sub">今すぐ受給資格をチェック。業務内容に合わせた正しい業種コードで登録。GSTやBASなどの税務義務もわかりやすくご説明します。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               ABNを登録する →

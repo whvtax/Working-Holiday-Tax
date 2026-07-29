@@ -496,7 +496,7 @@ export default async function JapaneseHomePage() {
               タックスリターンを依頼する →
             </a>
             <p style={{ marginTop: '10px', fontSize: '12px', color: '#2FA880' }}>
-              無料相談&nbsp;&bull;&nbsp;日本語で安心サポート
+              今すぐ受給資格をチェック&nbsp;&bull;&nbsp;日本語で安心サポート
             </p>
           </div>
         </div>

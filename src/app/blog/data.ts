@@ -2742,7 +2742,7 @@ If you have already accumulated super in multiple funds, we can help consolidate
 
  // ─── WORK RIGHTS ────────────────────────────────────────────────────────────
  {
- slug: "minimum-wage-australia-2025-26",
+ slug: "minimum-wage-australia-2026-27",
  title: "Minimum Wage Australia: $26.44/hr From 1 July 2026 (Casual $33.05)",
  description:
  "The national minimum wage rose 6% to $26.44 per hour ($1,004.90 per week) on 1 July 2026. Casual rates with 25% loading, award increases, and your rights.",

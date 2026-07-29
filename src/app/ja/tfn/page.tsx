@@ -241,7 +241,7 @@ export default function TFNPageJA() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">TFN申請をすべて当社が代行</h3>
-              <p className="service-cta-sub">WhatsAppでの無料相談から、確実かつ迅速に申請。通常1時間以内にご返信します。</p>
+              <p className="service-cta-sub">今すぐ受給資格をチェック。WhatsAppから、確実かつ迅速に申請。通常1時間以内にご返信します。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               TFNを申請する →

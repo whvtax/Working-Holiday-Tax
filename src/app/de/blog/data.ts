@@ -187,6 +187,225 @@ export const deCategoryMeta: DeCategoryMeta[] = [
  *   }
  */
 export const dePostTranslations: Record<string, { title: string; description: string; body?: string }> = {
+  'diy-tax-return-vs-tax-agent-working-holiday': {
+    title: 'Selbst machen oder Tax Agent? Der ehrliche Vergleich',
+    description: 'Die Abgabe über myTax ist kostenlos; ein registrierter Agent kostet, findet aber Residency, Befreiungen und Abzüge, die Backpacker übersehen. Wann sich was lohnt.',
+    body: `
+Du kannst deine australische Steuererklärung kostenlos selbst über myTax einreichen oder einen registrierten Tax Agent beauftragen. Für Working Holiday Maker mit einem Arbeitgeber, korrekten 15 % das ganze Jahr und ohne Werbungskosten funktioniert die Selbstabgabe gut. Ein Agent verdient seine Gebühr, wenn Mehrfach-Arbeitgeber, 45-%-Phasen, die Medicare-Levy-Befreiung, eine ABN oder die Abgabe aus Deutschland im Spiel sind.
+
+## Was Selbstabgabe über myTax bedeutet
+
+myTax ist das kostenlose Online-Tool des ATO, erreichbar über ein mit dem ATO verknüpftes myGov-Konto. Deine Income Statements füllen sich ab Mitte Juli automatisch vor. Bei einer einfachen Erklärung dauert das Formular unter einer Stunde. Der Haken für Backpacker: myTax ist für Residents gebaut - die Residency-Fragen, das WHM-Einkommensfeld und der Medicare-Abschnitt sind genau die Stellen, an denen die meisten raten.
+
+## Wo Backpacker bei der Selbstabgabe Geld verlieren
+
+- **Medicare-Levy-Befreiung übersprungen** - sie erfordert ein Wochen vorher bestelltes Medicare Entitlement Statement von Services Australia. Auslassen kostet 2 % des zu versteuernden Einkommens, rund 500 Dollar bei 25.000 Dollar
+- **Residency falsch beantwortet** - der häufigste Backpacker-Fehler und Auslöser fehlerhafter Bescheide
+- **Werbungskosten nicht geltend gemacht** - RSA- und White-Card-Kurse, Sonnenschutz für Außenarbeit, Werkzeug, Waschen von Pflichtuniformen, Agentengebühr des Vorjahres
+- **Mehrere Arbeitgeber nicht abgeglichen** - der Überabzug bei einem im September verlassenen Job fällt ohne Prüfung aller Income Statements niemandem auf
+- **ABN-Einkommen falsch behandelt** - Liefern oder Farm-Contracting mit ABN bedeutet Geschäftsposten, mögliche GST-Fragen und andere Abzüge. Siehe unsere [ABN-Guides](/de/blog/category/abn)
+
+## Was ein Agent anders macht
+
+Ein registrierter Tax Agent (jeder Agent ist im TPB-Register prüfbar) darf für Steuerberatung und Abgabe Geld nehmen, trägt berufliche Pflichten und bekommt verlängerte Abgabefristen. Speziell für Working Holiday Maker klärt ein guter Agent deine Residency-Position, besorgt das Medicare Entitlement Statement, prüft den Abzug über alle Arbeitgeber, macht zulässige Werbungskosten geltend und reicht korrekt ein - auch wenn du längst wieder in Deutschland bist. Die Gebühr ist im Folgejahr absetzbar.
+
+## Die ehrliche Entscheidungshilfe
+
+**Selbst machen ist sinnvoll, wenn:** ein registrierter Arbeitgeber das ganze Jahr, TFN ab Tag eins, keine ABN, du nächstes Jahr in Australien bleibst und dir die myTax-Fragen klar sind.
+
+**Ein Agent ist sinnvoll, wenn:** irgendeine Phase mit 45 % Abzug, mehr als zwei Arbeitgeber, Farm- oder Arbeit bei nicht registrierten Betrieben, Medicare-Levy-Befreiung, ABN-Einkommen, Abreise vor oder während der Steuersaison, oder eine Erstattung, bei der ein Fehler wehtut.
+
+## Häufige Fragen
+
+### Was kostet ein Tax Agent für eine Working-Holiday-Erklärung?
+
+Das variiert je nach Anbieter und Komplexität. Unsere Gebühren stehen transparent auf der [Service-Seite](/de/tax-return) - ohne Prozent-vom-Erstattungsbetrag-Modell, vor dem du dich hüten solltest.
+
+### Ist myTax wirklich kostenlos?
+
+Ja, vollständig. Wenn deine Erklärung einfach ist und du die Fragen richtig beantwortest, ist die Selbstabgabe eine legitime Wahl - dieser Guide existiert, damit du sie ehrlich treffen kannst.
+
+### Kann ein Agent nach meiner Abreise für mich einreichen?
+
+Ja - die Abgabe aus dem Ausland ist Standard, inklusive Abruf deiner Income Statements und gleichzeitiger Organisation deines [Super-Antrags](/de/superannuation).
+
+[Melde dich bei uns](/de/contact), wenn du eine schnelle Einschätzung willst, ob dein Fall ein DIY-Fall ist - wir sagen es dir ehrlich, in beide Richtungen.
+`,
+  },
+  'working-holiday-visa-tax-guide-417-462': {
+    title: 'Steuern mit 417/462-Visum: Sätze, Erstattung, Regeln (2026)',
+    description: 'Der komplette Steuerguide für Working Holiday Maker: 15 % auf die ersten 45.000 Dollar, was darüber gilt, Medicare-Levy-Befreiung, Super und Erstattungen.',
+    body: `
+Working Holiday Maker mit 417- oder 462-Visum zahlen 2025-26 pauschal 15 % Steuer auf die ersten 45.000 Dollar, die sie in Australien verdienen - ohne Steuerfreibetrag. Darüber greifen die normalen Sätze. Damit 15 % automatisch gelten, muss dein Arbeitgeber registriert sein; andernfalls gelten höhere Foreign-Resident-Sätze, und der Überschuss kommt über die Steuererklärung zurück.
+
+## Die WHM-Steuersätze 2025-26
+
+- **Erste 45.000 Dollar: 15 %**
+- 45.001 bis 135.000 Dollar: 30 %
+- 135.001 bis 190.000 Dollar: 37 %
+- Über 190.000 Dollar: 45 %
+
+Zwei Dinge überraschen deutsche Backpacker regelmäßig. Erstens: Es gibt keinen Steuerfreibetrag - Australier zahlen auf ihre ersten 18.200 Dollar nichts, Working Holiday Maker ab dem ersten Dollar 15 %. Zweitens: Die 15 % gelten nur automatisch, wenn dein Arbeitgeber beim ATO als Working-Holiday-Arbeitgeber registriert ist.
+
+## Registrierte vs. nicht registrierte Arbeitgeber
+
+Registrierte Arbeitgeber behalten ab dem ersten Dollar 15 % ein. Nicht registrierte müssen zu Foreign-Resident-Sätzen ab über 30 % einbehalten. Vorher erkennen lässt sich das selten - Farmen und kleine Gastro sind die üblichen Verdächtigen. Die gute Nachricht: Der Überabzug ist nicht verloren, sondern kommt mit deiner [Steuererklärung](/de/tax-return) zurück.
+
+## Alles hängt an deiner TFN
+
+Ohne TFN in der Lohnbuchhaltung muss dein Arbeitgeber 45 % einbehalten, egal ob registriert oder nicht. Beantrage deine [TFN](/de/tfn) sofort nach der Ankunft (der Antrag geht nur aus Australien heraus), gib sie jedem Arbeitgeber über die Tax File Number Declaration, und ab der nächsten Abrechnung gilt der korrekte Satz.
+
+## Die Medicare-Levy-Befreiung, die viele übersehen
+
+Australier zahlen zusätzlich 2 % Medicare-Abgabe. Die meisten 417/462-Inhaber - Deutschland hat kein Abkommen mit Australien - haben keinen Medicare-Anspruch und können sich vollständig befreien lassen. Bei 25.000 Dollar Einkommen sind das rund 500 Dollar, beantragt über ein Medicare Entitlement Statement und geltend gemacht in der Steuererklärung. Details im [Guide zur Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers).
+
+## Superannuation: die anderen 12 %
+
+Zusätzlich zum Lohn muss jeder Arbeitgeber 12 % deines regulären Verdienstes in einen Super-Fonds zahlen. In Australien kommst du nicht heran, aber nach Abreise und Visa-Ende holst du es als DASP (65 % Steuer). Ein Jahr Vollzeit hinterlässt typischerweise mehrere tausend Dollar - siehe [die beste Methode, sie zu holen](/de/blog/best-way-to-claim-super-leaving-australia).
+
+## Residency: die Frage, die deine Erklärung entscheidet
+
+Die meisten Working Holiday Maker sind steuerlich nicht ansässig, die WHM-Sätze gelten aber ohnehin. Die Residency-Fragen in myTax bringen jedes Jahr tausende Backpacker ins Straucheln - falsche Antworten sind der häufigste Grund für fehlerhafte Bescheide und spätere ATO-Korrekturen. Wenn deine Situation nicht dem Lehrbuch entspricht (langer Aufenthalt, ein Ort, Studium), hol dir vor der Abgabe Rat.
+
+## Die wichtigsten Termine
+
+- **1. Juli bis 30. Juni**: das australische Steuerjahr
+- **Ab 1. Juli**: Abgabe möglich
+- **31. Oktober**: Frist für die Selbstabgabe (mit Agent länger)
+- **Endgültige Abreise mitten im Jahr?** Dann geht die vorgezogene Erklärung sofort
+
+## Häufige Fragen
+
+### Bekommen Working Holiday Maker den Steuerfreibetrag?
+
+Nein. Die 18.200 Dollar gelten nicht für WHM-Einkommen - die Steuer startet bei 15 % ab dem ersten Dollar.
+
+### Welcher Satz gilt im zweiten Jahr auf dem 417-Visum?
+
+Dieselben WHM-Sätze. Auch deine TFN bleibt dieselbe - siehe [was beim zweiten Visum zu aktualisieren ist](/de/blog/do-you-need-new-tfn-second-visa).
+
+### Bekomme ich bei der Abreise alle Steuern zurück?
+
+In der Regel nicht - 15 % auf Einkommen bis 45.000 Dollar sind die korrekte Endsteuer. Zurück holst du Überabzüge, die Medicare-Levy-Befreiung, Werbungskosten und deine Super über DASP.
+
+Nutze unseren [Rechner](/de/calculator) für eine schnelle Schätzung oder [melde dich bei uns](/de/contact) - registrierte Tax Agents, die ausschließlich mit Working Holiday Makern arbeiten.
+`,
+  },
+  'best-way-to-claim-super-leaving-australia': {
+    title: 'Super nach der Abreise zurückholen: die beste Methode (2026)',
+    description: 'Drei Wege zu deiner Super nach der Abreise: DASP selbst online, über einen Agenten, oder ATO-verwahrte Beträge. Dauer, Kosten und Auszahlung im Vergleich.',
+    body: `
+Sobald du Australien verlassen hast und dein Working-Holiday-Visum abgelaufen ist, kannst du deine Superannuation als Departing Australia Superannuation Payment (DASP) beanspruchen. Auf Working-Holiday-Super fallen 65 % Steuer an, ein Guthaben von 10.000 Dollar wird also mit rund 3.500 Dollar ausgezahlt. Der Antrag über das DASP-Portal des ATO ist kostenlos; alternativ übernimmt ein Agent den Fonds-Papierkram und die beglaubigten Unterlagen für dich.
+
+## Zuerst: bist du berechtigt?
+
+DASP geht nur, wenn alles Folgende zutrifft:
+
+- Du hast Super auf einem temporären Visum angesammelt (417 und 462 zählen)
+- Du hast Australien verlassen
+- Dein Visum ist abgelaufen oder wurde storniert
+
+Solange dein Visum aktiv ist, geht der Antrag nicht - auch nicht aus Deutschland. Planst du eine Rückkehr auf einem anderen temporären Visum, kannst du trotzdem beanspruchen: Entscheidend ist, dass das Visum, unter dem die Super entstand, beendet ist.
+
+## Die drei Wege
+
+### Weg 1: selbst über das DASP-Portal
+
+Kostenlos. Funktioniert gut bei einem einzigen Fonds, vollständigen Ausweisdokumenten und einem Fonds, der keine beglaubigten Kopien verlangt. Fordert der Fonds zusätzliche Identitätsprüfungen, wird es aus dem Ausland deutlich mühsamer.
+
+### Weg 2: über einen Agenten
+
+Kostet eine Gebühr, übernimmt aber genau die Teile, die in der Praxis schiefgehen: alle Fonds finden (viele Backpacker haben zwei oder drei, ohne es zu wissen), fondsspezifische Dokumentenanforderungen, beglaubigte Kopien, Nachfassen bei stummen Fonds, und die Kombination mit deiner [letzten Steuererklärung](/de/tax-return). Besonders sinnvoll bei mehreren Fonds oder wenn du schon abgereist bist.
+
+### Weg 3: ATO-verwahrte Super
+
+Wer nicht innerhalb von rund 6 Monaten nach der Abreise beansprucht, dessen Guthaben wandert als Unclaimed Super zum ATO. Verloren ist nichts - der Antrag geht dann an das ATO statt an den Fonds - aber die Fondsversicherung endet und das Verfahren unterscheidet sich. Wenn du vor Jahren abgereist bist, liegt dein Geld sehr wahrscheinlich dort.
+
+## Was du brauchst
+
+- Passdaten und Visumsinformationen
+- Deine TFN
+- Fondsname und Mitgliedsnummer (alte Payslips oder die Fonds-App)
+- Ein Bankkonto im Ausland oder in Australien
+
+Du weißt nicht, in welchen Fonds dein Arbeitgeber eingezahlt hat? Wir können [verlorene Super finden](/de/blog/how-to-find-lost-superannuation) - über alle Fonds und ATO-verwahrten Beträge hinweg.
+
+## Wie viel kommt an und wann
+
+DASP für Working Holiday Maker wird mit 65 % auf den besteuerten Anteil belastet - unterm Strich rund 35 Cent pro Dollar. Vollständige Anträge werden meist innerhalb von 28 Tagen ausgezahlt; unvollständige Unterlagen sind die Hauptursache für Verzögerungen. Details in [wie lange DASP dauert](/de/blog/how-long-does-dasp-take).
+
+## Häufige Fragen
+
+### Lohnt sich der Antrag bei 65 % Steuer?
+
+Ja. Die Alternative ist, 100 % liegen zu lassen. Ein Jahr Vollzeitarbeit summiert sich bei 12 % Beitrag schnell - aus 8.000 Dollar Guthaben werden immer noch etwa 2.800 Dollar für dich.
+
+### Kann ich DASP schon in Australien beantragen?
+
+Nein. Du musst abgereist und dein Visum beendet sein. Vorbereiten lässt sich aber alles vorher - genau das richten wir über unseren [Super-Service](/de/superannuation) für Kunden vor dem Abflug ein.
+
+### Was passiert, wenn ich nie beanspruche?
+
+Das Geld geht als Unclaimed Money an das ATO und liegt dort unbefristet. Du kannst es Jahre später holen, verdienst in der Zwischenzeit aber keine Fondserträge.
+
+[Melde dich vor dem Abflug](/de/contact) - zehn Minuten Vorbereitung sparen dir Wochen Dokumentenjagd aus Deutschland.
+`,
+  },
+  'average-tax-refund-working-holiday': {
+    title: 'Wie hoch ist die Steuererstattung im Working Holiday? Rechenbeispiele',
+    description: 'Erstattungen reichen von ein paar hundert bis mehreren tausend Dollar - je nach Abzug, Einkommen und Werbungskosten. Konkrete Beispiele für 417/462.',
+    body: `
+Die durchschnittliche australische Steuererstattung wird oft mit rund 2.600 Dollar angegeben. Für Working Holiday Maker lautet die ehrliche Antwort aber: Es kommt darauf an, wie viel einbehalten wurde im Vergleich zu den 15 %, die du auf Einkommen bis 45.000 Dollar tatsächlich schuldest. Wer Phasen mit 45 % Abzug hatte oder bei einem nicht registrierten Arbeitgeber gearbeitet hat, sieht regelmäßig vierstellige Erstattungen.
+
+## Drei Zahlen entscheiden über deine Erstattung
+
+Die Erstattung ist kein Bonus, sondern die Differenz zwischen dem, was einbehalten wurde, und dem, was du gesetzlich schuldest. Entscheidend sind:
+
+1. Das **Gesamteinkommen** im Steuerjahr (1. Juli bis 30. Juni)
+2. Die **gesamte einbehaltene Steuer** über alle Arbeitgeber - hier versteckt sich der Überabzug
+3. **Befreiungen und Werbungskosten** - vor allem die Medicare-Levy-Befreiung und berufsbezogene Ausgaben
+
+## Rechenbeispiele
+
+Mit den WHM-Sätzen 2025-26 (15 % auf die ersten 45.000 Dollar):
+
+### Beispiel 1: das ganze Jahr korrekt besteuert
+
+30.000 Dollar verdient, alle Arbeitgeber registriert, 15 % einbehalten (4.500 Dollar). Geschuldete Steuer: 4.500 Dollar. Erstattung vor Befreiungen: null. Mit Medicare-Levy-Befreiung und 300 Dollar Werbungskosten ergibt sich typischerweise eine Erstattung im niedrigen dreistelligen Bereich.
+
+### Beispiel 2: sechs Wochen ohne TFN im System
+
+Ebenfalls 30.000 Dollar, aber die ersten 4.000 Dollar wurden mit 45 % statt 15 % belastet, weil die TFN spät kam. Zusätzlicher Abzug: rund 1.200 Dollar - vollständig erstattet, zusätzlich zu allen Befreiungen.
+
+### Beispiel 3: Farmarbeit bei einem nicht registrierten Arbeitgeber
+
+18.000 Dollar verdient, davon 10.000 Dollar bei einem Betrieb ohne WHM-Registrierung mit über 30 % Abzug. Die Differenz zu 15 % auf diesen Teil - grob 1.500 Dollar oder mehr - kommt zur Steuerzeit zurück.
+
+### Beispiel 4: Abreise im Januar
+
+22.000 Dollar in einem halben Jahr, dann endgültige Abreise. Der Abzug unterstellte ein volles Jahreseinkommen, weshalb eine vorgezogene Erklärung oft eine deutlich größere Erstattung plus Medicare-Levy-Befreiung freisetzt.
+
+## So findest du deine echte Zahl
+
+Vergiss Durchschnittswerte - deine Payslips erzählen die Wahrheit. Addiere Einkommen und einbehaltene Steuer aus jedem Job und gib sie in unseren [Steuerrechner](/de/calculator) ein. Payslips verloren oder bar gearbeitet? Ein registrierter Agent ruft deine offiziellen Income Statements direkt beim ATO ab.
+
+## Häufige Fragen
+
+### Stimmen die 2.600 Dollar Durchschnitt?
+
+Das ist ein breit beworbener Branchendurchschnitt über alle Visumsarten, keine Working-Holiday-Zahl. Deine Erstattung hängt allein von deinem Abzug ab.
+
+### Bekomme ich bei der Abreise alle Steuern zurück?
+
+Nein, das ist ein Mythos. Zurück kommt nur, was über deine korrekte 15-%-Schuld hinaus einbehalten wurde, plus Befreiungen und Werbungskosten. Vollständig zurückholen kannst du deine [Superannuation](/de/superannuation), abzüglich DASP-Steuer.
+
+### Was bringt Backpackern am meisten?
+
+Die Medicare-Levy-Befreiung (2 % des zu versteuernden Einkommens für die meisten 417/462-Inhaber) und die Korrektur von Phasen mit 45 % Abzug.
+
+[Melde dich bei uns](/de/contact) - wir prüfen den Abzug über alle Arbeitgeber, bevor du einreichst.
+`,
+  },
   'tax-back-australia-working-holiday': {
     title: 'Steuern zurück aus Australien: Der Working-Holiday-Guide (2026)',
     description: 'So holst du dir nach Work and Travel deine Steuern aus Australien zurück: was erstattet wird, wie hoch die Rückzahlung ausfällt, Fristen - auch nach der Rückkehr.',
@@ -1116,7 +1335,7 @@ Wenn du eine frühere Steuererklärung eingereicht und die Medicare Levy gezahlt
   },
 
   // ─── Work Rights - Minimum wage ────────────────────────────────────────────
-  'minimum-wage-australia-2025-26': {
+  'minimum-wage-australia-2026-27': {
     title: 'Mindestlohn Australien: 26,44 $/Std. ab 1. Juli 2026 (Casual 33,05 $)',
     description: 'Der nationale Mindestlohn stieg am 1. Juli 2026 um 6 % auf 26,44 $ pro Stunde (1.004,90 $/Woche). Casual-Sätze mit 25 % Zuschlag und deine Rechte.',
     body: `
@@ -2012,7 +2231,7 @@ Wir identifizieren Absetzungen, die du beim Selbsteinreichen vielleicht übersie
 4. Medicare-Levy-Befreiung nie beantragt (2 % des Einkommens für Deutsche und die meisten Nationalitäten)
 5. Ungeltend gemachte Ausgaben: Kurse, Ausrüstung, Sonnenschutz, Agentengebühren
 
-Drei oder mehr Treffer? Deine Erstattung liegt wahrscheinlich im vierstelligen Bereich. Rechne dein Szenario im [Rechner](/de/calculator) durch oder [lass uns kostenlos prüfen](/de/contact).
+Drei oder mehr Treffer? Deine Erstattung liegt wahrscheinlich im vierstelligen Bereich. Rechne dein Szenario im [Rechner](/de/calculator) durch oder [lass uns deine Berechtigung prüfen](/de/contact).
 `,
   },
 

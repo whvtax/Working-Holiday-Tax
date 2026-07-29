@@ -6087,7 +6087,7 @@ The 12% rate is now the final settled level for the Superannuation Guarantee. Ev
 
 ## Minimum Wage Australia: $26.44/hr From 1 July 2026 (Casual $33.05)
 
-**URL:** https://workingholidaytax.com.au/blog/minimum-wage-australia-2025-26
+**URL:** https://workingholidaytax.com.au/blog/minimum-wage-australia-2026-27
 
 **Published:** 29 July 2026
 
@@ -18029,7 +18029,7 @@ Der 12 %-Satz ist jetzt das endgültige Niveau der Superannuation Guarantee. Jed
 
 ## Mindestlohn Australien: 26,44 $/Std. ab 1. Juli 2026 (Casual 33,05 $)
 
-**URL:** https://workingholidaytax.com.au/de/blog/minimum-wage-australia-2025-26
+**URL:** https://workingholidaytax.com.au/de/blog/minimum-wage-australia-2026-27
 
 **Published:** 29 July 2026
 
@@ -29960,7 +29960,7 @@ Superannuation Guarantee率は10年以上にわたって段階的に上昇：
 
 ## オーストラリア最低賃金は時給26.44ドルに（2026年7月〜・カジュアル33.05ドル）
 
-**URL:** https://workingholidaytax.com.au/ja/blog/minimum-wage-australia-2025-26
+**URL:** https://workingholidaytax.com.au/ja/blog/minimum-wage-australia-2026-27
 
 **Published:** 29 July 2026
 
@@ -33802,4 +33802,84 @@ Medicareにアクセスできないワーキングホリデーメーカー（RHC
 **Published:** 29 July 2026
 
 **Summary:** So holst du dir nach Work and Travel deine Steuern aus Australien zurück: was erstattet wird, wie hoch die Rückzahlung ausfällt, Fristen - auch nach der Rückkehr.
+
+## Wie hoch ist die Steuererstattung im Working Holiday? Rechenbeispiele
+
+**URL:** https://workingholidaytax.com.au/de/blog/average-tax-refund-working-holiday
+
+**Published:** 29 July 2026
+
+**Summary:** Erstattungen reichen von ein paar hundert bis mehreren tausend Dollar - je nach Abzug, Einkommen und Werbungskosten. Konkrete Beispiele für 417/462.
+
+
+## Super nach der Abreise zurückholen: die beste Methode (2026)
+
+**URL:** https://workingholidaytax.com.au/de/blog/best-way-to-claim-super-leaving-australia
+
+**Published:** 29 July 2026
+
+**Summary:** Drei Wege zu deiner Super nach der Abreise: DASP selbst online, über einen Agenten, oder ATO-verwahrte Beträge. Dauer, Kosten und Auszahlung im Vergleich.
+
+
+## Steuern mit 417/462-Visum: Sätze, Erstattung, Regeln (2026)
+
+**URL:** https://workingholidaytax.com.au/de/blog/working-holiday-visa-tax-guide-417-462
+
+**Published:** 29 July 2026
+
+**Summary:** Der komplette Steuerguide für Working Holiday Maker: 15 % auf die ersten 45.000 Dollar, was darüber gilt, Medicare-Levy-Befreiung, Super und Erstattungen.
+
+
+## Selbst machen oder Tax Agent? Der ehrliche Vergleich
+
+**URL:** https://workingholidaytax.com.au/de/blog/diy-tax-return-vs-tax-agent-working-holiday
+
+**Published:** 29 July 2026
+
+**Summary:** Die Abgabe über myTax ist kostenlos; ein registrierter Agent kostet, findet aber Residency, Befreiungen und Abzüge, die Backpacker übersehen. Wann sich was lohnt.
+
+
+## オーストラリアで税金を取り戻す：ワーホリ完全ガイド（2026年版）
+
+**URL:** https://workingholidaytax.com.au/ja/blog/tax-back-australia-working-holiday
+
+**Published:** 29 July 2026
+
+**Summary:** ワーホリがオーストラリアで税金を取り戻す方法。何が請求でき、還付額の目安、期限、申請方法を解説。帰国後の申請にも対応。
+
+
+## ワーホリの還付金は平均いくら？ケース別の計算例
+
+**URL:** https://workingholidaytax.com.au/ja/blog/average-tax-refund-working-holiday
+
+**Published:** 29 July 2026
+
+**Summary:** ワーホリの還付額は源泉徴収・収入・控除により数百〜数千ドル。417/462ビザの実例で、いくら戻るのかを具体的に解説。
+
+
+## 帰国後にスーパーを取り戻す最善の方法（2026年版）
+
+**URL:** https://workingholidaytax.com.au/ja/blog/best-way-to-claim-super-leaving-australia
+
+**Published:** 29 July 2026
+
+**Summary:** 帰国後にスーパーを受け取る3つの方法：自分でDASP申請、税理士経由、ATO保管分の請求。手続き期間・費用・受取額を比較。
+
+
+## 417・462ビザの税金完全ガイド：税率・還付・ルール（2026年版）
+
+**URL:** https://workingholidaytax.com.au/ja/blog/working-holiday-visa-tax-guide-417-462
+
+**Published:** 29 July 2026
+
+**Summary:** ワーホリ税制のすべて：45,000ドルまで15%、それ以上の税率、メディケア・レヴィ免除、スーパー、還付の仕組みを解説。
+
+
+## 自分で申告 vs 税理士に依頼：ワーホリのための正直な比較
+
+**URL:** https://workingholidaytax.com.au/ja/blog/diy-tax-return-vs-tax-agent-working-holiday
+
+**Published:** 29 July 2026
+
+**Summary:** myTaxでの自己申告は無料。税理士は有料だが居住性・免除・控除の見落としを防ぐ。どちらが自分に合うか判断基準を解説。
 

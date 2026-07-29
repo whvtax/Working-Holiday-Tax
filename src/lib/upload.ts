@@ -173,7 +173,7 @@ export async function uploadFiles(
 
 /**
  * Uploads a raw buffer (e.g. an image or PDF a client sent on WhatsApp,
- * already downloaded via downloadMedia() in lib/whatsapp.ts) to Supabase
+ * already downloaded by the caller) to Supabase
  * Storage. Separate from uploadFile() above because that one validates a
  * browser File object from a form; this one starts from bytes we already
  * fetched server-side. Same magic-byte and size checks apply — WhatsApp

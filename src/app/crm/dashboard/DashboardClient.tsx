@@ -1499,10 +1499,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 style={S.sbBtn} badgeStyle={S.sbBadge}
                 onClick={()=>{ window.location.href = '/crm/partners' }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
-              <SbButton label="WhatsApp Leads"
-                style={S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ window.location.href = '/crm/whatsapp' }}
-                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
             </nav>
           </div>
           <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'20px'}}>

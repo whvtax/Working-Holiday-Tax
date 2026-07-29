@@ -3,7 +3,6 @@ export const maxDuration = 60
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server'
 import { createTask, findExistingClient } from '@/lib/db'
-import { linkFormSubmissionToConversation, getOrCreateConversation, dispatchMessage } from '@/lib/wa-store'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
@@ -92,34 +91,6 @@ export async function POST(req: NextRequest) {
       reviewerNote: '',
       reviewedAt:   '',
     })
-
-    // Link back to an open WhatsApp conversation for this number, if one
-    // exists — see role doc Section 2 (Phase 1 → Phase 2 handoff). Never
-    // let this block or fail the actual form submission.
-    if (whatsapp) {
-      linkFormSubmissionToConversation(whatsapp, task.id).catch(err =>
-        console.error('[tax-form] wa link failed (non-fatal):', err)
-      )
-
-      // Client ticked "Yes" to having expenses — proactively explain what
-      // counts (Section 10.11 wording) and ask them to send proof, so the
-      // tax preparer isn't starting from zero. Fixed script, goes through
-      // dispatchMessage like every other automated reply (shadow mode
-      // applies — the tax agent still approves it before it sends).
-      if (formData.get('hasExpenses') === 'Yes') {
-        const firstName = sanitiseShort(formData.get('fullName')).split(' ')[0] || 'there'
-        const expensesMessage =
-          `Hey ${firstName}! One more thing 🙌\n\n` +
-          "Since you mentioned you've got expenses - basically anything you paid for that relates to your work can count: " +
-          'work clothes/uniforms, tools or equipment, work-related travel, or even your car if you used it for an ABN job like Uber. ' +
-          "If you're not sure whether something counts, just send it over and we'll check - no need to stress about it, we'll take care of it 😊\n\n" +
-          'Whenever you get a chance, please send through photos of your receipts, invoices, or any other proof of purchase right here in the chat 📎'
-
-        getOrCreateConversation(whatsapp, firstName)
-          .then(conversation => dispatchMessage(conversation.id, whatsapp, expensesMessage, '10.11_expenses_explainer'))
-          .catch(err => console.error('[tax-form] expenses message failed (non-fatal):', err))
-      }
-    }
 
     return NextResponse.json({ ok: true })
   } catch (err) {

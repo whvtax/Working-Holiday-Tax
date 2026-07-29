@@ -327,7 +327,7 @@ export default function GermanTaxReturnPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir bereiten deine Working Holiday Steuererklärung vor und reichen sie für dich ein</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung. Keine Formulare, keine ATO-Portale, kein Stress. Wir beantragen jeden Abzug, der dir zusteht, und erledigen alles online - auch wenn du Australien schon verlassen hast.</p>
+              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung. Keine Formulare, keine ATO-Portale, kein Stress. Wir beantragen jeden Abzug, der dir zusteht, und erledigen alles online - auch wenn du Australien schon verlassen hast.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Steuererklärung starten →

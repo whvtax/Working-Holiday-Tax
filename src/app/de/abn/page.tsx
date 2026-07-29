@@ -273,7 +273,7 @@ export default function ABNPageDE() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir registrieren deine ABN korrekt für dich</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung auf WhatsApp. Wir registrieren deine ABN mit dem richtigen Setup für deine Tätigkeit - und erklären dir deine Steuerpflichten klar und verständlich.</p>
+              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung – schreib uns auf WhatsApp. Wir registrieren deine ABN mit dem richtigen Setup für deine Tätigkeit - und erklären dir deine Steuerpflichten klar und verständlich.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine ABN registrieren →

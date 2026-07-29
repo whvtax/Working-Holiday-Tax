@@ -119,7 +119,23 @@ const nextConfig = {
       // Slug update: minimum-wage-australia-2024-25 → 2025-26 (kept old URL working)
       {
         source: '/blog/minimum-wage-australia-2024-25',
-        destination: '/blog/minimum-wage-australia-2025-26',
+        destination: '/blog/minimum-wage-australia-2026-27',
+        permanent: true,
+      },
+      // Annual slug roll-forward: 2025-26 -> 2026-27 (FWC review effective 1 July 2026)
+      {
+        source: '/blog/minimum-wage-australia-2025-26',
+        destination: '/blog/minimum-wage-australia-2026-27',
+        permanent: true,
+      },
+      {
+        source: '/de/blog/minimum-wage-australia-2025-26',
+        destination: '/de/blog/minimum-wage-australia-2026-27',
+        permanent: true,
+      },
+      {
+        source: '/ja/blog/minimum-wage-australia-2025-26',
+        destination: '/ja/blog/minimum-wage-australia-2026-27',
         permanent: true,
       },
     ]

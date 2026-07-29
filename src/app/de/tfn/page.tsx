@@ -254,7 +254,7 @@ export default function TFNPageDE() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir kümmern uns um deinen gesamten TFN-Antrag</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung auf WhatsApp. Wir reichen deinen Antrag beim ersten Mal korrekt ein - meistens innerhalb einer Stunde.</p>
+              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung – schreib uns auf WhatsApp. Wir reichen deinen Antrag beim ersten Mal korrekt ein - meistens innerhalb einer Stunde.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine TFN beantragen →

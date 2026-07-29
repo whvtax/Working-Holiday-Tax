@@ -308,7 +308,7 @@ export default function GermanSuperannuationPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir holen deine Super für dich zurück</h3>
-              <p className="service-cta-sub">Kostenlose Erstberatung. Vom Finden deiner Superfonds bis zur DASP-Beantragung - wir wickeln den ganzen Prozess ab, damit dein Geld nicht in Australien zurückbleibt.</p>
+              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung. Vom Finden deiner Superfonds bis zur DASP-Beantragung - wir wickeln den ganzen Prozess ab, damit dein Geld nicht in Australien zurückbleibt.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine Super beantragen →

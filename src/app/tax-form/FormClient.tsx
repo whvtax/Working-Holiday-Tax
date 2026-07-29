@@ -483,7 +483,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   /* ── Success screen ── */
   if (submitted) {
     const firstName = fullName.split(' ')[0]
-    const waMsg = encodeURIComponent("Hi! I just filled out the form and I'd love a free eligibility check 😊")
+    const waMsg = encodeURIComponent("Hi! I just filled out the form and I'd like to check my eligibility 😊")
     const waHref = `https://wa.me/${WA_NUMBER}?text=${waMsg}`
     return (
       <>

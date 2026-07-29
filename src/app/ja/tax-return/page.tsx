@@ -378,7 +378,7 @@ export default function JapaneseTaxReturnPage() {
               style={{ height: '52px', padding: '0 28px', fontSize: '14.5px', maxWidth: '300px', width: '100%' }}>
               タックスリターンを依頼する →
             </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>無料相談&nbsp;&bull;&nbsp;事前支払い不要</p>
+            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>今すぐ受給資格をチェック&nbsp;&bull;&nbsp;事前支払い不要</p>
           </div>
         </div>
       </section>
@@ -610,7 +610,7 @@ export default function JapaneseTaxReturnPage() {
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ height: '52px', padding: '0 32px', fontSize: '15px' }}>
               タックスリターンを依頼する →
             </a>
-            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>無料相談&nbsp;&bull;&nbsp;事前支払い不要</p>
+            <p style={{ marginTop: '10px', fontSize: '12px', color: '#8AADA3' }}>今すぐ受給資格をチェック&nbsp;&bull;&nbsp;事前支払い不要</p>
           </div>
         </div>
       </section>
