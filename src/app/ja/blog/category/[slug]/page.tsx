@@ -179,7 +179,7 @@ export default function JapaneseCategoryPage({ params }: Props) {
                 style={{ display: 'flex', flexDirection: 'column', gap: '0', padding: '0', background: '#fff', textDecoration: 'none', borderRadius: '16px', border: '1px solid #E2EFE9' }}
               >
                 <div className="blog-card-hero" style={{ aspectRatio: '16/9', overflow: 'hidden', borderRadius: '15px 15px 0 0' }}>
-                  <CategoryHero category={article.category} title={article.title} />
+                  <CategoryHero category={article.category} title={article.title} slug={article.slug} />
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '20px 22px 22px', flex: 1 }}>

@@ -1,164 +1,287 @@
 import { type Category, getCategoryColor } from '../data'
 
 /**
- * Renders a decorative SVG hero image based on the article's category.
- * Uses category colors for a cohesive look without needing actual photos.
- * Lightweight (inline SVG), accessible, no external requests, and looks distinct per category.
+ * Decorative card/hero visual for a blog article.
+ *
+ * Shows a large emoji chosen to match what the specific article is about, on a
+ * soft category-tinted background — warmer and more readable than an abstract
+ * illustration, and consistent with the emoji cards on /expenses.
+ *
+ * The emoji is looked up by slug, so it is stable, intentional and easy to
+ * change: edit ARTICLE_EMOJI below. Anything not listed falls back to a
+ * sensible per-category default.
  */
-export default function CategoryHero({ category, title }: { category: Category; title: string }) {
+
+const ARTICLE_EMOJI: Record<string, string> = {
+  'what-is-a-tfn': '🆔',
+  'how-to-apply-for-a-tfn': '🆔',
+  'how-long-does-it-take-to-get-a-tfn': '⏳',
+  'can-you-start-work-without-a-tfn': '🕐',
+  'what-happens-without-your-tfn': '⚠️',
+  'tfn-vs-abn-difference': '🔀',
+  'apply-for-tfn-before-arriving': '✈️',
+  'tfn-application-delayed': '⏳',
+  'do-you-need-new-tfn-second-visa': '🔁',
+  'how-to-find-lost-tfn': '🔎',
+  'what-is-an-abn': '💼',
+  'how-to-register-for-an-abn': '📋',
+  'farm-work-and-abns': '🌾',
+  'employee-vs-contractor-australia': '🔀',
+  'can-you-have-tfn-and-abn': '🔗',
+  'how-to-cancel-your-abn': '🗑️',
+  'gst-and-abn-for-working-holiday-makers': '🔟',
+  'how-does-australian-tax-year-work': '📅',
+  'backpacker-tax-rate-australia': '📊',
+  'how-to-lodge-tax-return-working-holiday': '📝',
+  'what-is-payg-payment-summary': '📄',
+  'tax-deductions-working-holiday-makers': '🧮',
+  'do-you-need-to-lodge-tax-return-short-stay': '⏱️',
+  'how-to-lodge-tax-return-from-overseas': '✈️',
+  'what-is-a-tax-agent': '🎓',
+  'how-does-payg-withholding-work': '🔁',
+  'australian-financial-year-dates': '📅',
+  'cash-in-hand-tax-return': '💵',
+  'what-is-superannuation': '🏦',
+  'how-much-super-should-employer-pay': '🧮',
+  'what-is-dasp-super-withdrawal': '🏦',
+  'how-to-apply-for-super-back': '🏦',
+  'how-long-does-dasp-take': '⏳',
+  'tax-on-super-withdrawal-backpacker': '💵',
+  'what-happens-to-unclaimed-super': '📦',
+  'can-you-withdraw-super-in-australia': '🔒',
+  'how-to-find-lost-superannuation': '🔎',
+  'how-to-choose-super-fund': '🎯',
+  'minimum-wage-australia-2026-27': '💲',
+  'how-many-hours-can-you-work-on-whv': '⏱️',
+  'penalty-rates-australia': '🌙',
+  'can-your-employer-pay-you-cash-in-hand': '💵',
+  'fair-work-act-working-holiday-makers': '⚖️',
+  'employer-not-paying-correctly': '⚠️',
+  'leave-entitlements-working-holiday-visa': '🌴',
+  'what-is-a-tax-invoice': '🧾',
+  'can-you-work-for-multiple-employers': '👥',
+  'full-time-part-time-casual-australia': '🗂️',
+  'what-is-medicare-working-holiday-makers': '🏥',
+  'countries-with-medicare-agreement-australia': '🌍',
+  'medicare-levy-working-holiday-makers': '🩺',
+  'tax-file-number-declaration-form': '📝',
+  'what-does-tax-withheld-mean-payslip': '🔍',
+  'what-is-an-income-statement': '📄',
+  'what-is-the-ato': '🏛️',
+  'gross-pay-vs-net-pay-australia': '➗',
+  'do-working-holiday-makers-pay-tax-on-tips': '🪙',
+  'tax-obligations-after-leaving-australia': '✈️',
+  'tax-residency-working-holiday-makers': '🏠',
+  'how-to-update-address-with-ato': '📍',
+  'what-is-a-tax-refund-australia': '💰',
+  'how-long-does-tax-refund-take-australia': '⏳',
+  'super-for-casual-and-part-time-workers': '🧾',
+  'employer-asking-you-to-work-more-than-visa-allows': '🚩',
+  'farm-work-rights-working-holiday-australia': '🌾',
+  'what-is-superannuation-guarantee-charge': '⚠️',
+  'tfn-reference-number-before-tfn-arrives': '🔢',
+  'tax-free-threshold-working-holiday-visa': '🚧',
+  'white-card-australia-working-holiday': '🦺',
+  'rsa-certificate-australia-working-holiday': '🍺',
+  'wwcc-working-with-children-check-australia': '🧒',
+  'public-holidays-australia-working-holiday': '🎉',
+  'casual-shift-cancellation-rules-australia': '📵',
+  'six-month-employer-rule-working-holiday-visa': '📆',
+  'opening-bank-account-australia-working-holiday': '🏧',
+  'trs-tourist-refund-scheme-australia': '🛫',
+  'transferring-money-overseas-australia-tax': '🌐',
+  'vehicle-logbook-abn-working-holiday': '🚗',
+  'small-business-tax-offset-working-holiday-abn': '🏪',
+  'sole-trader-vs-company-australia-working-holiday': '🏛️',
+  'profit-loss-vs-personal-services-income-australia': '📊',
+  'low-income-tax-offset-working-holiday': '📉',
+  'appealing-ato-decision-australia': '⚖️',
+  'amending-tax-return-australia': '✏️',
+  'ato-payment-plan-tax-debt-australia': '💳',
+  'piece-rates-farm-work-working-holiday': '🧺',
+  'labour-hire-agencies-working-holiday-australia': '🤝',
+  'how-to-read-a-payslip-australia-working-holiday': '🧾',
+  'wage-theft-working-holiday-australia': '🚨',
+  'backpacker-tax-history-australia': '📜',
+  'how-to-check-super-balance-working-holiday': '📱',
+  'tfn-application-rejected': '❌',
+  'tfn-identity-documents-required': '🛂',
+  'tfn-security-protect-from-fraud': '🔐',
+  'who-can-ask-for-your-tfn': '🔐',
+  'tfn-australian-address-no-fixed-address': '📮',
+  'abn-invoicing-requirements-australia': '🧾',
+  'abn-deductions-business-expenses': '🧾',
+  'uber-doordash-rideshare-abn-working-holiday': '🛵',
+  'tax-return-without-tfn-australia': '🆘',
+  'multiple-jobs-tax-return-working-holiday': '👥',
+  'second-third-year-visa-tax-implications': '🛂',
+  'dasp-documents-required': '📑',
+  'dasp-tax-rate-65-percent-explained': '✂️',
+  'super-multiple-funds-consolidation': '🔗',
+  'dasp-rejected-what-to-do': '🚫',
+  'super-employer-not-paying-what-to-do': '⚠️',
+  'super-stapling-rule-australia': '📎',
+  'workplace-injury-working-holiday-rights': '🩹',
+  'unfair-dismissal-working-holiday-australia': '⚖️',
+  'bullying-harassment-workplace-working-holiday': '🛡️',
+  'unpaid-trial-shifts-australia-legal': '🚫',
+  'uniform-laundry-deductions-illegal-australia': '👕',
+  'uk-medicare-reciprocal-agreement-australia': '🇬🇧',
+  'german-european-health-insurance-australia-working-holiday': '🇩🇪',
+  'private-health-insurance-working-holiday-australia': '🏥',
+  'emergency-medical-care-working-holiday-no-medicare': '🚑',
+  'travel-insurance-vs-health-insurance-working-holiday': '🧳',
+  'hospitality-award-working-holiday-makers': '🍽️',
+  'horticulture-award-working-holiday-makers': '🌾',
+  'restaurant-industry-award-working-holiday': '🍝',
+  'award-classifications-working-holiday-australia': '📚',
+  'late-tax-return-penalty-working-holiday': '⏰',
+  'understating-income-ato-penalty-working-holiday': '🚨',
+  'tools-equipment-under-300-instant-deduction-whv': '🔧',
+  '1000-dollar-instant-deduction-rule-2026': '⚡',
+  'bicycle-motorcycle-vehicle-deductions-working-holiday': '🚲',
+  'dasp-vs-leaving-super-in-australia-pros-cons': '⚖️',
+  'fruit-picking-jobs-working-holiday-australia': '🍓',
+  'farm-hand-jobs-working-holiday-australia': '🚜',
+  'bartender-jobs-working-holiday-australia': '🍸',
+  'barista-coffee-shop-working-holiday-australia': '☕',
+  'waiter-waitress-working-holiday-australia': '🍽️',
+  'kitchen-hand-working-holiday-australia': '🔪',
+  'construction-laborer-working-holiday-australia': '🏗️',
+  'uber-eats-delivery-rider-working-holiday-australia': '🛵',
+  'uber-driver-working-holiday-australia': '🚗',
+  'ski-resort-jobs-working-holiday-australia': '🎿',
+  'supermarket-work-coles-woolworths-working-holiday': '🛒',
+  'station-hand-cattle-station-working-holiday-australia': '🐄',
+  'super-rate-12-percent-2025-2026-increase': '📈',
+  'bringing-money-into-australia-10000-reporting-threshold': '💼',
+  'ato-tax-debt-failure-to-pay-penalty-australia': '⚠️',
+  'tax-back-australia-working-holiday': '💰',
+  'average-tax-refund-working-holiday': '📊',
+  'best-way-to-claim-super-leaving-australia': '🏦',
+  'working-holiday-visa-tax-guide-417-462': '🛂',
+  'diy-tax-return-vs-tax-agent-working-holiday': '⚖️',
+  'tfn': '🆔',
+  'abn': '💼',
+  'tax-return': '💰',
+  'super': '🏦',
+  'work-rights': '⚖️',
+  'medicare-and-other': '🏥',
+}
+
+const CATEGORY_FALLBACK: Record<Category, string> = {
+  'TFN': '\u{1F194}',
+  'ABN': '\u{1F4BC}',
+  'Tax Return': '\u{1F4B0}',
+  'Super': '\u{1F3E6}',
+  'Work Rights': '\u2696\uFE0F',
+  'Medicare & Other': '\u{1F3E5}',
+}
+
+const CATEGORY_LABEL: Record<Category, string> = {
+  'TFN': 'TFN',
+  'ABN': 'ABN',
+  'Tax Return': 'Tax Return',
+  'Super': 'Superannuation',
+  'Work Rights': 'Work Rights',
+  'Medicare & Other': 'Medicare & More',
+}
+
+export default function CategoryHero({
+  category,
+  title,
+  slug,
+}: {
+  category: Category
+  title: string
+  slug?: string
+}) {
   const colors = getCategoryColor(category)
+  const emoji = (slug && ARTICLE_EMOJI[slug]) || CATEGORY_FALLBACK[category] || '\u{1F4C4}'
 
-  // Deterministic per-article variation so cards in the same category don't look identical.
-  // Derived from the title: subtle rotation, scale and offset of the motif, plus a
-  // hash-positioned accent ring. Same article always renders the same art (SSR-safe).
+  // Small deterministic variation so identical emojis never look copy-pasted.
+  // Unsigned shifts only — a signed shift on a hash above 2^31 goes negative.
   let hash = 0
-  for (let i = 0; i < title.length; i++) hash = (hash * 31 + title.charCodeAt(i)) >>> 0
-  // NOTE: use unsigned shifts (>>>) - a signed shift on a hash above 2^31
-  // yields a negative value, which produced a negative array index.
-  const rot = ((hash % 7) - 3) * 3            // -9..9 degrees
-  const sc = 0.9 + ((hash >>> 3) % 5) * 0.04  // 0.90..1.06
-  const tx = (((hash >>> 5) % 5) - 2) * 7     // -14..14 px
-  const ty = (((hash >>> 7) % 3) - 1) * 6     // -6..6 px
-  const accents = [
-    { cx: 48, cy: 52 }, { cx: 272, cy: 48 }, { cx: 276, cy: 178 }, { cx: 44, cy: 182 },
-  ]
-  const accent = accents[(hash >>> 9) % accents.length] ?? accents[0]
-  const accentR = 7 + ((hash >>> 11) % 3) * 3
-
-  // Each category gets a different visual motif to feel distinct
-  const renderMotif = () => {
-    switch (category) {
-      case 'TFN':
-        // Concentric rings - represent identity/numbers
-        return (
-          <>
-            <circle cx="160" cy="100" r="80" fill="none" stroke={colors.border} strokeWidth="1.5" opacity="0.5" />
-            <circle cx="160" cy="100" r="60" fill="none" stroke={colors.border} strokeWidth="1.5" opacity="0.7" />
-            <circle cx="160" cy="100" r="40" fill="none" stroke={colors.text} strokeWidth="2" opacity="0.85" />
-            <circle cx="160" cy="100" r="20" fill={colors.text} opacity="0.15" />
-            <circle cx="160" cy="100" r="6" fill={colors.text} />
-          </>
-        )
-      case 'ABN':
-        // Geometric grid - represents business/structure
-        return (
-          <>
-            <rect x="100" y="40" width="50" height="50" fill="none" stroke={colors.border} strokeWidth="1.5" rx="4" opacity="0.6" />
-            <rect x="160" y="40" width="50" height="50" fill="none" stroke={colors.border} strokeWidth="1.5" rx="4" opacity="0.6" />
-            <rect x="100" y="100" width="50" height="50" fill={colors.text} rx="4" opacity="0.85" />
-            <rect x="160" y="100" width="50" height="50" fill="none" stroke={colors.text} strokeWidth="2" rx="4" />
-            <rect x="220" y="100" width="50" height="50" fill="none" stroke={colors.border} strokeWidth="1.5" rx="4" opacity="0.5" />
-            <rect x="160" y="160" width="50" height="50" fill="none" stroke={colors.border} strokeWidth="1.5" rx="4" opacity="0.6" />
-          </>
-        )
-      case 'Tax Return':
-        // Stacked documents - represents paperwork
-        return (
-          <>
-            <rect x="110" y="60" width="100" height="120" fill={colors.bg} stroke={colors.border} strokeWidth="1.5" rx="6" transform="rotate(-6 160 120)" />
-            <rect x="120" y="50" width="100" height="120" fill="#fff" stroke={colors.text} strokeWidth="2" rx="6" />
-            <line x1="135" y1="80" x2="200" y2="80" stroke={colors.text} strokeWidth="2" opacity="0.6" />
-            <line x1="135" y1="100" x2="195" y2="100" stroke={colors.text} strokeWidth="1.5" opacity="0.4" />
-            <line x1="135" y1="115" x2="180" y2="115" stroke={colors.text} strokeWidth="1.5" opacity="0.4" />
-            <line x1="135" y1="140" x2="190" y2="140" stroke={colors.text} strokeWidth="1.5" opacity="0.3" />
-            <line x1="135" y1="155" x2="170" y2="155" stroke={colors.text} strokeWidth="1.5" opacity="0.3" />
-          </>
-        )
-      case 'Super':
-        // Growing bars - represents accumulation
-        return (
-          <>
-            <rect x="100" y="160" width="22" height="30" fill={colors.border} rx="3" opacity="0.6" />
-            <rect x="130" y="140" width="22" height="50" fill={colors.border} rx="3" opacity="0.75" />
-            <rect x="160" y="110" width="22" height="80" fill={colors.text} rx="3" opacity="0.9" />
-            <rect x="190" y="80" width="22" height="110" fill={colors.text} rx="3" />
-            <path d="M 105 155 Q 145 110 215 75" fill="none" stroke={colors.text} strokeWidth="2" strokeLinecap="round" opacity="0.7" strokeDasharray="3,3" />
-            <circle cx="215" cy="75" r="4" fill={colors.text} />
-          </>
-        )
-      case 'Work Rights':
-        // Shield - represents protection
-        return (
-          <>
-            <path
-              d="M 160 50 L 220 80 L 220 130 Q 220 170 160 195 Q 100 170 100 130 L 100 80 Z"
-              fill={colors.bg}
-              stroke={colors.text}
-              strokeWidth="2.5"
-              opacity="0.9"
-            />
-            <path
-              d="M 135 125 L 152 142 L 188 105"
-              fill="none"
-              stroke={colors.text}
-              strokeWidth="3.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </>
-        )
-      case 'Medicare & Other':
-        // Plus/cross - represents health
-        return (
-          <>
-            <circle cx="160" cy="120" r="65" fill={colors.bg} stroke={colors.border} strokeWidth="1.5" />
-            <rect x="148" y="80" width="24" height="80" fill={colors.text} rx="6" />
-            <rect x="120" y="108" width="80" height="24" fill={colors.text} rx="6" />
-          </>
-        )
-    }
-  }
+  const seed = slug || title
+  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0
+  const tilt = ((hash >>> 7) % 7) - 3           // -3..3 degrees
+  const offset = (((hash >>> 11) % 5) - 2) * 4  // -8..8 px
 
   return (
     <div
       className="category-hero-image"
       role="img"
-      aria-label={`Decorative illustration for ${category}`}
+      aria-label={`${CATEGORY_LABEL[category]} article`}
       style={{
         width: '100%',
-        background: `linear-gradient(135deg, ${colors.bg} 0%, #fff 100%)`,
-        borderRadius: '16px',
-        overflow: 'hidden',
-        border: `1px solid ${colors.border}`,
+        height: '100%',
+        minHeight: '100%',
         position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        borderRadius: 'inherit',
+        background: `radial-gradient(120% 120% at 50% 0%, #ffffff 0%, ${colors.bg} 72%)`,
+        borderBottom: `1px solid ${colors.border}`,
       }}
     >
-      <svg
-        viewBox="0 0 320 240"
-        preserveAspectRatio="xMidYMid meet"
-        style={{ display: 'block', width: '100%', height: '100%' }}
-        xmlns="http://www.w3.org/2000/svg"
+      {/* Soft dotted texture */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `radial-gradient(${colors.text} 1px, transparent 1px)`,
+          backgroundSize: '18px 18px',
+          opacity: 0.08,
+        }}
+      />
+
+      {/* Halo behind the emoji */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          width: '42%',
+          aspectRatio: '1',
+          borderRadius: '50%',
+          background: '#ffffff',
+          opacity: 0.7,
+          transform: `translateX(${offset}px)`,
+          boxShadow: `0 0 0 1px ${colors.border}`,
+        }}
+      />
+
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'relative',
+          fontSize: 'clamp(36px, 20%, 84px)',
+          lineHeight: 1,
+          transform: `translateX(${offset}px) rotate(${tilt}deg)`,
+          filter: 'drop-shadow(0 2px 4px rgba(8,15,13,0.10))',
+        }}
       >
-        {/* Background dots pattern */}
-        <defs>
-          <pattern id={`dots-${category.replace(/\s|&/g, '')}`} x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <circle cx="2" cy="2" r="1" fill={colors.text} opacity="0.1" />
-          </pattern>
-        </defs>
-        <rect width="320" height="240" fill={`url(#dots-${category.replace(/\s|&/g, '')})`} />
+        {emoji}
+      </span>
 
-        {/* Category-specific motif - per-article transform variation */}
-        <g transform={`translate(${160 + tx} ${120 + ty}) rotate(${rot}) scale(${sc}) translate(-160 -120)`}>
-          {renderMotif()}
-        </g>
-
-        {/* Per-article accent ring */}
-        <circle cx={accent.cx} cy={accent.cy} r={accentR} fill="none" stroke={colors.text} strokeWidth="1.5" opacity="0.35" />
-        <circle cx={accent.cx} cy={accent.cy} r={2.5} fill={colors.text} opacity="0.45" />
-
-        {/* Category label */}
-        <text
-          x="20"
-          y="225"
-          fontSize="11"
-          fontWeight="700"
-          fill={colors.text}
-          letterSpacing="2"
-          fontFamily="system-ui, -apple-system, sans-serif"
-        >
-          {category.toUpperCase()}
-        </text>
-      </svg>
+      <span
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: '14px',
+          bottom: '10px',
+          fontSize: '10px',
+          fontWeight: 600,
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color: colors.text,
+          opacity: 0.55,
+        }}
+      >
+        {CATEGORY_LABEL[category]}
+      </span>
     </div>
   )
 }

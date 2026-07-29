@@ -453,7 +453,7 @@ export default function GuidePage({ params }: Props) {
 
               {/* Decorative category illustration - hidden on small mobile */}
               <div className="article-hero-image">
-                <CategoryHero category={guide.category} title={guide.title} />
+                <CategoryHero category={guide.category} title={guide.title} slug={guide.slug} />
               </div>
             </div>
           </div>

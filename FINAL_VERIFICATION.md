@@ -47,3 +47,19 @@ no "free eligibility" claims in any language
 3. Search Console: resubmit sitemap.xml; request indexing for the 5 new /blog/ URLs,
    /blog, and /blog/minimum-wage-australia-2026-27.
 4. In 2-3 weeks: export a fresh GSC report to compare against the 28 July 2026 baseline.
+
+---
+
+## Blog card artwork changed to per-article emoji (29 July 2026)
+CategoryHero.tsx rewritten: the abstract SVG motif is replaced by a large emoji chosen to
+match each specific article, on a soft category-tinted background with a dotted texture,
+white halo and a small category label — visually consistent with the /expenses emoji cards.
+
+- ARTICLE_EMOJI maps all 154 slugs to a content-matched emoji (99 distinct emojis).
+  Examples: fruit picking 🍓 · barista ☕ · ski season 🎿 · Uber Eats 🛵 · DASP timing ⏳ ·
+  TFN security 🔐 · Medicare levy 🩺 · wage theft 🚨 · logbook 🚗 · white card 🦺
+- Falls back to a per-category emoji for any slug not in the map (future posts are safe).
+- Slight deterministic tilt/offset so repeated emojis never look copy-pasted; unsigned
+  shifts only (the bug from the earlier version cannot recur).
+- `slug` prop wired through all 7 call sites (EN/DE/JA index, category and article pages).
+- Verified: all 154 slugs covered, 0 missing; tsc + eslint clean on the whole tree.
