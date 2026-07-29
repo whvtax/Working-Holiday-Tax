@@ -197,8 +197,6 @@ const sections: Section[] = [
     body: 'Wenn du mit einem Teil des Service nicht zufrieden bist, möchten wir davon erfahren und gemeinsam eine Lösung finden:',
     items: [
       'Melde dich zuerst bei uns über die Kontaktdaten auf unserer Kontaktseite. Wir bestätigen deine Beschwerde und antworten in der Regel innerhalb von 14 Tagen.',
-      'Bleibt deine Beschwerde ungelöst, kannst du dich an das Tax Practitioners Board (TPB) wenden. Das TPB führt ein öffentliches Register registrierter Steuerberater und bearbeitet Beschwerden über registrierte Praktiker: tpb.gov.au.',
-      'Du kannst dich außerdem an das ATO oder an die Verbraucherschutzbehörde deines Bundesstaates wenden.',
       'Nichts in dieser Vereinbarung hindert dich daran, eine Beschwerde bei einer Aufsichtsbehörde einzureichen.',
     ],
   },

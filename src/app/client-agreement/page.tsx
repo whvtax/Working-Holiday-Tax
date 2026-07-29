@@ -208,8 +208,6 @@ const sections: Section[] = [
     body: 'If you are not satisfied with any aspect of the Service, we want to hear about it and we will work with you to resolve it:',
     items: [
       'Contact us in the first instance using the details on our contact page. We will acknowledge your complaint and aim to respond within 14 days.',
-      'If your complaint remains unresolved, you may raise it with the Tax Practitioners Board (TPB), which maintains a public register of registered tax agents and handles complaints about registered practitioners, at tpb.gov.au.',
-      'You may also seek assistance from the ATO or from the consumer protection agency in your state or territory.',
       'Nothing in this Agreement prevents or discourages you from making a complaint to any regulator.',
     ],
   },

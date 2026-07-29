@@ -9,7 +9,8 @@ import { type Category, getCategoryColor } from '../data'
  *
  * The emoji is looked up by slug, so it is stable, intentional and easy to
  * change: edit ARTICLE_EMOJI below. Anything not listed falls back to a
- * sensible per-category default.
+ * sensible per-category default. Sizing uses container query units so the
+ * same component works on small cards and on the large article hero.
  */
 
 const ARTICLE_EMOJI: Record<string, string> = {
@@ -191,27 +192,50 @@ export default function CategoryHero({
   category,
   title,
   slug,
+  variant = 'card',
 }: {
   category: Category
   title: string
   slug?: string
+  /** 'card' = tinted panel used on blog cards. 'badge' = just the emoji in a circle. */
+  variant?: 'card' | 'badge'
 }) {
   const colors = getCategoryColor(category)
   const emoji = (slug && ARTICLE_EMOJI[slug]) || CATEGORY_FALLBACK[category] || '\u{1F4C4}'
 
-  // Small deterministic variation so identical emojis never look copy-pasted.
-  // Unsigned shifts only — a signed shift on a hash above 2^31 goes negative.
-  let hash = 0
-  const seed = slug || title
-  for (let i = 0; i < seed.length; i++) hash = (hash * 31 + seed.charCodeAt(i)) >>> 0
-  const tilt = ((hash >>> 7) % 7) - 3           // -3..3 degrees
-  const offset = (((hash >>> 11) % 5) - 2) * 4  // -8..8 px
+  if (variant === 'badge') {
+    return (
+      <div
+        role="img"
+        aria-label={`${CATEGORY_LABEL[category]}: ${title}`}
+        style={{
+          width: '132px',
+          height: '132px',
+          maxWidth: '100%',
+          margin: '0 auto',
+          borderRadius: '50%',
+          background: '#ffffff',
+          border: `1px solid ${colors.border}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '58px',
+          lineHeight: 1,
+        }}
+      >
+        <span aria-hidden="true" style={{ filter: 'drop-shadow(0 2px 4px rgba(8,15,13,0.10))' }}>
+          {emoji}
+        </span>
+      </div>
+    )
+  }
+
 
   return (
     <div
       className="category-hero-image"
       role="img"
-      aria-label={`${CATEGORY_LABEL[category]} article`}
+      aria-label={`${CATEGORY_LABEL[category]}: ${title}`}
       style={{
         width: '100%',
         height: '100%',
@@ -224,6 +248,8 @@ export default function CategoryHero({
         borderRadius: 'inherit',
         background: `radial-gradient(120% 120% at 50% 0%, #ffffff 0%, ${colors.bg} 72%)`,
         borderBottom: `1px solid ${colors.border}`,
+        containerType: 'size',
+        fontSize: '52px',
       }}
     >
       {/* Soft dotted texture */}
@@ -243,12 +269,11 @@ export default function CategoryHero({
         aria-hidden="true"
         style={{
           position: 'absolute',
-          width: '42%',
+          width: 'min(62cqh, 148px)',
           aspectRatio: '1',
           borderRadius: '50%',
           background: '#ffffff',
-          opacity: 0.7,
-          transform: `translateX(${offset}px)`,
+          opacity: 0.72,
           boxShadow: `0 0 0 1px ${colors.border}`,
         }}
       />
@@ -257,9 +282,8 @@ export default function CategoryHero({
         aria-hidden="true"
         style={{
           position: 'relative',
-          fontSize: 'clamp(36px, 20%, 84px)',
+          fontSize: 'min(40cqh, 96px)',
           lineHeight: 1,
-          transform: `translateX(${offset}px) rotate(${tilt}deg)`,
           filter: 'drop-shadow(0 2px 4px rgba(8,15,13,0.10))',
         }}
       >

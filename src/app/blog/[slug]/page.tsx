@@ -451,9 +451,9 @@ export default function GuidePage({ params }: Props) {
                 </p>
               </div>
 
-              {/* Decorative category illustration - hidden on small mobile */}
+              {/* Article emoji - hidden on small mobile */}
               <div className="article-hero-image">
-                <CategoryHero category={guide.category} title={guide.title} slug={guide.slug} />
+                <CategoryHero category={guide.category} title={guide.title} slug={guide.slug} variant="badge" />
               </div>
             </div>
           </div>

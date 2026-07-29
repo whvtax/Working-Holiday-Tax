@@ -59,7 +59,25 @@ white halo and a small category label — visually consistent with the /expenses
   Examples: fruit picking 🍓 · barista ☕ · ski season 🎿 · Uber Eats 🛵 · DASP timing ⏳ ·
   TFN security 🔐 · Medicare levy 🩺 · wage theft 🚨 · logbook 🚗 · white card 🦺
 - Falls back to a per-category emoji for any slug not in the map (future posts are safe).
-- Slight deterministic tilt/offset so repeated emojis never look copy-pasted; unsigned
-  shifts only (the bug from the earlier version cannot recur).
+- No rotation or offset: every emoji sits straight and centred.
+- Sizing uses container query units (emoji min(40cqh,96px), halo min(62cqh,148px)) so the
+  same component scales correctly on small cards and on the large article hero, with a
+  52px inherited font-size as fallback.
 - `slug` prop wired through all 7 call sites (EN/DE/JA index, category and article pages).
 - Verified: all 154 slugs covered, 0 missing; tsc + eslint clean on the whole tree.
+
+### Article page: badge variant (29 July 2026)
+CategoryHero now takes a `variant` prop.
+- `card` (default) — the tinted panel used on blog index and category cards. Unchanged.
+- `badge` — used on the three article pages: just the emoji inside a clean white circle,
+  no gradient band, no dotted texture, no category label. Fixes the squashed strip that
+  appeared in the article header, where the container is short and wide.
+Mobile: the article badge stays hidden below 700px (existing `.article-hero-image` rule),
+so the mobile article view is unchanged; cards keep their 16/9 artwork at all sizes.
+
+
+### Clause 24 trimmed (29 July 2026)
+Removed the two escalation bullets (TPB register/complaints and ATO/state consumer agency)
+from clause 24 in EN, DE and JA. Retained: the internal complaints path with a 14-day
+response commitment, and the statement that nothing in the agreement prevents or discourages
+a complaint to any regulator.

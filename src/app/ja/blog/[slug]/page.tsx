@@ -600,7 +600,7 @@ export default function JapaneseGuidePage({ params }: Props) {
               </div>
 
               <div className="article-hero-image">
-                <CategoryHero category={guide.category} title={guide.title} slug={guide.slug} />
+                <CategoryHero category={guide.category} title={guide.title} slug={guide.slug} variant="badge" />
               </div>
             </div>
           </div>
