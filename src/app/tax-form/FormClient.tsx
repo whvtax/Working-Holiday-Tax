@@ -236,6 +236,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   //    NDA country selecting Working Holiday Maker) ──────────────────────
   const [showResidencyPrompt, setShowResidencyPrompt] = useState(false)
   const [showWhmBlockModal, setShowWhmBlockModal] = useState(false)
+  // Set once the client explicitly confirms the WHM tax status in the warning
+  // modal, so the next submit goes straight through.
+  const whmConfirmedRef = useRef(false)
+  const formRef = useRef<HTMLFormElement>(null)
   const taxStatusRef = useRef<HTMLDivElement>(null)
   const residencyUrl = lang === 'de' ? '/de/tax-residency' : lang === 'ja' ? '/ja/tax-residency' : '/tax-residency'
   const SNAPSHOT_KEY = 'whv_taxform_return'
@@ -354,12 +358,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
 
-    // Hard block: clients who select "Working Holiday Maker" tax status cannot
-    // submit the form. Visa type and income level don't determine tax residency -
-    // only the actual residency tests do - so this stops people from locking in
-    // a worse tax outcome (15% flat, no refund) without at least reading the
-    // tax-residency explainer first. The form stays fully filled either way.
-    if (taxStatus === 'whm') { setShowWhmBlockModal(true); return }
+    // Soft warning (not a block): visa type and income level don't determine tax
+    // residency - only the actual residency tests do - so we ask WHM selectors to
+    // confirm once, with a prominent path to the residency explainer. If they
+    // confirm, the submission goes through normally.
+    if (taxStatus === 'whm' && !whmConfirmedRef.current) { setShowWhmBlockModal(true); return }
 
     setLoading(true)
 
@@ -561,7 +564,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </div>
           </div>
 
-        <form onSubmit={handleSubmit} noValidate>
+        <form ref={formRef} onSubmit={handleSubmit} noValidate>
 
           {step === 1 && (
           <div>
@@ -871,17 +874,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           const txt = lang === 'de'
             ? { icon: '🛑', title: 'Bevor du absendest',
                 body: <>Deine Visumart und deine Einkommenshöhe bestimmen nicht deine Steuerresidenz. Deine Steuerresidenz wird durch die Steuerresidenz-Tests bestimmt, die auf der Seite zur Steuerresidenz erklärt werden.</>,
-                body2: <>Basierend auf deinen Angaben giltst du für steuerliche Zwecke als Working Holiday Maker. Da du während des Jahres die korrekten 15% Steuer gezahlt hast, hast du dieses Jahr keinen Anspruch auf eine Steuerrückerstattung.</>,
-                thanks: 'Danke!', link: 'Steuerresidenz erklärt', close: 'Schließen' }
+                body2: <>Basierend auf deinen Angaben giltst du für steuerliche Zwecke als Working Holiday Maker. Da du während des Jahres die korrekten 15% Steuer gezahlt hast, hast du dieses Jahr keinen Anspruch auf eine Steuerrückerstattung - es sei denn, du hast berufsbezogene Ausgaben, die du geltend machen möchtest.</>,
+                thanks: 'Danke!', link: 'Steuerresidenz erklärt', check: 'Nein, Steuerresidenz prüfen', sure: 'Ich bin sicher, ich bin steuerlich ein WHM' }
             : lang === 'ja'
             ? { icon: '🛑', title: '送信する前に',
                 body: <>あなたのビザの種類や所得額は、税務上の居住区分を決定するものではありません。あなたの税務上の居住区分は、税務居住区分ページに記載されている居住テストによって決定されます。</>,
-                body2: <>ご回答の内容に基づき、税法上ワーキングホリデーメーカーとみなされます。年間を通じて正しい15%の税金を納めているため、今回は税金の還付を受ける資格がありません。</>,
-                thanks: 'ありがとうございます！', link: '税務上の居住区分について', close: '閉じる' }
+                body2: <>ご回答の内容に基づき、税法上ワーキングホリデーメーカーとみなされます。年間を通じて正しい15%の税金を納めているため、申請したい業務関連の経費がある場合を除き、今回は税金の還付を受ける資格がありません。</>,
+                thanks: 'ありがとうございます！', link: '税務上の居住区分について', check: 'いいえ、居住区分を確認する', sure: '税務上WHMで間違いありません' }
             : { icon: '🛑', title: 'Before you submit',
                 body: <>Your visa and income level don&apos;t determine your tax residency. Your tax residency is determined by the tax residency tests explained on the Tax Residency page.</>,
-                body2: <>Based on your answers, you&apos;re considered a Working Holiday Maker for tax purposes. Since you paid the correct 15% tax during the year, you aren&apos;t eligible for a tax refund this year.</>,
-                thanks: 'Thank you!', link: 'Tax Residency Explained', close: 'Close' }
+                body2: <>Based on your answers, you&apos;re considered a Working Holiday Maker for tax purposes. Since you paid the correct 15% tax during the year, you aren&apos;t eligible for a tax refund this year unless you have work-related expenses you&apos;d like to claim.</>,
+                thanks: 'Thank you!', link: 'Tax Residency Explained', check: 'No, let me check Residency', sure: "I'm sure I'm a WHM for tax purposes" }
 
           return (
             <div role="dialog" aria-modal="true"
@@ -894,10 +897,23 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                   style={{display:'inline-block',fontSize:13,color:'#0B5240',textDecoration:'underline',fontWeight:600,marginBottom:14,background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',padding:0}}>{txt.link} →</button>
                 <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 10px'}}>{txt.body2}</p>
                 <p style={{fontSize:14,color:'#1A2822',fontWeight:600,margin:'0 0 20px'}}>{txt.thanks}</p>
-                <button type="button" onClick={() => setShowWhmBlockModal(false)}
-                  style={{minHeight:50,width:'100%',borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>
-                  {txt.close}
-                </button>
+                <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                  {/* Checking residency stays the prominent path; confirming is
+                      available but deliberately lower-emphasis. */}
+                  <button type="button" onClick={goReadResidency}
+                    style={{minHeight:50,borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>
+                    {txt.check}
+                  </button>
+                  <button type="button"
+                    onClick={() => {
+                      whmConfirmedRef.current = true
+                      setShowWhmBlockModal(false)
+                      formRef.current?.requestSubmit()
+                    }}
+                    style={{minHeight:44,borderRadius:100,border:'1.5px solid #E2E8E4',background:'#fff',color:'#587066',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>
+                    {txt.sure}
+                  </button>
+                </div>
               </div>
             </div>
           )
