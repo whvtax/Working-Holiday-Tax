@@ -146,11 +146,43 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 {err && <p role="alert" className="text-[13px] text-red-500 font-medium">{err}</p>}
               </div>
 
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+              <button type="button" onClick={run}
                 className="btn-primary w-full flex items-center justify-center"
                 style={{ height: '52px', fontSize: '15px', borderRadius: '100px' }}>
                 還付金を計算する →
-              </a>
+              </button>
+
+              {result && (
+                <div
+                  role="status"
+                  aria-live="polite"
+                  style={{ marginTop: '18px', padding: '20px', borderRadius: '16px',
+                           background: result.owing ? '#FEF3F0' : '#EAF6F1',
+                           border: `1.5px solid ${result.owing ? '#FDBA74' : '#C8EAE0'}`, textAlign: 'center' }}>
+                  <p className="font-medium uppercase"
+                    style={{ fontSize: '10.5px', letterSpacing: '0.12em',
+                             color: result.owing ? '#9A3412' : '#0B5240', marginBottom: '6px' }}>
+                    {result.label}
+                  </p>
+                  <p className="font-serif font-black"
+                    style={{ fontSize: 'clamp(30px,6vw,44px)', lineHeight: 1,
+                             color: result.owing ? '#9A3412' : '#0B5240', marginBottom: '8px' }}>
+                    {result.amount}
+                  </p>
+                  <p className="font-light"
+                    style={{ fontSize: '12.5px', lineHeight: 1.6, color: 'rgba(10,15,13,0.6)', marginBottom: '14px' }}>
+                    {result.sub}
+                  </p>
+                  <p className="font-light" style={{ fontSize: '12px', lineHeight: 1.6, color: 'rgba(10,15,13,0.55)', marginBottom: '14px' }}>
+                    控除やメディケア・レヴィ免除を適用すると、実際の金額はさらに大きくなることがあります。
+                  </p>
+                  <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                    className="btn-primary w-full flex items-center justify-center"
+                    style={{ height: '48px', fontSize: '14px', borderRadius: '100px' }}>
+                    この還付金の申請を依頼する →
+                  </a>
+                </div>
+              )}
 
               <p className="text-[12px] text-subtle mt-4 leading-[1.6] text-center">
                 これは見積もりです、正確な還付額は書類確認後に確定します。
