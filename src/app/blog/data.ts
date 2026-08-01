@@ -138,7 +138,7 @@ The online form asks for: passport details (exactly as printed - transcription m
  `,
  }, {
  slug: "how-long-does-it-take-to-get-a-tfn",
- title: "How Long Does a TFN Take in 2026? Usually 10–28 Days",
+ title: "How Long Does a TFN Take in 2026? Usually 10-28 Days",
  description:
  "The ATO issues most TFNs within 28 days - many arrive in about 2 weeks. How delivery works, how to work while you wait, and what to do if 28 days pass.",
  category: "TFN",
@@ -2772,7 +2772,7 @@ For the 2026-27 financial year (from 1 July 2026):
 - Weekly minimum (38 hours): $1,004.90 gross - the first time the weekly minimum has passed $1,000
 - Award minimum rates: increased 4.75% in the same review
 
-For reference, the 2025-26 rates (relevant to the tax year you may be lodging for now) were $26.44 per hour, or $33.05 casual.
+For reference, the 2025-26 rates (relevant to the tax year you may be lodging for now) were $24.95 per hour, or $31.19 casual.
 
 If you earn less than these rates, you are being underpaid.
 

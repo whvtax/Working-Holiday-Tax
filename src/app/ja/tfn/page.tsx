@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'TFN（タックスファイルナンバー）申請 - ワーホリ オーストラリア 還付金の第一歩',
-  description: 'TFN（タックスファイルナンバー）を最短で正しく取得。登録税理士の監督のもとで、ステップごとに丁寧にサポート。タックスリターン還付金を受け取るための第一歩。',
+  title: "TFN申請代行｜45%課税を避けるために（ワーホリ向け）",
+  description: "TFNがないと雇用主は15%ではなく45%を源泉徴収します。登録税理士の監督のもとTFN申請を代行し、最初の給与から正しい税率が適用される状態にします。",
   keywords: [
     'TFN 申請 オーストラリア',
     'TFN 申請 ワーホリ',
@@ -59,6 +60,14 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'TFNの申請はATOのサイトで無料です。何に対する費用ですか。',
+    answer: '番号の取得自体は無料です。その点は正直にお伝えします。費用は「一度で通す」ことに対するものです。入国記録と完全に一致させるパスポート情報、4週間郵便を受け取れる住所の設定、28日を過ぎた場合のATOへの照会、この部分を代行します。ご自身で進めたい方向けの手順はブログに掲載しています。',
+  },
+  {
+    question: 'TFNなしですでに働き始めています。手遅れですか。',
+    answer: 'いいえ。就労開始から28日以内であれば45%は適用されず、引かれすぎた分もタックスリターンで戻ります。多くの場合、ご連絡いただいた当日に申請できます。',
+  },
   { question: 'TFNを取得する前から働けますか？', answer: 'はい、TFNの到着を待たずにすぐに働き始めることができます。ただし、勤務開始から28日以内に雇用主にTFNを提出する必要があります。提出されるまで、雇用主は最高税率の45%で源泉徴収する義務があります。後日タックスリターンで取り戻せますが、到着前に申請しておくのがおすすめです。' },
   { question: '観光ビザでもTFNは取得できますか？', answer: 'いいえ、観光ビザでは取得できません。TFNを申請するには、就労許可のあるビザ（ワーキングホリデービザ417・462、学生ビザ、就労ビザなど）が必要です。' },
   { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去のタックスリターンの控えや給与明細から確認できます。また、登録税理士の監督のもとでATO記録から取得することも可能です。' },
@@ -93,27 +102,6 @@ const breadcrumbSchema = {
   ],
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'TFN（タックスファイルナンバー）の申請方法',
-  description: 'オーストラリアのワーキングホリデーメーカーがTFN（タックスファイルナンバー）を申請する手順。登録税理士の監督のもとで日本語で代行します。',
-  inLanguage: 'ja',
-  totalTime: 'P28D',
-  estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
-  supply: [
-    { '@type': 'HowToSupply', name: 'パスポート' },
-    { '@type': 'HowToSupply', name: 'オーストラリア国内の郵便受取住所' },
-    { '@type': 'HowToSupply', name: 'ワーキングホリデービザ（417または462）' },
-  ],
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-    url: `${SITE_URL}/ja/tfn#step-${i + 1}`,
-  })),
-}
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -133,7 +121,6 @@ export default function TFNPageJA() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -159,8 +146,8 @@ export default function TFNPageJA() {
 
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              <span style={{ display: 'block' }}>TFNを取得して</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>初日から正しい税率で働く。</span>
+              <span style={{ display: 'block' }}>TFNがないと税率45%。</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>取得を代行します。</span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -474,6 +461,7 @@ export default function TFNPageJA() {
         cta="ABNが必要か確認する →"
         href="/ja/abn"
       />
+      <MobileCta href={WA_URL} lang="ja" />
     </>
   )
 }

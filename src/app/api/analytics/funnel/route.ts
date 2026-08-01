@@ -10,7 +10,7 @@ const ALLOWED_EVENTS = new Set(['view', 'step1_complete', 'submit_success'])
 const ALLOWED_FORMS = new Set(['tax-form'])
 
 // POST /api/analytics/funnel
-// Fire-and-forget funnel event logging for public forms — no auth (these are
+// Fire-and-forget funnel event logging for public forms - no auth (these are
 // public, unauthenticated pages), rate-limited per IP to prevent abuse.
 // Never throws in a way that could break the form itself; the form always
 // calls this with .catch(() => {}) so a logging hiccup never blocks a

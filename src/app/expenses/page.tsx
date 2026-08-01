@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: 'Backpacker Tax Deductions Australia: The Complete Guide',
@@ -339,6 +340,7 @@ export default function ExpensesPage() {
         </section>
 
       </main>
+      <MobileCta href="/tax-form" lang="en" />
     </>
   )
 }

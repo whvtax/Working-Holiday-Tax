@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-  description: 'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Unter Aufsicht eines registrierten Steueragenten reichen wir deine Steuererklärung online beim ATO ein - auch nach deiner Rückkehr nach Deutschland.',
+  title: "Du hast wahrscheinlich zu viel Steuer gezahlt. machen lassen - registrierte Tax Agents",
+  description: "Steuern zurück aus Australien, ohne myGov und ohne Formulare. Registrierte Tax Agents reichen deine 417/462-Steuererklärung ein, holen die Medicare-Levy-Befreiung und jeden Abzug, der dir zusteht - auch nach deiner Rückkehr nach Deutschland.",
   keywords: [
     'Steuerrückerstattung Australien',
     'Steuerrückerstattung Australien Working Holiday',
@@ -23,15 +24,15 @@ export const metadata: Metadata = {
     'Steuer zurück Australien Working Holiday',
     'Steuer zurück Australien Backpacker',
     'Steuern zurück aus Australien',
-    'Steuererklärung Australien Working Holiday',
-    'Steuererklärung Australien Backpacker',
+    'Du hast wahrscheinlich zu viel Steuer gezahlt. Working Holiday',
+    'Du hast wahrscheinlich zu viel Steuer gezahlt. Backpacker',
     'WHV Steuererklärung',
     '417 Visum Steuererklärung',
     '462 Visum Steuererklärung',
     'Steuererklärung einreichen Australien',
-    'Steuererklärung Australien nach Rückkehr',
-    'Steuererklärung Australien nach Heimkehr',
-    'Steuererklärung Australien aus Deutschland',
+    'Du hast wahrscheinlich zu viel Steuer gezahlt. nach Rückkehr',
+    'Du hast wahrscheinlich zu viel Steuer gezahlt. nach Heimkehr',
+    'Du hast wahrscheinlich zu viel Steuer gezahlt. aus Deutschland',
     'Steuerrückerstattung nach Australien Aufenthalt',
     'Steuerrückerstattung Backpacker Rechner',
     'wie viel Steuern zurück Australien',
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
+    title: "Du hast wahrscheinlich zu viel Steuer gezahlt. machen lassen - registrierte Tax Agents",
     description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten - alles online, auch aus Deutschland.',
   },
   twitter: {
@@ -63,6 +64,18 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'Was kostet das, und was ist, wenn mir doch nichts zusteht?',
+    answer: 'Die Gebühr ist ein fester Betrag, den wir dir vor jeder kostenpflichtigen Arbeit nennen - nie ein Prozentsatz deiner Erstattung. Ergibt die Prüfung, dass dir keine Erstattung zusteht, entfällt die Gebühr vollständig.',
+  },
+  {
+    question: 'Ich bin schon zurück in Deutschland. Ist es zu spät?',
+    answer: 'Nein. Wir reichen routinemäßig aus dem Ausland ein, auch für zurückliegende Jahre. Deine Income Statements holen wir direkt bei der ATO - verlorene Payslips sind kein Hindernis.',
+  },
+  {
+    question: 'Kann ich das nicht selbst über myTax machen?',
+    answer: 'Kannst du, und bei einem einfachen Jahr ist das eine legitime Wahl. Geld kostet es bei den Residency-Fragen, beim Medicare-Entitlement-Statement, das Wochen vorher bestellt werden muss, und beim Abgleich mehrerer Arbeitgeber - genau das übernehmen wir.',
+  },
   {
     question: 'Was ist eine Working Holiday Steuerrückerstattung und bekomme ich eine?',
     answer: 'Eine Working Holiday Steuerrückerstattung ist das Geld, das dir das ATO (australisches Finanzamt) zurückzahlt, wenn während des Jahres mehr Steuern von deinem Lohn einbehalten wurden, als du tatsächlich schuldest. Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hast du oft Anspruch - zum Beispiel wenn dein Arbeitgeber den falschen Steuersatz angewendet hat, du absetzbare Werbungskosten hast, oder du nur einen Teil des Steuerjahres gearbeitet hast. Der einzige Weg, das herauszufinden, ist eine Steuererklärung einzureichen.',
@@ -89,14 +102,6 @@ const faqs = [
   }
   ]
 
-const DEDUCTIONS = [
-  { title: 'Arbeitskleidung und Uniformen',   body: 'Schutzkleidung oder vorgeschriebene Kleidung wie Stiefel, Warnwesten oder Uniformen.' },
-  { title: 'Werkzeuge und Ausrüstung',          body: 'Arbeitsbezogene Werkzeuge oder Ausrüstung, die du gekauft und benutzt hast.' },
-  { title: 'Lizenzen und Zertifikate',  body: 'Arbeitslizenzen wie RSA, White Card oder Ähnliches.' },
-  { title: 'Wäsche und Reinigung',         body: 'Reinigung und Pflege deiner Arbeitskleidung.' },
-  { title: 'Arbeitsbedingte Fahrten',          body: 'Fahrten zwischen Arbeitsorten (nicht der tägliche Arbeitsweg).' },
-  { title: 'Spenden',         body: 'Spenden an registrierte australische Wohltätigkeitsorganisationen.' },
-]
 
 const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Einkommens- und Arbeitsdaten, damit wir deine Working Holiday Steuererklärung korrekt vorbereiten können.' },
@@ -160,20 +165,6 @@ const serviceSchema = {
   },
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'So reichst du deine Working Holiday Steuererklärung in Australien ein',
-  description: 'Schritt-für-Schritt-Anleitung für Working Holiday Maker, wie du deine australische Steuererklärung beim ATO einreichst - aus Australien oder aus dem Ausland.',
-  totalTime: 'P14D',
-  inLanguage: 'de',
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-  })),
-}
 
 
 export default function GermanTaxReturnPage() {
@@ -182,7 +173,6 @@ export default function GermanTaxReturnPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
@@ -213,20 +203,20 @@ export default function GermanTaxReturnPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Steuererklärung Australien</span>
-                <span style={{ display:'block', color:'#0B5240' }}>schnell &amp; stressfrei.</span>
+                <span style={{ display:'block' }}>Du hast wahrscheinlich zu viel Steuer gezahlt.</span>
+                <span style={{ display:'block', color:'#0B5240' }}>Wir holen sie für dich zurück.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Steuererklärung Australien</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>schnell &amp; stressfrei.</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Du hast wahrscheinlich zu viel Steuer gezahlt.</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>Wir holen sie für dich zurück.</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              Deine WHV Steuererklärung, eingereicht mit einem registrierten Steueragenten.
+              Den meisten Working Holiday Makern steht Geld zu, und sie holen es nie ab.
             
             </p>
 
@@ -440,126 +430,6 @@ export default function GermanTaxReturnPage() {
         </div>
       </section>
 
-      {/* ── TAX RATES ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-12 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Steuersätze</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Working Holiday Maker Steuersätze in Australien
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '42ch' }}>
-              <span>Steuersätze für 417 und 462 Visa unterscheiden sich von denen australischer Steuerresidenten.</span>
-            </p>
-          </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-7 items-stretch">
-              {[
-                {
-                  label: 'Working Holiday Visuminhaber',
-                  rows: [
-                    ['0 $ - 45.000 $', '15 %'],
-                    ['45.001 $ - 135.000 $', '6.750 $ + 30 %'],
-                    ['135.001 $ - 190.000 $', '33.750 $ + 37 %'],
-                    ['190.001 $+', '54.100 $ + 45 %'],
-                  ],
-                },
-                {
-                  label: 'Australische Steuerresidenten',
-                  rows: [
-                    ['0 $ - 18.200 $', '0 %'],
-                    ['18.201 $ - 45.000 $', '16 %'],
-                    ['45.001 $ - 135.000 $', '4.288 $ + 30 %'],
-                    ['135.001 $ - 190.000 $', '31.288 $ + 37 %'],
-                    ['190.001 $+', '51.638 $ + 45 %'],
-                  ],
-                },
-              ].map((table, ti) => (
-                <div key={ti} className="min-w-0 flex flex-col">
-                  <h3 className="font-semibold text-ink mb-3 text-center" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>{table.label}</h3>
-                  <div className="rounded-xl overflow-hidden flex-1" style={{ border: '1px solid #C8EAE0' }}>
-                    <table className="w-full" style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}>
-                      <thead>
-                        <tr style={{ background: '#EAF6F1' }}>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '55%' }}>Zu versteuerndes Einkommen</th>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '45%' }}>Steuersatz</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {table.rows.map(([income, rate], i) => (
-                          <tr key={i} style={{ borderTop: '1px solid #E2EFE9', background: i % 2 === 0 ? '#ffffff' : '#F5F9F7' }}>
-                            <td className="font-light text-body" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{income}</td>
-                            <td className="font-medium text-ink" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{rate}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-5 rounded-xl px-5 py-3 mx-auto" style={{ background: '#FFFCF5', border: '1.5px solid #E9A020', borderRadius: '12px', maxWidth: 'fit-content' }}>
-              <p className="font-light text-body" style={{ fontSize: '12.5px', lineHeight: 1.5, textAlign: 'center' }}>
-                Wenn dein Arbeitgeber nicht als Working Holiday Arbeitgeber registriert ist, kannst du mit 30 % statt 15 % besteuert werden.
-              </p>
-            </div>
-            <div className="text-center mt-8">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center font-medium transition-all"
-                style={{ fontSize: '14px', color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                <span className="hidden lg:inline">Nicht sicher, ob du zu viel Steuern gezahlt hast? Finde heraus, ob dir eine Rückerstattung zusteht →</span><span className="lg:hidden">Nicht sicher, ob du zu viel Steuern gezahlt hast?<br />Anspruch auf Rückerstattung prüfen →</span>
-              </a>
-            </div>
-        </div>
-      </section>
-
-      {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Absetzbare Kosten</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '28ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Werbungskosten für Working Holiday Maker
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '38ch' }}>
-              Du kannst oft mehr absetzen, als du denkst. Wir sorgen dafür, dass nichts Abzugsfähiges vergessen wird.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 reveal delay-1">
-            {DEDUCTIONS.map((d, i) => (
-              <div key={i} className="bg-white rounded-xl" style={{ padding: '16px 18px', border: '1px solid #E2EFE9', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
-                <div className="flex items-center gap-2" style={{ marginBottom: '5px' }}>
-                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </span>
-                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)' }}>{d.title}</p>
-                </div>
-                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '28ch', paddingLeft:'26px' }}>{d.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 max-w-xl reveal delay-2">
-            <div className="info-block">
-              <p><span className="hidden lg:inline">Private Kosten, Strafen und der tägliche Arbeitsweg sind nicht absetzbar.</span><span className="lg:hidden">Private Kosten, Strafen und der tägliche<br />Arbeitsweg sind nicht absetzbar.</span></p>
-            </div>
-          </div>
-
-          <div className="text-center mt-8 reveal delay-3">
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '16px' }}>
-              Nicht sicher, was du absetzen kannst? Wir prüfen deine Situation und wenden jeden passenden Abzug an.
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '48px', padding: '0 28px', fontSize: '14px', maxWidth: '280px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
-              Steuererklärung starten →
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
@@ -682,6 +552,7 @@ export default function GermanTaxReturnPage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
+      <MobileCta href={WA_URL} lang="de" />
     </>
   )
 }

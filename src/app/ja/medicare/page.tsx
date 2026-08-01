@@ -3,10 +3,11 @@ import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'メディケア（Medicare）- ワーキングホリデー オーストラリア',
-  description: 'ワーキングホリデー保持者のメディケア対象資格について理解。メディケア税の仕組みと免除証明書の取得をサポートします。',
+  title: "メディケア・レヴィ免除の申請代行｜2%を取り戻します",
+  description: "日本はメディケア相互協定の対象外です。417・462ビザの多くは2%のレヴィを支払う義務がなく、収入25,000ドルなら約500ドル。Medicare Entitlement Statementの取得から免除申請まで代行します。",
   keywords: [
     'メディケア ワーキングホリデー オーストラリア',
     'メディケア レビー 免除',
@@ -41,19 +42,27 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/medicare`,
     siteName: 'Working Holiday Tax',
-    title: 'メディケア（Medicare）- ワーキングホリデー オーストラリア',
+    title: "メディケア・レヴィ免除の申請代行｜2%を取り戻します",
     description: 'ワーキングホリデー保持者のメディケア対象資格について。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'メディケア（Medicare）- ワーキングホリデー オーストラリア',
+    title: "メディケア・レヴィ免除の申請代行｜2%を取り戻します",
     description: 'メディケアとメディケア税について。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
+  {
+    question: '免除の金額はどのくらいですか。',
+    answer: 'レヴィは課税所得の2%なので、収入25,000ドルなら約500ドルです。給与明細ではなくタックスリターンを通じて戻るため、支払っていたこと自体に気づかない方がほとんどです。',
+  },
+  {
+    question: '417・462ビザなら誰でも免除されますか。',
+    answer: '多くは対象ですが、全員ではありません。日本はメディケア相互協定の対象外のため、通常は免除の対象になります。一方、英国・アイルランド・イタリアなど協定国の国籍の方は状況が異なります。申請前に個別に確認します。',
+  },
   {
     question: 'メディケア税免除とは何ですか？',
     answer: 'メディケア対象外（ほとんどのワーキングホリデービザ保持者）の場合、タックスリターンでメディケア税の免除を受けることができます。タックスリターンサービスの一部としてすべて対応します。',
@@ -148,8 +157,8 @@ export default function JapaneseMedicarePage() {
                 letterSpacing:'-0.02em',
                 marginBottom:'10px',
               }}>
-              <span style={{ display:'block' }}>メディケアの対象資格を確認</span>
-              <span style={{ display:'block', color:'#0B5240' }}>タックスリターンの前に。</span>
+              <span style={{ display:'block' }}>多くのワーホリは2%を払う義務がありません。</span>
+              <span style={{ display:'block', color:'#0B5240' }}>代わりに取り戻します。</span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -486,6 +495,7 @@ export default function JapaneseMedicarePage() {
         cta="タックスリターンを依頼する →"
         href="/ja/tax-return"
       />
+      <MobileCta href={WA_URL} lang="ja" />
     </>
   )
 }

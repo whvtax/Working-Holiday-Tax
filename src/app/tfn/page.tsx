@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
-  description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund as a Working Holiday Maker. Apply correctly under the supervision of a registered tax agent.',
+  title: "Get Your TFN - We Apply For You (No 45% Tax) | Working Holiday",
+  description: "Without a TFN your employer withholds 45% instead of 15%. We apply for your Tax File Number under a registered tax agent so you start on the right rate from your first payslip.",
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/tfn`,
     siteName: 'Working Holiday Tax',
-    title: 'TFN Application for Working Holiday Visa Holders - Tax Refund Ready',
+    title: "Get Your TFN - We Apply For You (No 45% Tax) | Working Holiday",
     description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
   },
   twitter: {
@@ -58,6 +59,14 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'The TFN application is free on the ATO site. What am I paying you for?',
+    answer: 'The number itself is free and we will say so plainly. What we charge for is getting the application through first time - the passport details that must match immigration records exactly, the address that has to hold mail for four weeks, and chasing the ATO if it stalls past 28 days. If you would rather do it yourself, our blog walks through it step by step.',
+  },
+  {
+    question: 'I have already started work without a TFN. Is it too late?',
+    answer: 'No. You have 28 days from starting a job before the 45% rate applies, and any excess already withheld comes back through your tax return. We can usually have the application lodged the same day you contact us.',
+  },
   { question:'Can I start work before I receive my TFN?', answer:'Yes. You can start working, but you must provide your TFN within 28 days. Until then, your employer may withhold tax at a higher rate.' },
   { question:'Can I get a TFN on a tourist visa?', answer:'No. You must hold a valid work visa, such as a Working Holiday visa (Subclass 417 or 462), to apply for a TFN.' },
   { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
@@ -110,21 +119,6 @@ const serviceSchema = {
   inLanguage: 'en-AU',
 }
 
-// HowTo schema - rich step-by-step result in Google
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'How to apply for a TFN as a working holiday maker',
-  description: 'Step-by-step process to apply for a Tax File Number in Australia as a working holiday visa holder.',
-  totalTime: 'P28D',
-  inLanguage: 'en-AU',
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-  })),
-}
 
 // Speakable - cues Google Assistant for voice answers
 const speakableSchema = {
@@ -142,7 +136,6 @@ export default function TFNPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -171,19 +164,19 @@ export default function TFNPage() {
               style={{ fontSize:'clamp(24px,3.2vw,44px)', lineHeight:1.06, letterSpacing:'-0.03em', marginBottom:'10px' }}>
               {/* Desktop: 2 lines - line 1 black, line 2 green */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Apply for your TFN to start working</span>
-                <span style={{ display:'block', color:'#0B5240' }}>legally in Australia.</span>
+                <span style={{ display:'block' }}>No TFN means 45% tax.</span>
+                <span style={{ display:'block', color:'#0B5240' }}>We sort it for you.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Apply for your TFN to start working</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>legally in Australia.</span>
+                <span style={{ display:'block', fontSize:'22px' }}>No TFN means 45% tax.</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>We sort it for you.</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
-              We make sure your TFN is done correctly the first time.
+              With a TFN on file you are taxed at 15% instead of 45% - about $7.50 an hour back on a $25 job.
             </p>
 
             <p className="font-light"
@@ -262,7 +255,7 @@ export default function TFNPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We handle the entire TFN application for you</h3>
-              <p className="service-cta-sub">Free initial consultation on WhatsApp. We submit your application correctly the first time - usually within an hour.</p>
+              <p className="service-cta-sub">Tell us your situation and we will tell you what you are owed on WhatsApp. We submit your application correctly the first time - usually within an hour.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Apply for my TFN →
@@ -495,6 +488,7 @@ export default function TFNPage() {
         cta="Check your ABN eligibility →"
         href="/abn"
       />
+      <MobileCta href={WA_URL} lang="en" />
     </>
   )
 }

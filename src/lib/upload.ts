@@ -176,7 +176,7 @@ export async function uploadFiles(
  * already downloaded by the caller) to Supabase
  * Storage. Separate from uploadFile() above because that one validates a
  * browser File object from a form; this one starts from bytes we already
- * fetched server-side. Same magic-byte and size checks apply — WhatsApp
+ * fetched server-side. Same magic-byte and size checks apply - WhatsApp
  * media is still untrusted input.
  */
 export async function uploadWhatsappMedia(

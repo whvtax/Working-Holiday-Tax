@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'Super-Rückerstattung (DASP) für Working Holiday Maker - Australien',
-  description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise als Working Holiday Maker (417/462). 12 % deines Lohns wurden in Super eingezahlt - per DASP-Antrag bekommst du es zurück.',
+  title: "Superannuation zurückholen lassen - wir übernehmen das | DASP",
+  description: "Zurück aus Australien? Dein Arbeitgeber hat 12 % deines Lohns in einen Super-Fonds gezahlt, und das Geld liegt noch dort. Wir holen deine Super als DASP für dich zurück: du schickst vier Angaben, wir übernehmen Fonds, Papierkram und Auszahlung.",
   keywords: [
     'Super-Rückerstattung Australien',
     'Super zurück Australien',
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/superannuation`,
     siteName: 'Working Holiday Tax',
-    title: 'Super-Rückerstattung (DASP) für Working Holiday Maker - Australien',
+    title: "Superannuation zurückholen lassen - wir übernehmen das | DASP",
     description: 'Hol dir deine Super-Rückerstattung in Australien nach deiner Abreise. 12 % deines Lohns wurden eingezahlt - per DASP zurück.',
   },
   twitter: {
@@ -53,6 +54,18 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'Was kostet das, und was ist, wenn nichts zu holen ist?',
+    answer: 'Die Gebühr nennen wir dir, bevor kostenpflichtige Arbeit beginnt - ein fester Betrag, nie ein Prozentsatz deiner Super. Ergibt die Prüfung, dass es nichts zu beanspruchen gibt, entfällt die Gebühr vollständig und du zahlst nichts.',
+  },
+  {
+    question: 'Ich weiß nicht, bei welchem Fonds ich war. Ist das ein Problem?',
+    answer: 'Nein, das ist der häufigste Fall bei uns. Wir durchsuchen jeden Fonds, der mit deiner TFN verknüpft ist, einschließlich Guthaben, die bereits an die ATO übertragen wurden - du musst dich an keine Arbeitgeber- oder Fondsnamen erinnern.',
+  },
+  {
+    question: 'Kann ich das nicht einfach selbst über die ATO machen?',
+    answer: 'Kannst du. Das DASP-Portal der ATO ist kostenlos und funktioniert gut, wenn du einen Fonds hattest und deine Unterlagen vollständig sind. Schwierig wird es bei mehreren vergessenen Fonds, beglaubigten Kopien aus dem Ausland und Fonds, die nicht mehr antworten - genau diesen Teil übernehmen wir.',
+  },
   {
     question: 'Ich habe Australien vor Jahren verlassen. Kann ich meine Super noch beantragen?',
     answer: 'Ja. Es gibt keine Frist für die Beantragung deiner Super. Auch wenn dein Guthaben schon ans ATO überwiesen wurde, kannst du es noch zurückholen.',
@@ -141,20 +154,6 @@ const serviceSchema = {
   },
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'So beantragst du deine DASP-Superauszahlung nach der Ausreise aus Australien',
-  description: 'Schritt-für-Schritt-Anleitung für Working Holiday Maker, wie du deine Superauszahlung über das Departing Australia Superannuation Payment (DASP) beantragst.',
-  totalTime: 'P28D',
-  inLanguage: 'de',
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-  })),
-}
 
 
 export default function GermanSuperannuationPage() {
@@ -163,7 +162,6 @@ export default function GermanSuperannuationPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
@@ -194,20 +192,20 @@ export default function GermanSuperannuationPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Hol dir deine Super zurück</span>
-                <span style={{ display:'block', color:'#0B5240' }}>wenn du Australien verlässt</span>
+                <span style={{ display:'block' }}>Deine Super liegt noch in Australien.</span>
+                <span style={{ display:'block', color:'#0B5240' }}>Wir holen sie für dich zurück.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Hol dir deine Super zurück</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>wenn du Australien verlässt</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Deine Super liegt noch in Australien.</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>Wir holen sie für dich zurück.</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              Wir wickeln den kompletten DASP-Prozess für dich ab.
+              Dein Arbeitgeber hat 12 % jedes Lohns in einen Super-Fonds gezahlt. Das ist dein Geld, und es liegt immer noch dort.
             
             </p>
 
@@ -265,7 +263,7 @@ export default function GermanSuperannuationPage() {
                 <strong>Superannuation</strong> (kurz &quot;Super&quot;) ist das australische Rentensystem. Per Gesetz zahlt dein Arbeitgeber <strong>12 % deines Lohns</strong> zusätzlich zu deinem Gehalt in einen Superfonds ein - du hast also mehr verdient, als du denkst.
               </p>
               <p className="super-intro-body">
-                Als Working Holiday Maker kannst du dieses Geld zurückbekommen, wenn du Australien verlässt. Das läuft über den sogenannten <strong>DASP - Departing Australia Superannuation Payment</strong>.
+                Als Working Holiday Maker kannst du dieses Geld zurückbekommen, Wir holen sie für dich zurück.. Das läuft über den sogenannten <strong>DASP - Departing Australia Superannuation Payment</strong>.
               </p>
               <p className="super-intro-body">
                 Die Auszahlung wird mit 65 % besteuert, aber die restlichen 35 % sind echtes Geld in deiner Tasche. Für die meisten Backpacker sind das zwischen <strong>2.000 und 5.000 AUD</strong>, von denen sie gar nichts wussten.
@@ -317,44 +315,44 @@ export default function GermanSuperannuationPage() {
         </div>
       </section>
 
-      {/* ── CLARITY - THIS IS YOUR MONEY ──────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+
+      {/* ── HOW MUCH DO YOU GET BACK ──────────────────────────────────────── */}
+      <section className="py-10 lg:py-14" style={{ background:'#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Warum unser Service</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '22ch', marginTop: '8px', marginBottom: '0', textWrap: 'balance' }}>
-              Wir helfen dir, die dir zustehende Super zurückzuholen
+          <div className="max-w-3xl mx-auto text-center" style={{ marginBottom:'26px' }}>
+            <h2 className="font-serif font-black text-ink"
+              style={{ fontSize:'clamp(21px,2.6vw,32px)', lineHeight:1.12, letterSpacing:'-0.025em', marginBottom:'10px' }}>
+              Wie viel kommt bei dir an?
             </h2>
+            <p className="font-light" style={{ fontSize:'clamp(13px,1.2vw,15px)', lineHeight:1.7, color:'rgba(10,15,13,0.58)' }}>
+              Super von Working Holiday Makern wird bei der Auszahlung mit 65 % besteuert, es kommen also rund 35 Cent pro Dollar bei dir an. Ein typisches Arbeitsjahr sieht so aus.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 max-w-3xl mx-auto">
             {[
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'Wir finden jedes Superkonto', body:'Mehrere Jobs bedeuten oft mehrere Fonds. Wir finden sie alle, damit nichts von deiner Super verloren geht.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Auch nach der Abreise beantragen', body:'Wir reichen deinen DASP komplett online ein und zahlen ihn auf dein Konto im Ausland - auch Jahre nach deiner Rückkehr.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'Es ist dein Geld, nicht das des ATO', body:'Nicht beantragte Super geht irgendwann an das ATO. Wir sorgen dafür, dass sie stattdessen zu dir zurückkommt.' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'DASP eingereicht, Steuer geregelt', body:'Wir bereiten deine Departing Australia Superannuation Payment vor und kümmern uns korrekt um die Quellensteuer.' },
-            ].map((item,i) => (
-              <div key={i} className="bg-white rounded-2xl flex gap-4"
-                style={{ padding:'20px', boxShadow:'0 1px 3px rgba(0,0,0,.04), 0 2px 10px rgba(11,82,64,.05)' }}>
-                <div className="flex items-center justify-center flex-shrink-0 text-forest-500"
-                  style={{ width:'36px', height:'36px', minWidth:'36px', background:'#EAF6F1', borderRadius:'8px' }}>
-                  {item.icon}
-                </div>
-                <div style={{ paddingTop:'2px' }}>
-                  <p className="font-semibold text-ink" style={{ fontSize:'clamp(13px, 1.2vw, 14px)', letterSpacing:'-0.01em', marginBottom:'6px', lineHeight:1.35 }}>{item.title}</p>
-                  <p className="font-light text-muted" style={{ fontSize:'clamp(12px, 1.1vw, 13px)', lineHeight:1.7 }}>{item.body}</p>
-                </div>
+              { bal:'$3,000', net:'$1,050', note:'ein paar Monate Casual-Arbeit' },
+              { bal:'$6,000', net:'$2,100', note:'etwa sechs Monate Vollzeit' },
+              { bal:'$10,000', net:'$3,500', note:'ein ganzes Working-Holiday-Jahr' },
+            ].map((r,i) => (
+              <div key={i} className="rounded-2xl" style={{ padding:'20px', background:'#F7FBF9', border:'1.5px solid #E2EFE9', textAlign:'center' }}>
+                <p className="font-medium" style={{ fontSize:'11px', letterSpacing:'0.06em', textTransform:'uppercase', color:'rgba(10,15,13,0.45)', marginBottom:'6px' }}>
+                  Super-Guthaben
+                </p>
+                <p className="font-semibold text-ink" style={{ fontSize:'17px', marginBottom:'10px' }}>{r.bal}</p>
+                <p className="font-serif font-black" style={{ fontSize:'clamp(24px,3vw,30px)', color:'#0B5240', lineHeight:1, marginBottom:'8px' }}>
+                  {r.net}
+                </p>
+                <p className="font-light" style={{ fontSize:'12px', color:'rgba(10,15,13,0.55)', lineHeight:1.6 }}>
+                  ausgezahlt &middot; {r.note}
+                </p>
               </div>
             ))}
           </div>
 
-          <div className="text-center reveal delay-3" style={{ marginTop: '28px' }}>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-medium transition-colors hover-forest-light"
-              style={{ fontSize: '13.5px', color: '#0B5240' }}>
-              Superberechtigung prüfen →
-            </a>
-          </div>
+          <p className="font-light text-center" style={{ fontSize:'12.5px', color:'rgba(10,15,13,0.5)', marginTop:'18px', lineHeight:1.7 }}>
+            Beträge nach der 65-%-DASP-Steuer der ATO. Fondsgebühren und Versicherungsprämien schmälern das Guthaben, je länger es unbeansprucht liegt - deshalb lohnt sich ein früher Antrag.
+          </p>
         </div>
       </section>
 
@@ -538,6 +536,7 @@ export default function GermanSuperannuationPage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
+      <MobileCta href={WA_URL} lang="de" />
     </>
   )
 }

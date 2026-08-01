@@ -1321,7 +1321,7 @@
   font-weight: 600;
 }
 
-/* Expenses page — occupation cards */
+/* Expenses page - occupation cards */
 .exp-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -2856,3 +2856,43 @@ a:focus-visible, button:focus-visible {
   transform: none;
 }
 
+
+/* ── Mobile sticky CTA (service pages) ─────────────────────────────────── */
+.mobile-cta-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #E2EFE9;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+  pointer-events: none;
+}
+.mobile-cta-bar[data-visible='true'] {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-cta-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 52px;
+  border-radius: 100px;
+  background: #0B5240;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 18px;
+}
+.mobile-cta-label { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.mobile-cta-sub   { font-size: 11px; font-weight: 400; opacity: 0.82; }
+@media (min-width: 768px) {
+  .mobile-cta-bar { display: none; }
+}

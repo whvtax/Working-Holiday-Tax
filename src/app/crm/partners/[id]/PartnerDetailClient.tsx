@@ -47,7 +47,7 @@ function NavLink({ href, label, icon, active }: { href: string; label: string; i
 }
 
 function fmtDate(iso: string | null) {
-  if (!iso) return '—'
+  if (!iso) return '-'
   try { return new Date(iso).toLocaleDateString('en-AU', { day:'2-digit', month:'short', year:'numeric' }) } catch { return iso }
 }
 
@@ -264,7 +264,7 @@ export default function PartnerDetailClient({ partnerId }: { partnerId: string }
                           </td>
                           <td style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1'}}>
                             {!c.qualified ? (
-                              <span style={{fontSize:11,color:'#aabab2'}}>—</span>
+                              <span style={{fontSize:11,color:'#aabab2'}}>-</span>
                             ) : c.commissionPaidAt ? (
                               <button onClick={()=>togglePaid(c.id, false)} style={{padding:'6px 12px',background:'#fff',border:'1px solid #d8e4dc',borderRadius:8,fontSize:11,fontWeight:600,color:'#7a8a82',cursor:'pointer',fontFamily:'inherit'}}>↺ Undo</button>
                             ) : (

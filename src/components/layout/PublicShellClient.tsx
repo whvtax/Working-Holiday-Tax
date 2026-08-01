@@ -15,7 +15,7 @@ export default function PublicShellClient({
 }) {
   const pathname = usePathname()
   const isCrm = pathname?.startsWith('/crm')
-  // Tax-form: hide only the footer (not the top nav) — a focused form
+  // Tax-form: hide only the footer (not the top nav) - a focused form
   // shouldn't offer easy escape routes at the bottom (blog links, social
   // icons, other pages), but the top nav/logo staying visible still gives
   // people a sense of "I'm on a real, navigable site" if they want it.

@@ -3,10 +3,11 @@ import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'Medicare in Australien für Working Holiday Visuminhaber',
-  description: 'Verstehe, ob du als Working Holiday Visuminhaber Anspruch auf Medicare hast und wie die Medicare Levy funktioniert. Wir holen für dich das Befreiungszertifikat.',
+  title: "Medicare-Levy-Befreiung - wir holen die 2 % für dich zurück",
+  description: "Deutschland hat kein Medicare-Abkommen mit Australien: Die meisten 417/462-Inhaber schulden die 2-%-Abgabe gar nicht - rund 500 $ bei 25.000 $ Einkommen. Wir besorgen dein Medicare Entitlement Statement und holen die Befreiung mit deiner Steuererklärung.",
   keywords: [
     'Medicare Working Holiday Australien',
     'Medicare Levy Befreiung',
@@ -32,13 +33,13 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/medicare`,
     siteName: 'Working Holiday Tax',
-    title: 'Medicare in Australien für Working Holiday Visuminhaber',
+    title: "Medicare-Levy-Befreiung - wir holen die 2 % für dich zurück",
     description: 'Verstehe Medicare und die Medicare Levy als Working Holiday Visuminhaber.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Medicare in Australien für Working Holiday Visuminhaber',
+    title: "Medicare-Levy-Befreiung - wir holen die 2 % für dich zurück",
     description: 'Verstehe Medicare und die Medicare Levy in Australien.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
@@ -51,6 +52,14 @@ const rhca = [
 ]
 
 const faqs = [
+  {
+    question: 'Wie viel ist die Befreiung wert?',
+    answer: 'Die Abgabe beträgt 2 % des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst. Sie kommt über die Steuererklärung zurück, nicht über den Payslip - deshalb merken die meisten gar nicht, dass sie gezahlt haben.',
+  },
+  {
+    question: 'Bekommt jeder auf einem 417- oder 462-Visum die Befreiung?',
+    answer: 'Die meisten ja, aber nicht alle. Deutschland hat kein Abkommen mit Australien, deshalb steht dir die Befreiung in der Regel zu. Bei Staatsangehörigen von Abkommensländern wie Großbritannien, Irland oder Italien sieht es anders aus. Wir prüfen deinen Fall, bevor wir etwas beantragen.',
+  },
   {
     question: 'Was ist die Medicare-Levy-Befreiung?',
     answer: 'Wenn du nicht für Medicare berechtigt bist - was auf die meisten Working Holiday Visuminhaber zutrifft - kannst du dich bei deiner Steuererklärung von der Medicare Levy befreien lassen. Wir kümmern uns darum als Teil unserer Steuererklärungsleistung.',
@@ -163,12 +172,12 @@ export default function GermanMedicarePage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Verstehe deinen Medicarestatus</span>
-                <span style={{ display:'block', color:'#0B5240' }}>vor deiner Steuererklärung</span>
+                <span style={{ display:'block' }}>Die meisten schulden die 2 % gar nicht.</span>
+                <span style={{ display:'block', color:'#0B5240' }}>Wir holen sie für dich zurück.</span>
               </span>
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Verstehe deinen Medicarestatus</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>vor deiner Steuererklärung</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Die meisten schulden die 2 % gar nicht.</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>Wir holen sie für dich zurück.</span>
               </span>
             </h1>
 
@@ -411,7 +420,7 @@ export default function GermanMedicarePage() {
               Medicare-Levy-Befreiung
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '40ch', marginBottom: '28px' }}>
-              Wenn du keinen Anspruch auf Medicare hast, brauchst du eventuell eine Medicare-Levy-Befreiung vor deiner Steuererklärung.
+              Wenn du keinen Anspruch auf Medicare hast, brauchst du eventuell eine Medicare-Levy-Befreiung Wir holen sie für dich zurück..
             </p>
             {/* Mobile: portrait 9/16, Desktop: landscape 16/9 */}
             <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto w-full">
@@ -512,6 +521,7 @@ export default function GermanMedicarePage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
+      <MobileCta href={WA_URL} lang="de" />
     </>
   )
 }

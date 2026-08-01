@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: 'バックパッカーの税金控除ガイド：オーストラリア完全版',
@@ -35,22 +36,22 @@ export const metadata: Metadata = {
 
 const GOLDEN_RULES = [
   'そのお金を自分で支払っており、雇用主から払い戻しを受けていないこと。',
-  'その支出が収入を得ることに直接関係していること — 私的・家庭的な支出ではないこと。',
-  '証拠となる記録があること — 何をいつ購入したかを示すレシート、請求書、または銀行明細。',
+  'その支出が収入を得ることに直接関係していること、私的・家庭的な支出ではないこと。',
+  '証拠となる記録があること、何をいつ購入したかを示すレシート、請求書、または銀行明細。',
 ]
 
 const CAR_METHOD_ROWS = [
   ['レート（2024-25・2025-26年度）', '1kmあたり88セント'],
   ['レート（2026-27年度、2026年7月1日から）', '1kmあたり91セント'],
   ['請求できる上限', '1台あたり年間5,000km'],
-  ['領収書は必要？', '不要 — ただし走行距離の算出方法を示せる必要あり'],
+  ['領収書は必要？', '不要、ただし走行距離の算出方法を示せる必要あり'],
 ]
 
 const LOGBOOK_ROWS = [
   ['仕組み', '実際にかかった費用のうち、仕事で使用した割合を請求'],
   ['ログブック記録期間', '連続12週間、5年間有効'],
-  ['請求できる上限', '上限なし — 実際の仕事使用率に基づく'],
-  ['領収書は必要？', '必要 — 請求するすべての費用について'],
+  ['請求できる上限', '上限なし、実際の仕事使用率に基づく'],
+  ['領収書は必要？', '必要、請求するすべての費用について'],
 ]
 
 type Occupation = {
@@ -73,7 +74,7 @@ const OCCUPATIONS: Occupation[] = [
       '職務上必要な応急処置資格',
     ],
     cannot: [
-      'ロゴのない普通の黒い服や靴 — 職場で義務付けられていても、ATOはこれを制服ではなく普段着とみなします',
+      'ロゴのない普通の黒い服や靴、職場で義務付けられていても、ATOはこれを制服ではなく普段着とみなします',
     ],
   },
   {
@@ -87,7 +88,7 @@ const OCCUPATIONS: Occupation[] = [
     ],
     cannot: [
       '仕事で汚れたり傷んだりしても、ジーンズやTシャツなどの普段着',
-      '自宅から最初の農場までの毎日の移動 — これは通常の通勤とみなされます',
+      '自宅から最初の農場までの毎日の移動、これは通常の通勤とみなされます',
     ],
   },
   {
@@ -97,7 +98,7 @@ const OCCUPATIONS: Occupation[] = [
     can: [
       'White Card（建設従事者証）の更新費用',
       '安全靴（先芯入り）と高視認性の作業着',
-      '工具・機材 — $300未満は即時控除、$300以上は耐用年数にわたって減価償却',
+      '工具・機材、$300未満は即時控除、$300以上は耐用年数にわたって減価償却',
       '屋外現場作業のための日焼け対策',
     ],
     cannot: [
@@ -111,7 +112,7 @@ const OCCUPATIONS: Occupation[] = [
     subtitle: '商業用キッチン、レストラン',
     can: [
       '自分で購入したシェフナイフやその他の調理器具',
-      'シェフコートやチェック柄のシェフパンツ — 職業に特有の衣類として認められます',
+      'シェフコートやチェック柄のシェフパンツ、職業に特有の衣類として認められます',
       '滑り止め付きのキッチンシューズ',
       '職務上必要な食品安全管理者資格',
     ],
@@ -124,14 +125,14 @@ const OCCUPATIONS: Occupation[] = [
     title: 'ライドシェア・配達',
     subtitle: 'Uber、Uber Eats、DoorDashなど',
     can: [
-      '仕事に関連する運転部分の車両費 — 1kmあたりの定額法またはログブック法（下記参照）',
+      '仕事に関連する運転部分の車両費、1kmあたりの定額法またはログブック法（下記参照）',
       '携帯電話プランのうち仕事で使用した割合',
       '乗客のために車を適切な状態に保つための洗車代',
       '仕事中に発生した駐車料金',
     ],
     cannot: [
       '各移動のうち私的な部分、または通常の通勤',
-      '駐車違反やスピード違反の罰金 — 理由を問わず控除の対象にはなりません',
+      '駐車違反やスピード違反の罰金、理由を問わず控除の対象にはなりません',
     ],
   },
   {
@@ -236,7 +237,7 @@ export default function ExpensesPageJA() {
                 バックパッカーが実際に<span style={{ color: '#0B5240' }}>経費計上できるもの</span>とは？
               </h1>
               <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.8, color: '#0B5240', maxWidth: '46ch' }}>
-                仕事に関連する控除は還付金に数百ドルを上乗せすることがあります — ただし、その支出が本当に条件を満たしている場合に限ります。職業別に、何が対象になるかを正確に解説します。
+                仕事に関連する控除は還付金に数百ドルを上乗せすることがあります、ただし、その支出が本当に条件を満たしている場合に限ります。職業別に、何が対象になるかを正確に解説します。
               </p>
             </div>
           </div>
@@ -268,7 +269,7 @@ export default function ExpensesPageJA() {
               <div>
                 <p className="taxres-savings-heading">記録の保管について</p>
                 <p className="taxres-savings-body">
-                  請求を予定しているものについては、レシート、請求書、または銀行明細を保管してください — スマートフォンで撮った写真でも構いません。年間の仕事関連の請求合計が$300未満の場合、ATOは書面での証拠を求めませんが、その金額をどのように算出したかは説明できる必要があります。
+                  請求を予定しているものについては、レシート、請求書、または銀行明細を保管してください、スマートフォンで撮った写真でも構いません。年間の仕事関連の請求合計が$300未満の場合、ATOは書面での証拠を求めませんが、その金額をどのように算出したかは説明できる必要があります。
                 </p>
               </div>
             </div>
@@ -282,7 +283,7 @@ export default function ExpensesPageJA() {
                 車両費：2つの計算方法
               </h2>
               <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.8, maxWidth: '54ch' }}>
-                仕事に関連する運転のみが対象です — 通常の通勤は含まれません。方法は2つあり、1台の車につき1年で1つの方法しか使えません。
+                仕事に関連する運転のみが対象です、通常の通勤は含まれません。方法は2つあり、1台の車につき1年で1つの方法しか使えません。
               </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
@@ -290,7 +291,7 @@ export default function ExpensesPageJA() {
               <CompareTable label="ログブック法" rows={LOGBOOK_ROWS} />
             </div>
             <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.8, maxWidth: '60ch', marginTop: '18px' }}>
-              年間の仕事関連の走行距離が5,000kmを超える場合、通常はログブック法の方が還付額が大きくなります — ただし12週間のログブックとすべての領収書の保管が必要です。
+              年間の仕事関連の走行距離が5,000kmを超える場合、通常はログブック法の方が還付額が大きくなります、ただし12週間のログブックとすべての領収書の保管が必要です。
             </p>
           </div>
         </section>
@@ -314,7 +315,7 @@ export default function ExpensesPageJA() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.9, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません — 状況は人それぞれ異なります。当社でお手続きいただく際には、お客様の具体的な職業や状況を確認し、請求できるものはすべて、請求できないものは含めないようにサポートします。
+              これは一般的な情報であり、個別の税務アドバイスではありません、状況は人それぞれ異なります。当社でお手続きいただく際には、お客様の具体的な職業や状況を確認し、請求できるものはすべて、請求できないものは含めないようにサポートします。
             </p>
             <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
@@ -324,6 +325,7 @@ export default function ExpensesPageJA() {
         </section>
 
       </main>
+      <MobileCta href="/ja/tax-form" lang="ja" />
     </>
   )
 }

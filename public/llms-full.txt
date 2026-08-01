@@ -1,6 +1,6 @@
-# Working Holiday Tax — Full Content for AI Models (EN / DE / JA)
+# Working Holiday Tax - Full Content for AI Models (EN / DE / JA)
 
-> Complete article content in all three site languages — English, German (Deutsch), and Japanese (日本語). All articles verified against current ATO, Fair Work, and Services Australia guidance for the 2025-26 Australian financial year.
+> Complete article content in all three site languages - English, German (Deutsch), and Japanese (日本語). All articles verified against current ATO, Fair Work, and Services Australia guidance for the 2025-26 Australian financial year.
 
 ## About This File
 
@@ -130,7 +130,7 @@ Each employer needs their own Tax File Number Declaration form. Providing your T
 
 ---
 
-## How Long Does a TFN Take in 2026? Usually 10–28 Days
+## How Long Does a TFN Take in 2026? Usually 10-28 Days
 
 **URL:** https://workingholidaytax.com.au/blog/how-long-does-it-take-to-get-a-tfn
 
@@ -24198,7 +24198,7 @@ TFNが登録されていない場合、雇用主は最高限界税率の45%で�
 
 **Published:** 5 August 2024
 
-**Summary:** TFNは従業員用、ABNは個人事業主用 — 税金の扱いが全く異なります。どちらが必要か、両方持つケース、注意すべき罠を解説。
+**Summary:** TFNは従業員用、ABNは個人事業主用 - 税金の扱いが全く異なります。どちらが必要か、両方持つケース、注意すべき罠を解説。
 
 
 タックスファイルナンバー（TFN）は、給与をもらう従業員として働く際に使う個人の納税者番号です。オーストラリア事業者番号（ABN）は、個人事業主や独立した請負業者として、クライアントに請求書を発行して働く際に使う事業者番号です。通常の雇用形態で働くワーキングホリデーメーカーのほとんどはTFNだけで十分。ABNが必要になるのは、自分で事業を営んだり、独立して請負業務を行う場合です。バックパッカーの多くは両方持つことになります。
@@ -26195,7 +26195,7 @@ PAYGペイメントサマリー（現在はインカムステートメントと�
 
 **Published:** 29 July 2026
 
-**Summary:** RSAなどの講習、作業道具、制服の洗濯、職場間の移動、税理士費用 — バックパッカーが申請できる控除と、ATOに却下されるものを解説。
+**Summary:** RSAなどの講習、作業道具、制服の洗濯、職場間の移動、税理士費用 - バックパッカーが申請できる控除と、ATOに却下されるものを解説。
 
 
 オーストラリアのワーキングホリデーメーカーは、オーストラリア居住者と同じく、タックスリターンで業務関連の控除を申請できます。一般的な控除には、制服と保護用作業着、工具と機材、仕事現場間の移動、業務用電話の利用、登録税理士の費用が含まれます。控除を申請するには、経費が収入を得ることに直接関連していて、記録（領収書、銀行明細、日記メモ）がある必要があります。[タックスリターン](/ja/tax-return)を準備する際、当社チームが対象となる控除を特定します。
@@ -26344,7 +26344,7 @@ ATOはあなたのタックスリターンを使って、実際の納税額を�
 
 **Published:** 9 December 2024
 
-**Summary:** 日本に帰国後でも申請可能 — 過去数年分の還付も請求できます。myGovの問題、税理士経由の申請、海外口座への受け取り方。
+**Summary:** 日本に帰国後でも申請可能 - 過去数年分の還付も請求できます。myGovの問題、税理士経由の申請、海外口座への受け取り方。
 
 
 オーストラリアを離れた後で海外からタックスリターンを提出するには、代理でリモートに申告書を準備・提出できる登録税理士と連携しましょう。プロセス全体が電子的に行われ、還付金はオーストラリアの銀行口座に支払われます。当社チームは世界中のワーキングホリデーメーカーのタックスリターンを毎週対応しています。オーストラリアに戻る必要はなく、登録税理士を通すと提出期限が延長されます。

@@ -13,7 +13,7 @@ const isJaTranslated = (slug: string) => !!jaPostTranslations[slug]?.body
 // Parse a guide date string ("1 July 2024") into a Date for accurate <lastmod>.
 // Stable last-content-update date for static & category pages, so <lastmod>
 // doesn't churn on every deploy (which a build-time new Date() would cause).
-const LAST_CONTENT_UPDATE = new Date('2026-06-01')
+const LAST_CONTENT_UPDATE = new Date('2026-08-01')
 
 function parseGuideDate(s: string): Date {
   const d = new Date(s)
@@ -37,6 +37,7 @@ const routes = [
   { url: '/abn',                       priority: 0.8,  changeFrequency: 'monthly', translated: true  },
   { url: '/calculator',                priority: 0.8,  changeFrequency: 'monthly', translated: true  },
   { url: '/medicare',                  priority: 0.7,  changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses',                  priority: 0.8,  changeFrequency: 'monthly', translated: true  },
   // Blog hub
   { url: '/blog',                      priority: 0.85, changeFrequency: 'weekly',  translated: true  },
   // Contact and supporting pages

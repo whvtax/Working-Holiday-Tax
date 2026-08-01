@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
-  description: 'Working holiday tax refund Australia - your WHV tax return for 417 and 462 visa holders is lodged under the supervision of a registered tax agent. Claim your tax back from Australia, even after you have gone home. All online, fast and simple.',
+  title: "Working Holiday Tax Refund - Lodged For You By Tax Agents",
+  description: "Get your Australian tax refund without touching myGov. Registered tax agents lodge your 417/462 return, claim the Medicare levy exemption and every deduction you are owed - from Australia or after you have flown home.",
   keywords: [
     'working holiday tax refund Australia',
     'working holiday tax refund',
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax Refund Australia | WHV Tax Return Service',
+    title: "Working Holiday Tax Refund - Lodged For You By Tax Agents",
     description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online - even after you leave Australia.',
   },
   twitter: {
@@ -67,6 +68,18 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'What does it cost, and what if I turn out not to be owed anything?',
+    answer: 'The fee is a fixed amount told to you before any chargeable work begins - never a percentage of your refund. If the check shows you are not entitled to a refund, the assessment fee is waived in full and you pay nothing.',
+  },
+  {
+    question: 'I already left Australia. Is it too late?',
+    answer: 'No. We lodge from overseas as a matter of routine, including for previous years you never got around to. We retrieve your income statements directly from the ATO, so lost payslips are not a problem.',
+  },
+  {
+    question: 'Can I just lodge it myself in myTax?',
+    answer: 'You can, and for a simple year it is a legitimate choice. Where it costs people money is the residency questions, the Medicare levy exemption paperwork that has to be ordered weeks in advance, and reconciling several employers - which is exactly what we handle.',
+  },
   {
     question: 'What is a working holiday tax refund and am I eligible?',
     answer: 'A working holiday tax refund is the money the Australian Taxation Office (ATO) pays back when more tax was withheld from your wages than you actually owe. If you worked in Australia on a 417 or 462 visa, you may be eligible if your employer withheld at the wrong rate, you have eligible work-related deductions, or you only worked part of the financial year. The only way to find out is to lodge a tax return.',
@@ -105,14 +118,6 @@ const faqs = [
   }
   ]
 
-const DEDUCTIONS = [
-  { title: 'Work uniforms and clothing',   body: 'Protective or required clothing like boots, high-vis, or uniforms.' },
-  { title: 'Tools and equipment',          body: 'Work-related tools or equipment you purchased and used.' },
-  { title: 'Licences and certifications',  body: 'Work licences like RSA, White Card, or similar.' },
-  { title: 'Laundry and cleaning',         body: 'Cleaning and maintaining your work clothing.' },
-  { title: 'Work-related travel',          body: 'Travel between job sites (not daily commute).' },
-  { title: 'Charitable donations',         body: 'Donations to registered Australian charities.' },
-]
 
 const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your income and work details so we can prepare your working holiday tax return correctly.' },
@@ -160,20 +165,6 @@ const serviceSchema = {
   inLanguage: 'en-AU',
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'How to lodge a working holiday tax return in Australia',
-  description: 'Step-by-step process for working holiday makers to lodge their Australian tax return with the ATO, from Australia or overseas.',
-  totalTime: 'P14D',
-  inLanguage: 'en-AU',
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-  })),
-}
 
 const speakableSchema = {
   '@context': 'https://schema.org',
@@ -190,7 +181,6 @@ export default function TaxReturnPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -224,20 +214,20 @@ export default function TaxReturnPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Working holiday tax return</span>
-                <span style={{ display:'block', color:'#0B5240' }}>fast &amp; stress-free.</span>
+                <span style={{ display:'block' }}>You probably overpaid tax.</span>
+                <span style={{ display:'block', color:'#0B5240' }}>We get it back for you.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Working holiday tax return</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>fast &amp; stress-free.</span>
+                <span style={{ display:'block', fontSize:'22px' }}>You probably overpaid tax.</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>We get it back for you.</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              Your WHV tax return lodged with registered tax agent.
+              Most working holiday makers are owed money and never claim it.
             
             </p>
 
@@ -249,7 +239,7 @@ export default function TaxReturnPage() {
                 maxWidth:'46ch',
                 marginBottom:'0',
               }}>
-              <span>For 417 and 462 visa holders. Your backpacker tax return is lodged within 24 hours - even after you have left Australia.</span>
+              <span>Registered tax agents lodge your 417 or 462 return, claim the Medicare levy exemption and every deduction you are owed. No myGov, no forms - and it works from anywhere in the world.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -338,7 +328,7 @@ export default function TaxReturnPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We prepare and lodge your working holiday tax return for you</h3>
-              <p className="service-cta-sub">Free initial consultation. No forms, no ATO portals, no stress. We claim every deduction you are entitled to and handle everything online - even after you leave Australia.</p>
+              <p className="service-cta-sub">Tell us your situation and we will tell you what you are owed. No forms, no ATO portals, no stress. We claim every deduction you are entitled to and handle everything online - even after you leave Australia.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Start my tax return →
@@ -447,126 +437,6 @@ export default function TaxReturnPage() {
                 Start your tax return →
               </a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── TAX RATES ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-12 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Tax rates</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Working holiday maker tax rates in Australia
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '40ch' }}>
-              <span>Tax rates for 417 and 462 visa holders are different from Australian residents.</span>
-            </p>
-          </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-7 items-stretch">
-              {[
-                {
-                  label: 'Working Holiday visa holders',
-                  rows: [
-                    ['$0 - $45,000', '15%'],
-                    ['$45,001 - $135,000', '$6,750 + 30%'],
-                    ['$135,001 - $190,000', '$33,750 + 37%'],
-                    ['$190,001+', '$54,100 + 45%'],
-                  ],
-                },
-                {
-                  label: 'Australian residents',
-                  rows: [
-                    ['$0 - $18,200', 'Nil'],
-                    ['$18,201 - $45,000', '16%'],
-                    ['$45,001 - $135,000', '$4,288 + 30%'],
-                    ['$135,001 - $190,000', '$31,288 + 37%'],
-                    ['$190,001+', '$51,638 + 45%'],
-                  ],
-                },
-              ].map((table, ti) => (
-                <div key={ti} className="min-w-0 flex flex-col">
-                  <h3 className="font-semibold text-ink mb-3 text-center" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>{table.label}</h3>
-                  <div className="rounded-xl overflow-hidden flex-1" style={{ border: '1px solid #C8EAE0' }}>
-                    <table className="w-full" style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}>
-                      <thead>
-                        <tr style={{ background: '#EAF6F1' }}>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '55%' }}>Taxable income</th>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '45%' }}>Tax rate</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {table.rows.map(([income, rate], i) => (
-                          <tr key={i} style={{ borderTop: '1px solid #E2EFE9', background: i % 2 === 0 ? '#ffffff' : '#F5F9F7' }}>
-                            <td className="font-light text-body" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{income}</td>
-                            <td className="font-medium text-ink" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{rate}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-5 rounded-xl px-5 py-3 mx-auto" style={{ background: '#FFFCF5', border: '1.5px solid #E9A020', borderRadius: '12px', maxWidth: 'fit-content' }}>
-              <p className="font-light text-body" style={{ fontSize: '12.5px', lineHeight: 1.5, textAlign: 'center' }}>
-                If your employer is not registered as a Working Holiday employer, you could be taxed at 30% instead of 15%.
-              </p>
-            </div>
-            <div className="text-center mt-8">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center font-medium transition-all"
-                style={{ fontSize: '14px', color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                <span className="hidden lg:inline">Not sure if you have overpaid tax? Find out if you are entitled to a refund →</span><span className="lg:hidden">Not sure if you have overpaid tax?<br />Find out if you are entitled to a refund →</span>
-              </a>
-            </div>
-        </div>
-      </section>
-
-      {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">Deductions</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              Work-related deductions for working holiday makers
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '36ch' }}>
-              You may be entitled to claim more than you think. We make sure nothing eligible is missed.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 reveal delay-1">
-            {DEDUCTIONS.map((d, i) => (
-              <div key={i} className="bg-white rounded-xl" style={{ padding: '16px 18px', border: '1px solid #E2EFE9', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
-                <div className="flex items-center gap-2" style={{ marginBottom: '5px' }}>
-                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </span>
-                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)' }}>{d.title}</p>
-                </div>
-                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '28ch', paddingLeft:'26px' }}>{d.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 max-w-xl reveal delay-2">
-            <div className="info-block">
-              <p><span className="hidden lg:inline">Personal expenses, fines, and daily travel to work are not claimable.</span><span className="lg:hidden">Personal expenses, fines, and daily travel to work<br />are not claimable.</span></p>
-            </div>
-          </div>
-
-          <div className="text-center mt-8 reveal delay-3">
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '44ch', marginBottom: '16px' }}>
-              Not sure what you can claim? We review your situation and apply every deduction that fits.
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '48px', padding: '0 28px', fontSize: '14px', maxWidth: '280px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
-              Start your tax return →
-            </a>
           </div>
         </div>
       </section>
@@ -693,6 +563,7 @@ export default function TaxReturnPage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
+      <MobileCta href={WA_URL} lang="en" />
     </>
   )
 }

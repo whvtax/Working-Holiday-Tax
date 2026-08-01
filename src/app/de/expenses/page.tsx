@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: 'Steuerabsetzbare Ausgaben für Backpacker in Australien',
@@ -36,22 +37,22 @@ export const metadata: Metadata = {
 
 const GOLDEN_RULES = [
   'Du musst das Geld selbst ausgegeben haben, ohne Erstattung durch deinen Arbeitgeber.',
-  'Die Ausgabe muss direkt mit der Erzielung deines Einkommens zusammenhängen — keine private oder häusliche Ausgabe.',
-  'Du brauchst einen Nachweis — eine Quittung, Rechnung oder einen Kontoauszug, der zeigt, was du gekauft hast und wann.',
+  'Die Ausgabe muss direkt mit der Erzielung deines Einkommens zusammenhängen - keine private oder häusliche Ausgabe.',
+  'Du brauchst einen Nachweis - eine Quittung, Rechnung oder einen Kontoauszug, der zeigt, was du gekauft hast und wann.',
 ]
 
 const CAR_METHOD_ROWS = [
   ['Satz (2024-25 & 2025-26)', '88 Cent / km'],
   ['Satz (2026-27, ab 1. Juli 2026)', '91 Cent / km'],
   ['Maximal absetzbar', '5.000 km / Auto / Jahr'],
-  ['Belege nötig?', 'Nein — aber du musst zeigen können, wie du die Kilometer ermittelt hast'],
+  ['Belege nötig?', 'Nein - aber du musst zeigen können, wie du die Kilometer ermittelt hast'],
 ]
 
 const LOGBOOK_ROWS = [
   ['Funktionsweise', 'Absetzung des arbeitsbezogenen Prozentsatzes aller tatsächlichen Kosten'],
   ['Fahrtenbuch-Zeitraum', '12 zusammenhängende Wochen, gültig für 5 Jahre'],
-  ['Maximal absetzbar', 'Keine Grenze — basiert auf deinem tatsächlichen Arbeitsanteil'],
-  ['Belege nötig?', 'Ja — für jede Ausgabe, die du absetzt'],
+  ['Maximal absetzbar', 'Keine Grenze - basiert auf deinem tatsächlichen Arbeitsanteil'],
+  ['Belege nötig?', 'Ja - für jede Ausgabe, die du absetzt'],
 ]
 
 type Occupation = {
@@ -74,7 +75,7 @@ const OCCUPATIONS: Occupation[] = [
       'Ein Erste-Hilfe-Zertifikat, falls für deine Rolle erforderlich',
     ],
     cannot: [
-      'Einfache schwarze Kleidung oder Schuhe ohne Logo — auch wenn dein Betrieb sie verlangt, gilt das für die ATO als gewöhnliche Kleidung, nicht als Uniform',
+      'Einfache schwarze Kleidung oder Schuhe ohne Logo - auch wenn dein Betrieb sie verlangt, gilt das für die ATO als gewöhnliche Kleidung, nicht als Uniform',
     ],
   },
   {
@@ -88,7 +89,7 @@ const OCCUPATIONS: Occupation[] = [
     ],
     cannot: [
       'Gewöhnliche Kleidung wie Jeans oder T-Shirts, auch wenn sie bei der Arbeit abgenutzt oder schmutzig wird',
-      'Die tägliche Fahrt von zuhause zur ersten Farm — das gilt als gewöhnlicher Arbeitsweg',
+      'Die tägliche Fahrt von zuhause zur ersten Farm - das gilt als gewöhnlicher Arbeitsweg',
     ],
   },
   {
@@ -98,7 +99,7 @@ const OCCUPATIONS: Occupation[] = [
     can: [
       'Erneuerung deiner White Card (Construction Induction Card)',
       'Stahlkappenschuhe und Warnschutzkleidung',
-      'Werkzeug und Ausrüstung — Gegenstände unter $300 sind sofort absetzbar, über $300 werden sie über die Nutzungsdauer abgeschrieben',
+      'Werkzeug und Ausrüstung - Gegenstände unter $300 sind sofort absetzbar, über $300 werden sie über die Nutzungsdauer abgeschrieben',
       'Sonnenschutz für Arbeit im Freien auf der Baustelle',
     ],
     cannot: [
@@ -112,7 +113,7 @@ const OCCUPATIONS: Occupation[] = [
     subtitle: 'Gewerbeküchen, Restaurants',
     can: [
       'Kochmesser und andere Küchenwerkzeuge, die du selbst kaufst',
-      'Kochjacke oder karierte Kochhose — diese zählen als berufsspezifische Kleidung',
+      'Kochjacke oder karierte Kochhose - diese zählen als berufsspezifische Kleidung',
       'Rutschfeste Küchenschuhe',
       'Ein Food-Safety-Supervisor-Zertifikat, falls für deine Rolle erforderlich',
     ],
@@ -125,14 +126,14 @@ const OCCUPATIONS: Occupation[] = [
     title: 'Rideshare & Lieferfahrten',
     subtitle: 'Uber, Uber Eats, DoorDash und Ähnliches',
     can: [
-      'Autokosten für den arbeitsbezogenen Anteil deiner Fahrten — per Kilometerpauschale oder Fahrtenbuch (siehe unten)',
+      'Autokosten für den arbeitsbezogenen Anteil deiner Fahrten - per Kilometerpauschale oder Fahrtenbuch (siehe unten)',
       'Der arbeitsbezogene Anteil deines Mobilfunkvertrags',
       'Autowäsche, um das Auto in einem für Fahrgäste angemessenen Zustand zu halten',
       'Parkgebühren, die während der Arbeit anfallen',
     ],
     cannot: [
       'Der private Anteil jeder Fahrt oder dein gewöhnlicher Arbeitsweg',
-      'Park- oder Geschwindigkeitsstrafen — diese sind nie absetzbar, egal aus welchem Grund',
+      'Park- oder Geschwindigkeitsstrafen - diese sind nie absetzbar, egal aus welchem Grund',
     ],
   },
   {
@@ -237,7 +238,7 @@ export default function ExpensesPageDE() {
                 Was können Backpacker wirklich <span style={{ color: '#0B5240' }}>steuerlich absetzen</span>?
               </h1>
               <p className="font-semibold mx-auto" style={{ fontSize: 'clamp(15px, 1.6vw, 18px)', lineHeight: 1.6, color: '#0B5240', maxWidth: '46ch' }}>
-                Arbeitsbezogene Absetzungen können deiner Rückerstattung Hunderte Dollar hinzufügen — aber nur, wenn die Ausgabe wirklich qualifiziert. Hier ist genau, was zählt, nach Beruf.
+                Arbeitsbezogene Absetzungen können deiner Rückerstattung Hunderte Dollar hinzufügen - aber nur, wenn die Ausgabe wirklich qualifiziert. Hier ist genau, was zählt, nach Beruf.
               </p>
             </div>
           </div>
@@ -269,7 +270,7 @@ export default function ExpensesPageDE() {
               <div>
                 <p className="taxres-savings-heading">Nachweise aufbewahren</p>
                 <p className="taxres-savings-body">
-                  Bewahre eine Quittung, Rechnung oder einen Kontoauszug für alles auf, was du absetzen möchtest — ein Foto auf deinem Handy reicht. Wenn deine gesamten arbeitsbezogenen Absetzungen im Jahr unter $300 liegen, verlangt die ATO keinen schriftlichen Nachweis, aber du musst trotzdem erklären können, wie du auf den Betrag gekommen bist.
+                  Bewahre eine Quittung, Rechnung oder einen Kontoauszug für alles auf, was du absetzen möchtest - ein Foto auf deinem Handy reicht. Wenn deine gesamten arbeitsbezogenen Absetzungen im Jahr unter $300 liegen, verlangt die ATO keinen schriftlichen Nachweis, aber du musst trotzdem erklären können, wie du auf den Betrag gekommen bist.
                 </p>
               </div>
             </div>
@@ -283,7 +284,7 @@ export default function ExpensesPageDE() {
                 Autokosten: zwei Methoden
               </h2>
               <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '54ch' }}>
-                Nur arbeitsbezogenes Fahren zählt — niemals dein gewöhnlicher Arbeitsweg. Es gibt zwei Methoden; du kannst pro Auto und Jahr nur eine verwenden.
+                Nur arbeitsbezogenes Fahren zählt - niemals dein gewöhnlicher Arbeitsweg. Es gibt zwei Methoden; du kannst pro Auto und Jahr nur eine verwenden.
               </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
@@ -291,7 +292,7 @@ export default function ExpensesPageDE() {
               <CompareTable label="Fahrtenbuch-Methode" rows={LOGBOOK_ROWS} />
             </div>
             <p className="font-light mx-auto text-center" style={{ fontSize: '12.5px', color: '#587066', lineHeight: 1.6, maxWidth: '60ch', marginTop: '18px' }}>
-              Wenn du mehr als 5.000 arbeitsbezogene km im Jahr fährst, bringt die Fahrtenbuch-Methode meist eine höhere Rückerstattung — erfordert aber ein 12-wöchiges Fahrtenbuch und alle Belege.
+              Wenn du mehr als 5.000 arbeitsbezogene km im Jahr fährst, bringt die Fahrtenbuch-Methode meist eine höhere Rückerstattung - erfordert aber ein 12-wöchiges Fahrtenbuch und alle Belege.
             </p>
           </div>
         </section>
@@ -303,7 +304,7 @@ export default function ExpensesPageDE() {
                 Absetzungen nach Beruf
               </h2>
               <p className="font-medium mx-auto" style={{ fontSize: '14px', color: '#587066', lineHeight: 1.6, maxWidth: '56ch' }}>
-                Die häufigsten Jobs, in denen Backpacker in Australien arbeiten, und genau was in der Regel absetzbar ist — und was nicht.
+                Die häufigsten Jobs, in denen Backpacker in Australien arbeiten, und genau was in der Regel absetzbar ist - und was nicht.
               </p>
             </div>
             <div className="exp-grid">
@@ -315,7 +316,7 @@ export default function ExpensesPageDE() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              Dies sind allgemeine Informationen, keine persönliche Steuerberatung — jede Situation ist etwas anders. Wenn du deine Erklärung bei uns einreichst, gehen wir deinen spezifischen Beruf und deine Umstände durch, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
+              Dies sind allgemeine Informationen, keine persönliche Steuerberatung - jede Situation ist etwas anders. Wenn du deine Erklärung bei uns einreichst, gehen wir deinen spezifischen Beruf und deine Umstände durch, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
             </p>
             <Link href="/de/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>
@@ -325,6 +326,7 @@ export default function ExpensesPageDE() {
         </section>
 
       </main>
+      <MobileCta href="/de/tax-form" lang="de" />
     </>
   )
 }

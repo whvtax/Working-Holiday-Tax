@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'ABN-Registrierung für Working Holiday Visainhaber in Australien',
-  description: 'Registriere deine ABN korrekt als selbstständiger Working Holiday Maker. Wir kümmern uns um die Registrierung und alle Steuerpflichten - einfach, schnell, online.',
+  title: "ABN in Australien anmelden lassen - 417 & 462 | Tax Agents",
+  description: "ABN für Lieferdienste, Rideshare oder Farmarbeit? Wir melden sie korrekt für deine tatsächliche Tätigkeit an, erklären dir deine Steuerpflichten klar und halten dich aus den Fallen heraus, die Backpacker Super und Mindestlohn kosten.",
   keywords: [
     'ABN Registrierung Australien',
     'ABN Working Holiday',
@@ -55,6 +56,14 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'Die ABN-Registrierung ist kostenlos. Wofür zahle ich?',
+    answer: 'Die Registrierung ist kostenlos, das behaupten wir nicht anders. Bezahlt wird, dass sie zu deiner tatsächlichen Tätigkeit passt, dass du weißt, was zur Steuerzeit auf dich zukommt, und dass wir dich warnen, wenn ein Arbeitgeber dich in eine ABN drängt, um Super und Mindestlohn zu sparen.',
+  },
+  {
+    question: 'Mein Arbeitgeber verlangt eine ABN für einen normalen Schichtjob. Ist das korrekt?',
+    answer: 'Meistens nicht. Wenn er deine Zeiten festlegt, dich anleitet und das Werkzeug stellt, ist das ein Angestelltenverhältnis - mit ABN gibt es keinen Steuerabzug, keine Super und keine Unfallversicherung. Schick uns die Jobdetails, bevor du dich registrierst, und wir sagen dir ehrlich, was es ist.',
+  },
   { question: 'Kann ich sowohl eine TFN als auch eine ABN haben?', answer: 'Ja. Du kannst beide haben - die TFN für Anstellungen und die ABN für selbstständige Tätigkeiten.' },
   { question: 'Bekomme ich eine ABN ohne TFN?', answer: 'Nein. Du brauchst zuerst eine TFN, bevor du eine ABN beantragen kannst.' },
   { question: 'Muss ich mich für GST registrieren?', answer: 'Eine GST-Registrierung ist nur erforderlich, wenn dein Jahresumsatz über 75.000 AUD liegt. Die meisten Working Holiday Visainhaber müssen sich nicht für GST registrieren.' },
@@ -114,20 +123,6 @@ const serviceSchema = {
   },
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'So registrierst du eine ABN als Working Holiday Maker',
-  description: 'Schritt-für-Schritt-Anleitung, wie du als Working Holiday Visuminhaber eine Australian Business Number (ABN) für Selbstständigen- oder Vertragsarbeit registrierst.',
-  totalTime: 'PT15M',
-  inLanguage: 'de',
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-  })),
-}
 
 
 export default function ABNPageDE() {
@@ -136,7 +131,6 @@ export default function ABNPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
@@ -162,12 +156,12 @@ export default function ABNPageDE() {
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
               <span className="hidden lg:block">
-                <span style={{ display: 'block' }}>Registriere deine ABN und</span>
-                <span style={{ display: 'block', color: '#0B5240' }}>arbeite als Selbstständiger</span>
+                <span style={{ display: 'block' }}>Brauchst du eine ABN für deinen Job?</span>
+                <span style={{ display: 'block', color: '#0B5240' }}>Wir melden sie korrekt an.</span>
               </span>
               <span className="lg:hidden">
-                <span style={{ display: 'block', fontSize: '22px' }}>Registriere deine ABN und</span>
-                <span style={{ display: 'block', color: '#0B5240', fontSize: '22px' }}>arbeite als Selbstständiger</span>
+                <span style={{ display: 'block', fontSize: '22px' }}>Brauchst du eine ABN für deinen Job?</span>
+                <span style={{ display: 'block', color: '#0B5240', fontSize: '22px' }}>Wir melden sie korrekt an.</span>
               </span>
             </h1>
 
@@ -273,7 +267,7 @@ export default function ABNPageDE() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir registrieren deine ABN korrekt für dich</h3>
-              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung – schreib uns auf WhatsApp. Wir registrieren deine ABN mit dem richtigen Setup für deine Tätigkeit - und erklären dir deine Steuerpflichten klar und verständlich.</p>
+              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung - schreib uns auf WhatsApp. Wir registrieren deine ABN mit dem richtigen Setup für deine Tätigkeit - und erklären dir deine Steuerpflichten klar und verständlich.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine ABN registrieren →
@@ -518,6 +512,7 @@ export default function ABNPageDE() {
         cta="Steuererklärung starten →"
         href="/de/tax-return"
       />
+      <MobileCta href={WA_URL} lang="de" />
     </>
   )
 }

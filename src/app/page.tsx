@@ -160,7 +160,7 @@ export default async function HomePage() {
     about: { '@id': `${SITE_URL}/#business` },
   }
 
-  // Only built when gRating.live — see googleData.ts. Never emit a fabricated
+  // Only built when gRating.live - see googleData.ts. Never emit a fabricated
   // rating to Google as structured data.
   const aggregateRatingLd = gRating.live ? {
     '@context': 'https://schema.org',

@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'ABN登録 - ワーキングホリデー オーストラリア',
-  description: '個人事業主として正しくABNを登録。ワーキングホリデー専門のチームが、登録税理士の監督のもとで登録から税務まですべてサポートします。',
+  title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
+  description: "デリバリー、ライドシェア、ファーム請負にABNが必要ですか。実際の業務に合わせて正しく登録を代行し、発生する税金をわかりやすく説明。ワーホリが陥りがちな落とし穴も日本語で回避できます。",
   keywords: [
     'ABN 登録 オーストラリア',
     'ABN ワーキングホリデー',
@@ -42,19 +43,27 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABN登録 - ワーキングホリデー オーストラリア',
+    title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'ABN登録 - ワーキングホリデー オーストラリア',
+    title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
     description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
+  {
+    question: 'ABN登録は無料です。何に対する費用ですか。',
+    answer: '登録自体は無料です。費用は、実際の業務内容に合った正しい登録、税務上いくら準備が必要かの説明、そして雇用主がスーパーや最低賃金の支払いを避けるためにABNを勧めている場合の警告に対するものです。',
+  },
+  {
+    question: '普通のシフト勤務なのに雇用主からABNを求められました。正しいですか。',
+    answer: 'たいていは正しくありません。勤務時間を指定され、指示を受け、道具も支給されるなら、それは雇用です。ABNだと源泉徴収もスーパーも労災もありません。登録前に求人の詳細をお送りいただければ、どちらに当たるか率直にお伝えします。',
+  },
   { question: 'TFNとABNの両方を持つことはできますか？', answer: 'はい、両方持つことができます。多くのワーキングホリデーメーカーが両方を保有しています。TFNは雇用契約（給与所得）用、ABNは個人事業主としての請負業務用に使い分けます。同じ年度内に両方の収入があっても、1つのタックスリターンで一緒に申告できます。' },
   { question: 'TFNなしでABNを取得できますか？', answer: 'いいえ、ABNを申請する前に、まずTFN（タックスファイルナンバー）を取得する必要があります。TFNがあなたの本人確認の基礎となるからです。当社では、必要に応じてTFNとABNを同時に申請することも可能です。' },
   { question: 'GST（消費税）の登録は必要ですか？', answer: '年間売上（収入）が75,000ドルを超える場合のみGST登録が義務付けられています。ほとんどのワーキングホリデーメーカーはこの基準を超えないため、GST登録は不要です。ただし、Uber・DiDiなどの配車サービスドライバーは収入額に関わらずGST登録が必須です（フードデリバリーは75,000ドル基準が適用）。' },
@@ -86,27 +95,6 @@ const breadcrumbSchema = {
   ],
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'ABN（Australian Business Number）の登録方法',
-  description: 'オーストラリアで個人事業主・請負業務・フリーランスとして働くためのABN登録手順。登録税理士の監督のもとで日本語で代行します。',
-  inLanguage: 'ja',
-  totalTime: 'P1D',
-  estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
-  supply: [
-    { '@type': 'HowToSupply', name: 'TFN（タックスファイルナンバー）' },
-    { '@type': 'HowToSupply', name: 'パスポート情報' },
-    { '@type': 'HowToSupply', name: '業務内容（業種）' },
-  ],
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-    url: `${SITE_URL}/ja/abn#step-${i + 1}`,
-  })),
-}
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -126,7 +114,6 @@ export default function ABNPageJA() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -152,8 +139,8 @@ export default function ABNPageJA() {
 
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: '10px' }}>
-              <span style={{ display: 'block' }}>ABNを取得して</span>
-              <span style={{ display: 'block', color: '#0B5240' }}>請負業務・フリーランスを始める。</span>
+              <span style={{ display: 'block' }}>仕事にABNが必要ですか。</span>
+              <span style={{ display: 'block', color: '#0B5240' }}>正しく登録を代行します。</span>
             </h1>
 
             <p className="font-semibold text-ink"
@@ -502,6 +489,7 @@ export default function ABNPageJA() {
         cta="タックスリターンを依頼する →"
         href="/ja/tax-return"
       />
+      <MobileCta href={WA_URL} lang="ja" />
     </>
   )
 }

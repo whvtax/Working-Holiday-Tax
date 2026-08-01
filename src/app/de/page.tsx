@@ -151,7 +151,7 @@ export default async function GermanHomePage() {
     about: { '@id': `${SITE_URL}/#business` },
   }
 
-  // Only built when gRating.live — see googleData.ts. Never emit a fabricated
+  // Only built when gRating.live - see googleData.ts. Never emit a fabricated
   // rating to Google as structured data.
   const serviceLd = gRating.live ? {
     '@context': 'https://schema.org',

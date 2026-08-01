@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'ABN Registration for Working Holiday Visa Holders | 417 & 462',
-  description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration and tax return - simple, fast, online.',
+  title: "ABN Registration Done For You - 417 & 462 Visa | Tax Agents",
+  description: "Need an ABN for delivery, rideshare or farm contracting? We register it correctly for your actual work, explain what you will owe, and keep you out of the traps that cost backpackers their super and minimum pay.",
   keywords: [
     'ABN registration Australia',
     'ABN registration working holiday',
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/abn`,
     siteName: 'Working Holiday Tax',
-    title: 'ABN Registration for Working Holiday Visa Holders | 417 & 462',
+    title: "ABN Registration Done For You - 417 & 462 Visa | Tax Agents",
     description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration.',
   },
   twitter: {
@@ -56,6 +57,14 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'Registering an ABN is free. What am I paying you for?',
+    answer: 'The registration is free and we will never pretend otherwise. What we charge for is registering it correctly for the work you actually do, telling you what you will owe at tax time, and flagging when an employer is pushing you onto an ABN to avoid paying you super and minimum rates.',
+  },
+  {
+    question: 'My employer says I need an ABN for a normal shift job. Is that right?',
+    answer: 'Usually not. If they set your hours, supervise your work and provide the tools, that is employment - and an ABN means no tax withheld, no super paid for you and no workers compensation. Send us the job details before you register and we will tell you honestly which it is.',
+  },
   { question: 'Can I have both a TFN and an ABN?', answer: 'Yes. You can have both, one for employment and one for contract work.' },
   { question: 'Can I get an ABN without a TFN?', answer: 'No. You must have a TFN before applying for an ABN.' },
   { question: 'Do I need to register for GST?', answer: 'GST registration is only required if your annual turnover is over $75,000. Most Working Holiday visa holders do not need to register for GST.' },
@@ -110,20 +119,6 @@ const serviceSchema = {
   inLanguage: 'en-AU',
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'How to register for an ABN as a working holiday maker',
-  description: 'Step-by-step process to register an Australian Business Number for contractor or sole-trader work on a working holiday visa.',
-  totalTime: 'PT15M',
-  inLanguage: 'en-AU',
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-  })),
-}
 
 const speakableSchema = {
   '@context': 'https://schema.org',
@@ -140,7 +135,6 @@ export default function ABNPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
@@ -174,13 +168,13 @@ export default function ABNPage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block' }}>Set up your ABN and</span>
-                <span style={{ display:'block', color:'#0B5240' }}>start working as a contractor</span>
+                <span style={{ display:'block' }}>Need an ABN for your job?</span>
+                <span style={{ display:'block', color:'#0B5240' }}>We register it properly.</span>
               </span>
               {/* Mobile: 2 lines with green second line */}
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Set up your ABN and</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>start working as a contractor</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Need an ABN for your job?</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>We register it properly.</span>
               </span>
             </h1>
 
@@ -300,7 +294,7 @@ export default function ABNPage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We register your ABN correctly for you</h3>
-              <p className="service-cta-sub">Free initial consultation on WhatsApp. We register your ABN with the correct setup for your work type - and explain your tax obligations clearly.</p>
+              <p className="service-cta-sub">Tell us your situation and we will tell you what you are owed on WhatsApp. We register your ABN with the correct setup for your work type - and explain your tax obligations clearly.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Register my ABN →
@@ -548,6 +542,7 @@ export default function ABNPage() {
         cta="Start your tax return →"
         href="/tax-return"
       />
+      <MobileCta href={WA_URL} lang="en" />
     </>
   )
 }

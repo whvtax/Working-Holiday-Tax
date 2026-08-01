@@ -4,7 +4,7 @@ import { type Category, getCategoryColor } from '../data'
  * Decorative card/hero visual for a blog article.
  *
  * Shows a large emoji chosen to match what the specific article is about, on a
- * soft category-tinted background — warmer and more readable than an abstract
+ * soft category-tinted background - warmer and more readable than an abstract
  * illustration, and consistent with the emoji cards on /expenses.
  *
  * The emoji is looked up by slug, so it is stable, intentional and easy to

@@ -3,10 +3,11 @@ import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'Medicare Levy Exemption for Working Holiday Visa Holders Australia',
-  description: 'Understand Medicare eligibility and claim your Medicare levy exemption as a Working Holiday Visa holder (417/462). Increase your working holiday tax refund - handled as part of your tax return.',
+  title: "Medicare Levy Exemption - We Claim The 2% Back For You",
+  description: "Most 417 and 462 visa holders never owed the 2% Medicare levy - about $500 on $25,000 earned. We obtain your Medicare Entitlement Statement and claim the exemption with your return.",
   keywords: [
     'Medicare working holiday',
     'Medicare levy exemption backpacker',
@@ -41,7 +42,7 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/medicare`,
     siteName: 'Working Holiday Tax',
-    title: 'Medicare Levy Exemption for Working Holiday Visa Holders Australia',
+    title: "Medicare Levy Exemption - We Claim The 2% Back For You",
     description: 'Understand Medicare eligibility and the Medicare levy as a Working Holiday Visa holder. Claim your levy exemption.',
   },
   twitter: {
@@ -60,6 +61,14 @@ const rhca = [
 ]
 
 const faqs = [
+  {
+    question: 'How much is the exemption actually worth?',
+    answer: 'The levy is 2% of taxable income, so about $500 on $25,000 earned. It comes back through your tax return, not your payslip, which is why most people never notice they paid it.',
+  },
+  {
+    question: 'Does everyone on a 417 or 462 visa get the exemption?',
+    answer: 'Most do, but not everyone. If your country has a reciprocal health care agreement with Australia - the UK, Ireland, Italy, New Zealand and several others - you are generally entitled to Medicare, and that removes the exemption. We check your specific situation before claiming anything.',
+  },
   {
     question: 'What is the Medicare levy exemption?',
     answer: 'If you are not eligible for Medicare - which applies to most Working Holiday Visa holders - you can apply to have the Medicare levy waived when you lodge your tax return. We handle this as part of our tax return service.',
@@ -167,19 +176,19 @@ export default function MedicarePage() {
               }}>
               {/* Desktop: locked 2 lines - nowrap per line */}
               <span className="hidden lg:block">
-                <span style={{ display:'block', whiteSpace:'nowrap' }}>Understand your Medicare status</span>
-                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>before lodging your tax return</span>
+                <span style={{ display:'block', whiteSpace:'nowrap' }}>Most backpackers never owed the 2% levy.</span>
+                <span style={{ display:'block', whiteSpace:'nowrap', color:'#0B5240' }}>We claim it back for you.</span>
               </span>
               <span className="lg:hidden">
-                <span style={{ display:'block', fontSize:'22px' }}>Understand your Medicare status</span>
-                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>before lodging your tax return</span>
+                <span style={{ display:'block', fontSize:'22px' }}>Most backpackers never owed the 2% levy.</span>
+                <span style={{ display:'block', color:'#0B5240', fontSize:'22px' }}>We claim it back for you.</span>
               </span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.4 }}>
               
-              We assess your eligibility and ensure it is applied correctly in your tax return.
+              The Medicare levy is 2% of your taxable income - about $500 on $25,000 earned. Most 417 and 462 holders can have it exempted in full.
             
             </p>
 
@@ -299,7 +308,7 @@ export default function MedicarePage() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">We claim your Medicare levy exemption for you</h3>
-              <p className="service-cta-sub">Free initial consultation. We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return - so you get back what you should not have paid.</p>
+              <p className="service-cta-sub">Tell us your situation and we will tell you what you are owed. We assess your eligibility, prepare your exemption certificate, and apply it correctly when lodging your tax return - so you get back what you should not have paid.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Check my exemption →
@@ -415,7 +424,7 @@ export default function MedicarePage() {
               Medicare levy exemption
             </h2>
             <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.65, maxWidth: '40ch', marginBottom: '28px' }}>
-              If you are not eligible for Medicare, you may need a Medicare levy exemption before lodging your tax return.
+              If you are not eligible for Medicare, you may need a Medicare levy exemption We claim it back for you..
             </p>
             {/* Mobile: portrait 9/16, Desktop: landscape 16/9 */}
             <div className="reveal delay-1 rounded-2xl overflow-hidden mx-auto w-full">
@@ -516,6 +525,7 @@ export default function MedicarePage() {
       />
 
       {/* ── RELATED SERVICES ──────────────────────────────────────────────── */}
+      <MobileCta href={WA_URL} lang="en" />
     </>
   )
 }

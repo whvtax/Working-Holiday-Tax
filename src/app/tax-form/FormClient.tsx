@@ -209,11 +209,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   const [loading, setLoading]         = useState(false)
   const [errors, setErrors]           = useState<Record<string, string>>({})
 
-  // ── Funnel analytics (no external service — logs straight into Supabase,
+  // ── Funnel analytics (no external service - logs straight into Supabase,
   //    see form_funnel_events / migration 012). One stable id per form
   //    visit, generated once, so a view → step1_complete → submit_success
   //    chain can be tied together and the conversion rate measured. Never
-  //    allowed to affect the actual form — every call is fire-and-forget.
+  //    allowed to affect the actual form - every call is fire-and-forget.
   const sessionIdRef = useRef<string>('')
   if (!sessionIdRef.current) {
     sessionIdRef.current = (typeof crypto !== 'undefined' && crypto.randomUUID)
@@ -236,8 +236,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   //    NDA country selecting Working Holiday Maker) ──────────────────────
   const [showResidencyPrompt, setShowResidencyPrompt] = useState(false)
   const [showWhmBlockModal, setShowWhmBlockModal] = useState(false)
-  // Set once the client explicitly confirms the WHM tax status in the warning
-  // modal, so the next submit goes straight through.
+  // Set once the client explicitly confirms the WHM tax status in the warning modal.
   const whmConfirmedRef = useRef(false)
   const formRef = useRef<HTMLFormElement>(null)
   const taxStatusRef = useRef<HTMLDivElement>(null)
@@ -269,7 +268,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       setIf(d.howHeard, setHowHeard)
       // This snapshot only ever gets saved from within the step-2 section
       // (the residency question), so restoring it must also jump back to
-      // step 2 — otherwise the scroll target below doesn't even exist yet.
+      // step 2 - otherwise the scroll target below doesn't even exist yet.
       setStep(2)
       // Scroll back to the tax-residency question after the DOM settles
       setTimeout(() => taxStatusRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' }), 60)
@@ -360,8 +359,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
 
     // Soft warning (not a block): visa type and income level don't determine tax
     // residency - only the actual residency tests do - so we ask WHM selectors to
-    // confirm once, with a prominent path to the residency explainer. If they
-    // confirm, the submission goes through normally.
+    // confirm once, with a prominent path to the residency explainer.
     if (taxStatus === 'whm' && !whmConfirmedRef.current) { setShowWhmBlockModal(true); return }
 
     setLoading(true)
@@ -898,8 +896,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 10px'}}>{txt.body2}</p>
                 <p style={{fontSize:14,color:'#1A2822',fontWeight:600,margin:'0 0 20px'}}>{txt.thanks}</p>
                 <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                  {/* Checking residency stays the prominent path; confirming is
-                      available but deliberately lower-emphasis. */}
                   <button type="button" onClick={goReadResidency}
                     style={{minHeight:50,borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>
                     {txt.check}

@@ -304,7 +304,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // Present only when CSP nonce mode is enabled (middleware). null otherwise,
   // in which case the static 'unsafe-inline' CSP covers the inline script.
   const nonce = headers().get('x-nonce') ?? undefined
-  // Don't tag the internal CRM/admin area — it's staff usage, not public
+  // Don't tag the internal CRM/admin area - it's staff usage, not public
   // traffic, and would otherwise pollute GA4's acquisition/behaviour data.
   // (/crm is also disallowed in robots.ts for the same "not public" reason.)
   const isAdminArea = (headers().get('x-pathname') ?? '').startsWith('/crm')

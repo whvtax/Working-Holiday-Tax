@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { CalculatorClient } from './CalculatorClient'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: 'Steuerrückerstattung Rechner Australien für Working Holiday Maker',
@@ -117,6 +118,7 @@ export default function GermanCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <CalculatorClient faqs={faqs} />
+      <MobileCta href="/de/tax-form" lang="de" />
     </>
   )
 }

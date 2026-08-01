@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
-  description: 'オーストラリア タックスリターン 還付金の手続きを、417・462ビザのワーキングホリデー専門のチームが登録税理士の監督のもとで日本語で完全代行。準備からATOへの提出まで、帰国後の日本からでもオンラインで完結します。',
+  title: "オーストラリアのタックスリターン代行｜登録税理士が申請します",
+  description: "myGovも書類作成も不要。登録税理士が417・462ビザのタックスリターンを代行申請し、メディケア・レヴィ免除や控除もすべて申請します。帰国後の日本からのご依頼にも対応、やり取りはすべて日本語です。",
   keywords: [
     // Refund-focused (primary)
     'オーストラリア タックスリターン 還付金',
@@ -62,7 +63,7 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
+    title: "オーストラリアのタックスリターン代行｜登録税理士が申請します",
     description: '417・462ビザのワーホリ専門。登録税理士の監督のもとで、タックスリターン還付金の手続きを日本語で代行。帰国後も対応。',
   },
   twitter: {
@@ -75,6 +76,18 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: '費用はいくらですか。還付が受けられなかった場合は？',
+    answer: '費用の発生する作業を始める前に定額をお伝えします。還付金の◯%という成功報酬ではありません。確認の結果、還付を受ける資格がないと判明した場合は費用を全額免除します。',
+  },
+  {
+    question: 'すでに帰国しています。もう遅いですか。',
+    answer: 'いいえ。海外からの申請は日常的に対応しており、申請していない過去年度分も可能です。所得明細はATOから直接取得しますので、ペイスリップを失くしていても問題ありません。',
+  },
+  {
+    question: 'myTaxで自分で申請できますか。',
+    answer: 'できますし、単純な年であれば正当な選択です。費用がかかるのは、居住区分の質問、数週間前に申請が必要なMedicare Entitlement Statement、そして複数雇用主の照合、まさにその部分を当方が担当します。',
+  },
   {
     question: 'ワーホリのタックスリターン還付金とはどのような仕組みですか？',
     answer: '417・462ビザでオーストラリアで働くと、雇用主は毎回の給与から税金を源泉徴収します。会計年度末（6月30日）後にATO（オーストラリア税務署）へタックスリターンを提出すると、払いすぎていた分が還付金としてあなたに戻ってきます。還付金の金額は、所得、税務上の居住者ステータス、申告できる控除、雇用主がワーキングホリデーメーカー雇用主として登録されていたかなど、個人の状況によって大きく異なります。確認する唯一の方法は、タックスリターンを提出することです。',
@@ -101,14 +114,6 @@ const faqs = [
   }
   ]
 
-const DEDUCTIONS = [
-  { title: '作業着・ユニフォーム', body: '安全靴、蛍光ベスト、シェフホワイト、雇用主指定のロゴ入りユニフォームなど。' },
-  { title: '工具・機材',         body: '$300未満は即時控除可能。シェフナイフ、剪定鋏、デリバリーバッグ、職人の工具など。' },
-  { title: 'ライセンス・資格',   body: 'RSA（アルコール提供）、White Card（建設業）、ホワイトワーキングチェックなど業務に必要なもの。' },
-  { title: '洗濯・クリーニング', body: 'ユニフォームや保護用作業着の洗濯費用（自宅で洗う場合も対象）。' },
-  { title: '業務関連の移動',     body: '現場間の移動、業務会議への移動など（自宅と通常職場間の通勤は除く）。' },
-  { title: '電話・通信費',       body: '業務で使う携帯電話・インターネット料金の業務関連割合。' },
-]
 
 const STEPS = [
   { n: '1', title: 'ご相談・お問い合わせ',   body: '日本語でお気軽にご相談ください。ワーホリ タックスリターンに必要な情報を簡単にご案内します。' },
@@ -144,28 +149,6 @@ const breadcrumbSchema = {
   ],
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'オーストラリアのタックスリターン申告方法（ワーキングホリデー）',
-  description: 'オーストラリアのワーキングホリデーメーカーがタックスリターンを提出して還付金を受け取る手順。登録税理士の監督のもとで日本語で代行します。',
-  inLanguage: 'ja',
-  totalTime: 'P1D',
-  estimatedCost: { '@type': 'MonetaryAmount', currency: 'AUD', value: '0' },
-  supply: [
-    { '@type': 'HowToSupply', name: 'TFN（タックスファイルナンバー）' },
-    { '@type': 'HowToSupply', name: 'PAYG Payment Summary／Income Statement' },
-    { '@type': 'HowToSupply', name: '業務関連経費の領収書' },
-    { '@type': 'HowToSupply', name: '銀行口座情報（豪・日本のどちらでも可）' },
-  ],
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-    url: `${SITE_URL}/ja/tax-return#step-${i + 1}`,
-  })),
-}
 
 const serviceSchema = {
   '@context': 'https://schema.org',
@@ -191,7 +174,6 @@ export default function JapaneseTaxReturnPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
@@ -223,13 +205,13 @@ export default function JapaneseTaxReturnPage() {
                 marginBottom:'10px',
               }}>
               <span style={{ display:'block' }}>オーストラリア</span>
-              <span style={{ display:'block', color:'#0B5240' }}>タックスリターン還付金、</span>
-              <span style={{ display:'block' }}>おまかせください。</span>
+              <span style={{ display:'block', color:'#0B5240' }}>税金を払いすぎている可能性があります。</span>
+              <span style={{ display:'block' }}>代わりに取り戻します。</span>
             </h1>
 
             <p className="font-semibold text-ink"
               style={{ fontSize:'clamp(14px,1.5vw,17px)', letterSpacing:'-0.01em', marginBottom:'8px', lineHeight:1.5 }}>
-              417・462ビザのWHVタックスリターンをATOへ完全代行いたします。
+              多くのワーホリメーカーが還付を受けられるのに、請求していません。
             </p>
 
             <p className="font-light"
@@ -442,126 +424,6 @@ export default function JapaneseTaxReturnPage() {
         </div>
       </section>
 
-      {/* ── TAX RATES ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-12 bg-white">
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">税率</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              オーストラリアで実際に支払う税金
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.75, maxWidth: '40ch' }}>
-              税率はビザの種類と状況によって異なります。
-            </p>
-          </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-7 items-stretch">
-              {[
-                {
-                  label: 'ワーキングホリデービザ保持者',
-                  rows: [
-                    ['$0 - $45,000', '15%'],
-                    ['$45,001 - $135,000', '$6,750 + 30%'],
-                    ['$135,001 - $190,000', '$33,750 + 37%'],
-                    ['$190,001+', '$54,100 + 45%'],
-                  ],
-                },
-                {
-                  label: 'オーストラリア税務居住者',
-                  rows: [
-                    ['$0 - $18,200', '0%'],
-                    ['$18,201 - $45,000', '16%'],
-                    ['$45,001 - $135,000', '$4,288 + 30%'],
-                    ['$135,001 - $190,000', '$31,288 + 37%'],
-                    ['$190,001+', '$51,638 + 45%'],
-                  ],
-                },
-              ].map((table, ti) => (
-                <div key={ti} className="min-w-0 flex flex-col">
-                  <h3 className="font-semibold text-ink mb-3 text-center" style={{ fontSize: '13px', letterSpacing: '-0.01em' }}>{table.label}</h3>
-                  <div className="rounded-xl overflow-hidden flex-1" style={{ border: '1px solid #C8EAE0' }}>
-                    <table className="w-full" style={{ borderCollapse: 'collapse', tableLayout: 'fixed' }}>
-                      <thead>
-                        <tr style={{ background: '#EAF6F1' }}>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '55%' }}>課税所得</th>
-                          <th className="text-left font-semibold text-ink" style={{ fontSize: '11px', padding: '8px 12px', letterSpacing: '0.02em', width: '45%' }}>税率</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {table.rows.map(([income, rate], i) => (
-                          <tr key={i} style={{ borderTop: '1px solid #E2EFE9', background: i % 2 === 0 ? '#ffffff' : '#F5F9F7' }}>
-                            <td className="font-light text-body" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{income}</td>
-                            <td className="font-medium text-ink" style={{ fontSize: '11.5px', padding: '8px 12px' }}>{rate}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-5 rounded-xl px-5 py-3 mx-auto" style={{ background: '#FFFCF5', border: '1.5px solid #E9A020', borderRadius: '12px', maxWidth: 'fit-content' }}>
-              <p className="font-light text-body" style={{ fontSize: '12.5px', lineHeight: 1.6, textAlign: 'center' }}>
-                雇用主がワーキングホリデー雇用主として登録されていない場合、15%ではなく30%で課税される可能性があります。
-              </p>
-            </div>
-            <div className="text-center mt-8">
-              <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center font-medium transition-all"
-                style={{ fontSize: '14px', color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
-                税金を払い過ぎていないか確認する →
-              </a>
-            </div>
-        </div>
-      </section>
-
-      {/* ── DEDUCTIONS ────────────────────────────────────────────────────── */}
-      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
-        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-xl mx-auto text-center reveal" style={{ marginBottom: '32px' }}>
-            <span className="section-label center">控除可能な経費</span>
-            <h2 className="font-serif font-black text-ink mx-auto" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', maxWidth: '26ch', marginTop: '8px', marginBottom: '8px', textWrap: 'balance' }}>
-              業務関連の経費で還付金が増えます
-            </h2>
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.75, maxWidth: '34ch' }}>
-              思っているよりも多くの経費が控除できます。漏れがないよう、すべて確認します。
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 reveal delay-1">
-            {DEDUCTIONS.map((d, i) => (
-              <div key={i} className="bg-white rounded-xl" style={{ padding: '16px 18px', border: '1px solid #E2EFE9', boxShadow: '0 1px 3px rgba(0,0,0,.03)' }}>
-                <div className="flex items-center gap-2" style={{ marginBottom: '5px' }}>
-                  <span className="flex-shrink-0 flex items-center justify-center" style={{ width:'18px', height:'18px', borderRadius:'50%', background:'#EAF6F1', border:'1px solid #C8EAE0' }}>
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 5l2.5 2.5 3.5-4" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </span>
-                  <p className="font-semibold text-ink" style={{ fontSize: 'clamp(13px, 1.2vw, 14px)' }}>{d.title}</p>
-                </div>
-                <p className="font-light text-muted leading-[1.75]" style={{ fontSize: 'clamp(12px, 1.1vw, 13px)', maxWidth: '30ch', paddingLeft:'26px' }}>{d.body}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 max-w-xl reveal delay-2">
-            <div className="info-block">
-              <p>個人的な経費、罰金、通勤費用は控除できません。</p>
-            </div>
-          </div>
-
-          <div className="text-center mt-8 reveal delay-3">
-            <p className="font-light text-muted mx-auto" style={{ fontSize: '13.5px', lineHeight: 1.75, maxWidth: '40ch', marginBottom: '16px' }}>
-              何が控除できるか分からない方も大丈夫。すべて確認して、最大の還付金を取り戻します。
-            </p>
-            <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-              className="btn-primary inline-flex"
-              style={{ height: '48px', padding: '0 28px', fontSize: '14px', maxWidth: '280px', width: '100%', marginLeft: 'auto', marginRight: 'auto' }}>
-              タックスリターンを依頼する →
-            </a>
-          </div>
-        </div>
-      </section>
-
       {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
       <section id="how-it-works" className="py-10 lg:py-12 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
@@ -682,6 +544,7 @@ export default function JapaneseTaxReturnPage() {
         trustLine="数分で確認完了"
         href="/ja/superannuation"
       />
+      <MobileCta href={WA_URL} lang="ja" />
     </>
   )
 }

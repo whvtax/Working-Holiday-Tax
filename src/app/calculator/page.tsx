@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { CalculatorClient } from './CalculatorClient'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: 'Working Holiday Tax Refund Calculator Australia - WHV Estimator',
@@ -135,6 +136,7 @@ export default function CalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
       <CalculatorClient faqs={faqs} />
+      <MobileCta href="/tax-form" lang="en" />
     </>
   )
 }

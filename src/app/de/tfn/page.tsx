@@ -5,10 +5,11 @@ import Link from 'next/link'
 import { WA_URL, SITE_URL } from '@/lib/constants'
 import { NextStep } from '@/components/ui/NextStep'
 import { Accordion } from '@/components/ui/Accordion'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'TFN beantragen für Working Holiday Maker - Grundlage für Steuerrückerstattung',
-  description: 'Hol dir deine Steuernummer (TFN) schnell und korrekt - der erste Schritt zu deiner Steuerrückerstattung in Australien als Working Holiday Maker. Unter Aufsicht eines registrierten Steueragenten.',
+  title: "TFN beantragen lassen - keine 45 % Steuer | Working Holiday",
+  description: "Ohne TFN behält dein Arbeitgeber 45 % statt 15 % ein. Wir beantragen deine Steuernummer unter Aufsicht eines registrierten Tax Agents, damit du ab dem ersten Payslip richtig besteuert wirst.",
   keywords: [
     'TFN beantragen Australien',
     'TFN beantragen Working Holiday',
@@ -57,6 +58,14 @@ export const metadata: Metadata = {
 }
 
 const faqs = [
+  {
+    question: 'Der TFN-Antrag ist bei der ATO kostenlos. Wofür zahle ich dann?',
+    answer: 'Die Nummer selbst ist kostenlos, das sagen wir offen. Bezahlt wird die Bearbeitung: Passdaten, die exakt mit den Einreisedaten übereinstimmen müssen, eine Adresse, die vier Wochen lang Post annimmt, und das Nachfassen bei der ATO, wenn es über 28 Tage dauert. Wer es lieber selbst macht, findet die Anleitung in unserem Blog.',
+  },
+  {
+    question: 'Ich habe schon ohne TFN angefangen zu arbeiten. Zu spät?',
+    answer: 'Nein. Du hast ab Arbeitsbeginn 28 Tage Zeit, bevor der 45-%-Satz greift, und zu viel einbehaltene Steuer kommt mit der Steuererklärung zurück. Meist reichen wir den Antrag noch am selben Tag ein.',
+  },
   { question: 'Kann ich schon arbeiten, bevor ich meine TFN erhalten habe?', answer: 'Ja. Du kannst sofort anfangen zu arbeiten, musst deinem Arbeitgeber deine TFN aber innerhalb von 28 Tagen geben. Bis dahin behält dein Arbeitgeber Steuern zum Höchstsatz ein.' },
   { question: 'Kann ich mit einem Touristenvisum eine TFN bekommen?', answer: 'Nein. Du brauchst ein gültiges Arbeitsvisum, zum Beispiel ein Working Holiday Visum (Subclass 417 oder 462), um eine TFN beantragen zu können.' },
   { question: 'Was passiert, wenn ich meine TFN vergesse?', answer: 'Du kannst deine TFN herausfinden, indem du den ATO direkt kontaktierst, in alten Steuerdokumenten nachschaust oder deinen Steueragenten fragst.' },
@@ -119,20 +128,6 @@ const serviceSchema = {
   },
 }
 
-const howToSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'HowTo',
-  name: 'So beantragst du eine TFN als Working Holiday Maker',
-  description: 'Schritt-f\u00fcr-Schritt-Anleitung, wie du als Working Holiday Visuminhaber eine Steuernummer (TFN) in Australien beantragst.',
-  totalTime: 'P28D',
-  inLanguage: 'de',
-  step: STEPS.map((s, i) => ({
-    '@type': 'HowToStep',
-    position: i + 1,
-    name: s.title,
-    text: s.body,
-  })),
-}
 
 
 export default function TFNPageDE() {
@@ -141,7 +136,6 @@ export default function TFNPageDE() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
@@ -167,12 +161,12 @@ export default function TFNPageDE() {
             <h1 className="font-serif font-black text-ink"
               style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
               <span className="hidden lg:block">
-                <span style={{ display: 'block' }}>Beantrage deine TFN und arbeite</span>
-                <span style={{ display: 'block', color: '#0B5240' }}>legal in Australien.</span>
+                <span style={{ display: 'block' }}>Ohne TFN 45 % Steuer.</span>
+                <span style={{ display: 'block', color: '#0B5240' }}>Wir erledigen das für dich.</span>
               </span>
               <span className="lg:hidden">
-                <span style={{ display: 'block', fontSize: '22px' }}>Beantrage deine TFN und arbeite</span>
-                <span style={{ display: 'block', color: '#0B5240', fontSize: '22px' }}>legal in Australien.</span>
+                <span style={{ display: 'block', fontSize: '22px' }}>Ohne TFN 45 % Steuer.</span>
+                <span style={{ display: 'block', color: '#0B5240', fontSize: '22px' }}>Wir erledigen das für dich.</span>
               </span>
             </h1>
 
@@ -254,7 +248,7 @@ export default function TFNPageDE() {
           <div className="service-cta-strip">
             <div className="service-cta-text">
               <h3 className="service-cta-heading">Wir kümmern uns um deinen gesamten TFN-Antrag</h3>
-              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung – schreib uns auf WhatsApp. Wir reichen deinen Antrag beim ersten Mal korrekt ein - meistens innerhalb einer Stunde.</p>
+              <p className="service-cta-sub">Prüfe jetzt deine Berechtigung - schreib uns auf WhatsApp. Wir reichen deinen Antrag beim ersten Mal korrekt ein - meistens innerhalb einer Stunde.</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
               Meine TFN beantragen →
@@ -487,6 +481,7 @@ export default function TFNPageDE() {
         cta="ABN-Berechtigung prüfen →"
         href="/de/abn"
       />
+      <MobileCta href={WA_URL} lang="de" />
     </>
   )
 }

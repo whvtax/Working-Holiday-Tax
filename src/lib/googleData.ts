@@ -14,14 +14,14 @@ export type GoogleRatingData = {
   // true only when this came from a real, successful Featurable/Google
   // Reviews API response this request. false = the FALLBACK below.
   // Callers should NOT emit AggregateRating structured data when this is
-  // false — showing a static number to Google as if it were the current
+  // false - showing a static number to Google as if it were the current
   // live rating violates Google's structured-data policy if the real
   // number has since changed.
   live: boolean
 }
 
 // Used only to avoid breaking layout while the live rating is unavailable
-// (e.g. UI display). NEVER put this in JSON-LD structured data — check
+// (e.g. UI display). NEVER put this in JSON-LD structured data - check
 // `live` first.
 const FALLBACK: GoogleRatingData = { rating: 4.9, count: 80, live: false }
 

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SITE_URL } from '@/lib/constants'
 import { CalculatorClient } from './CalculatorClient'
+import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: 'タックスリターン 還付金 計算機 - ワーキングホリデー オーストラリア',
@@ -128,6 +129,7 @@ export default function JapaneseCalculatorPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppSchema) }} />
       <CalculatorClient faqs={faqs} />
+      <MobileCta href="/ja/tax-form" lang="ja" />
     </>
   )
 }

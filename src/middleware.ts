@@ -27,7 +27,7 @@ function buildCsp(nonce: string): string {
     // connect.facebook.net: Meta's Embedded Signup SDK (admin-only WhatsApp
     // connect page). Note: strict-dynamic means scripts loaded BY a nonce'd
     // script are trusted automatically, so this entry is mainly documentation
-    // — but kept explicit in case strict-dynamic support changes.
+    // - but kept explicit in case strict-dynamic support changes.
     // https://www.googletagmanager.com: GA4's gtag.js loader script.
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://connect.facebook.net https://www.googletagmanager.com${isDev ? " 'unsafe-eval'" : ''}`,
     // Styles still use 'unsafe-inline' (next/font + many inline styles); style

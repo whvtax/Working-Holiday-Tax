@@ -1561,9 +1561,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 const allClients = clients.filter(c => !c.archived)
 
                 // "Ready to go": pending tasks with no note and not flagged
-                // In Progress — genuinely untouched, ready to pick up.
+                // In Progress - genuinely untouched, ready to pick up.
                 // "In Process": pending tasks that DO have a note or ARE
-                // flagged In Progress — someone's already partway through them.
+                // flagged In Progress - someone's already partway through them.
                 const readyToGoCount = pendingTasks.filter(t => !isTaskInProgress(t.notes) && !(t.reviewerNote && t.reviewerNote.trim())).length
                 const inProcessCount = pendingTasks.filter(t => isTaskInProgress(t.notes) || (t.reviewerNote && t.reviewerNote.trim())).length
 
@@ -2714,7 +2714,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                       }}
                       style={{flex:1,border:'1px solid #e4ede8',borderRadius:8,padding:'5px 8px',fontSize:12,color:'#0a1410',background:'#f7fbf9',fontFamily:'inherit',cursor:'pointer',outline:'none'}}
                     >
-                      <option value="">— None —</option>
+                      <option value="">- None -</option>
                       {referralPartners.map(p => (
                         <option key={p.id} value={p.id}>{p.name}</option>
                       ))}

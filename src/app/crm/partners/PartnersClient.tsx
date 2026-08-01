@@ -246,7 +246,7 @@ export default function PartnersClient() {
                   {visiblePartners.map(p => (
                     <tr key={p.id} style={{cursor:'pointer'}} onClick={()=>{ window.location.href = `/crm/partners/${p.id}` }}>
                       <td style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',fontWeight:500,fontSize:13,color:'#0E5C42',textDecoration:'underline'}}>{p.name}</td>
-                      <td style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#7a8a82'}}>{p.email || '—'}</td>
+                      <td style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#7a8a82'}}>{p.email || '-'}</td>
                       <td style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,fontFamily:'monospace',color:'#7a8a82'}}>{p.code}</td>
                       <td style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}><CopyLinkBtn code={p.code} /></td>
                       <td style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',fontSize:13,color:'#0a1410'}}>{p.totalReferrals}</td>
