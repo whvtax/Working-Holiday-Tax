@@ -4,8 +4,8 @@ import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'Working Holiday Tax Refund Calculator Australia - WHV Estimator',
-  description: 'Estimate your Australian tax refund as a Working Holiday Maker (417/462). Free instant calculator using 2025-26 WHM tax rates. See how much tax back you can claim - no sign-up.',
+  title: 'Tax Refund & Superannuation Calculator Australia - Working Holiday',
+  description: 'Estimate your Australian tax refund and your superannuation payout after the 65% DASP tax. Free calculator for 417 and 462 visa holders, current rates, no sign-up.',
   keywords: [
     'working holiday tax refund calculator',
     'working holiday tax refund calculator Australia',
@@ -44,14 +44,14 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/calculator`,
     siteName: 'Working Holiday Tax',
-    title: 'Working Holiday Tax Refund Calculator Australia - WHV Estimator',
-    description: 'Estimate your Australian tax refund as a Working Holiday Maker. Free, instant, no sign-up.',
+    title: 'Tax Refund & Superannuation Calculator Australia - Working Holiday',
+    description: 'Tax refund plus superannuation after the 65% DASP tax. Free, instant, no sign-up.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Working Holiday Tax Refund Calculator Australia',
-    description: 'Estimate your Australian tax refund as a Working Holiday Maker. Free, instant.',
+    title: 'Tax Refund & Superannuation Calculator Australia',
+    description: 'Tax refund plus superannuation after the 65% DASP tax. Free and instant.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

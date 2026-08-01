@@ -2,7 +2,9 @@
 import { useState } from 'react'
 import { WA_URL } from '@/lib/constants'
 
-type Result = { label: string; amount: string; sub: string; pct: number; owing: boolean }
+type SuperCalc = { gross: number; rate: number; tax: number; net: number }
+
+type Result = { label: string; amount: string; sub: string; owing: boolean; refund: number; sup: SuperCalc | null; total: number }
 
 type FAQ = { question: string; answer: string }
 
@@ -10,7 +12,9 @@ type Props = {
   faqs?: FAQ[]
 }
 
-function calc(inc: number, wit: number, visa: 'whm' | 'res'): Result {
+const money = (n: number) => '$' + Math.round(n).toLocaleString('en-AU')
+
+function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Result {
   let tax = 0
   if (visa === 'whm') {
     tax = inc <= 45000 ? inc * 0.15 : 6750 + (inc - 45000) * 0.3
@@ -22,32 +26,48 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res'): Result {
     else                    tax = 56838 + (inc - 190000) * 0.45
   }
   const d = wit - tax
-  const safePct = wit > 0 ? Math.min(100, (Math.abs(d) / wit) * 100) : 50
-  if (d > 0) return { label: '推定還付金', amount: `$${Math.round(d).toLocaleString()}`, sub: visa === 'whm' ? 'ワーキングホリデーメーカー税率' : 'オーストラリア税務居住者税率', pct: safePct, owing: false }
-  if (d < 0) return { label: '追加納税額', amount: `$${Math.round(Math.abs(d)).toLocaleString()}`, sub: '追加で納税が必要な可能性があります。ご相談はお問い合わせください。', pct: safePct, owing: true }
-  return             { label: '相殺', amount: '$0', sub: '還付金も追加納税もありません。', pct: 50, owing: false }
+
+  // Departing Australia Superannuation Payment.
+  // 65% applies to anyone who has held a 417 or 462 visa at any point.
+  // 35% is the taxed-element rate for other temporary residents.
+  const rate = visa === 'whm' ? 65 : 35
+  const sup: SuperCalc | null =
+    supBal > 0
+      ? { gross: supBal, rate, tax: supBal * (rate / 100), net: supBal * (1 - rate / 100) }
+      : null
+
+  const refund = d > 0 ? d : 0
+  const total = refund + (sup ? sup.net : 0)
+
+  if (d > 0) return { label: '推定還付金', amount: money(d),  sub: visa === 'whm' ? 'ワーキングホリデーメーカー税率' : 'オーストラリア税務居住者税率', owing: false, refund, sup, total }
+  if (d < 0) return { label: '追加納税額',  amount: money(-d), sub: '追加で納税が必要な可能性があります。ご相談はお問い合わせください。', owing: true,  refund: 0, sup, total }
+  return             { label: '相殺', amount: money(0), sub: '還付金も追加納税もありません。', owing: false, refund: 0, sup, total }
 }
 
 export function CalculatorClient({ faqs = [] }: Props) {
   const [income,   setIncome]   = useState('')
   const [withheld, setWithheld] = useState('')
   const [visa,     setVisa]     = useState('')
+  const [superBal, setSuperBal] = useState('')
   const [result,   setResult]   = useState<Result | null>(null)
   const [err,      setErr]      = useState('')
 
   const run = () => {
     const safeInc = income.replace(/[^0-9.]/g, '')
     const safeWit = withheld.replace(/[^0-9.]/g, '')
+    const safeSup = superBal.replace(/[^0-9.]/g, '')
     const rawI = parseFloat(safeInc)
     const rawW = parseFloat(safeWit)
+    const rawS = parseFloat(safeSup)
     const i = isFinite(rawI) ? Math.min(Math.max(rawI, 0), 10_000_000) : 0
     const w = isFinite(rawW) ? Math.min(Math.max(rawW, 0), 5_000_000)  : 0
+    const s = isFinite(rawS) ? Math.min(Math.max(rawS, 0), 5_000_000) : 0
     if (!i || !w || !visa) { setErr('3つの項目をすべてご入力ください。'); return }
     if (w > i) { setErr('源泉徴収税額は総収入を超えることはできません。'); return }
     setErr('')
     const allowedVisa = ['whm', 'res'] as const
     if (!(allowedVisa as readonly string[]).includes(visa)) { setErr('無効な選択です。'); return }
-    setResult(calc(i, w, visa as 'whm' | 'res'))
+    setResult(calc(i, w, visa as 'whm' | 'res', s))
   }
 
   return (
@@ -82,7 +102,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
                 color: 'rgba(10,15,13,0.6)',
                 maxWidth: '38ch',
               }}>
-              オーストラリアの税金還付額を瞬時に見積もり。
+              還付金と、65%のDASP税を引いた後に受け取れる年金額を試算します。
             </p>
           </div>
         </div>
@@ -142,6 +162,23 @@ export function CalculatorClient({ faqs = [] }: Props) {
                     </svg>
                   </div>
                 </div>
+                {/* Superannuation balance - optional */}
+                <div>
+                  <label htmlFor="cs" className="block text-[11px] font-semibold tracking-[0.1em] uppercase text-muted mb-2.5">
+                    年金（Super）残高 <span style={{ textTransform: 'none', letterSpacing: 0, opacity: 0.55 }}>(任意)</span>
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[13px] font-medium text-subtle">AUD</span>
+                    <input
+                      id="cs" type="number" placeholder="0" value={superBal} min={0} max={5000000} inputMode="numeric"
+                      onChange={e => setSuperBal(e.target.value)}
+                      className="input-base"
+                      style={{ paddingLeft: '56px' }}
+                    />
+                  </div>
+                  <p className="text-[12px] text-subtle mt-2 leading-[1.6]">スーパー基金の残高証明に記載されています。417・462ビザを一度でも保持した場合、残高全額に65%のDASP税率が適用されます。</p>
+                </div>
+
 
                 {err && <p role="alert" className="text-[13px] text-red-500 font-medium">{err}</p>}
               </div>
@@ -149,38 +186,73 @@ export function CalculatorClient({ faqs = [] }: Props) {
               <button type="button" onClick={run}
                 className="btn-primary w-full flex items-center justify-center"
                 style={{ height: '52px', fontSize: '15px', borderRadius: '100px' }}>
-                還付金を計算する →
+                計算する
               </button>
 
               {result && (
-                <div
-                  role="status"
-                  aria-live="polite"
-                  style={{ marginTop: '18px', padding: '20px', borderRadius: '16px',
-                           background: result.owing ? '#FEF3F0' : '#EAF6F1',
-                           border: `1.5px solid ${result.owing ? '#FDBA74' : '#C8EAE0'}`, textAlign: 'center' }}>
-                  <p className="font-medium uppercase"
-                    style={{ fontSize: '10.5px', letterSpacing: '0.12em',
-                             color: result.owing ? '#9A3412' : '#0B5240', marginBottom: '6px' }}>
-                    {result.label}
-                  </p>
-                  <p className="font-serif font-black"
-                    style={{ fontSize: 'clamp(30px,6vw,44px)', lineHeight: 1,
-                             color: result.owing ? '#9A3412' : '#0B5240', marginBottom: '8px' }}>
-                    {result.amount}
-                  </p>
-                  <p className="font-light"
-                    style={{ fontSize: '12.5px', lineHeight: 1.6, color: 'rgba(10,15,13,0.6)', marginBottom: '14px' }}>
-                    {result.sub}
-                  </p>
-                  <p className="font-light" style={{ fontSize: '12px', lineHeight: 1.6, color: 'rgba(10,15,13,0.55)', marginBottom: '14px' }}>
-                    控除やメディケア・レヴィ免除を適用すると、実際の金額はさらに大きくなることがあります。
-                  </p>
-                  <a href={WA_URL} target="_blank" rel="noopener noreferrer"
-                    className="btn-primary w-full flex items-center justify-center"
-                    style={{ height: '48px', fontSize: '14px', borderRadius: '100px' }}>
-                    この還付金の申請を依頼する →
-                  </a>
+                <div role="status" aria-live="polite"
+                  style={{
+                    marginTop: '20px',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    border: `1.5px solid ${result.owing ? '#FDBA74' : '#C8EAE0'}`,
+                    background: result.owing ? '#FEF3F0' : '#EAF6F1',
+                  }}>
+
+                  <div style={{ padding: '22px 20px 18px', textAlign: 'center' }}>
+                    <p className="font-semibold uppercase"
+                      style={{ fontSize: '10.5px', letterSpacing: '0.14em', marginBottom: '7px', color: result.owing ? 'rgba(154,52,18,0.8)' : 'rgba(11,82,64,0.7)' }}>
+                      {result.label}
+                    </p>
+                    <p className="font-black"
+                      style={{ fontSize: 'clamp(30px,6vw,42px)', lineHeight: 1.04, letterSpacing: '-0.03em', color: result.owing ? '#9A3412' : '#0B5240' }}>
+                      {result.amount}
+                    </p>
+                    <p style={{ fontSize: '12.5px', lineHeight: 1.6, marginTop: '9px', color: 'rgba(10,15,13,0.58)' }}>
+                      {result.sub}
+                    </p>
+                  </div>
+
+                  {result.sup && (
+                    <div style={{ borderTop: '1px solid rgba(11,82,64,0.12)', background: 'rgba(255,255,255,0.55)', padding: '16px 20px' }}>
+                      <p className="font-semibold uppercase"
+                        style={{ fontSize: '10.5px', letterSpacing: '0.14em', color: 'rgba(11,82,64,0.7)', marginBottom: '11px' }}>
+                        年金の一括請求（DASP）
+                      </p>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13.5px', marginBottom: '6px' }}>
+                        <span style={{ color: 'rgba(10,15,13,0.6)' }}>残高</span>
+                        <span style={{ fontWeight: 500 }}>{money(result.sup.gross)}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13.5px', marginBottom: '9px', paddingBottom: '9px', borderBottom: '1px solid rgba(11,82,64,0.1)' }}>
+                        <span style={{ color: 'rgba(10,15,13,0.6)' }}>税金 {result.sup.rate}%</span>
+                        <span style={{ fontWeight: 500, color: '#9A3412' }}>-{money(result.sup.tax)}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                        <span style={{ fontSize: '13.5px', fontWeight: 600, color: '#0B5240' }}>受取額</span>
+                        <span className="font-black" style={{ fontSize: '19px', letterSpacing: '-0.02em', color: '#0B5240' }}>{money(result.sup.net)}</span>
+                      </div>
+                      <p style={{ fontSize: '11.5px', lineHeight: 1.6, marginTop: '11px', color: 'rgba(10,15,13,0.48)' }}>
+                        Superの請求は、オーストラリアを出国し、ビザが失効または取り消された後にのみ可能です。
+                      </p>
+                    </div>
+                  )}
+
+                  {result.sup && !result.owing && (
+                    <div style={{ borderTop: '1px solid rgba(11,82,64,0.12)', padding: '15px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                      <span className="font-semibold uppercase" style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'rgba(11,82,64,0.75)' }}>
+                        合計見込み
+                      </span>
+                      <span className="font-black" style={{ fontSize: '23px', letterSpacing: '-0.025em', color: '#0B5240' }}>{money(result.total)}</span>
+                    </div>
+                  )}
+
+                  <div style={{ padding: '0 20px 20px' }}>
+                    <a href={WA_URL} target="_blank" rel="noopener noreferrer"
+                      className="btn-primary w-full flex items-center justify-center"
+                      style={{ height: '48px', fontSize: '14px', borderRadius: '100px' }}>
+                      正確な金額を確認 →
+                    </a>
+                  </div>
                 </div>
               )}
 

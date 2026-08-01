@@ -200,32 +200,3 @@ EN "No refund, no fee" · DE "Kein Anspruch, keine Gebühr" · JA 「資格が�
 
 ## Stale comment removed
 A leftover "// HowTo schema" comment on /tfn from the schema removal.
-
----
-
-# Calculator fixed to actually calculate (1 August 2026)
-
-## The problem
-The "Calculate my refund" button was an <a href={WA_URL}> - it sent the visitor to WhatsApp
-without ever showing a number. All the calculation logic (calc(), run(), the result state)
-already existed in the file; nothing was wired to it and the result was never rendered.
-
-This mattered for two reasons:
-- /calculator has the best CTR of any non-blog page (2.73% at position 12.2). People
-  searching "calculator" want a figure, not a chat window.
-- The outreach emails describe it as a free calculator. If a blogger clicked through and
-  found a WhatsApp redirect, they would not link to it - and rightly so.
-
-## The fix (EN, DE and JA)
-- The button is now a <button onClick={run}> and runs the existing calculation
-- A result panel renders below it: label, the figure in large type, the rate note, and then
-  a WhatsApp CTA to have it lodged - number first, contact second
-- Green panel for a refund, amber for tax owing, with role="status" and aria-live for
-  screen readers
-- Added an honest line that deductions and the Medicare levy exemption usually make the real
-  figure higher, which is both true and a reason to get in touch
-
-## Verified
-Calculation checked against five hand-worked scenarios including the above-$45,000 bracket
-(income $50,000, withheld $8,000 -> correctly reports $250 owing, not a refund).
-tsc --noEmit clean, eslint clean.

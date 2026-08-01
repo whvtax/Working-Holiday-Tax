@@ -4,8 +4,8 @@ import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'タックスリターン 還付金 計算機 - ワーキングホリデー オーストラリア',
-  description: 'ワーキングホリデー（417・462ビザ）のオーストラリア タックスリターン還付金を無料で見積もり。2025-26年度のWHM税率使用。あなたの還付金がいくらか即時計算 - 登録不要。',
+  title: '還付金・年金（Super）計算機 - ワーキングホリデー オーストラリア',
+  description: 'ワーキングホリデー（417・462ビザ）の還付金と、65%のDASP税を差し引いた後の年金受取額を無料で試算。最新税率を使用、登録不要。',
   keywords: [
     // Refund-focused
     'タックスリターン 還付金 計算機',
@@ -47,14 +47,14 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/calculator`,
     siteName: 'Working Holiday Tax',
-    title: 'タックスリターン 還付金 計算機 - ワーキングホリデー オーストラリア',
-    description: 'ワーキングホリデーのオーストラリア タックスリターン還付金を無料で見積もり。即時・登録不要。',
+    title: '還付金・年金（Super）計算機 - ワーキングホリデー オーストラリア',
+    description: '還付金と、65%のDASP税を引いた後の年金受取額を無料で試算。即時・登録不要。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'タックスリターン 還付金 計算機 - ワーホリ オーストラリア',
-    description: 'ワーホリのオーストラリア タックスリターン還付金を無料で見積もり。',
+    title: '還付金・年金（Super）計算機 - ワーホリ オーストラリア',
+    description: '還付金と65%のDASP税を引いた後の年金受取額を無料で試算。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

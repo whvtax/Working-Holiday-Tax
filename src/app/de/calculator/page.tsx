@@ -4,8 +4,8 @@ import { CalculatorClient } from './CalculatorClient'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: 'Steuerrückerstattung Rechner Australien für Working Holiday Maker',
-  description: 'Berechne deine Steuerrückerstattung in Australien als Working Holiday Maker (417/462). Kostenloser Rechner mit den aktuellen WHM-Steuersätzen 2025-26. Schätze, wie viel Steuer du zurückbekommst - keine Anmeldung.',
+  title: 'Steuer- und Superannuation-Rechner Australien für Work and Travel',
+  description: 'Schätze deine australische Steuerrückerstattung und dein Superannuation-Guthaben nach Abzug der 65-%-DASP-Steuer. Kostenlos für 417- und 462-Visum, aktuelle Sätze, keine Anmeldung.',
   keywords: [
     // Refund-focused
     'Steuerrückerstattung Rechner Australien',
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/calculator`,
     siteName: 'Working Holiday Tax',
-    title: 'Steuerrückerstattung Rechner Australien für Working Holiday Maker',
-    description: 'Berechne deine Steuerrückerstattung in Australien als Working Holiday Maker. Kostenlos, sofort, keine Anmeldung.',
+    title: 'Steuer- und Superannuation-Rechner Australien für Work and Travel',
+    description: 'Steuerrückerstattung plus Superannuation nach der 65-%-DASP-Steuer. Kostenlos, sofort, keine Anmeldung.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Steuerrückerstattung Rechner Australien für WHV',
-    description: 'Berechne deine Steuerrückerstattung als Working Holiday Maker. Kostenlos und sofort.',
+    title: 'Steuer- und Superannuation-Rechner Australien',
+    description: 'Steuerrückerstattung plus Superannuation nach der 65-%-DASP-Steuer. Kostenlos und sofort.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
