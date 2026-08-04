@@ -44,6 +44,7 @@ const routes = [
   { url: '/contact',                   priority: 0.7,  changeFrequency: 'monthly', translated: true  },
   // Informational pages
   { url: '/tax-residency',             priority: 0.6,  changeFrequency: 'yearly',  translated: true  },
+  { url: '/uk-working-holiday-tax',    priority: 0.7,  changeFrequency: 'monthly', translated: false },
   // Legal (English only - not translated)
   { url: '/client-agreement',          priority: 0.4,  changeFrequency: 'yearly',  translated: false },
   { url: '/privacy',                   priority: 0.4,  changeFrequency: 'yearly',  translated: false },

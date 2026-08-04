@@ -65,6 +65,10 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
+    question: 'Was ist das Addy-Urteil und betrifft es mich?',
+    answer: 'Der australische High Court hat im November 2021 entschieden, dass die Backpacker-Steuer gegen den Gleichbehandlungsartikel im Doppelbesteuerungsabkommen verstößt. Die ATO wendet das Urteil auf Working Holiday Maker an, die steuerlich in Australien ansässig waren und die Staatsangehörigkeit von Großbritannien, Chile, Finnland, Deutschland, Japan, Norwegen oder der Türkei haben. Deutschland ist dabei, Österreich und die Schweiz nicht. Entscheidend ist die steuerliche Ansässigkeit, die die wenigsten erfüllen, aber wer länger an einem Ort geblieben ist, kommt durchaus in Frage. Wir prüfen das im Einzelfall.',
+  },
+  {
     question: 'Was kostet das, und was ist, wenn mir doch nichts zusteht?',
     answer: 'Die Gebühr ist ein fester Betrag, den wir dir vor jeder kostenpflichtigen Arbeit nennen - nie ein Prozentsatz deiner Erstattung. Ergibt die Prüfung, dass dir keine Erstattung zusteht, entfällt die Gebühr vollständig.',
   },
@@ -484,6 +488,30 @@ export default function GermanTaxReturnPage() {
       </section>
 
       {/* ── WHAT TO HAVE READY ── */}
+
+      {/* ── ADDY-URTEIL ───────────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[760px] mx-auto reveal">
+            <span className="section-label">Addy v Commissioner of Taxation</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '14px' }}>
+              Deutschland steht auf der Liste: das Urteil zur Backpacker-Steuer
+            </h2>
+            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
+              Im November 2021 entschied der australische High Court, dass die Backpacker-Steuer gegen den Gleichbehandlungsartikel im Doppelbesteuerungsabkommen verstößt. Wer dieselbe Arbeit am selben Ort macht, darf nicht höher besteuert werden als ein Australier.
+            </p>
+            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
+              Die ATO wendet die Entscheidung auf Working Holiday Maker an, die steuerlich in Australien ansässig waren und die Staatsangehörigkeit eines dieser Laender haben: Großbritannien, Chile, Finnland, Deutschland, Japan, Norwegen oder die Türkei. <strong>Deutschland ist dabei, Österreich und die Schweiz nicht.</strong>
+            </p>
+            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
+              Entscheidend ist die steuerliche Ansässigkeit, und die erfüllen die wenigsten. Wer aber länger an einem Ort geblieben ist, dort gemietet und gearbeitet hat, kommt durchaus in Frage. Dann gilt der Grundfreibetrag und die niedrigeren Resident-Saetze, was den Unterschied deutlich macht.
+            </p>
+            <p className="text-[14px] font-light text-muted leading-[1.75]">
+              Früher eingereichte Steuererklärungen lassen sich innerhalb der ueblichen Änderungsfrist noch korrigieren. Wenn du länger als ein Jahr am selben Ort warst, lohnt sich eine Prüfung, statt einfach anzunehmen, dass es dich nicht betrifft. Mehr zur Ansaessigkeit auf unserer <Link href="/de/tax-residency" className="underline hover:text-forest-500">Seite zur Steuerresidenz</Link>.
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
       <section className="py-10 lg:py-14">

@@ -77,6 +77,10 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
+    question: 'Addy判決とは何ですか。自分にも関係しますか。',
+    answer: '2021年11月、オーストラリアの高等裁判所は、ワーキングホリデーメーカーへの課税が租税条約の無差別条項に反すると判断しました。ATOはこの判決を、税務上オーストラリアの居住者であった方のうち、イギリス・チリ・フィンランド・ドイツ・日本・ノルウェー・トルコの国籍を持つ方に適用しています。日本は対象国に含まれます。判断の分かれ目は居住者かどうかで、多くの方は該当しませんが、同じ都市に長く滞在して働いていた方は該当することがあります。個別に確認します。',
+  },
+  {
     question: '費用はいくらですか。還付が受けられなかった場合は？',
     answer: '費用の発生する作業を始める前に定額をお伝えします。還付金の◯%という成功報酬ではありません。確認の結果、還付を受ける資格がないと判明した場合は費用を全額免除します。',
   },
@@ -478,6 +482,30 @@ export default function JapaneseTaxReturnPage() {
       </section>
 
       {/* ── WHAT TO HAVE READY ── */}
+
+      {/* ── Addy判決 ──────────────────────────────────────────────────────── */}
+      <section className="py-10 lg:py-14" style={{ background: '#F5F9F7' }}>
+        <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
+          <div className="max-w-[760px] mx-auto reveal">
+            <span className="section-label">Addy v Commissioner of Taxation</span>
+            <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.1, letterSpacing: '-0.025em', marginTop: '8px', marginBottom: '14px' }}>
+              日本は対象国です：バックパッカー税をめぐる高等裁判所の判決
+            </h2>
+            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
+              2021年11月、オーストラリアの高等裁判所は、ワーキングホリデーメーカーに適用される税率が租税条約の無差別条項に反すると判断しました。同じ場所で同じ仕事をしている以上、オーストラリア人より重く課税されてはならない、という考え方です。
+            </p>
+            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
+              ATOはこの判決を、<strong>税務上オーストラリアの居住者であった</strong>ワーキングホリデーメーカーのうち、イギリス・チリ・フィンランド・ドイツ・<strong>日本</strong>・ノルウェー・トルコの国籍を持つ方に適用しています。日本はこの7カ国に含まれています。
+            </p>
+            <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
+              判断の分かれ目は居住者かどうかで、多くの方は該当しません。ただし、同じ都市に長く滞在し、部屋を借りて働いていた方は該当することがあります。該当すれば18,200豪ドルの非課税枠と居住者の税率が適用されるため、金額の差は小さくありません。
+            </p>
+            <p className="text-[14px] font-light text-muted leading-[1.75]">
+              過去に提出した申告も、通常の修正可能期間内であれば見直すことができます。1年以上同じ場所に滞在していた方は、自分には関係ないと決めつけず、一度確認する価値があります。居住者判定については<Link href="/ja/tax-residency" className="underline hover:text-forest-500">税務上の居住者ページ</Link>をご覧ください。
+            </p>
+          </div>
+        </div>
+      </section>
 
       {/* ── RELATED GUIDES (internal links to supporting blog content) ─────── */}
       <section className="py-10 lg:py-14">

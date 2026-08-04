@@ -514,6 +514,7 @@ export default function TaxReturnPage() {
               { href: '/blog/how-long-does-tax-refund-take-australia', label: 'How long does a working holiday tax refund take?' },
               { href: '/blog/tax-residency-working-holiday-makers', label: 'Are working holiday makers tax residents of Australia?' },
               { href: '/blog/what-is-a-tax-refund-australia', label: 'What is a tax refund and how do you know if you are owed one?' },
+              { href: '/uk-working-holiday-tax', label: 'UK passport holders: three years, Medicare and the Addy ruling' },
             ].map((g) => (
               <Link
                 key={g.href}

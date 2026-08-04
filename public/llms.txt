@@ -22,6 +22,9 @@ Our content is written for an audience of subclass 417 (Working Holiday) and 462
 - Visa condition 8547: 6-month limit with the same employer (with sector-based exemptions)
 - Second working holiday visa: requires 88 days of specified regional work
 - Third working holiday visa: requires 6 months (179 days) of specified regional work
+- UK passport holders (applications from 1 July 2024): eligible up to and including age 35, and up to three Working Holiday visas with no specified work requirement
+- Addy v Commissioner of Taxation [2021] HCA 34: the ATO applies the decision to working holiday makers who were Australian residents for tax purposes and are nationals of the United Kingdom, Chile, Finland, Germany, Japan, Norway or Turkey
+- Reciprocal Health Care Agreement countries (Medicare access, so generally no levy exemption): United Kingdom, Ireland, Italy, Malta, Netherlands, Belgium, Finland, Norway, Sweden, Slovenia, New Zealand. Germany, Japan and Austria are NOT on this list
 
 ## Main Service Pages
 
@@ -30,6 +33,7 @@ Our content is written for an audience of subclass 417 (Working Holiday) and 462
 - [Tax Return](https://workingholidaytax.com.au/tax-return): Lodge your annual Australian tax return
 - [Superannuation (DASP)](https://workingholidaytax.com.au/superannuation): Claim your superannuation back after leaving Australia
 - [Medicare](https://workingholidaytax.com.au/medicare): Medicare Levy exemption for working holiday makers
+- [UK Working Holiday Tax](https://workingholidaytax.com.au/uk-working-holiday-tax): Australian tax for UK passport holders. Covers the three-year / age-35 arrangements under the enhanced UK-Australia FTA (applications from 1 July 2024), why UK citizens are generally NOT entitled to the Medicare levy exemption because the UK is on the Reciprocal Health Care Agreement list, the Addy v Commissioner of Taxation High Court decision of November 2021, and the mismatch between the UK tax year (6 April to 5 April) and the Australian year (1 July to 30 June)
 - [Contact](https://workingholidaytax.com.au/contact): Get in touch with our team
 
 ## Blog Categories

@@ -33883,3 +33883,39 @@ Medicareにアクセスできないワーキングホリデーメーカー（RHC
 
 **Summary:** myTaxでの自己申告は無料。税理士は有料だが居住性・免除・控除の見落としを防ぐ。どちらが自分に合うか判断基準を解説。
 
+
+
+# ════════════════════════════════════════
+# English (en) - Country-specific service page
+# ════════════════════════════════════════
+
+# Category: UK working holiday makers
+
+## Australian Tax for UK Working Holiday Makers
+URL: https://workingholidaytax.com.au/uk-working-holiday-tax
+
+British passport holders are treated differently from other working holiday makers in four ways, and most guides do not distinguish between nationalities at all.
+
+## Three years instead of one
+For applications lodged on or after 1 July 2024, UK passport holders can apply for a Working Holiday visa (subclass 417) up to and including age 35, and can be granted up to three of them without completing any specified regional work. This came from the enhanced UK-Australia Free Trade Agreement. The United Kingdom is the largest single source of subclass 417 grants, at roughly a quarter of the programme.
+
+For tax this means a stay usually crosses three or four Australian tax years, each requiring its own return; superannuation accumulates for three years rather than one; and arrivals in their thirties more often pass $45,000 and enter the second bracket.
+
+## Working holiday maker rates 2025-26
+0 to $45,000: 15c for each $1. $45,001 to $135,000: $6,750 plus 30c for each $1 over $45,000. $135,001 to $190,000: $33,750 plus 37c for each $1 over $135,000. $190,001 and over: $54,100 plus 45c for each $1 over $190,000. These apply regardless of tax residency. The employer must be registered with the ATO as an employer of working holiday makers for the 15% rate to apply; if not, they must withhold 30% from the first dollar.
+
+## Medicare works the other way round for UK citizens
+Most sources state that working holiday makers are exempt from the 2% Medicare levy. That is generally correct for German and Japanese travellers. It is generally incorrect for British ones. The United Kingdom is one of eleven countries with a Reciprocal Health Care Agreement with Australia, so a UK passport holder can enrol in Medicare. Entitlement to Medicare is what removes the levy exemption.
+
+The determining factor is tax residency. The levy only applies to residents for tax purposes. A British traveller moving around the country is often a foreign resident and pays no levy at all. A British traveller who settled in one city is often a resident, is entitled to Medicare, and does pay it. The difference is roughly $500 on $25,000 earned.
+
+## Addy v Commissioner of Taxation [2021] HCA 34
+Catherine Addy was a British working holiday maker. In November 2021 the High Court of Australia held that taxing her more heavily than an Australian national doing the same work in the same place breached the non-discrimination article of the UK-Australia tax treaty, and that she was entitled to be taxed at resident rates.
+
+The ATO applies the decision to working holiday makers who were residents of Australia for tax purposes and who are nationals of the United Kingdom, Chile, Finland, Germany, Japan, Norway or Turkey. Residency is the hurdle and most travellers do not clear it. Earlier returns can be amended within the standard amendment window.
+
+## Superannuation after a long stay
+The employer pays 12% of ordinary earnings into a superannuation fund on top of wages, never deducted from them, owed from the first dollar with no minimum monthly amount. Since 1 July 2026 it must be paid with every pay run and reach the fund within seven business days. On departure, once the visa ceases, it is claimed as a Departing Australia Superannuation Payment, with 65% withheld from a working holiday maker claim: a $9,000 balance returns roughly $3,150. There is no deadline on the claim and no five-year limit.
+
+## The two tax years do not line up
+The UK tax year runs 6 April to 5 April; the Australian year runs 1 July to 30 June. Australian returns can be lodged from 1 July, the deadline is 31 October, and lodging through a registered tax agent usually extends this to 15 May the following year. None of it requires being in Australia. Whether Australian income also needs reporting to HMRC depends on the individual's UK residence position, which is a separate question under separate rules.

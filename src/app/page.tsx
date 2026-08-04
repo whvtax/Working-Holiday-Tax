@@ -479,6 +479,28 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
+
+          {/* Nationality entry point */}
+          <div className="reveal" style={{ marginTop: '18px' }}>
+            <Link href="/uk-working-holiday-tax"
+              className="group flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 bg-white rounded-2xl transition-all hover:shadow-lg"
+              style={{ padding: '18px 20px', boxShadow: '0 1px 3px rgba(0,0,0,.04), 0 2px 12px rgba(11,82,64,.06)' }}>
+              <div style={{ flex: 1 }}>
+                <span className="font-medium uppercase text-subtle" style={{ fontSize: '10px', letterSpacing: '0.1em' }}>
+                  Where you are from changes what you get back
+                </span>
+                <h3 className="font-semibold text-ink" style={{ fontSize: '13.5px', marginTop: '6px', marginBottom: '4px' }}>
+                  UK passport holders
+                </h3>
+                <p className="font-light text-muted leading-[1.65]" style={{ fontSize: '12px' }}>
+                  Three years instead of one, Medicare access other backpackers do not get, and the Addy ruling. The British rules are not the same.
+                </p>
+              </div>
+              <span className="flex items-center gap-1.5 font-medium text-forest-600 transition-all group-hover:gap-3 flex-shrink-0" style={{ fontSize: '12px' }}>
+                Read more →
+              </span>
+            </Link>
+          </div>
         </div>
       </section>
 

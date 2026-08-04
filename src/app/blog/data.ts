@@ -138,9 +138,9 @@ The online form asks for: passport details (exactly as printed - transcription m
  `,
  }, {
  slug: "how-long-does-it-take-to-get-a-tfn",
- title: "How Long Does a TFN Take in 2026? Usually 10-28 Days",
+ title: "How Long Does a TFN Take? About 2 Weeks, 28 Days Maximum",
  description:
- "The ATO issues most TFNs within 28 days - many arrive in about 2 weeks. How delivery works, how to work while you wait, and what to do if 28 days pass.",
+ "Most TFNs arrive in about two weeks. The ATO's stated maximum is 28 days. You can start work before it arrives, and here is exactly what to tell your employer so you are not taxed at 45% in the meantime.",
  category: "TFN",
  date: "20 July 2026",
  readTime: 6,
@@ -164,7 +164,7 @@ If you are moving between hostels, use the address of somewhere you will be for 
 
 You do not need to wait for your TFN before starting work. You can begin working immediately and inform your employer that your application is in progress.
 
-Until your employer has your TFN on file, the standard rule is that they must withhold tax at 45%. Some employers accept the ATO confirmation email as evidence the application is underway and may apply a lower rate, although this is at their discretion.
+You have 28 days from your start date to give your employer your TFN. If you state on the Tax File Number declaration that you have applied for one, your employer withholds at the normal rate during that window rather than at the top rate. Miss the 28 days and 45% applies until you supply the number. Even then the money is not lost: the excess comes back when your tax return is lodged, because your actual rate is worked out on your total income for the year, not on what was withheld week to week.
 
 Any excess tax withheld during the waiting period can be recovered when you lodge your [tax return](/tax-return) at the end of the Australian financial year.
 
@@ -2347,7 +2347,7 @@ Multiple funds mean parallel applications that finish at different speeds. ATO-h
  }, {
  slug: "tax-on-super-withdrawal-backpacker",
  title:
- "How Much Super Will You Get Back? Worked Examples After 65% Tax",
+ "Super Tax for Working Holiday Makers: What You Get Back After 65%",
  description:
  "A $10,000 super balance pays out about $3,500 after the 65% DASP tax. Worked examples by balance and work history, plus how to avoid losing more to fees.",
  category: "Super",
@@ -3671,9 +3671,9 @@ Generally yes if you enrol or are entitled to enrol in Medicare - entitlement us
  `,
  }, {
  slug: "medicare-levy-working-holiday-makers",
- title: "Medicare Levy Exemption for 417/462 Visas: Save the 2% (2026)",
+ title: "Do Working Holiday Makers Pay the Medicare Levy? Usually Not",
  description:
- "Most working holiday makers can claim a full Medicare levy exemption worth 2% of taxable income - about $500 on $25,000 of earnings. Who qualifies and how to claim.",
+ "Most 417 and 462 holders are not entitled to Medicare, so the 2% levy should not apply. That is about $500 back on $25,000 earned. The exception is travellers from the UK, Ireland and nine other agreement countries.",
  category: "Medicare & Other",
  date: "20 July 2026",
  readTime: 6,
@@ -3857,9 +3857,9 @@ Everything else on the declaration is identification; these three set the money:
  `,
  }, {
  slug: "what-does-tax-withheld-mean-payslip",
- title: "Tax Withheld on Your Payslip: Is 15% Being Taken Correctly?",
+ title: "What Does Tax Withheld Mean on a Payslip? Plain English",
  description:
- "Working holiday makers should normally see 15% withheld on earnings up to $45,000. How to read your payslip, spot over-withholding, and get overpaid tax back.",
+ "Tax withheld is the amount your employer sends to the ATO on your behalf before you are paid. Working holiday makers should normally see 15% on earnings up to $45,000. How to read the line, spot over-withholding, and get the excess back.",
  category: "Medicare & Other",
  date: "20 July 2026",
  readTime: 5,
@@ -5544,9 +5544,9 @@ Public holidays split by state - national ones (New Year, Australia Day, Good Fr
  `,
  }, {
  slug: "casual-shift-cancellation-rules-australia",
- title: "Casual Shift Cancelled? Your Rights and Pay in Australia (2026)",
+ title: "Casual Shift Cancelled? You May Still Be Owed 2 to 3 Hours Pay",
  description:
- "Employers can cancel casual shifts, but Fair Work rules may entitle you to minimum shift pay. Notice rules, when you must be paid anyway, and what to do next.",
+ "Yes, your employer can cancel a casual shift. But under most awards, cancellation with less than 24 hours notice means you are still owed a minimum engagement of 2 to 3 hours. How to check your award and claim it.",
  category: "Work Rights" as const,
  date: "20 July 2026",
  readTime: 6,

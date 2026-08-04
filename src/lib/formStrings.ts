@@ -320,9 +320,9 @@ export const formStrings = {
     ja: '銀行明細書をアップロード',
   },
   bankStatementHint: {
-    en: 'Just the first page is enough to verify your bank account.',
-    de: 'Nur die erste Seite ist ausreichend, um dein Bankkonto zu bestätigen.',
-    ja: '最初の1ページで十分です。銀行口座の確認に使用します。',
+    en: 'Just the first page with your full name, BSB, and account number.',
+    de: 'Nur die erste Seite mit deinem vollständigen Namen, BSB und Kontonummer.',
+    ja: '氏名・BSB・口座番号が記載された最初の1ページのみで結構です。',
   },
   selfieHint: {
     en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',

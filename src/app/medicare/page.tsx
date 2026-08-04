@@ -474,6 +474,7 @@ export default function MedicarePage() {
               { href: '/blog/countries-with-medicare-agreement-australia', label: 'Reciprocal Health Care Agreement countries with Australia' },
               { href: '/blog/private-health-insurance-working-holiday-australia', label: 'Do working holiday makers need private health insurance?' },
               { href: '/blog/emergency-medical-care-working-holiday-no-medicare', label: 'Emergency medical care without Medicare in Australia' },
+              { href: '/uk-working-holiday-tax', label: 'UK passport holders: how Medicare and the levy work for you' },
               { href: '/blog/uk-medicare-reciprocal-agreement-australia', label: 'UK-Australia Reciprocal Health Care Agreement explained' },
             ].map((g) => (
               <Link
