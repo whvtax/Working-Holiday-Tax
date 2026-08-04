@@ -323,6 +323,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (declared === 'no')    e.declared       = 'You must agree to submit'
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
+    // Block NDA country residents from claiming WHM status
+    if (taxStatus === 'whm' && isNdaCountry(country)) {
+      e.taxStatus = 'Please read again who qualifies as an Australian tax resident'
+    }
     return e
   }
 
