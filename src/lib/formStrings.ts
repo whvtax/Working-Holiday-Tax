@@ -320,9 +320,9 @@ export const formStrings = {
     ja: '銀行明細書をアップロード',
   },
   bankStatementHint: {
-    en: 'Just the first page with your full name, BSB, and account number.',
-    de: 'Nur die erste Seite mit deinem vollständigen Namen, BSB und Kontonummer.',
-    ja: '氏名・BSB・口座番号が記載された最初の1ページのみで結構です。',
+    en: 'Account → Manage → View Statements → Attach any one of them.',
+    de: 'Konto → Verwalten → Kontoauszüge anzeigen → einen davon anhängen.',
+    ja: 'Account → Manage → View Statements → いずれかをアップロード。',
   },
   selfieHint: {
     en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',
