@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "Working Holiday Tax Refund - Lodged For You By Tax Agents",
-  description: "Get your Australian tax refund without touching myGov. Registered tax agents lodge your 417/462 return, claim the Medicare levy exemption and every deduction you are owed - from Australia or after you have flown home.",
+  description: "Get your Australian tax refund without touching myGov. Lodged by registered tax agents - your 417/462 return is processed to claim the Medicare levy exemption and every deduction you are owed - from Australia or after you have flown home.",
   keywords: [
     'working holiday tax refund Australia',
     'working holiday tax refund',
@@ -56,13 +56,13 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/tax-return`,
     siteName: 'Working Holiday Tax',
     title: "Working Holiday Tax Refund - Lodged For You By Tax Agents",
-    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Registered tax agent lodges your tax return online - even after you leave Australia.',
+    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Lodged by registered tax agents online - even after you leave Australia.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agent - all online.',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Lodged by registered tax agents - all online.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -239,7 +239,7 @@ export default function TaxReturnPage() {
                 maxWidth:'46ch',
                 marginBottom:'0',
               }}>
-              <span>Registered tax agents lodge your 417 or 462 return, claim the Medicare levy exemption and every deduction you are owed. No myGov, no forms - and it works from anywhere in the world.</span>
+              <span>Lodged by registered tax agents - your 417 or 462 return is processed to claim the Medicare levy exemption and every deduction you are owed. No myGov, no forms - and it works from anywhere in the world.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"

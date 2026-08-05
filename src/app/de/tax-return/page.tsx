@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "Du hast wahrscheinlich zu viel Steuer gezahlt. machen lassen - registrierte Tax Agents",
-  description: "Steuern zurück aus Australien, ohne myGov und ohne Formulare. Registrierte Tax Agents reichen deine 417/462-Steuererklärung ein, holen die Medicare-Levy-Befreiung und jeden Abzug, der dir zusteht - auch nach deiner Rückkehr nach Deutschland.",
+  description: "Steuern zurück aus Australien, ohne myGov und ohne Formulare. Von registrierten Steueragenten eingereicht - deine 417/462-Steuererklärung wird bearbeitet, die Medicare-Levy-Befreiung geholt und jeden Abzug, der dir zusteht - auch nach deiner Rückkehr nach Deutschland.",
   keywords: [
     'Steuerrückerstattung Australien',
     'Steuerrückerstattung Australien Working Holiday',

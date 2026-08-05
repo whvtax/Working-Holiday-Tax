@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "Claim Your Super Back From Australia - We Do It For You | DASP",
-  description: "Left Australia? Your employer paid 12% of your wages into super and it is still sitting there. Registered tax agents claim your DASP for you - you send four details, we handle the funds, the paperwork and the payment to your account.",
+  description: "Left Australia? Your employer paid 12% of your wages into super and it is still sitting there. Through registered tax agents, your DASP is claimed for you - you send four details, we handle the funds, the paperwork and the payment to your account.",
   keywords: [
     'DASP super refund',
     'DASP super refund Australia',
@@ -223,7 +223,7 @@ export default function SuperannuationPage() {
                 marginBottom:'0',
               }}>
               
-              Registered tax agents handle the funds, the paperwork and the payment. You send four details. Most claims are paid within 28 days.
+              Through registered tax agents, we handle the funds, the paperwork and the payment. You send four details. Most claims are paid within 28 days.
             
             </p>
 

@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Working holiday tax refund for 417 and 462 visa holders. Registered tax agents - all online, lodge from Australia or overseas.',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Lodged by registered tax agents - all online, lodge from Australia or overseas.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -154,7 +154,7 @@ export default async function HomePage() {
     '@id': `${SITE_URL}/#webpage`,
     url: SITE_URL,
     name: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Registered tax agents who handle working holiday tax refunds, TFN, tax returns, super withdrawal (DASP) and ABN for 417 and 462 visa holders in Australia.',
+    description: 'Services from registered tax agents who handle working holiday tax refunds, TFN, tax returns, super withdrawal (DASP) and ABN for 417 and 462 visa holders in Australia.',
     inLanguage: 'en-AU',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -197,7 +197,7 @@ export default async function HomePage() {
     legalName: AGENT_NAME,
     url: SITE_URL,
     email: EMAIL,
-    description: 'Registered tax agent service specialising in working holiday makers (417 and 462 visa holders) in Australia. We handle tax returns, TFN applications, super refunds (DASP) and ABN registrations.',
+    description: 'Working with registered tax agents - we handle tax returns, TFN applications, super refunds (DASP) and ABN registrations for working holiday makers (417 and 462 visa holders) in Australia.',
     identifier: [
       { '@type': 'PropertyValue', name: 'ABN', value: AGENT_ABN },
       { '@type': 'PropertyValue', name: 'TPB Registration', value: AGENT_TPB },
@@ -220,7 +220,7 @@ export default async function HomePage() {
     telephone: '+61424513998',
     priceRange: '$$',
     image: `${SITE_URL}/og-image.png`,
-    description: 'Registered tax agent for working holiday makers in Australia (417 and 462 visa holders). Tax returns, TFN, ABN, super refund (DASP).',
+    description: 'Tax services with registered tax agents for working holiday makers in Australia (417 and 462 visa holders). Tax returns, TFN, ABN, super refund (DASP).',
     areaServed: { '@type': 'Country', name: 'Australia' },
     serviceType: ['Tax return preparation', 'TFN application', 'ABN registration', 'Superannuation refund (DASP)', 'Medicare levy exemption'],
     provider: { '@id': `${SITE_URL}/#business` },

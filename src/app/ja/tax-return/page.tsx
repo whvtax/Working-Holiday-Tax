@@ -8,8 +8,8 @@ import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: "オーストラリアのタックスリターン代行｜登録税理士が申請します",
-  description: "myGovも書類作成も不要。登録税理士が417・462ビザのタックスリターンを代行申請し、メディケア・レヴィ免除や控除もすべて申請します。帰国後の日本からのご依頼にも対応、やり取りはすべて日本語です。",
+  title: "オーストラリアのタックスリターン代行｜登録税理士により申請",
+  description: "myGovも書類作成も不要。417・462ビザのタックスリターンは登録税理士により代行申請され、メディケア・レヴィ免除や控除もすべて申請されます。帰国後の日本からのご依頼にも対応、やり取りはすべて日本語です。",
   keywords: [
     // Refund-focused (primary)
     'オーストラリア タックスリターン 還付金',
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: "オーストラリアのタックスリターン代行｜登録税理士が申請します",
+    title: "オーストラリアのタックスリターン代行｜登録税理士により申請",
     description: '417・462ビザのワーホリ専門。登録税理士の監督のもとで、タックスリターン還付金の手続きを日本語で代行。帰国後も対応。',
   },
   twitter: {

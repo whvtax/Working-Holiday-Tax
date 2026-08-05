@@ -407,7 +407,7 @@ export default function UKWorkingHolidayTaxPage() {
         cta="Start with a message"
         href={WA_URL}
         external
-        trustLine="Registered tax agent in Australia. No obligation."
+        trustLine="Services handled by registered tax agents in Australia. No obligation."
       />
     </>
   )

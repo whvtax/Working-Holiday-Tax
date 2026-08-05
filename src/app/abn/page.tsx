@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/abn`,
     siteName: 'Working Holiday Tax',
     title: "ABN Registration Done For You - 417 & 462 Visa | Tax Agents",
-    description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Registered tax agent handles your ABN registration.',
+    description: 'Set up your ABN correctly as a Working Holiday contractor on a 417 or 462 visa. Your ABN registration is handled under the supervision of a registered tax agent.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],

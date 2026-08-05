@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "Get Your TFN - We Apply For You (No 45% Tax) | Working Holiday",
-  description: "Without a TFN your employer withholds 45% instead of 15%. We apply for your Tax File Number under a registered tax agent so you start on the right rate from your first payslip.",
+  description: "Without a TFN your employer withholds 45% instead of 15%. We apply for your Tax File Number under the supervision of a registered tax agent so you start on the right rate from your first payslip.",
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
