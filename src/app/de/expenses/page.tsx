@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { RelatedServices } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
   title: 'Steuerabsetzbare Ausgaben für Backpacker in Australien',
@@ -312,6 +313,19 @@ export default function ExpensesPageDE() {
             </div>
           </div>
         </section>
+
+        <RelatedServices
+          label="Ausführliche Guides nach Beruf"
+          items={[
+            { label: 'Essenslieferung', desc: 'Uber Eats, DoorDash & mehr',        href: '/de/expenses/delivery-drivers' },
+            { label: 'Gastronomie',     desc: 'Bars, Cafés & Restaurants',         href: '/de/expenses/hospitality' },
+            { label: 'Farmarbeit',      desc: 'Obsternte & Farmjobs',              href: '/de/expenses/farm-work' },
+            { label: 'Bauarbeit',       desc: 'Werkzeug, PSA & White Card',        href: '/de/expenses/construction' },
+            { label: 'Hilfsarbeiten',   desc: 'Lager & Zeitarbeit',                href: '/de/expenses/labouring' },
+            { label: 'Reinigungskräfte',desc: 'ABN, GST & Fahrten zwischen Jobs',  href: '/de/expenses/cleaners' },
+            { label: 'FIFO',            desc: 'Zone-Offset & Reisekosten',         href: '/de/expenses/fifo' },
+          ]}
+        />
 
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">

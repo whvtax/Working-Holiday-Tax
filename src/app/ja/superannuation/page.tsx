@@ -103,6 +103,14 @@ const faqs = [
     answer: 'はい、日本に帰国された後でも世界中どこからでも申請できます。当社が日本語ですべての手続きを代行し、スーパー受取は直接日本の銀行口座に振り込むことが可能です。何年経っていても申請可能です。',
   },
   {
+    question: 'DASP（Departing Australia Superannuation Payment）とは何ですか？',
+    answer: 'DASPとは、オーストラリアを永住的に出国し、ビザが失効またはキャンセルされた後に、現地で積み立てたスーパーアニュエーションを取り戻すための正式な手続きです。ワーキングホリデーメーカーがスーパーを受け取れる唯一の方法で、オーストラリア滞在中は原則ロックされたままです。申請はATOまたはスーパーファンドに対して、帰国後どこからでも行えます。',
+  },
+  {
+    question: 'ABN（事業者番号）で働いていた場合もスーパーはもらえますか？',
+    answer: '基本的にはもらえません。スーパーアニュエーションの拠出義務はPAYG雇用に紐づくもので、ABNでの請負・フリーランス収入には通常適用されません。ただし、名目上は請負でも実態は従業員に近い働き方（勤務時間が固定、道具は雇用主支給、業務を他人に委託できないなど）であった場合は、スーパーの権利が認められることがあります。思い込みで諦めず、確認する価値があります。',
+  },
+  {
     question: 'DASPスーパー受取には税金がかかりますか？',
     answer: 'はい、DASPの支払いには、ATOが定めた固定税率で課税され、振込前に源泉徴収されます。お受け取りになるのはこの税引き後の純額です。具体的な税率はビザの種類や支払われるスーパーの種類によって異なります。',
   }
@@ -156,12 +164,29 @@ const serviceSchema = {
   inLanguage: 'ja',
 }
 
+// STEPSに基づくHowToスキーマ（「スーパーの受け取り方」系のクエリ向け）
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  inLanguage: 'ja',
+  name: 'オーストラリア出国後にスーパーアニュエーション（DASP）を受け取る方法',
+  description: 'ビザが失効・キャンセルされ、オーストラリアを出国した後に、Departing Australia Superannuation Payment（DASP）でスーパーアニュエーションを取り戻す手順。',
+  totalTime: 'P28D',
+  step: STEPS.map(s => ({
+    '@type': 'HowToStep',
+    position: Number(s.n),
+    name: s.title,
+    text: s.body,
+  })),
+}
+
 export default function JapaneseSuperannuationPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
@@ -226,7 +251,7 @@ export default function JapaneseSuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['350名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['世界中のワーホリメーカーをサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'登録税理士が監督','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

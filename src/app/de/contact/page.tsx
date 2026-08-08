@@ -60,7 +60,7 @@ const FAQS = [
   },
   {
     question: 'Welche Sprachen sprecht ihr?',
-    answer: 'Unser Team bearbeitet Anfragen auf Englisch und auf Deutsch. Wir arbeiten jedes Jahr mit Working Holiday Makern aus über 45 Ländern - egal woher du kommst, wir machen es dir einfach.',
+    answer: 'Unser Team bearbeitet Anfragen auf Englisch und auf Deutsch. Wir arbeiten jedes Jahr mit Working Holiday Makern aus der ganzen Welt - egal woher du kommst, wir machen es dir einfach.',
   },
   {
     question: 'Muss ich sofort Unterlagen schicken?',
@@ -215,9 +215,9 @@ export default function GermanContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '350+', label: 'Backpacker' },
+              { stat: 'Vertraut', label: 'von Backpackern' },
               { stat: <GoogleRating variant="number" lang="de" />, label: 'Bewertung' },
-              { stat: '45+',    label: 'Länder' },
+              { stat: 'International',    label: 'unterwegs' },
               { stat: '~1 Std',  label: 'Antwortzeit' },
             ].map((item, i) => (
               <div key={i} className="text-center">

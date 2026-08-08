@@ -53,12 +53,12 @@ export function NextStep({ eyebrow, heading, body, cta, href, external, trustLin
 // ── RELATED SERVICES component ─────────────────────────────────────────────
 interface RelatedItem { label: string; desc: string; href: string }
 
-export function RelatedServices({ items }: { items: RelatedItem[] }) {
+export function RelatedServices({ items, label = 'Related services' }: { items: RelatedItem[]; label?: string }) {
   return (
     <section className="py-8 lg:py-10 bg-white" style={{ borderTop: '1px solid #E2EFE9' }}>
       <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
         <p className="font-medium uppercase mb-4" style={{ fontSize: '10px', letterSpacing: '0.14em', color: 'rgba(11,82,64,0.5)' }}>
-          Related services
+          {label}
         </p>
         <div className="flex flex-wrap gap-3">
           {items.map((item, i) => (

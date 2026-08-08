@@ -1,4 +1,4 @@
-import { SITE_URL } from '@/lib/constants'
+import { SITE_URL, AGENT_NAME, AGENT_TPB } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -241,6 +241,20 @@ export default function GuidePage({ params }: Props) {
       '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
+    },
+    // No individual byline - content is prepared and reviewed under the supervision of
+    // the registered tax agent entity itself, surfaced here as an independently
+    // verifiable credential (searchable on the Tax Practitioners Board public register)
+    // rather than an invented named author.
+    reviewedBy: {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#business`,
+      name: AGENT_NAME,
+      identifier: {
+        '@type': 'PropertyValue',
+        name: 'Tax Agent Number',
+        value: AGENT_TPB,
+      },
     },
     publisher: {
       '@type': 'Organization',

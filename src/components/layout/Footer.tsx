@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { WA_URL, EMAIL } from '@/lib/constants'
+import { WA_URL, EMAIL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export function Footer() {
   const pathname = usePathname() || '/'
@@ -41,6 +41,7 @@ export function Footer() {
           { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
         ],
         copyright: 'Working Holiday Tax. Alle Rechte vorbehalten.',
+        about: 'Über uns',
         clientAgreement: 'Mandantenvereinbarung',
         privacyPolicy: 'Datenschutzerklärung',
         secure: 'Sicher & verschlüsselt',
@@ -76,6 +77,7 @@ export function Footer() {
         ],
         copyright: 'Working Holiday Tax. All rights reserved.',
         copyrightJa: '無断複写・転載を禁じます。',
+        about: '当社について',
         clientAgreement: 'クライアント規約',
         privacyPolicy: 'プライバシーポリシー',
         secure: '安全・暗号化通信',
@@ -109,6 +111,7 @@ export function Footer() {
           { label: 'Instagram',  href: 'https://instagram.com/workingholidaytax', external: true },
         ],
         copyright: 'Working Holiday Tax. All rights reserved.',
+        about: 'About Us',
         clientAgreement: 'Client Agreement',
         privacyPolicy: 'Privacy Policy',
         secure: 'Secure & encrypted',
@@ -211,6 +214,23 @@ export function Footer() {
       {/* ─── Bottom bar - DARK GREEN brand layer ──────────────────────────── */}
       <div style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
+
+          {/* Registered tax agent credential line - real, independently verifiable on the
+              Tax Practitioners Board public register (tpb.gov.au). No individual is named
+              here by design; the entity + registration number carry the trust signal.
+              Framed as supervision ("work is carried out under...") rather than a direct
+              "we are a registered tax agent" claim, per house style used sitewide. */}
+          <div
+            className="text-center md:text-left"
+            style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.55)', marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.12)' }}
+          >
+            {locale === 'de'
+              ? `${AGENT_NAME} (ABN ${AGENT_ABN}) - Arbeiten werden unter Aufsicht eines registrierten Steueragenten durchgeführt (Nr. ${AGENT_TPB}).`
+              : locale === 'ja'
+              ? `${AGENT_NAME}（ABN ${AGENT_ABN}）- 業務は登録税理士の監督のもとで行われます（登録番号 ${AGENT_TPB}）。`
+              : `${AGENT_NAME} (ABN ${AGENT_ABN}) - work is carried out under the supervision of a registered tax agent (TAN ${AGENT_TPB}).`}
+          </div>
+
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 
             <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }} suppressHydrationWarning>
@@ -222,6 +242,10 @@ export function Footer() {
             </div>
 
             <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
+              <Link href="/about" className="footer-link-dark">
+                {t.about}
+              </Link>
+              <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
               <Link
                 href={locale === 'de' ? '/de/client-agreement' : locale === 'ja' ? '/ja/client-agreement' : '/client-agreement'}
                 className="footer-link-dark"

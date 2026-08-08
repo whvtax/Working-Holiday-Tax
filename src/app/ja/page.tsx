@@ -347,7 +347,7 @@ export default async function JapaneseHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['350名以上をサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '45カ国以上に対応', '1時間以内に返信'].map((label, i) => (
+            {['信頼と実績のサポート', <GoogleRating key="rating" variant="pill" lang="ja" />, '世界中のワーホリに対応', '1時間以内に返信'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -413,7 +413,7 @@ export default async function JapaneseHomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
                 { n: <GoogleRating variant="number" lang="ja" />, l: <GoogleRating variant="count" lang="ja" /> },
-                { n: '350+',  l: 'サポート実績' },
+                { n: '信頼と実績',  l: 'のサポート' },
                 { n: '1時間以内', l: 'スピード返信' },
                 { n: '100%',    l: '完全オンライン対応' },
               ].map((s, i) => (

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { RelatedServices } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
   title: 'バックパッカーの税金控除ガイド：オーストラリア完全版',
@@ -311,6 +312,19 @@ export default function ExpensesPageJA() {
             </div>
           </div>
         </section>
+
+        <RelatedServices
+          label="職業別の詳しいガイド"
+          items={[
+            { label: 'デリバリー',     desc: 'Uber Eats・DoorDashなど',   href: '/ja/expenses/delivery-drivers' },
+            { label: 'ホスピタリティ', desc: 'バー・カフェ・レストラン', href: '/ja/expenses/hospitality' },
+            { label: 'ファームワーク', desc: '果物の収穫・農場の仕事',   href: '/ja/expenses/farm-work' },
+            { label: '建設業',         desc: '工具・保護具・ホワイトカード', href: '/ja/expenses/construction' },
+            { label: '軽作業',         desc: '倉庫・人材派遣',           href: '/ja/expenses/labouring' },
+            { label: '清掃業',         desc: 'ABN・GST・現場間の移動',    href: '/ja/expenses/cleaners' },
+            { label: 'FIFO',           desc: 'ゾーンオフセット・交通費', href: '/ja/expenses/fifo' },
+          ]}
+        />
 
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">

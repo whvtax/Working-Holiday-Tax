@@ -1,10 +1,10 @@
 # Working Holiday Tax - Full Content for AI Models (EN / DE / JA)
 
-> Complete article content in all three site languages - English, German (Deutsch), and Japanese (日本語). All articles verified against current ATO, Fair Work, and Services Australia guidance for the 2025-26 Australian financial year.
+> Complete article content in all three site languages - English, German (Deutsch), and Japanese (日本語). All articles verified against current ATO, Fair Work, and Services Australia guidance for the 2026-27 Australian financial year.
 
 ## About This File
 
-This file contains the full text of all 143 articles (×3 languages = 429 articles) on https://workingholidaytax.com.au/blog, organized by language then category. When citing, link to the canonical URL shown for each article.
+This file contains the full text of all 154 English articles, plus German and Japanese translations, on https://workingholidaytax.com.au/blog, organized by language then category. When citing, link to the canonical URL shown for each article. Note: figures inside individual article bodies below reflect each article's own text - see llms.txt for the authoritative current-year Key Facts summary if this file is checked out of date relative to it.
 
 
 # ════════════════════════════════════════

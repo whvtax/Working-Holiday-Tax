@@ -8,8 +8,8 @@ import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: "ABN Registration Done For You - 417 & 462 Visa | Tax Agents",
-  description: "Need an ABN for delivery, rideshare or farm contracting? We register it correctly for your actual work, explain what you will owe, and keep you out of the traps that cost backpackers their super and minimum pay.",
+  title: "Can You Get an ABN on a Working Holiday Visa? Yes - Here's How",
+  description: "Yes - 417 and 462 visa holders can register an ABN for delivery, rideshare or farm contracting. We register it correctly for your actual work, explain what you will owe, and keep you out of the traps that cost backpackers their super and minimum pay.",
   keywords: [
     'ABN registration Australia',
     'ABN registration working holiday',
@@ -70,7 +70,8 @@ const faqs = [
   { question: 'Do I need to register for GST?', answer: 'GST registration is only required if your annual turnover is over $75,000. Most Working Holiday visa holders do not need to register for GST.' },
   { question: 'What happens to my ABN when I leave Australia?', answer: 'You can cancel your ABN when you stop working in Australia. This can be done online.' },
   { question: 'Do I need an ABN as a working holiday maker?', answer: 'You only need an ABN if you are working as a contractor or sole trader - for example, doing rideshare, food delivery, freelance work, or being paid directly by clients rather than through PAYG employment. If you are a regular employee, you only need a TFN.' },
-  { question: 'How does ABN income affect my working holiday tax return?', answer: 'ABN income is treated differently from PAYG wages. No tax is withheld upfront, so you are responsible for setting aside money for tax. When you lodge your working holiday tax return, ABN income is declared separately and you can claim related business expenses as deductions.' }
+  { question: 'How does ABN income affect my working holiday tax return?', answer: 'ABN income is treated differently from PAYG wages. No tax is withheld upfront, so you are responsible for setting aside money for tax. When you lodge your working holiday tax return, ABN income is declared separately and you can claim related business expenses as deductions.' },
+  { question: 'Can you get an ABN on a working holiday visa?', answer: 'Yes. Working holiday visa holders (417 and 462) can get an ABN for legitimate contract and sole trader work. You must have a TFN first. An ABN lets you work as a contractor, but you lose automatic super contributions and employment protections - it is only suitable for genuine contract work, not regular employment.' }
 ]
 
 const STEPS = [
@@ -212,7 +213,7 @@ export default function ABNPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['Trusted by backpackers',<GoogleRating key="rating" variant="pill" lang="en" />,'Worldwide reach','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

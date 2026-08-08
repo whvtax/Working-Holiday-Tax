@@ -68,7 +68,7 @@ const FAQS = [
   },
   {
     question: '日本語で対応してもらえますか？',
-    answer: 'やり取りは主に英語ですが、日本語でのお問い合わせも歓迎です。毎年45カ国以上のワーキングホリデーメーカーをサポートしており、日本人のお客様にも数多くご利用いただいています。ご質問はお気軽に日本語でお送りください。',
+    answer: 'やり取りは主に英語ですが、日本語でのお問い合わせも歓迎です。毎年世界中のワーキングホリデーメーカーをサポートしており、日本人のお客様にも数多くご利用いただいています。ご質問はお気軽に日本語でお送りください。',
   },
   {
     question: 'すぐに書類を送る必要がありますか？',
@@ -223,9 +223,9 @@ export default function JapaneseContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '350+', label: 'サポート実績' },
+              { stat: '信頼と実績', label: 'のサポート' },
               { stat: <GoogleRating variant="number" lang="ja" />, label: '評価' },
-              { stat: '45+',    label: '対応国数' },
+              { stat: '世界中の',    label: 'ワーホリに対応' },
               { stat: '~1時間', label: '返信時間' },
             ].map((item, i) => (
               <div key={i} className="text-center">

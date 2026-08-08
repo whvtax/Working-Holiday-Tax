@@ -292,7 +292,7 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['350+ backpackers helped', <GoogleRating key="rating" variant="pill" lang="en" />, '45+ countries served', '~1 hour response time'].map((label, i) => (
+            {['Trusted by backpackers', <GoogleRating key="rating" variant="pill" lang="en" />, 'Worldwide reach', '~1 hour response time'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -358,7 +358,7 @@ export default async function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
                 { n: <GoogleRating variant="number" lang="en" />, l: <GoogleRating variant="count" lang="en" /> },
-                { n: '350+', l: 'backpackers helped' },
+                { n: 'Trusted', l: 'by backpackers' },
                 { n: '< 1 hr', l: '~1 hour response time' },
                 { n: '100%',   l: 'Fully online, no paperwork' },
               ].map((s, i) => (

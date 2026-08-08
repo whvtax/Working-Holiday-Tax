@@ -8,8 +8,8 @@ import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: "Claim Your Super Back From Australia - We Do It For You | DASP",
-  description: "Left Australia? Your employer paid 12% of your wages into super and it is still sitting there. Through registered tax agents, your DASP is claimed for you - you send four details, we handle the funds, the paperwork and the payment to your account.",
+  title: "Departing Australia Superannuation Payment (DASP) | Claim Your Super Refund",
+  description: "Departing Australia Superannuation Payment (DASP) - how to claim your superannuation refund after leaving Australia. Working holiday super claim process, DASP refund, 65% tax rate explained.",
   keywords: [
     'DASP super refund',
     'DASP super refund Australia',
@@ -99,14 +99,46 @@ const faqs = [
   {
     question: 'How is my DASP super refund taxed?',
     answer: 'DASP payments are taxed at a fixed rate set by the ATO, which is deducted before the payment is sent to you. The amount you receive is the net figure after this tax has been applied. The exact rate depends on your visa subclass and the type of super being paid out.',
-  }
+  },
+  {
+    question: 'I am on a working holiday visa - can I claim my super?',
+    answer: 'Yes. Working holiday makers on subclass 417 or 462 visas are eligible to claim their superannuation (DASP) once they have left Australia and their visa has expired or been cancelled. You must apply from outside Australia. The DASP withholding tax rate for working holiday makers is 65% of the taxable component.',
+  },
+  {
+    question: 'What is the superannuation tax rate for working holiday makers?',
+    answer: 'Working holiday makers pay a fixed withholding tax of 65% on the taxable component of their DASP super withdrawal. This is deducted before payment is sent to you. The amount you actually receive is 35% of the taxable component (net of tax). Non-working-visa temporary residents like students pay a different rate of 35%.',
+  },
+  {
+    question: 'How do I claim superannuation when leaving Australia?',
+    answer: 'To claim superannuation (DASP) when leaving Australia, your visa must have expired or been cancelled, and you must have permanently left Australia. Contact a registered tax agent or lodge through the ATO DASP portal. You will need your TFN, passport details, visa information, and super fund details. Payment typically arrives within 28 days of approval.',
+  },
+  {
+    question: 'Do working holiday makers pay Medicare Levy?',
+    answer: 'No. Working holiday makers on subclass 417 and 462 visas are exempt from the Medicare Levy (2% tax). You must claim this exemption on your tax return - it is not automatic. The exemption saves you 2% of your taxable income, which adds to your tax refund at the end of the financial year.',
+  },
+  {
+    question: 'What is DASP - the Departing Australia Superannuation Payment?',
+    answer: 'DASP (Departing Australia Superannuation Payment) is the official process for withdrawing your Australian superannuation once you have permanently left the country and your visa has expired or been cancelled. It is the only way working holiday makers can access their super - it stays locked while you are still in Australia. Applications go directly to the ATO or your super fund, from anywhere in the world.',
+  },
+  {
+    question: "I'm on a 417 or 462 visa - how do I actually get my superannuation back?",
+    answer: 'Once you have left Australia and your working holiday visa has expired or been cancelled, you (or a registered tax agent on your behalf) submit a DASP application with your passport, visa and super fund details. Most working holiday makers have several small super accounts from casual and seasonal jobs - we search all of them under your TFN, combine the claim, and lodge it correctly the first time, so nothing is left behind and nothing is delayed by a mismatched detail.',
+  },
+  {
+    question: 'Do I get superannuation if I worked under an ABN?',
+    answer: 'Generally no. Superannuation Guarantee contributions are an employer obligation tied to PAYG employment, not ABN/contractor income - so gig, rideshare or freelance work invoiced under an ABN usually does not generate super automatically. If you were engaged as a contractor but worked more like a regular employee (set hours, tools provided, no ability to subcontract), you may still be entitled to super under the ATO’s expanded definition of "employee" - worth checking rather than assuming.',
+  },
+  {
+    question: 'What happens if I never claim my super after leaving Australia?',
+    answer: 'It is not lost. About six months after your visa expires, an unclaimed super fund is required to transfer your balance to the ATO as "ATO-held super". It still belongs to you and earns no fees while held there, and there is no deadline - you can lodge a DASP claim years later and the ATO will pay it out, though fund fees and insurance premiums along the way can quietly shrink a balance left too long before it transfers.',
+  },
 ]
 
 const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'Share your visa and work details so we can guide you correctly.' },
   { n: '2', title: 'Send your details in minutes',  body: 'Passport, TFN and super fund info - quick and simple.' },
   { n: '3', title: 'We handle everything for you',  body: 'We prepare and submit your claim correctly.' },
-  { n: '4', title: 'Receive your super payment',    body: 'Your money is paid directly to your Australian bank account.' },
+  { n: '4', title: 'Receive your super payment',    body: 'Your money is paid directly to your bank account, in Australia or overseas.' },
 ]
 
 
@@ -160,11 +192,29 @@ const speakableSchema = {
   url: `${SITE_URL}/superannuation`,
 }
 
+// HowTo schema for the 4-step claim process below (STEPS array) - gives Google
+// and AI answer engines an explicit, structured procedure to extract and cite
+// for "how do I claim my superannuation / DASP" style queries.
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to claim your superannuation (DASP) after leaving Australia',
+  description: 'The step-by-step process working holiday makers use to claim their superannuation back through the Departing Australia Superannuation Payment (DASP) once their visa has expired or been cancelled and they have left Australia.',
+  totalTime: 'P28D',
+  step: STEPS.map(s => ({
+    '@type': 'HowToStep',
+    position: Number(s.n),
+    name: s.title,
+    text: s.body,
+  })),
+}
+
 export default function SuperannuationPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
@@ -242,7 +292,7 @@ export default function SuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['Working holiday makers, worldwide',<GoogleRating key="rating" variant="pill" lang="en" />,'Registered tax agent supervision','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -272,6 +322,13 @@ export default function SuperannuationPage() {
               </p>
               <p className="super-intro-body">
                 The withdrawal is taxed at 65%, but the remaining 35% is still real money in your pocket. For most backpackers, this is between <strong>$2,000 and $5,000</strong> they did not know they had.
+              </p>
+              <p className="super-intro-body">
+                Not sure what you are owed? Our{' '}
+                <Link href="/calculator" className="font-semibold" style={{ color: '#0B5240', textDecoration: 'underline', textUnderlineOffset: '2px' }}>
+                  free tax and super refund calculator
+                </Link>{' '}
+                gives working holiday makers on a 417 or 462 visa a quick estimate before you commit to anything.
               </p>
             </div>
 

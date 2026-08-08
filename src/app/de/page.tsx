@@ -314,7 +314,7 @@ export default async function GermanHomePage() {
           </div>
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:justify-center lg:items-center lg:gap-y-0 lg:gap-x-7 mx-auto">
-            {['350+ Backpacker geholfen', <GoogleRating key="rating" variant="pill" lang="de" />, '45+ Länder', 'Antwort in unter 1 Stunde'].map((label, i) => (
+            {['Vertraut von Backpackern', <GoogleRating key="rating" variant="pill" lang="de" />, 'International', 'Antwort in unter 1 Stunde'].map((label, i) => (
               <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontSize: '12px', color: 'rgba(10,15,13,0.5)' }}>
                 <CheckIcon />{label}
@@ -380,7 +380,7 @@ export default async function GermanHomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 lg:gap-8">
               {[
                 { n: <GoogleRating variant="number" lang="de" />, l: <GoogleRating variant="count" lang="de" /> },
-                { n: '350+',  l: 'Backpacker geholfen' },
+                { n: 'Vertraut',  l: 'von Backpackern' },
                 { n: '< 1 Std', l: 'Antwortzeit' },
                 { n: '100 %',   l: 'Komplett online, ohne Papierkram' },
               ].map((s, i) => (

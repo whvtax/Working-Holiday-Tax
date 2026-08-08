@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
 
 export const metadata: Metadata = {
-  title: 'Contact Us - Working Holiday Tax | Registered Tax Agents Australia',
+  title: 'Contact Us - Working Holiday Tax | WHV Tax Support',
   description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
   keywords: [
     'contact working holiday tax',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
-    title: 'Contact Working Holiday Tax | Registered Tax Agents Australia',
+    title: 'Contact Working Holiday Tax | WHV Tax Support',
     description: 'Get in touch with our team, working under the supervision of a registered tax agent. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
     url: `${SITE_URL}/contact`,
     type: 'website',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
-    title: 'Contact Working Holiday Tax | Registered Tax Agents',
+    title: 'Contact Working Holiday Tax | WHV Tax Support',
     description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund.',
   },
   robots: {
@@ -69,7 +69,7 @@ const FAQS = [
   },
   {
     question: 'What languages do you speak?',
-    answer: 'Our team handles enquiries in English. We work with working holiday makers from 45+ countries every year, so we are used to making things simple regardless of background.',
+    answer: 'Our team handles enquiries in English. We work with working holiday makers from all over the world every year, so we are used to making things simple regardless of background.',
   },
   {
     question: 'Do I need to send documents straight away?',
@@ -236,9 +236,9 @@ export default function ContactPage() {
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7 reveal">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
             {[
-              { stat: '350+', label: 'Backpackers' },
+              { stat: 'Trusted', label: 'by backpackers' },
               { stat: <GoogleRating variant="number" lang="en" />, label: 'Rating' },
-              { stat: '45+',    label: 'Countries' },
+              { stat: 'Worldwide',    label: 'reach' },
               { stat: '~1 hr',  label: 'Response' },
             ].map((item, i) => (
               <div key={i} className="text-center">

@@ -138,9 +138,9 @@ The online form asks for: passport details (exactly as printed - transcription m
  `,
  }, {
  slug: "how-long-does-it-take-to-get-a-tfn",
- title: "How Long Does a TFN Take? About 2 Weeks, 28 Days Maximum",
+ title: "How Long Does It Take to Get a Tax File Number? 2-4 Weeks Processing",
  description:
- "Most TFNs arrive in about two weeks. The ATO's stated maximum is 28 days. You can start work before it arrives, and here is exactly what to tell your employer so you are not taxed at 45% in the meantime.",
+ "How long does it take to get a tax file number in Australia? TFN processing time: typically 2 weeks, maximum 28 days from ATO. What to do while waiting for your TFN letter.",
  category: "TFN",
  date: "20 July 2026",
  readTime: 6,
@@ -1970,9 +1970,9 @@ No payslips does not mean no return. Rebuild the numbers from: bank deposits (ev
  // ─── SUPER ─────────────────────────────────────────────────────────────────
  {
  slug: "what-is-superannuation",
- title: "Superannuation Explained: The 12% Your Boss Must Pay (2026)",
+ title: "Superannuation Explained: Claim Your Super After Leaving Australia",
  description:
- "Every employer must pay 12% of your wages into super on top of salary. How it works on a working holiday visa and how you claim it back when you leave.",
+ "Superannuation explained: 12% your boss must pay into super. How to claim superannuation (super claim) after leaving Australia through DASP, step-by-step process.",
  category: "Super",
  date: "29 November 2024",
  readTime: 6,
@@ -2103,14 +2103,14 @@ Open your fund's app and check contributions against this: 12% of ordinary time 
  `,
  }, {
  slug: "what-is-dasp-super-withdrawal",
- title: "DASP: How to Get Your Super Back After Leaving Australia",
+ title: "What Is DASP? Getting Your Super Back After Leaving Australia",
  description:
- "The Departing Australia Superannuation Payment lets you withdraw super once you leave and your visa ends. Eligibility, 65% tax, timing and how to apply.",
+ "DASP is the payment that returns your superannuation once you've left Australia and your visa has ended. Who qualifies, how it differs from your tax refund, and what to do if your visa situation isn't straightforward.",
  category: "Super",
  date: "5 December 2024",
  readTime: 6,
  body: `
-DASP (Departing Australia Superannuation Payment) is the official process used by working holiday makers and other temporary visa holders to withdraw their accumulated Australian superannuation after leaving the country. To apply, your visa must have expired or been cancelled and you must be outside Australia. The DASP withholding tax rate for working holiday makers is 65% of the taxable component. Our team handles DASP applications end-to-end, from locating your super accounts to receiving the payment.
+DASP (Departing Australia Superannuation Payment) is the official process working holiday makers use to withdraw their Australian superannuation once they have left the country and their visa has ended. It is a single one-off payment, not a pension - the whole balance is paid out in one transfer, taxed at 65% for working holiday makers, to a bank account anywhere in the world. [Our team handles the whole application](/superannuation), from locating your super accounts to receiving the payment.
 
 ## Who can apply for DASP?
 
@@ -2123,51 +2123,39 @@ To qualify for DASP, you must:
 
 You generally cannot apply while still inside Australia on a valid working holiday visa. The application must be made after you have departed and your visa has ended.
 
+## Is DASP the same as my tax refund?
+
+No - they are two separate payments, from two different sources, and most people leaving Australia are owed both. Your [tax refund](/tax-return) is income tax you overpaid during the year, refunded by the ATO. DASP is your accumulated superannuation, refunded by your super fund (or the ATO, if it was transferred to them as unclaimed money) at a flat 65% withholding tax. You can lodge both around the same time once you have left, and they arrive as two separate payments, often on different timelines.
+
+## What if my visa situation is not straightforward?
+
+A few situations catch people out:
+
+- **Visa still technically active**: you can usually request cancellation from overseas to unlock DASP eligibility once you have no intention of returning on it
+- **A bridging visa is quietly keeping your status alive**: this needs to lapse or be cancelled too, not just the working holiday visa itself
+- **Returning to Australia on a new visa before claiming**: this does not block the claim, but changes the timing - speak to us before you travel back if this applies to you
+
+None of these are fatal to a claim - each just changes the sequence of what needs to happen first.
+
 ## How do you apply for DASP?
 
-Our team handles the entire DASP application for you:
+[We handle the full application for you](/blog/how-to-apply-for-super-back) - finding every fund, preparing the paperwork, and lodging it correctly the first time. In short: send your TFN, passport and visa details, we locate every super account under your name, lodge the application, and the payment lands in your nominated bank account.
 
-1. [Send us your details](/superannuation): TFN, passport, visa dates, employment history
-2. We locate all your super accounts (across multiple funds if needed)
-3. We prepare and lodge the DASP application on your behalf
-4. The super fund verifies your details and releases the payment
-5. The funds are paid to your nominated bank account (anywhere in the world)
+## How much tax comes out, and how long does it take?
 
-If your super was held in multiple funds, we lodge separate DASP applications for each. Alternatively, we can consolidate your super into one fund before applying to simplify the process.
-
-## How long does DASP take to process?
-
-Most DASP applications are processed within 28 days:
-
-- Some applications process faster, sometimes within two weeks
-- Complex cases (multiple funds, identity verification issues) can take longer
-- The fund verifies your details, the ATO confirms your visa status, then payment is released
-
-If 28 days pass without payment, our team chases the application directly. You do not need to follow up with the fund or ATO yourself.
-
-## How much will you receive from DASP?
-
-Your DASP payout depends on:
-
-- The total contributions made by your employers (12% of your earnings throughout your stay)
-- Any investment returns the fund has generated on those contributions
-- The 65% DASP withholding tax for working holiday makers (applied to the taxable component)
-
-The 65% tax rate is high, but the alternative is leaving the super behind permanently. The net amount, even after tax, is usually still a meaningful sum (often several thousand dollars depending on how long you worked).
-
-See our article on [what tax is taken from your DASP](/blog/tax-on-super-withdrawal-backpacker) for a detailed breakdown of how the tax is calculated.
+Both questions have their own detailed answers, since each depends on your specific situation: [how the 65% DASP tax is actually calculated](/blog/dasp-tax-rate-65-percent-explained), and [how long payment actually takes once you apply](/blog/how-long-does-dasp-take) (most applications: 28 days).
 
 [Get in touch with our team](/contact) to handle your DASP application, locate every super fund holding your contributions, and receive your payment overseas.
- 
+
 ## DASP eligibility: the three-condition checklist
 
-All three must be true on the day you apply: super was earned on an eligible temporary visa (417 and 462 qualify), you have physically left Australia, and the visa has ceased - expired or cancelled. Common blockers: a visa still technically active (you can request cancellation from overseas to unlock eligibility), a bridging visa quietly keeping your status alive, or returning onshore on a new visa before claiming. None are fatal - each just changes the sequence. The claim itself runs through the ATO's DASP portal or an agent, covers every fund you name plus ATO-held amounts, and pays about 35 cents per dollar after the [65% WHM tax](/blog/dasp-tax-rate-65-percent-explained).
+All three must be true on the day you apply: super was earned on an eligible temporary visa (417 and 462 qualify), you have physically left Australia, and the visa has ceased - expired or cancelled. The claim itself runs through the ATO's DASP portal or an agent, covers every fund you name plus ATO-held amounts, and pays about 35 cents per dollar after the [65% WHM tax](/blog/dasp-tax-rate-65-percent-explained).
  `,
  }, {
  slug: "how-to-apply-for-super-back",
- title: "How to Claim Your Super After Leaving Australia (DASP 2026)",
+ title: "How to Claim Super Back After Leaving Australia | DASP Step-by-Step Guide",
  description:
- "The step-by-step DASP process: finding every super account, documents, lodgment and getting paid overseas - most complete claims are paid within 28 days.",
+ "How to claim superannuation after leaving Australia: complete DASP guide with step-by-step instructions. Find all super accounts, lodge claim, documents, tax rates, payment timeline.",
  category: "Super",
  date: "29 July 2026",
  readTime: 9,
@@ -2347,9 +2335,9 @@ Multiple funds mean parallel applications that finish at different speeds. ATO-h
  }, {
  slug: "tax-on-super-withdrawal-backpacker",
  title:
- "Super Tax for Working Holiday Makers: What You Get Back After 65%",
+ "Superannuation Tax When Leaving Australia: Backpacker 65% Withholding Explained",
  description:
- "A $10,000 super balance pays out about $3,500 after the 65% DASP tax. Worked examples by balance and work history, plus how to avoid losing more to fees.",
+ "Superannuation tax when leaving Australia: 65% DASP tax for backpackers. How much super you actually receive, worked examples, $10,000 balance = $3,500 net payment.",
  category: "Super",
  date: "29 July 2026",
  readTime: 7,
@@ -2441,9 +2429,9 @@ Use our [superannuation service](/superannuation) to have the whole claim handle
  `,
  }, {
  slug: "what-happens-to-unclaimed-super",
- title: "Unclaimed Super Goes to the ATO - It's Still Yours to Claim",
+ title: "Unclaimed Super After Leaving Australia: ATO Holds It Until You Claim",
  description:
- "About 6 months after you leave, funds transfer super to the ATO. Nothing is lost - how ATO-held super works and how to claim it even years later.",
+ "Unclaimed superannuation after leaving Australia goes to ATO. Your super is still yours - claim it years later through DASP. How ATO-held super works for backpackers.",
  category: "Super",
  date: "22 December 2024",
  readTime: 5,
@@ -2503,9 +2491,9 @@ Left more than 6 months ago? Search is simple: a registered agent (or myGov, if 
  `,
  }, {
  slug: "can-you-withdraw-super-in-australia",
- title: "Can You Withdraw Super While Still in Australia? Almost Never",
+ title: "Withdraw Super After Leaving Australia | DASP vs. Early Access Myths",
  description:
- "Super is locked while you are in Australia on a WHV - the real access point is DASP after departure. The rare hardship exceptions and the scams to avoid.",
+ "Can you withdraw super after leaving Australia? Yes through DASP. But not while still in Australia on WHV. Complete guide to access points, conditions, and common myths.",
  category: "Super",
  date: "24 December 2024",
  readTime: 5,
@@ -2576,9 +2564,9 @@ Anyone offering to unlock your super while you are working in Australia is runni
  `,
  }, {
  slug: "how-to-find-lost-superannuation",
- title: "Find Lost Super in 5 Minutes: Every Account Linked to Your TFN",
+ title: "Find Lost Super Before Leaving Australia | Search Every Account by TFN",
  description:
- "Multiple employers usually means multiple super funds. How to find every account via myGov or an agent - including balances already moved to the ATO.",
+ "Find lost superannuation before leaving Australia: search every super fund linked to your TFN. Locate multiple accounts, unclaimed super, prepare for DASP claim.",
  category: "Super",
  date: "29 December 2024",
  readTime: 5,
@@ -2649,14 +2637,14 @@ Every employer that never asked for your fund choice opened a default account in
  `,
  }, {
  slug: "how-to-choose-super-fund",
- title: "How to Choose a Super Fund on a WHV (Fees Matter Most)",
+ title: "Best Super Fund for Working Holiday Makers? Pick for Easy DASP Claims",
  description:
- "For working holiday makers the super priorities differ: low fees, easy DASP processing, no insurance you cannot use. What to pick and what to avoid.",
+ "The best super fund for a working holiday maker isn't the one with the best returns - it's the one that makes your eventual DASP claim fastest and cheapest. What to prioritise, what to avoid, and how to prepare.",
  category: "Super",
  date: "10 January 2025",
  readTime: 5,
  body: `
-For working holiday makers, the choice of super fund matters less than it would for an Australian resident building retirement savings. You will be withdrawing your super through the DASP process when you leave Australia, so the priorities are simplicity and accessibility, not long-term investment performance. The simplest approach is to nominate one fund at your first job and stick with it for every subsequent role. Our team can help you choose and manage your super setup to make the eventual DASP claim straightforward.
+There is no single "best" super fund for everyone, but for a working holiday maker the ranking criteria are different from what applies to an Australian resident building retirement savings. You will be withdrawing the whole balance through DASP when you leave Australia, so the priorities are simplicity, low fees and a fast claims process, not long-term investment performance. The simplest approach is to nominate one fund at your first job and stick with it for every subsequent role. Our team can help you choose and manage your super setup to make the eventual DASP claim straightforward.
 
 ## What is a superannuation fund?
 
@@ -3513,9 +3501,9 @@ Casual wins for most working holiday makers: the 25% loading suits short stints,
  // ─── MEDICARE & OTHER ────────────────────────────────────────────────────────
  {
  slug: "what-is-medicare-working-holiday-makers",
- title: "Medicare on a Working Holiday Visa: Are You Covered? (2026)",
+ title: "Medicare Working Holiday Visa: Are You Covered? 417/462 Guide 2026",
  description:
- "Most 417/462 visa holders are not covered by Medicare - unless their country has a reciprocal agreement. Who is covered, emergency costs, and the levy exemption.",
+ "Medicare working holiday visa coverage explained. 417 and 462 visa holders and Medicare - reciprocal agreements, costs, exemption, travel insurance requirements.",
  category: "Medicare & Other",
  date: "20 July 2026",
  readTime: 6,
@@ -4482,9 +4470,9 @@ Yes, you can record an international address. Refunds pay to bank accounts, not 
  {
  slug: "what-is-a-tax-refund-australia",
  title:
- "What Is a Tax Refund? How Backpackers Know They Are Owed One",
+ "Tax Refund vs Superannuation Refund: How Backpackers Claim Both",
  description:
- "A refund is the gap between tax withheld and tax actually owed. The 5 signs you are owed money in Australia and how to claim it before you leave.",
+ "Tax refund guide for backpackers: how refunds work, when you're owed money, superannuation refund explained, and how to claim both tax and super refunds before you leave Australia.",
  category: "Tax Return",
  date: "5 June 2025",
  readTime: 5,
@@ -4658,9 +4646,9 @@ Ready to start? [Lodge your tax return](/tax-return) under the supervision of a 
  {
  slug: "super-for-casual-and-part-time-workers",
  title:
- "Casuals Get Super Too: 12% From the First Dollar (2026)",
+ "Do Casual and Part-Time Workers Get Superannuation? Yes - 12% From Day One",
  description:
- "There is no minimum-hours threshold anymore - every casual shift earns 12% super. How to check your fund is receiving it and what to do if not.",
+ "Casual and part-time working holiday makers get 12% superannuation from their very first dollar of earnings, with no minimum monthly threshold. How to check your contributions are actually arriving.",
  category: "Super",
  date: "9 June 2025",
  readTime: 5,
@@ -5037,9 +5025,9 @@ Lodge the ATO's unpaid super notification (online, free, with your employment da
  {
  slug: "tfn-reference-number-before-tfn-arrives",
  title:
- "TFN Reference Number: Can You Start Work Before the TFN Arrives?",
+ "How Long Does TFN Take to Arrive? Work While You Wait Using Reference Number",
  description:
- "Your application reference number is not a TFN, but you can start work under the 28-day rule while you wait. What to tell your employer in the meantime.",
+ "How long does TFN take to arrive? TFN application processing: 2-4 weeks average. Start work before your TFN letter arrives using the reference number. 28-day rule explained.",
  category: "TFN" as const,
  date: "29 July 2026",
  readTime: 6,
@@ -5246,19 +5234,21 @@ Keep a photo of the card on your phone in case you lose the physical one.
 
 ## Can you claim the cost as a tax deduction?
 
-Yes. If you completed the White Card course to qualify for or maintain construction employment:
+It depends on whether this is your first White Card or a renewal:
 
-- The course cost is deductible as a work-related expense
-- Include it in your [tax return](/tax-return)
-- Keep the receipt as evidence
+- Your very first White Card is generally **not** deductible. The ATO treats it the same way as a first driver's licence - the cost of gaining a qualification you needed just to become eligible for construction work in the first place is a private expense, not a work-related one.
+- Renewing a White Card you already hold, once you are already working on-site, **is** deductible as a work-related expense.
+- The same first-vs-renewal logic applies to a first forklift ticket or heavy-vehicle permit.
 
-Our team includes these training costs when we prepare your return. If you have multiple work-related certifications, we claim all of them.
+Keep every receipt regardless - include deductible renewals in your [tax return](/tax-return) with the evidence to support them. See our full [construction worker deductions guide](/expenses/construction) for tools, PPE and vehicle claims alongside this one.
+
+Our team checks which of your work-related certifications qualify when we prepare your return.
 
 [Get in touch with our team](/contact) if you have wage, [super](/superannuation), or workplace issues - we handle the tax and super side and coordinate with Fair Work where needed.
  
 ## Course, cost and which states accept online
 
-The general induction (CPCWHS1001) runs a few hours. NSW, VIC and most states accept accredited online delivery with a webcam assessment; QLD requires in-person or zoom-verified formats - check the current state rules before paying. Typical cost is under a hundred dollars, it never expires (though long gaps out of the industry can prompt refreshers), and every state recognises every other state's card. Deduct the fee at tax time - it is a work-related self-education expense once you work construction.
+The general induction (CPCWHS1001) runs a few hours. NSW, VIC and most states accept accredited online delivery with a webcam assessment; QLD requires in-person or zoom-verified formats - check the current state rules before paying. Typical cost is under a hundred dollars, it never expires (though long gaps out of the industry can prompt refreshers), and every state recognises every other state's card. A renewal is a deductible work-related self-education expense once you are already working construction - your very first card isn't, for the same reason a first driver's licence isn't.
  `,
  }, {
  slug: "rsa-certificate-australia-working-holiday",
@@ -5544,9 +5534,9 @@ Public holidays split by state - national ones (New Year, Australia Day, Good Fr
  `,
  }, {
  slug: "casual-shift-cancellation-rules-australia",
- title: "Casual Shift Cancelled? You May Still Be Owed 2 to 3 Hours Pay",
+ title: "How Much Notice to Cancel a Casual Shift? Minimum Pay Rules Australia",
  description:
- "Yes, your employer can cancel a casual shift. But under most awards, cancellation with less than 24 hours notice means you are still owed a minimum engagement of 2 to 3 hours. How to check your award and claim it.",
+ "Casual shift cancellation: how much notice required? Minimum notice to cancel shifts in Australia, minimum engagement pay (2-3 hours), award rules, what you're owed.",
  category: "Work Rights" as const,
  date: "20 July 2026",
  readTime: 6,
@@ -6127,7 +6117,7 @@ Sequence matters more than tax here (your after-tax wages transfer tax-free rega
  date: "12 August 2025",
  readTime: 6,
  body: `
-If you work under an [ABN](/abn) and use a vehicle for business, you can claim vehicle expenses as tax deductions. The two methods are: cents-per-kilometre (88c/km, up to 5,000 km/year, no logbook needed) and the logbook method (claim actual expenses based on business-use percentage). Driving from your accommodation to a work site or between job sites counts as business travel. Driving from home to your regular workplace does not. Our team picks the method that gives you the largest legitimate deduction.
+If you work under an [ABN](/abn) and use a vehicle for business, you can claim vehicle expenses as tax deductions. The two methods are: cents-per-kilometre (91c/km, up to 5,000 km/year, no logbook needed) and the logbook method (claim actual expenses based on business-use percentage). Driving from your accommodation to a work site or between job sites counts as business travel. Driving from home to your regular workplace does not. Our team picks the method that gives you the largest legitimate deduction.
 
 ## Can you claim vehicle expenses with an ABN?
 
@@ -6154,9 +6144,9 @@ The key distinction: business travel needs a genuine business purpose. Personal 
 
 The simplest method for most working holiday makers:
 
-- Set rate of **88 cents per kilometre** (current ATO rate)
+- Set rate of **91 cents per kilometre** (current ATO rate)
 - Claim up to **5,000 km per year**
-- Maximum deduction: $4,400 per year (5,000 km × 88c)
+- Maximum deduction: $4,550 per year (5,000 km × 91c)
 - **No detailed logbook required**
 
 To use this method, keep a simple record of your business trips:
@@ -6638,9 +6628,9 @@ LITO's absence stings less once the real list is on the table. Available regardl
  `,
  }, {
  slug: "appealing-ato-decision-australia",
- title: "Disagree With the ATO? How to Object and Appeal (2026)",
+ title: "Disagree With the ATO? How to Dispute, Object and Appeal (2026)",
  description:
- "You can formally object to an ATO assessment for free, with deadlines from 60 days to 2 years. The objection process, evidence, and when to get help.",
+ "How to dispute an ATO tax assessment: you can formally object for free, with deadlines from 60 days to 2 years. The objection process, evidence, and when to get help.",
  category: "Tax Return" as const,
  date: "20 September 2025",
  readTime: 5,
@@ -7509,9 +7499,9 @@ When you lodge through our service:
  }, {
  slug: "how-to-check-super-balance-working-holiday",
  title:
- "Check Your Super Balance in 2 Minutes (myGov or Fund App)",
+ "Check Your Working Holiday Superannuation Balance | How-To Guide",
  description:
- "See every fund and balance linked to your TFN through myGov, your fund app, or an agent. What to look for before you leave Australia.",
+ "Check your working holiday superannuation balance through myGov, fund app, or agent. How to find every super account, what to look for before leaving Australia, and when to claim.",
  category: "Super" as const,
  date: "16 October 2025",
  readTime: 4,
@@ -10752,9 +10742,9 @@ Keep the purchase receipt and a simple usage note. Employees who ride to a fixed
 // ─── SUPER ────────────────────────────────────────────────────────────────
  {
  slug: "dasp-vs-leaving-super-in-australia-pros-cons",
- title: "Claim Your Super or Leave It in Australia? The Real Numbers",
+ title: "Leaving Australia: Claim Super Now (DASP) or Leave It Invested? Comparison",
  description:
-   "DASP pays out about 35 cents per dollar after 65% tax - leaving super invested avoids the tax but locks the money away. The honest comparison by scenario.",
+   "Claim superannuation leaving Australia vs leave it invested - the real numbers. DASP gets 35 cents per dollar after 65% tax. Complete cost-benefit analysis for backpackers.",
  category: "Super",
  date: "24 March 2026",
  readTime: 6,
@@ -12759,9 +12749,9 @@ The 15% itself is generally the correct final rate on earnings up to the bracket
  },
  {
  slug: "average-tax-refund-working-holiday",
- title: "Average Tax Refund on a Working Holiday Visa: What to Expect",
+ title: "Tax Refund + Superannuation Refund | Working Holiday Visa How Much to Expect",
  description:
- "Working holiday refunds range from a few hundred to several thousand dollars depending on withholding, income and deductions. Worked examples for 417/462 visas.",
+ "Working holiday refunds: tax refund + superannuation (DASP) refund combined. Average amounts for 417/462 visas, how much to expect, worked examples with withholding and deductions.",
  category: "Tax Return",
  date: "29 July 2026",
  readTime: 8,
@@ -12823,14 +12813,14 @@ The Medicare levy exemption (worth 2% of taxable income for most 417/462 holders
  },
  {
  slug: "best-way-to-claim-super-leaving-australia",
- title: "Best Way to Claim Your Super When Leaving Australia (2026)",
+ title: "DIY, Agent, or ATO-Held: 3 Ways to Claim Your Super After Leaving Australia",
  description:
- "Three ways to get your super back after leaving Australia: DASP online yourself, through an agent, or recovering ATO-held super. Timing, costs and payouts compared.",
+ "Once you're eligible for DASP, there are three real ways to get your super back - each with different cost, speed, and hassle. Which one actually fits your situation.",
  category: "Super",
  date: "29 July 2026",
  readTime: 9,
  body: `
-Once you have left Australia and your working holiday visa has ended, you can claim your superannuation as a Departing Australia Superannuation Payment (DASP). Tax of 65% applies to working holiday super, so a 10,000 dollar balance pays out about 3,500 dollars. You can apply free via the ATO DASP portal, or use an agent to handle fund paperwork and certified documents for you.
+Once you've left Australia and your working holiday visa has ended, there isn't just one way to claim your superannuation back as a Departing Australia Superannuation Payment (DASP) - there are three, and they suit different situations. Tax of 65% applies to working holiday super regardless of which path you take, so a 10,000 dollar balance pays out about 3,500 dollars either way. What differs between the three options is cost, speed, and how much of the paperwork lands on you.
 
 ## First: check you are eligible
 
@@ -12858,16 +12848,11 @@ If you do not claim within about 6 months of leaving, funds transfer your balanc
 
 ## What you will need
 
-- Passport details and visa information
-- Your TFN
-- Super fund name and member number (check old payslips or your fund's app)
-- An overseas or Australian bank account for payment
+Whichever option you pick, you'll be asked for the same basics: passport and visa details, your TFN, each fund's name and member number, and a bank account for payment. See our [full DASP document checklist](/blog/dasp-documents-required) for exactly what each fund typically asks for. Not sure which fund your employer paid into? We can [find lost super](/blog/how-to-find-lost-superannuation) across all funds and ATO-held amounts.
 
-Not sure which fund your employer paid into? We can [find lost super](/blog/how-to-find-lost-superannuation) across all funds and ATO-held amounts.
+## How much you actually receive
 
-## How much arrives and when
-
-DASP for working holiday makers is taxed at 65% on the taxed element - the flat outcome for most 417/462 balances is roughly 35 cents in the dollar paid out. Most complete applications are paid within 28 days; incomplete document sets are the main cause of delays. See [how long DASP takes](/blog/how-long-does-dasp-take) for the full timeline.
+Whichever option you choose, the tax treatment is identical: 65% withheld, so roughly 35 cents in the dollar reaches you. What differs between the three options is timing and effort, not the tax rate. For the exact breakdown by balance size see [why DASP is taxed at 65%](/blog/dasp-tax-rate-65-percent-explained), and for realistic timeframes see [how long DASP takes](/blog/how-long-does-dasp-take).
 
 ## Timing your claim around the 6-month transfer
 
@@ -12879,15 +12864,15 @@ The clock that matters: roughly 6 months after your visa ends and you depart, fu
 
 Yes. The alternative is leaving 100% of it behind. On a typical year of full-time work, employer contributions at 12% add up fast - a 8,000 dollar balance still pays you about 2,800 dollars.
 
-### Can I claim DASP while still in Australia?
+### Which of the three options is actually fastest?
 
-No. You must have departed and your visa must have ended. You can prepare everything before you leave, then submit once eligible - which is exactly what we set up for clients through our [superannuation service](/superannuation).
+Going through an agent is usually fastest in practice - not because the ATO processes agent applications any quicker, but because agents catch the errors (a wrong member number, a missing certified copy, an unrecognised passport format) that send DIY applications back and forth with the fund. A clean DIY application with one fund can be just as fast; the DIY route slows down once you have multiple funds or incomplete records.
 
 ### What happens to my super if I never claim it?
 
-It transfers to the ATO as unclaimed money and sits there indefinitely. You can claim it years later, but it earns no fund returns in the meantime.
+It transfers to the ATO as unclaimed money and sits there indefinitely - see [what happens to unclaimed super](/blog/what-happens-to-unclaimed-super) for the full picture. You can claim it years later, but it earns no fund returns in the meantime.
 
-[Get in touch with our team](/contact) before you fly out - ten minutes of preparation saves weeks of chasing documents from overseas.
+[Get in touch with our team](/contact) before you fly out - ten minutes of preparation saves weeks of chasing documents from overseas, whichever option you end up choosing.
  `,
  },
  {

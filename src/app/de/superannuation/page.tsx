@@ -87,6 +87,14 @@ const faqs = [
     answer: 'Ja. Wir helfen Working Holiday Makern aus Deutschland, Österreich, der Schweiz und weltweit, ihre DASP-Rückerstattung komplett online zu beantragen, nachdem sie nach Hause zurückgekehrt sind. Deine Super-Rückerstattung kann direkt auf dein deutsches Bankkonto überwiesen werden.',
   },
   {
+    question: 'Was ist DASP - Departing Australia Superannuation Payment?',
+    answer: 'DASP ist das offizielle Verfahren, mit dem du deine australische Superannuation zurückbekommst, sobald du das Land dauerhaft verlassen hast und dein Visum abgelaufen oder storniert ist. Es ist der einzige Weg für Working Holiday Maker, an ihre Super heranzukommen - solange du in Australien bist, bleibt sie gesperrt. Der Antrag geht direkt an die ATO oder deinen Superfonds, von überall auf der Welt.',
+  },
+  {
+    question: 'Bekomme ich Superannuation, wenn ich unter einer ABN gearbeitet habe?',
+    answer: 'In der Regel nicht. Superannuation-Beiträge sind an eine PAYG-Anstellung gebunden, nicht an ABN-/Auftragnehmereinkommen - Gig-, Rideshare- oder Freelance-Arbeit über eine ABN erzeugt also normalerweise keine automatische Super. Wurdest du formal als Auftragnehmer engagiert, aber faktisch wie ein Angestellter behandelt (feste Arbeitszeiten, gestelltes Werkzeug, keine Möglichkeit zu delegieren), kann dennoch ein Superanspruch bestehen - lohnt sich zu prüfen statt anzunehmen.',
+  },
+  {
     question: 'Wie wird meine DASP Super-Rückerstattung besteuert?',
     answer: 'DASP-Auszahlungen werden zu einem festen Steuersatz besteuert, der vom ATO festgelegt ist und vor der Auszahlung einbehalten wird. Was du bekommst, ist der Nettobetrag nach Steuern. Der genaue Satz hängt von deiner Visumsklasse und der Art der ausgezahlten Super ab.',
   }
@@ -96,7 +104,7 @@ const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation', body: 'Schick uns deine Visa- und Arbeitsdaten, damit wir dich richtig beraten können.' },
   { n: '2', title: 'Schick uns deine Unterlagen',  body: 'Reisepass, TFN und Superfondsinfos - schnell und einfach.' },
   { n: '3', title: 'Wir kümmern uns um alles',  body: 'Wir bereiten alles vor und reichen deinen Antrag korrekt ein.' },
-  { n: '4', title: 'Deine Superauszahlung kommt',    body: 'Dein Geld kommt direkt auf dein australisches Bankkonto.' },
+  { n: '4', title: 'Deine Superauszahlung kommt',    body: 'Dein Geld kommt direkt auf dein Bankkonto - in Australien oder im Ausland.' },
 ]
 
 
@@ -144,14 +152,23 @@ const serviceSchema = {
     '@type': 'Audience',
     name: 'Working Holiday Visuminhaber in Australien (Subclass 417 und 462)',
   },
-  provider: {
-    '@type': 'Organization',
-    '@id': `${SITE_URL}/#organization`,
-    name: 'Working Holiday Tax',
-    url: `${SITE_URL}`,
-    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker.',
-    knowsLanguage: ['de', 'en', 'ja'],
-  },
+  provider: { '@id': `${SITE_URL}/#business` },
+}
+
+// HowTo schema for the 4-step claim process below (STEPS array).
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  inLanguage: 'de',
+  name: 'So beantragst du deine Superannuation (DASP) nach der Abreise aus Australien',
+  description: 'Der Ablauf, mit dem Working Holiday Maker ihre Superannuation über die Departing Australia Superannuation Payment (DASP) zurückbekommen, sobald ihr Visum abgelaufen ist und sie Australien verlassen haben.',
+  totalTime: 'P28D',
+  step: STEPS.map(s => ({
+    '@type': 'HowToStep',
+    position: Number(s.n),
+    name: s.title,
+    text: s.body,
+  })),
 }
 
 
@@ -162,6 +179,7 @@ export default function GermanSuperannuationPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pt-[68px]" style={{background:'linear-gradient(160deg,#fff 0%,#F7FBF9 100%)'}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-6 pb-8 lg:pt-14 lg:pb-14">
@@ -237,7 +255,7 @@ export default function GermanSuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['350+ Backpackern geholfen',<GoogleRating key="rating" variant="pill" lang="de" />,'45+ Länder unterstützt','~1 Std. Antwortzeit'].map((t,i) => (
+              {['Working Holiday Maker weltweit',<GoogleRating key="rating" variant="pill" lang="de" />,'Betreuung durch registrierten Steuerberater','~1 Std. Antwortzeit'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

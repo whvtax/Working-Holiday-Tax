@@ -36,9 +36,20 @@ const SERVICES_LINKS = [
   { label: 'Medicare',           href: '/medicare',       desc: 'Levy exemption and access' },
 ] as const
 
-// Top-level links (Services is a dropdown, others are direct)
+// Expenses by occupation (5 profession pages, under the Expenses dropdown)
+const EXPENSES_LINKS = [
+  { label: 'All Expenses',       href: '/expenses',                   desc: 'Full deductions guide' },
+  { label: 'Delivery Drivers',   href: '/expenses/delivery-drivers',  desc: 'Uber Eats, DoorDash & more' },
+  { label: 'Hospitality',        href: '/expenses/hospitality',       desc: 'Bars, cafes & restaurants' },
+  { label: 'Farm Work',          href: '/expenses/farm-work',         desc: 'Fruit picking & farm jobs' },
+  { label: 'Construction',       href: '/expenses/construction',      desc: 'Tools, PPE & White Card' },
+  { label: 'Labouring',          href: '/expenses/labouring',         desc: 'Warehouse & labour hire' },
+  { label: 'Cleaners',           href: '/expenses/cleaners',          desc: 'ABN, GST & multi-site travel' },
+  { label: 'FIFO',               href: '/expenses/fifo',              desc: 'Zone offset & roster travel' },
+] as const
+
+// Top-level links (Services and Expenses are dropdowns, others are direct)
 const TOP_LINKS = [
-  { label: 'Expenses',   href: '/expenses' },
   { label: 'Calculator', href: '/calculator' },
   { label: 'Blog',       href: '/blog' },
   { label: 'Contact',    href: '/contact' },
@@ -48,7 +59,9 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
+  const [expensesOpen, setExpensesOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const expensesDropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
 
   // Detect locale from URL
@@ -76,17 +89,40 @@ export function Nav() {
         ]
       : SERVICES_LINKS
 
+  const expensesLinks =
+    locale === 'de'
+      ? [
+          { label: 'Alle Ausgaben',        href: '/de/expenses',                   desc: 'Vollständiger Abzugs-Guide' },
+          { label: 'Essenslieferung',      href: '/de/expenses/delivery-drivers',  desc: 'Uber Eats, DoorDash & mehr' },
+          { label: 'Gastronomie',          href: '/de/expenses/hospitality',       desc: 'Bars, Cafés & Restaurants' },
+          { label: 'Farmarbeit',           href: '/de/expenses/farm-work',         desc: 'Obsternte & Farmjobs' },
+          { label: 'Bauarbeit',            href: '/de/expenses/construction',      desc: 'Werkzeug, PSA & White Card' },
+          { label: 'Hilfsarbeiten',        href: '/de/expenses/labouring',         desc: 'Lager & Zeitarbeit' },
+          { label: 'Reinigungskräfte',     href: '/de/expenses/cleaners',          desc: 'ABN, GST & Fahrten zwischen Jobs' },
+          { label: 'FIFO',                 href: '/de/expenses/fifo',              desc: 'Zone-Offset & Reisekosten' },
+        ]
+      : locale === 'ja'
+      ? [
+          { label: 'すべての経費',       href: '/ja/expenses',                   desc: '控除ガイド全体' },
+          { label: 'デリバリー',         href: '/ja/expenses/delivery-drivers',  desc: 'Uber Eats・DoorDashなど' },
+          { label: 'ホスピタリティ',     href: '/ja/expenses/hospitality',       desc: 'バー・カフェ・レストラン' },
+          { label: 'ファームワーク',     href: '/ja/expenses/farm-work',         desc: '果物の収穫・農場の仕事' },
+          { label: '建設業',             href: '/ja/expenses/construction',      desc: '工具・保護具・ホワイトカード' },
+          { label: '軽作業',             href: '/ja/expenses/labouring',         desc: '倉庫・人材派遣' },
+          { label: '清掃業',             href: '/ja/expenses/cleaners',          desc: 'ABN・GST・現場間の移動' },
+          { label: 'FIFO',               href: '/ja/expenses/fifo',              desc: 'ゾーンオフセット・交通費' },
+        ]
+      : EXPENSES_LINKS
+
   const topLinks =
     locale === 'de'
       ? [
-          { label: 'Ausgaben', href: '/de/expenses' },
           { label: 'Rechner',  href: '/de/calculator' },
           { label: 'Blog',     href: '/de/blog' },
           { label: 'Kontakt',  href: '/de/contact' },
         ]
       : locale === 'ja'
       ? [
-          { label: '経費',             href: '/ja/expenses' },
           { label: '計算機',           href: '/ja/calculator' },
           { label: 'ブログ',           href: '/ja/blog' },
           { label: 'お問い合わせ',     href: '/ja/contact' },
@@ -97,6 +133,10 @@ export function Nav() {
     locale === 'de' ? 'Leistungen' :
     locale === 'ja' ? 'サービス' :
     'Services'
+  const expensesLabel =
+    locale === 'de' ? 'Ausgaben' :
+    locale === 'ja' ? '経費' :
+    'Expenses'
   const ctaLabel =
     locale === 'de' ? 'Steuererklärung starten' :
     locale === 'ja' ? 'タックスリターンを依頼する' :
@@ -128,11 +168,24 @@ export function Nav() {
     return () => document.removeEventListener('mousedown', onClick)
   }, [servicesOpen])
 
+  // Close expenses dropdown when clicking outside
+  useEffect(() => {
+    if (!expensesOpen) return
+    const onClick = (e: MouseEvent) => {
+      if (expensesDropdownRef.current && !expensesDropdownRef.current.contains(e.target as Node)) {
+        setExpensesOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClick)
+    return () => document.removeEventListener('mousedown', onClick)
+  }, [expensesOpen])
+
   // Close dropdown on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setServicesOpen(false)
+        setExpensesOpen(false)
         setOpen(false)
       }
     }
@@ -142,6 +195,7 @@ export function Nav() {
 
   const close = () => setOpen(false)
   const isServicePage = servicesLinks.some(s => pathname === s.href)
+  const isExpensePage = expensesLinks.some(e => pathname === e.href)
 
   return (
     <>
@@ -218,6 +272,70 @@ export function Nav() {
                 )}
               </div>
 
+              {/* Expenses Dropdown */}
+              <div ref={expensesDropdownRef} style={{ position: 'relative' }}>
+                <button
+                  type="button"
+                  onClick={() => setExpensesOpen(!expensesOpen)}
+                  onMouseEnter={() => setExpensesOpen(true)}
+                  className="nav-link inline-flex items-center gap-1 text-[13.5px] cursor-pointer bg-transparent border-none p-0"
+                  style={{ color: isExpensePage ? '#0B5240' : '#587066', fontWeight: isExpensePage ? 600 : 400 }}
+                  aria-expanded={expensesOpen}
+                  aria-haspopup="true"
+                >
+                  {expensesLabel}
+                  <svg width="10" height="10" viewBox="0 0 12 12" fill="none" style={{ transform: expensesOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s ease' }} aria-hidden="true">
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {isExpensePage && <span className="absolute -bottom-[22px] left-0 right-0 h-[2px] bg-forest-500" />}
+                </button>
+
+                {/* Dropdown Panel */}
+                {expensesOpen && (
+                  <div
+                    onMouseLeave={() => setExpensesOpen(false)}
+                    style={{
+                      position: 'absolute',
+                      top: 'calc(100% + 16px)',
+                      left: '-16px',
+                      minWidth: '320px',
+                      background: '#fff',
+                      borderRadius: '14px',
+                      boxShadow: '0 12px 32px -8px rgba(11, 82, 64, 0.18), 0 4px 12px -4px rgba(11, 82, 64, 0.08)',
+                      border: '1px solid #E2EFE9',
+                      padding: '8px',
+                      zIndex: 60,
+                    }}
+                  >
+                    {expensesLinks.map(e => {
+                      const active = pathname === e.href
+                      return (
+                        <Link
+                          key={e.href}
+                          href={e.href}
+                          onClick={() => setExpensesOpen(false)}
+                          className="services-dropdown-item"
+                          style={{
+                            display: 'block',
+                            padding: '12px 14px',
+                            borderRadius: '10px',
+                            textDecoration: 'none',
+                            background: active ? '#F7F9F8' : 'transparent',
+                          }}
+                        >
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: '#0B5240', marginBottom: '2px' }}>
+                            {e.label}
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#587066', fontWeight: 400, lineHeight: 1.4 }}>
+                            {e.desc}
+                          </div>
+                        </Link>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
               {/* Top-level direct links */}
               {topLinks.map(l => {
                 const active = pathname === l.href || (l.href.endsWith('/blog') && pathname?.startsWith(l.href))
@@ -275,6 +393,13 @@ export function Nav() {
               { label: 'Super (DASP)',         href: '/de/superannuation' },
               { label: 'Medicare',             href: '/de/medicare' },
               { label: 'Ausgaben',             href: '/de/expenses' },
+              { label: 'Essenslieferung',      href: '/de/expenses/delivery-drivers' },
+              { label: 'Gastronomie',          href: '/de/expenses/hospitality' },
+              { label: 'Farmarbeit',           href: '/de/expenses/farm-work' },
+              { label: 'Bauarbeit',            href: '/de/expenses/construction' },
+              { label: 'Hilfsarbeiten',        href: '/de/expenses/labouring' },
+              { label: 'Reinigungskräfte',     href: '/de/expenses/cleaners' },
+              { label: 'FIFO',                 href: '/de/expenses/fifo' },
               { label: 'Rechner',              href: '/de/calculator' },
               { label: 'Blog',                 href: '/de/blog' },
               { label: 'Kontakt',              href: '/de/contact' },
@@ -287,6 +412,13 @@ export function Nav() {
               { label: 'スーパー受取',       href: '/ja/superannuation' },
               { label: 'メディケア',         href: '/ja/medicare' },
               { label: '経費',               href: '/ja/expenses' },
+              { label: 'デリバリー',         href: '/ja/expenses/delivery-drivers' },
+              { label: 'ホスピタリティ',     href: '/ja/expenses/hospitality' },
+              { label: 'ファームワーク',     href: '/ja/expenses/farm-work' },
+              { label: '建設業',             href: '/ja/expenses/construction' },
+              { label: '軽作業',             href: '/ja/expenses/labouring' },
+              { label: '清掃業',             href: '/ja/expenses/cleaners' },
+              { label: 'FIFO',               href: '/ja/expenses/fifo' },
               { label: '計算機',             href: '/ja/calculator' },
               { label: 'ブログ',             href: '/ja/blog' },
               { label: 'お問い合わせ',       href: '/ja/contact' },
@@ -298,6 +430,13 @@ export function Nav() {
               { label: 'Super',       href: '/superannuation' },
               { label: 'Medicare',    href: '/medicare' },
               { label: 'Expenses',    href: '/expenses' },
+              { label: 'Delivery Drivers', href: '/expenses/delivery-drivers' },
+              { label: 'Hospitality',      href: '/expenses/hospitality' },
+              { label: 'Farm Work',        href: '/expenses/farm-work' },
+              { label: 'Construction',     href: '/expenses/construction' },
+              { label: 'Labouring',        href: '/expenses/labouring' },
+              { label: 'Cleaners',         href: '/expenses/cleaners' },
+              { label: 'FIFO',             href: '/expenses/fifo' },
               { label: 'Calculator',  href: '/calculator' },
               { label: 'Blog',        href: '/blog' },
               { label: 'Contact',     href: '/contact' },

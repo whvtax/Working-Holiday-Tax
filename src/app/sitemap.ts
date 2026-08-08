@@ -38,10 +38,18 @@ const routes = [
   { url: '/calculator',                priority: 0.8,  changeFrequency: 'monthly', translated: true  },
   { url: '/medicare',                  priority: 0.7,  changeFrequency: 'monthly', translated: true  },
   { url: '/expenses',                  priority: 0.8,  changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses/delivery-drivers', priority: 0.75, changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses/hospitality',      priority: 0.75, changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses/farm-work',        priority: 0.75, changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses/construction',     priority: 0.75, changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses/labouring',        priority: 0.75, changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses/cleaners',         priority: 0.75, changeFrequency: 'monthly', translated: true  },
+  { url: '/expenses/fifo',             priority: 0.75, changeFrequency: 'monthly', translated: true  },
   // Blog hub
   { url: '/blog',                      priority: 0.85, changeFrequency: 'weekly',  translated: true  },
   // Contact and supporting pages
   { url: '/contact',                   priority: 0.7,  changeFrequency: 'monthly', translated: true  },
+  { url: '/about',                     priority: 0.6,  changeFrequency: 'monthly', translated: false },
   // Informational pages
   { url: '/tax-residency',             priority: 0.6,  changeFrequency: 'yearly',  translated: true  },
   { url: '/uk-working-holiday-tax',    priority: 0.7,  changeFrequency: 'monthly', translated: false },

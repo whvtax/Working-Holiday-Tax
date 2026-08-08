@@ -160,7 +160,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/ja/tax-return#service`,
   name: 'タックスリターン代行サービス',
   serviceType: 'タックスリターン申告',
-  description: 'オーストラリアのワーキングホリデーメーカー向けタックスリターン代行。登録税理士の監督のもとで最大の還付金を取り戻します。平均還付額は約$2,800。',
+  description: 'オーストラリアのワーキングホリデーメーカー向けタックスリターン代行。登録税理士の監督のもとで最大の還付金を取り戻します。',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
@@ -226,7 +226,7 @@ export default function JapaneseTaxReturnPage() {
                 maxWidth:'48ch',
                 marginBottom:'0',
               }}>
-              通常24時間以内に提出。還付金の平均は約$2,800です。
+              通常24時間以内に提出。受け取れる還付金を、もれなく申告します。
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"
@@ -244,7 +244,7 @@ export default function JapaneseTaxReturnPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['350名以上をサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'45カ国以上に対応','1時間以内に返信'].map((t,i) => (
+              {['信頼と実績のサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'世界中のワーホリに対応','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}
@@ -263,9 +263,9 @@ export default function JapaneseTaxReturnPage() {
             {/* Left: Visual - money refund */}
             <div className="taxret-intro-visual">
               <div className="taxret-refund-card">
-                <p className="taxret-refund-label">平均還付金額</p>
-                <p className="taxret-refund-amount">$2,800</p>
-                <p className="taxret-refund-detail">ワーキングホリデー実績</p>
+                <p className="taxret-refund-label">私たちの約束</p>
+                <p className="taxret-refund-amount">受けられる控除を、もれなく</p>
+                <p className="taxret-refund-detail">ワーキングホリデーメーカーのために</p>
                 <div className="taxret-refund-stars">
                   {Array.from({length:5}).map((_,i) => (
                     <svg key={i} width="14" height="14" viewBox="0 0 12 12" aria-hidden="true">
@@ -302,7 +302,7 @@ export default function JapaneseTaxReturnPage() {
                 <strong>タックスリターン</strong>（日本でいう確定申告）は、毎年の所得をATO（オーストラリア税務署）に申告する手続きです。年間の収入、源泉徴収された税金、控除可能な業務関連経費を照合し、最終的な納税額を確定させます。
               </p>
               <p className="taxret-intro-body">
-                ワーキングホリデーメーカーの多くは<strong>年間で税金を払い過ぎている</strong>ため、差額が還付金として戻ってきます。当社で対応したワーホリの平均還付額は約<strong>$2,800</strong>。$1,000〜$5,000の還付になることも珍しくありません。
+                ワーキングホリデーメーカーの多くは<strong>年間で税金を払い過ぎている</strong>ため、差額が還付金として戻ってきます。当社ではこれまで多くのワーホリの方の還付金申請をサポートしてきました。還付額は収入や控除内容によって異なりますが、<strong>まとまった金額</strong>になることも珍しくありません。
               </p>
               <p className="taxret-intro-body">
                 オーストラリアの会計年度は<strong>7月1日〜翌年6月30日</strong>。提出期限は10月31日ですが、当社のように登録税理士の監督のもとで提出する場合は翌年5月まで延長されます。日本帰国後でも世界中どこからでも申請可能で、還付金はオーストラリア・日本どちらの口座でも受け取れます。

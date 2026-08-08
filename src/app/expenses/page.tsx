@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SITE_URL } from '@/lib/constants'
 import { MobileCta } from '@/components/ui/MobileCta'
+import { RelatedServices } from '@/components/ui/NextStep'
 
 export const metadata: Metadata = {
   title: 'Backpacker Tax Deductions Australia: The Complete Guide',
@@ -325,6 +326,20 @@ export default function ExpensesPage() {
             </div>
           </div>
         </section>
+
+        {/* ── FULL GUIDES BY JOB ───────────────────────────────────────────── */}
+        <RelatedServices
+          label="Full guides by job"
+          items={[
+            { label: 'Delivery Drivers', desc: 'Uber Eats, DoorDash & more',      href: '/expenses/delivery-drivers' },
+            { label: 'Hospitality',      desc: 'Bars, cafes & restaurants',       href: '/expenses/hospitality' },
+            { label: 'Farm Work',        desc: 'Fruit picking & farm jobs',       href: '/expenses/farm-work' },
+            { label: 'Construction',     desc: 'Tools, PPE & White Card',         href: '/expenses/construction' },
+            { label: 'Labouring',        desc: 'Warehouse & labour hire',         href: '/expenses/labouring' },
+            { label: 'Cleaners',         desc: 'ABN, GST & multi-site travel',    href: '/expenses/cleaners' },
+            { label: 'FIFO',             desc: 'Zone offset & roster travel',     href: '/expenses/fifo' },
+          ]}
+        />
 
         {/* ── DISCLAIMER + CTA ─────────────────────────────────────────────── */}
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>

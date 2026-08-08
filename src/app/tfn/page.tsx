@@ -8,8 +8,8 @@ import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: "Get Your TFN - We Apply For You (No 45% Tax) | Working Holiday",
-  description: "Without a TFN your employer withholds 45% instead of 15%. We apply for your Tax File Number under the supervision of a registered tax agent so you start on the right rate from your first payslip.",
+  title: "TFN Application for Working Holiday Visa (417/462) - Avoid 45% Tax",
+  description: "Applying for a TFN on a working holiday visa? Without one your employer withholds 45% instead of 15%. We apply for your Tax File Number under the supervision of a registered tax agent so you start on the right rate from your first payslip.",
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
@@ -72,7 +72,13 @@ const faqs = [
   { question:'What if I forget my TFN?', answer:'You can find your TFN by contacting the ATO directly, by checking previous tax documents, or by asking your tax agent.' },
   { question:'What is a TFN Declaration Form?', answer:'A form you complete when starting a job. It tells your employer how much tax to withhold from your pay.' },
   { question:'Can I apply for a TFN before arriving in Australia?', answer:'You can only apply once you arrive in Australia and your working holiday visa is activated. If you apply before arrival, the ATO will need an Australian postal address to send your TFN to.' },
-  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' }
+  { question:'How does my TFN connect to my working holiday tax refund?', answer:'Your TFN links you to every tax record in Australia. Without it, your employer must withhold tax at the top marginal rate instead of the 15% working holiday rate - which usually means a larger refund when you lodge your tax return.' },
+  { question:'How long does it take to get a Tax File Number?', answer:'The ATO processes TFN applications within 28 days maximum. In practice, most working holiday makers receive their TFN within 2-4 weeks. The TFN arrives as a letter posted to your Australian address.' },
+  { question:'How long does the TFN take to arrive?', answer:'Your TFN letter typically arrives within 2-4 weeks after you submit your application. The ATO can take up to 28 days to process. You can start work before it arrives using your application reference number.' },
+  { question:'What is a Tax File Number for a working holiday visa?', answer:'A Tax File Number (TFN) is a unique 9-digit identifier issued by the ATO. For working holiday visa holders (417 and 462), it determines your tax withholding rate. With a TFN, your employer withholds 15% instead of 45% - essential for your tax refund and superannuation claiming.' },
+  { question:'How long does a TFN take to process and come in the mail?', answer:'Processing takes up to 28 days maximum, typically 2-4 weeks. The TFN arrives by post to your Australian address. Most working holiday makers receive theirs within 2-3 weeks of submitting their application.' },
+  { question:'Can you work without a TFN in Australia?', answer:'Technically yes, but you should not. Without a TFN, your employer is required by law to withhold tax at 45% instead of 15%. You can work while waiting for your TFN to arrive (up to 28 days) by providing your application reference number to your employer.' },
+  { question:'Can you apply for a TFN before entering Australia?', answer:'No. You can only apply for a TFN once you have arrived in Australia and your working holiday visa is activated. You need an Australian residential address to receive your TFN by post, which the ATO verifies is real.' }
 ]
 
 const STEPS = [
@@ -199,7 +205,7 @@ export default function TFNPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['350+ backpackers helped',<GoogleRating key="rating" variant="pill" lang="en" />,'45+ countries served','~1 hour response time'].map((t,i) => (
+              {['Trusted by backpackers',<GoogleRating key="rating" variant="pill" lang="en" />,'Worldwide reach','~1 hour response time'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

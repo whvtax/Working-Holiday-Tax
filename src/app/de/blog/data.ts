@@ -292,10 +292,10 @@ Nutze unseren [Rechner](/de/calculator) für eine schnelle Schätzung oder [meld
 `,
   },
   'best-way-to-claim-super-leaving-australia': {
-    title: 'Super nach der Abreise zurückholen: die beste Methode (2026)',
-    description: 'Drei Wege zu deiner Super nach der Abreise: DASP selbst online, über einen Agenten, oder ATO-verwahrte Beträge. Dauer, Kosten und Auszahlung im Vergleich.',
+    title: 'DIY, Agent oder ATO-Verwahrung: 3 Wege, deine Super nach der Abreise zu holen',
+    description: 'Sobald du DASP-berechtigt bist, gibt es drei echte Wege zu deiner Super - mit unterschiedlichen Kosten, Tempo und Aufwand. Welcher zu deiner Situation passt.',
     body: `
-Sobald du Australien verlassen hast und dein Working-Holiday-Visum abgelaufen ist, kannst du deine Superannuation als Departing Australia Superannuation Payment (DASP) beanspruchen. Auf Working-Holiday-Super fallen 65 % Steuer an, ein Guthaben von 10.000 Dollar wird also mit rund 3.500 Dollar ausgezahlt. Der Antrag über das DASP-Portal des ATO ist kostenlos; alternativ übernimmt ein Agent den Fonds-Papierkram und die beglaubigten Unterlagen für dich.
+Sobald du Australien verlassen hast und dein Working-Holiday-Visum abgelaufen ist, gibt es nicht nur einen Weg, deine Superannuation als Departing Australia Superannuation Payment (DASP) zurückzuholen - sondern drei, die zu unterschiedlichen Situationen passen. Die 65 % Steuer auf Working-Holiday-Super fällt bei allen drei Wegen gleichermaßen an, ein Guthaben von 10.000 Dollar bringt also so oder so rund 3.500 Dollar. Was sich unterscheidet, sind Kosten, Tempo und wie viel Papierkram bei dir hängen bleibt.
 
 ## Zuerst: bist du berechtigt?
 
@@ -323,16 +323,15 @@ Wer nicht innerhalb von rund 6 Monaten nach der Abreise beansprucht, dessen Guth
 
 ## Was du brauchst
 
-- Passdaten und Visumsinformationen
-- Deine TFN
-- Fondsname und Mitgliedsnummer (alte Payslips oder die Fonds-App)
-- Ein Bankkonto im Ausland oder in Australien
+Bei allen drei Wegen brauchst du dieselben Basics: Passdaten und Visumsinformationen, deine TFN, Fondsname und Mitgliedsnummer für jeden Fonds, und ein Bankkonto für die Auszahlung. Die genaue Checkliste je Fonds findest du in [unserer vollständigen DASP-Dokumentencheckliste](/de/blog/dasp-documents-required). Weißt du nicht, in welchen Fonds dein Arbeitgeber eingezahlt hat? Wir können [verlorene Super finden](/de/blog/how-to-find-lost-superannuation) - über alle Fonds und ATO-verwahrten Beträge hinweg.
 
-Du weißt nicht, in welchen Fonds dein Arbeitgeber eingezahlt hat? Wir können [verlorene Super finden](/de/blog/how-to-find-lost-superannuation) - über alle Fonds und ATO-verwahrten Beträge hinweg.
+## Wie viel du tatsächlich bekommst
 
-## Wie viel kommt an und wann
+Egal für welchen Weg du dich entscheidest, die Besteuerung ist identisch: 65 % werden einbehalten, es kommen also rund 35 Cent pro Dollar bei dir an. Was sich zwischen den drei Wegen unterscheidet, ist Tempo und Aufwand - nicht der Steuersatz. Die genaue Aufschlüsselung nach Guthabenhöhe steht in [warum DASP mit 65 % besteuert wird](/de/blog/dasp-tax-rate-65-percent-explained), realistische Zeitrahmen in [wie lange DASP dauert](/de/blog/how-long-does-dasp-take).
 
-DASP für Working Holiday Maker wird mit 65 % auf den besteuerten Anteil belastet - unterm Strich rund 35 Cent pro Dollar. Vollständige Anträge werden meist innerhalb von 28 Tagen ausgezahlt; unvollständige Unterlagen sind die Hauptursache für Verzögerungen. Details in [wie lange DASP dauert](/de/blog/how-long-does-dasp-take).
+## Dein Timing rund um die 6-Monats-Frist
+
+Die entscheidende Frist: rund 6 Monate nachdem dein Visum endet und du ausreist, müssen Fonds nicht beanspruchte Guthaben an das ATO übertragen. Beanspruchst du vorher, hast du es mit deinem Fonds zu tun - App-Zugang, bekannte Mitgliedsnummer, vertrauter Ablauf, aber auch die Papierkram-Standards des Fonds (beglaubigte Kopien, Identitätsprüfung aus dem Ausland). Beanspruchst du danach, hast du es mit dem ATO zu tun - oft weniger Papierkram-Reibung, keine Fondsgebühren, die das Guthaben schmälern, während du gezögert hast, aber du musst erst herausfinden, wohin das Geld gewandert ist. Kein Timing lässt dich dauerhaft Geld verlieren; die Gebührenerosion vor der Übertragung ist die einzige echte Kosten des Wartens. Am besten bleibt, alles [vor dem Abflug](/de/blog/how-to-apply-for-super-back) vorzubereiten, damit der Antrag in der Woche rausgeht, in der die Berechtigung beginnt.
 
 ## Häufige Fragen
 
@@ -340,15 +339,15 @@ DASP für Working Holiday Maker wird mit 65 % auf den besteuerten Anteil belaste
 
 Ja. Die Alternative ist, 100 % liegen zu lassen. Ein Jahr Vollzeitarbeit summiert sich bei 12 % Beitrag schnell - aus 8.000 Dollar Guthaben werden immer noch etwa 2.800 Dollar für dich.
 
-### Kann ich DASP schon in Australien beantragen?
+### Welcher der drei Wege ist tatsächlich am schnellsten?
 
-Nein. Du musst abgereist und dein Visum beendet sein. Vorbereiten lässt sich aber alles vorher - genau das richten wir über unseren [Super-Service](/de/superannuation) für Kunden vor dem Abflug ein.
+In der Praxis meist der Weg über einen Agenten - nicht weil das ATO Agentenanträge schneller bearbeitet, sondern weil Agenten genau die Fehler abfangen (falsche Mitgliedsnummer, fehlende beglaubigte Kopie, ein nicht erkanntes Passformat), die DIY-Anträge im Hin und Her mit dem Fonds ausbremsen. Ein sauberer DIY-Antrag mit einem einzigen Fonds kann genauso schnell sein; der DIY-Weg wird erst langsam, sobald mehrere Fonds oder lückenhafte Unterlagen im Spiel sind.
 
 ### Was passiert, wenn ich nie beanspruche?
 
-Das Geld geht als Unclaimed Money an das ATO und liegt dort unbefristet. Du kannst es Jahre später holen, verdienst in der Zwischenzeit aber keine Fondserträge.
+Das Geld geht als Unclaimed Money an das ATO und liegt dort unbefristet - das vollständige Bild steht in [was mit nicht beanspruchter Super passiert](/de/blog/what-happens-to-unclaimed-super). Du kannst es Jahre später holen, verdienst in der Zwischenzeit aber keine Fondserträge.
 
-[Melde dich vor dem Abflug](/de/contact) - zehn Minuten Vorbereitung sparen dir Wochen Dokumentenjagd aus Deutschland.
+[Melde dich vor dem Abflug](/de/contact) - zehn Minuten Vorbereitung sparen dir Wochen Dokumentenjagd aus Deutschland, egal für welchen Weg du dich am Ende entscheidest.
 `,
   },
   'average-tax-refund-working-holiday': {
@@ -1339,7 +1338,7 @@ Wenn du eine frühere Steuererklärung eingereicht und die Medicare Levy gezahlt
     title: 'Mindestlohn Australien: 26,44 $/Std. ab 1. Juli 2026 (Casual 33,05 $)',
     description: 'Der nationale Mindestlohn stieg am 1. Juli 2026 um 6 % auf 26,44 $ pro Stunde (1.004,90 $/Woche). Casual-Sätze mit 25 % Zuschlag und deine Rechte.',
     body: `
-Der nationale Mindestlohn in Australien beträgt ab 1. Juli 2025 26,44 $ pro Stunde für festangestellte Arbeitnehmer und 33,05 $ pro Stunde für Casual-Arbeitnehmer (das umfasst den 25 %-Casual Loading). Das gilt für alle Arbeitnehmer, auch für Working Holiday Maker. Allerdings sind die meisten Branchen von modernen Awards oder Tarifverträgen abgedeckt, die höhere Mindestsätze als den nationalen Mindestlohn festlegen - der tatsächliche Satz für deine Stelle ist also meistens höher als 26,44 $.
+Der nationale Mindestlohn in Australien beträgt ab 1. Juli 2026 26,44 $ pro Stunde für festangestellte Arbeitnehmer und 33,05 $ pro Stunde für Casual-Arbeitnehmer (das umfasst den 25 %-Casual Loading). Das gilt für alle Arbeitnehmer, auch für Working Holiday Maker. Allerdings sind die meisten Branchen von modernen Awards oder Tarifverträgen abgedeckt, die höhere Mindestsätze als den nationalen Mindestlohn festlegen - der tatsächliche Satz für deine Stelle ist also meistens höher als 26,44 $.
 
 ## Wie wird der australische Mindestlohn festgelegt?
 
@@ -1354,7 +1353,7 @@ Der Mindestlohn wird jährlich überprüft, um mit den Lebenshaltungskosten und 
 
 ## Wie hoch ist der Mindestlohn nach Anstellungsart?
 
-Für das Steuerjahr 2025-26:
+Für das Steuerjahr 2026-27:
 
 - Festangestellte Vollzeit und Teilzeit: 26,44 $ pro Stunde
 - Casual-Arbeitnehmer: 33,05 $ pro Stunde (25 %-Loading inklusive)
@@ -3172,7 +3171,7 @@ Plus das Recht, mindestens den nationalen Mindestlohn oder den geltenden Award-S
 
 Für Backpacker sind die relevantesten Ansprüche:
 
-- **Mindestlohn**: 26,44 $/Stunde für festangestellte Arbeitnehmer, 33,05 $/Stunde für Casuals (ab 1. Juli 2025)
+- **Mindestlohn**: 26,44 $/Stunde für festangestellte Arbeitnehmer, 33,05 $/Stunde für Casuals (ab 1. Juli 2026)
 - **Feiertage**: Penalty Rates von etwa 225 % beim Arbeiten, oder bezahlter Grundsatz beim Nichtarbeiten (nur festangestellt)
 - **Kündigungsfrist**: ordnungsgemäße Frist oder Zahlung statt Frist beim Ende der Anstellung
 - **Maximale wöchentliche Stunden**: Schutz davor, zu unangemessenen Zusatzstunden gezwungen zu werden
@@ -5833,7 +5832,7 @@ Casual-Arbeiter sammeln keinen bezahlten Urlaub an. Stattdessen bekommen sie:
 
 - **25 %-Casual Loading** zusätzlich zum geltenden Award-Stundenlohn
 - Dieses Loading gleicht das Fehlen von bezahltem Urlaub aus
-- Der Casual-Mindestlohn ist 33,05 $/Stunde ab 1. Juli 2025 (nationales Minimum + 25 %)
+- Der Casual-Mindestlohn ist 33,05 $/Stunde ab 1. Juli 2026 (nationales Minimum + 25 %)
 - Die meisten Working Holiday Maker in Gastronomie, Einzelhandel und Farmarbeit sind Casual
 
 Wenn du dich als Casual krank meldest, wirst du für diese Schicht nicht bezahlt. Der Ausgleich ist der höhere Stundenlohn.
@@ -5987,7 +5986,7 @@ Casualangestellte:
 - Bekommen möglicherweise nicht jede Woche Schichten angeboten
 - Haben weniger Jobsicherheit aber mehr Flexibilität
 
-Casual ist die häufigste Anstellungsform für Working Holiday Maker - besonders in Gastronomie, Einzelhandel und Erntearbeit. Stelle sicher, dass das 25 %-Loading in deinem Satz enthalten ist. Das Casualminimum ab 1. Juli 2025 ist 33,05 $/Stunde (nationales Minimum + 25 %).
+Casual ist die häufigste Anstellungsform für Working Holiday Maker - besonders in Gastronomie, Einzelhandel und Erntearbeit. Stelle sicher, dass das 25 %-Loading in deinem Satz enthalten ist. Das Casualminimum ab 1. Juli 2026 ist 33,05 $/Stunde (nationales Minimum + 25 %).
 
 ## Wie findest du heraus, welche du bist?
 
@@ -6086,19 +6085,21 @@ Bewahre ein Foto der Karte auf deinem Handy auf, falls du die physische verliers
 
 ## Kannst du die Kosten als Steuerabsetzung beanspruchen?
 
-Ja. Wenn du den White Cardkurs absolviert hast, um dich für Bauanstellung zu qualifizieren oder sie zu halten:
+Das hängt davon ab, ob es dein erstes White Card oder eine Erneuerung ist:
 
-- Die Kurskosten sind als arbeitsbezogene Ausgabe absetzbar
-- Nimm sie in deine [Steuererklärung](/de/tax-return) auf
-- Bewahre die Quittung als Beleg auf
+- Dein allererstes White Card ist grundsätzlich **nicht** absetzbar. Das ATO behandelt es wie einen ersten Führerschein: Kosten, um eine Qualifikation zu erwerben, die du erst brauchst, um für Bauarbeit überhaupt infrage zu kommen, sind eine private Ausgabe, keine arbeitsbezogene.
+- Die Erneuerung eines White Cards, das du bereits besitzt, während du schon auf der Baustelle arbeitest, **ist** als arbeitsbezogene Ausgabe absetzbar.
+- Die gleiche Logik (erste Ausstellung vs. Erneuerung) gilt auch für einen ersten Staplerschein oder eine Schwerfahrzeug-Berechtigung.
 
-Unser Team nimmt diese Schulungskosten auf, wenn wir deine Steuererklärung vorbereiten. Wenn du mehrere arbeitsbezogene Zertifikate hast, beanspruchen wir alle.
+Bewahre trotzdem jede Quittung auf und nimm absetzbare Erneuerungen mit Belegen in deine [Steuererklärung](/de/tax-return) auf.
+
+Unser Team prüft, welche deiner arbeitsbezogenen Zertifikate absetzbar sind, wenn wir deine Steuererklärung vorbereiten.
 
 [Kontaktiere unser Team](/de/contact), wenn du Lohn-, [Super](/de/superannuation)- oder Arbeitsplatzprobleme hast - wir kümmern uns um die Steuer- und Superseite und koordinieren wo nötig mit Fair Work.
  
 ## Kurs, Kosten und wo online akzeptiert wird
 
-Die allgemeine Einweisung (CPCWHS1001) dauert wenige Stunden. NSW, VIC und die meisten Bundesstaaten akzeptieren akkreditierte Online-Kurse mit Webcam-Prüfung; QLD verlangt Präsenz- oder Zoom-verifizierte Formate - prüfe die aktuellen Regeln des Bundesstaats, bevor du bezahlst. Die Kosten liegen typischerweise unter hundert Dollar, die Karte läuft nie ab (nach langen Pausen außerhalb der Branche kann eine Auffrischung verlangt werden), und jeder Bundesstaat erkennt die Karten aller anderen an. Setze die Gebühr bei der Steuer ab - sobald du am Bau arbeitest, ist sie eine berufsbezogene Weiterbildungsausgabe.
+Die allgemeine Einweisung (CPCWHS1001) dauert wenige Stunden. NSW, VIC und die meisten Bundesstaaten akzeptieren akkreditierte Online-Kurse mit Webcam-Prüfung; QLD verlangt Präsenz- oder Zoom-verifizierte Formate - prüfe die aktuellen Regeln des Bundesstaats, bevor du bezahlst. Die Kosten liegen typischerweise unter hundert Dollar, die Karte läuft nie ab (nach langen Pausen außerhalb der Branche kann eine Auffrischung verlangt werden), und jeder Bundesstaat erkennt die Karten aller anderen an. Eine Erneuerung ist eine absetzbare berufsbezogene Weiterbildungsausgabe, sobald du bereits am Bau arbeitest - dein allererstes Card nicht, aus demselben Grund wie ein erster Führerschein.
 `,
   },
 
@@ -6557,7 +6558,7 @@ Dein Arbeitgeber muss den höheren Betrag zahlen zwischen dem Piece Rate und dem
 Viele Farmen zahlen nach Piece Rate (pro Bin, pro Kilogramm), was unter dem Horticulture Award legal ist. Allerdings:
 
 - Dein Stundenverdienst muss mindestens dem Casual-Mindeststundenlohn entsprechen
-- Für 2025-26 ist das Casual-Minimum etwa 33,05 $/Stunde einschließlich Casual Loading
+- Für 2026-27 ist das Casual-Minimum etwa 33,05 $/Stunde einschließlich Casual Loading
 - Wenn Piece-Rate-Einkünfte für eine Stunde darunter fallen, muss der Arbeitgeber deinen Lohn aufstocken
 - Die Aufstockung ist eine gesetzliche Anforderung, nicht optional
 
@@ -7108,7 +7109,7 @@ Der TRS-Prozess selbst wird am Flughafen vor deinem Abflug gemacht, aber das Tim
     title: 'Fahrzeugkosten und Logbücher für Working Holiday Maker mit ABN',
     description: 'Wenn du ein Auto für Arbeit unter deiner ABN nutzt, kannst du eventuell Fahrzeugkosten absetzen. Hier erfährst du, wie es funktioniert.',
     body: `
-Wenn du unter einer ABN arbeitest und ein Fahrzeug für das Geschäft nutzt, kannst du Fahrzeugkosten als Steuerabzug geltend machen. Es gibt zwei Methoden: Cent pro Kilometer (88 Cent/km, bis zu 5.000 km/Jahr, kein Logbuch nötig) und die Logbuch-Methode (tatsächliche Kosten basierend auf dem geschäftlichen Nutzungsanteil absetzen). Fahrten von deiner Unterkunft zu einer Arbeitsstelle oder zwischen Jobstandorten zählen als Geschäftsreisen. Fahrten von zu Hause zu deinem regulären Arbeitsplatz zählen nicht. Unser Team wählt die Methode, die dir den größten legitimen Abzug bringt.
+Wenn du unter einer ABN arbeitest und ein Fahrzeug für das Geschäft nutzt, kannst du Fahrzeugkosten als Steuerabzug geltend machen. Es gibt zwei Methoden: Cent pro Kilometer (91 Cent/km, bis zu 5.000 km/Jahr, kein Logbuch nötig) und die Logbuch-Methode (tatsächliche Kosten basierend auf dem geschäftlichen Nutzungsanteil absetzen). Fahrten von deiner Unterkunft zu einer Arbeitsstelle oder zwischen Jobstandorten zählen als Geschäftsreisen. Fahrten von zu Hause zu deinem regulären Arbeitsplatz zählen nicht. Unser Team wählt die Methode, die dir den größten legitimen Abzug bringt.
 
 ## Kannst du Fahrzeugkosten mit einer ABN absetzen?
 
@@ -7135,9 +7136,9 @@ Der Schlüssel: Geschäftsfahrten brauchen einen echten geschäftlichen Zweck. P
 
 Die einfachste Methode für die meisten Working Holiday Maker:
 
-- Fester Satz von **88 Cent pro Kilometer** (aktueller ATO-Satz)
+- Fester Satz von **91 Cent pro Kilometer** (aktueller ATO-Satz)
 - Bis zu **5.000 km pro Jahr** absetzbar
-- Maximaler Abzug: 4.400 $ pro Jahr (5.000 km × 88 Cent)
+- Maximaler Abzug: 4.550 $ pro Jahr (5.000 km × 91 Cent)
 - **Kein detailliertes Logbuch erforderlich**
 
 Um diese Methode zu nutzen, halte eine einfache Aufzeichnung deiner Geschäftsfahrten:
@@ -7479,7 +7480,7 @@ Objections gewinnen durch Struktur, nicht Eloquenz - der ATO-Prüfer braucht vie
     title: 'Akkordlohn bei Farmarbeit: wie Working Holiday Maker für Erntearbeit bezahlt werden',
     description: 'Akkordlohn ist üblich beim Obstpflücken und bei der Erntearbeit in Australien. Hier erfährst du, wie es funktioniert und was die Mindestlohnregeln sind.',
     body: `
-Akkordlohn (Piece Rates) ist ein Bezahlungssystem, das in der australischen Farmarbeit üblich ist - du wirst pro geernteter Einheit bezahlt (pro Kilogramm, pro Bin, pro Tray) statt pro Stunde. Akkordlohn ist unter dem Horticulture Award legal, aber das australische Recht verlangt, dass der resultierende Stundenlohn mindestens dem Casual-Mindestlohn entspricht (33,05 $/Stunde ab 1. Juli 2025). Wenn dein Akkordlohn-Einkommen für eine Stunde darunter fällt, muss dein Arbeitgeber deinen Lohn auf das Minimum aufstocken. Viele Working Holiday Maker in Farmarbeit sind unterbezahlt, weil Arbeitgeber die Top-up-Regel nicht anwenden. Unser Team kann deine Aufzeichnungen prüfen und das zurückholen, was dir geschuldet wird.
+Akkordlohn (Piece Rates) ist ein Bezahlungssystem, das in der australischen Farmarbeit üblich ist - du wirst pro geernteter Einheit bezahlt (pro Kilogramm, pro Bin, pro Tray) statt pro Stunde. Akkordlohn ist unter dem Horticulture Award legal, aber das australische Recht verlangt, dass der resultierende Stundenlohn mindestens dem Casual-Mindestlohn entspricht (33,05 $/Stunde ab 1. Juli 2026). Wenn dein Akkordlohn-Einkommen für eine Stunde darunter fällt, muss dein Arbeitgeber deinen Lohn auf das Minimum aufstocken. Viele Working Holiday Maker in Farmarbeit sind unterbezahlt, weil Arbeitgeber die Top-up-Regel nicht anwenden. Unser Team kann deine Aufzeichnungen prüfen und das zurückholen, was dir geschuldet wird.
 
 ## Was ist ein Akkordlohn?
 
@@ -7498,7 +7499,7 @@ Akkordlohn ist darauf ausgelegt, Produktivität zu belohnen. Erfahrene Pflücker
 **Ja**. Das ist die kritischste Regel zu verstehen:
 
 - Akkordlohn-Arbeiter müssen mindestens den Casual-Mindeststundenlohn verdienen
-- Für 2025-26 ist dieses Minimum 33,05 $/Stunde (nationales Minimum + 25 % Casual Loading)
+- Für 2026-27 ist dieses Minimum 33,05 $/Stunde (nationales Minimum + 25 % Casual Loading)
 - Das Minimum wird pro Lohnperiode berechnet
 - Wenn dein effektiver Stundenlohn unter 33,05 $ fällt, muss der Arbeitgeber aufstocken
 
@@ -7513,7 +7514,7 @@ Am Ende jeder Lohnperiode:
 3. Einkünfte geteilt durch Stunden = effektiver Stundenlohn
 4. Falls unter 33,05 $/Stunde, muss der Arbeitgeber aufstocken
 
-Beispiel: 400 $ Akkordlohn über 20 Stunden = 20 $/Stunde effektiv. Unter Minimum. Der Arbeitgeber muss um 223,80 $ aufstocken (33,05 $ × 20 = 623,80 $ - 400 $), um das gesetzliche Minimum zu erreichen.
+Beispiel: 400 $ Akkordlohn über 20 Stunden = 20 $/Stunde effektiv. Unter Minimum. Der Arbeitgeber muss um 261 $ aufstocken (33,05 $ × 20 = 661 $ - 400 $), um das gesetzliche Minimum zu erreichen.
 
 Wenn dein Arbeitgeber diese Aufstockung nicht anwendet, verstößt er gegen den Fair Work Act.
 
@@ -7539,7 +7540,7 @@ Führe Aufzeichnungen über:
 Um unbezahlte Löhne zurückzuholen:
 
 1. Berechne deine Einkünfte pro Lohnperiode geteilt durch gearbeitete Stunden
-2. Vergleich gegen 33,05 $/Stunde (Casualminimum für 2025-26)
+2. Vergleich gegen 33,05 $/Stunde (Casualminimum für 2026-27)
 3. Identifiziere den Fehlbetrag
 4. Sprich das Thema mit deinem Arbeitgeber mit Belegen an
 5. Wenn ungeklärt, [kontaktiere unser Team](/de/contact)
@@ -7609,7 +7610,7 @@ Vor der Registrierung prüfe, ob die Agentur lizenziert ist. Mehrere australisch
 
 Dieselben Rechte gelten, egal ob du direkt für ein Unternehmen oder über eine Agentur arbeitest:
 
-- Casualmindestsatz für deine Branche (33,05 $/Stunde für 2025-26)
+- Casualmindestsatz für deine Branche (33,05 $/Stunde für 2026-27)
 - Lohnzettel innerhalb von 24 Stunden nach jeder Bezahlung
 - Super zu 12 % des Bruttoeinkommens (ab 1. Juli 2025)
 - Sichere Arbeitsumgebung
@@ -7803,7 +7804,7 @@ Lohnraub (weniger bezahlt zu werden, als dir gesetzlich zusteht) ist leider übl
 
 Lohnraub umfasst viele spezifische Praktiken:
 
-- **Unter Mindestlohn**: weniger bezahlt als der Casual-Mindestsatz (33,05 $/Stunde für 2025-26)
+- **Unter Mindestlohn**: weniger bezahlt als der Casual-Mindestsatz (33,05 $/Stunde für 2026-27)
 - **Fehlende Penalty Rates**: Wochenend-, Feiertags- oder Überstundenarbeit zum Grundsatz bezahlt
 - **Unbezahlte Super**: 12 % Super nicht gezahlt (oder zu niedrigerem Satz)
 - **Übermäßige Abzüge**: Unterkunfts-/Transportgebühren, die den effektiven Lohn unter das Minimum bringen
@@ -7825,7 +7826,7 @@ Die einfachsten Prüfungen:
 
 Für die meisten Working Holiday Maker in Standardrollen:
 
-- 2025-26 Casual-Minimum: 33,05 $/Stunde
+- 2026-27 Casual-Minimum: 33,05 $/Stunde
 - Sonntagspenalty-Satz (Gastronomie): etwa 54 $/Stunde
 - Feiertagssatz: etwa 70 $/Stunde
 - Super: 12 % des Bruttolohns zusätzlich
@@ -8850,7 +8851,7 @@ Der Fair Work Ombudsman hat klare Richtlinien herausgegeben, dass unbezahlte Arb
 
 Falls eine Probeschicht ungesetzlich unbezahlt war, schuldet man dir Löhne zum relevanten Mindestsatz für die gearbeiteten Stunden. Für die meisten Working-Holiday-Maker-Jobs:
 
-- Der Mindestlohn (derzeit 26,44 $ pro Stunde ab Juli 2025)
+- Der Mindestlohn (derzeit 26,44 $ pro Stunde ab Juli 2026)
 - Oder der höhere Award-Satz für die Branche (Gastronomie, Einzelhandel, Landwirtschaft haben alle eigene Awards)
 - Plus Casual Loading (meistens 25 %), falls du Casualarbeiter warst
 - Plus Penalty Rates, falls die Probe an einem Wochenende, Abend oder Feiertag war
