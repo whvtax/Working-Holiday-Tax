@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "TFN申請代行｜45%課税を避けるために（ワーホリ向け）",
-  description: "TFNがないと雇用主は15%ではなく45%を源泉徴収します。登録税理士の監督のもとTFN申請を代行し、最初の給与から正しい税率が適用される状態にします。",
+  description: "TFNがないと雇用主は15%ではなく45%を源泉徴収します。ワーホリ専門チームがTFN申請を代行し、最初の給与から正しい税率が適用される状態にします。",
   keywords: [
     'TFN 申請 オーストラリア',
     'TFN 申請 ワーホリ',
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja/tfn`,
     siteName: 'Working Holiday Tax',
     title: 'TFN申請 - ワーホリ オーストラリア 還付金の第一歩',
-    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金を受け取るための第一歩。登録税理士の監督のもとでサポート。',
+    description: 'TFN（タックスファイルナンバー）を最短で正しく取得。タックスリターン還付金を受け取るための第一歩。専門チームが日本語で対応。ワーホリ専門チームがサポート。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -70,7 +70,7 @@ const faqs = [
   },
   { question: 'TFNを取得する前から働けますか？', answer: 'はい、TFNの到着を待たずにすぐに働き始めることができます。ただし、勤務開始から28日以内に雇用主にTFNを提出する必要があります。提出されるまで、雇用主は最高税率の45%で源泉徴収する義務があります。後日タックスリターンで取り戻せますが、到着前に申請しておくのがおすすめです。' },
   { question: '観光ビザでもTFNは取得できますか？', answer: 'いいえ、観光ビザでは取得できません。TFNを申請するには、就労許可のあるビザ（ワーキングホリデービザ417・462、学生ビザ、就労ビザなど）が必要です。' },
-  { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去のタックスリターンの控えや給与明細から確認できます。また、登録税理士の監督のもとでATO記録から取得することも可能です。' },
+  { question: 'TFNを忘れてしまった場合はどうすればいいですか？', answer: 'ATOに直接問い合わせるか、過去のタックスリターンの控えや給与明細から確認できます。また、ワーホリ専門チームがATO記録から取得することも可能です。' },
   { question: 'TFN Declaration（タックスファイルナンバー宣言書）とは？', answer: '新しい仕事を始める際に雇用主に提出する書類です。あなたのTFN、ビザステータス、税務区分を伝えることで、雇用主が正しい税率（ワーキングホリデーメーカーは15%）で源泉徴収できるようになります。' },
   { question: 'オーストラリア渡航前にTFNを申請できますか？', answer: 'TFNの申請はオーストラリア到着後、ワーキングホリデービザがアクティベートされてから行います。ATOからのTFN通知書を受け取るため、オーストラリア国内の郵送先住所が必要です。シェアハウスやホステルの住所でも問題ありません。' },
   { question: 'TFNとタックスリターン還付金の関係は？', answer: 'TFNはオーストラリアの税務記録すべてをあなたに紐付ける番号です。TFNを雇用主に提出していない場合、ワーホリ税率15%ではなく最高税率45%で源泉徴収されます。その分、タックスリターン提出時に大きな還付金として戻ってくることが多いです。' }
@@ -109,7 +109,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/ja/tfn#service`,
   name: 'TFN申請代行サービス',
   serviceType: 'タックスファイルナンバー申請',
-  description: 'オーストラリアのワーキングホリデーメーカー向けTFN申請代行。登録税理士の監督のもとで日本語ですべて代行します。',
+  description: 'オーストラリアのワーキングホリデーメーカー向けTFN申請代行。ワーホリ専門チームが日本語ですべて代行します。',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
@@ -299,7 +299,7 @@ export default function TFNPageJA() {
             <span className="section-label center">かんたんな方法</span>
             <h2 className="font-serif font-black text-ink mx-auto"
               style={{ fontSize: 'clamp(19px, 2.04vw, 26px)', lineHeight: 1.2, letterSpacing: '-0.02em', marginTop: '10px' }}>
-              自分で申請するより、登録税理士の監督のもとで任せる方が確実
+              自分で申請するより、専門チームに任せる方が確実
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6 max-w-3xl lg:max-w-4xl mx-auto" style={{ alignItems: 'stretch' }}>

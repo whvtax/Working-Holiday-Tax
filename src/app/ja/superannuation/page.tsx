@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "スーパーアニュエーション返金代行｜帰国後の受け取りをお任せ（DASP）",
-  description: "帰国後もオーストラリアにあなたのスーパーが残っています。雇用主が給与の12%を積み立てた資金を、登録税理士によりDASPとして代行請求されます。必要事項をお送りいただくだけで、ファンド探し・書類・入金まで日本語で対応します。",
+  description: "帰国後もオーストラリアにあなたのスーパーが残っています。雇用主が給与の12%を積み立てた資金を、税理士によりDASPとして代行請求されます。必要事項をお送りいただくだけで、ファンド探し・書類・入金まで日本語で対応します。",
   keywords: [
     // Refund-focused
     'スーパー 返金 オーストラリア',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja/superannuation`,
     siteName: 'Working Holiday Tax',
     title: "スーパーアニュエーション返金代行｜帰国後の受け取りをお任せ（DASP）",
-    description: 'オーストラリアのスーパー受取をDASPで受け取り。ワーホリ専門のチームが登録税理士の監督のもとですべて代行します。',
+    description: 'オーストラリアのスーパー受取をDASPで受け取り。ワーホリ専門のチームですべて代行します。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -251,7 +251,7 @@ export default function JapaneseSuperannuationPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-x-4 gap-y-2 lg:flex lg:flex-row lg:flex-nowrap lg:items-center lg:gap-y-0 lg:gap-x-7">
-              {['世界中のワーホリメーカーをサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'登録税理士が監督','1時間以内に返信'].map((t,i) => (
+              {['世界中のワーホリメーカーをサポート',<GoogleRating key="rating" variant="pill" lang="ja" />,'ワーホリ専門チーム','1時間以内に返信'].map((t,i) => (
                 <span key={i} className="inline-flex items-center gap-1.5 whitespace-nowrap"
                   style={{ fontSize:'12px', color:'rgba(10,15,13,0.45)' }}>
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="6" fill="#EAF6F1" stroke="#C8EAE0" strokeWidth="0.5"/><path d="M4 6.5l2 2 3.5-3.5" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>{t}

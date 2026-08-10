@@ -2,15 +2,15 @@ import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
+import { WA_URL, SITE_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { getGoogleRating } from '@/lib/googleData'
 
 // ─── METADATA - rich SEO + AI optimized for Japanese market ─────────────
 export const metadata: Metadata = {
-  title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
+  title: 'オーストラリア タックスリターン 還付金 | ワーホリ（417・462）専門',
   description:
-    'オーストラリア タックスリターン 還付金を、ワーキングホリデー（417・462ビザ）専門のチームが登録税理士の監督のもとで手続き代行。TFN申請、スーパーアニュエーション返金（DASP）、ABN登録まで日本語でオンライン完結。帰国後の申請にも対応します。',
+    'オーストラリア タックスリターン 還付金を、ワーキングホリデー（417・462ビザ）専門のチームが手続き代行。TFN申請、スーパーアニュエーション返金（DASP）、ABN登録まで日本語でオンライン完結。帰国後の申請にも対応します。',
   keywords: [
     // Primary refund-focused terms (core service)
     'オーストラリア タックスリターン 還付金',
@@ -77,19 +77,19 @@ export const metadata: Metadata = {
     alternateLocale: ['en_AU', 'de_DE'],
     url: `${SITE_URL}/ja`,
     siteName: 'Working Holiday Tax',
-    title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
-    description: 'オーストラリアのワーホリ（417・462ビザ）専門。登録税理士の監督のもとで、タックスリターン還付金、TFN申請、スーパーアニュエーション返金（DASP）まで日本語ですべてオンライン。帰国後も対応。',
+    title: 'オーストラリア タックスリターン 還付金 | ワーホリ（417・462）専門',
+    description: 'オーストラリアのワーホリ（417・462ビザ）専門。タックスリターン還付金、TFN申請、スーパーアニュエーション返金（DASP）まで日本語ですべてオンライン。帰国後も対応。',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'オーストラリア タックスリターン 還付金 - 登録税理士の監督のもとでワーホリ（417・462ビザ）専門',
+      alt: 'オーストラリア タックスリターン 還付金 - ワーホリ（417・462ビザ）専門',
     }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'オーストラリア タックスリターン 還付金 | ワーホリ専門',
-    description: 'オーストラリアのワーホリ専門。登録税理士の監督のもとでタックスリターン還付金を日本語で代行申請。帰国後でも対応。',
+    description: 'オーストラリアのワーホリ専門。タックスリターン還付金を日本語で代行申請。帰国後でも対応。',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -118,7 +118,7 @@ const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill=
 const STEPS = [
   { n: '1', title: 'ご相談・状況の確認',     body: 'TFN、ABN、ワーホリ タックスリターン、スーパー受取など、必要なサービスを最初にご案内します。' },
   { n: '2', title: '必要書類のご準備',       body: 'シンプルなチェックリストに沿って情報をお送りいただくだけ。複雑な書類作業は不要です。' },
-  { n: '3', title: '当社が手続きを代行',     body: '登録税理士の監督のもとで、書類作成からATO（オーストラリア税務署）への申請まですべて代行します。' },
+  { n: '3', title: '当社が手続きを代行',     body: '書類作成からATO（オーストラリア税務署）への申請まで、すべてオンラインで代行します。' },
   { n: '4', title: 'ATOからの結果通知',     body: 'ATOによるタックスリターン処理が完了次第、還付金が発生する場合はご指定のオーストラリアの銀行口座へ直接お振り込みします。' },
 ]
 
@@ -133,7 +133,7 @@ const SERVICES = [
 const FAQS = [
   {
     question: 'オーストラリア タックスリターンの還付金はどのような仕組みですか？',
-    answer: '417・462ビザでオーストラリアで働いていた場合、雇用主は毎回の給与から税金を源泉徴収しています。会計年度末（6月30日）の後にATO（オーストラリア税務署）へタックスリターンを提出すると、払いすぎていた分が還付金としてあなたに戻ってきます。還付金の金額は、所得、税務上の居住者ステータス、申告可能な控除、雇用主がワーキングホリデーメーカー雇用主として登録されていたかなど、個々の状況によって異なります。登録税理士の監督のもとで状況を確認し、正しく申告手続きを行います。',
+    answer: '417・462ビザでオーストラリアで働いていた場合、雇用主は毎回の給与から税金を源泉徴収しています。会計年度末（6月30日）の後にATO（オーストラリア税務署）へタックスリターンを提出すると、払いすぎていた分が還付金としてあなたに戻ってきます。還付金の金額は、所得、税務上の居住者ステータス、申告可能な控除、雇用主がワーキングホリデーメーカー雇用主として登録されていたかなど、個々の状況によって異なります。ワーホリ専門チームが状況を確認し、正しく申告手続きを行います。',
   },
   {
     question: 'サービスの料金はいくらですか？',
@@ -166,8 +166,8 @@ export default async function JapaneseHomePage() {
     '@type': 'WebPage',
     '@id': `${SITE_URL}/ja/#webpage`,
     url: `${SITE_URL}/ja`,
-    name: 'オーストラリア タックスリターン 還付金 | ワーホリ専門・登録税理士監督',
-    description: '417・462ビザのワーキングホリデーメーカー専門。登録税理士の監督のもとで、タックスリターン還付金、TFN、スーパー（DASP）、ABNまで日本語ですべてオンライン。',
+    name: 'オーストラリア タックスリターン 還付金 | ワーホリ専門',
+    description: '417・462ビザのワーキングホリデーメーカー専門。タックスリターン還付金、TFN、スーパー（DASP）、ABNまで日本語ですべてオンライン。',
     inLanguage: 'ja',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -218,7 +218,6 @@ export default async function JapaneseHomePage() {
     '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
     '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
-    legalName: AGENT_NAME,
     url: SITE_URL,
     telephone: '+61424513998',
     priceRange: '$$',
@@ -229,7 +228,7 @@ export default async function JapaneseHomePage() {
       width: 512,
       height: 512,
     },
-    description: 'オーストラリアで登録税理士の監督のもとで運営。ワーキングホリデーメーカー（ビザサブクラス417・462）専門。日本語・英語・ドイツ語対応。',
+    description: 'ワーキングホリデーメーカー（ビザサブクラス417・462）専門のオーストラリアの税務サービス。日本語をはじめ、どの言語でも対応。',
     foundingDate: '2020',
     knowsLanguage: ['en', 'de', 'ja'],
     areaServed: {
@@ -292,7 +291,6 @@ export default async function JapaneseHomePage() {
       ],
     },
     sameAs: [
-      'https://www.tpb.gov.au/public-register',
     ],
     knowsAbout: [
       'オーストラリア税法',
@@ -375,8 +373,8 @@ export default async function JapaneseHomePage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 reveal" style={{ marginBottom: '36px' }}>
             {[
-              { title: 'ワーホリ税務の専門家', body: '417・462ビザのワーキングホリデーメーカーの税務だけを専門に扱う、登録税理士監督のもとのチーム。あなたに関わるルールを熟知しています。' },
-              { title: 'ATO登録税理士の監督', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。ATOの最新ルールに完全準拠して申告します。' },
+              { title: 'ワーホリ税務の専門家', body: '417・462ビザのワーキングホリデーメーカーの税務だけを専門に扱うチーム。あなたに関わるルールを熟知しています。' },
+              { title: 'ATOワーホリ専門チーム', body: 'オーストラリア税務署（ATO）に登録された税理士が監督。ATOの最新ルールに完全準拠して申告します。' },
               { title: '日本語で完全対応', body: '専門用語はわかりやすく説明。複雑な書類もこちらで代行するので、日本語だけで完結します。' },
               { title: 'すべておまかせ', body: 'TFN取得からタックスリターン還付金の受け取りまで、オーストラリアでも帰国後でもすべてお任せください。' },
             ].map((item, i) => (

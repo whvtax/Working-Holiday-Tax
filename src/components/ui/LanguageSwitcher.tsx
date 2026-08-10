@@ -24,10 +24,20 @@ export function LanguageSwitcher({ variant = 'desktop' }: { variant?: 'desktop' 
   const stripLocale = (p: string) =>
     p.replace(/^\/de(\/|$)/, '/').replace(/^\/ja(\/|$)/, '/') || '/'
 
+  // Routes that only exist in English - switching locale falls back to that locale's home
+  const EN_ONLY_ROUTES = ['/uk-working-holiday-tax']
+  // The Medicare category slug differs between locales (EN: medicare-and-other, DE/JA: medicare)
+  const toLocalizedPath = (p: string) =>
+    EN_ONLY_ROUTES.includes(p) ? '/' : p.replace(/^\/blog\/category\/medicare-and-other$/, '/blog/category/medicare')
+  const toEnglishPath = (p: string) =>
+    p.replace(/^\/blog\/category\/medicare$/, '/blog/category/medicare-and-other')
+
   const baseUrl = stripLocale(pathname)
-  const englishHref  = baseUrl === '/' ? '/'   : baseUrl
-  const germanHref   = baseUrl === '/' ? '/de' : `/de${baseUrl}`
-  const japaneseHref = baseUrl === '/' ? '/ja' : `/ja${baseUrl}`
+  const enBase  = toEnglishPath(baseUrl)
+  const locBase = toLocalizedPath(baseUrl)
+  const englishHref  = enBase === '/' ? '/'   : enBase
+  const germanHref   = locBase === '/' ? '/de' : `/de${locBase}`
+  const japaneseHref = locBase === '/' ? '/ja' : `/ja${locBase}`
 
   // Close dropdown on outside click
   useEffect(() => {

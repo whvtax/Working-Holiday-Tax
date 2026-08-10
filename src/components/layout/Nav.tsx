@@ -199,7 +199,7 @@ export function Nav() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/96 backdrop-blur-xl shadow-sm' : ''}`}
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? 'bg-white/95 backdrop-blur-xl shadow-sm' : ''}`}
         style={scrolled ? { borderBottom: '1px solid rgba(205,227,219,0.45)' } : {}}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-[68px] flex items-center justify-between gap-5">
@@ -474,13 +474,6 @@ export function Nav() {
               <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
-          <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
-            aria-label="Registered Tax Practitioners Board"
-            className="flex items-center justify-center rounded-full transition-opacity hover:opacity-70 overflow-hidden"
-            style={{ width: '40px', height: '40px', border: '1.5px solid #C8EAE0' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={24} height={24} style={{ objectFit: 'contain' }} />
-          </a>
         </div>
       </div>
     </>

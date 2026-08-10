@@ -8,8 +8,8 @@ import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: "オーストラリアのタックスリターン代行｜登録税理士により申請",
-  description: "myGovも書類作成も不要。417・462ビザのタックスリターンは登録税理士により代行申請され、メディケア・レヴィ免除や控除もすべて申請されます。帰国後の日本からのご依頼にも対応、やり取りはすべて日本語です。",
+  title: "オーストラリアのタックスリターン代行｜ワーホリ専門チーム",
+  description: "myGovも書類作成も不要。417・462ビザのタックスリターンは専門チームにより代行申請され、メディケア・レヴィ免除や控除もすべて申請されます。帰国後の日本からのご依頼にも対応、やり取りはすべて日本語です。",
   keywords: [
     // Refund-focused (primary)
     'オーストラリア タックスリターン 還付金',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     'タックスリターン 必要書類 ワーホリ',
     'オーストラリア 確定申告 ワーホリ',
     'オーストラリア 滞在後 税金 還付',
-    '登録税理士 オーストラリア 日本語',
+    'ワーホリ タックスリターン 日本語',
     '日豪租税条約 ワーホリ',
     'Notice of Assessment 日本語',
   ],
@@ -63,8 +63,8 @@ export const metadata: Metadata = {
     locale: 'ja_JP',
     url: `${SITE_URL}/ja/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: "オーストラリアのタックスリターン代行｜登録税理士により申請",
-    description: '417・462ビザのワーホリ専門。登録税理士の監督のもとで、タックスリターン還付金の手続きを日本語で代行。帰国後も対応。',
+    title: "オーストラリアのタックスリターン代行｜ワーホリ専門チーム",
+    description: '417・462ビザのワーホリ専門。タックスリターン還付金の手続きを日本語で代行。帰国後も対応。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -102,11 +102,11 @@ const faqs = [
   },
   {
     question: '帰国後でもタックスリターンを提出して還付金を受け取れますか？',
-    answer: 'はい、日本帰国後でも世界中どこからでも提出できます。登録税理士の監督のもとでオンラインで完結します。タックスリターン還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルールにより、海外口座への振込はできません）。帰国後でも数年遡って申請できるケースもあります。',
+    answer: 'はい、日本帰国後でも世界中どこからでも提出できます。すべてオンラインで完結します。タックスリターン還付金はオーストラリアの銀行口座への振込のみ可能です（ATOのルールにより、海外口座への振込はできません）。帰国後でも数年遡って申請できるケースもあります。',
   },
   {
     question: '還付金がもらえるか、どうやって分かりますか？',
-    answer: '年間で源泉徴収された税金が実際の納税額より多い場合、差額が還付されます。TFNなしの期間があった、間違った税率で源泉徴収された、業務関連の控除可能経費がある、会計年度の一部しか働いていない、などのケースでは還付金になることが多いです。登録税理士の監督のもとであなたの状況を確認し、正確に申告します。',
+    answer: '年間で源泉徴収された税金が実際の納税額より多い場合、差額が還付されます。TFNなしの期間があった、間違った税率で源泉徴収された、業務関連の控除可能経費がある、会計年度の一部しか働いていない、などのケースでは還付金になることが多いです。ワーホリ専門チームがあなたの状況を確認し、正確に申告します。',
   },
   {
     question: 'ワーホリのタックスリターン還付金はいくらもらえますか？',
@@ -160,7 +160,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/ja/tax-return#service`,
   name: 'タックスリターン代行サービス',
   serviceType: 'タックスリターン申告',
-  description: 'オーストラリアのワーキングホリデーメーカー向けタックスリターン代行。登録税理士の監督のもとで最大の還付金を取り戻します。',
+  description: 'オーストラリアのワーキングホリデーメーカー向けタックスリターン代行。ワーホリ専門チームが最大の還付金を取り戻します。',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
@@ -305,7 +305,7 @@ export default function JapaneseTaxReturnPage() {
                 ワーキングホリデーメーカーの多くは<strong>年間で税金を払い過ぎている</strong>ため、差額が還付金として戻ってきます。当社ではこれまで多くのワーホリの方の還付金申請をサポートしてきました。還付額は収入や控除内容によって異なりますが、<strong>まとまった金額</strong>になることも珍しくありません。
               </p>
               <p className="taxret-intro-body">
-                オーストラリアの会計年度は<strong>7月1日〜翌年6月30日</strong>。提出期限は10月31日ですが、当社のように登録税理士の監督のもとで提出する場合は翌年5月まで延長されます。日本帰国後でも世界中どこからでも申請可能で、還付金はオーストラリア・日本どちらの口座でも受け取れます。
+                オーストラリアの会計年度は<strong>7月1日〜翌年6月30日</strong>。提出期限は10月31日ですが、当社のように税理士経由で提出すれば期限が延長されます。当社のようにワーホリ専門チームが提出する場合は翌年5月まで延長されます。日本帰国後でも世界中どこからでも申請可能で、還付金はオーストラリア・日本どちらの口座でも受け取れます。
               </p>
             </div>
 
@@ -314,7 +314,7 @@ export default function JapaneseTaxReturnPage() {
           {/* CTA strip to OUR service */}
           <div className="service-cta-strip">
             <div className="service-cta-text">
-              <h3 className="service-cta-heading">登録税理士の監督のもとで代理申告いたします</h3>
+              <h3 className="service-cta-heading">ワーホリ専門チームが代理申告いたします</h3>
               <p className="service-cta-sub">初回相談は無料。ATOポータルや英語の書類と格闘する必要はありません。日本語ですべて完結し、最大の還付金を取り戻します。帰国後も対応可能です。</p>
             </div>
             <a href={WA_URL} target="_blank" rel="noopener noreferrer" className="service-cta-button">
@@ -340,7 +340,7 @@ export default function JapaneseTaxReturnPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6" style={{ marginBottom:'28px', alignItems:'stretch' }}>
             {[
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2v8l5 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/></svg>, title:'すべての収入を正確に申告', body:'複数の雇用主、ABN収入、現金払いの仕事も含めて、漏れなく集計します。' },
-              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'登録税理士の監督のもとで代理提出', body:'TANを持つ登録税理士の監督の下、ATOに直接タックスリターンを提出します。' },
+              { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 10h14M10 3l7 7-7 7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'ワーホリ専門チームが代理提出', body:'TANを持つワーホリ専門チームの下、ATOに直接タックスリターンを提出します。' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><rect x="2" y="2" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.4"/><path d="M7 10l2.5 2.5 4-4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>, title:'すべての控除を漏れなく適用', body:'作業着、工具、ライセンス、メディケア税免除など、対象となる控除をすべて適用します。' },
               { icon:<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.4"/><path d="M10 6v4.5l3 1.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>, title:'日本語で安心サポート', body:'専門用語を使わず日本語でわかりやすくご案内。ATOからの問い合わせも当社が代理対応します。' },
             ].map((item,i) => (

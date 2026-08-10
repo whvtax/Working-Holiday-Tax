@@ -32,10 +32,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `${SITE_URL}/ja/blog/category/${meta.slug}`,
       languages: {
-        'en-AU': `${SITE_URL}/blog/category/${meta.slug}`,
+        // EN uses a different slug for the Medicare category (medicare-and-other)
+        'en-AU': `${SITE_URL}/blog/category/${meta.slug === 'medicare' ? 'medicare-and-other' : meta.slug}`,
         'de': `${SITE_URL}/de/blog/category/${meta.slug}`,
         'ja': `${SITE_URL}/ja/blog/category/${meta.slug}`,
-        'x-default': `${SITE_URL}/blog/category/${meta.slug}`,
+        'x-default': `${SITE_URL}/blog/category/${meta.slug === 'medicare' ? 'medicare-and-other' : meta.slug}`,
       },
     },
     openGraph: {

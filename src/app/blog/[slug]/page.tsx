@@ -1,4 +1,4 @@
-import { SITE_URL, AGENT_NAME, AGENT_TPB } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -6,6 +6,7 @@ import { guides, getGuideBySlug, getCategoryMeta, getCategoryColor } from '../da
 import GuideArticle from './GuideArticle'
 import StickyBreadcrumbs from './StickyBreadcrumbs'
 import CategoryHero from './CategoryHero'
+import { isoGuideDate } from '@/lib/blog-dates'
 
 
 const OG_BY_CATEGORY: Record<string, string> = {
@@ -234,27 +235,20 @@ export default function GuidePage({ params }: Props) {
     wordCount,
     timeRequired: `PT${readTime}M`,
     inLanguage: 'en-AU',
-    datePublished: guide.date,
-    dateModified: guide.date,
+    datePublished: isoGuideDate(guide.date),
+    dateModified: isoGuideDate(guide.date),
     author: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
     },
-    // No individual byline - content is prepared and reviewed under the supervision of
-    // the registered tax agent entity itself, surfaced here as an independently
-    // verifiable credential (searchable on the Tax Practitioners Board public register)
-    // rather than an invented named author.
+    // No individual byline - content is prepared and reviewed by the business
+    // entity itself rather than an invented named author.
     reviewedBy: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
-      name: AGENT_NAME,
-      identifier: {
-        '@type': 'PropertyValue',
-        name: 'Tax Agent Number',
-        value: AGENT_TPB,
-      },
+      name: 'Working Holiday Tax',
     },
     publisher: {
       '@type': 'Organization',
@@ -477,7 +471,7 @@ export default function GuidePage({ params }: Props) {
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 20px' }}>
           <article style={{ padding: '2rem 0 3rem 0' }} itemScope itemType="https://schema.org/Article">
             <meta itemProp="headline" content={guide.title} />
-            <meta itemProp="datePublished" content={guide.date} />
+            <meta itemProp="datePublished" content={isoGuideDate(guide.date)} />
             <meta itemProp="author" content="Working Holiday Tax" />
             <GuideArticle guide={guide} />
           </article>

@@ -77,11 +77,11 @@ Apply for your TFN as soon as possible and let your employer know your applicati
 
 Any tax overpaid before your TFN was on file can be reclaimed when you lodge your [tax return](/tax-return) at the end of the financial year. You do not permanently lose that money, as long as you lodge a return before the deadline.
 
-[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN or to fix any issues with an existing application.
  
 ## One number, four systems
 
-Your TFN links you across the ATO (tax and refunds), your employer's payroll (withholding rate), your super fund (contributions tracked to you), and Centrelink-adjacent systems you will likely never touch. That reach is exactly why it stays private: TFN plus passport details is a workable identity theft kit. Give it only to an employer after accepting a job, your super fund, your bank, and the ATO or your registered tax agent - [the full list is short](/blog/who-can-ask-for-your-tfn).
+Your TFN links you across the ATO (tax and refunds), your employer's payroll (withholding rate), your super fund (contributions tracked to you), and Centrelink-adjacent systems you will likely never touch. That reach is exactly why it stays private: TFN plus passport details is a workable identity theft kit. Give it only to an employer after accepting a job, your super fund, your bank, and the ATO or your tax agent - [the full list is short](/blog/who-can-ask-for-your-tfn).
  `,
  }, {
  slug: "how-to-apply-for-a-tfn",
@@ -130,7 +130,7 @@ When your TFN letter arrives:
 
 Each employer needs their own Tax File Number Declaration form. Providing your TFN to one employer does not automatically share it with others.
 
-[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN or to fix any issues with an existing application.
  
 ## The five-minute application, field by field
 
@@ -197,7 +197,7 @@ Two practical notes: the 28 days count from ATO acknowledgment, not from when yo
 
 ### Can I check my TFN application status online?
 
-There is no online tracker. If 28 days have passed, call the ATO on 13 28 61 with the reference number from your application confirmation, or ask a registered tax agent to follow it up for you.
+There is no online tracker. If 28 days have passed, call the ATO on 13 28 61 with the reference number from your application confirmation, or ask a tax agent to follow it up for you.
 
 ### Can I get my TFN faster?
 
@@ -211,7 +211,7 @@ Yes. You have 28 days from starting a job to give your employer your TFN before 
 
 Call the ATO as soon as possible to correct it. A wrong address is the single most common reason TFN letters never arrive.
 
-[Get in touch with our team](/contact) - as registered tax agents we sort this out for working holiday makers every day.
+[Get in touch with our team](/contact) - we sort this out for working holiday makers every day.
  `,
  }, {
  slug: "can-you-start-work-without-a-tfn",
@@ -251,7 +251,7 @@ Processing typically takes up to 28 days, so the earlier you apply, the less tim
 
 If you are being paid cash in hand, the TFN question is handled differently because no formal payroll exists. For more on how that works and the tax implications, see our article on [cash in hand work in Australia](/blog/can-your-employer-pay-you-cash-in-hand).
 
-[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN or to fix any issues with an existing application.
  
 ## What to tell your employer on day one
 
@@ -317,13 +317,13 @@ If your application is still in progress, show your employer the ATO confirmatio
 
 Yes. The excess tax withheld during the period before your TFN was on file is credited against your tax liability when you lodge your [annual tax return](/tax-return). The ATO calculates the difference between what you actually owed and what was withheld, then refunds the amount to your Australian bank account.
 
-The deadline is 31 October following the end of each financial year (1 July to 30 June). If you lodge under the supervision of a registered tax agent, the deadline can be extended.
+The deadline is 31 October following the end of each financial year (1 July to 30 June). If you lodge through a tax agent, the deadline can be extended.
 
 ## Giving your TFN to multiple employers
 
 If you work for more than one employer during your time in Australia, each one needs your TFN separately. Providing it to one employer does not automatically share it with others. Submit a Tax File Number Declaration form to every employer you work for, including casual and short-term roles.
 
-[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN or to fix any issues with an existing application.
  
 ## What 45% withholding costs you per pay, in dollars
 
@@ -400,7 +400,7 @@ The key question is whether the business paying you is treating you as an employ
 
 If you are unsure which situation applies, our article on [the difference between employees and contractors in Australia](/blog/employee-vs-contractor-australia) goes into the legal tests in more detail.
 
-[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN or to fix any issues with an existing application.
  
 ## The 30-second decision rule
 
@@ -522,7 +522,7 @@ If you are approaching your own 28-day employment window at the same time, tell 
 
 ### Who do I call about a delayed TFN application?
 
-The ATO on 13 28 61 (8am-6pm weekdays), with your passport and the reference number from your application. From overseas: +61 2 6216 1111. A registered tax agent can also chase it for you.
+The ATO on 13 28 61 (8am-6pm weekdays), with your passport and the reference number from your application. From overseas: +61 2 6216 1111. A tax agent can also chase it for you.
 
 ### Why would the ATO flag a TFN application?
 
@@ -532,7 +532,7 @@ Common triggers are passport details that do not match immigration records, a pr
 
 Do not lodge a second application - it usually creates a duplicate flag and slows everything down. Always resolve the original application by phone first.
 
-[Get in touch with our team](/contact) - as registered tax agents we sort this out for working holiday makers every day.
+[Get in touch with our team](/contact) - we sort this out for working holiday makers every day.
  `,
  }, {
  slug: "do-you-need-new-tfn-second-visa",
@@ -580,7 +580,7 @@ Your tax obligations on your second visit work exactly the same way as the first
 - The financial year runs from 1 July to 30 June
 - You must lodge a [tax return](/tax-return) for any year you earned income in Australia
 - The 15% working holiday maker rate applies to your earnings, provided your employers have your TFN on file
-- The standard deadline is 31 October, or later if you use a registered tax agent
+- The standard deadline is 31 October, or later if you use a tax agent
  
 ## What actually needs updating on a returning visa
 
@@ -606,7 +606,7 @@ Update your address and bank details so letters and refunds reach you. Your TFN 
 
 Usually yes, if you can still access the linked email or phone. If not, recover the account first - it is faster than creating a new identity trail.
 
-[Get in touch with our team](/contact) - as registered tax agents we handle this for working holiday makers every day.
+[Get in touch with our team](/contact) - we handle this for working holiday makers every day.
  `,
  }, {
  slug: "how-to-find-lost-tfn",
@@ -617,7 +617,7 @@ Usually yes, if you can still access the linked email or phone. If not, recover 
  date: "29 July 2026",
  readTime: 4,
  body: `
-To find a lost Tax File Number, start with documents you may already have (the original ATO letter, payslips, payment summaries, or past tax returns). Your TFN is permanent and does not change, so the same number you were issued originally is the one you still hold. If you cannot find it in your records, our team can retrieve it for you under the supervision of a registered tax agent.
+To find a lost Tax File Number, start with documents you may already have (the original ATO letter, payslips, payment summaries, or past tax returns). Your TFN is permanent and does not change, so the same number you were issued originally is the one you still hold. If you cannot find it in your records, our team can retrieve it for you.
 
 ## How to find your TFN at home
 
@@ -632,7 +632,7 @@ If you saved emails, scanned documents, or kept paperwork from previous work in 
 
 ## How to retrieve a lost TFN
 
-If you cannot find your TFN in any of your records, [get in touch with our team](/contact). We work under the supervision of a registered tax agent and can retrieve your TFN on your behalf through our direct channels with the ATO.
+If you cannot find your TFN in any of your records, [get in touch with our team](/contact). We can retrieve your TFN on your behalf through our direct channels with the ATO.
 
 To help us, please have ready:
 
@@ -642,7 +642,7 @@ To help us, please have ready:
 - Your residential address history in Australia
 - Any other personal identification details
 
-Retrieving a TFN as an individual involves long ATO phone wait times and an identity verification process that often requires Australian-specific documents most backpackers no longer have access to from overseas. Going under the supervision of a registered tax agent is faster and more reliable.
+Retrieving a TFN as an individual involves long ATO phone wait times and an identity verification process that often requires Australian-specific documents most backpackers no longer have access to from overseas. Going through a tax agent is faster and more reliable.
 
 ## How to keep your TFN safe in future
 
@@ -671,9 +671,9 @@ Your super fund statements and old payslips often show it. Employers hold it but
 
 ### What if I am overseas and locked out of myGov?
 
-A registered tax agent can verify your identity and retrieve your TFN from the ATO - this is one of the most common things we handle for clients who have left Australia.
+A tax agent can verify your identity and retrieve your TFN from the ATO - this is one of the most common things we handle for clients who have left Australia.
 
-[Get in touch with our team](/contact) - as registered tax agents we handle this for working holiday makers every day.
+[Get in touch with our team](/contact) - we handle this for working holiday makers every day.
  `,
  },
 
@@ -1069,7 +1069,7 @@ Yes. Cancelling the ABN does not cancel your obligations for income already earn
 
 The ABN stays active and the ATO may expect lodgments, eventually sending reminders and demands. Cancel before you fly - it is a five-minute job.
 
-[Get in touch with our team](/contact) - as registered tax agents we handle this for working holiday makers every day.
+[Get in touch with our team](/contact) - we handle this for working holiday makers every day.
  `,
  }, {
  slug: "gst-and-abn-for-working-holiday-makers",
@@ -1123,7 +1123,7 @@ If GST applies to you:
 - Remit the collected GST to the ATO
 - You can claim back GST you paid on business expenses
 
-We can handle BAS lodgement under the supervision of a registered tax agent and make this straightforward.
+We can handle BAS lodgement and make this straightforward.
 
 ## What is the main tax obligation for most contractors?
 
@@ -1156,7 +1156,7 @@ Registered means charging 10% on invoices and remitting it - money held for the 
  date: "23 October 2024",
  readTime: 6,
  body: `
-The Australian financial year runs from 1 July to 30 June, not the calendar year. As a working holiday maker, you are required to lodge a tax return for any financial year in which you earned income in Australia. The deadline to lodge is 31 October following the end of the financial year. If you lodge under the supervision of a registered tax agent like our team, the deadline is extended automatically.
+The Australian financial year runs from 1 July to 30 June, not the calendar year. As a working holiday maker, you are required to lodge a tax return for any financial year in which you earned income in Australia. The deadline to lodge is 31 October following the end of the financial year. If you lodge through a tax agent like our team, the deadline is extended automatically.
 
 ## What does the financial year mean for you?
 
@@ -1177,7 +1177,7 @@ The standard deadline is 31 October following the end of the financial year:
 - 2024-25 financial year (ends 30 June 2025) → deadline 31 October 2025
 - 2025-26 financial year (ends 30 June 2026) → deadline 31 October 2026
 
-If we lodge your return under the supervision of a registered tax agent, you qualify for an extended deadline, often until May the following year. This gives you breathing room if you missed October or your records are not yet complete.
+If we lodge your return for you, you qualify for an extended deadline, often until May the following year. This gives you breathing room if you missed October or your records are not yet complete.
 
 ## What if you left Australia before 30 June?
 
@@ -1200,7 +1200,7 @@ To lodge your return, our team needs:
 
 We can access your income statements directly through our tax agent portal, so you do not need to collect payslips from each employer yourself. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas) for more detail on what we need.
 
-[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return and make sure every refund you are entitled to is claimed.
  
 ## July to June: why the odd dates work for you
 
@@ -1308,7 +1308,7 @@ Most working holiday makers we see get a refund of between $1,000 and $3,000 whe
  date: "29 October 2024",
  readTime: 7,
  body: `
-To lodge a [tax return](/tax-return) in Australia as a working holiday maker, the simplest option is to work with our team under the supervision of a registered tax agent. We collect your details, access your income statements directly through our tax agent portal, prepare your return, and lodge it with the ATO on your behalf. The process works the same whether you are still in Australia or have already left, and using a registered agent gives you an extended lodgment deadline beyond the standard 31 October.
+To lodge a [tax return](/tax-return) in Australia as a working holiday maker, the simplest option is to work with our team. We collect your details, access your income statements directly through our tax agent portal, prepare your return, and lodge it with the ATO on your behalf. The process works the same whether you are still in Australia or have already left, and using a registered agent gives you an extended lodgment deadline beyond the standard 31 October.
 
 ## What do you need to lodge a tax return?
 
@@ -1372,7 +1372,7 @@ Gather: every employer's name (income statements auto-load, but you are checking
  date: "29 July 2026",
  readTime: 5,
  body: `
-A PAYG payment summary, now known as an income statement, is the official record showing your total wages and total tax withheld by an employer during a financial year. It is the document used to lodge your [tax return](/tax-return). Employers report wages and withholding amounts to the ATO automatically through their payroll software, so the income statement is generated digitally rather than handed to you as a paper document. Working under the supervision of a registered tax agent, our team can access your income statements directly through the ATO system.
+A PAYG payment summary, now known as an income statement, is the official record showing your total wages and total tax withheld by an employer during a financial year. It is the document used to lodge your [tax return](/tax-return). Employers report wages and withholding amounts to the ATO automatically through their payroll software, so the income statement is generated digitally rather than handed to you as a paper document. Our team can access your income statements directly through the ATO system.
 
 ## PAYG payment summary vs PAYG withholding: what's the difference?
 
@@ -1385,11 +1385,11 @@ In short: PAYG withholding happens every pay cycle, and the income statement is 
 
 ## Where can you find your income statement in myGov?
 
-If you want to check it yourself before we lodge, your income statement is available in myGov under the ATO online services section, listed by employer and financial year. It shows as "Tax ready" once your employer has finalised it, or "Not tax ready" if they haven't yet. You do not need to find this yourself if you lodge through our service - we access it directly under the supervision of a registered tax agent.
+If you want to check it yourself before we lodge, your income statement is available in myGov under the ATO online services section, listed by employer and financial year. It shows as "Tax ready" once your employer has finalised it, or "Not tax ready" if they haven't yet. You do not need to find this yourself if you lodge through our service - we access it directly from the ATO for you.
 
 ## No myGov? Your agent pulls it straight from the ATO
 
-Income statements live in ATO systems, not with your employer. If you never set up myGov, or lost access after leaving Australia, a registered tax agent can retrieve every income statement across all employers directly - no payslips needed. This is the standard route for backpackers lodging from overseas, and it also catches employers you forgot about.
+Income statements live in ATO systems, not with your employer. If you never set up myGov, or lost access after leaving Australia, a tax agent can retrieve every income statement across all employers directly - no payslips needed. This is the standard route for backpackers lodging from overseas, and it also catches employers you forgot about.
 
 ## Employer never reported your income?
 
@@ -1429,7 +1429,7 @@ What we see in your records:
 - Each employer listed separately if you worked for more than one
 - The finalisation status (in progress or finalised)
 
-This is one of the main advantages of lodging under the supervision of a registered tax agent. We see everything the ATO sees, and we wait until all employer reports are finalised before lodging your return.
+This is one of the main advantages of lodging through our team. We see everything the ATO sees, and we wait until all employer reports are finalised before lodging your return.
 
 ## What if an employer has not finalised their report?
 
@@ -1461,7 +1461,7 @@ Lodging without this cross-check is risky. The income statements are usually acc
  date: "29 July 2026",
  readTime: 5,
  body: `
-Working holiday makers in Australia can claim work-related tax deductions on their tax return, the same as Australian residents. Common deductions include uniforms and protective clothing, tools and equipment, travel between work sites, work-related phone use, and registered tax agent fees. To claim a deduction, the expense must be directly related to earning your income and you must have a record (receipt, bank statement, or diary note). Our team identifies eligible deductions when we prepare your [tax return](/tax-return).
+Working holiday makers in Australia can claim work-related tax deductions on their tax return, the same as Australian residents. Common deductions include uniforms and protective clothing, tools and equipment, travel between work sites, work-related phone use, and tax agent fees. To claim a deduction, the expense must be directly related to earning your income and you must have a record (receipt, bank statement, or diary note). Our team identifies eligible deductions when we prepare your [tax return](/tax-return).
 
 ## What work-related clothing can you claim?
 
@@ -1594,7 +1594,7 @@ Even if you have already left Australia, lodging is straightforward through our 
 
 You do not need to come back to Australia. Keep your Australian bank account open until the refund clears.
 
-The standard deadline is 31 October following the end of the financial year, but if you lodge through our team under the supervision of a registered tax agent, you qualify for the extended agent deadline.
+The standard deadline is 31 October following the end of the financial year, but if you lodge through our team, you qualify for the extended agent deadline.
  
 ## Short stays are where the biggest refund rates hide
 
@@ -1610,7 +1610,7 @@ Counterintuitive but consistent: the shorter the working stint, the higher the r
  date: "12 November 2024",
  readTime: 6,
  body: `
-To lodge an Australian [tax return](/tax-return) from overseas after you have left, work under the supervision of a registered tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and any refund the ATO assesses is paid into your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go under the supervision of a registered tax agent.
+To lodge an Australian [tax return](/tax-return) from overseas after you have left, work with a tax agent who can prepare and lodge the return remotely on your behalf. The entire process is done electronically, and any refund the ATO assesses is paid into your Australian bank account. Our team handles tax returns for working holiday makers all over the world, every week. You do not need to return to Australia, and the lodgment deadline is extended when you go through a tax agent.
 
 ## How do you lodge from overseas through our service?
 
@@ -1641,7 +1641,7 @@ If you have already closed your Australian bank account, [get in touch with our 
 The standard deadline is 31 October following the end of the financial year:
 
 - 2024-25 financial year → standard deadline 31 October 2025
-- Through our service under the supervision of a registered tax agent → deadline often extended into the following May
+- Through our service → deadline often extended into the following May
 
 This means if you missed the October deadline, lodging through us still gives you time to do it without late penalties.
 
@@ -1672,18 +1672,18 @@ Most working holiday makers receive a refund. Owing money is the exception, not 
  `,
  }, {
  slug: "what-is-a-tax-agent",
- title: "Registered Tax Agents: What They Do and How to Verify One",
+ title: "Tax Agents: What They Do and How to Verify One",
  description:
- "A registered tax agent is TPB-licensed to lodge for you, with extended deadlines and professional duties. What they handle for backpackers and fee red flags.",
+ "A tax agent is licensed to lodge for you, with extended deadlines and professional duties. What they handle for backpackers and fee red flags.",
  category: "Tax Return",
  date: "14 November 2024",
  readTime: 5,
  body: `
-A registered tax agent is a tax professional authorised by the Tax Practitioners Board to prepare and lodge [tax returns](/tax-return) on behalf of clients. In Australia, anyone offering paid tax services must be TPB-registered. Working holiday makers benefit from using a registered tax agent for three main reasons: access to extended lodgment deadlines, complete handling of communication with the ATO, and identification of deductions that self-lodgers often miss.
+A tax agent is a tax professional licensed under Australian law to prepare and lodge [tax returns](/tax-return) on behalf of clients. In Australia, anyone offering paid tax services must be government-registered. Working holiday makers benefit from using a tax agent for three main reasons: access to extended lodgment deadlines, complete handling of communication with the ATO, and identification of deductions that self-lodgers often miss.
 
-## What does a registered tax agent actually do?
+## What does a tax agent actually do?
 
-A registered tax agent handles your tax return end-to-end:
+A tax agent handles your tax return end-to-end:
 
 - Reviews your income and personal circumstances
 - Accesses your income statements directly from the ATO system
@@ -1709,26 +1709,26 @@ There are several reasons:
 
 Always verify the agent is currently registered:
 
-- [Check that anyone advising you is a registered tax agent](/contact)
+- [Check that anyone advising you is a tax agent](/contact)
 - Confirm the agent's registration is active and not under suspension
 - Verify the registration covers tax agent services (not just BAS services)
-- Ask for the agent's TPB registration number upfront
+- Ask for the agent's registration number upfront
 
-Never engage someone who claims to be a tax agent but cannot provide a TPB registration number. The TPB register is the only authoritative source.
+Never engage someone who claims to be a tax agent but cannot provide a registration number. The government's public register of tax practitioners is the only authoritative source.
 
-## How is our service supervised?
+## Who actually handles your return?
 
-We operate under the supervision of a registered tax agent. Our registration details are listed on the TPB register and are available on request. When we lodge your return, it is done through the supervising tax agent's TPB number, which means you receive all the protections and benefits of working with a registered agent.
+A team that works only with working holiday makers - nothing else. Your return is prepared by people who deal with 417 and 462 tax questions all day, every day, and you can reach us directly on WhatsApp for fast answers at any point in the process.
 
-[Get in touch](/contact) with our team and we will share our registration details and explain how our process works.
+[Get in touch](/contact) with our team and we will explain exactly how the process works.
  
 ## Verifying an agent in 60 seconds (do this before paying anyone)
 
-Search the Tax Practitioners Board register at tpb.gov.au - every legitimate agent has a registration number and a public record showing conditions and status. No listing means no legal right to charge for tax work, full stop. Beyond registration, three practical checks: fixed fees published upfront (percentage-of-refund pricing inflates with your money), a physical Australian presence or verifiable business history, and whether they ask for your myGov password - a registered agent never needs it, because they access your records through their own agent portal. That last one is the cleanest scam detector in the industry.
+Search the government's public register of tax practitioners - every legitimate agent has a registration number and a public record showing conditions and status. No listing means no legal right to charge for tax work, full stop. Beyond registration, three practical checks: fixed fees published upfront (percentage-of-refund pricing inflates with your money), a physical Australian presence or verifiable business history, and whether they ask for your myGov password - a registered agent never needs it, because they access your records through their own agent portal. That last one is the cleanest scam detector in the industry.
 
 ## What the agent relationship changes at the ATO
 
-Appointing an agent links you to their lodgment program: extended deadlines (well past 31 October), direct ATO communication channels when something stalls, and professional accountability - agents carry obligations to the TPB that DIY lodgment does not. For backpackers specifically, the practical difference shows in retrieval work: income statements from forgotten employers, TFN recovery, old-year returns and DASP paperwork all happen inside the agent portal without you chasing call centres from another timezone.
+Appointing an agent links you to their lodgment program: extended deadlines (well past 31 October), direct ATO communication channels when something stalls, and professional accountability - agents carry regulatory obligations that DIY lodgment does not. For backpackers specifically, the practical difference shows in retrieval work: income statements from forgotten employers, TFN recovery, old-year returns and DASP paperwork all happen inside the agent portal without you chasing call centres from another timezone.
  `,
  }, {
  slug: "how-does-payg-withholding-work",
@@ -1875,7 +1875,7 @@ If your stay crosses 30 June, you will need to lodge two tax returns, one for ea
 - **14 July**: employers begin finalising income statements
 - **31 July**: most income statements should be finalised by this date
 - **31 October**: standard deadline to lodge your tax return
-- **Extended (around May the following year)**: deadline if you lodge under the supervision of a registered tax agent like our team
+- **Extended (around May the following year)**: deadline if you lodge through a tax agent like our team
 
 Lodgment opens 1 July, but it is usually worth waiting until late July or early August so your employer's income statement is finalised. We monitor this for you when you lodge through our service.
 
@@ -1890,7 +1890,7 @@ Superannuation contributions are paid quarterly:
 
 These dates matter if you are checking that your employer has paid your [superannuation](/superannuation) correctly before you leave Australia.
 
-[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return and make sure every refund you are entitled to is claimed.
  `,
  }, {
  slug: "cash-in-hand-tax-return",
@@ -2571,7 +2571,7 @@ Anyone offering to unlock your super while you are working in Australia is runni
  date: "29 December 2024",
  readTime: 5,
  body: `
-To find lost or unclaimed superannuation in Australia, work with our team. Under the supervision of a registered tax agent, we can search across all major super funds and ATO records using your Tax File Number to identify every account holding your super. Working holiday makers often accumulate super across multiple funds without realising it, and tracking down every account before lodging your DASP claim makes sure no money is left behind.
+To find lost or unclaimed superannuation in Australia, work with our team. We can search across all major super funds and ATO records using your Tax File Number to identify every account holding your super. Working holiday makers often accumulate super across multiple funds without realising it, and tracking down every account before lodging your DASP claim makes sure no money is left behind.
 
 ## Why does super get lost or spread across multiple accounts?
 
@@ -3738,7 +3738,7 @@ If you lodged a previous return and paid the Medicare Levy when you should have 
 3. Submit and wait - processing commonly takes up to 6 weeks, so apply well before tax season
 4. Use the statement to claim a full exemption at item M1 of the tax return for every day it covers
 
-A new statement is needed for each financial year you claim. A registered tax agent can prepare the application and the return together - the exemption is one of the most commonly missed refund items for backpackers.
+A new statement is needed for each financial year you claim. A tax agent can prepare the application and the return together - the exemption is one of the most commonly missed refund items for backpackers.
 
 ## RHCA passport holders: you probably cannot claim it
 
@@ -3762,7 +3762,7 @@ Most do, but not citizens of countries with a reciprocal health care agreement (
 
 Services Australia typically takes up to 6 weeks to issue an MES, so apply well before you plan to lodge your tax return.
 
-[Get in touch with our team](/contact) - as registered tax agents we sort this out for working holiday makers every day.
+[Get in touch with our team](/contact) - we sort this out for working holiday makers every day.
  `,
  }, {
  slug: "tax-file-number-declaration-form",
@@ -3946,7 +3946,7 @@ When we lodge your return, we see:
 - Finalisation status (in progress or finalised)
 - [Super](/superannuation) contributions paid
 
-This is one of the main advantages of working under the supervision of a registered tax agent.
+This is one of the main advantages of working with our team.
 
 ## When do income statements become available?
 
@@ -4046,7 +4046,7 @@ Most working holiday makers never receive direct ATO contact. The ATO might reac
 - A review or audit is initiated (rare for working holiday makers)
 - A refund is held up due to identity verification
 
-All legitimate ATO communications are either through your registered tax agent or by post to your registered address. **The ATO will never call demanding immediate payment, requesting payment in gift cards, or threatening arrest**. These calls are scams, and they target working holiday makers specifically. Hang up and [contact our team](/contact) if you receive one.
+All legitimate ATO communications are either through your tax agent or by post to your registered address. **The ATO will never call demanding immediate payment, requesting payment in gift cards, or threatening arrest**. These calls are scams, and they target working holiday makers specifically. Hang up and [contact our team](/contact) if you receive one.
 
 ## How does our team handle ATO communication?
 
@@ -4245,7 +4245,7 @@ Through our service, the process is fully remote:
 - We prepare and lodge the return on your behalf
 - Refund is paid to your Australian bank account
 
-The standard deadline is 31 October following the financial year. Through our service under the supervision of a registered tax agent, the deadline is typically extended to May the following year.
+The standard deadline is 31 October following the financial year. Through our service, the deadline is typically extended to May the following year.
 
 Failing to lodge when required can result in penalties. The ATO has your income records from your employers and expects a return. See our article on [lodging a tax return from overseas](/blog/how-to-lodge-tax-return-from-overseas).
 
@@ -4404,7 +4404,7 @@ The simplest way is through our service:
 
 1. [Get in touch with our team](/contact)
 2. Give us your new address
-3. We update it with the ATO on your behalf under the supervision of a registered tax agent
+3. We update it with the ATO on your behalf
 4. Confirmation is sent back to us
 
 You do not need to log into ATO online services or wait on hold. We handle it as part of managing your tax position.
@@ -4462,7 +4462,7 @@ Yes - any Australian address where mail reliably reaches you works. For TFN lett
 
 Yes, you can record an international address. Refunds pay to bank accounts, not cheques, in most cases - keep your bank details current too.
 
-[Get in touch with our team](/contact) - as registered tax agents we handle this for working holiday makers every day.
+[Get in touch with our team](/contact) - we handle this for working holiday makers every day.
  `,
  },
 
@@ -4555,7 +4555,7 @@ Three or more? Your refund is likely in the four figures. Run it through the [ca
  date: "29 July 2026",
  readTime: 4,
  body: `
-Most Australian tax refunds are processed and paid within two weeks of lodgment when the return is filed electronically. Through our service under the supervision of a registered tax agent, we lodge electronically so refunds typically arrive within 7-14 business days. Refunds during peak season (August-September) may take a few days longer. If your refund is taking longer than expected, our team follows up directly with the ATO.
+Most Australian tax refunds are processed and paid within two weeks of lodgment when the return is filed electronically. Through our service, we lodge electronically so refunds typically arrive within 7-14 business days. Refunds during peak season (August-September) may take a few days longer. If your refund is taking longer than expected, our team follows up directly with the ATO.
 
 ## What is the typical refund timeline?
 
@@ -4638,7 +4638,7 @@ If you have left Australia and lodged from overseas:
 
 Keep your Australian bank account open for at least 4-6 weeks after lodgment to ensure the refund clears before closing.
 
-Ready to start? [Lodge your tax return](/tax-return) under the supervision of a registered tax agent and track your refund the whole way.
+Ready to start? [Lodge your tax return](/tax-return) and track your refund the whole way.
  `,
  },
 
@@ -5653,7 +5653,7 @@ Yes. Casual employment works both ways - your employer offers shifts and you can
 
 Start with your employer in writing, then contact the Fair Work Ombudsman (fairwork.gov.au) if it continues. Keep records of every cancelled shift and any lost pay.
 
-[Get in touch with our team](/contact) - as registered tax agents we sort this out for working holiday makers every day.
+[Get in touch with our team](/contact) - we sort this out for working holiday makers every day.
  `,
  }, {
  slug: "six-month-employer-rule-working-holiday-visa",
@@ -6098,7 +6098,7 @@ Money you brought in with you when you arrived is not taxable:
 
 What is taxable is everything you earned in Australia during your stay. The distinction is between what you earned here (taxable) and what you brought in or hold in savings (not taxable).
 
-[Get in touch with our team](/contact) to lodge your Australian tax return under the supervision of a registered tax agent and make sure every refund you are entitled to is claimed.
+[Get in touch with our team](/contact) to lodge your Australian tax return and make sure every refund you are entitled to is claimed.
  
 ## The transfer-home playbook before you fly
 
@@ -6943,7 +6943,7 @@ We apply for penalty remission when warranted. Even if not all penalties are rem
 
 [Get in touch with our team](/contact) as soon as you become aware of a tax debt. The earlier we act, the better the outcome.
 
-A tax debt is often the result of an earlier [tax return](/tax-return) that was not handled correctly. Lodging under the supervision of a registered tax agent going forward helps avoid it happening again.
+A tax debt is often the result of an earlier [tax return](/tax-return) that was not handled correctly. Lodging through a tax agent going forward helps avoid it happening again.
  
 ## Leaving Australia with a tax debt: what follows you
 
@@ -7667,9 +7667,9 @@ Tax agents have direct lines into the ATO that are not available to the public, 
 
 ## How do you protect your TFN once it is issued?
 
-Once your TFN is issued, treat it like a bank account number. Never share your TFN or passport details with anyone who is not a registered tax agent. People posing as accountants or "tax helpers" on social media and backpacker forums regularly steal TFNs and lodge fraudulent tax returns in someone else's name, sending the refund to their own bank account.
+Once your TFN is issued, treat it like a bank account number. Never share your TFN or passport details with anyone who is not a tax agent. People posing as accountants or "tax helpers" on social media and backpacker forums regularly steal TFNs and lodge fraudulent tax returns in someone else's name, sending the refund to their own bank account.
 
-A registered tax agent has a TAN (Tax Agent Number) listed on the Tax Practitioners Board register. If you cannot verify the number, do not hand over your details. [Get in touch with our team](/contact) to lodge through a registered agent and keep your identity protected.
+A tax agent has a registration number listed on the government's public register of tax practitioners. If you cannot verify the number, do not hand over your details. [Get in touch with our team](/contact) to lodge through a registered agent and keep your identity protected.
  
 ## Reapply or rescue? Choosing the right recovery path
 
@@ -7723,9 +7723,9 @@ The public TFN application form does not warn you about mismatches before submis
 
 ## What about TFN security?
 
-Never share copies of your passport, visa grant, or TFN with anyone who is not a registered tax agent. Scammers regularly pose as "accountants" or "tax helpers" on backpacker forums, social media, and messaging apps to collect identity documents. Once they have your TFN and passport details, they can lodge a fraudulent tax return in your name and divert the refund to their own account. A registered tax agent is listed on the Tax Practitioners Board register with a TAN number. If you cannot verify the number, do not share your documents. [Apply for your TFN](/tfn-form) under the supervision of a registered tax agent to keep your identity protected.
+Never share copies of your passport, visa grant, or TFN with anyone who is not a tax agent. Scammers regularly pose as "accountants" or "tax helpers" on backpacker forums, social media, and messaging apps to collect identity documents. Once they have your TFN and passport details, they can lodge a fraudulent tax return in your name and divert the refund to their own account. A tax agent is listed on the government's public register of tax practitioners with a registration number. If you cannot verify their registration, do not share your documents. [Apply for your TFN](/tfn-form) through our secure form to keep your identity protected.
 
-[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN or to fix any issues with an existing application.
  
 ## Why "just a passport" sometimes is not enough
 
@@ -7751,7 +7751,7 @@ The ATO publishes a strict list of who can ask for your TFN. The list is short:
 - Your employer (after you have started work, on a Tax File Number Declaration form)
 - Your bank or financial institution (to apply the correct tax rate on interest)
 - Your [superannuation](/superannuation) fund (to manage your retirement savings)
-- Your registered tax agent (to lodge your tax return or manage ATO matters)
+- Your tax agent (to lodge your tax return or manage ATO matters)
 - Centrelink or government agencies administering payments you are entitled to
 
 No one else has a legal right to ask for your TFN. Not a landlord, not a friend, not a recruitment agency, and certainly not someone in a Facebook group offering to "help with your tax".
@@ -7770,7 +7770,7 @@ With these details, the scammer lodges a tax return in your name through the ATO
 
 ## Warning signs of a TFN scam
 
-If the person offering to handle your tax cannot show you a TAN (Tax Agent Number) on the Tax Practitioners Board register, they are not a registered tax agent. Other red flags include:
+If the person offering to handle your tax cannot show you a current registration on the government's public register of tax practitioners, they are not a tax agent. Other red flags include:
 
 - Asking for payment in cash, cryptocurrency, or gift cards
 - Operating only through messaging apps with no business address
@@ -7778,7 +7778,7 @@ If the person offering to handle your tax cannot show you a TAN (Tax Agent Numbe
 - Asking for your account passwords or for you to share your screen
 - Pressure to "act fast" or "before the deadline"
 
-Legitimate tax agents have a registered business, a TAN number, a professional indemnity insurance policy, and never need your account passwords to lodge a return on your behalf.
+Legitimate tax agents have a registered business, a public registration number, a professional indemnity insurance policy, and never need your account passwords to lodge a return on your behalf.
 
 ## What to do if your TFN has been compromised
 
@@ -7786,7 +7786,7 @@ If you suspect your TFN has been shared with the wrong person or your details ha
 
 ## How do we keep your TFN secure?
 
-When you lodge through our service, your TFN and identity documents are handled under the supervision of a registered tax agent channel covered by professional indemnity insurance and bound by the Tax Practitioners Board code of conduct. We never operate through anonymous messaging apps, and our TAN number is publicly verifiable on the Tax Practitioners Board register.
+When you lodge through our service, your TFN and identity documents are handled through a secure, insured professional channel. We never operate through anonymous messaging accounts, and you always know exactly who you are dealing with.
  
 ## If your TFN leaked: the damage-control sequence
 
@@ -7812,7 +7812,7 @@ The Privacy (Tax File Number) Rule restricts TFN collection to a defined list:
 - Your employer, once you have started work, on a Tax File Number Declaration form
 - Banks and financial institutions, to apply the correct tax rate on interest
 - [Superannuation](/superannuation) funds, to manage and identify your retirement account
-- Registered tax agents, to lodge tax returns and manage ATO correspondence on your behalf
+- Tax agents, to lodge tax returns and manage ATO correspondence on your behalf
 - Centrelink and Services Australia, if you are claiming a government payment
 - The ATO itself
 
@@ -7827,7 +7827,7 @@ The list of people who are not entitled to your TFN is much longer. These includ
 - Insurance companies (other than for specific tax-related products)
 - Friends, hostel staff, or fellow backpackers
 - Recruitment agencies (the employer collects it after you are hired, not the agency)
-- Anyone offering tax help who cannot show a registered tax agent number (TAN)
+- Anyone offering tax help who cannot show a current tax agent registration
 
 If a request for your TFN does not come from the list above, you are entitled to refuse. Refusing is not a criminal matter and cannot be used as grounds to deny you a service.
 
@@ -7846,15 +7846,15 @@ The most common TFN fraud targeting working holiday makers comes from messages l
 - "I work for an accountant, send me a photo of your visa and TFN"
 - "I can get you a bigger refund if you send me your TFN"
 
-None of these are legitimate. Registered tax agents do not operate through anonymous Facebook accounts or WhatsApp numbers, they do not need your account passwords, and they never promise inflated refunds before reviewing your actual income.
+None of these are legitimate. Tax agents do not operate through anonymous Facebook accounts or WhatsApp numbers, they do not need your account passwords, and they never promise inflated refunds before reviewing your actual income.
 
 ## How do you verify a tax agent before sharing your TFN?
 
-Every registered tax agent in Australia has a Tax Agent Number (TAN) listed on the public Tax Practitioners Board register. Before sharing your TFN with anyone offering tax services, verify their TAN number is current. If they cannot give you a TAN or the number does not match the business, do not share any documents.
+Every tax agent in Australia has a registration number listed on the government's public register of tax practitioners. Before sharing your TFN with anyone offering tax services, verify their registration is current. If they cannot show you a current registration or the details do not match the business, do not share any documents.
 
-[Our service](/tax-return) is delivered under the supervision of a registered tax agent. Our TAN number is publicly verifiable, and your TFN is handled through a secure tax agent channel rather than through email or messaging apps.
+[Our service](/tax-return) handles your TFN through a secure tax agent channel rather than through email or messaging apps.
 
-[Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent or to fix any issues with an existing application.
+[Get in touch with our team](/contact) to apply for your TFN or to fix any issues with an existing application.
  
 ## The scam patterns targeting backpackers right now
 
@@ -7862,7 +7862,7 @@ Every registered tax agent in Australia has a Tax Agent Number (TAN) listed on t
 - **"Tax refund agents" on social media** asking for TFN + myGov login - they lodge fraudulent returns to their own accounts
 - **Hostel noticeboard "payroll setup" forms** collecting TFNs for cash jobs that never materialise
 
-The rule: your TFN goes to an employer after you accept a job (via the official declaration form), to your super fund, your bank, and the ATO or your registered tax agent. Nobody else - not landlords, not recruiters before hiring, not anyone over WhatsApp. Compromised? Call the ATO's identity line and get a re-issue flag on your file.
+The rule: your TFN goes to an employer after you accept a job (via the official declaration form), to your super fund, your bank, and the ATO or your tax agent. Nobody else - not landlords, not recruiters before hiring, not anyone over WhatsApp. Compromised? Call the ATO's identity line and get a re-issue flag on your file.
  `,
  }, {
  slug: "tfn-australian-address-no-fixed-address",
@@ -7907,7 +7907,7 @@ When we lodge a TFN application through our service, we can use a verified addre
 
 ## How do you keep your TFN safe once it arrives?
 
-A TFN letter is a high-value document. Once it arrives, do not leave it lying around in shared accommodation, do not photograph it for social media, and do not share it with anyone other than your employer, your bank, your [super](/superannuation) fund, or a registered tax agent. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the full list of who is allowed to ask for your TFN and who is not. [Get in touch with our team](/contact) to apply for your TFN under the supervision of a registered tax agent channel.
+A TFN letter is a high-value document. Once it arrives, do not leave it lying around in shared accommodation, do not photograph it for social media, and do not share it with anyone other than your employer, your bank, your [super](/superannuation) fund, or a tax agent. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the full list of who is allowed to ask for your TFN and who is not. [Get in touch with our team](/contact) to apply for your TFN with fast, direct support.
  
 ## The address hierarchy for the permanently mobile
 
@@ -7998,7 +7998,7 @@ The general rule is that an expense is deductible if it is directly related to e
 - **Mobile phone and internet**: the work-related percentage of your usage
 - **Licences and certifications**: White Card, RSA, and other industry tickets directly required by your work
 - **Bank fees and merchant charges**: card payment fees on a business account
-- **Professional services**: registered tax agent fees and bookkeeping costs
+- **Professional services**: tax agent fees and bookkeeping costs
 
 Items used for both work and private purposes can only be claimed at the work-related percentage. A phone used 60% for work means 60% of the bill is deductible.
 
@@ -8170,7 +8170,7 @@ The refund for a year worked without a TFN is often several thousand dollars lar
 
 ## What about identity protection?
 
-If you worked without a TFN because you were uncertain about how the system works, do not be tempted to share your details with strangers offering tax help online. Backpacker Facebook groups, WhatsApp communities, and messaging apps are full of scammers who target working holiday makers who feel out of their depth. Never share your TFN, passport, or visa grant with anyone who is not a registered tax agent. A registered agent is listed on the Tax Practitioners Board register with a verifiable TAN number. If they cannot show you their TAN, do not hand over your documents.
+If you worked without a TFN because you were uncertain about how the system works, do not be tempted to share your details with strangers offering tax help online. Backpacker Facebook groups, WhatsApp communities, and messaging apps are full of scammers who target working holiday makers who feel out of their depth. Never share your TFN, passport, or visa grant with anyone who is not a tax agent. A registered agent is listed on the government's public register of tax practitioners with a verifiable registration number. If they cannot show it to you, do not hand over your documents.
  
 ## The no-TFN year, rebuilt in four steps
 
@@ -8447,7 +8447,7 @@ Working holiday makers who never claim their super are essentially making a gift
 
 The 65% rate is set by federal law and cannot be reduced through deductions, offsets, or tax planning. The only way to receive a lower effective rate is if your account has a non-taxable component, which is unusual for working holiday makers. There is no legitimate strategy that reduces the rate.
 
-Anyone claiming they can "get your super out at a lower tax rate" is either misunderstanding the law or running a scam. Be particularly careful with offers on social media or messaging apps to "handle your DASP at a discount". The same rules apply to whoever lodges the application: the 65% is withheld at the fund level before the payment is released. Sharing your super details with anyone who is not a registered tax agent puts you at serious risk of identity theft. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the warning signs.
+Anyone claiming they can "get your super out at a lower tax rate" is either misunderstanding the law or running a scam. Be particularly careful with offers on social media or messaging apps to "handle your DASP at a discount". The same rules apply to whoever lodges the application: the 65% is withheld at the fund level before the payment is released. Sharing your super details with anyone who is not a tax agent puts you at serious risk of identity theft. See our article on [protecting your TFN from fraud](/blog/tfn-security-protect-from-fraud) for the warning signs.
 
 ## How does our service handle DASP?
 
@@ -8528,7 +8528,7 @@ If you are still in Australia, we can also coordinate consolidation before DASP 
 
 ## What about warning on super consolidation?
 
-Scammers regularly target working holiday makers with offers to "consolidate your super" or "find your lost super". Once they have your TFN and passport details, they can roll your super out of your real account and into one they control. Never share your TFN or passport details with anyone who is not a registered tax agent. A registered agent has a TAN number listed on the Tax Practitioners Board register. If they cannot show their TAN, do not hand over your documents.
+Scammers regularly target working holiday makers with offers to "consolidate your super" or "find your lost super". Once they have your TFN and passport details, they can roll your super out of your real account and into one they control. Never share your TFN or passport details with anyone who is not a tax agent. A legitimate agent is listed on the government's public register of tax practitioners. If they cannot show you their registration, do not hand over your documents.
  `,
  }, {
  slug: "dasp-rejected-what-to-do",
@@ -8674,7 +8674,7 @@ Unpaid super is often invisible to the worker until DASP is lodged and the numbe
 
 ## What about warning on super claims?
 
-Be cautious of anyone outside a registered tax agent offering to "chase your unpaid super" for a fee. Scammers regularly target working holiday makers with offers to investigate super, collect identity documents, and then either disappear or use the documents to commit identity fraud. Never share your TFN or super fund passwords with anyone who is not a registered tax agent. A registered agent has a TAN number listed on the Tax Practitioners Board register.
+Be cautious of anyone outside a tax agent offering to "chase your unpaid super" for a fee. Scammers regularly target working holiday makers with offers to investigate super, collect identity documents, and then either disappear or use the documents to commit identity fraud. Never share your TFN or super fund passwords with anyone who is not a tax agent. A legitimate agent is listed on the government's public register of tax practitioners.
  `,
  }, {
  slug: "super-stapling-rule-australia",
@@ -10199,7 +10199,7 @@ The penalty is rarely the largest cost of a late tax return. For working holiday
 
 For working holiday makers lodging their own return, the deadline is 31 October following the end of the financial year (which runs 1 July to 30 June). A return for the 2024-25 financial year is therefore due by 31 October 2025.
 
-Working holiday makers who lodge under the supervision of a registered tax agent have a later deadline. Tax agents can lodge for their clients up until late May of the following year, provided the client was registered with the agent before the standard 31 October deadline.
+Working holiday makers who lodge through a tax agent have a later deadline. Tax agents can lodge for their clients up until late May of the following year, provided the client was registered with the agent before the standard 31 October deadline.
 
 This extension is one of the practical advantages of lodging through a tax agent, particularly for working holiday makers who are still in Australia or who have only just left.
 
@@ -10239,7 +10239,7 @@ The ATO has discretion to remit (cancel or reduce) the Failure to Lodge penalty 
 - ATO system or processing issues that prevented lodgement
 - First-time late lodgement with otherwise clean compliance history
 
-Remission must be specifically requested and supported by evidence. The remission rate for working holiday makers is generally higher when the request is made under the supervision of a registered tax agent than when made directly by the taxpayer.
+Remission must be specifically requested and supported by evidence. The remission rate for working holiday makers is generally higher when the request is made through a tax agent than when made directly by the taxpayer.
 
 ## What about returns from years you have already left Australia?
 
@@ -10356,7 +10356,7 @@ The reliable ways to avoid a shortfall penalty are:
 - Include every employer for every job worked in the financial year (no matter how short)
 - Include all ABN income, including gig economy platforms
 - Only claim deductions that are directly related to earning income, with records to support each one
-- Lodge under the supervision of a registered tax agent who has direct access to the ATO income record
+- Lodge through a tax agent who has direct access to the ATO income record
 - Wait until all employer Single Touch Payroll reporting is finalised before lodging (early-lodging risks amended assessments)
 
 ## How does our service handle ATO compliance risk?
@@ -10373,7 +10373,7 @@ The defensibility of the return matters as much as the refund amount. A larger r
 
 ## A security note
 
-Working holiday makers are targeted by tax fraud scams that promise inflated refunds in exchange for sharing TFN and passport details. These schemes typically inflate deductions or omit income to generate a larger initial refund, with the scammer taking a cut. When the ATO later identifies the discrepancy, the worker is left with the penalty and the General Interest Charge while the scammer has disappeared. Never share your TFN, passport, or login details with anyone who is not a registered tax agent on the Tax Practitioners Board register.
+Working holiday makers are targeted by tax fraud scams that promise inflated refunds in exchange for sharing TFN and passport details. These schemes typically inflate deductions or omit income to generate a larger initial refund, with the scammer taking a cut. When the ATO later identifies the discrepancy, the worker is left with the penalty and the General Interest Charge while the scammer has disappeared. Never share your TFN, passport, or login details with anyone who is not a tax agent on the government's public register of tax practitioners.
  `,
  }, {
  slug: "tools-equipment-under-300-instant-deduction-whv",
@@ -11898,7 +11898,7 @@ Business Activity Statements are due quarterly:
 - Quarter 3 (January to March): due 28 April
 - Quarter 4 (April to June): due 28 July
 
-Lodgement under the supervision of a registered tax agent typically extends the deadline by 4 weeks. Missing a BAS lodgement triggers Failure to Lodge penalties similar to those for late tax returns. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday) for the framework.
+Lodgement through a tax agent typically extends the deadline by 4 weeks. Missing a BAS lodgement triggers Failure to Lodge penalties similar to those for late tax returns. See our article on [late tax return penalties](/blog/late-tax-return-penalty-working-holiday) for the framework.
 
 ## What deductions can rideshare drivers claim?
 
@@ -12614,7 +12614,7 @@ A working holiday maker who lodges late AND pays late can be hit with both penal
 
 ## When is a tax debt due?
 
-For an individual lodging under the supervision of a registered tax agent, the standard payment deadline is 21 days after the Notice of Assessment is issued (which is usually within a few weeks of lodgement). For self-lodgers, the payment deadline is typically by the 21st of November following the end of the financial year.
+For an individual lodging through a tax agent, the standard payment deadline is 21 days after the Notice of Assessment is issued (which is usually within a few weeks of lodgement). For self-lodgers, the payment deadline is typically by the 21st of November following the end of the financial year.
 
 For BAS debts, the payment is due on the same date the BAS is due, which is 28 days after the end of the quarter for most lodgers.
 
@@ -12662,7 +12662,7 @@ The ATO has discretion to remit (reduce or cancel) the GIC and Failure to Pay pe
 - Circumstances beyond the taxpayer's control (illness, natural disaster, family emergency)
 - First-time non-payment with otherwise clean compliance history
 
-Remission requests must be made specifically and supported by evidence. The remission rate is generally higher for requests lodged under the supervision of a registered tax agent than for direct requests.
+Remission requests must be made specifically and supported by evidence. The remission rate is generally higher for requests lodged through a tax agent than for direct requests.
 
 ## How does our service support tax debt situations?
 
@@ -12712,12 +12712,12 @@ For a personalised estimate, use our [tax refund calculator](/calculator) - it t
 
 ## When and how to claim
 
-The Australian tax year runs 1 July to 30 June. You can lodge from 1 July, and the deadline for self-lodgment is 31 October. Lodging through a registered tax agent extends that deadline significantly.
+The Australian tax year runs 1 July to 30 June. You can lodge from 1 July, and the deadline for self-lodgment is 31 October. Lodging through a tax agent extends that deadline significantly.
 
 There are three ways to lodge:
 
 1. **myTax via myGov** - free, but the residency and working holiday questions confuse many backpackers, and mistakes are common
-2. **A registered tax agent** - handles residency status, the Medicare levy exemption paperwork and deductions for you; fees are themselves tax-deductible next year
+2. **A tax agent** - handles residency status, the Medicare levy exemption paperwork and deductions for you; fees are themselves tax-deductible next year
 3. **From overseas after leaving** - you can lodge after departure, and if you leave permanently before 30 June you may lodge an early return instead of waiting
 
 Our team specialises in [working holiday tax returns](/tax-return) - we check every one of the refund triggers above as standard.
@@ -12744,7 +12744,7 @@ Yes - there is no practical limit for lodging late returns, and refunds from ear
 
 The 15% itself is generally the correct final rate on earnings up to the bracket ceiling - what comes back is everything withheld above that correct amount, plus exemptions and deductions.
 
-[Get in touch with our team](/contact) for a no-obligation check of what you are owed - as registered tax agents we do this for working holiday makers every day.
+[Get in touch with our team](/contact) for a no-obligation check of what you are owed - we do this for working holiday makers every day.
  `,
  },
  {
@@ -12940,7 +12940,7 @@ The same working holiday maker rates. Your TFN also stays the same - see [what t
 
 Generally no - 15% on earnings up to 45,000 dollars is the correct final tax. What you recover is over-withholding, the Medicare levy exemption, deductions, and your superannuation via DASP.
 
-Use our [refund calculator](/calculator) for a quick estimate, or [get in touch with our team](/contact) - registered tax agents who work only with working holiday makers.
+Use our [refund calculator](/calculator) for a quick estimate, or [get in touch with our team](/contact) - a team that works only with working holiday makers.
  `,
  },
  {
@@ -12952,7 +12952,7 @@ Use our [refund calculator](/calculator) for a quick estimate, or [get in touch 
  date: "29 July 2026",
  readTime: 8,
  body: `
-You can lodge your Australian tax return yourself through myTax for free, or pay a registered tax agent to do it. For working holiday makers with one employer, correct 15% withholding all year and no deductions, DIY works fine. An agent earns their fee when your situation includes multiple employers, 45% withholding periods, the Medicare levy exemption, an ABN, or lodging from overseas.
+You can lodge your Australian tax return yourself through myTax for free, or pay a tax agent to do it. For working holiday makers with one employer, correct 15% withholding all year and no deductions, DIY works fine. An agent earns their fee when your situation includes multiple employers, 45% withholding periods, the Medicare levy exemption, an ABN, or lodging from overseas.
 
 ## What DIY through myTax involves
 
@@ -12968,7 +12968,7 @@ myTax is the ATO's free online lodgment tool, accessed through a myGov account l
 
 ## What an agent actually does differently
 
-A registered tax agent (check any agent on the TPB register) is legally allowed to charge for tax advice and lodgment, carries professional obligations, and gets extended lodgment deadlines. For working holiday makers specifically, a good agent will confirm your residency position, obtain the Medicare Entitlement Statement, audit withholding across every employer, claim eligible deductions, and lodge correctly even after you have left the country. The fee is tax-deductible in the following year's return.
+A tax agent (check any agent on the public register of tax practitioners) is legally allowed to charge for tax advice and lodgment, carries professional obligations, and gets extended lodgment deadlines. For working holiday makers specifically, a good agent will confirm your residency position, obtain the Medicare Entitlement Statement, audit withholding across every employer, claim eligible deductions, and lodge correctly even after you have left the country. The fee is tax-deductible in the following year's return.
 
 ## The honest decision guide
 
@@ -13097,7 +13097,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "When do working holiday makers need to lodge a tax return?",
  answer:
- "The Australian financial year ends on 30 June. You must lodge your tax return between 1 July and 31 October that year. If you lodge under the supervision of a registered tax agent, the deadline can be extended.",
+ "The Australian financial year ends on 30 June. You must lodge your tax return between 1 July and 31 October that year. If you lodge through a tax agent, the deadline can be extended.",
  },
  {
  question: "Do working holiday makers get a tax refund?",
@@ -13108,7 +13108,7 @@ export const categoryMeta: CategoryMeta[] = [
  question:
  "Can you lodge an Australian tax return after leaving the country?",
  answer:
- "Yes. You can lodge your tax return from anywhere in the world. We can manage the process remotely under the supervision of a registered tax agent. Keep your Australian bank account open until the refund is paid.",
+ "Yes. You can lodge your tax return from anywhere in the world. We can manage the process remotely. Keep your Australian bank account open until the refund is paid.",
  },
  {
  question: "What can working holiday makers claim as deductions?",
@@ -13146,7 +13146,7 @@ export const categoryMeta: CategoryMeta[] = [
  {
  question: "How do you find lost or unclaimed super?",
  answer:
- "You can find lost super by linking your TFN to your account through our service, contacting the Australian Taxation Office, or working under the supervision of a registered tax agent who can search across all funds.",
+ "You can find lost super by linking your TFN to your account through our service, contacting the Australian Taxation Office, or working with a tax agent who can search across all funds.",
  },
  ],
  relatedServicePath: "/superannuation",
@@ -13228,10 +13228,6 @@ export function getCategoryBySlug(slug: string): CategoryMeta | undefined {
 
 export function getGuideBySlug(slug: string): Guide | undefined {
  return guides.find((g) => g.slug === slug);
-}
-
-export function getGuidesByCategory(category: Category): Guide[] {
- return guides.filter((g) => g.category === category);
 }
 
 export function getCategoryColor(category: Category): {

@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
-import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Contact Us - Working Holiday Tax | WHV Tax Support',
-  description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
+  description: 'Get in touch with our team of working holiday tax specialists for your tax refund, TFN, ABN or super (DASP). WhatsApp, email, Instagram or TikTok. We reply within an hour during business hours.',
   keywords: [
     'contact working holiday tax',
     'working holiday tax agent contact',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Contact Working Holiday Tax | WHV Tax Support',
-    description: 'Get in touch with our team, working under the supervision of a registered tax agent. Fast responses from real advisors. Working holiday tax refund, TFN, ABN, super (DASP).',
+    description: 'Get in touch with our team - fast responses from real advisors who work only with working holiday makers. Tax refund, TFN, ABN, super (DASP).',
     url: `${SITE_URL}/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Contact Working Holiday Tax | WHV Tax Support',
-    description: 'Get in touch with our team, working under the supervision of a registered tax agent, for your working holiday tax refund.',
+    description: 'Get in touch with our team of working holiday tax specialists for your tax refund.',
   },
   robots: {
     index: true,
@@ -94,7 +94,7 @@ export default function ContactPage() {
     '@id': `${SITE_URL}/contact`,
     url: `${SITE_URL}/contact`,
     name: 'Contact Working Holiday Tax',
-    description: 'Get in touch with our team, working under the supervision of a registered tax agent, for help with TFN, tax returns, super and ABN.',
+    description: 'Get in touch with our team of working holiday tax specialists for help with TFN, tax returns, super and ABN.',
     inLanguage: 'en-AU',
     isPartOf: {
       '@type': 'WebSite',
@@ -107,7 +107,6 @@ export default function ContactPage() {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
-      legalName: AGENT_NAME,
       url: SITE_URL,
       email: EMAIL,
       contactPoint: [
@@ -134,8 +133,6 @@ export default function ContactPage() {
         },
       ],
       identifier: [
-        { '@type': 'PropertyValue', name: 'ABN', value: AGENT_ABN },
-        { '@type': 'PropertyValue', name: 'Tax Agent Number', value: AGENT_TPB },
       ],
     },
   }

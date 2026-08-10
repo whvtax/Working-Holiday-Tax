@@ -8,8 +8,8 @@ import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: "Working Holiday Tax Refund - Lodged For You By Tax Agents",
-  description: "Get your Australian tax refund without touching myGov. Lodged by registered tax agents - your 417/462 return is processed to claim the Medicare levy exemption and every deduction you are owed - from Australia or after you have flown home.",
+  title: "Working Holiday Tax Refund - Lodged For You, All Online",
+  description: "Get your Australian tax refund without touching myGov. Backpacker specialists process your 417/462 return to claim the Medicare levy exemption and every deduction.",
   keywords: [
     'working holiday tax refund Australia',
     'working holiday tax refund',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     'how much tax refund will I get Australia working holiday',
     'tax return for foreigners Australia',
     'working holiday tax return online',
-    'registered tax agent working holiday',
+    'backpacker tax return specialists',
     'tax deductions working holiday makers',
     'working holiday tax refund UK',
     'working holiday tax refund Germany',
@@ -55,14 +55,14 @@ export const metadata: Metadata = {
     locale: 'en_AU',
     url: `${SITE_URL}/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: "Working Holiday Tax Refund - Lodged For You By Tax Agents",
-    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Lodged by registered tax agents online - even after you leave Australia.',
+    title: "Working Holiday Tax Refund - Lodged For You, All Online",
+    description: 'Working holiday tax refund Australia for 417 and 462 visa holders. Lodged online by backpacker specialists - even after you leave Australia.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Working holiday tax refund for 417 and 462 visa holders. Lodged by registered tax agents - all online.',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Backpacker tax specialists - all online.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -94,7 +94,7 @@ const faqs = [
   },
   {
     question: 'How do I know if I am owed a tax refund?',
-    answer: 'You will be owed a tax refund if you paid more tax than required during the year. This often happens to working holiday makers when the wrong tax rate was applied, when you did not provide your TFN early enough, or when you have eligible deductions. Under the supervision of a registered tax agent, we review your situation and make sure your return is lodged correctly so you do not miss anything you are entitled to.',
+    answer: 'You will be owed a tax refund if you paid more tax than required during the year. This often happens to working holiday makers when the wrong tax rate was applied, when you did not provide your TFN early enough, or when you have eligible deductions. Working holiday returns are all we do, so we review your situation and make sure your return is lodged correctly so you do not miss anything you are entitled to.',
   },
   {
     question: 'How much working holiday tax refund will I get?',
@@ -158,7 +158,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/tax-return#service`,
   name: 'Working Holiday Tax Return Service',
   serviceType: 'Tax return preparation and lodgement',
-  description: 'Australian tax return preparation and lodgement for 417 and 462 working holiday visa holders. Prepared and lodged with the ATO under the supervision of a registered tax agent.',
+  description: 'Australian tax return preparation and lodgement for 417 and 462 working holiday visa holders. Prepared and lodged with the ATO, all online.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },
@@ -239,7 +239,7 @@ export default function TaxReturnPage() {
                 maxWidth:'46ch',
                 marginBottom:'0',
               }}>
-              <span>Lodged by registered tax agents - your 417 or 462 return is processed to claim the Medicare levy exemption and every deduction you are owed. No myGov, no forms - and it works from anywhere in the world.</span>
+              <span>Built for backpackers - your 417 or 462 return is processed to claim the Medicare levy exemption and every deduction you are owed. No myGov, no forms - and it works from anywhere in the world.</span>
             </p>
 
             <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4"

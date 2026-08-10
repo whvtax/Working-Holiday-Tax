@@ -110,7 +110,7 @@ const faqs = [
   },
   {
     question: 'How do I claim superannuation when leaving Australia?',
-    answer: 'To claim superannuation (DASP) when leaving Australia, your visa must have expired or been cancelled, and you must have permanently left Australia. Contact a registered tax agent or lodge through the ATO DASP portal. You will need your TFN, passport details, visa information, and super fund details. Payment typically arrives within 28 days of approval.',
+    answer: 'To claim superannuation (DASP) when leaving Australia, your visa must have expired or been cancelled, and you must have permanently left Australia. Contact a tax agent or lodge through the ATO DASP portal. You will need your TFN, passport details, visa information, and super fund details. Payment typically arrives within 28 days of approval.',
   },
   {
     question: 'Do working holiday makers pay Medicare Levy?',
@@ -122,7 +122,7 @@ const faqs = [
   },
   {
     question: "I'm on a 417 or 462 visa - how do I actually get my superannuation back?",
-    answer: 'Once you have left Australia and your working holiday visa has expired or been cancelled, you (or a registered tax agent on your behalf) submit a DASP application with your passport, visa and super fund details. Most working holiday makers have several small super accounts from casual and seasonal jobs - we search all of them under your TFN, combine the claim, and lodge it correctly the first time, so nothing is left behind and nothing is delayed by a mismatched detail.',
+    answer: 'Once you have left Australia and your working holiday visa has expired or been cancelled, you (or a tax agent on your behalf) submit a DASP application with your passport, visa and super fund details. Most working holiday makers have several small super accounts from casual and seasonal jobs - we search all of them under your TFN, combine the claim, and lodge it correctly the first time, so nothing is left behind and nothing is delayed by a mismatched detail.',
   },
   {
     question: 'Do I get superannuation if I worked under an ABN?',
@@ -173,7 +173,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/superannuation#service`,
   name: 'DASP Super Refund Service for Working Holiday Makers',
   serviceType: 'Departing Australia Superannuation Payment (DASP) claim',
-  description: 'DASP super refund claim service for 417 and 462 working holiday visa holders, prepared and submitted under the supervision of a registered tax agent. Claim your super back after leaving Australia.',
+  description: 'DASP super refund claim service for 417 and 462 working holiday visa holders, handled end to end by working holiday specialists. Claim your super back after leaving Australia.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462) leaving Australia' },
@@ -273,7 +273,7 @@ export default function SuperannuationPage() {
                 marginBottom:'0',
               }}>
               
-              Through registered tax agents, we handle the funds, the paperwork and the payment. You send four details. Most claims are paid within 28 days.
+              We handle the funds, the paperwork and the payment. You send four details. Most claims are paid within 28 days.
             
             </p>
 

@@ -7,6 +7,7 @@ import { guides, getCategoryColor } from '@/app/blog/data'
 import GuideArticle from '@/app/blog/[slug]/GuideArticle'
 import StickyBreadcrumbs from '@/app/blog/[slug]/StickyBreadcrumbs'
 import CategoryHero from '@/app/blog/[slug]/CategoryHero'
+import { isoGuideDate, formatGuideDateJa } from '@/lib/blog-dates'
 import { getJapaneseGuide, getJapaneseCategoryMeta, jaCategoryMeta, blogUI } from '../data'
 
 
@@ -284,7 +285,6 @@ function extractMentions(body: string, category: string): Array<{ '@type': strin
     { match: /Services Australia|Medicare|メディケア/, name: 'Services Australia', sameAs: 'https://www.servicesaustralia.gov.au/' },
     { match: /Department of Home Affairs|内務省/, name: 'Department of Home Affairs', sameAs: 'https://www.homeaffairs.gov.au/' },
     { match: /myGov|MyGov/, name: 'myGov', sameAs: 'https://my.gov.au/' },
-    { match: /Tax Practitioners Board|TPB/, name: 'Tax Practitioners Board', sameAs: 'https://www.tpb.gov.au/' },
   ]
   for (const ent of orgEntities) {
     if (ent.match.test(body)) {
@@ -388,14 +388,14 @@ export default function JapaneseGuidePage({ params }: Props) {
     wordCount,
     timeRequired: `PT${readTime}M`,
     inLanguage: articleLang,
-    datePublished: guide.date,
-    dateModified: guide.date,
+    datePublished: isoGuideDate(guide.date),
+    dateModified: isoGuideDate(guide.date),
     author: {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
       url: `${SITE_URL}`,
-      description: 'オーストラリアで登録税理士の監督のもとで運営。ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門としています。',
+      description: 'ワーキングホリデーメーカー（ビザサブクラス417・462）の税務サポートを専門とするオーストラリアのサービスです。',
       knowsAbout: [
         'オーストラリア税法',
         'ワーキングホリデービザ（サブクラス417・462）',
@@ -533,8 +533,11 @@ export default function JapaneseGuidePage({ params }: Props) {
         {categoryInfo && (
           <StickyBreadcrumbs
             category={categoryInfo.category}
-            categorySlug={`/ja/blog/category/${categoryInfo.slug}`}
+            categorySlug={categoryInfo.slug}
             title={guide.title}
+            basePath="/ja"
+            homeLabel="ホーム"
+            blogLabel="ブログ"
           />
         )}
 
@@ -582,7 +585,7 @@ export default function JapaneseGuidePage({ params }: Props) {
                       <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                     </>
                   )}
-                  <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>最終更新：{guide.date}</span>
+                  <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>最終更新：{formatGuideDateJa(guide.date)}</span>
                   <span style={{ color: 'rgba(0,0,0,0.15)' }}>·</span>
                   <span style={{ fontSize: '12px', color: 'rgba(10,15,13,0.55)' }}>{readTime}分で読めます</span>
                 </div>
@@ -632,7 +635,7 @@ export default function JapaneseGuidePage({ params }: Props) {
 
           <article style={{ padding: '2rem 0 3rem 0' }} itemScope itemType="https://schema.org/Article">
             <meta itemProp="headline" content={guide.title} />
-            <meta itemProp="datePublished" content={guide.date} />
+            <meta itemProp="datePublished" content={isoGuideDate(guide.date)} />
             <meta itemProp="author" content="Working Holiday Tax" />
             <GuideArticle guide={guide} locale="ja" />
           </article>

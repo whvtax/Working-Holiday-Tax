@@ -2080,7 +2080,9 @@
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 16px) scale(0.98);
-  z-index: 9999;
+  /* Below the mobile menu (z-40), nav (z-50) and CTA bar (z-60) so the
+     transient toast never covers interactive navigation UI */
+  z-index: 39;
   max-width: calc(100vw - 24px);
   width: 460px;
   opacity: 0;
@@ -2280,6 +2282,11 @@ html[lang="ja"] h3,
 html[lang="ja"] h4 {
   line-break: strict;
   word-break: keep-all;
+  /* keep-all alone can force a heading wider than the viewport on narrow
+     screens (its min-content width inflates grid/flex parents, clipping the
+     text). 'anywhere' - unlike 'break-word' - also shrinks min-content, so
+     long runs wrap instead of overflowing. */
+  overflow-wrap: anywhere;
   /* Slightly tighter tracking for CJK */
   letter-spacing: 0;
 }
@@ -2895,4 +2902,16 @@ a:focus-visible, button:focus-visible {
 .mobile-cta-sub   { font-size: 11px; font-weight: 400; opacity: 0.82; }
 @media (min-width: 768px) {
   .mobile-cta-bar { display: none; }
+}
+
+/* Back-to-top button: default resting position, and clearance so it is not
+   buried underneath the sticky mobile CTA bar when that bar is visible. */
+.scroll-top-btn {
+  bottom: 24px;
+  transition: bottom 0.25s ease, opacity 0.2s ease;
+}
+@media (max-width: 767px) {
+  body:has(.mobile-cta-bar[data-visible='true']) .scroll-top-btn {
+    bottom: 104px;
+  }
 }

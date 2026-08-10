@@ -108,7 +108,7 @@ export default function GermanBlogPage() {
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
     logo: `${SITE_URL}/icon-512.png`,
-    description: 'Steuerservice für Working Holiday Visuminhaber in Australien. TFN-Anträge, Steuererklärungen, DASP Superauszahlungen und ABN-Registrierungen unter Aufsicht eines registrierten Steueragenten.',
+    description: 'Steuerservice für Working Holiday Visuminhaber in Australien. TFN-Anträge, Steuererklärungen, DASP Superauszahlungen und ABN-Registrierungen von Working-Holiday-Spezialisten abgewickelt.',
     areaServed: { '@type': 'Country', name: 'Australia' },
     knowsAbout: [
       'Tax File Number Anträge',

@@ -8,8 +8,8 @@ import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
-  title: "Du hast wahrscheinlich zu viel Steuer gezahlt. machen lassen - registrierte Tax Agents",
-  description: "Steuern zurück aus Australien, ohne myGov und ohne Formulare. Von registrierten Steueragenten eingereicht - deine 417/462-Steuererklärung wird bearbeitet, die Medicare-Levy-Befreiung geholt und jeden Abzug, der dir zusteht - auch nach deiner Rückkehr nach Deutschland.",
+  title: "Du hast wahrscheinlich zu viel Steuer gezahlt | Steuererklärung Australien",
+  description: "Steuern zurück aus Australien, ohne myGov und ohne Formulare. Wir bearbeiten deine 417/462-Steuererklärung, holen die Medicare-Levy-Befreiung und jeden Abzug, der dir zusteht - auch nach deiner Rückkehr nach Deutschland.",
   keywords: [
     'Steuerrückerstattung Australien',
     'Steuerrückerstattung Australien Working Holiday',
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     'Steuererklärung Backpacker Deutsch',
     'Work and Travel Steuerrückerstattung',
     'Work and Travel Steuer zurück',
-    'registrierter Steueragent Australien Deutsch',
+    'Steueragent Australien Deutsch',
     'Notice of Assessment Australien Deutsch',
     'PAYG Summary verstehen',
   ],
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
     locale: 'de_DE',
     url: `${SITE_URL}/de/tax-return`,
     siteName: 'Working Holiday Tax',
-    title: "Du hast wahrscheinlich zu viel Steuer gezahlt. machen lassen - registrierte Tax Agents",
-    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten - alles online, auch aus Deutschland.',
+    title: "Du hast wahrscheinlich zu viel Steuer gezahlt | Steuererklärung Australien",
+    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Spezialisiert auf Backpacker - alles online, auch aus Deutschland.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -94,7 +94,7 @@ const faqs = [
   },
   {
     question: 'Woher weiß ich, ob ich eine Steuerrückerstattung bekomme?',
-    answer: 'Du bekommst eine Steuerrückerstattung, wenn du im Laufe des Jahres mehr Steuern gezahlt hast als nötig. Das passiert bei Working Holiday Makern oft, wenn der falsche Steuersatz angewendet wurde, deine TFN zu spät hinterlegt war, oder du absetzbare Kosten hast. Unter Aufsicht eines registrierten Steueragenten prüfen wir deine Situation und sorgen dafür, dass deine Erklärung korrekt eingereicht wird und du nichts verpasst, was dir zusteht.',
+    answer: 'Du bekommst eine Steuerrückerstattung, wenn du im Laufe des Jahres mehr Steuern gezahlt hast als nötig. Das passiert bei Working Holiday Makern oft, wenn der falsche Steuersatz angewendet wurde, deine TFN zu spät hinterlegt war, oder du absetzbare Kosten hast. Wir prüfen deine Situation und sorgen dafür, dass deine Erklärung korrekt eingereicht wird und du nichts verpasst, was dir zusteht.',
   },
   {
     question: 'Wie viel Steuerrückerstattung aus Australien bekomme ich?',
@@ -146,7 +146,7 @@ const serviceSchema = {
   '@type': 'Service',
   '@id': `${SITE_URL}/de/tax-return#service`,
   name: 'Australische Steuererklärung für Working Holiday Maker',
-  description: 'Komplette Bearbeitung deiner australischen Steuererklärung - Vorbereitung, Optimierung und Einreichung beim ATO unter Aufsicht eines registrierten Steueragenten.',
+  description: 'Komplette Bearbeitung deiner australischen Steuererklärung - Vorbereitung, Optimierung und Einreichung beim ATO.',
   serviceType: 'Tax Return Preparation',
   category: 'Tax Preparation Service',
   url: `${SITE_URL}/de/tax-return`,
@@ -164,7 +164,7 @@ const serviceSchema = {
     '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
-    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker.',
+    description: 'Steuerservice spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
   },
 }

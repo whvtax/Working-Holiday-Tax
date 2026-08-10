@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
+import { isValidEmail, isValidTfn, isPlausibleDob } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
@@ -81,13 +82,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!firstName.trim())      e.firstName      = T('required')
     if (!lastName.trim())       e.lastName       = T('required')
     if (!dob.trim())            e.dob            = T('required')
+    else if (!isPlausibleDob(dob)) e.dob         = T('invalidDob')
     if (!passport.trim())       e.passport       = T('required')
     if (!passportCountry.trim()) e.passportCountry = T('required')
     if (!smsPhone.trim())       e.smsPhone       = T('required')
     if (!email.trim())          e.email          = T('required')
+    else if (!isValidEmail(email)) e.email       = T('invalidEmail')
     if (!auAddress.trim())      e.auAddress      = T('required')
     if (!homeAddress.trim())    e.homeAddress    = T('required')
     if (!tfn.trim())            e.tfn            = T('required')
+    else if (!isValidTfn(tfn))  e.tfn            = T('invalidTfn')
     if (!superFundName.trim())   e.superFundName   = T('required')
     if (!superMemberNumber.trim()) e.superMemberNumber = T('required')
     if (!superOpeningDate.trim()) e.superOpeningDate = T('required')
@@ -263,7 +267,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">{T('acceptTerms')} <a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">{T('clientAgreement')}</a> {T('and')} <a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">{T('privacyPolicy')}</a></span>
+              <span className="check-label">{T('acceptTerms')} <a href={lang === 'de' ? '/de/client-agreement' : lang === 'ja' ? '/ja/client-agreement' : '/client-agreement'} target="_blank" rel="noopener noreferrer" className="decl-link">{T('clientAgreement')}</a> {T('and')} <a href={lang === 'de' ? '/de/privacy' : lang === 'ja' ? '/ja/privacy' : '/privacy'} target="_blank" rel="noopener noreferrer" className="decl-link">{T('privacyPolicy')}</a></span>
             </label>
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>

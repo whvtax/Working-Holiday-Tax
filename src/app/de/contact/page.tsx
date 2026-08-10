@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
-import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-  description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
+  description: 'Kontaktiere unser Team, das ausschließlich mit Working Holiday Makern arbeitet. WhatsApp, E-Mail, Instagram oder TikTok. Wir antworten innerhalb einer Stunde während der Geschäftszeiten.',
   keywords: [
     'Kontakt Working Holiday Tax',
     'Steueragent Australien Kontakt',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet. Schnelle Antworten von echten Beratern.',
+    description: 'Kontaktiere unser Team, das ausschließlich mit Working Holiday Makern arbeitet. Schnelle Antworten von echten Beratern.',
     url: `${SITE_URL}/de/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Kontakt - Steueragent für Backpacker | Working Holiday Tax',
-    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet.',
+    description: 'Kontaktiere unser Team, das ausschließlich mit Working Holiday Makern arbeitet.',
   },
   robots: {
     index: true,
@@ -85,7 +85,7 @@ export default function GermanContactPage() {
     '@id': `${SITE_URL}/de/contact`,
     url: `${SITE_URL}/de/contact`,
     name: 'Kontakt - Working Holiday Tax',
-    description: 'Kontaktiere unser Team, das unter Aufsicht eines registrierten Steueragenten arbeitet, für Hilfe mit TFN, Steuererklärung, Super und ABN.',
+    description: 'Kontaktiere unser Team, das ausschließlich mit Working Holiday Makern arbeitet, für Hilfe mit TFN, Steuererklärung, Super und ABN.',
     inLanguage: 'de',
     isPartOf: {
       '@type': 'WebSite',
@@ -98,7 +98,6 @@ export default function GermanContactPage() {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
-      legalName: AGENT_NAME,
       url: SITE_URL,
       email: EMAIL,
       contactPoint: [
@@ -125,8 +124,6 @@ export default function GermanContactPage() {
         },
       ],
       identifier: [
-        { '@type': 'PropertyValue', name: 'ABN', value: AGENT_ABN },
-        { '@type': 'PropertyValue', name: 'Tax Agent Number', value: AGENT_TPB },
       ],
     },
   }

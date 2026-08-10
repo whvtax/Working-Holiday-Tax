@@ -321,7 +321,7 @@ export default function HospitalityExpensesPage() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              This is general information, not personal tax advice. Everyone&apos;s situation is a little different, especially once you add more than one employer into the mix. When you lodge with us, we&apos;ll go through your specific payslips and income statements, prepared under the supervision of a registered tax agent, to make sure your tax-free threshold answers, deductions and tips are all accounted for correctly.
+              This is general information, not personal tax advice. Everyone&apos;s situation is a little different, especially once you add more than one employer into the mix. When you lodge with us, we&apos;ll go through your specific payslips and income statements, prepared by our working-holiday-only team, to make sure your tax-free threshold answers, deductions and tips are all accounted for correctly.
             </p>
             <Link href="/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

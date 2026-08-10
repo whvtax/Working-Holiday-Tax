@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { SITE_URL, AGENT_NAME } from '@/lib/constants'
+import { SITE_URL } from '@/lib/constants'
 
 /**
  * Japanese section layout.
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'オーストラリアのワーキングホリデー（417・462ビザ）専門。登録税理士の監督のもとで、タックスリターン還付金の受取、TFN申請、スーパー受取（DASP）、ABN登録までオンラインで完結。',
+    'オーストラリアのワーキングホリデー（417・462ビザ）専門。タックスリターン還付金の受取、TFN申請、スーパー受取（DASP）、ABN登録までオンラインで完結。',
   keywords: [
     // Refund-focused (HIGH INTENT - primary service)
     'オーストラリア タックスリターン 還付金',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     'ワーキングホリデービザ 税金',
     'バックパッカー 税金 オーストラリア',
     // Professional service
-    '登録税理士 オーストラリア 日本語',
+    'ワーホリ 税金 専門 日本語',
     'オーストラリア 税理士 ワーホリ',
     'オーストラリア 税務代理人 日本人',
     // Medicare / specific topics
@@ -70,9 +70,9 @@ export const metadata: Metadata = {
     'ワーホリ タックスリターン 期限',
     'オーストラリア 会計年度 タックスリターン',
   ],
-  authors: [{ name: AGENT_NAME }],
-  creator: AGENT_NAME,
-  publisher: AGENT_NAME,
+  authors: [{ name: 'Working Holiday Tax' }],
+  creator: 'Working Holiday Tax',
+  publisher: 'Working Holiday Tax',
   category: '税務サービス',
   alternates: {
     canonical: `${SITE_URL}/ja`,
@@ -90,18 +90,18 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja`,
     siteName: 'Working Holiday Tax',
     title: 'オーストラリア タックスリターン 還付金 - ワーキングホリデー専門',
-    description: 'オーストラリアのワーホリ（417・462ビザ）専門。登録税理士の監督のもとで、タックスリターン還付金、TFN、スーパー受取（DASP）まですべてオンライン。',
+    description: 'オーストラリアのワーホリ（417・462ビザ）専門。タックスリターン還付金、TFN、スーパー受取（DASP）まですべてオンライン。',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
       height: 630,
-      alt: 'オーストラリア タックスリターン 還付金 - 登録税理士の監督のもとでワーキングホリデー専門',
+      alt: 'オーストラリア タックスリターン 還付金 - ワーキングホリデー専門',
     }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'オーストラリア タックスリターン 還付金 - ワーホリ専門',
-    description: 'オーストラリアのワーホリ専門。登録税理士の監督のもとでタックスリターン還付金を最大化。',
+    description: 'オーストラリアのワーホリ専門。タックスリターン還付金を最大化。',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {

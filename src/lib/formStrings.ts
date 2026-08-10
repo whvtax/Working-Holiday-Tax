@@ -72,7 +72,7 @@ export const formStrings = {
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
   timeEstimate:        { en: '⏱ Takes about 2 minutes',            de: '⏱ Dauert etwa 2 Minuten',    ja: '⏱ 約2分で完了' },
   backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },
-  registeredTaxAgent:  { en: 'Registered Agent Supervision',        de: 'Unter Aufsicht eines registrierten Steueragenten', ja: '登録税理士の監督のもとで' },
+  registeredTaxAgent:  { en: 'Working holiday specialists',        de: 'Working-Holiday-Spezialisten', ja: 'ワーホリ専門チーム' },
   secureForm:          { en: 'Secure Form',                         de: 'Sicheres Formular',           ja: '安全なフォーム' },
   fullyOnline:         { en: '100% Online',                         de: '100% Online',                 ja: '完全オンライン' },
 
@@ -86,6 +86,9 @@ export const formStrings = {
 
   // ─ Validation ─
   required:            { en: 'Required',                            de: 'Pflichtfeld',              ja: '必須' },
+  invalidEmail:        { en: 'Please enter a valid email address',  de: 'Bitte gib eine gültige E-Mail-Adresse ein', ja: '有効なメールアドレスをご入力ください' },
+  invalidTfn:          { en: 'A TFN is 8 or 9 digits',              de: 'Eine TFN hat 8 oder 9 Ziffern', ja: 'TFNは8桁または9桁の数字です' },
+  invalidDob:          { en: 'Please check the date of birth',      de: 'Bitte überprüfe das Geburtsdatum', ja: '生年月日をご確認ください' },
   mustConfirmDecl:     { en: 'You must confirm this declaration to proceed', de: 'Du musst diese Erklärung bestätigen, um fortzufahren', ja: '続行するにはこの宣言の確認が必要です' },
   mustAcceptTerms:     { en: 'You must accept the terms',           de: 'Du musst die Bedingungen akzeptieren', ja: '規約への同意が必要です' },
   fixBeforeSubmit:     { en: 'Please fix the following before submitting:', de: 'Bitte korrigiere Folgendes, bevor du absendest:', ja: '送信前に以下を修正してください：' },

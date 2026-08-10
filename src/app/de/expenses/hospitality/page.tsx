@@ -307,7 +307,7 @@ export default function HospitalityExpensesPageDE() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              Dies sind allgemeine Informationen, keine persönliche Steuerberatung. Jede Situation ist etwas anders, besonders sobald mehr als ein Arbeitgeber ins Spiel kommt. Wenn du deine Erklärung bei uns einreichst, wird sie unter Aufsicht eines registrierten Steueragenten erstellt, der deine Lohnzettel und Income Statements im Detail durchgeht, damit deine Antworten zur Freibetragsfrage, deine Absetzungen und dein Trinkgeld korrekt berücksichtigt werden.
+              Dies sind allgemeine Informationen, keine persönliche Steuerberatung. Jede Situation ist etwas anders, besonders sobald mehr als ein Arbeitgeber ins Spiel kommt. Wenn du deine Erklärung bei uns einreichst, wird sie von unserem Team erstellt, das nur mit Working Holiday Makern arbeitet und deine Lohnzettel und Income Statements im Detail durchgeht, damit deine Antworten zur Freibetragsfrage, deine Absetzungen und dein Trinkgeld korrekt berücksichtigt werden.
             </p>
             <Link href="/de/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

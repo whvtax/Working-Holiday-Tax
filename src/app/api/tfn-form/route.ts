@@ -19,6 +19,12 @@ export async function POST(req: NextRequest) {
     const whatsapp  = sanitiseShort(formData.get('whatsapp') ?? formData.get('smsPhone'))
     const fullName  = [sanitiseShort(formData.get('firstName')), sanitiseShort(formData.get('lastName'))].filter(Boolean).join(' ')
 
+    // Minimal server-side guard: a lead without a name, email or phone is
+    // unactionable - reject it instead of creating an empty CRM task.
+    if (!fullName || !email || !whatsapp) {
+      return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
+    }
+
     const existing  = await findExistingClient(email, whatsapp)
     const isReturning = !!existing
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`

@@ -462,7 +462,7 @@ export default function FifoExpensesPageJA() {
         <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。ロースター、現場、キャンプでの取り決めは一人ひとり少しずつ異なり、特にZone Tax Offsetは、ロースターでどこへ行くかではなく、あなた自身の通常の居住地によって判断されます。当社にご依頼いただいた場合、タックスリターンは登録税理士の監督のもとで作成され、お客様の具体的なロースター、チケット、状況を確認したうえで、請求できるものはすべて、請求できないものは一切含めないようにいたします。
+              これは一般的な情報であり、個別の税務アドバイスではありません。ロースター、現場、キャンプでの取り決めは一人ひとり少しずつ異なり、特にZone Tax Offsetは、ロースターでどこへ行くかではなく、あなた自身の通常の居住地によって判断されます。当社にご依頼いただいた場合、タックスリターンはワーホリ専門のチームによって作成され、お客様の具体的なロースター、チケット、状況を確認したうえで、請求できるものはすべて、請求できないものは一切含めないようにいたします。
             </p>
             <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

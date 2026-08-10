@@ -2,14 +2,14 @@ import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB, EMAIL } from '@/lib/constants'
+import { WA_URL, SITE_URL, EMAIL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { getGoogleRating } from '@/lib/googleData'
 
 // ─── METADATA - rich SEO + AI optimized ─────────────────────────────────
 export const metadata: Metadata = {
   title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax Return',
-  description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. Lodge from Australia or after you go home, all online.',
+  description: 'Working holiday tax refund Australia - backpacker specialists handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visas. All online.',
   keywords: [
     // Primary refund-focused terms
     'working holiday tax refund',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     'ABN registration backpacker',
     'Australian tax for working holiday makers',
     'WHM tax rate 2025-26',
-    'registered tax agent Australia working holiday',
+    'backpacker tax specialist Australia',
     'super withdrawal Australia backpacker',
     'Medicare levy exemption backpacker',
     // Market-specific long-tail
@@ -51,9 +51,9 @@ export const metadata: Metadata = {
     'tax refund Australia German backpacker',
     'tax refund Australia Japanese working holiday',
   ],
-  authors: [{ name: AGENT_NAME }],
-  creator: AGENT_NAME,
-  publisher: AGENT_NAME,
+  authors: [{ name: 'Working Holiday Tax' }],
+  creator: 'Working Holiday Tax',
+  publisher: 'Working Holiday Tax',
   category: 'Tax Services',
   alternates: {
     canonical: SITE_URL,
@@ -70,13 +70,13 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia | WHV & Backpacker Tax Return',
-    description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent, we handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visa holders. All online, even after you leave Australia.',
+    description: 'Working holiday tax refund Australia - backpacker specialists handle your WHV tax return, TFN, super refund (DASP) and ABN for 417 and 462 visas. All online, even after you leave Australia.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia - tax services for backpackers on 417 and 462 visas' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Working holiday tax refund for 417 and 462 visa holders. Lodged by registered tax agents - all online, lodge from Australia or overseas.',
+    description: 'Working holiday tax refund for 417 and 462 visa holders. Backpacker tax specialists - all online, lodge from Australia or overseas.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -105,7 +105,7 @@ const CheckIcon = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill="n
 const STEPS = [
   { n: '1', title: 'Tell us about your situation', body: 'TFN, ABN, tax return or super, we guide you from day one.' },
   { n: '2', title: 'Send your details in minutes',  body: 'A quick checklist. No forms, no paperwork.' },
-  { n: '3', title: 'We handle everything for you',  body: 'Lodged by a registered tax agent and fully compliant with ATO rules.' },
+  { n: '3', title: 'We handle everything for you',  body: 'Your return is prepared and lodged fully compliant with ATO rules.' },
   { n: '4', title: 'Get your assessment',           body: 'Any refund you are owed goes straight to your bank account.' },
 ]
 
@@ -120,11 +120,11 @@ const SERVICES = [
 const FAQS = [
   {
     question: 'How does a working holiday tax refund in Australia work?',
-    answer: 'If you worked in Australia on a 417 or 462 working holiday visa, tax was withheld from your pay throughout the year. After 30 June, you lodge a tax return with the Australian Taxation Office (ATO), and any tax you overpaid comes back to you as a refund. The exact amount depends on your income, your tax residency status, the deductions you can claim, and whether your employer registered as a Working Holiday Maker employer. Under the supervision of a registered tax agent, we can review your situation and make sure your return is lodged correctly.',
+    answer: 'If you worked in Australia on a 417 or 462 working holiday visa, tax was withheld from your pay throughout the year. After 30 June, you lodge a tax return with the Australian Taxation Office (ATO), and any tax you overpaid comes back to you as a refund. The exact amount depends on your income, your tax residency status, the deductions you can claim, and whether your employer registered as a Working Holiday Maker employer. We work exclusively with 417 and 462 visa holders, so we can review your situation and make sure your return is lodged correctly.',
   },
   {
     question: 'How much do your services cost?',
-    answer: 'Initial enquiries and quotes are free. Our fees are flat and depend on the service. For tax returns, fees can be deducted from your refund so no upfront payment is needed. We confirm pricing before any work begins.',
+    answer: 'Initial enquiries and quotes are free. Our fees are flat and depend on the service - never a percentage of your refund. We confirm pricing before any work begins.',
   },
   {
     question: 'How quickly will you reply?',
@@ -154,7 +154,7 @@ export default async function HomePage() {
     '@id': `${SITE_URL}/#webpage`,
     url: SITE_URL,
     name: 'Working Holiday Tax Refund Australia | WHV Tax Return',
-    description: 'Services from registered tax agents who handle working holiday tax refunds, TFN, tax returns, super withdrawal (DASP) and ABN for 417 and 462 visa holders in Australia.',
+    description: 'Working holiday tax refunds, TFN, tax returns, super withdrawal (DASP) and ABN services for 417 and 462 visa holders in Australia.',
     inLanguage: 'en-AU',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -194,14 +194,9 @@ export default async function HomePage() {
     '@type': 'Organization',
     '@id': `${SITE_URL}/#business`,
     name: 'Working Holiday Tax',
-    legalName: AGENT_NAME,
     url: SITE_URL,
     email: EMAIL,
-    description: 'Working with registered tax agents - we handle tax returns, TFN applications, super refunds (DASP) and ABN registrations for working holiday makers (417 and 462 visa holders) in Australia.',
-    identifier: [
-      { '@type': 'PropertyValue', name: 'ABN', value: AGENT_ABN },
-      { '@type': 'PropertyValue', name: 'TPB Registration', value: AGENT_TPB },
-    ],
+    description: 'Backpacker tax specialists - we handle tax returns, TFN applications, super refunds (DASP) and ABN registrations exclusively for working holiday makers (417 and 462 visa holders) in Australia.',
     areaServed: { '@type': 'Country', name: 'Australia' },
     knowsLanguage: ['en', 'de', 'ja'],
     sameAs: [
@@ -220,7 +215,7 @@ export default async function HomePage() {
     telephone: '+61424513998',
     priceRange: '$$',
     image: `${SITE_URL}/og-image.png`,
-    description: 'Tax services with registered tax agents for working holiday makers in Australia (417 and 462 visa holders). Tax returns, TFN, ABN, super refund (DASP).',
+    description: 'Tax services for working holiday makers in Australia (417 and 462 visa holders). Tax returns, TFN, ABN, super refund (DASP).',
     areaServed: { '@type': 'Country', name: 'Australia' },
     serviceType: ['Tax return preparation', 'TFN application', 'ABN registration', 'Superannuation refund (DASP)', 'Medicare levy exemption'],
     provider: { '@id': `${SITE_URL}/#business` },
@@ -248,7 +243,7 @@ export default async function HomePage() {
     '@id': `${SITE_URL}/#website`,
     url: SITE_URL,
     name: 'Working Holiday Tax',
-    description: 'Working holiday tax refund Australia - under the supervision of a registered tax agent for 417 and 462 visa holders.',
+    description: 'Working holiday tax refund Australia - backpacker tax services for 417 and 462 visa holders.',
     inLanguage: ['en-AU', 'de', 'ja'],
     publisher: { '@id': `${SITE_URL}/#business` },
   }
@@ -321,7 +316,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 reveal" style={{ marginBottom: '36px' }}>
             {[
               { title: 'Backpacker tax specialists.',   body: 'We work exclusively with working holiday makers, so we know the rules that apply to you inside out.' },
-              { title: 'ATO compliant.',                body: 'Lodged with a registered tax agent and fully compliant with current ATO rules for working holiday makers.' },
+              { title: 'ATO compliant.',                body: 'Your return is lodged in full compliance with current ATO rules for working holiday makers.' },
               { title: 'Clear, simple support.',        body: 'No complicated terms. We guide you through your tax return step by step, in plain English.' },
               { title: 'We take care of everything.',   body: 'From your TFN to your final refund, we’ve got you covered. Whether you’re in Australia or back home.' },
             ].map((item, i) => (

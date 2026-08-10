@@ -44,13 +44,13 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/ja/abn`,
     siteName: 'Working Holiday Tax',
     title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
-    description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
+    description: '個人事業主として正しくABNを登録。ワーホリ専門チームがサポートします。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: "ABN登録代行｜417・462ビザ（デリバリー・ライドシェア・ファーム）",
-    description: '個人事業主として正しくABNを登録。登録税理士の監督のもとでサポートします。',
+    description: '個人事業主として正しくABNを登録。ワーホリ専門チームがサポートします。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }

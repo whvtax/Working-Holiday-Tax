@@ -7,7 +7,7 @@ import { Nav } from '@/components/layout/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { RevealObserver } from '@/components/ui/RevealObserver'
 import { ScrollToTop } from '@/components/ui/ScrollToTop'
-import { SITE_URL, AGENT_NAME, GA_MEASUREMENT_ID } from '@/lib/constants'
+import { SITE_URL, GA_MEASUREMENT_ID } from '@/lib/constants'
 import PublicShellClient from '@/components/layout/PublicShellClient'
 import { MobileLanguageBanner } from '@/components/ui/MobileLanguageBanner'
 import { LangSync } from '@/components/ui/LangSync'
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     template: '%s | Working Holiday Tax',
   },
   description:
-    'Get your Australian tax refund as a Working Holiday Maker (subclass 417 and 462). Working under the supervision of a registered tax agent for WHV tax returns, TFN, super refund (DASP) and ABN - lodged online.',
+    'Get your Australian tax refund as a Working Holiday Maker (subclass 417 and 462). Backpacker tax specialists for WHV tax returns, TFN, super refund (DASP) and ABN - lodged online.',
   keywords: [
     'working holiday tax refund',
     'WHV tax refund Australia',
@@ -69,13 +69,13 @@ export const metadata: Metadata = {
     'Australian tax for backpackers',
     'working holiday maker tax rate',
     'Medicare levy exemption',
-    'registered tax agent Australia working holiday',
+    'backpacker tax specialist Australia',
     'tax refund estimate Australia',
     'end of financial year tax return WHV',
   ],
-  authors: [{ name: AGENT_NAME }],
-  creator: AGENT_NAME,
-  publisher: AGENT_NAME,
+  authors: [{ name: 'Working Holiday Tax' }],
+  creator: 'Working Holiday Tax',
+  publisher: 'Working Holiday Tax',
   category: 'Tax Services',
   openGraph: {
     type: 'website',
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     siteName: 'Working Holiday Tax',
     title: 'Working Holiday Tax Refund Australia - WHV Tax Return Specialists',
-    description: 'Get your Australian tax refund as a Working Holiday Maker. Working under the supervision of a registered tax agent for WHV tax returns, TFN, super refund (DASP) and ABN - all online.',
+    description: 'Get your Australian tax refund as a Working Holiday Maker. Backpacker tax specialists for WHV tax returns, TFN, super refund (DASP) and ABN - all online.',
     images: [{
       url: `${SITE_URL}/og-image.png`,
       width: 1200,
@@ -94,7 +94,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Working Holiday Tax Refund Australia - WHV Tax Return',
-    description: 'Get your Australian tax refund as a Working Holiday Maker. Working under the supervision of a registered tax agent for backpackers - all online.',
+    description: 'Get your Australian tax refund as a Working Holiday Maker. Backpacker tax specialists - all online.',
     images: [`${SITE_URL}/og-image.png`],
   },
   robots: {
@@ -126,7 +126,6 @@ const schemaOrg = {
       '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
       '@id': 'https://workingholidaytax.com.au/#business',
       name: 'Working Holiday Tax',
-      legalName: 'The Accounting Academy Pty Ltd',
       alternateName: ['WHT', 'WorkingHolidayTax'],
       url: 'https://workingholidaytax.com.au',
       logo: {
@@ -138,24 +137,9 @@ const schemaOrg = {
       image: 'https://workingholidaytax.com.au/og-image.png',
       telephone: '+61424513998',
       email: 'info@workingholidaytax.com.au',
-      description: 'Working under the supervision of a registered tax agent, specialising in TFN applications, tax returns, superannuation (DASP) and ABN registrations for working holiday visa holders (subclass 417 and 462) in Australia.',
+      description: 'Specialists in TFN applications, tax returns, superannuation (DASP) and ABN registrations for working holiday visa holders (subclass 417 and 462) in Australia.',
       slogan: 'Australian tax, sorted.',
       foundingDate: '2020',
-      // ABN of the business (Australian Business Number)
-      taxID: '26 669 927 959',
-      // Tax Agent Number (TPB registration)
-      identifier: [
-        {
-          '@type': 'PropertyValue',
-          name: 'ABN',
-          value: '26 669 927 959',
-        },
-        {
-          '@type': 'PropertyValue',
-          name: 'Tax Agent Number',
-          value: '26233096',
-        },
-      ],
       address: {
         '@type': 'PostalAddress',
         addressCountry: 'AU',
@@ -230,7 +214,7 @@ const schemaOrg = {
             itemOffered: {
               '@type': 'Service',
               name: 'Tax Return Lodgement',
-              description: 'Lodge your Australian tax return as a working holiday maker under the supervision of a registered tax agent.',
+              description: 'Lodge your Australian tax return as a working holiday maker - handled end to end by backpacker tax specialists.',
               url: 'https://workingholidaytax.com.au/tax-return',
               provider: { '@id': 'https://workingholidaytax.com.au/#business' },
               areaServed: 'AU',

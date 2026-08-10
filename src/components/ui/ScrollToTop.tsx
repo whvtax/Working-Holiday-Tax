@@ -29,10 +29,9 @@ export function ScrollToTop() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       aria-label="Back to top"
-      className="lg:hidden"
+      className="lg:hidden scroll-top-btn"
       style={{
         position: 'fixed',
-        bottom: '24px',
         right: '20px',
         zIndex: 50,
         width: '44px',

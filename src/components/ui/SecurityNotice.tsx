@@ -58,11 +58,11 @@ export function SecurityNotice() {
         </svg>
         <p className="security-notice-text">
           {isGerman ? (
-            <>Ein registrierter Steueragent fragt niemals nach deinen <strong>myGov-Logindaten</strong>.</>
+            <>Ein Steueragent fragt niemals nach deinen <strong>myGov-Logindaten</strong>.</>
           ) : isJapanese ? (
-            <>登録税理士が<strong>myGovのログイン情報</strong>を尋ねることは絶対にありません。</>
+            <>税理士が<strong>myGovのログイン情報</strong>を尋ねることは絶対にありません。</>
           ) : (
-            <>A registered tax agent will never ask for your <strong>myGov login details</strong>.</>
+            <>A tax agent will never ask for your <strong>myGov login details</strong>.</>
           )}
         </p>
         <button

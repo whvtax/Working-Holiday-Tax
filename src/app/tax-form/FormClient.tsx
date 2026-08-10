@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { WA_URL, WA_NUMBER } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
+import { isValidEmail, isValidTfn, isPlausibleDob } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 import { isNdaCountry } from '@/lib/nda-countries'
@@ -189,12 +190,14 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   // Declarations
   const [taxStatus, setTaxStatus]     = useState<'resident'|'whm'|''>('')
   const [declared, setDeclared]       = useState<'yes'|'no'|''>('')
-  // Default to current AU tax year (Jul-Jun cycle). User can select multiple years.
+  // Default to the most recently COMPLETED AU tax year (Jul-Jun cycle) - the
+  // year people actually lodge for. E.g. lodging in August 2026 targets 2025-26,
+  // not the in-progress 2026-27.
   const [taxYears, setTaxYears] = useState<string[]>(() => {
     const now = new Date()
     const y = now.getFullYear()
-    const current = now.getMonth() >= 6 ? `${y}-${String(y+1).slice(2)}` : `${y-1}-${String(y).slice(2)}`
-    return [current]
+    const lastCompleted = now.getMonth() >= 6 ? `${y-1}-${String(y).slice(2)}` : `${y-2}-${String(y-1).slice(2)}`
+    return [lastCompleted]
   })
   const [terms, setTerms]             = useState(false)
   // ABN
@@ -261,7 +264,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       setIf(d.lastName, setLastName);   setIf(d.address, setAddress);     setIf(d.email, setEmail)
       setIf(d.country, setCountry);     setIf(d.dob, setDob);             setIf(d.marital, setMarital)
       setIf(d.hasMedicare, setHasMedicare)
-      setIf(d.tfn, setTfn);             setIf(d.primaryJob, setPrimaryJob)
+      setIf(d.primaryJob, setPrimaryJob)
       setIf(d.hasExpenses, setHasExpenses); setIf(d.taxStatus, setTaxStatus)
       setIf(d.declared, setDeclared)
       setIf(d.taxYears, setTaxYears);   setIf(d.terms, setTerms)
@@ -290,10 +293,13 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   // "No" → save everything and send them to the tax-residency explainer page.
   const goReadResidency = () => {
     try {
+      // Deliberately excludes the TFN: TFN + identity details together are an
+      // identity-theft kit, so the TFN never touches browser storage. Losing
+      // one 9-digit field on the round-trip is an acceptable trade.
       const data = {
         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
         hasMedicare,
-        tfn, primaryJob, hasExpenses,
+        primaryJob, hasExpenses,
         taxStatus, declared, taxYears, terms, howHeard,
       }
       sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), data }))
@@ -309,12 +315,15 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!fullName.trim())    e.fullName    = T('required')
     if (!lastName.trim())     e.lastName     = T('required')
     if (!email.trim())       e.email       = T('required')
+    else if (!isValidEmail(email)) e.email = T('invalidEmail')
     if (!address.trim())     e.address     = T('required')
     if (!country.trim())     e.country     = T('required')
     if (!dob.trim())         e.dob         = T('required')
+    else if (!isPlausibleDob(dob)) e.dob   = T('invalidDob')
     if (!marital)            e.marital     = T('required')
     if (!hasMedicare)        e.hasMedicare = T('required')
     if (!tfn.trim())         e.tfn         = T('required')
+    else if (!isValidTfn(tfn)) e.tfn       = T('invalidTfn')
     if (!primaryJob.trim())  e.primaryJob  = T('required')
     if (!bankStatement.file)  e.bankStatement  = T('required')
     if (!selfiePassport.file) e.selfiePassport = T('required')
@@ -339,8 +348,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!fullName.trim())    e.fullName    = T('required')
     if (!lastName.trim())    e.lastName    = T('required')
     if (!dob.trim())         e.dob         = T('required')
+    else if (!isPlausibleDob(dob)) e.dob   = T('invalidDob')
     if (!tfn.trim())         e.tfn         = T('required')
+    else if (!isValidTfn(tfn)) e.tfn       = T('invalidTfn')
     if (!email.trim())       e.email       = T('required')
+    else if (!isValidEmail(email)) e.email = T('invalidEmail')
     if (!address.trim())     e.address     = T('required')
     if (!primaryJob.trim())  e.primaryJob  = T('required')
     return e
@@ -553,8 +565,12 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 </svg>
               </div>
               <div className="form-trust-circle" title={T('registeredTaxAgent')}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={36} height={36} style={{ objectFit: 'contain' }} />
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="7" cy="6.5" r="3" stroke="#0B5240" strokeWidth="1.2"/>
+                  <path d="M1.8 16.5c0-2.9 2.3-5.2 5.2-5.2s5.2 2.3 5.2 5.2" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
+                  <circle cx="14" cy="7.5" r="2.4" stroke="#0B5240" strokeWidth="1.1"/>
+                  <path d="M13.2 12.6c2.8 0 5 2 5 4.4" stroke="#0B5240" strokeWidth="1.1" strokeLinecap="round"/>
+                </svg>
               </div>
               <div className="form-trust-circle" title={T('fullyOnline')}>
                 <svg width="21" height="21" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

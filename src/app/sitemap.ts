@@ -49,14 +49,19 @@ const routes = [
   { url: '/blog',                      priority: 0.85, changeFrequency: 'weekly',  translated: true  },
   // Contact and supporting pages
   { url: '/contact',                   priority: 0.7,  changeFrequency: 'monthly', translated: true  },
-  { url: '/about',                     priority: 0.6,  changeFrequency: 'monthly', translated: false },
+  { url: '/about',                     priority: 0.6,  changeFrequency: 'monthly', translated: true  },
   // Informational pages
   { url: '/tax-residency',             priority: 0.6,  changeFrequency: 'yearly',  translated: true  },
   { url: '/uk-working-holiday-tax',    priority: 0.7,  changeFrequency: 'monthly', translated: false },
-  // Legal (English only - not translated)
-  { url: '/client-agreement',          priority: 0.4,  changeFrequency: 'yearly',  translated: false },
-  { url: '/privacy',                   priority: 0.4,  changeFrequency: 'yearly',  translated: false },
+  // Legal pages (translated versions exist at /de and /ja)
+  { url: '/client-agreement',          priority: 0.4,  changeFrequency: 'yearly',  translated: true  },
+  { url: '/privacy',                   priority: 0.4,  changeFrequency: 'yearly',  translated: true  },
 ] as const
+
+// The Medicare category uses a different slug in the DE/JA routes
+// (EN: medicare-and-other, DE/JA: medicare) - map when building localized URLs.
+const localizedCategorySlug = (slug: string) =>
+  slug === 'medicare-and-other' ? 'medicare' : slug
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // English static pages
@@ -97,7 +102,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // German category pages
   const germanCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
-    url: `${SITE_URL}/de/blog/category/${c.slug}`,
+    url: `${SITE_URL}/de/blog/category/${localizedCategorySlug(c.slug)}`,
     lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: 'weekly' as const,
     priority: 0.76,
@@ -105,7 +110,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Japanese category pages
   const japaneseCategories: MetadataRoute.Sitemap = categoryMeta.map(c => ({
-    url: `${SITE_URL}/ja/blog/category/${c.slug}`,
+    url: `${SITE_URL}/ja/blog/category/${localizedCategorySlug(c.slug)}`,
     lastModified: LAST_CONTENT_UPDATE,
     changeFrequency: 'weekly' as const,
     priority: 0.76,

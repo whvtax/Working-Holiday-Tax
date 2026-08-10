@@ -7,13 +7,17 @@ interface Props {
   category: string
   categorySlug: string
   title: string
+  /** Locale prefix for all breadcrumb links: '' (EN), '/de' or '/ja'. */
+  basePath?: string
+  homeLabel?: string
+  blogLabel?: string
 }
 
 /**
  * Sticky breadcrumbs that appear after the user scrolls past the hero.
  * Provides persistent context and navigation without being obtrusive.
  */
-export default function StickyBreadcrumbs({ category, categorySlug, title }: Props) {
+export default function StickyBreadcrumbs({ category, categorySlug, title, basePath = '', homeLabel = 'Home', blogLabel = 'Blog' }: Props) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -46,11 +50,11 @@ export default function StickyBreadcrumbs({ category, categorySlug, title }: Pro
       aria-label="Breadcrumb (sticky)"
     >
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '10px 20px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'rgba(10,15,13,0.55)', flexWrap: 'nowrap', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-        <Link href="/" style={{ color: '#587066', textDecoration: 'none', flexShrink: 0 }}>Home</Link>
+        <Link href={basePath || '/'} style={{ color: '#587066', textDecoration: 'none', flexShrink: 0 }}>{homeLabel}</Link>
         <span aria-hidden="true" style={{ color: 'rgba(0,0,0,0.18)' }}>/</span>
-        <Link href="/blog" style={{ color: '#587066', textDecoration: 'none', flexShrink: 0 }}>Blog</Link>
+        <Link href={`${basePath}/blog`} style={{ color: '#587066', textDecoration: 'none', flexShrink: 0 }}>{blogLabel}</Link>
         <span aria-hidden="true" style={{ color: 'rgba(0,0,0,0.18)' }}>/</span>
-        <Link href={`/blog/category/${categorySlug}`} style={{ color: '#587066', textDecoration: 'none', flexShrink: 0 }}>{category}</Link>
+        <Link href={`${basePath}/blog/category/${categorySlug}`} style={{ color: '#587066', textDecoration: 'none', flexShrink: 0 }}>{category}</Link>
         <span aria-hidden="true" style={{ color: 'rgba(0,0,0,0.18)' }}>/</span>
         <span aria-current="page" style={{ color: '#0B5240', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis' }}>{truncatedTitle}</span>
       </div>

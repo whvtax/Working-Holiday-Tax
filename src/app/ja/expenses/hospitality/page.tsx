@@ -310,7 +310,7 @@ export default function HospitalityExpensesPageJA() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。特に雇用主が複数になると、一人ひとりの状況は少しずつ異なります。当社でお手続きいただく際には、登録税理士の監督のもとで、お客様の給与明細やインカムステートメントを一つひとつ確認し、非課税枠の回答、控除、チップがすべて正しく反映されるようにいたします。
+              これは一般的な情報であり、個別の税務アドバイスではありません。特に雇用主が複数になると、一人ひとりの状況は少しずつ異なります。当社でお手続きいただく際には、ワーホリ専門のチームが、お客様の給与明細やインカムステートメントを一つひとつ確認し、非課税枠の回答、控除、チップがすべて正しく反映されるようにいたします。
             </p>
             <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

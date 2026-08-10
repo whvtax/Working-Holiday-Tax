@@ -74,7 +74,7 @@ const WHY_DIFFERENT = [
 const faqs = [
   {
     question: 'I worked on three different farms this year - do I need separate tax returns?',
-    answer: 'No. One tax return covers the full financial year, from 1 July to 30 June, no matter how many farms or employers you worked for during that time. Every employer reports your wages and tax withheld separately to the ATO, and all of it is combined into the one return. The main risk with several short jobs is forgetting one, especially a quick one-week stint, which is exactly the kind of thing checked before a return is lodged under the supervision of a registered tax agent.',
+    answer: 'No. One tax return covers the full financial year, from 1 July to 30 June, no matter how many farms or employers you worked for during that time. Every employer reports your wages and tax withheld separately to the ATO, and all of it is combined into the one return. The main risk with several short jobs is forgetting one, especially a quick one-week stint, which is exactly the kind of thing checked before a return is lodged by our working-holiday-only team.',
   },
   {
     question: 'Can I claim fuel or car costs driving between farms?',
@@ -380,7 +380,7 @@ export default function FarmWorkExpensesPage() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '8px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7 }}>
-              This is general information, not personal tax advice, and it is not immigration or migration advice. Everyone&apos;s farm season looks a little different - which employers, which regions, how the visa side fits in. When you lodge with us, your return is prepared under the supervision of a registered tax agent, who will go through your specific employers and circumstances to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
+              This is general information, not personal tax advice, and it is not immigration or migration advice. Everyone&apos;s farm season looks a little different - which employers, which regions, how the visa side fits in. When you lodge with us, your return is prepared by a team that works only with working holiday makers, and we go through your specific employers and circumstances to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
             </p>
           </div>
         </section>

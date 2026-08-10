@@ -74,7 +74,7 @@ const WHY_DIFFERENT = [
 const faqs = [
   {
     question: 'Ich habe dieses Jahr auf drei verschiedenen Farmen gearbeitet - brauche ich getrennte Steuererklärungen?',
-    answer: 'Nein. Eine Steuererklärung deckt das gesamte Finanzjahr ab, vom 1. Juli bis zum 30. Juni, egal wie viele Farmen oder Arbeitgeber du in dieser Zeit hattest. Jeder Arbeitgeber meldet deinen Lohn und die einbehaltene Steuer getrennt an die ATO, und am Ende wird alles in einer einzigen Erklärung zusammengeführt. Das größte Risiko bei mehreren kurzen Jobs ist, einen davon zu vergessen, besonders einen kurzen Einsatz von nur einer Woche - genau das wird geprüft, bevor eine Erklärung unter Aufsicht eines registrierten Steueragenten eingereicht wird.',
+    answer: 'Nein. Eine Steuererklärung deckt das gesamte Finanzjahr ab, vom 1. Juli bis zum 30. Juni, egal wie viele Farmen oder Arbeitgeber du in dieser Zeit hattest. Jeder Arbeitgeber meldet deinen Lohn und die einbehaltene Steuer getrennt an die ATO, und am Ende wird alles in einer einzigen Erklärung zusammengeführt. Das größte Risiko bei mehreren kurzen Jobs ist, einen davon zu vergessen, besonders einen kurzen Einsatz von nur einer Woche - genau das wird geprüft, bevor eine Erklärung über unser Team eingereicht wird.',
   },
   {
     question: 'Kann ich Benzin- oder Autokosten für Fahrten zwischen Farmen absetzen?',
@@ -369,7 +369,7 @@ export default function FarmWorkExpensesPageDE() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '8px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7 }}>
-              Dies sind allgemeine Informationen, keine persönliche Steuerberatung, und keine Einwanderungs- oder Migrationsberatung. Jede Farmsaison sieht ein wenig anders aus - welche Arbeitgeber, welche Regionen, wie die Visumsseite hineinspielt. Wenn du deine Erklärung bei uns einreichst, wird sie unter Aufsicht eines registrierten Steueragenten erstellt, der deine konkreten Arbeitgeber und Umstände durchgeht, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
+              Dies sind allgemeine Informationen, keine persönliche Steuerberatung, und keine Einwanderungs- oder Migrationsberatung. Jede Farmsaison sieht ein wenig anders aus - welche Arbeitgeber, welche Regionen, wie die Visumsseite hineinspielt. Wenn du deine Erklärung bei uns einreichst, wird sie von unserem Team erstellt, das nur mit Working Holiday Makern arbeitet und deine konkreten Arbeitgeber und Umstände durchgeht, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
             </p>
           </div>
         </section>

@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Build artifacts
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Env files (real secrets never committed)
+.env
+.env.local
+.env*.local
+
+# Logs & OS droppings
+npm-debug.log*
+.DS_Store

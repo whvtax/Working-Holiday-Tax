@@ -118,7 +118,7 @@ const serviceSchema = {
     '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
-    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker.',
+    description: 'Australischer Steuerservice, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
   },
 }

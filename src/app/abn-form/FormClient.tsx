@@ -2,6 +2,7 @@
 import { useState, useRef } from 'react'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
+import { isValidEmail, isValidTfn, isPlausibleDob } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
 
@@ -75,13 +76,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!firstName.trim()) e.firstName = T('required')
     if (!lastName.trim())  e.lastName  = T('required')
     if (!dob.trim())       e.dob       = T('required')
+    else if (!isPlausibleDob(dob)) e.dob = T('invalidDob')
     if (!gender)           e.gender    = T('required')
     if (!whatsapp.trim())  e.whatsapp  = T('required')
     if (!auPhone.trim())   e.auPhone   = T('required')
     if (!email.trim())     e.email     = T('required')
+    else if (!isValidEmail(email)) e.email = T('invalidEmail')
     if (!address.trim())   e.address   = T('required')
     if (!howHeard.trim())  e.howHeard  = T('required')
     if (!tfn.trim())       e.tfn       = T('required')
+    else if (!isValidTfn(tfn)) e.tfn   = T('invalidTfn')
     if (!business.trim())  e.business  = T('required')
     if (!selfie.file)      e.selfie    = T('required')
     if (!declared)         e.declared  = T('mustConfirmDecl')
@@ -235,7 +239,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <label className="check-row">
               <input type="checkbox" checked={terms} onChange={e=>{ setTerms(e.target.checked); setErrors(p=>({...p,terms:''})) }} className="hidden"/>
               <div className={`check-box${terms?' checked':''}`}>{terms && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-              <span className="check-label">{T('acceptTerms')} <a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">{T('clientAgreement')}</a> {T('and')} <a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">{T('privacyPolicy')}</a></span>
+              <span className="check-label">{T('acceptTerms')} <a href={lang === 'de' ? '/de/client-agreement' : lang === 'ja' ? '/ja/client-agreement' : '/client-agreement'} target="_blank" rel="noopener noreferrer" className="decl-link">{T('clientAgreement')}</a> {T('and')} <a href={lang === 'de' ? '/de/privacy' : lang === 'ja' ? '/ja/privacy' : '/privacy'} target="_blank" rel="noopener noreferrer" className="decl-link">{T('privacyPolicy')}</a></span>
             </label>
             {errors.terms && <span className="field-error">{errors.terms}</span>}
           </div>

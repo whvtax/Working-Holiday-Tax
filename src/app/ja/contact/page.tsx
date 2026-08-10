@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import Link from 'next/link'
-import { WA_URL, EMAIL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, EMAIL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'お問い合わせ - Working Holiday Tax',
-  description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
+  description: 'ワーホリ専門の当社チームに直接ご相談ください。WhatsApp、メール、Instagram、TikTokから。営業時間内なら1時間以内にご返信します。',
   keywords: [
     'お問い合わせ ワーホリ 税金',
     'お問い合わせ オーストラリア タックスリターン',
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     'ワーホリ タックスリターン 受給資格チェック',
     'ワーホリ 税金 質問 日本語',
     'オーストラリア 帰国後 タックスリターン 相談',
-    '登録税理士 日本語 オーストラリア',
+    'ワーホリ 税金 相談 日本語',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/contact`,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'お問い合わせ | Working Holiday Tax',
-    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。営業時間内なら1時間以内にご返信します。',
+    description: 'ワーホリ専門の当社チームに直接ご相談ください。営業時間内なら1時間以内にご返信します。',
     url: `${SITE_URL}/ja/contact`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'お問い合わせ | Working Holiday Tax',
-    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。',
+    description: 'ワーホリ専門の当社チームに直接ご相談ください。',
   },
   robots: {
     index: true,
@@ -93,7 +93,7 @@ export default function JapaneseContactPage() {
     '@id': `${SITE_URL}/ja/contact`,
     url: `${SITE_URL}/ja/contact`,
     name: 'お問い合わせ - Working Holiday Tax',
-    description: '登録税理士の監督のもとで対応する当社チームに直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
+    description: 'ワーホリ専門の当社チームに直接ご相談ください。TFN、タックスリターン、スーパー、ABNのご質問に対応します。',
     inLanguage: 'ja',
     isPartOf: {
       '@type': 'WebSite',
@@ -106,7 +106,6 @@ export default function JapaneseContactPage() {
       '@type': 'Organization',
       '@id': `${SITE_URL}/#business`,
       name: 'Working Holiday Tax',
-      legalName: AGENT_NAME,
       url: SITE_URL,
       email: EMAIL,
       contactPoint: [
@@ -133,8 +132,6 @@ export default function JapaneseContactPage() {
         },
       ],
       identifier: [
-        { '@type': 'PropertyValue', name: 'ABN', value: AGENT_ABN },
-        { '@type': 'PropertyValue', name: 'Tax Agent Number', value: AGENT_TPB },
       ],
     },
   }

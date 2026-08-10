@@ -10,7 +10,8 @@ import type { FormLang } from '@/lib/formStrings'
 export function FormLanguageToggle({ lang, onChange }: { lang: FormLang; onChange: (l: FormLang) => void }) {
   // Shared button style generator
   const btnStyle = (active: boolean) => ({
-    padding: '6px 14px',
+    // ≥40px tall tap target on touch devices
+    padding: '10px 16px',
     fontSize: '12px',
     fontWeight: active ? 700 : 500,
     background: active ? '#fff' : 'transparent',

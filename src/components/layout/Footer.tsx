@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { WA_URL, EMAIL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, EMAIL } from '@/lib/constants'
 
 export function Footer() {
   const pathname = usePathname() || '/'
@@ -172,13 +172,6 @@ export function Footer() {
                     <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </div>
-                <a href="https://www.tpb.gov.au" target="_blank" rel="noopener noreferrer"
-                  aria-label="Registered Tax Practitioners Board"
-                  className="footer-social-icon flex items-center justify-center rounded-full overflow-hidden"
-                  style={{ width: '38px', height: '38px', border: '1.5px solid #C8EAE0', background: '#fff' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/assets/tpb-logo.svg" alt="Tax Practitioners Board" width={23} height={23} style={{ objectFit: 'contain' }} />
-                </a>
               </div>
             </div>
 
@@ -215,22 +208,6 @@ export function Footer() {
       <div style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
 
-          {/* Registered tax agent credential line - real, independently verifiable on the
-              Tax Practitioners Board public register (tpb.gov.au). No individual is named
-              here by design; the entity + registration number carry the trust signal.
-              Framed as supervision ("work is carried out under...") rather than a direct
-              "we are a registered tax agent" claim, per house style used sitewide. */}
-          <div
-            className="text-center md:text-left"
-            style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.55)', marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.12)' }}
-          >
-            {locale === 'de'
-              ? `${AGENT_NAME} (ABN ${AGENT_ABN}) - Arbeiten werden unter Aufsicht eines registrierten Steueragenten durchgeführt (Nr. ${AGENT_TPB}).`
-              : locale === 'ja'
-              ? `${AGENT_NAME}（ABN ${AGENT_ABN}）- 業務は登録税理士の監督のもとで行われます（登録番号 ${AGENT_TPB}）。`
-              : `${AGENT_NAME} (ABN ${AGENT_ABN}) - work is carried out under the supervision of a registered tax agent (TAN ${AGENT_TPB}).`}
-          </div>
-
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 
             <div style={{ fontSize: '12.5px', color: 'rgba(255,255,255,0.7)' }} suppressHydrationWarning>
@@ -242,7 +219,10 @@ export function Footer() {
             </div>
 
             <div className="flex items-center justify-center md:justify-end gap-4 md:gap-5 flex-wrap" style={{ fontSize: '11.5px' }}>
-              <Link href="/about" className="footer-link-dark">
+              <Link
+                href={locale === 'de' ? '/de/about' : locale === 'ja' ? '/ja/about' : '/about'}
+                className="footer-link-dark"
+              >
                 {t.about}
               </Link>
               <span aria-hidden="true" style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>

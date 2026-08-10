@@ -19,6 +19,14 @@ export async function POST(req: NextRequest) {
     const formData  = await req.formData()
     const email     = sanitiseShort(formData.get('email'))
     const whatsapp  = sanitiseShort(formData.get('waNumber'))
+    const fullName  = sanitiseShort(formData.get('fullName'))
+
+    // Minimal server-side guard: a lead without a name, email or phone is
+    // unactionable - reject it instead of creating an empty CRM task.
+    if (!fullName || !email || !whatsapp) {
+      return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
+    }
+
     const existing  = await findExistingClient(email, whatsapp)
     const isReturning = !!existing
     const clientId  = existing?.id ?? `CLT-${crypto.randomUUID()}`
@@ -38,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     const task = await createTask({
       clientId,
-      clientName:  sanitiseShort(formData.get('fullName')),
+      clientName:  fullName,
       taskType:    'tax-return',
       whatsapp,
       auPhone:     sanitiseShort(formData.get('auPhone')),

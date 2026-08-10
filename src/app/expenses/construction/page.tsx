@@ -462,7 +462,7 @@ export default function ConstructionExpensesPage() {
       <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '48px' }}>
         <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
           <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-            This is general information, not personal tax advice. Every site and every role is a little different. When you lodge with us, your return is prepared under the supervision of a registered tax agent, who will go through your specific tools, licences and site work to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
+            This is general information, not personal tax advice. Every site and every role is a little different. When you lodge with us, your return is prepared by a team that works only with working holiday makers, and we go through your specific tools, licences and site work to make sure you claim everything you&apos;re entitled to, and nothing you&apos;re not.
           </p>
           <Link href="/tax-form" className="inline-flex items-center justify-center font-semibold"
             style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

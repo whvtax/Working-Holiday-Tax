@@ -343,7 +343,7 @@ export default function UKWorkingHolidayTaxPage() {
               The UK tax year runs 6 April to 5 April. The Australian year runs 1 July to 30 June. Nothing about them matches, and it catches people out in both directions. Arriving in February means your first Australian year is only a few months long, which changes what your refund looks like. Leaving in September means you have an Australian year that is still open after you have gone home.
             </p>
             <p className="text-[14px] font-light text-muted leading-[1.75]" style={{ marginBottom: '12px' }}>
-              Australian returns can be lodged from 1 July, the deadline is 31 October, and going through a registered tax agent usually extends that to 15 May the following year. None of it requires you to be in the country.
+              Australian returns can be lodged from 1 July, the deadline is 31 October, and going through a tax agent usually extends that to 15 May the following year. None of it requires you to be in the country.
             </p>
             <p className="text-[14px] font-light text-muted leading-[1.75]">
               Whether your Australian income also needs reporting to HMRC depends on your UK residence position for the years involved, which is a separate question with its own rules. We handle the Australian side and will say plainly when something belongs to a UK adviser rather than guessing at it.
@@ -407,7 +407,7 @@ export default function UKWorkingHolidayTaxPage() {
         cta="Start with a message"
         href={WA_URL}
         external
-        trustLine="Services handled by registered tax agents in Australia. No obligation."
+        trustLine="Working holiday tax specialists. No obligation."
       />
     </>
   )

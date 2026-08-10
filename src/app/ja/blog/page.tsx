@@ -113,7 +113,7 @@ export default function JapaneseBlogPage() {
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
     logo: `${SITE_URL}/icon-512.png`,
-    description: 'オーストラリアのワーキングホリデー保持者向け税務サービス。登録税理士の監督のもと、TFN申請、タックスリターン、DASPスーパー受取、ABN登録を提供しています。',
+    description: 'オーストラリアのワーキングホリデー保持者向け税務サービス。ワーホリ専門チームが、TFN申請、タックスリターン、DASPスーパー受取、ABN登録を提供しています。',
     areaServed: { '@type': 'Country', name: 'Australia' },
     knowsAbout: [
       'タックスファイルナンバー（TFN）申請',

@@ -5,33 +5,34 @@ import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
-import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'Über uns - Wer wir sind | Working Holiday Tax',
-  description: `Working Holiday Tax ist ein Service von ${AGENT_NAME} (ABN ${AGENT_ABN}). Alle Arbeiten rund um TFN, Steuererklärung, Superannuation (DASP) und ABN für Inhaber eines 417/462 Working-Holiday-Visums erfolgen unter Aufsicht eines registrierten Steueragenten (TAN ${AGENT_TPB}). Wer wir sind und wie wir arbeiten.`,
+  description: 'Wir arbeiten mit nur einer Art von Kunden: Working Holiday Makern mit 417- oder 462-Visum. Steuererklärung, TFN, Super (DASP) und ABN - schnelle Antworten, komplett online, in deiner Sprache.',
   keywords: [
-    'Working Holiday Tax Steueragent',
-    'registrierter Steueragent Australien Backpacker',
+    'Working Holiday Tax Spezialisten',
+    'Backpacker Steuerhilfe Australien',
     'wer ist Working Holiday Tax',
-    'The Accounting Academy Pty Ltd',
     'ist Working Holiday Tax seriös',
     'Working Holiday Tax Bewertungen',
-    'Steueragent Working Holiday Visum Australien',
-    'TPB registrierter Agent Backpacker Steuer',
+    'Backpacker Steuerexperten 417 462',
+    'Working Holiday Visum Steuerhilfe',
+    'Steuerhilfe für Backpacker Australien',
   ],
   alternates: {
     canonical: `${SITE_URL}/de/about`,
     languages: {
       'en-AU': `${SITE_URL}/about`,
       'de': `${SITE_URL}/de/about`,
+      'ja': `${SITE_URL}/ja/about`,
       'x-default': `${SITE_URL}/about`,
     },
   },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Über Working Holiday Tax - Wer wir sind',
-    description: `Ein Service von ${AGENT_NAME}. Die Arbeit erfolgt unter Aufsicht eines registrierten australischen Steueragenten (TAN ${AGENT_TPB}), spezialisiert auf Steuerfragen rund um das Working-Holiday-Visum.`,
+    description: 'Nur eine Art von Kunden: Working Holiday Maker. Wir verstehen das Backpacker-Jahr - mehrere Arbeitgeber, Hostel-Adressen, Abreise mitten im Jahr - und antworten schnell.',
     url: `${SITE_URL}/de/about`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -41,23 +42,23 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Über Working Holiday Tax - Wer wir sind',
-    description: `Ein Service von ${AGENT_NAME}. Die Arbeit erfolgt unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Steuerfragen rund um das Working-Holiday-Visum.`,
+    description: 'Nur eine Art von Kunden: Working Holiday Maker. Schnelle Antworten, komplett online, in deiner Sprache.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
   {
-    question: 'Wer steckt hinter Working Holiday Tax?',
-    answer: `Working Holiday Tax ist ein Service von ${AGENT_NAME} (ABN ${AGENT_ABN}). Jede Einreichung einer Steuererklärung, jeder Ratschlag und jeder DASP-Superantrag über diese Seite wird unter Aufsicht eines registrierten Steueragenten (Tax Agent Number ${AGENT_TPB}) vorbereitet und eingereicht - eine Registrierung, die du im öffentlichen Register des TPB unter tpb.gov.au nachschlagen kannst.`,
+    question: 'Was unterscheidet euch von einem normalen Steuerberater?',
+    answer: 'Ein allgemeiner Steuerberater sieht ein paar Mal im Jahr einen Working Holiday Maker. Wir sehen nichts anderes. Der 417/462-Steuersatz, DASP-Superanträge nach der Abreise, Medicare-Befreiungen, die vom Pass abhängen, vier Arbeitgeber in drei Bundesstaaten in einem Jahr - das ist unser Alltag, kein Sonderfall, den jemand nachschlagen muss. Genau diese Spezialisierung macht uns schnell und präzise.',
   },
   {
-    question: 'Beaufsichtigt ein registrierter Steueragent meine Steuererklärung?',
-    answer: `Ja. Alles, was über Working Holiday Tax eingereicht wird, wird unter Aufsicht der Registrierung von ${AGENT_NAME} beim Tax Practitioners Board (TAN ${AGENT_TPB}) vorbereitet und eingereicht. Registrierte Agenten sind an den Tax Agent Services Act 2009 und den Code of Professional Conduct des TPB gebunden und verfügen über eine Berufshaftpflichtversicherung - anders als nicht registrierte "Rückerstattungsrechner"-Seiten.`,
+    question: 'Wie schnell antwortet ihr wirklich?',
+    answer: 'Schreib uns auf WhatsApp und ein echter Mensch antwortet - während der Geschäftszeiten meist innerhalb einer Stunde. Kein Callcenter, keine Ticket-Warteschlange, kein "bitte 5-7 Werktage Geduld". Wenn etwas geprüft werden muss, sagen wir dir auch das - sofort.',
   },
   {
-    question: 'Warum spezialisiert ihr euch auf Working Holiday Maker statt auf allgemeine Steuerfragen?',
-    answer: 'Die Steuersituation mit einem Working-Holiday-Visum unterscheidet sich wirklich von einer normalen australischen Steuererklärung: der 417/462-Steuersatz, der DASP-Prozess zur Superannuation-Auszahlung nach der Abreise, Medicare-Levy-Befreiungen, die von deiner Staatsangehörigkeit und von Sozialversicherungsabkommen abhängen, sowie Casual- und Saisoneinkommen, das sich über mehrere Arbeitgeber und Bundesstaaten verteilt. Wir haben den Service rund um genau diese eine Visumkategorie und ihre Probleme aufgebaut, statt sie wie eine kleinere Version einer Standarderklärung zu behandeln.',
+    question: 'Versteht ihr, wie ein Backpacker-Jahr wirklich aussieht?',
+    answer: 'Ja - weil wir uns mit nichts anderem beschäftigen. Hostel-Postadressen, Farm-Lohnzettel, die falsch aussehen, Wochen in bar, ein Job ohne letzten Payslip, Abreise mitten im Steuerjahr. Welche Version des Working-Holiday-Jahres du auch hattest - wir hatten sie mit ziemlicher Sicherheit schon auf dem Tisch.',
   },
   {
     question: 'Arbeitet ihr nur mit Menschen, die noch in Australien sind?',
@@ -65,7 +66,7 @@ const faqs = [
   },
   {
     question: 'In welchen Sprachen arbeitet ihr?',
-    answer: 'Englisch, Deutsch und Japanisch (日本語) - auf der gesamten Seite und im direkten Support, nicht nur auf maschinell übersetzten Seiten. Ist deine Muttersprache eine andere, arbeiten wir trotzdem auf Englisch mit dir und sind es gewohnt, Menschen australische Steuerkonzepte zu erklären, die zum ersten Mal damit zu tun haben.',
+    answer: 'Die Website läuft auf Englisch, Deutsch und Japanisch - der Support ist aber nicht darauf beschränkt. Schreib uns in der Sprache, in der du dich wohlfühlst, und wir arbeiten mit dir darin. Australische Steuern jemandem zu erklären, der ihnen zum ersten Mal begegnet, ist der Kern unserer Arbeit - in jeder Sprache.',
   },
 ]
 
@@ -129,16 +130,16 @@ export default function GermanAboutPage() {
 
               <h1 className="font-serif font-black text-ink"
                 style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
-                Rund um ein Visum aufgebaut, unter Aufsicht eines registrierten Steueragenten.
+                Für Backpacker gemacht - von Leuten, die nichts anderes tun.
               </h1>
 
               <p className="about-lead font-semibold text-ink"
                 style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
-                Working Holiday Tax ist ein Service von {AGENT_NAME} (ABN {AGENT_ABN}). Jede Steuererklärung, jeder Antrag und jeder Ratschlag wird unter Aufsicht eines registrierten Steueragenten (Tax Agent Number {AGENT_TPB}) erstellt.
+                Working Holiday Tax arbeitet mit nur einer Art von Kunden: Menschen mit einem 417- oder 462-Working-Holiday-Visum. Steuererklärung, TFN, ABN, Super und Medicare - das ist der ganze Job, und genau deshalb sind wir schnell und präzise darin.
               </p>
 
               <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '46ch' }}>
-                Wir kümmern uns nur um eines: Steuer-, TFN-, ABN-, Super- und Medicare-Fragen für Menschen mit einem Working-Holiday-Visum der Subclass 417 oder 462 - in Australien oder nachdem sie es bereits verlassen haben.
+                Schreib uns auf WhatsApp und ein echter Mensch antwortet - während der Geschäftszeiten meist innerhalb einer Stunde. In Australien oder nachdem du längst wieder zu Hause bist.
               </p>
 
               <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4" style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
@@ -163,7 +164,7 @@ export default function GermanAboutPage() {
         </div>
       </section>
 
-      {/* ── TRUST SIGNALS STRIP (all independently verifiable, no invented stats) ── */}
+      {/* ── TRUST SIGNALS STRIP ───────────────────────────────────────────── */}
       <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
@@ -171,7 +172,7 @@ export default function GermanAboutPage() {
               { stat: <GoogleRating variant="number" lang="de" />, label: 'Google-Bewertung' },
               { stat: <GoogleRating variant="count" lang="de" />, label: ' ' },
               { stat: '2020', label: 'Aktiv seit' },
-              { stat: '3', label: 'Sprachen - EN / DE / JA' },
+              { stat: 'Jede', label: 'Sprache - Support in deiner' },
             ].map((item, i) => (
               <div key={i} className="text-center">
                 <div className="font-serif" style={{ fontSize: 'clamp(20px, 3.4vw, 26px)', fontWeight: 800, color: '#0B5240', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '4px' }}>
@@ -183,35 +184,31 @@ export default function GermanAboutPage() {
               </div>
             ))}
           </div>
-          <p className="text-center" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.4)', marginTop: '14px' }}>
-            Die Arbeit erfolgt unter Aufsicht eines registrierten Steueragenten - die Registrierung ist im öffentlichen Register des Tax Practitioners Board unter{' '}
-            <a href="https://www.tpb.gov.au/public-register" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>tpb.gov.au</a> einsehbar.
-          </p>
         </div>
       </section>
 
-      {/* ── WHAT "REGISTERED TAX AGENT" ACTUALLY MEANS ─────────────────────── */}
+      {/* ── WIR VERSTEHEN BACKPACKER ──────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[720px] mx-auto">
-            <span className="section-label">Warum das wichtig ist</span>
+            <span className="section-label">Warum das funktioniert</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,32px)', lineHeight: 1.12, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              Was „registrierter Steueragent" wirklich bedeutet
+              Wir verstehen das Backpacker-Jahr
             </h2>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              In Australien darf nur ein beim Tax Practitioners Board (TPB) registrierter Steueragent gegen Bezahlung die Steuererklärung einer anderen Person vorbereiten oder einreichen. Die Registrierung setzt einschlägige Qualifikationen und Erfahrung voraus, eine laufende Prüfung der persönlichen Eignung („fit and proper person"), eine Berufshaftpflichtversicherung sowie die Einhaltung des Code of Professional Conduct des TPB unter dem Tax Agent Services Act 2009 - und die Registrierung kann bei Verstößen ausgesetzt oder entzogen werden.
+              Ein Working-Holiday-Jahr sieht nicht aus wie ein normales Steuerjahr - und wir tun auch nicht so. Vier Arbeitgeber in drei Bundesstaaten. Ein Farm-Lohnzettel, der falsch aussieht. Ein Hostel als Postadresse. Ein Job, den du ohne letzten Payslip verlassen hast. Abreise mitten im Steuerjahr. Für uns sind das keine Sonderfälle - das ist ein ganz normaler Dienstag.
             </p>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              Viele auf Backpacker ausgerichtete „Sofort-Rückerstattungsrechner"-Seiten sind gar keine registrierten Agenten - es handelt sich um Formulare zur Lead-Generierung, die deine Daten an jemand anderen weiterleiten, oder um nicht registrierte Anbieter, die außerhalb der Aufsicht des TPB arbeiten. Working Holiday Tax arbeitet unter der TPB-Registrierung von {AGENT_NAME} (TAN {AGENT_TPB}); jede Steuererklärung, jeder DASP-Antrag und jeder Ratschlag über diese Seite wird unter dieser Registrierung vorbereitet und eingereicht, nicht blind ausgelagert.
+              Weil wir nur 417- und 462-Fälle bearbeiten, musst du uns nichts zweimal erklären. Wir wissen, welche Farm-Arbeitgeber mit dem falschen Satz einbehalten, welche Superfonds beglaubigte Kopien verlangen, was die Medicare-Befreiung für deinen Pass wert ist und was sich ändert, wenn du aus dem Ausland einreichst. Du schickst deine Daten einmal - wir wissen, was damit zu tun ist.
             </p>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              Das heißt nicht, dass wir dir eine größere Rückerstattung verschaffen als jeder andere - das kann kein seriöser Agent versprechen, und wir tun es auch nicht. Es bedeutet, dass die Erklärung korrekt vorbereitet wird, die Beratung einer echten Aufsichtsbehörde gegenüber rechenschaftspflichtig ist, und dass es eine Anlaufstelle gibt, falls etwas schiefgeht.
+              Und wir arbeiten in Backpacker-Geschwindigkeit. Alles läuft online, WhatsApp ist die Eingangstür, und echte Menschen antworten schnell - während der Geschäftszeiten meist innerhalb einer Stunde. Keine Bürotermine, keine Warteschleifen, keine Woche Wartezeit, während dein Heimflug näher rückt.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── WHY ONE VISA CATEGORY ────────────────────────────────────────── */}
+      {/* ── WARUM NUR EINE VISUMKATEGORIE ────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '32px' }}>

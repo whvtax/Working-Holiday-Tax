@@ -5,32 +5,34 @@ import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
-import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: 'About Us - Who We Are | Working Holiday Tax',
-  description: `Working Holiday Tax is a service of ${AGENT_NAME} (ABN ${AGENT_ABN}). All TFN, tax return, superannuation (DASP) and ABN work for 417/462 working holiday visa holders is carried out under the supervision of a registered tax agent (TAN ${AGENT_TPB}). Who we are and how we work.`,
+  description: 'We work with one kind of client only: working holiday makers on 417 and 462 visas. Tax returns, TFN, super (DASP) and ABN - fast answers, fully online, in your language. Who we are and how we work.',
   keywords: [
-    'working holiday tax agent',
-    'registered tax agent Australia backpacker',
+    'working holiday tax specialists',
+    'backpacker tax help Australia',
     'who is working holiday tax',
-    'The Accounting Academy Pty Ltd',
     'is working holiday tax legit',
     'working holiday tax reviews',
-    'tax agent working holiday visa Australia',
-    'TPB registered agent backpacker tax',
+    'backpacker tax experts 417 462',
+    'working holiday visa tax help',
+    'tax help for backpackers Australia',
   ],
   alternates: {
     canonical: `${SITE_URL}/about`,
     languages: {
       'en-AU': `${SITE_URL}/about`,
+      'de': `${SITE_URL}/de/about`,
+      'ja': `${SITE_URL}/ja/about`,
       'x-default': `${SITE_URL}/about`,
     },
   },
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'About Working Holiday Tax - Who We Are',
-    description: `A service of ${AGENT_NAME}. Work is carried out under the supervision of a registered Australian tax agent (TAN ${AGENT_TPB}), specialising in working holiday visa tax matters.`,
+    description: 'One kind of client only: working holiday makers. We understand the backpacker year - multiple employers, hostel addresses, leaving mid-year - and we answer fast.',
     url: `${SITE_URL}/about`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -40,23 +42,23 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'About Working Holiday Tax - Who We Are',
-    description: `A service of ${AGENT_NAME}. Work is carried out under the supervision of a registered Australian tax agent, specialising in working holiday visa tax matters.`,
+    description: 'One kind of client only: working holiday makers. Fast answers, fully online, in your language.',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
   {
-    question: 'Who is behind Working Holiday Tax?',
-    answer: `Working Holiday Tax is a service of ${AGENT_NAME} (ABN ${AGENT_ABN}). Every tax return lodgement, piece of advice and DASP super claim made through the site is prepared and lodged under the supervision of a registered tax agent (Tax Agent Number ${AGENT_TPB}), a registration you can look up on the TPB's public register at tpb.gov.au.`,
+    question: 'What makes you different from a normal accountant?',
+    answer: 'A general accountant sees a working holiday maker a few times a year. We see nothing else. The 417/462 rate schedule, DASP super claims after departure, Medicare levy exemptions that depend on your passport, four employers across three states in one year - this is our everyday work, not an unusual case someone has to look up. That focus is what makes us fast and precise.',
   },
   {
-    question: 'Does a registered tax agent oversee my return?',
-    answer: `Yes. Everything lodged through Working Holiday Tax is prepared and submitted under the supervision of ${AGENT_NAME}'s registration with the Tax Practitioners Board (TAN ${AGENT_TPB}). Registered agents are bound by the Tax Agent Services Act 2009 and the TPB's Code of Professional Conduct, and carry professional indemnity insurance - unlike unregistered "refund estimator" sites.`,
+    question: 'How fast do you actually respond?',
+    answer: 'Message us on WhatsApp and a real person answers - usually within the hour during business hours. No call centres, no ticket queues, no "please allow 5-7 business days". If something needs checking, we tell you that too, straight away.',
   },
   {
-    question: 'Why specialise in working holiday makers instead of general tax?',
-    answer: 'Working holiday visa tax is genuinely different from a normal Australian tax return: the 417/462 tax rate schedule, the DASP superannuation withdrawal process after departure, Medicare Levy exemptions that depend on nationality and reciprocal health agreements, and casual/seasonal income spread across multiple employers and states. We built the service around this one visa category and its problems, rather than treating it as a smaller version of a standard return.',
+    question: 'Do you understand what a backpacker year actually looks like?',
+    answer: 'Yes - because it is the only thing we deal with. Hostel mailing addresses, farm payslips that look wrong, cash weeks you are not sure how to declare, a job you left without a final payslip, leaving Australia in the middle of the tax year. Whatever version of the working holiday year you had, we have almost certainly handled it before.',
   },
   {
     question: 'Do you only work with people still in Australia?',
@@ -64,7 +66,7 @@ const faqs = [
   },
   {
     question: 'What languages do you work in?',
-    answer: 'English, German (Deutsch) and Japanese (日本語), across the whole site and in direct support - not just machine-translated pages. If your first language is something else, we still work in English and are used to explaining Australian tax concepts to people encountering them for the first time.',
+    answer: "The site runs in English, German and Japanese, but support is not limited to those - write to us in whatever language you are comfortable in and we will work with you in it. Explaining Australian tax to someone meeting it for the first time is most of our job, in any language.",
   },
 ]
 
@@ -127,16 +129,16 @@ export default function AboutPage() {
 
               <h1 className="font-serif font-black text-ink"
                 style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
-                Built around one visa, supervised by a registered tax agent.
+                Built for backpackers, by people who do nothing else.
               </h1>
 
               <p className="about-lead font-semibold text-ink"
                 style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
-                Working Holiday Tax is a service of {AGENT_NAME} (ABN {AGENT_ABN}). Every return, claim and piece of advice is prepared under the supervision of a registered tax agent (Tax Agent Number {AGENT_TPB}).
+                Working Holiday Tax works with one kind of client only: people on a 417 or 462 working holiday visa. Tax returns, TFN, ABN, super and Medicare - that is the whole job, and it is why we are fast and precise at it.
               </p>
 
               <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '46ch' }}>
-                We only handle one thing: tax, TFN, ABN, super and Medicare questions for people on a subclass 417 or 462 working holiday visa - in Australia or after they have already left.
+                Message us on WhatsApp and a real person answers - usually within the hour during business hours. In Australia, or after you have already flown home.
               </p>
 
               <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4" style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
@@ -161,7 +163,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── TRUST SIGNALS STRIP (all independently verifiable, no invented stats) ── */}
+      {/* ── TRUST SIGNALS STRIP ───────────────────────────────────────────── */}
       <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
@@ -169,7 +171,7 @@ export default function AboutPage() {
               { stat: <GoogleRating variant="number" lang="en" />, label: 'Google rating' },
               { stat: <GoogleRating variant="count" lang="en" />, label: ' ' },
               { stat: '2020', label: 'Operating since' },
-              { stat: '3', label: 'Languages - EN / DE / JA' },
+              { stat: 'Any', label: 'Language - support in yours' },
             ].map((item, i) => (
               <div key={i} className="text-center">
                 <div className="font-serif" style={{ fontSize: 'clamp(20px, 3.4vw, 26px)', fontWeight: 800, color: '#0B5240', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '4px' }}>
@@ -181,29 +183,25 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-          <p className="text-center" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.4)', marginTop: '14px' }}>
-            Work is carried out under the supervision of a registered tax agent - the registration is searchable on the Tax Practitioners Board&apos;s public register at{' '}
-            <a href="https://www.tpb.gov.au/public-register" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>tpb.gov.au</a>.
-          </p>
         </div>
       </section>
 
-      {/* ── WHAT "REGISTERED TAX AGENT" ACTUALLY MEANS ─────────────────────── */}
+      {/* ── WE UNDERSTAND BACKPACKERS ─────────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[720px] mx-auto">
-            <span className="section-label">Why it matters</span>
+            <span className="section-label">Why it works</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,32px)', lineHeight: 1.12, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              What &quot;registered tax agent&quot; actually means
+              We understand the backpacker year
             </h2>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              In Australia, only a tax agent registered with the Tax Practitioners Board (TPB) is legally allowed to charge a fee to prepare or lodge someone else&apos;s tax return. Registration requires relevant qualifications and experience, an ongoing fit-and-proper-person test, professional indemnity insurance, and compliance with the TPB&apos;s Code of Professional Conduct under the Tax Agent Services Act 2009 - and registration can be suspended or terminated for breaches.
+              A working holiday year does not look like a normal tax year, and we never pretend it does. Four employers across three states. A farm payslip that looks wrong. A hostel as your mailing address. A job you left without ever getting a final payslip. Leaving the country in the middle of the financial year. These are not edge cases to us - they are Tuesday.
             </p>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              A lot of &quot;instant refund estimator&quot; sites aimed at backpackers are not registered agents at all - they are lead-generation forms that pass your details to someone else, or unregistered preparers operating outside the TPB&apos;s oversight. Working Holiday Tax operates under {AGENT_NAME}&apos;s TPB registration (TAN {AGENT_TPB}); every return, DASP claim and piece of advice given through the site is prepared and lodged under that registration, not outsourced blind.
+              Because we only do 417 and 462 work, nothing about your situation needs explaining twice. We know which farm employers withhold at the wrong rate, which super funds ask for certified copies, what the Medicare levy exemption is worth for your passport, and what changes when you lodge from overseas. You send your details once; we know what to do with them.
             </p>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              That does not mean we get you a bigger refund than anyone else could - no legitimate agent can promise that, and we do not. It means the return is prepared correctly, the advice is accountable to a real regulator, and there is somewhere to go if something goes wrong.
+              And we move at backpacker speed. Everything is online, WhatsApp is the front door, and real people answer fast - usually within the hour during business hours. No office visits, no phone menus, no waiting a week for a reply while your flight home gets closer.
             </p>
           </div>
         </div>

@@ -17,13 +17,17 @@ const money = (n: number) => '$' + Math.round(n).toLocaleString('en-AU')
 function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Result {
   let tax = 0
   if (visa === 'whm') {
-    tax = inc <= 45000 ? inc * 0.15 : 6750 + (inc - 45000) * 0.3
+    // WHM scale 2025-26: 15% to $45k, then 30% / 37% / 45% - no tax-free threshold
+    if      (inc <= 45000)  tax = inc * 0.15
+    else if (inc <= 135000) tax = 6750  + (inc - 45000)  * 0.3
+    else if (inc <= 190000) tax = 33750 + (inc - 135000) * 0.37
+    else                    tax = 54100 + (inc - 190000) * 0.45
   } else {
     if      (inc <= 18200)  tax = 0
     else if (inc <= 45000)  tax = (inc - 18200) * 0.16
     else if (inc <= 135000) tax = 4288  + (inc - 45000)  * 0.3
     else if (inc <= 190000) tax = 31288 + (inc - 135000) * 0.37
-    else                    tax = 56838 + (inc - 190000) * 0.45
+    else                    tax = 51638 + (inc - 190000) * 0.45
   }
   const d = wit - tax
 
@@ -39,7 +43,7 @@ function calc(inc: number, wit: number, visa: 'whm' | 'res', supBal: number): Re
   const refund = d > 0 ? d : 0
   const total = refund + (sup ? sup.net : 0)
 
-  if (d > 0) return { label: '推定還付金', amount: money(d),  sub: visa === 'whm' ? 'ワーキングホリデーメーカー税率' : 'オーストラリア税務居住者税率', owing: false, refund, sup, total }
+  if (d > 0) return { label: '推定還付金', amount: money(d),  sub: visa === 'whm' ? 'ワーキングホリデーメーカー税率' : 'オーストラリア税務居住者税率（2%のメディケア・レヴィ除く）', owing: false, refund, sup, total }
   if (d < 0) return { label: '追加納税額',  amount: money(-d), sub: '追加で納税が必要な可能性があります。ご相談はお問い合わせください。', owing: true,  refund: 0, sup, total }
   return             { label: '相殺', amount: money(0), sub: '還付金も追加納税もありません。', owing: false, refund: 0, sup, total }
 }
@@ -62,7 +66,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
     const i = isFinite(rawI) ? Math.min(Math.max(rawI, 0), 10_000_000) : 0
     const w = isFinite(rawW) ? Math.min(Math.max(rawW, 0), 5_000_000)  : 0
     const s = isFinite(rawS) ? Math.min(Math.max(rawS, 0), 5_000_000) : 0
-    if (!i || !w || !visa) { setErr('3つの項目をすべてご入力ください。'); return }
+    if (!i || safeWit === '' || !visa) { setErr('3つの項目をすべてご入力ください。'); return }
     if (w > i) { setErr('源泉徴収税額は総収入を超えることはできません。'); return }
     setErr('')
     const allowedVisa = ['whm', 'res'] as const

@@ -275,7 +275,7 @@ export default function LabouringExpensesPageJA() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。登録しているレイバーハイヤー会社、派遣先の組まれ方、そして実際にどれだけ現場を転々としているかによって、経費にできるものは変わります。そのため、このページの例はあくまで出発点としてご参考にしていただき、最終的な答えとして受け取らないようにしてください。当社にご依頼いただいた場合、タックスリターンは登録税理士の監督のもとで作成され、実際に登録されているレイバーハイヤー会社、現場、レシートを確認したうえで、請求できるものはすべて、請求できないものは含めないようにいたします。
+              これは一般的な情報であり、個別の税務アドバイスではありません。登録しているレイバーハイヤー会社、派遣先の組まれ方、そして実際にどれだけ現場を転々としているかによって、経費にできるものは変わります。そのため、このページの例はあくまで出発点としてご参考にしていただき、最終的な答えとして受け取らないようにしてください。当社にご依頼いただいた場合、タックスリターンはワーホリ専門のチームによって作成され、実際に登録されているレイバーハイヤー会社、現場、レシートを確認したうえで、請求できるものはすべて、請求できないものは含めないようにいたします。
             </p>
             <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

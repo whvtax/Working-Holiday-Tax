@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "TFN Application for Working Holiday Visa (417/462) - Avoid 45% Tax",
-  description: "Applying for a TFN on a working holiday visa? Without one your employer withholds 45% instead of 15%. We apply for your Tax File Number under the supervision of a registered tax agent so you start on the right rate from your first payslip.",
+  description: "Applying for a TFN on a working holiday visa? Without one your employer withholds 45% instead of 15%. We apply for you - fast and fully online.",
   keywords: [
     'TFN application Australia',
     'TFN application working holiday',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/tfn`,
     siteName: 'Working Holiday Tax',
     title: "Get Your TFN - We Apply For You (No 45% Tax) | Working Holiday",
-    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. Apply correctly under the supervision of a registered tax agent.',
+    description: 'Get your Tax File Number sorted fast - the first step to claiming your Australian tax refund. We handle the application for you, fully online.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -118,7 +118,7 @@ const serviceSchema = {
   '@id': `${SITE_URL}/tfn#service`,
   name: 'TFN Application Service for Working Holiday Makers',
   serviceType: 'Tax File Number application',
-  description: 'TFN application service for 417 and 462 working holiday visa holders, prepared and submitted under the supervision of a registered tax agent.',
+  description: 'TFN application service for 417 and 462 working holiday visa holders, prepared and submitted for you, fully online.',
   provider: { '@id': `${SITE_URL}/#business` },
   areaServed: { '@type': 'Country', name: 'Australia' },
   audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417/462)' },

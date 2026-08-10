@@ -512,7 +512,7 @@ export default function CleanersExpensesPageJA() {
         <section className="bg-white" style={{ paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              これは一般的な情報であり、個別の税務アドバイスではありません。請負業者か従業員か、そして実際に何を経費にできるかは、あなたの働き方の具体的な事実によって決まります。当社にご依頼いただいた場合、登録税理士の監督のもとで申告書を作成し、あなたの清掃の収入、ABNまたはTFNの状況、道具や移動にかかった費用を一つひとつ確認したうえで、請求できるものはすべて、請求できないものは一切含めないようにいたします。
+              これは一般的な情報であり、個別の税務アドバイスではありません。請負業者か従業員か、そして実際に何を経費にできるかは、あなたの働き方の具体的な事実によって決まります。当社にご依頼いただいた場合、ワーホリ専門のチームが申告書を作成し、あなたの清掃の収入、ABNまたはTFNの状況、道具や移動にかかった費用を一つひとつ確認したうえで、請求できるものはすべて、請求できないものは一切含めないようにいたします。
             </p>
             <Link href="/ja/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

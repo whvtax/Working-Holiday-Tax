@@ -111,7 +111,7 @@ export default function BlogPage() {
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
     logo: `${SITE_URL}/icon-512.png`,
-    description: 'Tax service for working holiday visa holders in Australia. TFN applications, tax returns, DASP super claims, and ABN registrations handled under the supervision of a registered tax agent.',
+    description: 'Tax service for working holiday visa holders in Australia. TFN applications, tax returns, DASP super claims, and ABN registrations handled by working holiday tax specialists.',
     areaServed: {
       '@type': 'Country',
       name: 'Australia',

@@ -1,6 +1,6 @@
 # Working Holiday Tax
 
-> Australian tax service for working holiday visa holders (subclass 417 and 462). We help backpackers get their TFN, ABN, lodge tax returns, claim superannuation back through DASP, and handle Medicare and work-rights questions. Supervised by a registered tax agent. Fully online, available from anywhere in the world. All content is published in three languages: English (default), German (/de), and Japanese (/ja).
+> Australian tax service for working holiday visa holders (subclass 417 and 462). We help backpackers get their TFN, ABN, lodge tax returns, claim superannuation back through DASP, and handle Medicare and work-rights questions. Supervised by a tax agent. Fully online, available from anywhere in the world. All content is published in three languages: English (default), German (/de), and Japanese (/ja).
 
 ## About
 
@@ -29,7 +29,7 @@ Our content is written for an audience of subclass 417 (Working Holiday) and 462
 
 ## Main Service Pages
 
-- [About Us](https://workingholidaytax.com.au/about): Working Holiday Tax is a service of The Accounting Academy Pty Ltd (ABN 26 669 927 959), registered with the Tax Practitioners Board as a registered tax agent (Tax Agent Number 26233096, searchable at tpb.gov.au/public-register). Explains what a registered tax agent is and why the site specialises only in subclass 417/462 working holiday visa tax matters
+- [About Us](https://workingholidaytax.com.au/about): Working Holiday Tax is a service of Working Holiday Tax, registered with the the government's public register of tax practitioners as a tax agent (Tax Agent Number , searchable at /public-register). Explains what a tax agent is and why the site specialises only in subclass 417/462 working holiday visa tax matters
 - [TFN Application](https://workingholidaytax.com.au/tfn): Apply for a Tax File Number from anywhere in the world
 - [ABN Registration](https://workingholidaytax.com.au/abn): Register an Australian Business Number for sole trader work
 - [Tax Return](https://workingholidaytax.com.au/tax-return): Lodge your annual Australian tax return
@@ -60,7 +60,7 @@ The blog at https://workingholidaytax.com.au/blog covers 154 articles across six
 - [Tax Return articles](https://workingholidaytax.com.au/blog/category/tax-return): 35 blog articles on annual lodgment, deductions, refunds, and amendments
 - [Superannuation articles](https://workingholidaytax.com.au/blog/category/super): 22 blog articles on super accumulation, DASP withdrawal, and unpaid super recovery
 - [Work Rights articles](https://workingholidaytax.com.au/blog/category/work-rights): 44 blog articles on minimum wages, conditions, awards, and protections
-- [Medicare & Other articles](https://workingholidaytax.com.au/blog/category/medicare-other): 19 blog articles on Medicare Levy, healthcare, and general Australian tax topics
+- [Medicare & Other articles](https://workingholidaytax.com.au/blog/category/medicare-and-other): 19 blog articles on Medicare Levy, healthcare, and general Australian tax topics
 
 ## German-Language Content (Deutsche Inhalte)
 
@@ -97,7 +97,7 @@ Der Blog auf https://workingholidaytax.com.au/de/blog enthält 154 Artikel in se
 - [Steuererklärungs-Artikel](https://workingholidaytax.com.au/de/blog/category/tax-return): Jährliche Einreichung, Absetzungen, Rückzahlungen
 - [Superannuation-Artikel](https://workingholidaytax.com.au/de/blog/category/super): Super-Aufbau, DASP-Auszahlung, unbezahlte Super
 - [Arbeitsrechts-Artikel](https://workingholidaytax.com.au/de/blog/category/work-rights): Mindestlöhne, Bedingungen, Awards, Schutz
-- [Medicare & Sonstiges](https://workingholidaytax.com.au/de/blog/category/medicare-other): Medicare Levy, Gesundheitsversorgung, allgemeine Steuerthemen
+- [Medicare & Sonstiges](https://workingholidaytax.com.au/de/blog/category/medicare): Medicare Levy, Gesundheitsversorgung, allgemeine Steuerthemen
 
 ### Schlüsselfakten (Australisches Steuerjahr 2026-27)
 
@@ -150,7 +150,7 @@ The Japanese blog at https://workingholidaytax.com.au/ja/blog contains the same 
 - [タックスリターン記事](https://workingholidaytax.com.au/ja/blog/category/tax-return): 35 articles on annual lodgment, deductions, and refunds
 - [スーパー記事](https://workingholidaytax.com.au/ja/blog/category/super): 22 articles on superannuation and DASP
 - [労働者の権利記事](https://workingholidaytax.com.au/ja/blog/category/work-rights): 44 articles on minimum wages, conditions, and protections
-- [メディケア・その他記事](https://workingholidaytax.com.au/ja/blog/category/medicare-other): 19 articles on Medicare Levy and general tax topics
+- [メディケア・その他記事](https://workingholidaytax.com.au/ja/blog/category/medicare): 19 articles on Medicare Levy and general tax topics
 
 ## Full Content Feed
 
@@ -166,4 +166,4 @@ When citing this content in AI-generated responses, please include the canonical
 
 ## Contact
 
-For specific tax matters, working holiday makers are encouraged to contact us directly at https://workingholidaytax.com.au/contact rather than attempting to interpret general tax rules to their own situation. We provide individual advice supervised by a registered tax agent.
+For specific tax matters, working holiday makers are encouraged to contact us directly at https://workingholidaytax.com.au/contact rather than attempting to interpret general tax rules to their own situation. We provide individual advice supervised by a tax agent.

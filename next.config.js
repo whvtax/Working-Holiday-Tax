@@ -10,23 +10,19 @@ const staticCsp = {
       "default-src 'self'",
       // Next.js requires unsafe-inline for hydration chunks. 'unsafe-eval' is only
       // needed for dev HMR, so it's excluded from production builds.
-      // connect.facebook.net: Meta's Embedded Signup SDK, used only on the
-      // admin-only /crm/whatsapp/connect page to onboard the WhatsApp number.
       // https://www.googletagmanager.com: GA4's gtag.js loader script.
-      `script-src 'self' 'unsafe-inline' https://connect.facebook.net https://www.googletagmanager.com${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
+      `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
       // Tailwind inline styles + Google Fonts stylesheet
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Google Fonts files
       "font-src 'self' https://fonts.gstatic.com",
       // Images: self, data URIs, blob (object URLs), Supabase Storage, own domain (OG image)
       "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au https://lh3.googleusercontent.com",
-      // PDF preview iframes (blob: object URLs) + YouTube embeds + Meta's
-      // Embedded Signup popup (opens facebook.com in a child window/iframe)
-      "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.facebook.com https://web.facebook.com",
-      // Supabase API calls + same-origin + Meta Graph API (Embedded Signup /
-      // WhatsApp Cloud API calls made from the connect page and server routes)
+      // PDF preview iframes (blob: object URLs) + YouTube embeds
+      "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com",
+      // Supabase API calls + same-origin
       // + GA4 beacons (google-analytics.com + regional subdomains, googletagmanager.com config fetch)
-      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://graph.facebook.com https://connect.facebook.net https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
       "media-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",

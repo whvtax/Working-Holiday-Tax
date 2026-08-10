@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { GoogleRating } from '@/components/ui/GoogleRating'
 import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import Link from 'next/link'
-import { WA_URL, SITE_URL, AGENT_NAME } from '@/lib/constants'
+import { WA_URL, SITE_URL } from '@/lib/constants'
 import { CtaBand } from '@/components/ui/CtaBand'
 import { getGoogleRating } from '@/lib/googleData'
 
@@ -10,7 +10,7 @@ import { getGoogleRating } from '@/lib/googleData'
 export const metadata: Metadata = {
   title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
   description:
-    'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Unter Aufsicht eines registrierten Steueragenten erledigen wir deine Steuererklärung, TFN, Super-Rückzahlung (DASP) und ABN - komplett online, auch nach deiner Rückkehr aus Australien.',
+    'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. Wir erledigen deine Steuererklärung, TFN, Super-Rückzahlung (DASP) und ABN - komplett online, auch nach deiner Rückkehr aus Australien.',
   keywords: [
     // Primary refund-focused terms (core service)
     'Steuerrückerstattung Australien',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
     'Steueragent Australien Deutsch',
     'Working Holiday Maker Steuersatz',
     'Medicare Levy Befreiung Backpacker',
-    'registrierter Steueragent Australien',
+    'Steueragent Australien',
     // Treaty-aware long-tail
     'Doppelbesteuerungsabkommen Australien Deutschland Working Holiday',
     'Notice of Assessment Australien Deutsch',
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     url: `${SITE_URL}/de`,
     siteName: 'Working Holiday Tax',
     title: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Unter Aufsicht eines registrierten Steueragenten erledigen wir deine Steuererklärung, TFN, Super (DASP) und ABN - komplett online.',
+    description: 'Steuerrückerstattung Australien für Working Holiday Maker (417/462). Wir erledigen deine Steuererklärung, TFN, Super (DASP) und ABN - komplett online.',
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Steuerrückerstattung Australien Working Holiday Maker - Backpacker Steuer 417 462 Visum' }],
   },
   twitter: {
@@ -96,7 +96,7 @@ const CheckIcon   = () => (<svg width="13" height="13" viewBox="0 0 13 13" fill=
 const STEPS = [
   { n: '1', title: 'Erzähl uns deine Situation',     body: 'TFN, ABN, Working Holiday Steuererklärung oder Super, wir helfen dir von Anfang an weiter.' },
   { n: '2', title: 'Schick uns deine Daten',         body: 'Kurze Checkliste, keine komplizierten Formulare oder Papierkram.' },
-  { n: '3', title: 'Wir kümmern uns um alles',       body: 'Wir bereiten alles vor und reichen es unter Aufsicht eines registrierten Steueragenten beim ATO ein.' },
+  { n: '3', title: 'Wir kümmern uns um alles',       body: 'Wir bereiten alles vor und reichen deine Erklärung beim ATO ein - komplett online.' },
   { n: '4', title: 'Dein Bescheid kommt',            body: 'Sobald das ATO deine Steuererklärung bearbeitet hat, wird eine eventuelle Rückerstattung direkt auf dein australisches Bankkonto überwiesen.' },
 ]
 
@@ -111,7 +111,7 @@ const SERVICES = [
 const FAQS = [
   {
     question: 'Wie funktioniert eine Steuerrückerstattung aus Australien für Working Holiday Maker?',
-    answer: 'Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hat dein Arbeitgeber während des Jahres Steuern von deinem Lohn einbehalten. Nach dem 30. Juni reichst du eine Steuererklärung beim ATO (australisches Finanzamt) ein, und die zu viel gezahlten Steuern bekommst du als Rückerstattung zurück. Die genaue Höhe hängt von deinem Einkommen, deinem steuerlichen Wohnsitzstatus, den Abzügen, die du geltend machen kannst, und davon ab, ob dein Arbeitgeber als Working Holiday Maker Arbeitgeber registriert war. Unter Aufsicht eines registrierten Steueragenten prüfen wir deine Situation und sorgen dafür, dass deine Erklärung korrekt eingereicht wird.',
+    answer: 'Wenn du in Australien mit einem 417 oder 462 Visum gearbeitet hast, hat dein Arbeitgeber während des Jahres Steuern von deinem Lohn einbehalten. Nach dem 30. Juni reichst du eine Steuererklärung beim ATO (australisches Finanzamt) ein, und die zu viel gezahlten Steuern bekommst du als Rückerstattung zurück. Die genaue Höhe hängt von deinem Einkommen, deinem steuerlichen Wohnsitzstatus, den Abzügen, die du geltend machen kannst, und davon ab, ob dein Arbeitgeber als Working Holiday Maker Arbeitgeber registriert war. Wir kennen die typische Backpacker-Situation - mehrere Arbeitgeber, Saisonarbeit, Ausreise - und sorgen dafür, dass deine Erklärung korrekt eingereicht wird.',
   },
   {
     question: 'Was kosten eure Leistungen?',
@@ -145,7 +145,7 @@ export default async function GermanHomePage() {
     '@id': `${SITE_URL}/de/#webpage`,
     url: `${SITE_URL}/de`,
     name: 'Steuerrückerstattung Australien Working Holiday | WHV Steuererklärung',
-    description: 'Steuerrückerstattung Australien unter Aufsicht eines registrierten Steueragenten - Working Holiday Maker auf 417/462 Visum. TFN, Steuererklärung, Super (DASP) und ABN - alles online erledigt.',
+    description: 'Steuerrückerstattung Australien für Working Holiday Maker auf 417/462 Visum. TFN, Steuererklärung, Super (DASP) und ABN - alles online erledigt.',
     inLanguage: 'de',
     isPartOf: { '@id': `${SITE_URL}/#website` },
     about: { '@id': `${SITE_URL}/#business` },
@@ -187,7 +187,6 @@ export default async function GermanHomePage() {
     '@type': ['Organization', 'ProfessionalService', 'AccountingService'],
     '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
-    legalName: AGENT_NAME,
     url: SITE_URL,
     telephone: '+61424513998',
     priceRange: '$$',
@@ -198,7 +197,7 @@ export default async function GermanHomePage() {
       width: 512,
       height: 512,
     },
-    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462). Beratung in Deutsch, Englisch und Japanisch.',
+    description: 'Steuerservice spezialisiert auf Working Holiday Maker (Visumklassen 417 und 462). Beratung in Deutsch, Englisch und Japanisch.',
     foundingDate: '2020',
     knowsLanguage: ['en', 'de', 'ja'],
     areaServed: {
@@ -260,9 +259,6 @@ export default async function GermanHomePage() {
         },
       ],
     },
-    sameAs: [
-      'https://www.tpb.gov.au/public-register',
-    ],
     knowsAbout: [
       'Australisches Steuerrecht',
       'Working Holiday Visum Subclass 417',
@@ -343,7 +339,7 @@ export default async function GermanHomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-8 reveal" style={{ marginBottom: '36px' }}>
             {[
               { title: 'Backpackersteuer-Experten.',       body: 'Wir arbeiten ausschließlich mit Working Holiday Makern. Die Regeln, die für dich gelten, kennen wir in- und auswendig.' },
-              { title: 'ATO-konform.',                     body: 'Eingereicht über einen registrierten Steueragenten und voll konform mit den aktuellen ATO-Regeln für Working Holiday Maker.' },
+              { title: 'ATO-konform.',                     body: 'Deine Erklärung wird voll konform mit den aktuellen ATO-Regeln für Working Holiday Maker eingereicht.' },
               { title: 'Klare, einfache Hilfe.',           body: 'Keine komplizierten Begriffe. Wir führen dich Schritt für Schritt durch deine Steuererklärung - in einfacher Sprache.' },
               { title: 'Wir kümmern uns um alles.',        body: 'Von der TFN bis zur Steuerrückerstattung sind wir für dich da. Egal ob in Australien oder wieder zu Hause.' },
             ].map((item, i) => (

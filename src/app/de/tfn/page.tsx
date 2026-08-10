@@ -9,7 +9,7 @@ import { MobileCta } from '@/components/ui/MobileCta'
 
 export const metadata: Metadata = {
   title: "TFN beantragen lassen - keine 45 % Steuer | Working Holiday",
-  description: "Ohne TFN behält dein Arbeitgeber 45 % statt 15 % ein. Wir beantragen deine Steuernummer unter Aufsicht eines registrierten Tax Agents, damit du ab dem ersten Payslip richtig besteuert wirst.",
+  description: "Ohne TFN behält dein Arbeitgeber 45 % statt 15 % ein. Wir beantragen deine Steuernummer für dich, damit du ab dem ersten Payslip richtig besteuert wirst.",
   keywords: [
     'TFN beantragen Australien',
     'TFN beantragen Working Holiday',
@@ -123,7 +123,7 @@ const serviceSchema = {
     '@id': `${SITE_URL}/#organization`,
     name: 'Working Holiday Tax',
     url: `${SITE_URL}`,
-    description: 'Service unter Aufsicht eines registrierten australischen Steueragenten, spezialisiert auf Working Holiday Maker.',
+    description: 'Australischer Steuerservice, spezialisiert auf Working Holiday Maker.',
     knowsLanguage: ['de', 'en', 'ja'],
   },
 }

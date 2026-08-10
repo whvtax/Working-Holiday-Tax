@@ -35,11 +35,11 @@ type Section = {
 const sections: Section[] = [
   {
     title: '1. Introduction',
-    body: 'This Privacy Policy explains how Working Holiday Tax ("we", "us", "our") collects, uses, discloses, and protects your personal information in accordance with the Privacy Act 1988 (Cth), the Australian Privacy Principles (APPs), and the Notifiable Data Breaches (NDB) scheme. We also comply with our obligations, working under the supervision of a registered tax agent, under the ATO and the Tax Practitioners Board (TPB), including strict confidentiality requirements. By using our website or engaging our services, you consent to the collection and use of your information as described in this Privacy Policy.',
+    body: 'This Privacy Policy explains how Working Holiday Tax ("we", "us", "our") collects, uses, discloses, and protects your personal information in accordance with the Privacy Act 1988 (Cth), the Australian Privacy Principles (APPs), and the Notifiable Data Breaches (NDB) scheme. We also comply with our obligations to the ATO and relevant regulators, including strict confidentiality requirements. By using our website or engaging our services, you consent to the collection and use of your information as described in this Privacy Policy.',
   },
   {
     title: '2. General Information Disclaimer',
-    body: 'The information provided on our website is for general informational purposes only and does not constitute personal tax advice. For advice specific to your individual circumstances, you should consult a registered tax agent or qualified professional.',
+    body: 'The information provided on our website is for general informational purposes only and does not constitute personal tax advice. For advice specific to your individual circumstances, you should consult a tax agent or qualified professional.',
   },
   {
     title: '3. Information We Collect',
@@ -59,7 +59,7 @@ const sections: Section[] = [
     body: 'We use your personal information to:',
     items: [
       'Prepare and lodge tax returns with the Australian Taxation Office (ATO).',
-      'Verify identity and comply with TPB and legal obligations.',
+      'Verify identity and comply with legal and regulatory obligations.',
       'Provide tax-related services and support.',
       'Communicate with you regarding your tax matters.',
       'Improve our services and customer experience.',
@@ -85,7 +85,7 @@ const sections: Section[] = [
     body: 'We do not sell or trade your personal information. We may share limited information with:',
     items: [
       'Trusted service providers assisting in operations or communications.',
-      'Regulatory authorities such as the ATO or TPB where required by law.',
+      'Regulatory authorities such as the ATO where required by law.',
     ],
   },
   {

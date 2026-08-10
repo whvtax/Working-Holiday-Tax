@@ -462,7 +462,7 @@ export default function FifoExpensesPageDE() {
         <section style={{ background: '#F5F9F7', paddingTop: '38px', paddingBottom: '48px' }}>
           <div className="max-w-[680px] mx-auto px-5 md:px-8 lg:px-12 text-center">
             <p className="font-light" style={{ fontSize: '12.5px', color: '#8AADA3', lineHeight: 1.7, marginBottom: '26px' }}>
-              Das sind allgemeine Informationen, keine persönliche Steuerberatung. Jeder Roster, jeder Standort und jede Camp-Regelung ist ein bisschen anders, und besonders der Zone Tax Offset hängt von deinem eigenen gewöhnlichen Wohnsitz ab, nicht nur davon, wohin dich dein Roster bringt. Wenn du deine Erklärung bei uns einreichst, wird sie unter Aufsicht eines registrierten Steueragenten erstellt, der deinen konkreten Roster, deine Tickets und deine Umstände durchgeht, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
+              Das sind allgemeine Informationen, keine persönliche Steuerberatung. Jeder Roster, jeder Standort und jede Camp-Regelung ist ein bisschen anders, und besonders der Zone Tax Offset hängt von deinem eigenen gewöhnlichen Wohnsitz ab, nicht nur davon, wohin dich dein Roster bringt. Wenn du deine Erklärung bei uns einreichst, wird sie von unserem Team erstellt, das nur mit Working Holiday Makern arbeitet und deinen konkreten Roster, deine Tickets und deine Umstände durchgeht, damit du alles absetzt, worauf du Anspruch hast, und nichts, worauf nicht.
             </p>
             <Link href="/de/tax-form" className="inline-flex items-center justify-center font-semibold"
               style={{ minHeight: '52px', padding: '0 36px', background: '#0B5240', color: '#fff', borderRadius: '100px', fontSize: '15px', textDecoration: 'none' }}>

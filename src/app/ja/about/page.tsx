@@ -5,25 +5,26 @@ import { GoogleReviews } from '@/components/ui/GoogleReviews'
 import { Accordion } from '@/components/ui/Accordion'
 import { MobileCta } from '@/components/ui/MobileCta'
 import { NextStep } from '@/components/ui/NextStep'
-import { WA_URL, SITE_URL, AGENT_NAME, AGENT_ABN, AGENT_TPB } from '@/lib/constants'
+import { WA_URL, SITE_URL } from '@/lib/constants'
 
 export const metadata: Metadata = {
   title: '当社について - 運営者情報 | Working Holiday Tax',
-  description: `Working Holiday Taxは、${AGENT_NAME}（ABN ${AGENT_ABN}）によるサービスです。417・462ビザ保持者向けのTFN申請、タックスリターン、スーパーアニュエーション（DASP）、ABN関連業務は、すべて登録税理士（TAN ${AGENT_TPB}）の監督のもとで行われます。当社について、そして私たちの働き方をご紹介します。`,
+  description: '当社のお客様はただ一種類、417・462ビザのワーキングホリデーメーカーだけです。タックスリターン、TFN、スーパー（DASP）、ABN - 素早い返信、完全オンライン、あなたの言語で対応します。',
   keywords: [
-    'ワーホリ 税理士 オーストラリア',
-    '登録税理士 オーストラリア バックパッカー',
+    'ワーホリ 税金 専門 オーストラリア',
+    'バックパッカー 税金 サポート',
     'Working Holiday Tax とは',
-    'The Accounting Academy Pty Ltd',
     'Working Holiday Tax 怪しい',
     'Working Holiday Tax 口コミ',
-    'ワーキングホリデービザ 税理士 オーストラリア',
-    'TPB登録 税理士 バックパッカー',
+    'ワーホリ 税金 専門家 417 462',
+    'ワーキングホリデービザ 税金 相談',
+    'バックパッカー タックスリターン 日本語',
   ],
   alternates: {
     canonical: `${SITE_URL}/ja/about`,
     languages: {
       'en-AU': `${SITE_URL}/about`,
+      'de': `${SITE_URL}/de/about`,
       'ja': `${SITE_URL}/ja/about`,
       'x-default': `${SITE_URL}/about`,
     },
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [{ url: `${SITE_URL}/og-image.png`, width: 1200, height: 630, alt: 'Working Holiday Tax Refund Australia' }],
     title: 'Working Holiday Taxについて - 運営者情報',
-    description: `${AGENT_NAME}によるサービスです。業務はすべて、オーストラリアの登録税理士（TAN ${AGENT_TPB}）の監督のもとで行われ、ワーキングホリデービザの税務を専門としています。`,
+    description: 'お客様はワーキングホリデーメーカーだけ。複数の雇用主、ホステルの住所、年度途中の帰国 - ワーホリの1年をよく知るチームが、素早くお答えします。',
     url: `${SITE_URL}/ja/about`,
     type: 'website',
     siteName: 'Working Holiday Tax',
@@ -41,23 +42,23 @@ export const metadata: Metadata = {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'Working Holiday Taxについて - 運営者情報',
-    description: `${AGENT_NAME}によるサービスです。業務はすべて、オーストラリアの登録税理士の監督のもとで行われ、ワーキングホリデービザの税務を専門としています。`,
+    description: 'お客様はワーキングホリデーメーカーだけ。素早い返信、完全オンライン、あなたの言語で。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
 
 const faqs = [
   {
-    question: 'Working Holiday Taxを運営しているのは誰ですか？',
-    answer: `Working Holiday Taxは、${AGENT_NAME}（ABN ${AGENT_ABN}）によるサービスです。当サイトを通じて行われるタックスリターンの提出、アドバイス、DASP（スーパーアニュエーション）請求はすべて、登録税理士（Tax Agent Number ${AGENT_TPB}）の監督のもとで作成・提出されます。この登録内容は、Tax Practitioners Boardの公的登録簿（tpb.gov.au）でご確認いただけます。`,
+    question: '普通の会計士と何が違うのですか？',
+    answer: '一般の会計士がワーキングホリデーメーカーを担当するのは年に数回程度です。当社はそれ以外を扱いません。417・462ビザの税率表、出国後のDASPスーパー請求、パスポートによって変わるメディケア免除、1年で3つの州・4つの雇用主 - これらは当社にとって「調べなければならない特殊ケース」ではなく、毎日の仕事そのものです。この専門特化こそが、速さと正確さの理由です。',
   },
   {
-    question: '登録税理士が私のタックスリターンを監督しますか？',
-    answer: `はい。Working Holiday Taxを通じて提出されるすべての申告は、${AGENT_NAME}によるTax Practitioners Boardへの登録（TAN ${AGENT_TPB}）の監督のもとで作成・提出されます。登録税理士はTax Agent Services Act 2009およびTPBの行動規範に拘束され、専門職賠償責任保険にも加入しています。これは、無登録の「還付金シミュレーター」サイトにはない特徴です。`,
+    question: '実際、どのくらい早く返信してもらえますか？',
+    answer: 'WhatsAppでメッセージを送っていただければ、営業時間内なら通常1時間以内に、実在のスタッフが返信します。コールセンターも、チケット待ちの列も、「5〜7営業日お待ちください」もありません。確認が必要な場合は、そのこともすぐにお伝えします。',
   },
   {
-    question: '一般的な税務ではなく、ワーキングホリデーメーカーに特化しているのはなぜですか？',
-    answer: 'ワーキングホリデービザの税務は、通常のオーストラリアのタックスリターンとは本質的に異なります。417・462ビザ特有の税率表、出国後に行うDASP（スーパーアニュエーション払い戻し）の手続き、国籍と社会保険協定によって適用が変わるメディケア・レヴィ免除、そして複数の雇用主や州にまたがるカジュアル・季節労働の収入など、独自の論点が数多くあります。当社はこのビザカテゴリーとその課題だけに焦点を当ててサービスを設計しており、通常の申告を単純に縮小したものとしては扱っていません。',
+    question: 'ワーホリの1年がどんなものか、本当に理解していますか？',
+    answer: 'はい - それだけを扱っているからです。ホステルの郵送先住所、何かおかしいファームの給与明細、申告方法に迷う現金払いの数週間、最後の給与明細をもらわずに辞めた仕事、会計年度の途中での帰国。あなたのワーホリの1年がどんな形でも、当社はほぼ確実に同じケースを扱ったことがあります。',
   },
   {
     question: 'オーストラリアに滞在中の方だけが対象ですか？',
@@ -65,7 +66,7 @@ const faqs = [
   },
   {
     question: '対応している言語は何ですか？',
-    answer: '英語・ドイツ語・日本語の3言語に対応しており、サイト全体だけでなく、直接のやり取りでも同じ言語でご対応します。単なる機械翻訳のページではありません。これら以外の言語を母語とする方でも、英語で問題なく対応いたします。オーストラリアの税務の仕組みを初めて知る方への説明にも慣れています。',
+    answer: 'サイトは英語・ドイツ語・日本語で運営していますが、サポートはそれに限りません。あなたが一番使いやすい言語でご連絡ください。その言語で対応します。オーストラリアの税金を初めて知る方に分かりやすく説明することが当社の仕事の中心です - どの言語でも。',
   },
 ]
 
@@ -129,16 +130,16 @@ export default function JapaneseAboutPage() {
 
               <h1 className="font-serif font-black text-ink"
                 style={{ fontSize: 'clamp(24px,3.2vw,44px)', lineHeight: 1.06, letterSpacing: '-0.03em', marginBottom: '10px' }}>
-                たったひとつのビザに特化し、登録税理士の監督のもとで運営しています。
+                バックパッカーのために。それ以外はやらないチームです。
               </h1>
 
               <p className="about-lead font-semibold text-ink"
                 style={{ fontSize: 'clamp(14px,1.5vw,17px)', letterSpacing: '-0.01em', marginBottom: '8px', lineHeight: 1.4 }}>
-                Working Holiday Taxは、{AGENT_NAME}（ABN {AGENT_ABN}）によるサービスです。すべての申告、請求、アドバイスは、登録税理士（Tax Agent Number {AGENT_TPB}）の監督のもとで作成されます。
+                Working Holiday Taxのお客様はただ一種類、417または462のワーキングホリデービザ保持者だけです。タックスリターン、TFN、ABN、スーパー、メディケア - それが仕事のすべて。だからこそ速く、正確なのです。
               </p>
 
               <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.65, color: 'rgba(10,15,13,0.58)', maxWidth: '46ch' }}>
-                当社が扱うのは一つだけです。サブクラス417または462のワーキングホリデービザ保持者を対象とした、税金、TFN、ABN、スーパー、メディケアに関するご相談です。オーストラリア滞在中の方はもちろん、すでに帰国された方にも対応しています。
+                WhatsAppでメッセージを送れば、実在のスタッフが返信します - 営業時間内なら通常1時間以内。オーストラリア滞在中でも、帰国後でも。
               </p>
 
               <div className="hero-cta-pair flex flex-col gap-3 lg:flex-row lg:gap-4" style={{ marginTop: '24px', marginBottom: '20px', maxWidth: '480px' }}>
@@ -163,7 +164,7 @@ export default function JapaneseAboutPage() {
         </div>
       </section>
 
-      {/* ── TRUST SIGNALS STRIP (all independently verifiable, no invented stats) ── */}
+      {/* ── TRUST SIGNALS STRIP ───────────────────────────────────────────── */}
       <section className="bg-white" style={{ borderTop: '1px solid #E2EFE9', borderBottom: '1px solid #E2EFE9' }}>
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 lg:px-12 py-5 lg:py-7">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
@@ -171,7 +172,7 @@ export default function JapaneseAboutPage() {
               { stat: <GoogleRating variant="number" lang="ja" />, label: 'Google評価' },
               { stat: <GoogleRating variant="count" lang="ja" />, label: ' ' },
               { stat: '2020', label: '運営開始' },
-              { stat: '3', label: '対応言語：日本語・英語・ドイツ語' },
+              { stat: '全言語', label: 'あなたの言語でサポート' },
             ].map((item, i) => (
               <div key={i} className="text-center">
                 <div className="font-serif" style={{ fontSize: 'clamp(20px, 3.4vw, 26px)', fontWeight: 800, color: '#0B5240', letterSpacing: '-0.02em', lineHeight: 1.1, marginBottom: '4px' }}>
@@ -183,36 +184,31 @@ export default function JapaneseAboutPage() {
               </div>
             ))}
           </div>
-          <p className="text-center" style={{ fontSize: '11.5px', color: 'rgba(10,15,13,0.4)', marginTop: '14px' }}>
-            業務はすべて登録税理士の監督のもとで行われており、その登録内容はTax Practitioners Boardの公的登録簿{' '}
-            <a href="https://www.tpb.gov.au/public-register" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>tpb.gov.au</a>{' '}
-            でご確認いただけます。
-          </p>
         </div>
       </section>
 
-      {/* ── WHAT "REGISTERED TAX AGENT" ACTUALLY MEANS ─────────────────────── */}
+      {/* ── ワーホリの1年を理解しています ─────────────────────────────────── */}
       <section className="py-10 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-[720px] mx-auto">
-            <span className="section-label">なぜ重要なのか</span>
+            <span className="section-label">選ばれる理由</span>
             <h2 className="font-serif font-black text-ink" style={{ fontSize: 'clamp(21px,2.6vw,32px)', lineHeight: 1.12, letterSpacing: '-0.025em', margin: '10px 0 18px' }}>
-              「登録税理士」が本当に意味すること
+              ワーホリの1年を理解しています
             </h2>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              オーストラリアでは、Tax Practitioners Board（TPB）に登録された税理士だけが、報酬を得て他人のタックスリターンを作成・提出することを法律上認められています。登録には、関連する資格・実務経験、継続的な適格性審査（fit-and-proper-person test）、専門職賠償責任保険への加入、そしてTax Agent Services Act 2009に基づくTPBの行動規範の遵守が求められ、違反があれば登録の停止または取り消しもあり得ます。
+              ワーキングホリデーの1年は、普通の納税者の1年とはまったく違います - 当社はそれを前提に仕事をしています。3つの州にまたがる4つの雇用主。何かがおかしいファームの給与明細。郵送先はホステル。最後の給与明細をもらえないまま辞めた仕事。会計年度の途中での帰国。これらは当社にとって「特殊なケース」ではなく、ごく普通の毎日です。
             </p>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)', marginBottom: '14px' }}>
-              バックパッカー向けの「即時還付金シミュレーター」サイトの多くは、実際には登録税理士ではありません。あなたの情報を他社へ渡すだけのリード獲得フォームであったり、TPBの監督の外で活動する無登録の申告代行業者であったりします。Working Holiday Taxは、{AGENT_NAME}のTPB登録（TAN {AGENT_TPB}）のもとで運営されており、サイトを通じて行われるすべての申告、DASP請求、アドバイスは、その登録のもとで作成・提出されます。見えないところで外部に丸投げすることはありません。
+              417・462の案件だけを扱っているため、あなたの状況を二度説明する必要はありません。どのファーム雇用主が間違った税率で源泉徴収しがちか、どのスーパーファンドが認証コピーを求めるか、あなたのパスポートでメディケア免除がいくらの価値になるか、海外から申告すると何が変わるか - すべて把握しています。情報を一度送っていただければ、あとは当社が動きます。
             </p>
             <p className="font-light" style={{ fontSize: 'clamp(13px,1.2vw,15px)', lineHeight: 1.8, color: 'rgba(10,15,13,0.62)' }}>
-              だからといって、他社より大きな還付金を得られるという意味ではありません。正当な税理士であれば誰も、それを約束することはできませんし、当社も約束しません。意味するのは、申告が正しく作成されること、アドバイスが実在する規制機関に対して説明責任を負っていること、そして万が一問題が生じた場合に相談できる先があるということです。
+              そしてスピードもバックパッカー仕様です。すべてオンライン、窓口はWhatsApp、返信するのは実在のスタッフ - 営業時間内なら通常1時間以内。オフィスへの来訪も、電話の自動音声も、帰国便が近づく中で1週間返事を待つこともありません。
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── WHY ONE VISA CATEGORY ────────────────────────────────────────── */}
+      {/* ── なぜワーホリ専門か ────────────────────────────────────────────── */}
       <section className="py-10 lg:py-16 bg-white">
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="max-w-xl mx-auto text-center" style={{ marginBottom: '32px' }}>

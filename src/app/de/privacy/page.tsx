@@ -25,7 +25,7 @@ type Section = {
 const sections: Section[] = [
   {
     title: '1. Einleitung',
-    body: 'Diese Datenschutzerklärung erläutert, wie Working Holiday Tax („wir", „uns", „unser") deine personenbezogenen Daten in Übereinstimmung mit dem Privacy Act 1988 (Cth), den Australian Privacy Principles (APPs) und dem Notifiable Data Breaches (NDB)-Schema erhebt, verwendet, offenlegt und schützt. Wir erfüllen außerdem unsere Pflichten unter Aufsicht eines registrierten Steueragenten gegenüber dem ATO und dem Tax Practitioners Board (TPB), einschließlich strenger Vertraulichkeitsanforderungen. Durch die Nutzung unserer Website oder die Inanspruchnahme unserer Dienstleistungen stimmst du der Erhebung und Verwendung deiner Daten gemäß dieser Datenschutzerklärung zu.',
+    body: 'Diese Datenschutzerklärung erläutert, wie Working Holiday Tax („wir", „uns", „unser") deine personenbezogenen Daten in Übereinstimmung mit dem Privacy Act 1988 (Cth), den Australian Privacy Principles (APPs) und dem Notifiable Data Breaches (NDB)-Schema erhebt, verwendet, offenlegt und schützt. Wir erfüllen außerdem strenge Vertraulichkeitsanforderungen gegenüber dem ATO und den zuständigen Aufsichtsbehörden. Durch die Nutzung unserer Website oder die Inanspruchnahme unserer Dienstleistungen stimmst du der Erhebung und Verwendung deiner Daten gemäß dieser Datenschutzerklärung zu.',
   },
   {
     title: '2. Allgemeiner Informationshinweis',
@@ -49,7 +49,7 @@ const sections: Section[] = [
     body: 'Wir verwenden deine personenbezogenen Daten, um:',
     items: [
       'Steuererklärungen vorzubereiten und beim Australian Taxation Office (ATO) einzureichen.',
-      'Die Identität zu prüfen und TPB- sowie gesetzlichen Pflichten nachzukommen.',
+      'Die Identität zu prüfen und gesetzlichen sowie regulatorischen Pflichten nachzukommen.',
       'Steuerbezogene Dienstleistungen und Support bereitzustellen.',
       'Mit dir über deine Steuerangelegenheiten zu kommunizieren.',
       'Unsere Dienstleistungen und das Kundenerlebnis zu verbessern.',
@@ -75,7 +75,7 @@ const sections: Section[] = [
     body: 'Wir verkaufen oder handeln deine personenbezogenen Daten nicht. Wir geben begrenzte Informationen weiter an:',
     items: [
       'Vertrauenswürdige Dienstleister, die bei Betrieb oder Kommunikation unterstützen.',
-      'Aufsichtsbehörden wie das ATO oder TPB, sofern gesetzlich erforderlich.',
+      'Aufsichtsbehörden wie das ATO, sofern gesetzlich erforderlich.',
     ],
   },
   {
