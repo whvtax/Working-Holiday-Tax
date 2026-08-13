@@ -283,7 +283,7 @@ export default function UKWorkingHolidayTaxPage() {
               </p>
             </div>
             <p className="text-[14px] font-light text-muted leading-[1.75]">
-              This is one of the reasons we look at British files individually rather than applying a template. More on how the levy works on our <Link href="/medicare" className="underline hover:text-forest-500">Medicare page</Link>, and on residency on our <Link href="/tax-residency" className="underline hover:text-forest-500">tax residency page</Link>.
+              This is one of the reasons we look at British files individually rather than applying a template. More on how the levy works on our <Link href="/medicare" className="underline hover:text-forest-500">Medicare page</Link>.
             </p>
           </div>
         </div>
@@ -386,7 +386,6 @@ export default function UKWorkingHolidayTaxPage() {
               { href: '/tax-return', label: 'Working holiday tax return: rates and how it works' },
               { href: '/superannuation', label: 'Superannuation and DASP for working holiday makers' },
               { href: '/medicare', label: 'Medicare levy and the exemption explained' },
-              { href: '/tax-residency', label: 'Are you a resident of Australia for tax purposes?' },
               { href: '/tfn', label: 'Tax File Number: why 45% is being withheld' },
               { href: '/calculator', label: 'Free refund and super calculator, no signup' },
             ].map((g) => (

@@ -69,6 +69,13 @@ export const formStrings = {
   submitTax:           { en: 'Submit Tax Return →',                de: 'Steuererklärung abschicken →', ja: 'タックスリターンを送信 →' },
   submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →',  ja: 'スーパー申請を送信 →' },
   submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…' },
+  // Last step of the tax form: the declaration + submit happen on the tax-residency page.
+  checkResidency:      { en: 'Check your tax residency status →',  de: 'Steuerresidenz-Status prüfen →', ja: '税務上の居住区分を確認 →' },
+  checkResidencyNote:  {
+    en: 'Last step — read what tax residency means, then submit.',
+    de: 'Letzter Schritt - lies, was Steuerresidenz bedeutet, und schick es dann ab.',
+    ja: '最後のステップ — 税務上の居住区分について確認してから送信します。',
+  },
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
   timeEstimate:        { en: '⏱ Takes about 2 minutes',            de: '⏱ Dauert etwa 2 Minuten',    ja: '⏱ 約2分で完了' },
   backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },

@@ -2,6 +2,7 @@
 import React from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
+import { downloadHtmlAsPdf } from '@/lib/html-to-pdf'
 
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'
 type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -1091,10 +1092,7 @@ export default function DashboardClient() {
       `<script class="no-print">window.onload=function(){window.print()}<\/script>` +
       `</body></html>`
 
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
-    const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
-    a.href = url
     // Build filename: ClientName_TaskType_Date.html (e.g., "John_Doe_Tax_Return_2026-05-20.html")
     // Allow Unicode letters (Hebrew, Spanish accents, etc) - only strip filesystem-unsafe chars
     let safeName = (task.clientName || 'form').trim().replace(/\s+/g, '_').replace(/[<>:"/\\|?*\x00-\x1f]/g, '')
@@ -1107,6 +1105,22 @@ export default function DashboardClient() {
     }
     const typeLabel = typeLabels[task.taskType] || task.taskType
     const dateStr = new Date().toISOString().slice(0, 10)
+    // Tax returns download as a real PDF: the same HTML is rendered off-screen
+    // and captured, so the document looks identical to the printable export -
+    // it just arrives as a .pdf in one click, with no print dialog. The other
+    // three form types still download the printable HTML.
+    if (task.taskType === 'tax-return') {
+      downloadHtmlAsPdf({ html, filename: `${safeName}_${typeLabel}_${dateStr}.pdf` })
+        .catch(err => {
+          console.error('[downloadHtmlAsPdf]', err)
+          alert('Could not build the PDF. Please try again.')
+        })
+      return
+    }
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    a.href = url
     a.download = `${safeName}_${typeLabel}_${dateStr}.html`
     a.style.display = 'none'
     document.body.appendChild(a)

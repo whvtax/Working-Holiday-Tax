@@ -19,7 +19,12 @@ export default function PublicShellClient({
   // shouldn't offer easy escape routes at the bottom (blog links, social
   // icons, other pages), but the top nav/logo staying visible still gives
   // people a sense of "I'm on a real, navigable site" if they want it.
-  const isTaxForm = pathname === '/tax-form' || pathname === '/de/tax-form' || pathname === '/ja/tax-form'
+  // The tax-residency route is a step of that same form, so it matches.
+  const formRoutes = [
+    '/tax-form', '/de/tax-form', '/ja/tax-form',
+    '/tax-residency', '/de/tax-residency', '/ja/tax-residency',
+  ]
+  const isTaxForm = !!pathname && formRoutes.includes(pathname)
   const hideFooter = isCrm || isTaxForm
 
   // Scroll to top on every page navigation

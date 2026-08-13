@@ -1,13 +1,12 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { WA_URL, WA_NUMBER } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { isValidEmail, isValidTfn, isPlausibleDob } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
-import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
-import { isNdaCountry } from '@/lib/nda-countries'
+import { setTaxFormHandoff, getTaxFormHandoff, clearTaxFormHandoff, takeTaxFormSubmitted } from '@/lib/tax-form-handoff'
 
 /* ── Types ── */
 type UploadState = { file: File | null; preview: string | null }
@@ -235,21 +234,47 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
   }
   useEffect(() => { trackFunnelEvent('view') }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Tax-residency confirmation prompt (shown for the one risky pick:
-  //    NDA country selecting Working Holiday Maker) ──────────────────────
-  const [showResidencyPrompt, setShowResidencyPrompt] = useState(false)
-  const [showWhmBlockModal, setShowWhmBlockModal] = useState(false)
-  // Set once the client explicitly confirms the WHM tax status in the warning modal.
-  const whmConfirmedRef = useRef(false)
+  const router = useRouter()
   const formRef = useRef<HTMLFormElement>(null)
-  const taxStatusRef = useRef<HTMLDivElement>(null)
   const residencyUrl = lang === 'de' ? '/de/tax-residency' : lang === 'ja' ? '/ja/tax-residency' : '/tax-residency'
+  const formUrl      = lang === 'de' ? '/de/tax-form'      : lang === 'ja' ? '/ja/tax-form'      : '/tax-form'
   const SNAPSHOT_KEY = 'whv_taxform_return'
 
-  // Restore the form when the user comes back from the tax-residency page (via
-  // the prompt's "No" button), so nothing they already filled is lost, and jump
-  // straight back to the tax-residency-status question where they left off.
+  // Restore the form when the client comes back from the tax-residency page.
+  //
+  // Two paths, in order of fidelity:
+  //  1. The in-memory hand-off - survives client-side navigation and carries
+  //     everything, including the uploaded files and the TFN.
+  //  2. The sessionStorage snapshot - the fallback for a hard refresh. Text
+  //     fields only: files can't be serialised and the TFN is deliberately
+  //     never written to browser storage.
   useEffect(() => {
+    // Came back from a successful submit on the residency page → success screen.
+    const doneName = takeTaxFormSubmitted()
+    if (doneName !== null) {
+      setFullName(doneName)
+      setSubmitted(true)
+      try { sessionStorage.removeItem(SNAPSHOT_KEY) } catch {}
+      return
+    }
+
+    const h = getTaxFormHandoff()
+    if (h) {
+      const p = h.payload
+      setWaNumber(p.waNumber);   setAuPhone(p.auPhone);       setFullName(p.fullName)
+      setLastName(p.lastName);   setAddress(p.address);       setEmail(p.email)
+      setCountry(p.country);     setDob(p.dob);               setMarital(p.marital)
+      setHasMedicare(p.hasMedicare); setTfn(p.tfn);           setPrimaryJob(p.primaryJob)
+      setHasExpenses(p.hasExpenses); setTaxYears(p.taxYears); setHowHeard(p.howHeard)
+      setDeclared(p.declared)
+      setBankStatement({ file: p.bankStatement,  preview: h.previews.bankStatement })
+      setSelfiePassport({ file: p.selfiePassport, preview: h.previews.selfiePassport })
+      setStep(2)
+      clearTaxFormHandoff()
+      try { sessionStorage.removeItem(SNAPSHOT_KEY) } catch {}
+      return
+    }
+
     let raw: string | null = null
     try { raw = sessionStorage.getItem(SNAPSHOT_KEY) } catch {}
     if (!raw) return
@@ -265,46 +290,59 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       setIf(d.country, setCountry);     setIf(d.dob, setDob);             setIf(d.marital, setMarital)
       setIf(d.hasMedicare, setHasMedicare)
       setIf(d.primaryJob, setPrimaryJob)
-      setIf(d.hasExpenses, setHasExpenses); setIf(d.taxStatus, setTaxStatus)
+      setIf(d.hasExpenses, setHasExpenses)
       setIf(d.declared, setDeclared)
       setIf(d.taxYears, setTaxYears);   setIf(d.terms, setTerms)
       setIf(d.howHeard, setHowHeard)
-      // This snapshot only ever gets saved from within the step-2 section
-      // (the residency question), so restoring it must also jump back to
-      // step 2 - otherwise the scroll target below doesn't even exist yet.
+      // The snapshot is only ever written on the way to the residency page,
+      // i.e. from step 2, so restoring it lands them back on step 2.
       setStep(2)
-      // Scroll back to the tax-residency question after the DOM settles
-      setTimeout(() => taxStatusRef.current?.scrollIntoView({ behavior: 'auto', block: 'center' }), 60)
     } catch {}
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Triggered when the user picks a tax-residency status.
-  // Only one combination needs an interruption: picking "Working Holiday
-  // Maker" while being from an NDA country, since that's the costly mistake
-  // this feature exists to catch (a bigger refund being left on the table).
-  // Picking "Resident" is always the desired outcome, so it never prompts.
-  const handleTaxStatusPick = (val: 'resident'|'whm') => {
-    setTaxStatus(val)
-    setErrors(p => ({ ...p, taxStatus: '' }))
-    if (val === 'whm' && isNdaCountry(country)) setShowResidencyPrompt(true)
-  }
+  // Final step of the form: everything is filled in, so hand the whole thing
+  // over to the tax-residency page, where the client reads what residency
+  // actually means, declares their status and submits.
+  //
+  // The hand-off is in-memory and the navigation is client-side on purpose -
+  // that's what keeps the uploaded files (and the TFN) alive across the trip.
+  // The sessionStorage snapshot below is only a hard-refresh safety net, and
+  // still deliberately excludes the TFN: TFN + identity details together are
+  // an identity-theft kit, so the TFN never touches browser storage.
+  const goToResidency = () => {
+    const errs = validate()
+    if (Object.keys(errs).length) {
+      setErrors(errs)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+    setErrors({})
 
-  // "No" → save everything and send them to the tax-residency explainer page.
-  const goReadResidency = () => {
+    setTaxFormHandoff({
+      lang,
+      formUrl,
+      payload: {
+        waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
+        hasMedicare, tfn, primaryJob, hasExpenses, taxYears, howHeard, refCode, declared,
+        bankStatement: bankStatement.file,
+        selfiePassport: selfiePassport.file,
+      },
+      previews: {
+        bankStatement: bankStatement.preview,
+        selfiePassport: selfiePassport.preview,
+      },
+    })
+
     try {
-      // Deliberately excludes the TFN: TFN + identity details together are an
-      // identity-theft kit, so the TFN never touches browser storage. Losing
-      // one 9-digit field on the round-trip is an acceptable trade.
       const data = {
         waNumber, auPhone, fullName, lastName, address, email, country, dob, marital,
-        hasMedicare,
-        primaryJob, hasExpenses,
-        taxStatus, declared, taxYears, terms, howHeard,
+        hasMedicare, primaryJob, hasExpenses, declared, taxYears, terms, howHeard,
       }
       sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ t: Date.now(), data }))
     } catch {}
-    window.location.href = residencyUrl
+
+    router.push(residencyUrl)
   }
 
   /* ── Validation ── */
@@ -327,15 +365,10 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     if (!primaryJob.trim())  e.primaryJob  = T('required')
     if (!bankStatement.file)  e.bankStatement  = T('required')
     if (!selfiePassport.file) e.selfiePassport = T('required')
-    if (!taxStatus)           e.taxStatus      = T('required')
     if (!declared)            e.declared       = T('required')
     if (declared === 'no')    e.declared       = 'You must agree to submit'
     if (!howHeard.trim())     e.howHeard       = T('required')
     if (!hasExpenses)         e.hasExpenses    = T('required')
-    // Block NDA country residents from claiming WHM status
-    if (taxStatus === 'whm' && isNdaCountry(country)) {
-      e.taxStatus = 'Please read again who qualifies as an Australian tax resident'
-    }
     return e
   }
 
@@ -365,136 +398,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
     trackFunnelEvent('step1_complete')
     setStep(2)
     window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
-
-  /* ── Submit ── */
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const errs = validate()
-    if (Object.keys(errs).length) { setErrors(errs); return }
-
-    // Soft warning (not a block): visa type and income level don't determine tax
-    // residency - only the actual residency tests do - so we ask WHM selectors to
-    // confirm once, with a prominent path to the residency explainer.
-    if (taxStatus === 'whm' && !whmConfirmedRef.current) { setShowWhmBlockModal(true); return }
-
-    setLoading(true)
-
-    // Pre-upload all files client-side for faster, more reliable submission
-    const uploadOne = async (f: File): Promise<string | null> => {
-      f = await compressImage(f)
-      if (f.size > MAX_UPLOAD_BYTES) {
-        alert(T('fileTooLarge'))
-        return null
-      }
-      const attempt = async () => {
-        // Normalize content-type for upload. Some browsers/file-pickers (esp. on
-        // Android, e.g. picking a PDF from Google Drive/Downloads) report an
-        // empty or generic 'application/octet-stream' MIME type. Previously we
-        // defaulted that straight to 'image/jpeg', which meant a real PDF bank
-        // statement would be declared as a JPEG - the server's magic-byte check
-        // then correctly rejected it ("File content does not match declared
-        // type"), failing the upload. Fall back to the file extension instead so
-        // PDFs (and other non-JPEG types) are labelled correctly.
-        let contentType = f.type
-        if (!contentType || contentType === 'application/octet-stream') {
-          const name = f.name.toLowerCase()
-          if (name.endsWith('.pdf'))               contentType = 'application/pdf'
-          else if (name.endsWith('.png'))           contentType = 'image/png'
-          else if (name.endsWith('.webp'))          contentType = 'image/webp'
-          else if (name.endsWith('.gif'))           contentType = 'image/gif'
-          else if (name.endsWith('.heic'))          contentType = 'image/heic'
-          else if (name.endsWith('.heif'))          contentType = 'image/heif'
-          else                                      contentType = 'image/jpeg' // covers .jpg/.jpeg and unknown extensions
-        }
-        // iOS sends HEIC photos with a .heic/.heif type even after our client-side
-        // JPEG re-encode step normally converts them; if compression didn't run
-        // (e.g. decode unsupported), send the true bytes but declare them as jpeg
-        // since the server accepts HEIC signatures under an image/jpeg label.
-        if (contentType === 'image/heic' || contentType === 'image/heif') contentType = 'image/jpeg'
-        const r = await fetch(
-          `/api/tax-form/upload?filename=${encodeURIComponent(f.name)}`,
-          { method: 'POST', body: f, headers: { 'Content-Type': contentType } }
-        )
-        const data = await r.json().catch(() => ({}))
-        if (!r.ok) throw new Error(data?.error || String(r.status))
-        return data
-      }
-      for (let i = 0; i < 3; i++) {
-        try { const res = await attempt(); return res?.url ?? null }
-        catch (e) {
-          console.error('[uploadOne]', f.name, 'attempt', i+1, 'error:', e)
-          if (i === 2) {
-            alert(`Upload failed for "${f.name}": ${e instanceof Error ? e.message : 'Unknown error'}`)
-            return null
-          }
-          await new Promise(r => setTimeout(r, 800 * (i + 1)))
-        }
-      }
-      return null
-    }
-
-    // Upload bankStatement + selfiePassport sequentially to avoid rate-limiting
-    const coreUploads: { label: string; file: File }[] = []
-    if (bankStatement.file)  coreUploads.push({ label: 'bankStatement',  file: bankStatement.file })
-    if (selfiePassport.file) coreUploads.push({ label: 'selfiePassport', file: selfiePassport.file })
-    const coreResults: (string | null)[] = []
-    for (const { file: f } of coreUploads) {
-      const result = await uploadOne(f)
-      coreResults.push(result)
-      await new Promise(r => setTimeout(r, 300))
-    }
-    const coreFailed = coreResults.filter(r => !r).length
-    if (coreFailed > 0) {
-      setLoading(false)
-      alert('Failed to upload required files. Please check your documents are images or PDFs under 10MB and try again.')
-      return
-    }
-    const coreUrls: Record<string, string> = {}
-    coreUploads.forEach(({ label }, i) => { if (coreResults[i]) coreUrls[label] = coreResults[i]! })
-
-    // Build FormData (no file blobs - URLs only)
-    const fd = new FormData()
-    fd.append('waNumber',    waNumber)
-    fd.append('auPhone',     auPhone)
-    fd.append('fullName',    `${fullName} ${lastName}`.trim())
-    fd.append('address',     address)
-    fd.append('email',       email)
-    fd.append('country',     country)
-    fd.append('dob',         dob)
-    fd.append('marital',     marital)
-    fd.append('hasMedicare', hasMedicare === 'yes' ? 'Yes' : hasMedicare === 'no' ? 'No' : '')
-    fd.append('tfn',         tfn)
-    fd.append('primaryJob',  primaryJob)
-    fd.append('hasExpenses',  hasExpenses === 'yes' ? 'Yes' : hasExpenses === 'no' ? 'No' : '')
-    fd.append('taxStatus',   taxStatus === 'resident' ? 'Australian resident for tax purposes' : taxStatus)
-    fd.append('taxYear',     taxYears.join(', '))
-    fd.append('howHeard',    howHeard)
-    if (refCode) fd.append('refCode', refCode)
-    fd.append('declared',    declared === 'yes' ? '✓ I confirm I\u2019ve read and agree to the Client Agreement and Privacy Policy.' : declared === 'no' ? '✗ No' : '')
-    if (coreUrls['bankStatement'])  fd.append('bankStatementUrl',  coreUrls['bankStatement'])
-    if (coreUrls['selfiePassport']) fd.append('selfiePassportUrl', coreUrls['selfiePassport'])
-
-    // Combine all uploaded URLs (core files only - invoices are sent by email)
-    const allFileUrls = [...Object.values(coreUrls)]
-    if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
-
-    try {
-      const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
-      if (res.ok) {
-        trackFunnelEvent('submit_success')
-        window.scrollTo({top:0,behavior:"instant"}); setSubmitted(true)
-      } else {
-        const data = await res.json().catch(() => ({}))
-        if (res.status === 429) alert(T('tooMany'))
-        else if (data?.error === 'invalid_file') alert(`${T('fileErrorPrefix')}${data.message || T('fileErrorGeneric')}`)
-        else alert('Something went wrong. Please try again or contact us directly.')
-      }
-    } catch {
-      alert('Something went wrong. Please try again or contact us directly.')
-    } finally {
-      setLoading(false)
-    }
   }
 
   /* ── Success screen ── */
@@ -582,7 +485,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </div>
           </div>
 
-        <form ref={formRef} onSubmit={handleSubmit} noValidate>
+        <form ref={formRef} onSubmit={e => e.preventDefault()} noValidate>
 
           {step === 1 && (
           <div>
@@ -722,45 +625,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           )}
 
           {step === 2 && (
-          <div ref={taxStatusRef} style={{scrollMarginTop:'80px'}}>
-
-            <Field label="" required error={errors.taxStatus}>
-              <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'10px'}}>
-                {lang === 'de' ? (
-                  <>Nach Prüfung des Abschnitts{' '}<a href="/de/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Steuerresidenz erklärt</a>{' '}und der relevanten ATO-Informationen erkläre ich, dass ich bin:</>
-                ) : lang === 'ja' ? (
-                  <>{'「'}<a href="/ja/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>税務上の居住者ステータスについて</a>{'」'}のセクションと関連するATO情報を確認した上で、以下に該当することを宣言します：</>
-                ) : (
-                  <>Having reviewed the{' '}<a href="/tax-residency" target="_self" style={{color:'#0B5240',textDecoration:'underline'}}>Tax Residency Explained</a>{' '}page and the relevant ATO information, I declare that I am:</>
-                )}<span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>
-              </label>
-              <div className="radio-group radio-group-col">
-                {([
-                  { val: 'resident', label: T('australianTaxResident'),
-                    hint: lang === 'de' ? 'Steuerfrei bis $18.200'
-                        : lang === 'ja' ? '$18,200まで非課税'
-                        : 'Tax-free up to $18,200' },
-                  { val: 'whm',      label: T('workingHolidayMakerTax'),
-                    hint: lang === 'de' ? 'Besteuerung mit 15% ab dem ersten Dollar'
-                        : lang === 'ja' ? '$0から15%課税'
-                        : 'Taxed at 15% from the first dollar' },
-                ] as const).map(opt => (
-                  <label key={opt.val} className={`radio-card ${taxStatus === opt.val ? 'radio-card-active' : ''}`} style={{flexDirection:'column',alignItems:'flex-start',gap:2}}>
-                    <span style={{display:'flex',alignItems:'center',gap:10}}>
-                      <input type="radio" name="taxStatus" value={opt.val} checked={taxStatus === opt.val}
-                        onChange={() => handleTaxStatusPick(opt.val)} className="hidden" />
-                      <span className={`radio-dot ${taxStatus === opt.val ? 'radio-dot-active' : ''}`} />
-                      {opt.label}
-                    </span>
-                    <span style={{fontSize:11,color:'#7a8a82',marginLeft:24,fontWeight:400}}>{opt.hint}</span>
-                  </label>
-                ))}
-              </div>
-            </Field>
-          </div>
-          )}
-
-          {step === 2 && (
           <div>
 
             <Field label={T('homeCountry')} required error={errors.country}>
@@ -791,20 +655,22 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div>
 
             <Field label="" required error={errors.declared}>
+              {/* One line, one action: the sentence IS the checkbox label, so
+                  there's no separate "I confirm this declaration" row repeating
+                  it. "&" instead of "and" to keep it on a single line. */}
               <div className={`declaration-box${errors.declared ? ' decl-error' : ''}`}>
-                <p className="decl-text">
-                  {lang === 'de' ? (
-                    <>Ich bestätige, dass ich die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' '}und die{' '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a> gelesen habe und ihnen zustimme.</>
-                  ) : lang === 'ja' ? (
-                    <>{'私は'}<a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">クライアント規約</a>{'および'}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">プライバシーポリシー</a>{'を読み、同意することを確認します。'}</>
-                  ) : (
-                    <>I confirm I&apos;ve read and agree to the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' '}and{' '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>
-                  )}
-                </p>
-                <label style={{display:'flex',alignItems:'center',gap:10,marginTop:10,cursor:'pointer'}}>
+                <label className="decl-row">
                   <input type="checkbox" checked={declared === 'yes'} onChange={e => { setDeclared(e.target.checked ? 'yes' : ''); setErrors(p => ({...p, declared: ''})) }} className="hidden"/>
                   <div className={`check-box${declared === 'yes' ? ' checked' : ''}`}>{declared === 'yes' && <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>}</div>
-                  <span className="check-label">{T('declConfirm')}</span>
+                  <span className="decl-text">
+                    {lang === 'de' ? (
+                      <>Ich habe die{' '}<a href="/de/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Mandantenvereinbarung</a>{' & '}<a href="/de/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Datenschutzerklärung</a>{' '}gelesen &amp; stimme zu.</>
+                    ) : lang === 'ja' ? (
+                      <><a href="/ja/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">クライアント規約</a>{'・'}<a href="/ja/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">プライバシーポリシー</a>{'を読み、同意します。'}</>
+                    ) : (
+                      <>I&apos;ve read &amp; agree to the{' '}<a href="/client-agreement" target="_blank" rel="noopener noreferrer" className="decl-link">Client Agreement</a>{' & '}<a href="/privacy" target="_blank" rel="noopener noreferrer" className="decl-link">Privacy Policy</a>.</>
+                    )}
+                  </span>
                 </label>
               </div>
             </Field>
@@ -831,109 +697,16 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             {T('backButton')}
           </button>
 
-          <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? (
-              <span className="btn-loading">
-                <svg className="spin" width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" strokeDasharray="40" strokeDashoffset="10"/>
-                </svg>
-                {T('submitting')}
-              </span>
-            ) : T('submitTax')}
+          <button type="button" className="submit-btn" onClick={goToResidency}>
+            {T('checkResidency')}
           </button>
 
+          <p className="form-footer-note" style={{marginTop:10}}>{T('checkResidencyNote')}</p>
           <p className="form-footer-note">{T('secureNote')}</p>
           </>
           )}
 
         </form>
-
-        {showResidencyPrompt && (() => {
-          const txt = lang === 'de'
-            ? { icon: '💰', title: 'Warte, das solltest du wissen',
-                body: <>Basierend auf deinem Heimatland (<strong>{country}</strong>) könntest du als australischer Steuerresident für steuerliche Zwecke gelten. Wenn du den Working Holiday Maker Steuerstatus wählst, zahlst du in der Regel 15% Steuer ab dem ersten verdienten Dollar. Zum Beispiel könntest du bei einem zu versteuernden Einkommen von $45.000 etwa $2.462 mehr Steuer zahlen als jemand, der als australischer Steuerresident gilt. Bist du sicher, dass der Working Holiday Maker Steuerstatus richtig für dich ist?</>,
-                link: 'Steuerresidenz erklärt', yes: 'Ja, ich bin sicher', no: 'Nein, Resident-Status prüfen' }
-            : lang === 'ja'
-            ? { icon: '💰', title: '待ってください',
-                body: <>あなたの出身国（<strong>{country}</strong>）に基づくと、税務上のオーストラリア居住者として認定される可能性があります。Working Holiday Makerの税務ステータスを選択すると、通常は最初の1ドルから15%の税金が課されます。例えば、課税所得が$45,000の場合、オーストラリア税務居住者として認定される人と比べて、約$2,462多く税金を支払う可能性があります。本当にWorking Holiday Makerの税務ステータスで正しいですか？</>,
-                link: '税務上の居住者ステータスについて', yes: 'はい、確実です', no: 'いいえ、居住者資格を確認する' }
-            : { icon: '💰', title: 'Wait, check this first',
-                body: <>Based on your home country (<strong>{country}</strong>), you may qualify as an Australian resident for tax purposes. If you choose the Working Holiday Maker tax status, you will generally pay tax at 15% from the first dollar earned. For example, on a taxable income of $45,000, you could pay approximately $2,462 more in tax compared to someone who qualifies as an Australian tax resident. Are you sure the Working Holiday Maker tax status is right for you?</>,
-                link: 'Tax Residency Explained', yes: "Yes, I'm sure", no: 'No, let me check Resident status' }
-
-          // The "go check" path is the prominent green button, and "I'm sure"
-          // is demoted to a plain low-emphasis button - so the path of least
-          // resistance is to actually go check, not to reflexively dismiss.
-          const dismissBtnStyle: React.CSSProperties =
-            {minHeight:44,borderRadius:100,border:'1.5px solid #E2E8E4',background:'#fff',color:'#587066',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}
-          const goCheckBtnStyle: React.CSSProperties =
-            {minHeight:50,borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}
-
-          return (
-            <div role="dialog" aria-modal="true"
-              style={{position:'fixed',inset:0,background:'rgba(8,15,13,0.55)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2000,padding:20}}>
-              <div style={{background:'#fff',borderRadius:18,maxWidth:440,width:'100%',padding:'26px 24px',boxShadow:'0 24px 70px rgba(0,0,0,0.32)',textAlign:'center'}}>
-                <div style={{fontSize:30,marginBottom:10}}>{txt.icon}</div>
-                <h3 style={{fontFamily:'inherit',fontSize:17,fontWeight:800,color:'#92400e',margin:'0 0 10px'}}>{txt.title}</h3>
-                <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 6px'}}>{txt.body}</p>
-                <a href={residencyUrl} target="_self" style={{display:'inline-block',fontSize:13,color:'#0B5240',textDecoration:'underline',fontWeight:600,marginBottom:20}}>{txt.link} →</a>
-                <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                  <button type="button" onClick={goReadResidency} style={goCheckBtnStyle}>{txt.no}</button>
-                  <button type="button" onClick={() => setShowResidencyPrompt(false)} style={dismissBtnStyle}>
-                    {txt.yes}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )
-        })()}
-
-        {showWhmBlockModal && (() => {
-          const txt = lang === 'de'
-            ? { icon: '🛑', title: 'Bevor du absendest',
-                body: <>Deine Visumart und deine Einkommenshöhe bestimmen nicht deine Steuerresidenz. Deine Steuerresidenz wird durch die Steuerresidenz-Tests bestimmt, die auf der Seite zur Steuerresidenz erklärt werden.</>,
-                body2: <>Basierend auf deinen Angaben giltst du für steuerliche Zwecke als Working Holiday Maker. Da du während des Jahres die korrekten 15% Steuer gezahlt hast, hast du dieses Jahr keinen Anspruch auf eine Steuerrückerstattung - es sei denn, du hast berufsbezogene Ausgaben, die du geltend machen möchtest.</>,
-                thanks: 'Danke!', link: 'Steuerresidenz erklärt', check: 'Nein, Steuerresidenz prüfen', sure: 'Ich bin sicher, ich bin steuerlich ein WHM' }
-            : lang === 'ja'
-            ? { icon: '🛑', title: '送信する前に',
-                body: <>あなたのビザの種類や所得額は、税務上の居住区分を決定するものではありません。あなたの税務上の居住区分は、税務居住区分ページに記載されている居住テストによって決定されます。</>,
-                body2: <>ご回答の内容に基づき、税法上ワーキングホリデーメーカーとみなされます。年間を通じて正しい15%の税金を納めているため、申請したい業務関連の経費がある場合を除き、今回は税金の還付を受ける資格がありません。</>,
-                thanks: 'ありがとうございます！', link: '税務上の居住区分について', check: 'いいえ、居住区分を確認する', sure: '税務上WHMで間違いありません' }
-            : { icon: '🛑', title: 'Before you submit',
-                body: <>Your visa and income level don&apos;t determine your tax residency. Your tax residency is determined by the tax residency tests explained on the Tax Residency page.</>,
-                body2: <>Based on your answers, you&apos;re considered a Working Holiday Maker for tax purposes. Since you paid the correct 15% tax during the year, you aren&apos;t eligible for a tax refund this year unless you have work-related expenses you&apos;d like to claim.</>,
-                thanks: 'Thank you!', link: 'Tax Residency Explained', check: 'No, let me check Residency', sure: "I'm sure I'm a WHM for tax purposes" }
-
-          return (
-            <div role="dialog" aria-modal="true"
-              style={{position:'fixed',inset:0,background:'rgba(8,15,13,0.55)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:2000,padding:20}}>
-              <div style={{background:'#fff',borderRadius:18,maxWidth:440,width:'100%',padding:'26px 24px',boxShadow:'0 24px 70px rgba(0,0,0,0.32)',textAlign:'center'}}>
-                <div style={{fontSize:30,marginBottom:10}}>{txt.icon}</div>
-                <h3 style={{fontFamily:'inherit',fontSize:17,fontWeight:800,color:'#92400e',margin:'0 0 10px'}}>{txt.title}</h3>
-                <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 10px'}}>{txt.body}</p>
-                <button type="button" onClick={goReadResidency}
-                  style={{display:'inline-block',fontSize:13,color:'#0B5240',textDecoration:'underline',fontWeight:600,marginBottom:14,background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',padding:0}}>{txt.link} →</button>
-                <p style={{fontSize:14,color:'#1A2822',lineHeight:1.6,margin:'0 0 10px'}}>{txt.body2}</p>
-                <p style={{fontSize:14,color:'#1A2822',fontWeight:600,margin:'0 0 20px'}}>{txt.thanks}</p>
-                <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                  <button type="button" onClick={goReadResidency}
-                    style={{minHeight:50,borderRadius:100,border:'none',background:'#0B5240',color:'#fff',fontSize:14,fontWeight:700,cursor:'pointer',fontFamily:'inherit'}}>
-                    {txt.check}
-                  </button>
-                  <button type="button"
-                    onClick={() => {
-                      whmConfirmedRef.current = true
-                      setShowWhmBlockModal(false)
-                      formRef.current?.requestSubmit()
-                    }}
-                    style={{minHeight:44,borderRadius:100,border:'1.5px solid #E2E8E4',background:'#fff',color:'#587066',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'inherit'}}>
-                    {txt.sure}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )
-        })()}
         </div>
       </div>
     </>
@@ -973,8 +746,9 @@ const styles = `
   .radio-card-no { }
   .radio-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #C8EAE0; flex-shrink: 0; transition: all .15s; background: #fff; }
   .radio-dot-active { border-color: #0B5240; background: #0B5240; }
-  .declaration-box { background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 14px; padding: 16px; }
-  .decl-text { font-size: 12px; color: #587066; line-height: 1.7; margin-bottom: 12px; }
+  .declaration-box { background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 14px; padding: 13px 14px; }
+  .decl-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .decl-text { font-size: 12px; color: #1A2822; line-height: 1.5; }
   .decl-link { color: #0B5240; text-decoration: underline; }
   .err-msg { display: block; font-size: 11px; color: #DC2626; margin-top: 4px; }
   .section-chip { display: inline-flex; align-items: center; background: #EAF6F1; color: #0B5240; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 16px; }

@@ -507,7 +507,7 @@ export default function GermanTaxReturnPage() {
               Entscheidend ist die steuerliche Ansässigkeit, und die erfüllen die wenigsten. Wer aber länger an einem Ort geblieben ist, dort gemietet und gearbeitet hat, kommt durchaus in Frage. Dann gilt der Grundfreibetrag und die niedrigeren Resident-Saetze, was den Unterschied deutlich macht.
             </p>
             <p className="text-[14px] font-light text-muted leading-[1.75]">
-              Früher eingereichte Steuererklärungen lassen sich innerhalb der ueblichen Änderungsfrist noch korrigieren. Wenn du länger als ein Jahr am selben Ort warst, lohnt sich eine Prüfung, statt einfach anzunehmen, dass es dich nicht betrifft. Mehr zur Ansaessigkeit auf unserer <Link href="/de/tax-residency" className="underline hover:text-forest-500">Seite zur Steuerresidenz</Link>.
+              Früher eingereichte Steuererklärungen lassen sich innerhalb der ueblichen Änderungsfrist noch korrigieren. Wenn du länger als ein Jahr am selben Ort warst, lohnt sich eine Prüfung, statt einfach anzunehmen, dass es dich nicht betrifft.
             </p>
           </div>
         </div>
