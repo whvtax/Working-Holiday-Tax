@@ -16,7 +16,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isNdaCountry } from '@/lib/nda-countries'
 import { submitTaxForm } from '@/lib/submit-tax-form'
 import {
   getTaxFormHandoff,
@@ -32,42 +31,30 @@ const COPY = {
     residentLabel: 'Australian tax resident',
     whmLabel: 'Working holiday maker',
     pickOne: 'Please choose your tax residency status',
-    ndaBlock: 'Please read again who qualifies as an Australian tax resident',
     secure: 'Your information is kept secure and private.',
-    modalTitle: 'Before you submit',
-    modalBody: 'Your visa and income level don\u2019t determine your tax residency. Your tax residency is determined by the tax residency tests explained on this page.',
-    modalBody2: 'Based on your answers, you\u2019re considered a Working Holiday Maker for tax purposes. Since you paid the correct 15% tax during the year, you aren\u2019t eligible for a tax refund this year unless you have work-related expenses you\u2019d like to claim.',
-    modalThanks: 'Thank you!',
-    modalReread: 'No, let me read it again',
-    modalSure: 'I\u2019m sure I\u2019m a WHM for tax purposes',
+    checkQuestion: 'Are you sure you are a working holiday maker for tax purposes?',
+    checkYes: 'Yes, I am sure',
+    checkNo: 'No, let me read again',
   },
   de: {
     intro: 'Nach Prüfung dieser Seite und der relevanten ATO-Informationen erkläre ich, dass ich bin:',
     residentLabel: 'Australischer Steuerresident',
     whmLabel: 'Working Holiday Maker',
     pickOne: 'Bitte wähle deinen Steuerresidenz-Status',
-    ndaBlock: 'Bitte lies noch einmal, wer als australischer Steuerresident gilt',
     secure: 'Deine Daten werden sicher und vertraulich behandelt.',
-    modalTitle: 'Bevor du absendest',
-    modalBody: 'Deine Visumart und deine Einkommenshöhe bestimmen nicht deine Steuerresidenz. Deine Steuerresidenz wird durch die auf dieser Seite erklärten Steuerresidenz-Tests bestimmt.',
-    modalBody2: 'Basierend auf deinen Angaben giltst du für steuerliche Zwecke als Working Holiday Maker. Da du während des Jahres die korrekten 15% Steuer gezahlt hast, hast du dieses Jahr keinen Anspruch auf eine Steuerrückerstattung - es sei denn, du hast berufsbezogene Ausgaben, die du geltend machen möchtest.',
-    modalThanks: 'Danke!',
-    modalReread: 'Nein, ich lese es noch einmal',
-    modalSure: 'Ich bin sicher, ich bin steuerlich ein WHM',
+    checkQuestion: 'Bist du sicher, dass du steuerlich ein Working Holiday Maker bist?',
+    checkYes: 'Ja, ich bin sicher',
+    checkNo: 'Nein, ich lese nochmal',
   },
   ja: {
     intro: 'このページと関連するATO情報を確認した上で、以下に該当することを宣言します：',
     residentLabel: 'オーストラリア税務居住者',
     whmLabel: 'ワーキングホリデーメーカー',
     pickOne: '税務上の居住区分を選択してください',
-    ndaBlock: 'オーストラリアの税務上の居住者に該当する条件をもう一度ご確認ください',
     secure: 'お客様の情報は安全に、非公開で管理されます。',
-    modalTitle: '送信する前に',
-    modalBody: 'あなたのビザの種類や所得額は、税務上の居住区分を決定するものではありません。税務上の居住区分は、このページで説明している居住テストによって決定されます。',
-    modalBody2: 'ご回答の内容に基づき、税法上ワーキングホリデーメーカーとみなされます。年間を通じて正しい15%の税金を納めているため、申請したい業務関連の経費がある場合を除き、今回は税金の還付を受ける資格がありません。',
-    modalThanks: 'ありがとうございます！',
-    modalReread: 'いいえ、もう一度読みます',
-    modalSure: '税務上WHMで間違いありません',
+    checkQuestion: '税務上ワーキングホリデーメーカーで間違いありませんか？',
+    checkYes: 'はい、間違いありません',
+    checkNo: 'いいえ、もう一度読みます',
   },
 } as const
 
@@ -77,8 +64,8 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
   const [status, setStatus] = useState<Status>('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [showWhmModal, setShowWhmModal] = useState(false)
-  const [whmConfirmed, setWhmConfirmed] = useState(false)
+  const [showWhmCheck, setShowWhmCheck] = useState(false)
+  const [whmAnswered, setWhmAnswered] = useState(false)
 
   // Read the hand-off after mount only: it lives in the JS heap, so the server
   // render knows nothing about it and rendering it directly would hydrate-mismatch.
@@ -105,17 +92,19 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
     setError(res.error)
   }
 
+  // Nothing gates the submit: whichever status the client picks, and whatever
+  // they answer to the WHM prompt below, the return goes through as declared.
   const handleSubmit = () => {
     if (!status) { setError(c.pickOne); return }
-    // Hard stop: someone from an NDA country claiming WHM status is the costly
-    // mistake this whole page exists to catch.
-    if (status === 'whm' && isNdaCountry(handoff.payload.country)) {
-      setError(c.ndaBlock)
-      return
-    }
-    // Soft stop: confirm WHM once, since visa type alone doesn't decide residency.
-    if (status === 'whm' && !whmConfirmed) { setShowWhmModal(true); return }
     void doSubmit(status)
+  }
+
+  // Picking WHM raises a short prompt, since visa type alone doesn't decide
+  // tax residency. Either answer dismisses it for good.
+  const pick = (val: 'resident' | 'whm') => {
+    setStatus(val)
+    setError('')
+    setShowWhmCheck(val === 'whm' && !whmAnswered)
   }
 
   // No sub-labels: the tax consequence of each option is already spelled out
@@ -143,7 +132,7 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
                 name="residencyStatus"
                 value={opt.val}
                 checked={status === opt.val}
-                onChange={() => { setStatus(opt.val); setError('') }}
+                onChange={() => pick(opt.val)}
                 className="resdecl-input"
               />
               <span className={`resdecl-dot${status === opt.val ? ' resdecl-dot-active' : ''}`} />
@@ -153,6 +142,32 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
         ))}
       </div>
 
+      {showWhmCheck && (
+        <div className="resdecl-check">
+          <p className="resdecl-check-q">{c.checkQuestion}</p>
+          <div className="resdecl-check-actions">
+            <button
+              type="button"
+              className="resdecl-check-yes"
+              onClick={() => { setWhmAnswered(true); setShowWhmCheck(false) }}
+            >
+              {c.checkYes}
+            </button>
+            <button
+              type="button"
+              className="resdecl-check-no"
+              onClick={() => {
+                setWhmAnswered(true)
+                setShowWhmCheck(false)
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }}
+            >
+              {c.checkNo}
+            </button>
+          </div>
+        </div>
+      )}
+
       {error && <p className="resdecl-error">{error}</p>}
 
       <button type="button" className="resdecl-submit" onClick={handleSubmit} disabled={loading}>
@@ -161,40 +176,6 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
 
       <p className="resdecl-secure">{c.secure}</p>
 
-      {showWhmModal && (
-        <div role="dialog" aria-modal="true" className="resdecl-modal-bg">
-          <div className="resdecl-modal">
-            <div className="resdecl-modal-icon">🛑</div>
-            <h3 className="resdecl-modal-title">{c.modalTitle}</h3>
-            <p className="resdecl-modal-body">{c.modalBody}</p>
-            <p className="resdecl-modal-body">{c.modalBody2}</p>
-            <p className="resdecl-modal-thanks">{c.modalThanks}</p>
-            <div className="resdecl-modal-actions">
-              <button
-                type="button"
-                className="resdecl-modal-primary"
-                onClick={() => {
-                  setShowWhmModal(false)
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                }}
-              >
-                {c.modalReread}
-              </button>
-              <button
-                type="button"
-                className="resdecl-modal-secondary"
-                onClick={() => {
-                  setWhmConfirmed(true)
-                  setShowWhmModal(false)
-                  void doSubmit('whm')
-                }}
-              >
-                {c.modalSure}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
@@ -217,13 +198,9 @@ const styles = `
   .resdecl-submit:active { transform: scale(.98); opacity: .9; }
   .resdecl-submit:disabled { opacity: .6; cursor: not-allowed; }
   .resdecl-secure { font-size: 11.5px; color: #7a8a82; text-align: center; margin-top: 12px; }
-  .resdecl-modal-bg { position: fixed; inset: 0; background: rgba(8,15,13,0.55); display: flex; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-  .resdecl-modal { background: #fff; border-radius: 18px; max-width: 440px; width: 100%; padding: 26px 24px; box-shadow: 0 24px 70px rgba(0,0,0,0.32); text-align: center; }
-  .resdecl-modal-icon { font-size: 30px; margin-bottom: 10px; }
-  .resdecl-modal-title { font-size: 17px; font-weight: 800; color: #92400e; margin: 0 0 10px; }
-  .resdecl-modal-body { font-size: 14px; color: #1A2822; line-height: 1.6; margin: 0 0 10px; }
-  .resdecl-modal-thanks { font-size: 14px; color: #1A2822; font-weight: 600; margin: 0 0 20px; }
-  .resdecl-modal-actions { display: flex; flex-direction: column; gap: 10px; }
-  .resdecl-modal-primary { min-height: 50px; border-radius: 100px; border: none; background: #0B5240; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
-  .resdecl-modal-secondary { min-height: 44px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: #587066; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .resdecl-check { margin-top: 12px; background: #FFF8EC; border: 1.5px solid #F0D9A8; border-radius: 12px; padding: 13px 14px; }
+  .resdecl-check-q { font-size: 12.5px; font-weight: 600; color: #7A5A16; line-height: 1.5; margin: 0 0 10px; }
+  .resdecl-check-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .resdecl-check-yes { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: none; background: #0B5240; color: #fff; font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
+  .resdecl-check-no { flex: 1; min-width: 120px; min-height: 38px; border-radius: 100px; border: 1.5px solid #E2E8E4; background: #fff; color: #587066; font-size: 12.5px; font-weight: 600; font-family: inherit; cursor: pointer; }
 `

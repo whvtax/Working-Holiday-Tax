@@ -2,77 +2,47 @@
 import type { FormLang } from '@/lib/formStrings'
 
 /**
- * Language toggle pill shown at the top of each form.
- * Always shows all three languages: English / Deutsch / 日本語
- * Data submitted to CRM always stays in the language the user typed (English).
- * The labels/instructions UI is what changes based on selection.
+ * Language toggle shown at the top of each form.
+ *
+ * Three quiet text links rather than a pill bar with flags. The flags were the
+ * loudest thing on the screen - four extra colours competing with the headline
+ * and the trust marks - and the pill was wide enough to wrap onto two lines on
+ * a narrow phone. This version is one line at any width.
+ *
+ * Only the interface language changes; data submitted to the CRM stays in
+ * whatever the client typed.
  */
+
+const OPTIONS: { code: FormLang; label: string; full: string }[] = [
+  { code: 'en', label: 'EN',   full: 'English' },
+  { code: 'de', label: 'DE',   full: 'Deutsch' },
+  { code: 'ja', label: '日本語', full: '日本語' },
+]
+
 export function FormLanguageToggle({ lang, onChange }: { lang: FormLang; onChange: (l: FormLang) => void }) {
-  // Shared button style generator
-  const btnStyle = (active: boolean) => ({
-    // ≥40px tall tap target on touch devices
-    padding: '10px 16px',
-    fontSize: '12px',
-    fontWeight: active ? 700 : 500,
-    background: active ? '#fff' : 'transparent',
-    color: active ? '#0B5240' : '#587066',
-    border: 'none',
-    borderRadius: '100px',
-    cursor: 'pointer',
-    fontFamily: 'inherit',
-    boxShadow: active ? '0 1px 3px rgba(11,82,64,0.12)' : 'none',
-    display: 'inline-flex' as const,
-    alignItems: 'center' as const,
-    gap: '6px',
-    transition: 'all .15s',
-  })
-
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      marginBottom: '14px',
-      gap: '4px',
-      background: '#EAF6F1',
-      borderRadius: '100px',
-      padding: '4px',
-      width: 'fit-content',
-      marginLeft: 'auto',
-      marginRight: 'auto',
-      flexWrap: 'wrap',
-    }}>
-      {/* English */}
-      <button type="button" onClick={() => onChange('en')} style={btnStyle(lang === 'en')} aria-pressed={lang === 'en'}>
-        <svg width="14" height="10" viewBox="0 0 60 42" aria-hidden="true">
-          <clipPath id="flt-uk"><rect width="60" height="42" rx="2"/></clipPath>
-          <g clipPath="url(#flt-uk)">
-            <rect width="60" height="42" fill="#012169"/>
-            <path d="M0,0 L60,42 M60,0 L0,42" stroke="#fff" strokeWidth="6"/>
-            <path d="M30,0 v42 M0,21 h60" stroke="#fff" strokeWidth="10"/>
-            <path d="M30,0 v42 M0,21 h60" stroke="#C8102E" strokeWidth="6"/>
-          </g>
-        </svg>
-        English
-      </button>
-
-      {/* Deutsch */}
-      <button type="button" onClick={() => onChange('de')} style={btnStyle(lang === 'de')} aria-pressed={lang === 'de'}>
-        <svg width="14" height="10" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '1px' }}>
-          <rect width="60" height="14" y="0"  fill="#000"/>
-          <rect width="60" height="14" y="14" fill="#DD0000"/>
-          <rect width="60" height="14" y="28" fill="#FFCE00"/>
-        </svg>
-        Deutsch
-      </button>
-
-      {/* 日本語 */}
-      <button type="button" onClick={() => onChange('ja')} style={btnStyle(lang === 'ja')} aria-pressed={lang === 'ja'}>
-        <svg width="14" height="10" viewBox="0 0 60 42" aria-hidden="true" style={{ borderRadius: '1px' }}>
-          <rect width="60" height="42" fill="#fff"/>
-          <circle cx="30" cy="21" r="12" fill="#BC002D"/>
-        </svg>
-        日本語
-      </button>
+    <div className="flang">
+      <style>{styles}</style>
+      {OPTIONS.map(o => (
+        <button
+          key={o.code}
+          type="button"
+          onClick={() => onChange(o.code)}
+          className={`flang-btn${lang === o.code ? ' is-active' : ''}`}
+          aria-pressed={lang === o.code}
+          aria-label={o.full}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   )
 }
+
+const styles = `
+  .flang { display: flex; justify-content: center; gap: 10px; margin-bottom: 14px; }
+  /* Padding keeps a ~40px tap target even though the text is small. */
+  .flang-btn { padding: 9px 10px; font-size: 12px; font-weight: 600; font-family: inherit; letter-spacing: .04em; color: #9DB5AC; background: none; border: none; border-bottom: 2px solid transparent; border-radius: 0; cursor: pointer; transition: color .15s, border-color .15s; }
+  .flang-btn:hover { color: #587066; }
+  .flang-btn.is-active { color: #0B5240; border-bottom-color: #0B5240; }
+`

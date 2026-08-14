@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation'
 import type { FormLang } from '@/lib/formStrings'
 import { getTaxFormHandoff } from '@/lib/tax-form-handoff'
 import ResidencyDeclaration from '@/components/ui/ResidencyDeclaration'
+import { FormStepper } from '@/components/ui/FormStepper'
 
 /**
  * Each criterion links to the ATO page it comes from, so someone unsure can
@@ -128,6 +129,8 @@ export default function ResidencyStep({ lang = 'en' }: { lang?: FormLang }) {
             {c.titleLead}<span className="resstep-accent">{c.titleAccent}</span>{c.titleTail}
           </h1>
           <p className="resstep-intro">{c.intro}</p>
+          {/* Only while a form is in flight - a stray visitor isn't on step 3 of anything. */}
+          {hasForm && <FormStepper step={3} lang={lang} />}
         </div>
 
         <div className="resstep-body">

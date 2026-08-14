@@ -2,10 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { WA_URL, WA_NUMBER } from '@/lib/constants'
+import { WA_URL, WA_NUMBER, AGENT_TPB } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
 import { isValidEmail, isValidTfn, isPlausibleDob } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
+import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
+import { FormStepper } from '@/components/ui/FormStepper'
 import { setTaxFormHandoff, getTaxFormHandoff, clearTaxFormHandoff, takeTaxFormSubmitted } from '@/lib/tax-form-handoff'
 
 /* ── Types ── */
@@ -455,34 +457,39 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
       <style>{styles}</style>
       <div className="form-page-wrap">
         <div className="form-card">
-          <div className="form-header">
-            <FormLanguageToggle lang={lang} onChange={setLang} />
+          <div className={`form-header${step === 1 ? '' : ' is-bare'}`}>
+            {/* Step 1 only: the site nav's switcher navigates to another route,
+                which would throw away everything typed so far. This one just
+                flips local state - but by step 2 the language is settled. */}
+            {step === 1 && <FormLanguageToggle lang={lang} onChange={setLang} />}
 
-          <h1 className="form-title">{T('titleTax')}</h1>
+            {/* Each step gets its own line: an instruction first, then reassurance. */}
+            <h1 className={`form-title${step === 1 ? ` form-title-${lang}` : ' form-title-short'}`}>
+              {step === 1 ? T('titleTax') : T('titleTaxStep2')}
+            </h1>
 
-            <div className="form-trust-row">
-              <div className="form-trust-circle" title={T('secureForm')}>
-                <svg width="19" height="21" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path d="M8 1L2 3.5V8c0 3.5 2.5 6.7 6 7.5 3.5-.8 6-4 6-7.5V3.5L8 1z" fill="#EAF6F1" stroke="#0B5240" strokeWidth="1.2" strokeLinejoin="round"/>
-                  <path d="M5.5 8.5l2 2 3-3" stroke="#0B5240" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+            {/* Trust marks belong before the client commits, not after: by
+                step 2 they've already handed over their name, phone and TFN.
+                Two marks only: the Google reviews score and the TPB
+                registration seal, rather than generic icons. */}
+            {step === 1 && (
+              <div className="form-trust-row">
+                <GoogleReviewsBadge lang={lang} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="form-trust-seal"
+                  src="/assets/tpb-registered.png"
+                  alt={`${T('registeredAgentNo')} ${AGENT_TPB}`}
+                  width={260}
+                  height={164}
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
-              <div className="form-trust-circle" title={T('registeredTaxAgent')}>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <circle cx="7" cy="6.5" r="3" stroke="#0B5240" strokeWidth="1.2"/>
-                  <path d="M1.8 16.5c0-2.9 2.3-5.2 5.2-5.2s5.2 2.3 5.2 5.2" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
-                  <circle cx="14" cy="7.5" r="2.4" stroke="#0B5240" strokeWidth="1.1"/>
-                  <path d="M13.2 12.6c2.8 0 5 2 5 4.4" stroke="#0B5240" strokeWidth="1.1" strokeLinecap="round"/>
-                </svg>
-              </div>
-              <div className="form-trust-circle" title={T('fullyOnline')}>
-                <svg width="21" height="21" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <circle cx="9" cy="9" r="7.3" stroke="#0B5240" strokeWidth="1.2"/>
-                  <path d="M9 1.7c3 2.9 3 11.7 0 14.6M9 1.7c-3 2.9-3 11.7 0 14.6" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
-                  <path d="M1.9 9h14.2" stroke="#0B5240" strokeWidth="1.2" strokeLinecap="round"/>
-                </svg>
-              </div>
-            </div>
+            )}
+
+            <FormStepper step={step === 1 ? 1 : 2} lang={lang} />
+
           </div>
 
         <form ref={formRef} onSubmit={e => e.preventDefault()} noValidate>
@@ -693,16 +700,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </div>
           )}
 
-          <button type="button" className="back-btn" onClick={() => { setStep(1); setErrors({}); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>
-            {T('backButton')}
-          </button>
-
           <button type="button" className="submit-btn" onClick={goToResidency}>
             {T('checkResidency')}
           </button>
 
           <p className="form-footer-note" style={{marginTop:10}}>{T('checkResidencyNote')}</p>
-          <p className="form-footer-note">{T('secureNote')}</p>
           </>
           )}
 
@@ -719,13 +721,27 @@ const styles = `
   .hidden { display: none !important; }
   .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
-  .form-header { background: #fff; padding: 22px 24px 22px; text-align: center; }
-  .form-trust-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; }
-  .form-trust-circle { width: 44px; height: 44px; border-radius: 50%; background: #EAF6F1; border: 1px solid #C8EAE0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .form-header { background: #fff; padding: 20px 24px 10px; text-align: center; }
+  .form-header.is-bare { padding: 20px 24px 8px; }
+  .form-trust-row { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; margin-top: 16px; margin-bottom: 4px; }
+  .form-trust-seal { display: block; width: 112px; height: auto; }
   .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(11,82,64,0.65); text-transform: uppercase; margin-bottom: 8px; }
-  .form-title { font-size: 24px; font-weight: 800; color: #080F0D; letter-spacing: -0.02em; margin-bottom: 10px; }
+  /* Two lines is fine - forcing one line meant shrinking it to ~19px, which
+     left the headline weaker than the Google score right below it. text-wrap
+     balance splits it evenly ("Find out what / you're owed") instead of
+     leaving one word stranded on line two. */
+  /* Step 1's line breaks at a fixed point (the \n in the string) rather than
+     wherever the width happens to run out, so it reads as two deliberate lines
+     in every language. white-space: pre honours that break and blocks any
+     other, and the per-language clamp keeps the longest line on screen down to
+     a 320px phone - German runs ~12% longer than English, Japanese shorter. */
+  .form-title { font-weight: 800; color: #080F0D; letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 10px; white-space: pre; }
+  .form-title-en { font-size: clamp(13px, 4.6vw, 22px); }
+  .form-title-de { font-size: clamp(11px, 3.9vw, 20px); }
+  .form-title-ja { font-size: clamp(15px, 5.5vw, 24px); letter-spacing: 0; }
+  .form-title-short { font-size: 26px; letter-spacing: -0.025em; line-height: 1.15; white-space: normal; }
   .form-intro { font-size: 13px; color: #587066; line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
-  form { padding: 20px 24px 32px; }
+  form { padding: 14px 24px 32px; }
   .field-group { margin-bottom: 14px; }
   .field-label { display: block; font-size: 13px; font-weight: 600; color: #1A2822; margin-bottom: 6px; }
   .req-dot { color: #0B5240; margin-left: 3px; }
@@ -773,8 +789,6 @@ const styles = `
   .submit-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: #0B5240; color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; margin-top: 24px; transition: opacity .15s, transform .1s; }
   .submit-btn:active { transform: scale(.98); opacity: .9; }
   .submit-btn:disabled { opacity: .6; cursor: not-allowed; }
-  .back-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 48px; background: #fff; color: #0B5240; font-size: 14px; font-weight: 600; font-family: inherit; border: 1.5px solid #D4EAE2; border-radius: 100px; cursor: pointer; margin-top: 14px; transition: opacity .15s, transform .1s; }
-  .back-btn:active { transform: scale(.98); opacity: .85; }
   .btn-loading { display: flex; align-items: center; gap: 8px; }
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }

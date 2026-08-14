@@ -72,13 +72,14 @@ export const formStrings = {
   // Last step of the tax form: the declaration + submit happen on the tax-residency page.
   checkResidency:      { en: 'Check your tax residency status →',  de: 'Steuerresidenz-Status prüfen →', ja: '税務上の居住区分を確認 →' },
   checkResidencyNote:  {
-    en: 'Last step — read what tax residency means, then submit.',
+    en: 'Last step - read what tax residency means, then submit.',
     de: 'Letzter Schritt - lies, was Steuerresidenz bedeutet, und schick es dann ab.',
-    ja: '最後のステップ — 税務上の居住区分について確認してから送信します。',
+    ja: '最後のステップ - 税務上の居住区分について確認してから送信します。',
   },
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
   timeEstimate:        { en: '⏱ Takes about 2 minutes',            de: '⏱ Dauert etwa 2 Minuten',    ja: '⏱ 約2分で完了' },
   backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },
+  registeredAgentNo:   { en: 'Registered Tax Agent',              de: 'Registrierter Steueragent',  ja: '登録税理士' },
   registeredTaxAgent:  { en: 'Working holiday specialists',        de: 'Working-Holiday-Spezialisten', ja: 'ワーホリ専門チーム' },
   secureForm:          { en: 'Secure Form',                         de: 'Sicheres Formular',           ja: '安全なフォーム' },
   fullyOnline:         { en: '100% Online',                         de: '100% Online',                 ja: '完全オンライン' },
@@ -138,7 +139,12 @@ export const formStrings = {
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung',        ja: 'ABN登録' },
-  titleTax:            { en: 'Claim Your Tax Refund',               de: 'Hol dir deine Steuerrückerstattung', ja: '税金の還付金を受け取る' },
+  titleTax:            {
+    en: 'Answer a few quick questions\nto check your eligibility',
+    de: 'Beantworte ein paar kurze Fragen\nzu deinem Anspruch',
+    ja: 'いくつかの簡単な質問で\n対象かどうかを確認します',
+  },
+  titleTaxStep2:       { en: 'Almost done',                          de: 'Fast geschafft',           ja: 'あと少しです' },
   titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
 
   // ─ Tax form specific ─
