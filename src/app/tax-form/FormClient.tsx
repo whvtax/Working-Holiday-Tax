@@ -463,10 +463,17 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 flips local state - but by step 2 the language is settled. */}
             {step === 1 && <FormLanguageToggle lang={lang} onChange={setLang} />}
 
-            {/* Each step gets its own line: an instruction first, then reassurance. */}
-            <h1 className={`form-title${step === 1 ? ` form-title-${lang}` : ' form-title-short'}`}>
-              {step === 1 ? T('titleTax') : T('titleTaxStep2')}
-            </h1>
+            {/* Step 1 is an instruction plus a reason; giving the second half a
+                lighter weight and size lets the first line carry real heading
+                presence instead of two flat lines competing at one size. */}
+            {step === 1 ? (
+              <>
+                <h1 className={`form-title form-title-${lang}`}>{T('titleTax')}</h1>
+                <p className="form-title-sub">{T('titleTaxSub')}</p>
+              </>
+            ) : (
+              <h1 className="form-title form-title-short">{T('titleTaxStep2')}</h1>
+            )}
 
             {/* Trust marks belong before the client commits, not after: by
                 step 2 they've already handed over their name, phone and TFN.
@@ -721,8 +728,10 @@ const styles = `
   .hidden { display: none !important; }
   .form-page-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 100px 16px 60px; }
   .form-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
-  .form-header { background: #fff; padding: 20px 24px 10px; text-align: center; }
-  .form-header.is-bare { padding: 20px 24px 8px; }
+  /* Narrower gutters than the form body: the heading needs the width more
+     than the header needs the margin. */
+  .form-header { background: #fff; padding: 20px 14px 10px; text-align: center; }
+  .form-header.is-bare { padding: 20px 14px 8px; }
   .form-trust-row { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 16px; margin-top: 16px; margin-bottom: 4px; }
   .form-trust-seal { display: block; width: 112px; height: auto; }
   .form-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: rgba(11,82,64,0.65); text-transform: uppercase; margin-bottom: 8px; }
@@ -735,10 +744,11 @@ const styles = `
      in every language. white-space: pre honours that break and blocks any
      other, and the per-language clamp keeps the longest line on screen down to
      a 320px phone - German runs ~12% longer than English, Japanese shorter. */
-  .form-title { font-weight: 800; color: #080F0D; letter-spacing: -0.02em; line-height: 1.3; margin-bottom: 10px; white-space: pre; }
-  .form-title-en { font-size: clamp(13px, 4.6vw, 22px); }
-  .form-title-de { font-size: clamp(11px, 3.9vw, 20px); }
-  .form-title-ja { font-size: clamp(15px, 5.5vw, 24px); letter-spacing: 0; }
+  .form-title { font-weight: 800; color: #080F0D; letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px; white-space: nowrap; }
+  .form-title-en { font-size: clamp(14px, 5.0vw, 22px); }
+  .form-title-de { font-size: clamp(12px, 4.2vw, 20px); }
+  .form-title-ja { font-size: clamp(15px, 5.2vw, 24px); letter-spacing: 0; }
+  .form-title-sub { font-size: 14px; font-weight: 500; color: #587066; line-height: 1.4; margin-bottom: 10px; }
   .form-title-short { font-size: 26px; letter-spacing: -0.025em; line-height: 1.15; white-space: normal; }
   .form-intro { font-size: 13px; color: #587066; line-height: 1.65; max-width: 30ch; margin-left: auto; margin-right: auto; }
   form { padding: 14px 24px 32px; }

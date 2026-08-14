@@ -22,7 +22,10 @@ const playfair = Playfair_Display({
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+  // 700-900 included because headings ask for them (the form title is 800).
+  // Without these the browser falls back to 600 or fakes the weight, and bold
+  // headings render noticeably softer than intended.
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-sans',
   display: 'swap',
 })

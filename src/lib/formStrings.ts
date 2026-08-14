@@ -140,11 +140,16 @@ export const formStrings = {
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung',        ja: 'ABN登録' },
   titleTax:            {
-    en: 'Answer a few quick questions\nto check your eligibility',
-    de: 'Beantworte ein paar kurze Fragen\nzu deinem Anspruch',
-    ja: 'いくつかの簡単な質問で\n対象かどうかを確認します',
+    en: 'Answer a few quick questions',
+    de: 'Beantworte ein paar kurze Fragen',
+    ja: 'かんたんな質問にお答えください',
   },
-  titleTaxStep2:       { en: 'Almost done',                          de: 'Fast geschafft',           ja: 'あと少しです' },
+  titleTaxSub:         {
+    en: 'to check your eligibility',
+    de: 'um deinen Anspruch zu prüfen',
+    ja: '対象かどうかを確認します',
+  },
+  titleTaxStep2:       { en: 'Almost done!',                         de: 'Fast geschafft!',          ja: 'あと少しです！' },
   titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
 
   // ─ Tax form specific ─
