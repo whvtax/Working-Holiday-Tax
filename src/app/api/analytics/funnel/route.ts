@@ -6,7 +6,7 @@ import { getSupabase } from '@/lib/supabase'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 
-const ALLOWED_EVENTS = new Set(['view', 'step1_complete', 'submit_success'])
+const ALLOWED_EVENTS = new Set(['view', 'step1_complete', 'submit_success', 'whm_blocked'])
 const ALLOWED_FORMS = new Set(['tax-form'])
 
 // POST /api/analytics/funnel

@@ -2,6 +2,7 @@
 import React from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
+import { WhmSubmissionsToggle } from '@/components/crm/WhmSubmissionsToggle'
 
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'
 type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
@@ -1553,6 +1554,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 </button>
 
               </div>
+
+              {/* The working-holiday-maker override. Sits at the top of Tasks
+                  on purpose: while it's ON it needs to be impossible to miss. */}
+              <WhmSubmissionsToggle />
 
               {/* Season stats */}
               {(()=>{

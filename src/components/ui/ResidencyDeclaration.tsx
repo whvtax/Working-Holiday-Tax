@@ -22,6 +22,7 @@ import {
   markTaxFormSubmitted,
   type TaxFormHandoff,
 } from '@/lib/tax-form-handoff'
+import { WhmNoRefundScreen } from '@/components/ui/WhmNoRefundScreen'
 
 type Status = 'resident' | 'whm' | ''
 
@@ -66,6 +67,7 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
   const [loading, setLoading] = useState(false)
   const [showWhmCheck, setShowWhmCheck] = useState(false)
   const [whmAnswered, setWhmAnswered] = useState(false)
+  const [whmBlocked, setWhmBlocked] = useState(false)
 
   // Read the hand-off after mount only: it lives in the JS heap, so the server
   // render knows nothing about it and rendering it directly would hydrate-mismatch.
@@ -92,11 +94,57 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
     setError(res.error)
   }
 
-  // Nothing gates the submit: whichever status the client picks, and whatever
-  // they answer to the WHM prompt below, the return goes through as declared.
+  /**
+   * A working-holiday-maker declaration doesn't get lodged.
+   *
+   * If they paid the correct 15% and have no significant work-related
+   * expenses there is no refund to claim, so instead of submitting we explain
+   * that and stop - nothing is sent, nothing is stored. The exceptions
+   * (overpaid tax, real expenses) are told to message us.
+   *
+   * The switch is read here rather than at page load, so turning it on in the
+   * CRM lets the next client straight through without them reloading. It
+   * fails closed: any error keeps the block in place.
+   */
+  const whmSubmissionsAllowed = async (): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/form-settings', { cache: 'no-store' })
+      const data = await res.json()
+      return data?.allowWhmSubmissions === true
+    } catch {
+      return false
+    }
+  }
+
+  /** Anonymous count only: no name, no TFN, no documents. */
+  const trackBlocked = () => {
+    try {
+      fetch('/api/analytics/funnel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formName: 'tax-form',
+          eventType: 'whm_blocked',
+          sessionId: `whm-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+          lang: handoff.lang,
+        }),
+        keepalive: true,
+      }).catch(() => {})
+    } catch {}
+  }
+
   const handleSubmit = () => {
     if (!status) { setError(c.pickOne); return }
-    void doSubmit(status)
+    if (status !== 'whm') { void doSubmit(status); return }
+
+    setLoading(true)
+    void whmSubmissionsAllowed().then(allowed => {
+      if (allowed) { void doSubmit('whm'); return }
+      setLoading(false)
+      trackBlocked()
+      setWhmBlocked(true)
+      window.scrollTo({ top: 0, behavior: 'auto' })
+    })
   }
 
   // Picking WHM raises a short prompt, since visa type alone doesn't decide
@@ -114,6 +162,22 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
     { val: 'resident', label: c.residentLabel },
     { val: 'whm',      label: c.whmLabel },
   ]
+
+  // Retry keeps the hand-off intact, so they land back on this page with
+  // every field still filled in and can read it through again.
+  if (whmBlocked) {
+    return (
+      <WhmNoRefundScreen
+        lang={lang}
+        onRetry={() => {
+          setWhmBlocked(false)
+          setStatus('')
+          setWhmAnswered(false)
+          window.scrollTo({ top: 0, behavior: 'smooth' })
+        }}
+      />
+    )
+  }
 
   return (
     <div className="resdecl-wrap">
