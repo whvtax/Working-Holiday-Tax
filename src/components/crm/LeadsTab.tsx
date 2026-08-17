@@ -34,17 +34,23 @@ export function LeadsTab() {
   const [leads, setLeads] = useState<Lead[] | null>(null)
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
-  const [hideUnsub, setHideUnsub] = useState(true)
   const [busy, setBusy] = useState('')
 
   const load = async () => {
     try {
       const res = await fetch('/api/crm/leads', { cache: 'no-store' })
       const d = await res.json()
-      if (!d?.ok) throw new Error()
+      if (!d?.ok) {
+        setLeads([])
+        setError(d?.error === 'table_missing'
+          ? 'The leads table does not exist yet. Run migrations 016 to 020 in Supabase, then reload.'
+          : `Could not load the list. ${d?.detail ?? ''}`.trim())
+        return
+      }
       setLeads(d.leads)
     } catch {
-      setError('Could not load the list.')
+      setLeads([])
+      setError('Could not reach the server. Check your connection and reload.')
     }
   }
   useEffect(() => { void load() }, [])
@@ -52,23 +58,37 @@ export function LeadsTab() {
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase()
     return (leads ?? [])
-      .filter(l => !(hideUnsub && l.unsubscribed))
+      // Unsubscribed people are never listed: showing them only invites
+      // mailing someone who asked not to be mailed.
+      .filter(l => !l.unsubscribed)
       .filter(l => !q || l.fullName.toLowerCase().includes(q) || l.email.toLowerCase().includes(q) || l.whatsapp.includes(q))
-  }, [leads, search, hideUnsub])
+  }, [leads, search])
 
-  const toggleUnsub = async (lead: Lead) => {
+  /**
+   * Marks someone unsubscribed. The row leaves the list immediately, since
+   * unsubscribed people are never shown; the row itself stays in the database
+   * so a later submission can't quietly re-add them.
+   *
+   * Re-adding is deliberately not offered here - putting someone back on a
+   * mailing list they asked to leave shouldn't be one stray click away. It can
+   * be done in Supabase if it was a genuine mistake:
+   *   update crm_leads set unsubscribed = false where email = '...';
+   */
+  const removeLead = async (lead: Lead) => {
     setBusy(lead.email)
     try {
-      await fetch('/api/crm/leads', {
+      const res = await fetch('/api/crm/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: lead.email, unsubscribed: !lead.unsubscribed }),
+        body: JSON.stringify({ email: lead.email, unsubscribed: true }),
       })
+      const d = await res.json()
+      if (!d?.ok) throw new Error()
       setLeads(prev => (prev ?? []).map(l =>
-        l.email === lead.email ? { ...l, unsubscribed: !l.unsubscribed } : l,
+        l.email === lead.email ? { ...l, unsubscribed: true } : l,
       ))
     } catch {
-      setError('Could not update that person.')
+      setError('Could not remove that person.')
     } finally {
       setBusy('')
     }
@@ -77,7 +97,12 @@ export function LeadsTab() {
   const activeCount = (leads ?? []).filter(l => !l.unsubscribed).length
 
   return (
-    <div style={{ padding: '0 26px 26px' }}>
+    <div style={{
+      // <main> is overflow:hidden, so each view owns its own scrolling.
+      // Without this the list is clipped at the fold with no way to reach it.
+      flex: 1, minHeight: 0, overflowY: 'auto',
+      padding: '0 26px 32px',
+    }}>
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap', marginBottom: 14 }}>
         <h2 style={{ fontSize: 17, fontWeight: 800, color: '#080F0D', margin: 0 }}>Leads</h2>
         <span style={{ fontSize: 12.5, color: '#587066' }}>
@@ -86,7 +111,10 @@ export function LeadsTab() {
         </span>
       </div>
 
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14 }}>
+      <div style={{
+        display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14,
+        position: 'sticky', top: 0, zIndex: 2, background: '#f0f4f1', paddingTop: 4, paddingBottom: 8,
+      }}>
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
@@ -97,10 +125,6 @@ export function LeadsTab() {
             borderRadius: 10, outline: 'none', color: '#080F0D',
           }}
         />
-        <label style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, color: '#587066', cursor: 'pointer' }}>
-          <input type="checkbox" checked={hideUnsub} onChange={e => setHideUnsub(e.target.checked)} />
-          Hide unsubscribed
-        </label>
         <a
           href="/api/crm/leads?csv=1"
           style={{
@@ -134,7 +158,7 @@ export function LeadsTab() {
           <div key={l.email} style={{
             display: 'grid', gridTemplateColumns: '1.3fr 1.8fr 1.2fr 0.9fr 0.7fr', gap: 0,
             borderTop: '1px solid #EDF3F0', fontSize: 12.5, color: '#1A2822',
-            alignItems: 'center', opacity: l.unsubscribed ? 0.5 : 1,
+            alignItems: 'center',
           }}>
             <div style={{ padding: '10px 12px', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {l.fullName || '—'}
@@ -150,16 +174,16 @@ export function LeadsTab() {
             <div style={{ padding: '10px 12px', textAlign: 'right' }}>
               <button
                 type="button"
-                onClick={() => void toggleUnsub(l)}
+                onClick={() => void removeLead(l)}
                 disabled={busy === l.email}
                 style={{
                   fontSize: 11, fontWeight: 600, fontFamily: 'inherit', padding: '4px 10px',
                   borderRadius: 100, cursor: 'pointer',
-                  background: '#fff', color: l.unsubscribed ? '#0B5240' : '#8AADA3',
+                  background: '#fff', color: '#8AADA3',
                   border: '1px solid #D4EAE2',
                 }}
               >
-                {l.unsubscribed ? 'Re-add' : 'Remove'}
+                Remove
               </button>
             </div>
           </div>
@@ -170,6 +194,7 @@ export function LeadsTab() {
         Everyone who submitted any form with an email address. Independent of tasks: marking done,
         archiving or deleting a task does not remove anyone from here. &ldquo;Remove&rdquo; marks the person
         unsubscribed but keeps the row, so a later submission cannot re-add them.
+        Unsubscribed people are never listed.
       </p>
     </div>
   )

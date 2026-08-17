@@ -55,7 +55,7 @@ BEGIN
       coalesce(NEW.whatsapp, ''),
       CASE WHEN coalesce(NEW.source, '') = '' THEN 'tax-form' ELSE NEW.source END,
       coalesce(NEW.country, ''),
-      coalesce(NEW.submitted_at, now()),
+      coalesce(nullif(NEW.submitted_at, '')::timestamptz, now()),
       now()
     )
     ON CONFLICT (email_norm) DO UPDATE SET

@@ -112,7 +112,7 @@ BEGIN
       coalesce(NEW.client_name, ''),
       coalesce(NEW.whatsapp, ''), p_norm,
       CASE WHEN coalesce(NEW.source, '') = '' THEN 'tax-form' ELSE NEW.source END,
-      coalesce(NEW.submitted_at, now()), now()
+      coalesce(nullif(NEW.submitted_at, '')::timestamptz, now()), now()
     )
     -- Belt and braces: if two submissions land at the same instant, the unique
     -- indexes still hold and the loser simply does nothing.

@@ -78,7 +78,7 @@ BEGIN
       coalesce(NEW.whatsapp, ''), p_norm,
       l_lang,
       CASE WHEN coalesce(NEW.source, '') = '' THEN 'tax-form' ELSE NEW.source END,
-      coalesce(NEW.submitted_at, now()), now()
+      coalesce(nullif(NEW.submitted_at, '')::timestamptz, now()), now()
     )
     ON CONFLICT DO NOTHING;
   END IF;

@@ -53,7 +53,16 @@ export async function GET(req: NextRequest) {
     )
   } catch (err) {
     console.error('[crm/leads GET]', err)
-    return NextResponse.json({ ok: false, error: 'read_failed' }, { status: 500 })
+    // Surface the real reason. This route is behind CRM auth, and a generic
+    // "could not load" leaves you guessing between a missing table, a
+    // permissions problem and a network fault.
+    const message = err instanceof Error ? err.message : String(err)
+    const missingTable = /relation .*crm_leads.* does not exist|schema cache/i.test(message)
+    return NextResponse.json({
+      ok: false,
+      error: missingTable ? 'table_missing' : 'read_failed',
+      detail: message,
+    }, { status: 500 })
   }
 }
 

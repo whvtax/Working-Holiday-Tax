@@ -2255,8 +2255,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
             </div>
           )}
 
-          {/* ── CLIENTS LIST ── */}
+          {/* ── LEADS (mailing list) ── */}
           {view==='leads' && <LeadsTab />}
+
+          {/* ── CLIENTS LIST ── */}
 
           {view==='clients' && !activeClient && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>

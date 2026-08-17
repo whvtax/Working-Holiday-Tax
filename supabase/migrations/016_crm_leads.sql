@@ -47,7 +47,7 @@ SELECT DISTINCT ON (lower(trim(email)))
   coalesce(client_name, ''),
   'backfill',
   coalesce(country, ''),
-  coalesce(submitted_at, now())
+  coalesce(nullif(submitted_at, '')::timestamptz, now())
 FROM crm_tasks
 WHERE email IS NOT NULL
   AND trim(email) <> ''
@@ -61,7 +61,7 @@ SELECT DISTINCT ON (lower(trim(email)))
   coalesce(full_name, ''),
   'backfill',
   coalesce(country, ''),
-  coalesce(created_at, now())
+  coalesce(nullif(created_at::text, '')::timestamptz, now())
 FROM crm_clients
 WHERE email IS NOT NULL
   AND trim(email) <> ''
