@@ -2000,7 +2000,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
                 {/* ── Panel 3: Form-specific details ── */}
                 <div style={S.card}>
-                  {activeTask.taskType==='tax-return' && <>
+                  {/* Leads carry the same fields, just partly filled: gating this on
+                      'tax-return' alone hid the TFN, Medicare and expenses that form 1
+                      already collected. */}
+                  {(activeTask.taskType==='tax-return' || activeTask.taskType==='lead') && <>
                     <div style={S.secHead}><span>Tax & employment</span></div>
                     {([['TFN 🔒',activeTask.tfn],['Employer',activeTask.primaryJob],['Tax status',activeTask.taxStatus]] as [string,string][]).map(([l,v])=>(
                       <div key={l} style={S.row}><span style={S.lbl}>{l}</span><span style={{...S.val,direction:'ltr',textAlign:'right'}}>{l.startsWith('TFN') ? groupDigits(v)||'-' : (v||'-')}</span>{v&&v!=='-'&&<CopyBtn text={v}/>}</div>
