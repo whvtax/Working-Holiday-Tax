@@ -37,15 +37,14 @@ export async function POST(req: NextRequest) {
     const whatsapp = sanitiseShort(formData.get('waNumber'))
     const fullName = sanitiseShort(formData.get('fullName'))
     const tfn      = sanitiseShort(formData.get('tfn'))
+    const email    = sanitiseShort(formData.get('email'))
 
     // A lead with no name, no phone and no TFN is unactionable.
     if (!fullName || !whatsapp || !tfn) {
       return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
     }
 
-    // Form 1 has no email field, so the returning-client check runs on the
-    // WhatsApp number alone.
-    const existing = await findExistingClient('', whatsapp)
+    const existing = await findExistingClient(email, whatsapp)
     const isReturning = !!existing
     const clientId = existing?.id ?? `CLT-${crypto.randomUUID()}`
 
@@ -75,7 +74,7 @@ export async function POST(req: NextRequest) {
       taskType:    LEAD_TASK_TYPE,
       whatsapp,
       auPhone:     '',
-      email:       '',
+      email,
       country:     sanitiseShort(formData.get('country')),
       dob:         sanitiseShort(formData.get('dob')),
       taxYear,

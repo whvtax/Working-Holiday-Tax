@@ -16,7 +16,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { WA_URL, WA_NUMBER } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isValidEmail } from '@/lib/validate'
 import ResidencyStep from '@/components/ui/ResidencyStep'
 import { setTaxFormHandoff, takeTaxFormSubmitted } from '@/lib/tax-form-handoff'
 
@@ -125,7 +124,6 @@ export function CompleteFormClient({ token }: { token: string }) {
   }, [token])
 
   const [auPhone, setAuPhone]       = useState('')
-  const [email, setEmail]           = useState('')
   const [address, setAddress]       = useState('')
   const [marital, setMarital]       = useState<'Single' | 'Married' | ''>('')
   const [primaryJob, setPrimaryJob] = useState('')
@@ -145,8 +143,6 @@ export function CompleteFormClient({ token }: { token: string }) {
   const validate = () => {
     const e: Record<string, string> = {}
     if (!auPhone.trim())    e.auPhone    = T('required')
-    if (!email.trim())      e.email      = T('required')
-    else if (!isValidEmail(email)) e.email = T('invalidEmail')
     if (!address.trim())    e.address    = T('required')
     if (!marital)           e.marital    = T('required')
     if (!primaryJob.trim()) e.primaryJob = T('required')
@@ -176,7 +172,7 @@ export function CompleteFormClient({ token }: { token: string }) {
       formUrl: `/complete/${token}`,
       submitUrl: `/api/complete/${token}`,
       payload: {
-        waNumber: '', auPhone, fullName: firstName, lastName: '', address, email,
+        waNumber: '', auPhone, fullName: firstName, lastName: '', address, email: '',
         country: '', dob: '', marital, hasMedicare: '', tfn: '', primaryJob,
         hasExpenses: '', taxYears: [], howHeard, refCode: '',
         declared: terms ? 'yes' : '',
@@ -284,13 +280,6 @@ export function CompleteFormClient({ token }: { token: string }) {
                    value={auPhone}
                    onChange={e => { setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({ ...p, auPhone: '' })) }}
                    onKeyDown={e => { if (!/^[0-9+\s]$/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key) && !(e.ctrlKey || e.metaKey)) e.preventDefault() }} />
-          </Field>
-
-          <Field label={T('email')} error={errors.email}>
-            <input className={`cf-input ${errors.email ? 'cf-input-err' : ''}`} type="email"
-                   placeholder="your@email.com" autoComplete="email" inputMode="email" maxLength={200}
-                   value={email}
-                   onChange={e => { setEmail(e.target.value); setErrors(p => ({ ...p, email: '' })) }} />
           </Field>
 
           <Field label={T('addressShort')} error={errors.address}>
@@ -422,7 +411,6 @@ const styles = `
   .cf-success-socials { display: flex; gap: 10px; justify-content: center; }
   .cf-success-social-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 100px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 600; color: #0B5240; text-decoration: none; background: #fff; font-family: inherit; }
   .cf-msg { padding: 40px 24px 34px; text-align: center; }
-  .cf-done-icon { width: 60px; height: 60px; border-radius: 50%; background: #EAF6F1; border: 1.5px solid #C8EAE0; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
   .cf-msg-title { font-size: 20px; font-weight: 800; color: #080F0D; letter-spacing: -0.02em; margin-bottom: 10px; }
   .cf-msg-body { font-size: 13.5px; color: #587066; line-height: 1.65; margin-bottom: 22px; }
   .cf-msg .cf-btn-primary { margin-top: 0; }

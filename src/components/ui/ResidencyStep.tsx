@@ -17,7 +17,6 @@
  */
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import type { FormLang } from '@/lib/formStrings'
 import { getTaxFormHandoff } from '@/lib/tax-form-handoff'
 import ResidencyDeclaration from '@/components/ui/ResidencyDeclaration'
@@ -61,8 +60,6 @@ const COPY = {
       'You have ongoing ties to Australia - a home, ongoing employment, or personal connections.',
     ],
     note: 'If you\u2019re not from one of these countries but meet the other requirements, you can still qualify for Australian tax residency and a refund of up to $700.',
-    startCta: 'Start your tax return →',
-    formUrl: '/tax-form',
   },
   de: {
     titleLead: 'Bist du ',
@@ -83,8 +80,6 @@ const COPY = {
       'Du hast dauerhafte Bindungen zu Australien - ein Zuhause, eine feste Arbeit oder persönliche Beziehungen.',
     ],
     note: 'Wenn du nicht aus einem dieser Länder kommst, aber die anderen Voraussetzungen erfüllst, kannst du trotzdem als australischer Steuerresident gelten und bis zu $700 zurückbekommen.',
-    startCta: 'Steuererklärung starten →',
-    formUrl: '/de/tax-form',
   },
   ja: {
     titleLead: 'あなたは',
@@ -105,8 +100,6 @@ const COPY = {
       '住居、継続的な仕事、個人的なつながりなど、オーストラリアとの結びつきがあること。',
     ],
     note: 'これらの国の出身でなくても、他の条件を満たしていれば、オーストラリア税務居住者として最大$700の還付を受けられる場合があります。',
-    startCta: 'タックスリターンを開始 →',
-    formUrl: '/ja/tax-form',
   },
 } as const
 
@@ -115,12 +108,15 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
   /** Forwarded to the declaration; see ResidencyDeclaration. */
   onSubmitted?: (firstName: string) => void
 }) {
-  const router = useRouter()
   const c = COPY[lang] ?? COPY.en
 
   // Whether there's a form mid-flight. Checked after mount because the
   // hand-off lives in the JS heap and the server render can't see it.
-  const [hasForm, setHasForm] = useState<boolean | null>(null)
+  //
+  // The content itself is never gated on this: a client whose hand-off is gone
+  // (a reload, or the link opened later) must still see the page they were
+  // sent to, not a blank card. The flag only controls the step indicator.
+  const [hasForm, setHasForm] = useState(false)
   useEffect(() => { setHasForm(!!getTaxFormHandoff()) }, [])
 
   return (
@@ -133,7 +129,7 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
             {c.titleLead}<span className="resstep-accent">{c.titleAccent}</span>{c.titleTail}
           </h1>
           <p className="resstep-intro">{c.intro}</p>
-          {/* Only while a form is in flight - a stray visitor isn't on step 3 of anything. */}
+          {/* Only while a form is in flight: a stray visitor isn't on step 3 of anything. */}
           {hasForm && <FormStepper step={3} lang={lang} />}
         </div>
 
@@ -186,12 +182,6 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
           <div className="resstep-divider" />
 
           <ResidencyDeclaration lang={lang} onSubmitted={onSubmitted} />
-
-          {hasForm === false && (
-            <button type="button" className="resstep-start" onClick={() => router.push(c.formUrl)}>
-              {c.startCta}
-            </button>
-          )}
         </div>
       </div>
     </div>
@@ -241,7 +231,6 @@ const styles = `
   .resstep-cond-text { font-size: 12px; color: #1A2822; line-height: 1.55; }
   .resstep-note { font-size: 12px; color: #587066; line-height: 1.55; margin: 12px 0 0; }
   .resstep-divider { height: 1px; background: #E6F0EB; margin: 22px 0 20px; }
-  .resstep-start { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: #0B5240; color: #fff; font-size: 15px; font-weight: 600; font-family: inherit; border: none; border-radius: 100px; cursor: pointer; }
 
   @media (min-width: 420px) {
     .resstep-header { padding: 26px 24px 18px; }

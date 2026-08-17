@@ -63,7 +63,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     const sb = getSupabase()
     const { data: existing, error: readErr } = await sb
       .from('crm_tasks')
-      .select('notes, file_urls, address, marital, primary_job, how_heard, au_phone, email')
+      .select('notes, file_urls, address, marital, primary_job, how_heard, au_phone')
       .eq('id', state.taskId)
       .single()
     if (readErr || !existing) {
@@ -71,7 +71,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     }
 
     const formData = await req.formData()
-    const email      = sanitiseShort(formData.get('email'))
     const auPhone    = sanitiseShort(formData.get('auPhone'))
     const address    = sanitiseField(formData.get('address'))
     const marital    = sanitiseShort(formData.get('marital'))
@@ -80,7 +79,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
     const taxStatus  = sanitiseShort(formData.get('taxStatus'))
     const declared   = sanitiseField(formData.get('declared'))
 
-    if (!email || !auPhone || !address || !taxStatus) {
+    // Email is collected in form 1, so it isn't expected here.
+    if (!auPhone || !address || !taxStatus) {
       return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
     }
 
@@ -112,7 +112,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
       const b = String(before ?? '').trim()
       if (b && b !== after) changes.push(`${label}: "${b}" → "${after}"`)
     }
-    track('Email', existing.email, email)
     track('AU phone', existing.au_phone, auPhone)
     track('Address', existing.address, address)
     track('Marital', existing.marital, marital)
@@ -130,7 +129,6 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
       .from('crm_tasks')
       .update({
         task_type:   'tax-return',
-        email,
         au_phone:    auPhone,
         address,
         marital,

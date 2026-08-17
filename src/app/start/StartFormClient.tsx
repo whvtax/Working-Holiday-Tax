@@ -19,7 +19,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { WA_URL } from '@/lib/constants'
 import { formStrings, type FormLang } from '@/lib/formStrings'
-import { isValidTfn, isPlausibleDob } from '@/lib/validate'
+import { isValidTfn, isPlausibleDob, isValidEmail } from '@/lib/validate'
 import { FormLanguageToggle } from '@/components/ui/FormLanguageToggle'
 import { GoogleReviewsBadge } from '@/components/ui/GoogleReviewsBadge'
 import { compressImage, MAX_UPLOAD_BYTES } from '@/lib/compress-image'
@@ -102,6 +102,7 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
   const [dob, setDob]             = useState('')
   const [tfn, setTfn]             = useState('')
   const [waNumber, setWaNumber]   = useState('')
+  const [email, setEmail]         = useState('')
   const [country, setCountry]     = useState('')
   const [hasMedicare, setHasMedicare] = useState<'yes' | 'no' | ''>('')
   const [hasExpenses, setHasExpenses] = useState<'yes' | 'no' | ''>('')
@@ -128,6 +129,8 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
     if (!tfn.trim())           e.tfn         = T('required')
     else if (!isValidTfn(tfn)) e.tfn         = T('invalidTfn')
     if (!waNumber.trim())      e.waNumber    = T('required')
+    if (!email.trim())         e.email       = T('required')
+    else if (!isValidEmail(email)) e.email   = T('invalidEmail')
     if (!country.trim())       e.country     = T('required')
     if (!hasMedicare)          e.hasMedicare = T('required')
     if (!hasExpenses)          e.hasExpenses = T('required')
@@ -182,6 +185,7 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
     fd.append('dob', dob)
     fd.append('tfn', tfn)
     fd.append('waNumber', waNumber)
+    fd.append('email', email)
     fd.append('country', country)
     fd.append('hasMedicare', hasMedicare === 'yes' ? 'Yes' : 'No')
     fd.append('hasExpenses', hasExpenses === 'yes' ? 'Yes' : 'No')
@@ -227,6 +231,7 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
           <FormLanguageToggle lang={lang} onChange={setLang} />
           <h1 className={`sf-title sf-title-${lang}`}>{c.title}</h1>
           <p className="sf-title-sub">{c.sub}</p>
+          <p className="sf-time">{c.time}</p>
           <div className="sf-trust">
             <GoogleReviewsBadge lang={lang} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -269,6 +274,13 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
                    value={waNumber}
                    onChange={e => { setWaNumber(e.target.value); setErrors(p => ({ ...p, waNumber: '' })) }}
                    onKeyDown={e => { if (!/^[0-9+\s]$/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key) && !(e.ctrlKey || e.metaKey)) e.preventDefault() }} />
+          </Field>
+
+          <Field label={T('email')} error={errors.email}>
+            <input className={`sf-input ${errors.email ? 'sf-input-err' : ''}`} type="email"
+                   placeholder="your@email.com" autoComplete="email" inputMode="email" maxLength={200}
+                   value={email}
+                   onChange={e => { setEmail(e.target.value); setErrors(p => ({ ...p, email: '' })) }} />
           </Field>
 
           <Field label={T('homeCountry')} error={errors.country}>
@@ -338,7 +350,19 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
           <button type="submit" className="sf-btn sf-btn-primary" disabled={loading}>
             {loading ? c.submitting : c.submit}
           </button>
-          <p className="sf-note">{c.time}</p>
+
+          {/* Not a checkbox: this form's whole point is to be short. A submit
+              notice is the standard pattern and adds no friction, while still
+              tying the submission to the agreement and privacy policy. */}
+          <p className="sf-consent">
+            {lang === 'de' ? (
+              <>Mit dem Absenden stimmst du unserer <a className="sf-link" href="/de/client-agreement" target="_blank" rel="noopener noreferrer">Mandantenvereinbarung</a> und <a className="sf-link" href="/de/privacy" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zu.</>
+            ) : lang === 'ja' ? (
+              <>送信することで、<a className="sf-link" href="/ja/client-agreement" target="_blank" rel="noopener noreferrer">クライアント規約</a>および<a className="sf-link" href="/ja/privacy" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>に同意したものとみなされます。</>
+            ) : (
+              <>By submitting, you agree to our <a className="sf-link" href="/client-agreement" target="_blank" rel="noopener noreferrer">Client Agreement</a> and <a className="sf-link" href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</>
+            )}
+          </p>
         </form>
       </div>
     </div>
@@ -394,7 +418,8 @@ const styles = `
   .sf-btn { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; border-radius: 100px; font-size: 15px; font-weight: 600; font-family: inherit; border: none; cursor: pointer; text-decoration: none; }
   .sf-btn-primary { background: #0B5240; color: #fff; margin-top: 24px; }
   .sf-btn-primary:disabled { opacity: .6; cursor: not-allowed; }
-  .sf-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; }
+  .sf-consent { text-align: center; font-size: 11px; color: #8AADA3; line-height: 1.5; margin-top: 14px; }
+  .sf-time { font-size: 12px; color: #0B5240; background: #EAF6F1; border-radius: 100px; padding: 5px 12px; display: inline-block; margin-bottom: 10px; font-weight: 600; }
   .sf-done { padding: 40px 24px 34px; text-align: center; }
   .sf-done-icon { width: 60px; height: 60px; border-radius: 50%; background: #EAF6F1; border: 1.5px solid #C8EAE0; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
   .sf-done-title { font-size: 22px; font-weight: 800; color: #080F0D; letter-spacing: -0.02em; margin-bottom: 10px; }

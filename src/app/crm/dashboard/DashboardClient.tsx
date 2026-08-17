@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { WhmSubmissionsToggle } from '@/components/crm/WhmSubmissionsToggle'
 import { CompletionLinkPanel } from '@/components/crm/CompletionLinkPanel'
+import { LeadsTab } from '@/components/crm/LeadsTab'
 
 // 'lead' = form 1 submitted, awaiting form 2 (see lib/intake.ts)
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'|'lead'
@@ -28,7 +29,7 @@ type Client = {
   yearlyCheckins?: Record<string, boolean>
   referred_by?: string | null
 }
-type View = 'tasks'|'clients'|'client-detail'|'archive'
+type View = 'tasks'|'clients'|'client-detail'|'archive'|'leads'
 
 const CY = new Date().getFullYear()
 // Current AU tax year start (Jul-Jun cycle)
@@ -1500,6 +1501,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 style={view==='archive' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
                 onClick={openArchive}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M10 12h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}/>
+              <SbButton label="Leads"
+                style={view==='leads' ? {...S.sbBtn,...S.sbBtnOn} : S.sbBtn} badgeStyle={S.sbBadge}
+                onClick={()=>{ setView('leads');setTaskView('list');setActiveTask(null);setActiveClient(null) }}
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
               <SbButton label="Partners"
                 style={S.sbBtn} badgeStyle={S.sbBadge}
                 onClick={()=>{ window.location.href = '/crm/partners' }}
@@ -1526,7 +1531,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
               {([
                 ['tasks','📋',pendingTasks.length],
                 ['clients','👥',newClientsCount],
-                ['archive','📦',newArchiveCount]
+                ['archive','📦',newArchiveCount],
+                ['leads','✉️',0]
               ] as const).map(([v,icon,badge])=>(
                 <button key={v} onClick={()=>{ if(v==='archive') openArchive(); else { setView(v as View);setTaskView('list');setActiveTask(null);setActiveClient(null); if(v==='clients') setNewClientsCount(0) } }}
                   style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:view===v?'rgba(255,255,255,0.18)':'transparent',color:'#fff',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
@@ -2250,6 +2256,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
           )}
 
           {/* ── CLIENTS LIST ── */}
+          {view==='leads' && <LeadsTab />}
+
           {view==='clients' && !activeClient && (
             <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden'}}>
               <div style={{padding:'26px 26px 8px',flexShrink:0}}>
