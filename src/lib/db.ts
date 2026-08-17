@@ -12,7 +12,10 @@ import crypto from 'crypto'
 export type TaxReturn     = { year: string; refundAmount: number; type: 'refund' | 'owed'; completedAt: string }
 export type SuperReturn   = { year: string; amount: number; completedAt: string }
 export type ServiceRecord = { done: boolean; completedAt: string; notes: string }
-export type TaskType      = 'tax-return' | 'super' | 'tfn' | 'abn'
+// 'lead' = form 1 submitted, form 2 not yet completed (see lib/intake.ts).
+// It becomes 'tax-return' the moment form 2 lands, so a finished record is
+// identical to one from the original /tax-form.
+export type TaskType      = 'tax-return' | 'super' | 'tfn' | 'abn' | 'lead'
 export type ReviewStatus  = 'pending' | 'approved' | 'rejected'
 
 export type ClientRecord = {
@@ -661,7 +664,7 @@ export type DashboardStats = {
   lastTaxYear: string                 // e.g. "2023-24"
 }
 
-function getCurrentTaxYear(): string {
+export function getCurrentTaxYear(): string {
   // AU tax year: 1 Jul - 30 Jun. Computed in Australia/Sydney timezone.
   const sydney = new Date(new Date().toLocaleString('en-US', { timeZone: 'Australia/Sydney' }))
   const y = sydney.getFullYear()

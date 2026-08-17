@@ -110,7 +110,11 @@ const COPY = {
   },
 } as const
 
-export default function ResidencyStep({ lang = 'en' }: { lang?: FormLang }) {
+export default function ResidencyStep({ lang = 'en', onSubmitted }: {
+  lang?: FormLang
+  /** Forwarded to the declaration; see ResidencyDeclaration. */
+  onSubmitted?: (firstName: string) => void
+}) {
   const router = useRouter()
   const c = COPY[lang] ?? COPY.en
 
@@ -181,7 +185,7 @@ export default function ResidencyStep({ lang = 'en' }: { lang?: FormLang }) {
 
           <div className="resstep-divider" />
 
-          <ResidencyDeclaration lang={lang} />
+          <ResidencyDeclaration lang={lang} onSubmitted={onSubmitted} />
 
           {hasForm === false && (
             <button type="button" className="resstep-start" onClick={() => router.push(c.formUrl)}>

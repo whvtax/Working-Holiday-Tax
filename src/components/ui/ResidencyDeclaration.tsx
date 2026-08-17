@@ -59,7 +59,16 @@ const COPY = {
   },
 } as const
 
-export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang }) {
+export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
+  lang?: FormLang
+  /**
+   * Called instead of navigating, when the caller is already rendering this
+   * step inside its own page. The two-stage flow needs it: there, formUrl is
+   * the page we're on, and router.push to the current URL doesn't remount the
+   * component - the success screen would never appear.
+   */
+  onSubmitted?: (firstName: string) => void
+}) {
   const router = useRouter()
   const [handoff, setHandoff] = useState<TaxFormHandoff | null>(null)
   const [status, setStatus] = useState<Status>('')
@@ -84,10 +93,12 @@ export default function ResidencyDeclaration({ lang = 'en' }: { lang?: FormLang 
   const doSubmit = async (picked: 'resident' | 'whm') => {
     setLoading(true)
     setError('')
-    const res = await submitTaxForm(handoff.payload, picked, handoff.lang)
+    const res = await submitTaxForm(handoff.payload, picked, handoff.lang, handoff.submitUrl)
     if (res.ok) {
-      markTaxFormSubmitted(handoff.payload.fullName.split(' ')[0] || '')
-      router.push(handoff.formUrl)
+      const firstName = handoff.payload.fullName.split(' ')[0] || ''
+      markTaxFormSubmitted(firstName)
+      if (onSubmitted) onSubmitted(firstName)
+      else router.push(handoff.formUrl)
       return
     }
     setLoading(false)

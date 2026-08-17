@@ -103,6 +103,8 @@ export async function submitTaxForm(
   p: TaxFormPayload,
   taxStatus: 'resident' | 'whm',
   lang: FormLang,
+  /** Defaults to the original endpoint so /tax-form is unaffected. */
+  endpoint: string = '/api/tax-form',
 ): Promise<SubmitResult> {
   const t = (k: keyof typeof formStrings) => {
     const entry = formStrings[k] as Record<FormLang, string>
@@ -165,7 +167,7 @@ export async function submitTaxForm(
   if (allFileUrls.length > 0) fd.append('invoiceUrls', JSON.stringify(allFileUrls))
 
   try {
-    const res = await fetch('/api/tax-form', { method: 'POST', body: fd })
+    const res = await fetch(endpoint, { method: 'POST', body: fd })
     if (res.ok) return { ok: true }
 
     const data = await res.json().catch(() => ({}))

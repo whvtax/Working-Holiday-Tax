@@ -28,6 +28,12 @@ export type TaxFormHandoff = {
   lang: FormLang
   /** Where to send the client back to (locale-aware). */
   formUrl: string
+  /**
+   * Endpoint the residency step submits to. Omitted by the original /tax-form
+   * flow, which posts to /api/tax-form; the two-stage flow sets it to
+   * /api/complete/<token> so the answers merge into the existing task.
+   */
+  submitUrl?: string
   payload: TaxFormPayload
   /** Previews so the form can redraw its upload thumbnails on the way back. */
   previews: { bankStatement: string | null; selfiePassport: string | null }
