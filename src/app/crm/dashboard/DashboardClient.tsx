@@ -5,6 +5,7 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { WhmSubmissionsToggle } from '@/components/crm/WhmSubmissionsToggle'
 import { CompletionLinkPanel } from '@/components/crm/CompletionLinkPanel'
 import { LeadsTab } from '@/components/crm/LeadsTab'
+import { canonicalCountry, canonicalSource, groupByCanonical } from '@/lib/normalise-labels'
 
 // 'lead' = form 1 submitted, awaiting form 2 (see lib/intake.ts)
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'|'lead'
@@ -1247,8 +1248,8 @@ export default function DashboardClient() {
     const my = yearFilter.size===0 || c.taxReturns.some(r=>yearFilter.has(r.year)) || c.superReturns.some(r=>yearFilter.has(r.year))
     const checkinDone = c.yearlyCheckins?.[checkinYear] ?? false
     const mc = checkinFilter==='all' || (checkinFilter==='done' && checkinDone) || (checkinFilter==='pending' && !checkinDone)
-    const mh = howHeardFilter.size===0 || howHeardFilter.has(c.howHeard||'Unknown')
-    const mcountry = countryFilter.size===0 || countryFilter.has(c.country||'')
+    const mh = howHeardFilter.size===0 || howHeardFilter.has(canonicalSource(c.howHeard) || 'Unknown')
+    const mcountry = countryFilter.size===0 || countryFilter.has(canonicalCountry(c.country))
     // Super filter: no-super = clients with tax returns but no super refund
     const msuper = superFilter==='all' || (superFilter==='no-super' && c.taxReturns.length > 0 && c.superReturns.length === 0)
     // No-return filter: clients who had tax return last year but didn't return this year
@@ -2354,25 +2355,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 </DropBtn>
                 {<DropBtn id="cl-hh" label="How heard" active={howHeardFilter.size>0} onClear={()=>setHowHeardFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M18 20V10M12 20V4M6 20v-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {Object.keys(howHeardStats).sort().map(src=>{const checked=howHeardFilter.has(src);return(
-                      <label key={src} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter);checked?s.delete(src):s.add(src);setHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{src}</span>
-                        <span style={{fontSize:11,color:'#aabab2'}}>{howHeardStats[src]}</span>
+                    {/* Grouped by canonical label: eighteen spellings of ChatGPT
+                        become one entry. See lib/normalise-labels.ts. */}
+                    {groupByCanonical(clients.map(c=>c.howHeard), canonicalSource).map(({label,count})=>{const checked=howHeardFilter.has(label);return(
+                      <label key={label} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(howHeardFilter);checked?s.delete(label):s.add(label);setHowHeardFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{label}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{count}</span>
                       </label>
                     )})}
-                    {Object.keys(howHeardStats).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
+                    {groupByCanonical(clients.map(c=>c.howHeard), canonicalSource).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
                 {<DropBtn id="cl-country" label="Country" active={countryFilter.size>0} onClear={()=>setCountryFilter(new Set())}
                     icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.8"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>}>
-                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).sort().map(ctry=>{const checked=countryFilter.has(ctry);const cnt=clients.filter(cl=>cl.country===ctry).length;return(
-                      <label key={ctry} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
-                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(ctry):s.add(ctry);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
-                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{ctry}</span>
-                        <span style={{fontSize:11,color:'#aabab2'}}>{cnt}</span>
+                    {groupByCanonical(clients.map(c=>c.country), canonicalCountry).map(({label,count})=>{const checked=countryFilter.has(label);return(
+                      <label key={label} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 2px',cursor:'pointer'}}>
+                        <input type="checkbox" checked={checked} onChange={()=>{const s=new Set(countryFilter);checked?s.delete(label):s.add(label);setCountryFilter(s)}} style={{width:14,height:14,accentColor:'#0E5C42'}}/>
+                        <span style={{fontSize:13,color:'#0a1410',flex:1}}>{label}</span>
+                        <span style={{fontSize:11,color:'#aabab2'}}>{count}</span>
                       </label>
                     )})}
-                    {Array.from(new Set(clients.map(c=>c.country||'').filter(Boolean))).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
+                    {groupByCanonical(clients.map(c=>c.country), canonicalCountry).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
 
                 {/* Status filter */}

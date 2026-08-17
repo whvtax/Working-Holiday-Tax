@@ -97,48 +97,61 @@ export function LeadsTab() {
   const activeCount = (leads ?? []).filter(l => !l.unsubscribed).length
 
   return (
-    <div style={{
-      // <main> is overflow:hidden, so each view owns its own scrolling.
-      // Without this the list is clipped at the fold with no way to reach it.
-      flex: 1, minHeight: 0, overflowY: 'auto',
-      padding: '0 26px 32px',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap', marginBottom: 14 }}>
-        <h2 style={{ fontSize: 17, fontWeight: 800, color: '#080F0D', margin: 0 }}>Leads</h2>
-        <span style={{ fontSize: 12.5, color: '#587066' }}>
-          {leads === null ? 'Loading…' : `${activeCount} on the list`}
-          {leads && leads.length !== activeCount && ` · ${leads.length - activeCount} unsubscribed`}
-        </span>
-      </div>
-
-      <div style={{
-        display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 14,
-        position: 'sticky', top: 0, zIndex: 2, background: '#f0f4f1', paddingTop: 4, paddingBottom: 8,
-      }}>
-        <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search name, email or number"
-          style={{
-            flex: '1 1 220px', minWidth: 0, height: 38, padding: '0 14px', fontSize: 13,
-            fontFamily: 'inherit', background: '#F5F9F7', border: '1.5px solid #D4EAE2',
-            borderRadius: 10, outline: 'none', color: '#080F0D',
-          }}
-        />
+    // Same structure as the Clients and Archive tabs: a flex column that
+    // doesn't scroll, a fixed header, and only the list scrolling below it.
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+      <div style={{ padding: '26px 26px 8px', flexShrink: 0 }}>
+      {/* Header and search styled to match the Clients and Archive tabs
+          exactly: same title, same count chip, same 38px search field, same
+          outlined export button. */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <h1 style={{ fontSize: 22, fontWeight: 700, color: '#0a1410', letterSpacing: '-0.5px', margin: 0 }}>Leads</h1>
+          <span style={{ background: '#e8f5f0', color: '#0E5C42', borderRadius: 20, padding: '3px 11px', fontSize: 12, fontWeight: 600 }}>
+            {leads === null ? '…' : `${activeCount} total`}
+          </span>
+        </div>
         <a
           href="/api/crm/leads?csv=1"
+          title="Download as CSV (opens in Excel)"
           style={{
-            height: 38, display: 'inline-flex', alignItems: 'center', padding: '0 18px',
-            background: '#0B5240', color: '#fff', fontSize: 13, fontWeight: 600,
-            borderRadius: 100, textDecoration: 'none',
+            padding: '8px 14px', fontSize: 13, background: '#fff', color: '#0E5C42',
+            border: '1.5px solid #d4eae2', borderRadius: 9, fontWeight: 600,
+            cursor: 'pointer', fontFamily: 'inherit', display: 'inline-flex',
+            alignItems: 'center', gap: 6, textDecoration: 'none', whiteSpace: 'nowrap',
           }}
         >
-          ⬇ Download Excel (CSV)
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M5 20h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+          Export CSV
         </a>
       </div>
 
-      {error && <p style={{ fontSize: 12.5, color: '#DC2626', marginBottom: 12 }}>{error}</p>}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 14, flexWrap: 'wrap', alignItems: 'center' }}>
+        <div style={{ position: 'relative', flex: 3, minWidth: 200 }}>
+          <svg style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}
+               width="13" height="13" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/>
+            <path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/>
+          </svg>
+          <input
+            style={{ width: '100%', height: '38px', padding: '0 12px 0 32px', border: '1px solid #d8e4dc',
+                     borderRadius: 9, fontSize: 13, background: '#fff', outline: 'none',
+                     fontFamily: 'inherit', color: '#0a1410', boxSizing: 'border-box' }}
+            placeholder="Search by name, WhatsApp or email…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
+      </div>
 
+        {error && <p style={{ fontSize: 12.5, color: '#DC2626', marginBottom: 12 }}>{error}</p>}
+      </div>
+
+      {/* Only this part scrolls. */}
+      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '0 26px 32px' }}>
       <div style={{ border: '1.5px solid #E4EFEA', borderRadius: 12, overflow: 'hidden', background: '#fff' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1.8fr 1.2fr 0.9fr 0.7fr', gap: 0,
                       background: '#F5F9F7', borderBottom: '1.5px solid #E4EFEA',
@@ -189,13 +202,7 @@ export function LeadsTab() {
           </div>
         ))}
       </div>
-
-      <p style={{ fontSize: 11, color: '#9DB5AC', marginTop: 12, lineHeight: 1.6 }}>
-        Everyone who submitted any form with an email address. Independent of tasks: marking done,
-        archiving or deleting a task does not remove anyone from here. &ldquo;Remove&rdquo; marks the person
-        unsubscribed but keeps the row, so a later submission cannot re-add them.
-        Unsubscribed people are never listed.
-      </p>
+      </div>
     </div>
   )
 }
