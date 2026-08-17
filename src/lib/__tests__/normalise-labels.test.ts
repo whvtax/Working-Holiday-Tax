@@ -61,6 +61,28 @@ describe('canonicalSource', () => {
     expect(canonicalSource('Online')).toBe('Online search')
   })
 
+  it('groups the travel-agency referrals, however the agency is written', () => {
+    for (const v of ['Travel Agent', 'ultimate travel', 'Ultimate travel',
+                     'Ultimate Travel', 'Ultimate travel partnership']) {
+      expect(canonicalSource(v)).toBe('Travel agent')
+    }
+  })
+
+  it('separates WhatsApp groups from one-to-one WhatsApp', () => {
+    expect(canonicalSource('Whats app')).toBe('WhatsApp')
+    expect(canonicalSource('WhatsApp')).toBe('WhatsApp')
+    expect(canonicalSource('Whatsapp Group')).toBe('WhatsApp group')
+    expect(canonicalSource('WhatsApp Travel Group (Admin Balou referred)')).toBe('WhatsApp group')
+  })
+
+  it('recognises a returning client', () => {
+    expect(canonicalSource('previous experience')).toBe('Returning client')
+  })
+
+  it('treats a website mention as an online search', () => {
+    expect(canonicalSource('Web site')).toBe('Online search')
+  })
+
   it('keeps an answer it does not recognise', () => {
     expect(canonicalSource('Saw the van in Bondi')).toBe('Saw the van in Bondi')
   })
@@ -90,5 +112,16 @@ describe('groupByCanonical', () => {
     expect(grouped.length).toBeLessThan(live.length)
     expect(new Set(grouped.map(g => g.label)).size).toBe(grouped.length)
     expect(grouped.find(g => g.label === 'ChatGPT / AI')?.count).toBe(7)
+  })
+
+  it('cuts the second round of live values from 18 categories to 11', () => {
+    const live = ['TikTok','Friend','Instagram','ChatGPT / AI','Google','Online search','Partner',
+      'previous experience','Travel Agent','ultimate travel','Ultimate travel','Ultimate Travel',
+      'Ultimate travel partnership','Web site','Whats app','WhatsApp','Whatsapp Group',
+      'WhatsApp Travel Group (Admin Balou referred)']
+    const grouped = groupByCanonical(live, canonicalSource)
+    expect(grouped).toHaveLength(11)
+    expect(grouped.find(g => g.label === 'Travel agent')?.count).toBe(5)
+    expect(grouped.find(g => g.label === 'WhatsApp group')?.count).toBe(2)
   })
 })

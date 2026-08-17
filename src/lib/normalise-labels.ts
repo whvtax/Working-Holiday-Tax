@@ -155,6 +155,12 @@ const SOURCE_EXACT: Record<string, string> = {
   'reddit': 'Reddit',
   'youtube': 'YouTube',
   'whatsapp': 'WhatsApp',
+  'whats app': 'WhatsApp',
+  'web site': 'Online search',
+  'previous experience': 'Returning client',
+  'returning client': 'Returning client',
+  'previous client': 'Returning client',
+  'used before': 'Returning client',
   'email': 'Email',
   'flyer': 'Flyer',
   'poster': 'Flyer',
@@ -186,6 +192,19 @@ const SOURCE_PREFIX: [string, string][] = [
   ['youtube', 'YouTube'],
   ['reddit', 'Reddit'],
   ['hostel', 'Partner'],
+  // "Ultimate travel", "Ultimate Travel partnership" and "Travel Agent" are all
+  // agency referrals; grouping them keeps the filter usable as more agencies
+  // come on board.
+  ['ultimate travel', 'Travel agent'],
+  ['travel agent', 'Travel agent'],
+  ['travel agency', 'Travel agent'],
+  ['agency', 'Travel agent'],
+  // Any WhatsApp group, however the admin or group is named.
+  ['whatsapp travel group', 'WhatsApp group'],
+  ['whatsapp group', 'WhatsApp group'],
+  ['whats app group', 'WhatsApp group'],
+  ['whatsapp', 'WhatsApp'],
+  ['whats app', 'WhatsApp'],
   ['partner', 'Partner'],
 ]
 

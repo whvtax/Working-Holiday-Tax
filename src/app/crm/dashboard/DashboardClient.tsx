@@ -1278,12 +1278,17 @@ export default function DashboardClient() {
         </button>
         {isOpen && <>
           <div style={{position:'fixed',inset:0,zIndex:98}} onClick={()=>setOpenDropdown(null)}/>
-          <div style={{position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,background:'#fff',border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',minWidth:200,boxShadow:'0 8px 24px rgba(0,0,0,0.1)'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f4f1'}}>
+          <div style={{position:'absolute',top:'calc(100% + 6px)',left:0,zIndex:99,background:'#fff',border:'1.5px solid #e4ede8',borderRadius:10,padding:'10px 12px',minWidth:200,boxShadow:'0 8px 24px rgba(0,0,0,0.1)',display:'flex',flexDirection:'column' as const,maxHeight:'min(380px, 60vh)'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8,paddingBottom:6,borderBottom:'1px solid #f0f4f1',flexShrink:0}}>
               <span style={{fontSize:11,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{label}</span>
               {active && <button style={{fontSize:11,color:'#0E5C42',background:'none',border:'none',cursor:'pointer',fontFamily:'inherit',fontWeight:600}} onClick={e=>{e.stopPropagation();onClear()}}>Clear</button>}
             </div>
-            {children}
+            {/* Only the options scroll: the title and Clear stay reachable
+                however long the list gets. Without the cap a long country list
+                runs off the bottom of the screen with no way to reach it. */}
+            <div style={{overflowY:'auto',minHeight:0,marginRight:-6,paddingRight:6}}>
+              {children}
+            </div>
           </div>
         </>}
       </div>
