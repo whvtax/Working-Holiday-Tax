@@ -65,6 +65,29 @@ const COPY = {
   },
 } as const
 
+/**
+ * Defined at module scope, not inside the form.
+ *
+ * A component declared in the render body is a new function on every render,
+ * so React tears the whole subtree down and rebuilds it after each keystroke -
+ * the input loses focus and only one character can be typed at a time.
+ */
+function Field({ label, error, hint, children }: {
+  label: React.ReactNode
+  error?: string
+  hint?: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="cf-fg">
+      <label className="cf-label">{label}<span className="cf-req">*</span></label>
+      {hint && <div className="cf-hint">{hint}</div>}
+      {children}
+      {error && <p className="cf-err">{error}</p>}
+    </div>
+  )
+}
+
 export function CompleteFormClient({ token }: { token: string }) {
   const [linkState, setLinkState] = useState<LinkState>('checking')
   const [lang, setLang] = useState<FormLang>('en')
@@ -220,16 +243,6 @@ export function CompleteFormClient({ token }: { token: string }) {
     )
   }
 
-  const Field = ({ label, error, hint, children }: {
-    label: string; error?: string; hint?: string; children: React.ReactNode
-  }) => (
-    <div className="cf-fg">
-      <label className="cf-label">{label}<span className="cf-req">*</span></label>
-      {hint && <div className="cf-hint">{hint}</div>}
-      {children}
-      {error && <p className="cf-err">{error}</p>}
-    </div>
-  )
 
   return (
     <div className="cf-wrap">
@@ -242,18 +255,25 @@ export function CompleteFormClient({ token }: { token: string }) {
 
         <form onSubmit={e => { e.preventDefault(); void goToResidency() }} noValidate>
           <Field label={T('auPhone')} error={errors.auPhone}>
-            <input className="cf-input" type="tel" inputMode="tel" autoComplete="tel" placeholder="04XX XXX XXX"
-                   value={auPhone} onChange={e => setAuPhone(e.target.value)} />
+            <input className={`cf-input ${errors.auPhone ? 'cf-input-err' : ''}`} type="tel"
+                   placeholder="04XX XXX XXX" autoComplete="tel" inputMode="tel" maxLength={30}
+                   value={auPhone}
+                   onChange={e => { setAuPhone(e.target.value.replace(/[^0-9+\s\-()]/g, '')); setErrors(p => ({ ...p, auPhone: '' })) }}
+                   onKeyDown={e => { if (!/^[0-9+\s]$/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key) && !(e.ctrlKey || e.metaKey)) e.preventDefault() }} />
           </Field>
 
           <Field label={T('email')} error={errors.email}>
-            <input className="cf-input" type="email" inputMode="email" autoComplete="email" placeholder="your@email.com"
-                   value={email} onChange={e => setEmail(e.target.value)} />
+            <input className={`cf-input ${errors.email ? 'cf-input-err' : ''}`} type="email"
+                   placeholder="your@email.com" autoComplete="email" inputMode="email" maxLength={200}
+                   value={email}
+                   onChange={e => { setEmail(e.target.value); setErrors(p => ({ ...p, email: '' })) }} />
           </Field>
 
           <Field label={T('addressShort')} error={errors.address}>
-            <input className="cf-input" placeholder="e.g. 12 Smith Street, Bondi NSW 2026"
-                   value={address} onChange={e => setAddress(e.target.value)} />
+            <input className={`cf-input ${errors.address ? 'cf-input-err' : ''}`} type="text"
+                   placeholder="e.g. 12 Smith Street, Bondi NSW 2026" autoComplete="street-address" maxLength={300}
+                   value={address}
+                   onChange={e => { setAddress(e.target.value); setErrors(p => ({ ...p, address: '' })) }} />
           </Field>
 
           <Field label={T('marital')} error={errors.marital}>
@@ -269,13 +289,17 @@ export function CompleteFormClient({ token }: { token: string }) {
           </Field>
 
           <Field label={T('primaryJob')} error={errors.primaryJob}>
-            <input className="cf-input" placeholder="e.g. Farm worker, Barista"
-                   value={primaryJob} onChange={e => setPrimaryJob(e.target.value)} />
+            <input className={`cf-input ${errors.primaryJob ? 'cf-input-err' : ''}`} type="text"
+                   placeholder="e.g. Farm worker, Barista"
+                   value={primaryJob}
+                   onChange={e => { setPrimaryJob(e.target.value); setErrors(p => ({ ...p, primaryJob: '' })) }} />
           </Field>
 
           <Field label={T('howHeard')} error={errors.howHeard}>
-            <input className="cf-input" placeholder="e.g. Instagram, TikTok, friend..."
-                   value={howHeard} onChange={e => setHowHeard(e.target.value)} />
+            <input className={`cf-input ${errors.howHeard ? 'cf-input-err' : ''}`} type="text"
+                   placeholder="e.g. Instagram, TikTok, friend..."
+                   value={howHeard}
+                   onChange={e => { setHowHeard(e.target.value); setErrors(p => ({ ...p, howHeard: '' })) }} />
           </Field>
 
           <Field label={T('bankStatements')} hint={T('bankStatementHint')} error={errors.bank}>
@@ -322,7 +346,7 @@ export function CompleteFormClient({ token }: { token: string }) {
 export default CompleteFormClient
 
 const styles = `
-  .cf-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 22px 16px 60px; }
+  .cf-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 26px 16px 50px; }
   .cf-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
   .cf-header { padding: 24px 20px 10px; text-align: center; }
   .cf-title { font-size: 24px; font-weight: 800; color: #080F0D; letter-spacing: -0.025em; line-height: 1.2; margin-bottom: 6px; }
@@ -333,9 +357,17 @@ const styles = `
   .cf-req { color: #0B5240; margin-left: 3px; }
   .cf-hint { font-size: 12px; color: #5A7B70; margin-bottom: 6px; line-height: 1.4; }
   .cf-link { color: #0B5240; text-decoration: underline; }
-  .cf-input { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; outline: none; }
+  .cf-input { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+  .cf-input-err { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
   .cf-input::placeholder { color: #9DB5AC; }
   .cf-input:focus { border-color: #0B5240; }
+  /* Copied verbatim from the original form: without the min-height a date
+     input renders shorter than every other field, and without the 16px
+     override iOS zooms the whole page in when it gets focus. */
+  input[type="date"].cf-input { min-height: 47px; line-height: 1.4; }
+  @media (max-width: 640px) {
+    .cf-input, input[type="text"], input[type="email"], input[type="tel"], input[type="date"] { font-size: 16px !important; }
+  }
   .cf-radios { display: flex; flex-direction: column; gap: 8px; }
   .cf-radio { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 500; color: #587066; background: #F5F9F7; cursor: pointer; }
   .cf-radio.is-on { background: #EAF6F1; border-color: #0B5240; color: #0B5240; font-weight: 600; }

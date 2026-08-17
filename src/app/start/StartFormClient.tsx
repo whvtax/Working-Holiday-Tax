@@ -62,6 +62,29 @@ const COPY = {
   },
 } as const
 
+/**
+ * Defined at module scope, not inside the form.
+ *
+ * A component declared in the render body is a new function on every render,
+ * so React tears the whole subtree down and rebuilds it after each keystroke -
+ * the input loses focus and only one character can be typed at a time.
+ */
+function Field({ label, error, hint, children }: {
+  label: React.ReactNode
+  error?: string
+  hint?: string
+  children: React.ReactNode
+}) {
+  return (
+    <div className="sf-fg">
+      <label className="sf-label">{label}<span className="sf-req">*</span></label>
+      {hint && <div className="sf-hint">{hint}</div>}
+      {children}
+      {error && <p className="sf-err">{error}</p>}
+    </div>
+  )
+}
+
 export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang }) {
   const [lang, setLang] = useState<FormLang>(initialLang)
   const T = (k: keyof typeof formStrings) => {
@@ -195,16 +218,6 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
     )
   }
 
-  const Field = ({ label, error, hint, children }: {
-    label: string; error?: string; hint?: string; children: React.ReactNode
-  }) => (
-    <div className="sf-fg">
-      <label className="sf-label">{label}<span className="sf-req">*</span></label>
-      {hint && <div className="sf-hint">{hint}</div>}
-      {children}
-      {error && <p className="sf-err">{error}</p>}
-    </div>
-  )
 
   return (
     <div className="sf-wrap">
@@ -224,32 +237,45 @@ export function StartFormClient({ lang: initialLang = 'en' }: { lang?: FormLang 
 
         <form onSubmit={handleSubmit} noValidate>
           <Field label={T('givenNames')} error={errors.fullName}>
-            <input className="sf-input" value={fullName} onChange={e => setFullName(e.target.value)}
-                   placeholder="As it appears on passport" autoComplete="given-name" />
+            <input className={`sf-input ${errors.fullName ? 'sf-input-err' : ''}`} type="text"
+                   placeholder="As it appears on passport" autoComplete="given-name" maxLength={60}
+                   value={fullName}
+                   onChange={e => { setFullName(e.target.value); setErrors(p => ({ ...p, fullName: '' })) }} />
           </Field>
 
           <Field label={T('lastName')} error={errors.lastName}>
-            <input className="sf-input" value={lastName} onChange={e => setLastName(e.target.value)}
-                   placeholder="e.g. Smith" autoComplete="family-name" />
+            <input className={`sf-input ${errors.lastName ? 'sf-input-err' : ''}`} type="text"
+                   placeholder="e.g. Smith" autoComplete="family-name" maxLength={60}
+                   value={lastName}
+                   onChange={e => { setLastName(e.target.value); setErrors(p => ({ ...p, lastName: '' })) }} />
           </Field>
 
           <Field label={T('dob')} error={errors.dob}>
-            <input className="sf-input" type="date" value={dob} onChange={e => setDob(e.target.value)} />
+            <input className={`sf-input ${errors.dob ? 'sf-input-err' : ''}`} type="date" autoComplete="bday"
+                   value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({ ...p, dob: '' })) }} />
           </Field>
 
           <Field label={T('tfnRequired')} error={errors.tfn}>
-            <input className="sf-input" value={tfn} onChange={e => setTfn(e.target.value)}
-                   placeholder="XXX XXX XXX" inputMode="numeric" />
+            <input className={`sf-input ${errors.tfn ? 'sf-input-err' : ''}`} type="text"
+                   placeholder="XXX XXX XXX" inputMode="numeric"
+                   value={tfn}
+                   onChange={e => { setTfn(e.target.value.replace(/[^0-9\s]/g, '')); setErrors(p => ({ ...p, tfn: '' })) }}
+                   onKeyDown={e => { if (!/^[0-9\s]$/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key) && !(e.ctrlKey || e.metaKey)) e.preventDefault() }} />
           </Field>
 
           <Field label={T('whatsapp')} hint={c.waHint} error={errors.waNumber}>
-            <input className="sf-input" value={waNumber} onChange={e => setWaNumber(e.target.value)}
-                   placeholder="+44 7XXX XXXXXX" inputMode="tel" autoComplete="tel" />
+            <input className={`sf-input ${errors.waNumber ? 'sf-input-err' : ''}`} type="tel"
+                   placeholder="+44 7XXX XXXXXX" autoComplete="tel" inputMode="tel" maxLength={30}
+                   value={waNumber}
+                   onChange={e => { setWaNumber(e.target.value); setErrors(p => ({ ...p, waNumber: '' })) }}
+                   onKeyDown={e => { if (!/^[0-9+\s]$/.test(e.key) && !['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key) && !(e.ctrlKey || e.metaKey)) e.preventDefault() }} />
           </Field>
 
           <Field label={T('homeCountry')} error={errors.country}>
-            <input className="sf-input" value={country} onChange={e => setCountry(e.target.value)}
-                   placeholder="e.g. United Kingdom" />
+            <input className={`sf-input ${errors.country ? 'sf-input-err' : ''}`} type="text"
+                   placeholder="e.g. United Kingdom" maxLength={60}
+                   value={country}
+                   onChange={e => { setCountry(e.target.value); setErrors(p => ({ ...p, country: '' })) }} />
           </Field>
 
           <Field label={T('hasMedicare')} error={errors.hasMedicare}>
@@ -323,7 +349,7 @@ export default StartFormClient
 
 /* Mirrors /tax-form's card so the two are visually identical. */
 const styles = `
-  .sf-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 22px 16px 60px; }
+  .sf-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; padding: 26px 16px 50px; }
   .sf-card { width: 100%; max-width: 480px; background: #fff; border-radius: 24px; box-shadow: 0 2px 24px rgba(11,82,64,0.07); overflow: hidden; }
   .sf-header { padding: 20px 14px 10px; text-align: center; }
   .sf-title { font-weight: 800; color: #080F0D; letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 4px; white-space: nowrap; }
@@ -339,9 +365,17 @@ const styles = `
   .sf-req { color: #0B5240; margin-left: 3px; }
   .sf-hint { font-size: 12px; color: #5A7B70; margin-bottom: 6px; line-height: 1.4; }
   .sf-link { color: #0B5240; text-decoration: underline; }
-  .sf-input { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; outline: none; }
+  .sf-input { display: block; width: 100%; padding: 12px 14px; font-size: 14px; font-family: inherit; color: #080F0D; background: #F5F9F7; border: 1.5px solid #D4EAE2; border-radius: 12px; outline: none; transition: border-color .15s; -webkit-appearance: none; }
+  .sf-input-err { border-color: #FCA5A5 !important; background: #FFF5F5 !important; }
   .sf-input::placeholder { color: #9DB5AC; }
   .sf-input:focus { border-color: #0B5240; }
+  /* Copied verbatim from the original form: without the min-height a date
+     input renders shorter than every other field, and without the 16px
+     override iOS zooms the whole page in when it gets focus. */
+  input[type="date"].sf-input { min-height: 47px; line-height: 1.4; }
+  @media (max-width: 640px) {
+    .sf-input, input[type="text"], input[type="email"], input[type="tel"], input[type="date"] { font-size: 16px !important; }
+  }
   .sf-radios { display: flex; flex-direction: column; gap: 8px; }
   .sf-radio { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; border: 1.5px solid #D4EAE2; font-size: 13px; font-weight: 500; color: #587066; background: #F5F9F7; cursor: pointer; width: 100%; }
   .sf-radio.is-on { background: #EAF6F1; border-color: #0B5240; color: #0B5240; font-weight: 600; }
