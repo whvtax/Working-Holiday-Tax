@@ -83,7 +83,7 @@ export function CompletionLinkPanel({ taskId, firstName }: { taskId: string; fir
       <div style={{ fontSize: 11, color: '#587066', lineHeight: 1.5, marginBottom: 10 }}>
         {url
           ? `Valid until ${new Date(expiresAt).toLocaleDateString('en-AU')}. Single use — it stops working once they submit.`
-          : 'Form 1 is in. Issue a link so they can complete the rest.'}
+          : 'Issue a link so the client can complete the rest.'}
       </div>
 
       {url && (
