@@ -333,8 +333,8 @@ export default function Dashboard() {
             {health && (health.whatsappLive
               ? <span className="waPill live" title={health.whatsappDetail}>● WhatsApp: Connected</span>
               : health.whatsappConfigured
-                ? <span className="waPill bad" title={health.whatsappDetail}>● WhatsApp: NOT WORKING — check token</span>
-                : <span className="waPill test" title={health.whatsappDetail || 'Cloud API credentials not active — outbound messages are NOT being sent'}>● WhatsApp: TEST MODE — not sending</span>)}
+                ? <a className="waPill bad" href="/crm/whatsapp/connect" title={`${health.whatsappDetail || ''} — click to reconnect`}>● WhatsApp: NOT WORKING — connect</a>
+                : <a className="waPill test" href="/crm/whatsapp/connect" title={health.whatsappDetail || 'Cloud API credentials not active — click to connect'}>● WhatsApp: TEST MODE — connect</a>)}
             {!health && <span className="hdot"><span className="dot" style={{ background: 'var(--warn)' }} /><span className="hlabel">connecting…</span></span>}
           </div>
           <div style={{ position: 'relative' }}>

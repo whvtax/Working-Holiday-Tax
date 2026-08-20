@@ -30,6 +30,39 @@ export function metaVerifyToken(): string | undefined {
   return process.env.META_VERIFY_TOKEN || process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN;
 }
 
+// ------------------------------------------------------------------
+// Runtime credentials (embedded signup / manual paste) live in the DB so they
+// can be updated WITHOUT a redeploy. Stored values win over env vars. This is
+// what lets the "Connect WhatsApp" flow drop in a working token instantly.
+// ------------------------------------------------------------------
+export const WA_TOKEN_KEY = 'wa_access_token';
+export const WA_PHONE_ID_KEY = 'wa_phone_number_id';
+export const WA_WABA_KEY = 'wa_waba_id';
+
+export async function resolveWaCreds(): Promise<{ token?: string; phoneId?: string; source: 'stored' | 'env' | 'none' }> {
+  let storedToken: string | undefined;
+  let storedPhone: string | undefined;
+  try {
+    const store = getStore();
+    const [t, p] = await Promise.all([store.getSetting(WA_TOKEN_KEY), store.getSetting(WA_PHONE_ID_KEY)]);
+    storedToken = (typeof t === 'string' && t) ? t : undefined;
+    storedPhone = (typeof p === 'string' && p) ? p : undefined;
+  } catch { /* store unavailable: fall back to env */ }
+  const token = storedToken || waAccessToken();
+  const phoneId = storedPhone || waPhoneNumberId();
+  const source = (storedToken || storedPhone) ? 'stored' : (token || phoneId) ? 'env' : 'none';
+  return { token, phoneId, source };
+}
+
+/** Persist connect-flow credentials so the channel goes live with no redeploy. */
+export async function saveWaCreds(token: string, phoneId: string, wabaId?: string): Promise<void> {
+  const store = getStore();
+  await store.setSetting(WA_TOKEN_KEY, token);
+  await store.setSetting(WA_PHONE_ID_KEY, phoneId);
+  if (wabaId) await store.setSetting(WA_WABA_KEY, wabaId);
+  _verifyCache = null; // force the health dot to re-check against the new creds
+}
+
 export interface SendResult {
   ok: boolean;
   providerId?: string;
@@ -50,8 +83,7 @@ let _verifyCache: { at: number; live: boolean; detail: string } | null = null;
 const VERIFY_TTL_MS = 30_000;
 
 export async function verifyChannel(): Promise<{ configured: boolean; live: boolean; detail: string }> {
-  const token = waAccessToken();
-  const phoneId = waPhoneNumberId();
+  const { token, phoneId } = await resolveWaCreds();
   if (!token || !phoneId) return { configured: false, live: false, detail: 'test mode (credentials not set)' };
 
   const nowMs = Date.now();
@@ -82,8 +114,7 @@ export async function verifyChannel(): Promise<{ configured: boolean; live: bool
 
 /** Transmit a plain text message to a WhatsApp number via Meta's Cloud API. */
 export async function sendWhatsAppText(toWaId: string, body: string): Promise<SendResult> {
-  const token = waAccessToken();
-  const phoneId = waPhoneNumberId();
+  const { token, phoneId } = await resolveWaCreds();
   if (!token || !phoneId) return { ok: true, skipped: true }; // test mode: not connected yet
 
   const to = (toWaId || '').replace(/[^\d]/g, '');

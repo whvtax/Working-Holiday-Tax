@@ -63,7 +63,9 @@ header{
 .will-scope .logo small{display:block;font-size:10px;font-weight:500;color:var(--ink3);letter-spacing:.4px;margin-top:-2px}
 .will-scope .hspacer{flex:1}
 .will-scope .health{display:flex;gap:10px;align-items:center;font-size:10.5px;color:var(--ink3)}
-.will-scope .waPill{font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:9px;white-space:nowrap;cursor:default}
+.will-scope .waPill{font-size:10.5px;font-weight:700;padding:2px 9px;border-radius:9px;white-space:nowrap;cursor:default;text-decoration:none;display:inline-block}
+.will-scope a.waPill{cursor:pointer}
+.will-scope a.waPill:hover{filter:brightness(.95);text-decoration:underline}
 .will-scope .waPill.live{color:#0a7d3c;background:rgba(37,211,102,.14)}
 .will-scope .waPill.test{color:#b23b00;background:rgba(208,80,0,.12)}
 .will-scope .waPill.bad{color:#c0202a;background:rgba(208,59,59,.14)}
