@@ -81,7 +81,10 @@ function maskWa(n: string): string {
  *  before any filtering so a dropped message still leaves a trace. `wabaId` is
  *  the entry id — the single most useful field when the same business owns
  *  several WhatsApp Business Accounts and only one of them is the live one. */
-export function inboundSnapshot(payload: unknown): Record<string, unknown> {
+// NOT exported: Next.js validates route files against a fixed set of allowed
+// exports (GET/POST/dynamic/maxDuration/...) and fails the build on anything
+// else. `tsc --noEmit` does not check this — only `next build` does.
+function inboundSnapshot(payload: unknown): Record<string, unknown> {
   const out = {
     wabaId: null as string | null,
     phoneNumberId: null as string | null,
