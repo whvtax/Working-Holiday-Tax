@@ -25,16 +25,16 @@ function buildCsp(nonce: string): string {
     // scripts they load) execute. Next.js auto-applies the nonce to its own
     // hydration scripts when it sees a nonce in the CSP. 'unsafe-eval' dev-only.
     // https://www.googletagmanager.com: GA4's gtag.js loader script.
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.googletagmanager.com${isDev ? " 'unsafe-eval'" : ''}`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://www.googletagmanager.com https://connect.facebook.net${isDev ? " 'unsafe-eval'" : ''}`,
     // Styles still use 'unsafe-inline' (next/font + many inline styles); style
     // nonces are lower-value and high-churn here.
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com",
     "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au https://lh3.googleusercontent.com",
-    "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com",
+    "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.facebook.com https://web.facebook.com https://staticxx.facebook.com",
     // GA4 beacons: google-analytics.com (+ regional subdomains) and the
     // googletagmanager.com config fetch.
-    "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
+    "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://graph.facebook.com https://www.facebook.com https://connect.facebook.net",
     "media-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",

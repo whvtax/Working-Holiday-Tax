@@ -11,18 +11,20 @@ const staticCsp = {
       // Next.js requires unsafe-inline for hydration chunks. 'unsafe-eval' is only
       // needed for dev HMR, so it's excluded from production builds.
       // https://www.googletagmanager.com: GA4's gtag.js loader script.
-      `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
+      // https://connect.facebook.net: WhatsApp Embedded Signup (Facebook JS SDK) on /crm/whatsapp/connect.
+      `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''}`,
       // Tailwind inline styles + Google Fonts stylesheet
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       // Google Fonts files
       "font-src 'self' https://fonts.gstatic.com",
       // Images: self, data URIs, blob (object URLs), Supabase Storage, own domain (OG image)
       "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://workingholidaytax.com.au https://lh3.googleusercontent.com",
-      // PDF preview iframes (blob: object URLs) + YouTube embeds
-      "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com",
+      // PDF preview iframes (blob: object URLs) + YouTube embeds + Facebook login dialog (Embedded Signup)
+      "frame-src 'self' blob: https://www.youtube.com https://www.youtube-nocookie.com https://youtube.com https://www.facebook.com https://web.facebook.com https://staticxx.facebook.com",
       // Supabase API calls + same-origin
       // + GA4 beacons (google-analytics.com + regional subdomains, googletagmanager.com config fetch)
-      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com",
+      // + Facebook Graph / login endpoints (Embedded Signup)
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://graph.facebook.com https://www.facebook.com https://connect.facebook.net",
       "media-src 'self'",
       "object-src 'none'",
       "base-uri 'self'",
@@ -39,7 +41,10 @@ const securityHeaders = [
   { key: 'Referrer-Policy',         value: 'strict-origin-when-cross-origin' },
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
   { key: 'Permissions-Policy',      value: 'camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(), usb=(), magnetometer=(), accelerometer=(), gyroscope=()' },
-  { key: 'Cross-Origin-Opener-Policy',   value: 'same-origin' },
+  // 'same-origin-allow-popups' (not 'same-origin') so the Facebook Embedded
+  // Signup login popup can post its result back to the opener. Still isolates
+  // this site from being reached by other windows.
+  { key: 'Cross-Origin-Opener-Policy',   value: 'same-origin-allow-popups' },
   { key: 'Cross-Origin-Resource-Policy', value: 'same-origin' },
   { key: 'X-DNS-Prefetch-Control',       value: 'on' },
   // Static CSP only when NOT in nonce mode (middleware owns CSP in nonce mode).
