@@ -11,7 +11,7 @@
 import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming } from '@/lib/will/service';
 import { getStore } from '@/lib/will/store';
-import { metaAppSecret, metaVerifyToken, waPhoneNumberId } from '@/lib/will/channel';
+import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited } from '@/lib/rate-limit';
 
 // REL-01: allow the function up to 60s so a Claude call (30s x up to 2 attempts)
@@ -20,6 +20,8 @@ import { isRateLimited } from '@/lib/rate-limit';
 export const maxDuration = 60;
 
 const MAX_WEBHOOK_BYTES = 256 * 1024;
+/** Throttle for the signature-rejection audit line (DIAG-02). */
+let _lastSigFailLog = 0;
 // COST-01: bound paid Anthropic calls + DB writes triggered by a public endpoint.
 const PER_SENDER_MAX = 12;   // inbound messages per sender per rate-limit window
 const GLOBAL_INBOUND_MAX = 400; // inbound messages across ALL senders per window
@@ -68,12 +70,75 @@ function inboundCutoffTs(): number {
   return Number.isFinite(v) ? v : 0;
 }
 
+/** Mask a phone number for the audit log: keep enough to recognise a sender,
+ *  never enough to be a leak if the log is ever exported. */
+function maskWa(n: string): string {
+  const d = (n || '').replace(/\D/g, '');
+  return d.length <= 4 ? '***' : `${d.slice(0, 4)}***${d.slice(-3)}`;
+}
+
+/** A compact, side-effect-free description of an inbound payload, recorded
+ *  before any filtering so a dropped message still leaves a trace. `wabaId` is
+ *  the entry id — the single most useful field when the same business owns
+ *  several WhatsApp Business Accounts and only one of them is the live one. */
+export function inboundSnapshot(payload: unknown): Record<string, unknown> {
+  const out = {
+    wabaId: null as string | null,
+    phoneNumberId: null as string | null,
+    displayPhoneNumber: null as string | null,
+    fields: [] as string[],
+    messageCount: 0,
+    types: [] as string[],
+    senders: [] as string[],
+    timestamps: [] as number[],
+    hasHistory: false,
+    statusesOnly: false,
+  };
+  try {
+    const entries = (payload as { entry?: unknown[] }).entry ?? [];
+    for (const e of entries) {
+      const id = (e as { id?: string }).id;
+      if (id && !out.wabaId) out.wabaId = String(id);
+      for (const ch of ((e as { changes?: unknown[] }).changes ?? [])) {
+        const field = (ch as { field?: string }).field;
+        if (field && !out.fields.includes(field)) out.fields.push(field);
+        const val = (ch as {
+          value?: {
+            messages?: WaMessage[];
+            statuses?: unknown[];
+            history?: unknown;
+            metadata?: { phone_number_id?: string; display_phone_number?: string };
+          };
+        }).value ?? {};
+        if (val.metadata?.phone_number_id) out.phoneNumberId = String(val.metadata.phone_number_id);
+        if (val.metadata?.display_phone_number) out.displayPhoneNumber = String(val.metadata.display_phone_number);
+        if (val.history) out.hasHistory = true;
+        if (!val.messages?.length && val.statuses?.length) out.statusesOnly = true;
+        for (const m of val.messages ?? []) {
+          out.messageCount += 1;
+          if (m.type && !out.types.includes(m.type)) out.types.push(m.type);
+          if (m.from) out.senders.push(maskWa(m.from));
+          if (m.timestamp) out.timestamps.push(Number(m.timestamp));
+        }
+      }
+    }
+  } catch { /* malformed payload: report what we managed to read */ }
+  return out;
+}
+
 /** Extract text messages + sender profile names from a Meta webhook payload.
  *  WH-01: only accept messages addressed to OUR phone number id (when we know
- *  it), so a valid-HMAC payload for a different WABA cannot inject customers. */
-function extract(payload: unknown): { msg: WaMessage; name?: string }[] {
+ *  it), so a valid-HMAC payload for a different WABA cannot inject customers.
+ *
+ *  CONFIG-02: `ourPhoneId` is passed IN (resolved via resolveWaCreds) rather
+ *  than read from the env here. The Connect page stores the phone number id in
+ *  the DB, where it OVERRIDES the env var for outbound — so reading only the
+ *  env var meant that connecting through the page could switch sending to a new
+ *  id while this filter kept matching the old one, silently dropping every
+ *  inbound message with no error anywhere. Both directions now resolve the id
+ *  the same way. */
+function extract(payload: unknown, ourPhoneId?: string): { msg: WaMessage; name?: string }[] {
   const out: { msg: WaMessage; name?: string }[] = [];
-  const ourPhoneId = waPhoneNumberId();
   try {
     const entries = (payload as { entry?: unknown[] }).entry ?? [];
     for (const e of entries) {
@@ -105,6 +170,21 @@ export async function POST(req: Request) {
   const raw = await req.text();
   if (Buffer.byteLength(raw, 'utf8') > MAX_WEBHOOK_BYTES) return new Response('Too large', { status: 413 });
   if (!verifySignature(raw, req.headers.get('x-hub-signature-256'))) {
+    // DIAG-02: a wrong META_APP_SECRET rejects every real message here and used
+    // to leave NO trace at all — inbound simply went quiet. Record it, but at
+    // most once a minute: this is a public endpoint and an unthrottled write
+    // would be an amplification vector.
+    const nowMs = Date.now();
+    if (nowMs - _lastSigFailLog > 60_000) {
+      _lastSigFailLog = nowMs;
+      try {
+        await getStore().audit('channel', 'inbound_signature_rejected', {
+          hasSecret: !!metaAppSecret(),
+          headerPresent: !!req.headers.get('x-hub-signature-256'),
+          hint: 'META_APP_SECRET does not match the Meta app that sent this webhook',
+        });
+      } catch { /* diagnostics only */ }
+    }
     return new Response('Invalid signature', { status: 401 });
   }
 
@@ -112,7 +192,23 @@ export async function POST(req: Request) {
   try { payload = JSON.parse(raw); } catch { return new Response('OK', { status: 200 }); }
 
   const store = getStore();
-  const items = extract(payload);
+  const { phoneId: ourPhoneId } = await resolveWaCreds();
+
+  // DIAG-01: record what actually arrived BEFORE any filter runs. Inbound
+  // failures used to be invisible — a message could be dropped by the phone-id
+  // filter, the timestamp cutoff or the returning-contact list and leave no
+  // trace anywhere, which made "nothing reached Will" impossible to diagnose
+  // without guessing. This one line is the difference between an answer and an
+  // afternoon of speculation. Never throws: diagnostics must not break inbound.
+  try {
+    const snap = inboundSnapshot(payload);
+    await store.audit('channel', 'inbound_received', {
+      ...snap, ourPhoneId: ourPhoneId ?? null, cutoff: inboundCutoffTs() || null,
+      phoneIdMatches: !snap.phoneNumberId || !ourPhoneId || snap.phoneNumberId === ourPhoneId,
+    });
+  } catch { /* diagnostics only */ }
+
+  const items = extract(payload, ourPhoneId);
 
   // REL-01: process BEFORE acking (Meta allows ~10s and our work is a few
   // seconds), so a serverless freeze after the response can never drop a

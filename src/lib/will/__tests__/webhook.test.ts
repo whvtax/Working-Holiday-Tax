@@ -16,7 +16,13 @@ jest.mock('@/lib/will/service', () => ({ handleIncoming: (...a: unknown[]) => ha
 const claimInbound = jest.fn().mockResolvedValue(true);
 const releaseInbound = jest.fn().mockResolvedValue(undefined);
 const audit = jest.fn().mockResolvedValue(undefined);
-const getSetting = jest.fn().mockResolvedValue('SUPERVISED');
+// Key-aware on purpose. The webhook now resolves the phone number id through
+// resolveWaCreds(), which reads wa_access_token / wa_phone_number_id from the
+// store before falling back to the env vars. A blanket mock that answered
+// 'SUPERVISED' to every key made the store look like it held a stored phone id
+// of "SUPERVISED", which then beat the env id and dropped every message.
+const getSetting = jest.fn().mockImplementation(async (key: string) =>
+  (key === 'ai_mode' ? 'SUPERVISED' : undefined));
 const isBlockedContact = jest.fn().mockResolvedValue(false);
 jest.mock('@/lib/will/store', () => ({
   getStore: () => ({ claimInbound, releaseInbound, audit, getSetting, isBlockedContact }),
@@ -49,7 +55,10 @@ beforeEach(() => {
   jest.clearAllMocks();
   claimInbound.mockResolvedValue(true);
   isBlockedContact.mockResolvedValue(false);
-  getSetting.mockResolvedValue('SUPERVISED');
+  // Key-aware (see the definition above): 'SUPERVISED' only for ai_mode, so the
+  // stored-credential lookup in resolveWaCreds() correctly finds nothing and
+  // falls back to the env vars this suite sets.
+  getSetting.mockImplementation(async (key: string) => (key === 'ai_mode' ? 'SUPERVISED' : undefined));
   process.env.META_APP_SECRET = SECRET;
   process.env.META_VERIFY_TOKEN = VERIFY;
 });
@@ -105,6 +114,31 @@ describe('WH-01: phone number id routing', () => {
     const res = await POST(signed(textPayload('w2', '999999999')));
     expect(res.status).toBe(200);
     expect(handleIncoming).toHaveBeenCalledTimes(1);
+  });
+
+  // CONFIG-02 regression. The Connect page stores the phone number id in the DB,
+  // where it OVERRIDES the env var for SENDING. The webhook used to read only
+  // the env var, so connecting through that page could point outbound at a new
+  // id while inbound kept matching the old one — every incoming message silently
+  // discarded, no error logged anywhere. Both directions must agree.
+  it('honours a phone number id stored in the DB over the env var', async () => {
+    process.env.WHATSAPP_PHONE_NUMBER_ID = '999999999';       // stale env value
+    getSetting.mockImplementation(async (key: string) => {
+      if (key === 'ai_mode') return 'SUPERVISED';
+      if (key === 'wa_phone_number_id') return '448522015011534';  // what Connect saved
+      return undefined;
+    });
+
+    // Addressed to the STORED id: must be processed.
+    const good = await POST(signed(textPayload('w3', '448522015011534')));
+    expect(good.status).toBe(200);
+    expect(handleIncoming).toHaveBeenCalledTimes(1);
+
+    // Addressed to the stale ENV id: must be rejected, not silently accepted.
+    handleIncoming.mockClear();
+    const stale = await POST(signed(textPayload('w4', '999999999')));
+    expect(stale.status).toBe(200);
+    expect(handleIncoming).not.toHaveBeenCalled();
   });
 });
 

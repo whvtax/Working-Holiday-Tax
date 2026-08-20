@@ -5,8 +5,29 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const APP_ID = process.env.NEXT_PUBLIC_META_APP_ID || '1388978866435944';
-const CONFIG_ID = process.env.NEXT_PUBLIC_META_EMBEDDED_CONFIG_ID || '1723636208969628';
-const GRAPH_VERSION = 'v21.0';
+// CONFIG-03: .env.example documented this as NEXT_PUBLIC_META_CONFIG_ID while the
+// code only read NEXT_PUBLIC_META_EMBEDDED_CONFIG_ID — setting the documented
+// name in Vercel silently did nothing and fell through to the hardcoded default.
+// Both names are accepted now; the documented one is listed first.
+const CONFIG_ID =
+  process.env.NEXT_PUBLIC_META_CONFIG_ID ||
+  process.env.NEXT_PUBLIC_META_EMBEDDED_CONFIG_ID ||
+  '1723636208969628';
+const GRAPH_VERSION = 'v23.0';
+
+// Which Embedded Signup flow Meta should present.
+//
+// 'whatsapp_business_app_onboarding' is COEXISTENCE: it offers to connect a
+// number that is ALREADY running in the WhatsApp Business app. The number stays
+// on the phone, and the confirmation code arrives inside WhatsApp rather than by
+// SMS. This was previously sent as an EMPTY STRING, which made Meta fall back to
+// its default flow — "create a new WhatsApp Business account" — and that flow
+// only ever offered a brand-new or virtual number, never the existing one. That
+// single empty value is why every attempt to connect the real number dead-ended.
+//
+// '' (empty) keeps Meta's default new-account flow, for a number that is not
+// running in the WhatsApp Business app at all.
+const COEXISTENCE_FEATURE = 'whatsapp_business_app_onboarding';
 
 declare global { interface Window { FB?: unknown; fbAsyncInit?: () => void } }
 
@@ -61,7 +82,7 @@ export default function ConnectWhatsApp() {
     }
   }, []);
 
-  const launch = useCallback(() => {
+  const launch = useCallback((featureType: string) => {
     if (!window.FB) { setStatus({ kind: 'error', msg: 'Facebook SDK not loaded yet, try again in a second' }); return; }
     signup.current = {};
     setStatus({ kind: 'working', msg: 'Opening Facebook…' });
@@ -74,7 +95,7 @@ export default function ConnectWhatsApp() {
       config_id: CONFIG_ID,
       response_type: 'code',
       override_default_response_type: true,
-      extras: { setup: {}, featureType: '', sessionInfoVersion: '3' },
+      extras: { setup: {}, featureType, sessionInfoVersion: '3' },
     });
   }, [post]);
 
@@ -90,11 +111,30 @@ export default function ConnectWhatsApp() {
       </p>
 
       <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginTop: 20 }}>
-        <h2 style={{ fontSize: 16, margin: '0 0 8px' }}>Option 1 — one click (recommended)</h2>
-        <p style={{ color: '#5c6572', fontSize: 13, marginTop: 0 }}>Click, log in with Facebook, pick your number, approve. That’s it.</p>
-        <button onClick={launch} disabled={!sdkReady || status.kind === 'working'}
+        <h2 style={{ fontSize: 16, margin: '0 0 8px' }}>Option 1 — connect the number already on your phone</h2>
+        <p style={{ color: '#5c6572', fontSize: 13, marginTop: 0 }}>
+          For a number running in the <strong>WhatsApp Business app</strong>. The number stays on the phone and the
+          confirmation code arrives inside WhatsApp, not by SMS.
+        </p>
+        <button onClick={() => launch(COEXISTENCE_FEATURE)} disabled={!sdkReady || status.kind === 'working'}
           style={{ background: '#0E5C42', color: '#fff', border: 'none', borderRadius: 8, padding: '11px 18px', fontSize: 14, fontWeight: 700, cursor: 'pointer', opacity: sdkReady ? 1 : 0.6 }}>
-          {sdkReady ? 'Connect WhatsApp with Facebook' : 'Loading Facebook…'}
+          {sdkReady ? 'Connect my existing WhatsApp number' : 'Loading Facebook…'}
+        </button>
+        <p style={{ color: '#a15c00', fontSize: 12.5, marginBottom: 0 }}>
+          ⚠️ Stop if Meta asks to verify the number by SMS or phone call — that is the flow that moves the number
+          off the phone. This flow should never ask for it.
+        </p>
+      </div>
+
+      <div style={{ border: '1px solid #e5e7eb', borderRadius: 12, padding: 20, marginTop: 16 }}>
+        <h2 style={{ fontSize: 16, margin: '0 0 8px' }}>Option 1b — register a different number</h2>
+        <p style={{ color: '#5c6572', fontSize: 13, marginTop: 0 }}>
+          Meta’s standard flow, for a number that is <strong>not</strong> in the WhatsApp Business app. Do not use this
+          for a number you still want to use on your phone.
+        </p>
+        <button onClick={() => launch('')} disabled={!sdkReady || status.kind === 'working'}
+          style={{ background: '#fff', color: '#1f2328', border: '1px solid #d1d5db', borderRadius: 8, padding: '10px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+          Standard signup (new number)
         </button>
       </div>
 
