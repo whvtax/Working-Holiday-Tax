@@ -20,7 +20,6 @@ function Field({ label, required, children, error, hint }: { label: string; requ
     <div style={{marginBottom:'14px'}}>
       <label style={{display:'block',fontSize:'13px',fontWeight:600,color:'#1A2822',marginBottom:'6px'}}>
         {label}
-        {required && <span style={{color:'#0B5240',marginLeft:'3px'}}>*</span>}
       </label>
       {hint && <div style={{fontSize:'12px',color:'#5A7B70',marginBottom:'6px',lineHeight:1.4}}>{hint}</div>}
       {children}
