@@ -1528,7 +1528,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 style={S.sbBtn} badgeStyle={S.sbBadge}
                 onClick={()=>{ window.location.href = '/crm/partners' }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
-              <SbButton label="WhatsApp"
+              <SbButton label="Will"
                 style={S.sbBtn} badgeStyle={S.sbBadge}
                 onClick={()=>{ window.location.href = '/crm/whatsapp' }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M8.5 8.8c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.6 1.4c.1.2 0 .4-.1.5l-.4.5c-.1.1-.2.3 0 .5.3.6.9 1.2 1.6 1.6.2.1.4.1.5 0l.5-.5c.1-.2.3-.2.5-.1l1.4.7c.3.1.4.3.4.5s0 .8-.3 1.1c-.3.3-.9.6-1.4.6-1 0-2.6-.6-3.8-1.9-1.3-1.2-1.9-2.8-1.9-3.8 0-.4.1-.8.3-1.1z" fill="currentColor"/></svg>}/>

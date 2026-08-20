@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { validateSession } from '@/lib/crm-store'
 import nextDynamic from 'next/dynamic'
+import './will-scoped.css'
 
 const WillDashboard = nextDynamic(() => import('@/components/will/Dashboard'), {
   ssr: false,
@@ -20,5 +21,5 @@ export default async function WhatsAppPage() {
   if (!validateSession(token)) {
     redirect('/crm')
   }
-  return <WillDashboard />
+  return <div className="will-scope"><WillDashboard /></div>
 }
