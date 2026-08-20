@@ -147,6 +147,10 @@ export interface Store {
   setMessageStatus(id: string, status: MessageRow['status']): Promise<void>;
   /** Clear the unread badge for a customer (chat opened / read). */
   markCustomerRead(id: string): Promise<void>;
+  /** Fresh-start filter: true if this WhatsApp number is a KNOWN pre-existing
+   *  contact (an old/returning customer we deliberately keep out of Will).
+   *  Genuinely new numbers return false and are allowed in. */
+  isBlockedContact(waId: string): Promise<boolean>;
   /** RACE-02: atomically move a PENDING_APPROVAL draft to QUEUED. Returns true if
    *  THIS caller won the claim (so only one concurrent approval actually sends). */
   claimMessageForSend(id: string): Promise<boolean>;

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { STAGE_GROUPS, STATE_LABELS, CustomerState } from '@/lib/will/state-machine';
 import type { CustomerRow, MessageRow, TaskRow, TemplateRow, JobRow } from '@/lib/will/store';
 import { ASSISTANT_NAME } from '@/lib/will/config';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import Simulator from './Simulator';
 
 type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'insights' | 'learning' | 'simulator';
@@ -71,7 +72,15 @@ const timeAgo = (iso: string | null) => {
 const incLabel = (i: CustomerRow['income']) => (i === 'TFN_ABN' ? 'TFN+ABN' : i === 'TFN' ? 'TFN' : '?');
 const feeOf = (i: CustomerRow['income']) => (i === 'TFN_ABN' ? '$385' : i === 'TFN' ? '$220' : null);
 // Jo's rule: identify customers by their WhatsApp phone number, never the profile name.
-const phoneOf = (waId: string) => (waId.startsWith('+') ? waId : '+' + waId);
+// Formatted exactly like the WhatsApp app (grouped spacing) via libphonenumber.
+const phoneOf = (waId: string) => {
+  const raw = waId.startsWith('+') ? waId : '+' + waId;
+  try {
+    const parsed = parsePhoneNumberFromString(raw);
+    if (parsed) return parsed.formatInternational(); // e.g. "+44 7851 436936"
+  } catch { /* fall back to the raw number */ }
+  return raw;
+};
 
 async function act(body: Record<string, unknown>) {
   const res = await fetch('/api/will/actions', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });

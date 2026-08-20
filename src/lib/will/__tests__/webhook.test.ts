@@ -17,8 +17,9 @@ const claimInbound = jest.fn().mockResolvedValue(true);
 const releaseInbound = jest.fn().mockResolvedValue(undefined);
 const audit = jest.fn().mockResolvedValue(undefined);
 const getSetting = jest.fn().mockResolvedValue('SUPERVISED');
+const isBlockedContact = jest.fn().mockResolvedValue(false);
 jest.mock('@/lib/will/store', () => ({
-  getStore: () => ({ claimInbound, releaseInbound, audit, getSetting }),
+  getStore: () => ({ claimInbound, releaseInbound, audit, getSetting, isBlockedContact }),
 }));
 
 import { GET, POST } from '@/app/api/will/webhook/route';
@@ -47,6 +48,7 @@ const textPayload = (id: string, phoneId?: string) => ({
 beforeEach(() => {
   jest.clearAllMocks();
   claimInbound.mockResolvedValue(true);
+  isBlockedContact.mockResolvedValue(false);
   getSetting.mockResolvedValue('SUPERVISED');
   process.env.META_APP_SECRET = SECRET;
   process.env.META_VERIFY_TOKEN = VERIFY;

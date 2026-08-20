@@ -21,6 +21,14 @@ interface Db {
   settings: Record<string, unknown>;
   audit: { id?: string; actor: string; action: string; detail: unknown; at: string }[];
   processed?: { id: string; at: string }[];
+  knownContacts?: string[]; // normalized numbers of pre-existing contacts kept OUT of Will
+}
+
+function normPhoneDigits(num: string | null | undefined): string | null {
+  let d = (num ?? '').replace(/\D/g, '');
+  if (!d) return null;
+  if (d.startsWith('00')) d = d.slice(2);
+  return d.length < 7 ? null : d;
 }
 
 const FILE = path.join(process.cwd(), '.data', 'store.json');
@@ -181,6 +189,13 @@ export class FileStore implements Store {
     const db = await load();
     const c = db.customers.find((x) => x.id === id);
     if (c && (c.unread || (c.unreadCount ?? 0) > 0)) { c.unread = false; c.unreadCount = 0; await persist(); }
+  }
+
+  async isBlockedContact(waId: string): Promise<boolean> {
+    const norm = normPhoneDigits(waId);
+    if (!norm) return false;
+    const db = await load();
+    return (db.knownContacts ?? []).includes(norm);
   }
 
   async listMessages(customerId: string) {

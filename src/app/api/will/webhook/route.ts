@@ -57,7 +57,16 @@ function verifySignature(rawBody: string, header: string | null): boolean {
   }
 }
 
-interface WaMessage { id: string; from: string; text?: { body: string }; type: string; }
+interface WaMessage { id: string; from: string; text?: { body: string }; type: string; timestamp?: string; }
+
+// Coexistence + fresh-start cutoff: when a number joins via coexistence, Meta
+// does a ONE-TIME history sync that pushes old chats into the webhook. Set
+// WILL_MIN_MESSAGE_TS (unix epoch seconds) to ignore anything older, so only
+// genuinely new conversations from that moment on enter Will. Unset = accept all.
+function inboundCutoffTs(): number {
+  const v = Number(process.env.WILL_MIN_MESSAGE_TS || 0);
+  return Number.isFinite(v) ? v : 0;
+}
 
 /** Extract text messages + sender profile names from a Meta webhook payload.
  *  WH-01: only accept messages addressed to OUR phone number id (when we know
@@ -72,8 +81,13 @@ function extract(payload: unknown): { msg: WaMessage; name?: string }[] {
         const val = (ch as { value?: { messages?: WaMessage[]; contacts?: { profile?: { name?: string }; wa_id?: string }[]; metadata?: { phone_number_id?: string } } }).value ?? {};
         // Drop deliveries for a different phone number id (only when ours is set).
         if (ourPhoneId && val.metadata?.phone_number_id && val.metadata.phone_number_id !== ourPhoneId) continue;
+        // Skip coexistence history-sync payloads entirely (they carry old chats).
+        if ((val as { history?: unknown }).history) continue;
         const nameByWa = new Map((val.contacts ?? []).map((c) => [c.wa_id, c.profile?.name]));
+        const cutoff = inboundCutoffTs();
         for (const m of val.messages ?? []) {
+          // Drop messages older than the fresh-start cutoff (history sync / backfill).
+          if (cutoff && m.timestamp && Number(m.timestamp) < cutoff) continue;
           if (m.type === 'text' && m.text?.body) out.push({ msg: m, name: nameByWa.get(m.from) });
         }
       }
@@ -112,6 +126,13 @@ export async function POST(req: Request) {
     try {
       claimed = await store.claimInbound(msg.id);
       if (!claimed) continue; // already processed / in-flight
+
+      // Fresh-start filter (Jo's rule): only 100% new customers enter Will. A
+      // pre-existing / returning contact is dropped even if they message again.
+      if (await store.isBlockedContact(msg.from)) {
+        await store.audit('policy_guard', 'returning_contact_skipped', { from: msg.from });
+        continue; // claim stands, so it is never reconsidered
+      }
 
       // Flood control on a public endpoint. When exceeded we KEEP the claim
       // (drop the message) and skip the engine so an abuser cannot amplify paid

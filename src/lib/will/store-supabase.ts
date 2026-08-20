@@ -286,6 +286,13 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_customers').update({ unread: false, unread_count: 0 }).eq('id', id);
   }
 
+  async isBlockedContact(waId: string): Promise<boolean> {
+    const norm = normPhone(waId);
+    if (!norm) return false;
+    const { data } = await this.sb().from('will_known_contacts').select('wa_norm').eq('wa_norm', norm).limit(1).maybeSingle();
+    return !!data;
+  }
+
   async listMessages(customerId: string): Promise<MessageRow[]> {
     const { data } = await this.sb().from('will_messages').select('*')
       .eq('customer_id', customerId).order('created_at', { ascending: true });
