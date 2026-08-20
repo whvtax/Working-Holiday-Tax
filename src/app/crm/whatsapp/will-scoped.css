@@ -147,8 +147,8 @@ main{padding:14px 16px 36px;max-width:none;margin-left:186px}
 /* WhatsApp-style unread badge: green pill with the unread count. */
 .will-scope .unreadbadge{flex:none;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:#25d366;color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center;display:inline-block}
 /* Unread rows read like WhatsApp: number in full-strength ink, preview a touch bolder. */
-.will-scope .citem.hasunread .cn b{color:var(--ink);font-weight:800}
-.will-scope .citem.hasunread .cm{color:var(--ink);font-weight:600}
+.will-scope .citem.hasunread .cn b{color:var(--ink);font-weight:500}
+.will-scope .citem.hasunread .cm{color:var(--ink);font-weight:500}
 .will-scope .crow2{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
 .will-scope .chip{font-size:9.5px;font-weight:500;padding:1px 6px;border-radius:6px;background:rgba(30,32,40,.04);color:var(--ink2)}
 .will-scope .chip.price{color:#3a72b8;background:rgba(42,120,214,.07)}
@@ -167,7 +167,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:186px}
 .will-scope .cav{width:33px;height:33px;border-radius:50%;background:var(--surface3);display:grid;place-items:center;font-size:16px;flex:none;overflow:hidden}
 .will-scope .cinfo{flex:1;min-width:0}
 .will-scope .cn{display:flex;justify-content:space-between;gap:6px}
-.will-scope .cn b{font-size:12.5px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.will-scope .cn b{font-size:12.5px;font-weight:450;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .will-scope .cn time{font-size:10.5px;color:var(--ink3);flex:none}
 .will-scope .cm{font-size:11px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
 .will-scope .cstate{font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:color-mix(in srgb,var(--sc) 14%, transparent);color:var(--sc);flex:none}
