@@ -67,6 +67,8 @@ const QUICK_TEMPLATES = ['req_abn', 'req_expenses', 'req_doc', 'medicare', 'paym
 
 export default function Dashboard() {
   const [view, setView] = useState<View>('pipeline');
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [focusTaskId, setFocusTaskId] = useState<string | null>(null);
   const [group, setGroup] = useState('sales');
   const [data, setData] = useState<StateData>({ customers: [], tasks: [], templates: [], pending: [] });
   const [health, setHealth] = useState<Health | null>(null);
@@ -120,6 +122,14 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => { refresh(); }, [refresh, view]);
+  // Scroll to and briefly highlight a task opened from the notification bell.
+  useEffect(() => {
+    if (view !== 'tasks' || !focusTaskId) return;
+    const el = document.getElementById('task-' + focusTaskId);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const tmr = setTimeout(() => setFocusTaskId(null), 2200);
+    return () => clearTimeout(tmr);
+  }, [view, focusTaskId, data]);
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); }, [view, chatSelId, loadChat]);
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); /* eslint-disable-next-line */ }, [data]);
   useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => { setReport(rp); if (rp.goal != null) setGoalInput(String(rp.goal)); }).catch(() => {}); }, [view, report]);
@@ -188,6 +198,14 @@ export default function Dashboard() {
   const g = STAGE_GROUPS.find((x) => x.id === group)!;
   const countFor = (states: readonly CustomerState[]) => data.customers.filter((c) => states.includes(c.state)).length;
   const openTasks = data.tasks.filter((t) => t.status === 'OPEN');
+  // Notifications, most urgent first (URGENT > CONFLICT > REVIEW), then newest.
+  const SEV_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
+  const notifTasks = [...openTasks].sort(
+    (a, b) => (SEV_RANK[a.severity] ?? 3) - (SEV_RANK[b.severity] ?? 3) || b.createdAt.localeCompare(a.createdAt),
+  );
+  const openTaskNotif = (id: string) => { setFocusTaskId(id); setView('tasks'); setNotifOpen(false); };
+  const greetHour = new Date().getHours();
+  const greeting = greetHour < 12 ? 'Good morning' : greetHour < 17 ? 'Good afternoon' : greetHour < 22 ? 'Good evening' : 'Working late';
   const awaiting = data.customers.filter((c) => ['PRICE_SENT', 'PAYMENT_PENDING'].includes(c.state));
   const awaitingPotential = awaiting.reduce((s, c) => s + (c.income === 'TFN_ABN' ? 385 : c.income === 'TFN' ? 220 : 0), 0);
   // We sent the last message, they went quiet, but never explicitly declined:
@@ -243,7 +261,12 @@ export default function Dashboard() {
             {v === 'learning' && suggestions.length > 0 && <span className="nbadge" style={{ background: 'var(--brand2)' }}>{suggestions.length}</span>}
           </button>
         ))}
-        <div className="sfoot"><span className="demopill">LOCAL</span></div>
+        <div className="sfoot">
+          <button onClick={() => { window.location.href = '/crm/dashboard'; }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7, width: '100%', padding: '9px', border: '1px solid var(--line2)', borderRadius: 10, background: 'var(--surface2)', color: 'var(--ink2)', fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit' }}>
+            ← Back to CRM
+          </button>
+        </div>
       </aside>
 
       <header>
@@ -265,7 +288,45 @@ export default function Dashboard() {
             ))}
             {!health && <span className="hdot"><span className="dot" style={{ background: 'var(--warn)' }} /><span className="hlabel">connecting…</span></span>}
           </div>
-          <div className="bell" onClick={() => setView('tasks')}>{BELL}{openTasks.length > 0 && <span className="badge">{openTasks.length}</span>}</div>
+          <div style={{ position: 'relative' }}>
+            <div className="bell" onClick={() => setNotifOpen((o) => !o)}>{BELL}{openTasks.length > 0 && <span className="badge">{openTasks.length}</span>}</div>
+            {notifOpen && (
+              <>
+                <div onClick={() => setNotifOpen(false)} style={{ position: 'fixed', inset: 0, zIndex: 998 }} />
+                <div style={{ position: 'absolute', top: 34, right: 0, width: 320, maxHeight: 420, overflowY: 'auto', background: 'var(--surface)', border: '1px solid var(--line2)', borderRadius: 14, boxShadow: '0 12px 40px rgba(20,22,30,.18)', zIndex: 999, padding: 6 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 10px 6px' }}>
+                    <span style={{ fontWeight: 700, fontSize: 12.5 }}>Notifications</span>
+                    <span style={{ fontSize: 11, color: 'var(--ink3)' }}>{notifTasks.length} open</span>
+                  </div>
+                  {notifTasks.length === 0 && (
+                    <div style={{ padding: '14px 10px', fontSize: 12, color: 'var(--ink3)' }}>All clear. Nothing needs you right now 🎉</div>
+                  )}
+                  {notifTasks.slice(0, 10).map((t) => {
+                    const dot = t.severity === 'URGENT' ? 'var(--crit)' : t.severity === 'CONFLICT' ? 'var(--warn)' : 'var(--ink3)';
+                    return (
+                      <button key={t.id} onClick={() => openTaskNotif(t.id)}
+                        style={{ display: 'flex', gap: 9, alignItems: 'flex-start', width: '100%', textAlign: 'left', border: 'none', background: 'none', cursor: 'pointer', padding: '9px 10px', borderRadius: 10, fontFamily: 'inherit' }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--surface2)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}>
+                        <span style={{ width: 7, height: 7, borderRadius: 4, background: dot, marginTop: 5, flex: 'none' }} />
+                        <span style={{ minWidth: 0, flex: 1 }}>
+                          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.customerName ?? 'System'}</span>
+                          <span style={{ display: 'block', fontSize: 11.5, color: 'var(--ink2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.reason}</span>
+                        </span>
+                        <span style={{ fontSize: 9.5, color: 'var(--ink3)', flex: 'none', marginTop: 2 }}>{timeAgo(t.createdAt)}</span>
+                      </button>
+                    );
+                  })}
+                  {notifTasks.length > 0 && (
+                    <button onClick={() => { setView('tasks'); setNotifOpen(false); }}
+                      style={{ width: '100%', border: 'none', borderTop: '1px solid var(--line)', background: 'none', cursor: 'pointer', padding: '9px', fontSize: 11.5, fontWeight: 600, color: 'var(--brand1)', fontFamily: 'inherit', marginTop: 4 }}>
+                      View all tasks
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
           <button className={`kill ${killSwitch ? 'paused' : ''}`} onClick={async () => {
             await act({ action: 'set_kill_switch', value: !killSwitch });
             say(killSwitch ? `${ASSISTANT_NAME} resumed from saved states ✓` : `🛑 ${ASSISTANT_NAME} fully stopped. Every chat is yours.`);
@@ -279,12 +340,16 @@ export default function Dashboard() {
       <main>
         {view === 'pipeline' && (
           <section className="view active">
+            <div style={{ marginBottom: 16 }}>
+              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--ink)', letterSpacing: '-.2px' }}>{greeting} 👋</div>
+              <div style={{ fontSize: 12.5, color: 'var(--ink3)', marginTop: 2 }}>Here is where everything stands right now.</div>
+            </div>
             <div className="kpis">
-              <div className="kpi"><div className="kl">Customers</div><div className="kv">{data.customers.length}</div><div className="kd">in the system</div></div>
-              <div className="kpi" style={{ cursor: 'pointer' }} title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => setGroup('closed')}>
-                <div className="kl">Quiet, Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">we spoke last, no reply, never said no</div>
+              <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{data.customers.length}</div><div className="kd">in the system</div></div>
+              <div className="kpi clickable" title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => { setView('pipeline'); setGroup('closed'); }}>
+                <div className="kl">Worth a Nudge</div><div className="kv">{quietLeads.length}</div><div className="kd">we spoke last, no reply, never said no</div>
               </div>
-              <div className="kpi"><div className="kl">Completed</div><div className="kv">{countFor(['COMPLETED'])}</div><div className="kd up">all-time</div></div>
+              <div className="kpi clickable" title="See completed customers" onClick={() => { setView('pipeline'); setGroup('done'); }}><div className="kl">Completed</div><div className="kv">{countFor(['COMPLETED'])}</div><div className="kd up">all-time</div></div>
             </div>
 
             <div className="pstrip">
@@ -424,7 +489,7 @@ export default function Dashboard() {
               const icon = t.severity === 'URGENT' ? '🔴' : t.severity === 'CONFLICT' ? '⚠️' : '📄';
               const draft = taskDrafts[t.id] ?? t.suggestedReply ?? '';
               return (
-                <div key={t.id} className="task" style={{ ['--tc' as string]: col }}>
+                <div key={t.id} id={'task-' + t.id} className="task" style={{ ['--tc' as string]: col, ...(focusTaskId === t.id ? { outline: '2px solid var(--brand1)', outlineOffset: '2px' } : {}) }}>
                   <div className="ticon">{icon}</div>
                   <div className="tbody">
                     <div className="trow"><span className="ttitle">{t.reason}</span><span className="tsev">{t.severity}</span></div>
@@ -439,8 +504,8 @@ export default function Dashboard() {
                     )}
                     <div className="tbtns">
                       {t.customerId && <button className="btn take" disabled={acted.has(t.id) || !draft.trim()} onClick={() => once(t.id, async () => { await act({ action: 'send_task_reply', id: t.id, body: draft }); say('Reply sent & task resolved ✓'); refresh(); })}>➤ Send Reply</button>}
-                      {t.customerId && <button className="btn ghost" onClick={() => { setView('chats'); loadChat(t.customerId!); }}>Open Chat</button>}
-                      <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked resolved ✓'); refresh(); }}>Mark Resolved</button>
+                      {t.customerId && <button className="btn ghost" onClick={async () => { setView('chats'); loadChat(t.customerId!); await act({ action: 'resolve_task', id: t.id }); refresh(); }}>Open Chat</button>}
+                      {!t.customerId && <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked resolved ✓'); refresh(); }}>Mark Resolved</button>}
                     </div>
                   </div>
                 </div>

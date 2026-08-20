@@ -1,5 +1,7 @@
 /* Will dashboard styles, scoped under .will-scope so they never touch the CRM/site. */
-.will-scope{min-height:100vh}
+/* You work at 80% browser zoom, so enlarge Will by 25% (1/0.8): at your 80%
+ * zoom it then renders at a normal, full 100% size. */
+.will-scope{min-height:80vh;zoom:1.25}
 .will-scope{
   --bg:#f7f8fa;
   --surface:#ffffff;
@@ -417,3 +419,9 @@ aside.side{
 .will-scope /* A/B in editor */
 .abtest{border-top:1px solid var(--line);margin-top:14px;padding-top:4px}
 .will-scope .abstats{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--ink2);font-weight:600}
+/* KPI tiles behave like the pipeline buttons: clickable with press feedback. */
+.will-scope .kpi.clickable{cursor:pointer;transition:transform .14s var(--ease-out),box-shadow .16s var(--ease-out)}
+.will-scope .kpi.clickable:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(20,22,30,.08)}
+.will-scope .kpi.clickable:active{transform:scale(.98)}
+/* Keep the top bar pinned while scrolling long lists. */
+.will-scope header{position:sticky;top:0;z-index:60}

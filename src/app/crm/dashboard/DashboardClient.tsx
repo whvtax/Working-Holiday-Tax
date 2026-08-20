@@ -1369,7 +1369,7 @@ export default function DashboardClient() {
     sbSub:{fontSize:11,color:'rgba(255,255,255,0.5)',marginTop:2,letterSpacing:'0.04em'},
     sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'4px 16px 10px'},
     sbNav:{display:'flex',flexDirection:'column',gap:4,padding:'0 10px'},
-    sbBtn:{display:'flex',alignItems:'center',gap:11,padding:'11px 13px',borderRadius:9,fontSize:13,fontWeight:500,color:'rgba(255,255,255,0.65)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'all 0.18s ease'},
+    sbBtn:{display:'flex',alignItems:'center',gap:11,padding:'11px 13px',borderRadius:9,fontSize:13,fontWeight:500,color:'rgba(255,255,255,0.65)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'transform 150ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1), color 150ms cubic-bezier(0.23,1,0.32,1), border-color 150ms cubic-bezier(0.23,1,0.32,1)'},
     sbBtnOn:{background:'rgba(255,255,255,0.18)',color:'#fff',fontWeight:600,boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.08)'},
     sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
     sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
@@ -1382,11 +1382,11 @@ export default function DashboardClient() {
     row:{display:'flex',padding:'8px 16px',borderBottom:'1px solid #f8f8f8',gap:10,alignItems:'center'},
     lbl:{fontSize:11,color:'#aabab2',fontWeight:500,minWidth:110,flexShrink:0},
     val:{fontSize:12,color:'#0a1410',flex:1},
-    taskCard:{background:'#fff',borderRadius:11,padding:'13px 16px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:12,cursor:'pointer',transition:'all 0.18s ease',marginBottom:7,boxShadow:'0 1px 2px rgba(11,82,64,0.03)'},
+    taskCard:{background:'#fff',borderRadius:11,padding:'13px 16px',border:'1px solid #e4ede8',display:'flex',alignItems:'center',gap:12,cursor:'pointer',transition:'transform 150ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1), color 150ms cubic-bezier(0.23,1,0.32,1), border-color 150ms cubic-bezier(0.23,1,0.32,1)',marginBottom:7,boxShadow:'0 1px 2px rgba(11,82,64,0.03)'},
     returnRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 13px',background:'#f7fbf9',borderRadius:9,marginBottom:6,border:'1px solid #e4ede8'},
     totalRow:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 13px',background:'#e8f5f0',borderRadius:9,border:'1px solid #b0d8c8'},
     addForm:{background:'#f7fbf9',borderRadius:10,padding:'12px',border:'1px solid #e4ede8',marginTop:8,display:'flex',gap:8,alignItems:'flex-end',flexWrap:'wrap' as const},
-    addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 12px',background:'#0E5C42',border:'none',borderRadius:8,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit',transition:'all 0.15s'},
+    addBtn:{display:'flex',alignItems:'center',gap:5,padding:'5px 12px',background:'#0E5C42',border:'none',borderRadius:8,fontSize:11,fontWeight:600,color:'#fff',cursor:'pointer',fontFamily:'inherit',transition:'transform 140ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1)'},
     backBtn:{display:'flex',alignItems:'center',gap:6,background:'none',border:'none',fontSize:12,color:'#0E5C42',cursor:'pointer',fontFamily:'inherit',fontWeight:500,marginBottom:18,padding:0},
     checkRow:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 16px'},
     checkbox:{width:20,height:20,borderRadius:6,border:'2px solid',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',flexShrink:0},
@@ -1412,6 +1412,22 @@ export default function DashboardClient() {
 button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
   outline: 2px solid #0E5C42 !important;
   outline-offset: 2px !important;
+}
+/* --- Craft pass (apple-design + emil-design-eng): motion + press feedback --- */
+:root{--ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1)}
+button, [role="button"], [data-task-card], [data-nav-btn]{
+  transition: transform 140ms var(--ease-out), box-shadow 160ms var(--ease-out), background-color 150ms var(--ease-out), color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+}
+/* Instant, tactile press feedback on every pressable (scale from the current value). */
+button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ transform: scale(0.97); }
+[data-task-card]{ transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out), border-color 160ms var(--ease-out); }
+/* Cards lift a touch on hover only on real pointers (avoid sticky hover on touch). */
+@media (hover: hover) and (pointer: fine){
+  [data-card-hover]:hover{ transform: translateY(-1px); box-shadow: 0 6px 20px rgba(11,82,64,0.08); }
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  button:active, [role="button"]:active, [data-task-card]:active{ transform: none; }
 }
 @media (max-width: 768px) {
   [data-sidebar] { display: none !important; }
