@@ -5,11 +5,17 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { handleIncoming } from '@/lib/will/service';
 import { AiMode } from '@/lib/will/engine';
+import { isRateLimited } from '@/lib/rate-limit';
+import { getClientIp } from '@/lib/get-ip';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  // COST-03: each simulate call runs a paid model decision; throttle it.
+  if (await isRateLimited(getClientIp(req), 'will_simulate', 30)) {
+    return NextResponse.json({ error: 'Too many simulator messages, please slow down.' }, { status: 429 });
+  }
   let body: { text?: unknown; mode?: unknown };
   try { body = await req.json(); } catch { return NextResponse.json({ error: 'bad json' }, { status: 400 }); }
 

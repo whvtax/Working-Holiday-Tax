@@ -16,15 +16,19 @@ export async function GET() {
   if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   const store = getStore();
   const customers = await store.listCustomers();
-  const [tasks, historyNested] = await Promise.all([
+  // PERF-03: one aggregate history query instead of one per customer.
+  const [tasks, history] = await Promise.all([
     store.listTasks(),
-    Promise.all(customers.map((c) => store.history(c.id))),
+    store.allHistory(),
   ]);
-  const history = historyNested.flat();
 
   // ---- funnel ----
+  // PERF-02: precompute reached (customerId|state) once, O(history), instead of
+  // scanning the whole history for every customer/state combination.
+  const reachedSet = new Set<string>();
+  for (const h of history) reachedSet.add(h.customerId + '|' + h.to);
   const reached = (s: CustomerState) =>
-    customers.filter((c) => c.state === s || history.some((h) => h.customerId === c.id && h.to === s)).length;
+    customers.filter((c) => c.state === s || reachedSet.has(c.id + '|' + s)).length;
   const funnel = [
     { label: 'New leads', n: customers.length },
     { label: 'Price sent', n: reached('PRICE_SENT') },

@@ -37,9 +37,9 @@ export interface MessageRow {
   customerId: string;
   direction: 'IN' | 'OUT';
   author: 'CUSTOMER' | 'AI' | 'HUMAN' | 'SYSTEM';
-  status: 'SENT' | 'PENDING_APPROVAL' | 'BLOCKED' | 'DISCARDED';
+  status: 'SENT' | 'PENDING_APPROVAL' | 'BLOCKED' | 'DISCARDED' | 'FAILED' | 'QUEUED';
   body: string;
-  meta?: { proposedState?: CustomerState; income?: 'TFN' | 'TFN_ABN'; templateId?: string; variant?: 'A' | 'B'; credited?: boolean };
+  meta?: { proposedState?: CustomerState; income?: 'TFN' | 'TFN_ABN'; templateId?: string; variant?: 'A' | 'B'; credited?: boolean; providerId?: string; channel?: string; sendError?: string };
   createdAt: string;
 }
 
@@ -93,6 +93,22 @@ export interface JobRow {
   createdAt: string;
 }
 
+export interface KnowledgeRow {
+  id: string;
+  intent: string;              // short label
+  question: string;            // canonical customer question
+  examples: string[];          // real phrasings customers used
+  answer: string;              // polished, approved-style answer
+  keywords: string[];          // for lexical retrieval
+  tags: string[];
+  lang: string;
+  weight: number;              // recurrence / conversion weight
+  status: 'draft' | 'active' | 'archived';
+  source: 'mined' | 'manual';
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface StateHistoryRow {
   customerId: string;
   from: CustomerState | null;
@@ -101,17 +117,35 @@ export interface StateHistoryRow {
   createdAt: string;
 }
 
+export interface AuditRow {
+  id: string;
+  actor: string;   // system | assistant | policy_guard | scheduler | owner | nightly
+  action: string;  // decision | reply_blocked | human_task_created | manual_reply | ...
+  detail: unknown; // structured context
+  at: string;      // ISO timestamp
+}
+
 export interface Store {
   listCustomers(): Promise<CustomerRow[]>;
   getCustomerByWaId(waId: string): Promise<CustomerRow | null>;
+  /** PERF-01/02: PK lookup instead of scanning listCustomers(). */
+  getCustomerById(id: string): Promise<CustomerRow | null>;
   createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow>;
   updateCustomer(id: string, patch: Partial<CustomerRow>): Promise<void>;
   setState(id: string, to: CustomerState, causedBy: string): Promise<void>;
   history(customerId: string): Promise<StateHistoryRow[]>;
+  /** PERF-03: all state history in one query (for the aggregate report) instead
+   *  of one history() call per customer. */
+  allHistory(): Promise<StateHistoryRow[]>;
 
   addMessage(m: Omit<MessageRow, 'id' | 'createdAt'>): Promise<MessageRow>;
   listMessages(customerId: string): Promise<MessageRow[]>;
+  /** PERF-01: PK lookup of a single message (includes its customerId). */
+  getMessageById(id: string): Promise<MessageRow | null>;
   setMessageStatus(id: string, status: MessageRow['status']): Promise<void>;
+  /** RACE-02: atomically move a PENDING_APPROVAL draft to QUEUED. Returns true if
+   *  THIS caller won the claim (so only one concurrent approval actually sends). */
+  claimMessageForSend(id: string): Promise<boolean>;
   pendingApprovals(): Promise<(MessageRow & { customerName: string | null })[]>;
 
   addTask(t: Omit<TaskRow, 'id' | 'createdAt' | 'status'>): Promise<TaskRow>;
@@ -124,6 +158,18 @@ export interface Store {
   deleteTemplate(id: string): Promise<void>;
 
   audit(actor: string, action: string, detail?: unknown): Promise<void>;
+  /** Most recent audit rows, newest first (decision log for review). */
+  listAudit(limit?: number): Promise<AuditRow[]>;
+
+  // Atomic inbound idempotency (RACE-01/REL-02/WILL-WH-01).
+  /** Atomically claim a Meta message id. Returns true if THIS caller won the
+   *  claim (first time seen), false if it was already claimed. */
+  claimInbound(metaId: string): Promise<boolean>;
+  /** Release a claim so a failed message can be reprocessed on Meta's retry. */
+  releaseInbound(metaId: string): Promise<void>;
+  /** Purge processed-message markers older than the cutoff (COST-02). Returns count. */
+  purgeProcessedMessages(olderThanMs: number): Promise<number>;
+
   deleteCustomerByWaId(waId: string): Promise<void>;
 
   listSuggestions(): Promise<SuggestionRow[]>;
@@ -135,9 +181,22 @@ export interface Store {
   getSetting(key: string): Promise<unknown>;
   setSetting(key: string, value: unknown): Promise<void>;
 
+  // Knowledge base (the brain's learned Q&A; RAG retrieval reads 'active' rows).
+  listKnowledge(status?: KnowledgeRow['status']): Promise<KnowledgeRow[]>;
+  addKnowledge(k: Omit<KnowledgeRow, 'id' | 'createdAt' | 'updatedAt'>): Promise<KnowledgeRow>;
+  updateKnowledge(id: string, patch: Partial<Pick<KnowledgeRow, 'answer' | 'intent' | 'question' | 'keywords' | 'tags' | 'weight' | 'lang'>>): Promise<void>;
+  setKnowledgeStatus(id: string, status: KnowledgeRow['status']): Promise<void>;
+  deleteKnowledge(id: string): Promise<void>;
+
   addJob(j: Omit<JobRow, 'id' | 'createdAt' | 'status'>): Promise<JobRow>;
   dueJobs(now: Date): Promise<JobRow[]>;
   listJobs(): Promise<JobRow[]>;
+  /** PERF-02: jobs for one customer (optionally filtered by kind), pushed to the DB. */
+  listJobsForCustomer(customerId: string, kinds?: JobRow['kind'][]): Promise<JobRow[]>;
+  /** PERF-04: the N soonest SCHEDULED non-nightly jobs, pushed to the DB (LIMIT). */
+  listUpcomingJobs(limit: number): Promise<JobRow[]>;
+  /** PERF-04: cheap existence check for a queued nightly job. */
+  hasScheduledNightly(): Promise<boolean>;
   getJob(id: string): Promise<JobRow | null>;
   setJobStatus(id: string, status: JobRow['status']): Promise<void>;
   /** Atomically move a SCHEDULED job to CLAIMED. Returns true if this caller won it. */

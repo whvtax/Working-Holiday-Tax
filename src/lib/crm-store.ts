@@ -121,31 +121,39 @@ const MAX_ATTEMPTS = 3
 const LOCKOUT_MS   = 30 * 60 * 1000
 const TTL_SECS     = 35 * 60
 
-// Admin login
-const KEY_COUNT  = 'crm_fail_count'
-const KEY_TS     = 'crm_fail_ts'
-const KEY_LOCKED = 'crm_locked'
+// Admin login. AUTHZ-DOS-01: keys are namespaced per client IP so one attacker
+// cannot lock out the real owner from every location by tripping a single global
+// counter. `scope` is the client IP (getClientIp); it falls back to 'global'
+// only when the IP is unknown.
+const sanitizeScope = (scope?: string) => (scope || 'global').replace(/[^a-zA-Z0-9:._-]/g, '_').slice(0, 64)
+const failKeys = (scope?: string) => {
+  const s = sanitizeScope(scope)
+  return { count: `crm_fail_count:${s}`, ts: `crm_fail_ts:${s}`, locked: `crm_locked:${s}` }
+}
 
-export async function recordFailedAttemptRedis(redis: import('redis').RedisClientType): Promise<FailedAttempt> {
+export async function recordFailedAttemptRedis(redis: import('redis').RedisClientType, scope?: string): Promise<FailedAttempt> {
   const now = Date.now()
-  const count = await redis.incr(KEY_COUNT)
-  await redis.set(KEY_TS, String(now), { EX: TTL_SECS })
-  await redis.expire(KEY_COUNT, TTL_SECS)
+  const k = failKeys(scope)
+  const count = await redis.incr(k.count)
+  await redis.set(k.ts, String(now), { EX: TTL_SECS })
+  await redis.expire(k.count, TTL_SECS)
   const locked = count >= MAX_ATTEMPTS
-  if (locked) await redis.set(KEY_LOCKED, '1', { EX: TTL_SECS })
+  if (locked) await redis.set(k.locked, '1', { EX: TTL_SECS })
   return { count, lastAttempt: now, locked }
 }
 
-export async function resetFailedAttemptsRedis(redis: import('redis').RedisClientType): Promise<void> {
-  await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
+export async function resetFailedAttemptsRedis(redis: import('redis').RedisClientType, scope?: string): Promise<void> {
+  const k = failKeys(scope)
+  await redis.del([k.count, k.ts, k.locked])
 }
 
-export async function isLockedOutRedis(redis: import('redis').RedisClientType): Promise<boolean> {
-  const locked = await redis.get(KEY_LOCKED)
+export async function isLockedOutRedis(redis: import('redis').RedisClientType, scope?: string): Promise<boolean> {
+  const k = failKeys(scope)
+  const locked = await redis.get(k.locked)
   if (!locked) return false
-  const ts = await redis.get(KEY_TS)
+  const ts = await redis.get(k.ts)
   if (ts && Date.now() - Number(ts) > LOCKOUT_MS) {
-    await redis.del([KEY_COUNT, KEY_TS, KEY_LOCKED])
+    await redis.del([k.count, k.ts, k.locked])
     return false
   }
   return true

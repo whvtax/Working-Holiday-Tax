@@ -82,7 +82,7 @@ export function WhmSubmissionsToggle() {
         aria-label="Allow working holiday maker submissions"
         style={{
           width: 42, height: 24, borderRadius: 100, flexShrink: 0,
-          background: allowed ? '#0B5240' : '#C8DAD3',
+          background: allowed ? '#0E5C42' : '#C8DAD3',
           border: 'none', cursor: saving ? 'wait' : 'pointer',
           position: 'relative', transition: 'background .15s', padding: 0,
         }}

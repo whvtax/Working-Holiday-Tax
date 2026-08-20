@@ -125,7 +125,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
       changes.length ? `✏️ Updated — ${changes.join('; ')}` : '',
     ].filter(Boolean).join(' | ')
 
-    const { error: updErr } = await sb
+    // INTAKE-01: consume the token atomically. The UPDATE is conditional on the
+    // token still being the one we resolved AND still unused, so two concurrent
+    // submissions with the same link cannot both succeed (the second updates 0
+    // rows). We select the id back to detect the race.
+    const { data: updated, error: updErr } = await sb
       .from('crm_tasks')
       .update({
         task_type:   'tax-return',
@@ -142,8 +146,14 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
         token_used_at: new Date().toISOString(),
       })
       .eq('id', state.taskId)
+      .eq('completion_token', token)
+      .is('token_used_at', null)
+      .select('id')
 
     if (updErr) throw updErr
+    if (!updated || updated.length === 0) {
+      return NextResponse.json({ ok: false, error: 'already_submitted' }, { status: 409 })
+    }
 
     return NextResponse.json({ ok: true })
   } catch (err) {

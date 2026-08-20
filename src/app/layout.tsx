@@ -303,7 +303,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           nonce={nonce}
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+          // JSONLD-04: escape HTML/JS-context characters so a field containing
+          // `</script>` (or U+2028/U+2029) cannot break out of the JSON-LD block.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schemaOrg)
+              .replace(/</g, '\\u003c')
+              .replace(/>/g, '\\u003e')
+              .replace(/&/g, '\\u0026')
+              .replace(/\u2028/g, '\\u2028')
+              .replace(/\u2029/g, '\\u2029'),
+          }}
         />
         {/* Google Analytics 4. Loaded afterInteractive so it never blocks
             first paint / LCP. Skipped entirely on /crm (see isAdminArea). */}

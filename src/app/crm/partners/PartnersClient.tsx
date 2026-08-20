@@ -154,7 +154,7 @@ export default function PartnersClient() {
           </div>
           <div>
             <div style={S.sbTitle}>Working Holiday Tax</div>
-            <div style={S.sbSub}>Admin Console</div>
+            <div style={S.sbSub}>Admin</div>
           </div>
         </div>
         <div style={S.sbDiv}/>

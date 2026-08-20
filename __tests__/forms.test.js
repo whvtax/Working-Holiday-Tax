@@ -85,14 +85,18 @@ describe('supabase storage URL validation', () => {
   })
 })
 
-describe('get-ip: client IP extraction', () => {
-  test('uses the first x-forwarded-for entry', () => {
-    const req = new Request('http://x/', { headers: { 'x-forwarded-for': '1.1.1.1, 2.2.2.2' } })
-    expect(getClientIp(req)).toBe('1.1.1.1')
+describe('get-ip: client IP extraction (DOS-02 hardened)', () => {
+  test('prefers x-real-ip (trusted, unspoofable) over x-forwarded-for', () => {
+    const req = new Request('http://x/', { headers: { 'x-real-ip': '3.3.3.3', 'x-forwarded-for': '1.1.1.1, 2.2.2.2' } })
+    expect(getClientIp(req)).toBe('3.3.3.3')
   })
-  test('falls back to x-real-ip', () => {
+  test('uses x-real-ip when it is the only header', () => {
     const req = new Request('http://x/', { headers: { 'x-real-ip': '3.3.3.3' } })
     expect(getClientIp(req)).toBe('3.3.3.3')
+  })
+  test('falls back to the RIGHTMOST x-forwarded-for hop, not the spoofable leftmost', () => {
+    const req = new Request('http://x/', { headers: { 'x-forwarded-for': '1.1.1.1, 2.2.2.2' } })
+    expect(getClientIp(req)).toBe('2.2.2.2')
   })
   test('returns "unknown" when no IP headers are present', () => {
     expect(getClientIp(new Request('http://x/'))).toBe('unknown')

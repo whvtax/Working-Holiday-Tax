@@ -78,37 +78,73 @@ function amountsInCents(text: string): number[] {
   return out;
 }
 
-// ---------- language coverage (H5) ----------
-// The lexical tax/DIY patterns below are English. Detect when a free-form reply
-// is in a language they cannot cover, so the engine can route it to a human in
-// Autopilot instead of sending an unreviewed off-policy message.
-export function isLikelyNonEnglish(text: string): boolean {
+// ---------- language coverage (H5 / AI-01) ----------
+// The lexical tax/DIY/currency patterns below are English. The old check was an
+// allow-list of European words (fail-OPEN: an unlisted language like Indonesian
+// or Tagalog slipped through as "English" and could auto-send unreviewed).
+// AI-01 inverts this to FAIL-CLOSED: a reply is trusted only if it is
+// CONFIDENTLY English; anything else is flagged so the engine holds it for human
+// approval in Autopilot. Common English function words are required as positive
+// evidence, non-Latin script and heavy diacritics are hard disqualifiers.
+const ENGLISH_WORDS = /\b(the|you|your|we|our|is|are|to|and|a|of|for|will|can|it|that|this|have|with|be|not|if|please|thanks|thank|hi|hey|hello|need|help|refund|tax|form|fee|pay|paid|once|just|let|know|get|got|back|send|sent|when|what|how|yes|no|but|so|on|in|at|do|does|any|all|from|about|here|there|we'll|you'll|i'll|we're|you're|it's|don't|can't)\b/gi;
+
+export function isConfidentlyEnglish(text: string): boolean {
   const t = text.replace(/https?:\S+/g, ' '); // ignore URLs
-  // Any non-Latin script (CJK, Hebrew, Arabic, Cyrillic, Greek, Thai, Hangul) => non-English.
-  if (/[Ѐ-ӿ֐-׿؀-ۿͰ-Ͽ฀-๿가-힯぀-ヿ一-鿿]/.test(t)) return true;
+  // Any non-Latin script (CJK, Hebrew, Arabic, Cyrillic, Greek, Thai, Hangul) => not English.
+  if (/[Ѐ-ӿ֐-׿؀-ۿͰ-Ͽ฀-๿가-힯぀-ヿ一-鿿]/.test(t)) return false;
   const letters = (t.match(/[A-Za-zÀ-ÿ]/g) || []).length;
-  if (letters < 8) return false; // too short to judge; treat as English (emojis, "ok")
+  if (letters < 8) return true; // too short to judge (emojis, "ok", "$220") => treat as safe
   const accented = (t.match(/[À-ÿ]/g) || []).length;
-  if (accented / letters > 0.08) return true; // heavy diacritics => romance/other language
-  // Distinctive non-English words (greetings / thanks / common function words).
-  if (/\b(el|la|los|las|und|der|die|das|ich|nicht|je|le|les|une|vous|ist|para|com|n[aã]o|voc[eê]|wir|por|con|pero|como|muy|tu|usted|gracias|hola|bonjour|merci|bitte|danke|ciao|grazie|prego|obrigad\w*|ol[aá]|guten|hallo|sehr|gerne|kein)\b/i.test(t)) return true;
-  return false;
+  if (accented / letters > 0.03) return false; // diacritics => not English
+  // Positive evidence: at least two common English function words must appear.
+  const hits = (t.match(ENGLISH_WORDS) || []).length;
+  return hits >= 2;
+}
+
+/** Back-compat wrapper (now fail-closed): true when the text is NOT confidently English. */
+export function isLikelyNonEnglish(text: string): boolean {
+  return !isConfidentlyEnglish(text);
 }
 
 // ---------- pattern sets ----------
 const TAX_DETERMINATION: RegExp[] = [
-  /you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?)*resident/i,
+  // WILL-AI-01: broadened residency qualifiers — the old group only covered
+  // "australian/tax/non- resident" and let "foreign / temporary / permanent /
+  // working-holiday resident" (the most common real determinations) through.
+  /you(?:'re| are|'d be| would be| will be)(?: probably| definitely| likely)?(?: considered)?(?: an?| a)?\s*(?:australian |tax |non-?|foreign |temporary |permanent |working[ -]?holiday |non[ -]?)*resident/i,
+  // A determination directed at the customer ("you're a foreign resident"),
+  // NOT a neutral mention of the concept ("who is considered a resident...").
+  /\byou(?:'re| are|'d be| would be| count as| qualify as)[^.!?]{0,30}\b(?:foreign|temporary|non)[ -]?resident\b/i,
   /you(?:'re| are)? (?:probably |definitely )?(?:do(?:n'?t)? |don'?t )?(?:need to pay|have to pay|qualify|exempt(?:ed)?|eligible)[^.!?]{0,40}medicare/i,
   /you can (?:claim|deduct|write off)/i,
   /you (?:can(?:'?t| ?not)?|won'?t|will(?: not)?|don'?t|do not) owe/i,
   /your (?:estimated |expected )?refund (?:will|would|should|is going to|is likely|is about|is around)/i,
   /you(?:'ll| will) (?:get|receive)[^.!?]{0,25}(?:refund|\$|back)/i,
+  // WILL-AI-01: bare-number refund/return estimates (no $ sign, so the currency
+  // guard misses them). Excludes the two fixed prices 220/385.
+  /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
+  /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
 ];
 
 const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (deal|price|offer)|just for you[^.!?]{0,15}\d|one.time (deal|price|offer))/i;
-const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,50}\b(?:refund(?!\s+the\s+difference)(?:ed|ing)?|cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,25}\bback)\b/i;
+// Blocks Will from unilaterally promising to refund the customer's PAYMENT or to
+// cancel. Precise on purpose: it must fire on transitive payment-refund promises
+// ("refund your payment", "refund you $220", "money back", "cancel") but NOT on
+// the noun ("eligible for a refund", "your tax refund", "super refund") nor on
+// the approved guarantee ("refund the difference" / "refund you the difference").
+const REFUND_PROMISE = /\b(we|i)\b[^.!?]{0,30}\b(?:cancel(?:led|ling)?|money\s?back|payment[^.!?]{0,20}\bback\b|refund\s+(?:you|your\s+(?:payment|fee|money)|the\s+(?:fee|payment|\$?\d)))\b(?!\s+the\s+difference)/i;
 const POST_PAYMENT_SALES = /(\bfee\b|\bprice\b|\bcost\b|\bdiscount\b|guarantee|out of pocket|cover the (gap|difference)|refund the difference)/i;
 const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yourself|on your own)|step[- ]by[- ]step|log ?in ?to mygov[^.!?]{0,40}(link|lodge|submit))/i;
+// myGov / ATO ACCESS (the team's single biggest problem): Will must never
+// troubleshoot or instruct a customer on myGov, the ATO portal, myGovID /
+// Digital ID, IHI, the Medicare Entitlement Statement, account linking or
+// login. This deterministic layer backs up the playbook rule. It fires only
+// when a myGov/ATO-access TERM appears together with a customer-directed STEP
+// cue, and NOT when the sentence is the allowed reassurance ("you don't need
+// myGov, we handle it"), so the approved deflection still sends freely.
+const MYGOV_TERMS = /\b(my ?gov|mygov ?id|ato (?:online|portal|account|login|app|website)|digital id|myid|centrelink|services australia|ihi|individual healthcare identifier|medicare entitlement statement|\bmes\b)\b/i;
+const MYGOV_STEP_CUE = /\b(?:log ?in|logging in|sign ?in|signing in|go to|head to|click|tap|press|select|choose|enter (?:your|the)|type in|open (?:the |your )?(?:app|link|page|site|portal|account)|create (?:an? )?(?:account|id|my ?gov ?id|digital id|profile)|set up (?:an? )?(?:account|id)|reset (?:your )?password|apply for (?:an? )?(?:ihi|mes|medicare entitlement|exemption|digital id)|link(?:ing)? (?:your|the) (?:my ?gov|ato|account)|connect (?:your|the) (?:my ?gov|ato)|verify your|follow (?:these|the|this) (?:steps|guide|link)|you (?:need|have|'ll need|will need) to (?:log|sign|go|click|create|apply|link|enter|select|open|reset|submit|set up|verify|connect)|try (?:logging|signing) in|try (?:again|it again)|submit (?:the )?(?:form|application|statement))\b/i;
+const MYGOV_REASSURANCE = /\b(?:do(?:n'?t| not)|does(?:n'?t| not)|no need|never|without|won'?t|will not|you'?ll never|nothing to)\b[^.!?]{0,45}\b(?:need|have to|require|use|access|log ?in|sign ?in|worry|touch|deal with)\b|\b(?:we|our team|i)\b[^.!?]{0,45}\b(?:handle|take care of|takes care of|access|manage|deal with|look after|sort out|do (?:it |everything |all )?for you|on your behalf|through the ato)\b|leave (?:it|that|the my ?gov|everything)[^.!?]{0,25}\b(?:to us|with us|to me)\b/i;
 // Prices are AUD, shown with the $ sign only. Any non-dollar currency next to a
 // number is a hard violation, even if the number itself matches an allowed price
 // (e.g. "220 euros" is a wrong-currency conversion and must never be sent).
@@ -175,6 +211,11 @@ export function policyGuard(text: string, ctx: GuardContext): GuardResult {
         if (p.test(sentence)) { violations.push('TAX_DETERMINATION_BEFORE_PAYMENT'); break; }
       }
       if (DIY_INSTRUCTIONS.test(sentence)) violations.push('DIY_INSTRUCTIONS');
+    }
+    // myGov / ATO-access troubleshooting is blocked at every stage (before AND
+    // after payment): the reassurance is allowed, step-by-step help never is.
+    if (MYGOV_TERMS.test(sentence) && MYGOV_STEP_CUE.test(sentence) && !MYGOV_REASSURANCE.test(sentence)) {
+      violations.push('MYGOV_TROUBLESHOOTING');
     }
     if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
     if (!ctx.isApprovedTemplate && REFUND_PROMISE.test(sentence)) violations.push('REFUND_OR_CANCEL_PROMISE');

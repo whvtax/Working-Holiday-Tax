@@ -152,9 +152,10 @@ export function LeadsTab() {
 
       {/* Only this part scrolls. */}
       <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: '0 26px 32px' }}>
-      <div style={{ border: '1.5px solid #E4EFEA', borderRadius: 12, overflow: 'hidden', background: '#fff' }}>
+      <div style={{ border: '1.5px solid #E4EFEA', borderRadius: 12, background: '#fff' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1.8fr 1.2fr 0.9fr 0.7fr', gap: 0,
-                      background: '#F5F9F7', borderBottom: '1.5px solid #E4EFEA',
+                      position: 'sticky', top: 0, zIndex: 5,
+                      background: '#F5F9F7', borderBottom: '1.5px solid #E4EFEA', borderRadius: '12px 12px 0 0',
                       fontSize: 11, fontWeight: 700, color: '#587066', textTransform: 'uppercase', letterSpacing: '.05em' }}>
           {['Name', 'Email', 'WhatsApp', 'Source', ''].map((h, i) => (
             <div key={i} style={{ padding: '9px 12px' }}>{h}</div>

@@ -68,7 +68,7 @@ function validateMagicBytes(buf: ArrayBuffer, contentType: string): boolean {
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req)
   // Allow 100 file uploads per 15min per IP (handles 22 files × 3 retries + buffer)
-  if (await isRateLimited(ip, 'tax-form-upload', 100)) {
+  if (await isRateLimited(ip, 'tax-form-upload', 40)) {
     return NextResponse.json({ ok: false, error: 'rate_limited' }, { status: 429 })
   }
   try {

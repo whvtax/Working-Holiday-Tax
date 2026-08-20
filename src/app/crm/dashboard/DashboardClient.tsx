@@ -45,7 +45,7 @@ const TASK_LABELS: Record<TaskType,string> = {
   'tax-return':'Tax Return','super':'Super Refund','tfn':'TFN Application','abn':'ABN Application','lead':'Lead'
 }
 const TASK_COLORS: Record<TaskType,string> = {
-  'tax-return':'#0E5C42','super':'#2563eb','tfn':'#7c3aed','abn':'#c2410c','lead':'#b45309'
+  'tax-return':'#0E5C42','super':'#0E5C42','tfn':'#0E5C42','abn':'#c2410c','lead':'#b45309'
 }
 
 function CopyBtn({ text }: { text: string }) {
@@ -122,7 +122,7 @@ function setClientStatusInNotes(notes: string, status: ClientStatus): string {
 }
 
 const STATUS_META: Record<ClientStatus, { label: string; bg: string; fg: string; border: string; emoji: string }> = {
-  'active':      { label: 'Active',      bg: '#eff6ff', fg: '#1d4ed8', border: '#bfdbfe', emoji: '🔵' },
+  'active':      { label: 'Active',      bg: '#f7fbf9', fg: '#0E5C42', border: '#d8e4dc', emoji: '🔵' },
   'filed':       { label: 'Filed',       bg: '#ecfdf5', fg: '#059669', border: '#a7f3d0', emoji: '🟢' },
   'needs-super': { label: 'Needs Super', bg: '#fef3c7', fg: '#92400e', border: '#fcd34d', emoji: '🟡' },
 }
@@ -1204,7 +1204,7 @@ export default function DashboardClient() {
     const groups = digits.match(/.{1,3}/g)?.join(' ') || digits
     return hasPlus ? `+${groups}` : groups
   }
-  const avatarColors = [['#e8f5f0','#0E5C42'],['#eef3fb','#2563eb'],['#fef3e8','#c2410c'],['#f3eefe','#7c3aed'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
+  const avatarColors = [['#e8f5f0','#0E5C42'],['#e8f5f0','#0E5C42'],['#fef3e8','#c2410c'],['#f7fbf9','#0E5C42'],['#fef0f0','#dc2626'],['#f0fdf4','#16a34a']]
   const avColor   = (name:string) => avatarColors[name.charCodeAt(0)%avatarColors.length]
 
   // Restore the task list's scroll position after returning from a task's detail view.
@@ -1364,8 +1364,8 @@ export default function DashboardClient() {
   }, [archivedClients, archiveSearchResults, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
   const S: Record<string,React.CSSProperties> = {
-    shell:{display:'flex',height:'100vh',overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif'},
-    sb:{width:260,background:'#ffffff',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:'100vh',borderRight:'1px solid #e4ede8',overflowY:'auto',zIndex:50},
+    shell:{display:'flex',height:'calc(100vh / 1.18)',overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif',zoom:1.18},
+    sb:{width:260,background:'#ffffff',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:'calc(100vh / 1.18)',borderRight:'1px solid #e4ede8',overflowY:'auto',zIndex:50},
     sbLogo:{display:'flex',alignItems:'center',gap:12,padding:'22px 16px 16px'},
     sbIcon:{width:40,height:40,borderRadius:11,background:'#0E5C42',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'#fff'},
     sbTitle:{fontSize:14,fontWeight:700,color:'#0a1410',letterSpacing:'-0.2px'},
@@ -1376,7 +1376,7 @@ export default function DashboardClient() {
     sbBtnOn:{background:'#0E5C42',color:'#fff',fontWeight:600},
     sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
     sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'#7a8a82',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
-    main:{flex:1,background:'#f0f4f1',marginLeft:260,display:'flex',flexDirection:'column',height:'100vh',overflow:'hidden'},
+    main:{flex:1,background:'#f0f4f1',marginLeft:260,display:'flex',flexDirection:'column',height:'calc(100vh / 1.18)',overflow:'hidden'},
     page:{padding:'26px 26px 32px',flex:1,overflowY:'auto',minHeight:0},
     pgTitle:{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.5px'},
     pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
@@ -1466,65 +1466,10 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   <polyline points="20.4,23 22.2,25 25,21.5" fill="none" stroke="#0B5240" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                 </g>
               </svg></div>
-              <div><div style={S.sbTitle}>Working Holiday Tax</div><div style={S.sbSub}>Admin Console</div></div>
+              <div><div style={S.sbTitle}>Working Holiday Tax</div><div style={S.sbSub}>Admin</div></div>
             </div>
             <div style={S.sbDiv}/>
 
-            {/* Global search */}
-            <div style={{padding:'0 12px 12px',position:'relative'}}>
-              <div style={{position:'relative'}}>
-                <svg style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                <input
-                  style={{width:'100%',padding:'9px 12px 9px 34px',background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:9,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
-                  placeholder="Search clients & tasks…"
-                  value={globalSearch}
-                  onChange={e=>setGlobalSearch(e.target.value)}
-                  onFocus={()=>setGlobalSearch(globalSearch)}
-                />
-              </div>
-              {globalResults && (globalResults.tasks.length>0 || globalResults.clients.length>0) && (
-                <div style={{position:'absolute',top:'100%',left:10,right:10,zIndex:200,background:'#fff',border:'1px solid #e4ede8',borderRadius:10,boxShadow:'0 8px 24px rgba(0,0,0,0.15)',overflow:'hidden',marginTop:4}}>
-                  {globalResults.tasks.length>0 && (
-                    <>
-                      <div style={{padding:'6px 12px',fontSize:10,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',background:'#f7fbf9'}}>Tasks</div>
-                      {globalResults.tasks.map(t=>(
-                        <div key={t.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
-                          onClick={()=>{setActiveTask(t);setTaskNotes(extractUserNotes(t.notes));setTaskView('detail');setView('tasks');setGlobalSearch('')}}>
-                          <div>
-                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{displayName(t.clientName)}</div>
-                            <div style={{fontSize:10,color:'#7a8a82'}}>{t.taskType} · {t.taxYear}</div>
-                          </div>
-                          {t.done ? <span style={{fontSize:10,color:'#059669',fontWeight:600}}>✓ Done</span>
-                                  : <span style={{fontSize:10,color:'#d97706',fontWeight:600}}>⏳ Pending</span>}
-                        </div>
-                      ))}
-                    </>
-                  )}
-                  {globalResults.clients.length>0 && (
-                    <>
-                      <div style={{padding:'6px 12px',fontSize:10,fontWeight:700,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',background:'#f7fbf9'}}>Clients</div>
-                      {globalResults.clients.map(c=>(
-                        <div key={c.id} style={{padding:'8px 12px',cursor:'pointer',borderBottom:'1px solid #f0f4f1',display:'flex',justifyContent:'space-between',alignItems:'center'}}
-                          onClick={()=>{setActiveClient(c);setClientNotes(c.notes||'');setView('clients');setGlobalSearch('')}}>
-                          <div>
-                            <div style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{displayName(c.fullName)}</div>
-                            <div style={{fontSize:10,color:'#7a8a82'}}>{c.country} · {c.taxReturns.length} returns</div>
-                          </div>
-                          {c.taxReturns.length>0 && (
-                            <span style={{fontSize:10,color:'#0E5C42',fontWeight:600}}>
-                              {[...c.taxReturns].sort((a,b)=>b.year.localeCompare(a.year))[0].year}
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </>
-                  )}
-                  {globalResults.tasks.length===0 && globalResults.clients.length===0 && (
-                    <div style={{padding:'12px',fontSize:12,color:'#aabab2',textAlign:'center' as const}}>No results found</div>
-                  )}
-                </div>
-              )}
-            </div>
 
             <nav style={S.sbNav}>
               <SbButton label="Tasks" badge={pendingTasks.length}
@@ -1554,7 +1499,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
             </nav>
           </div>
           <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'20px'}}>
-            <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:11,cursor:'pointer',color:'rgba(255,255,255,0.9)',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background 0.15s'}} onClick={lockAndExit}>
+            <button style={{display:'flex',alignItems:'center',justifyContent:'center',gap:8,width:'100%',height:44,background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,cursor:'pointer',color:'#587066',fontSize:13,fontWeight:600,fontFamily:'inherit',transition:'background-color 0.15s, border-color 0.15s'}} onClick={lockAndExit}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="11" rx="2.5" stroke="currentColor" strokeWidth="1.8"/><path d="M8 11V7.5a4 4 0 018 0V11" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
               Lock & Exit
             </button>
@@ -1681,7 +1626,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 if (upcoming.length === 0) return null
                 const fmtDays = (d:number) => d===0 ? 'today! 🎉' : d===1 ? 'tomorrow' : d===-1 ? 'yesterday' : `in ${d} days`
                 return (
-                  <div style={{background:'linear-gradient(135deg,#fdf2f8,#fce7f3)',border:'1px solid #f9a8d4',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
+                  <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',border:'1px solid #d8e4dc',borderRadius:12,padding:'14px 16px',marginBottom:16,display:'flex',alignItems:'flex-start',gap:12}}>
                     <div style={{fontSize:22,flexShrink:0}}>🎂</div>
                     <div style={{flex:1,minWidth:0}}>
                       <div style={{fontSize:13,fontWeight:700,color:'#9d174d',marginBottom:6}}>{upcoming.length} birthday{upcoming.length!==1?'s':''} this week</div>
@@ -1701,7 +1646,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 </a>
                               )}
                               <button type="button" onClick={()=>dismissBday(bkey)} title="Mark as done - dismiss this reminder"
-                                style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:600,padding:'3px 8px',background:'#fff',color:'#9d174d',border:'1px solid #f9a8d4',borderRadius:6,cursor:'pointer',whiteSpace:'nowrap' as const}}>
+                                style={{display:'inline-flex',alignItems:'center',gap:4,fontSize:10,fontWeight:600,padding:'3px 8px',background:'#fff',color:'#9d174d',border:'1px solid #d8e4dc',borderRadius:6,cursor:'pointer',whiteSpace:'nowrap' as const}}>
                                 ✓ Done
                               </button>
                             </div>
@@ -1960,7 +1905,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               })()}
               {/* Married Alert Banner */}
               {(activeTask.marital||'').toLowerCase() === 'married' && (
-                <div style={{background:'#fdf2f8',border:'1.5px solid #f9a8d4',borderLeft:'4px solid #db2777',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
+                <div style={{background:'#f7fbf9',border:'1.5px solid #d8e4dc',borderLeft:'4px solid #db2777',borderRadius:10,padding:'8px 14px',marginBottom:14,display:'flex',alignItems:'center',gap:8}}>
                   <span style={{fontSize:14,flexShrink:0}}>💑</span>
                   <span style={{fontSize:13,fontWeight:600,color:'#9d174d'}}>Married - Verify Status</span>
                 </div>
@@ -1993,7 +1938,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     <span>{activeTask.taxYear}</span>
                     <span>· Submitted {fmtDate(activeTask.submittedAt)}</span>
                     {(activeTask.notes||'').includes('🔄 Returning client') && (
-                      <span style={{background:'#eff6ff',color:'#1d4ed8',border:'1px solid #bfdbfe',borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>🔄 Returning client</span>
+                      <span style={{background:'#f7fbf9',color:'#0E5C42',border:'1px solid #d8e4dc',borderRadius:5,padding:'1px 8px',fontSize:11,fontWeight:700}}>🔄 Returning client</span>
                     )}
                   </div>
                 </div>
@@ -2170,13 +2115,8 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       const rawTaxVal    = parts.find((p:string) => p.startsWith('→ Australian') || p.startsWith('→ Working') || p.startsWith('→ resident') || p.startsWith('→ whm'))?.replace('→ ','') || activeTask.taxStatus || '-'
                       const taxStatusValue = normaliseTaxStatus(rawTaxVal)
                       const declaredPart = parts.find((p:string) => p.startsWith('→ ✓ I declare that all') || p.startsWith('→ ✓ Yes') || p.startsWith('→ ✓ I agree'))
+                      void taxStatusValue;
                       return <>
-                        <div style={S.secHead}><span>Tax Residency</span></div>
-                        <div style={{padding:'10px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'center',gap:8}}>
-                          <div style={{width:10,height:10,borderRadius:'50%',background:'#0B5240',flexShrink:0}}/>
-                          <span style={{fontSize:13,color:'#0B5240',fontWeight:600}}>{taxStatusValue||'-'}</span>
-                        </div>
-                        <div style={{borderTop:'1px solid #f0f4f1',marginTop:4}}/>
                         <div style={S.secHead}><span>Declaration</span></div>
                         <div style={{padding:'12px 14px',borderBottom:'1px solid #f0f4f1',display:'flex',alignItems:'flex-start',gap:10}}>
                           {declaredPart
@@ -2330,7 +2270,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         - tr.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + sr.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={{background:'#f3eefe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
+                    return <span style={{background:'#f7fbf9',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} returned</span>
                   })()}
                 </div>
                 <div style={{display:'flex',gap:8,alignItems:'center'}}>
@@ -2341,9 +2281,9 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     </button>
                   )}
                   {superFilter==='no-super' && (
-                    <button onClick={()=>setSuperFilter('all')} style={{display:'flex',alignItems:'center',gap:6,background:'#dbeafe',border:'1px solid #93c5fd',borderRadius:9,padding:'5px 10px',cursor:'pointer',fontFamily:'inherit'}}>
-                      <span style={{fontSize:11,color:'#1d4ed8',fontWeight:600}}>💼 No Super filter</span>
-                      <span style={{fontSize:14,color:'#1d4ed8',fontWeight:700,lineHeight:1}}>×</span>
+                    <button onClick={()=>setSuperFilter('all')} style={{display:'flex',alignItems:'center',gap:6,background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:9,padding:'5px 10px',cursor:'pointer',fontFamily:'inherit'}}>
+                      <span style={{fontSize:11,color:'#0E5C42',fontWeight:600}}>💼 No Super filter</span>
+                      <span style={{fontSize:14,color:'#0E5C42',fontWeight:700,lineHeight:1}}>×</span>
                     </button>
                   )}
                   <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:9,padding:'5px 10px'}}>
@@ -2431,20 +2371,6 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     {groupByCanonical(clients.map(c=>c.country), canonicalCountry).length===0 && <div style={{fontSize:12,color:'#aabab2',padding:'4px 2px'}}>No data yet</div>}
                   </DropBtn>}
 
-                {/* Status filter */}
-                <div style={{display:'inline-flex',alignItems:'center',gap:0,height:'38px',background:'#fff',border:'1px solid #e4ede8',borderRadius:9,padding:'0 4px',flexShrink:0}}>
-                  <span style={{fontSize:11,color:'#7a8a82',fontWeight:600,padding:'0 8px',borderRight:'1px solid #f0f4f1'}}>📋</span>
-                  {(['active','filed','needs-super'] as const).map(s=>{
-                    const active = statusFilter.has(s)
-                    const m = STATUS_META[s]
-                    return (
-                      <button key={s} onClick={()=>{const ns=new Set(statusFilter);active?ns.delete(s):ns.add(s);setStatusFilter(ns)}}
-                        style={{background:active?m.fg:'transparent',color:active?'#fff':'#7a8a82',border:'none',borderRadius:7,padding:'6px 10px',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'inherit',margin:'0 2px'}}>
-                        {m.label}
-                      </button>
-                    )
-                  })}
-                </div>
                 {(howHeardFilter.size>0||countryFilter.size>0||yearFilter.size>0||search||statusFilter.size>0) && (
                   <button style={{height:'38px',padding:'0 12px',border:'1px solid #fca5a5',borderRadius:9,fontSize:13,background:'#fff',color:'#c0392b',cursor:'pointer',fontFamily:'inherit',flexShrink:0}} onClick={()=>{setHowHeardFilter(new Set());setCountryFilter(new Set());setYearFilter(new Set());setSearch('');setStatusFilter(new Set())}}>
                     ✕ Clear
@@ -2493,26 +2419,26 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       </div>
                     )}
                     {totalSuper>0 && (
-                      <div style={{flex:1,minWidth:160,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+                      <div style={{flex:1,minWidth:160,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
-                          <div style={{fontSize:10,fontWeight:700,color:'#2563eb',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>🏦 Super Refunded{yearLabel}</div>
-                          <div style={{fontSize:20,fontWeight:700,color:'#2563eb'}}>{fmtCur(totalSuper)}</div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>🏦 Super Refunded{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalSuper)}</div>
                         </div>
                         <div style={{textAlign:'right' as const}}>
                           <div style={{fontSize:10,color:'#587066',marginBottom:2}}>across</div>
-                          <div style={{fontSize:14,fontWeight:700,color:'#2563eb'}}>{clientsWithSuper}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{clientsWithSuper}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
                         </div>
                       </div>
                     )}
                     {totalTaxRefund!==0 && totalSuper>0 && (
-                      <div style={{flex:1,minWidth:160,background:'#f3eefe',border:'1px solid #ddd6fe',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
+                      <div style={{flex:1,minWidth:160,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:11,padding:'11px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:12}}>
                         <div>
-                          <div style={{fontSize:10,fontWeight:700,color:'#7c3aed',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>✨ Combined{yearLabel}</div>
-                          <div style={{fontSize:20,fontWeight:700,color:'#7c3aed'}}>{fmtCur(totalTaxRefund+totalSuper)}</div>
+                          <div style={{fontSize:10,fontWeight:700,color:'#0E5C42',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:3}}>✨ Combined{yearLabel}</div>
+                          <div style={{fontSize:20,fontWeight:700,color:'#0E5C42'}}>{fmtCur(totalTaxRefund+totalSuper)}</div>
                         </div>
                         <div style={{textAlign:'right' as const}}>
                           <div style={{fontSize:10,color:'#587066',marginBottom:2}}>showing</div>
-                          <div style={{fontSize:14,fontWeight:700,color:'#7c3aed'}}>{visibleClients.length}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
+                          <div style={{fontSize:14,fontWeight:700,color:'#0E5C42'}}>{visibleClients.length}<span style={{fontSize:10,fontWeight:400,color:'#587066',marginLeft:3}}>clients</span></div>
                         </div>
                       </div>
                     )}
@@ -2633,13 +2559,13 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
 
           {/* ── ARCHIVE ── */}
           {view==='archive' && (
-            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden',background:'linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%)'}}>
+            <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:0,overflow:'hidden',background:'#f0f4f1'}}>
               <div style={{padding:'26px 26px 8px',flexShrink:0}}>
               {/* Header */}
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14,gap:12}}>
                 <div style={{display:'flex',alignItems:'center',gap:10}}>
-                  <h1 style={{...S.pgTitle as React.CSSProperties, color:'#7c3aed'}}>📦 Archive</h1>
-                  <span style={{background:'#ede9fe',color:'#7c3aed',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
+                  <h1 style={{...S.pgTitle as React.CSSProperties, color:'#0E5C42'}}>📦 Archive</h1>
+                  <span style={{background:'#e8f5f0',color:'#0E5C42',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>
                     {visibleArchived.length}{archivedClients.length!==visibleArchived.length?` of ${archivedClients.length}`:''} clients
                   </span>
                   {(()=>{
@@ -2649,7 +2575,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         - c.taxReturns.filter(r=>r.type==='owed').reduce((s,r)=>s+r.refundAmount,0)
                         + c.superReturns.reduce((s,r)=>s+r.amount,0)
                     },0)
-                    return <span style={{background:'#fff',color:'#7c3aed',border:'1px solid #ddd6fe',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} historical</span>
+                    return <span style={{background:'#fff',color:'#0E5C42',border:'1px solid #d8e4dc',borderRadius:20,padding:'3px 11px',fontSize:12,fontWeight:600}}>{fmtCur(tot)} historical</span>
                   })()}
                 </div>
               </div>
@@ -2722,9 +2648,9 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 <div style={{fontSize:12,fontWeight:500,color:'#7a8a82'}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr'}}>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr',whiteSpace:'nowrap'}}>
                               {cl.whatsapp
-                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none'}}>{formatPhoneNumber(cl.whatsapp)}</a>
+                                ? <a href={`https://wa.me/${cl.whatsapp.replace(/[^0-9+]/g,'')}`} target="_blank" rel="noopener noreferrer" onClick={e=>e.stopPropagation()} style={{color:'#0E5C42',textDecoration:'none',whiteSpace:'nowrap'}}>{formatPhoneNumber(cl.whatsapp)}</a>
                                 : '-'}
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
@@ -2822,10 +2748,10 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       <div style={{fontSize:18,fontWeight:700,color:'#059669',letterSpacing:'-0.5px'}}>{fmtCur(totalTaxRefunds)}</div>
                       <div style={{fontSize:10,color:'#059669',opacity:0.7,marginTop:2}}>{totalReturns} return{totalReturns!==1?'s':''}</div>
                     </div>
-                    <div style={{background:'linear-gradient(135deg,#eff6ff,#dbeafe)',border:'1px solid #bfdbfe',borderRadius:11,padding:'12px 14px'}}>
-                      <div style={{fontSize:9.5,fontWeight:700,color:'#1d4ed8',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💰 Super Total</div>
-                      <div style={{fontSize:18,fontWeight:700,color:'#1d4ed8',letterSpacing:'-0.5px'}}>{fmtCur(totalSuperRefunds)}</div>
-                      <div style={{fontSize:10,color:'#1d4ed8',opacity:0.7,marginTop:2}}>{totalSuper} withdrawal{totalSuper!==1?'s':''}</div>
+                    <div style={{background:'linear-gradient(135deg,#f7fbf9,#e8f5f0)',border:'1px solid #d8e4dc',borderRadius:11,padding:'12px 14px'}}>
+                      <div style={{fontSize:9.5,fontWeight:700,color:'#0E5C42',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>💰 Super Total</div>
+                      <div style={{fontSize:18,fontWeight:700,color:'#0E5C42',letterSpacing:'-0.5px'}}>{fmtCur(totalSuperRefunds)}</div>
+                      <div style={{fontSize:10,color:'#0E5C42',opacity:0.7,marginTop:2}}>{totalSuper} withdrawal{totalSuper!==1?'s':''}</div>
                     </div>
                     <div style={{background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:11,padding:'12px 14px'}}>
                       <div style={{fontSize:9.5,fontWeight:700,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.08em',marginBottom:4}}>🆔 TFN</div>
@@ -2845,7 +2771,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   <span>📅 History by Year</span>
                   <div style={{display:'flex',gap:6}}>
                     <button style={S.addBtn} onClick={()=>setShowAddTax(v=>!v)}>+ Tax Return</button>
-                    <button style={{...S.addBtn,background:'#2563eb'}} onClick={()=>setShowAddSuper(v=>!v)}>+ Super</button>
+                    <button style={{...S.addBtn,background:'#0E5C42'}} onClick={()=>setShowAddSuper(v=>!v)}>+ Super</button>
                   </div>
                 </div>
                 <div style={{padding:'12px 14px'}}>
@@ -2886,7 +2812,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         <label style={{fontSize:11,fontWeight:500,color:'#555'}}>Amount received (AUD)</label>
                         <input style={{...S.mInput,padding:'7px 10px'}} type="number" placeholder="e.g. 4200" value={newSuperAmt} onChange={e=>setNewSuperAmt(e.target.value)}/>
                       </div>
-                      <button style={{...S.addBtn,padding:'7px 13px',background:'#2563eb'}} onClick={addSuperReturn}>Save</button>
+                      <button style={{...S.addBtn,padding:'7px 13px',background:'#0E5C42'}} onClick={addSuperReturn}>Save</button>
                       <button style={{padding:'7px 10px',border:'1px solid #e4ede8',borderRadius:8,background:'#fff',color:'#333',fontSize:12,cursor:'pointer',fontFamily:'inherit'}} onClick={()=>setShowAddSuper(false)}>✕</button>
                     </div>
                   )}
@@ -2928,8 +2854,8 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                               </div>
                             )}
                             {sup && (
-                              <div style={{display:'flex',alignItems:'center',gap:6,background:'#eff6ff',border:'1px solid #bfdbfe',borderRadius:8,padding:'4px 10px'}}>
-                                <span style={{fontSize:11,fontWeight:700,color:'#2563eb'}}>🏦 Super</span>
+                              <div style={{display:'flex',alignItems:'center',gap:6,background:'#f7fbf9',border:'1px solid #d8e4dc',borderRadius:8,padding:'4px 10px'}}>
+                                <span style={{fontSize:11,fontWeight:700,color:'#0E5C42'}}>🏦 Super</span>
                                 <span style={{fontSize:12,fontWeight:600,color:'#0a1410'}}>{fmtCur(sup.amount)}</span>
                                 <button style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontSize:14,padding:'0',lineHeight:1}} onClick={()=>removeSuperReturn(year)}>×</button>
                               </div>
@@ -2948,27 +2874,13 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                         </div>
                       )}
                       {activeClient.superReturns.length>0 && (
-                        <div style={{flex:1,background:'#eff6ff',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
-                          <div style={{fontSize:10,color:'#2563eb',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total super refunded</div>
-                          <div style={{fontSize:15,fontWeight:700,color:'#2563eb'}}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
+                        <div style={{flex:1,background:'#f7fbf9',borderRadius:8,padding:'8px 12px',textAlign:'center' as const}}>
+                          <div style={{fontSize:10,color:'#0E5C42',fontWeight:600,textTransform:'uppercase' as const,letterSpacing:'0.05em'}}>Total super refunded</div>
+                          <div style={{fontSize:15,fontWeight:700,color:'#0E5C42'}}>{fmtCur(activeClient.superReturns.reduce((s:number,r:SuperReturn)=>s+r.amount,0))}</div>
                         </div>
                       )}
                     </div>
                   )}
-                </div>
-              </div>
-
-              {/* Notes */}
-              <div style={{...S.card,padding:'14px 16px',marginBottom:12}}>
-                <div style={{fontSize:12,fontWeight:600,color:'#0a1410',marginBottom:8,display:'flex',alignItems:'center',gap:7}}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="#0E5C42" strokeWidth="1.8"/><path d="M8 13h8M8 17h5" stroke="#0E5C42" strokeWidth="1.8" strokeLinecap="round"/></svg>
-                  Internal notes
-                </div>
-                <textarea style={{width:'100%',border:'1.5px solid #e4ede8',borderRadius:9,padding:'9px 11px',fontSize:12,fontFamily:'inherit',background:'#f7fbf9',color:'#0a1410',outline:'none',resize:'vertical',minHeight:72,lineHeight:1.55,boxSizing:'border-box'}}
-                  placeholder="Notes about this client..." value={clientNotes} onChange={e=>{setClientNotes(e.target.value);setClientNotesSaved(false)}}/>
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:6}}>
-                  {clientNotesSaved?<span style={{fontSize:11,color:'#059669',fontWeight:500}}>✓ Saved</span>:<span style={{fontSize:11,color:'#aabab2'}}>Only visible to you</span>}
-                  <button style={{padding:'5px 13px',border:'none',borderRadius:7,background:'#0E5C42',color:'#fff',fontSize:11,fontWeight:600,cursor:'pointer',fontFamily:'inherit',opacity:clientNotes===(activeClient.notes||'')?0.4:1}} disabled={clientNotes===(activeClient.notes||'')} onClick={saveClientNotes}>Save notes</button>
                 </div>
               </div>
 

@@ -77,7 +77,7 @@ export function CompletionLinkPanel({ taskId, firstName }: { taskId: string; fir
       background: '#F5F9F7', border: '1.5px solid #D4EAE2', borderRadius: 12,
       padding: '12px 14px', margin: '12px 0',
     }}>
-      <div style={{ fontSize: 12.5, fontWeight: 700, color: '#0B5240', marginBottom: 4 }}>
+      <div style={{ fontSize: 12.5, fontWeight: 700, color: '#0E5C42', marginBottom: 4 }}>
         Completion link
       </div>
       <div style={{ fontSize: 11, color: '#587066', lineHeight: 1.5, marginBottom: 10 }}>
@@ -127,7 +127,7 @@ function btn(primary: boolean, busy: boolean): React.CSSProperties {
   return {
     height: 32, padding: '0 14px', borderRadius: 100, fontSize: 12, fontWeight: 600,
     fontFamily: 'inherit', cursor: busy ? 'wait' : 'pointer',
-    background: primary ? '#0B5240' : '#fff',
+    background: primary ? '#0E5C42' : '#fff',
     color: primary ? '#fff' : '#587066',
     border: primary ? 'none' : '1.5px solid #D4EAE2',
     opacity: busy ? 0.6 : 1,

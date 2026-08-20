@@ -77,7 +77,18 @@ export default function Dashboard() {
   const [tpl, setTpl] = useState<TemplateRow | null>(null);
   const [newTpl, setNewTpl] = useState<{ title: string; category: string; body: string } | null>(null);
   const [suggestions, setSuggestions] = useState<Array<{ id: string; title: string; detail: string; proposedBody: string; occurrences: number }>>([]);
+  type Knw = { id: string; intent: string; question: string; answer: string; source: string };
+  const [knowledge, setKnowledge] = useState<{ drafts: Knw[]; active: Knw[] }>({ drafts: [], active: [] });
+  const loadKnowledge = useCallback(async () => {
+    try { const r = await fetch('/api/will/knowledge').then((x) => x.json()); if (r.ok) setKnowledge({ drafts: r.drafts ?? [], active: r.active ?? [] }); } catch { /* */ }
+  }, []);
+  type Audit = { id: string; actor: string; action: string; detail: unknown; at: string };
+  const [activity, setActivity] = useState<Audit[]>([]);
+  const loadActivity = useCallback(async () => {
+    try { const r = await fetch('/api/will/audit?limit=60').then((x) => x.json()); if (r.ok) setActivity(r.rows ?? []); } catch { /* */ }
+  }, []);
   const [sugDrafts, setSugDrafts] = useState<Record<string, string>>({});
+  const [knwDrafts, setKnwDrafts] = useState<Record<string, string>>({});
   const [variantB, setVariantB] = useState<string>('');
   const [goalInput, setGoalInput] = useState<string>('50');
   const [tplText, setTplText] = useState('');
@@ -133,6 +144,7 @@ export default function Dashboard() {
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); }, [view, chatSelId, loadChat]);
   useEffect(() => { if (view === 'chats' && chatSelId) loadChat(chatSelId); /* eslint-disable-next-line */ }, [data]);
   useEffect(() => { if ((view === 'insights' || view === 'learning') && !report) fetch('/api/will/report').then((r) => r.json()).then((rp) => { setReport(rp); if (rp.goal != null) setGoalInput(String(rp.goal)); }).catch(() => {}); }, [view, report]);
+  useEffect(() => { if (view === 'learning') { loadKnowledge(); loadActivity(); } }, [view, loadKnowledge, loadActivity]);
 
   // Update-on-change: instead of refetching everything on a fixed timer, poll a
   // tiny change-token and only pull the heavy /state + /suggestions payloads when
@@ -252,7 +264,7 @@ export default function Dashboard() {
   return (
     <>
       <aside className="side">
-        <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">WHT Control<small>{ASSISTANT_NAME.toUpperCase()} · OS</small></div></div>
+        <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
         {(['pipeline', 'chats', 'tasks', 'library', 'insights', 'learning', 'simulator'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
@@ -341,8 +353,8 @@ export default function Dashboard() {
         {view === 'pipeline' && (
           <section className="view active">
             <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--ink)', letterSpacing: '-.2px' }}>{greeting} 👋</div>
-              <div style={{ fontSize: 12.5, color: 'var(--ink3)', marginTop: 2 }}>Here is where everything stands right now.</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--ink)', letterSpacing: '-.2px' }}>Welcome</div>
+              <div style={{ fontSize: 12.5, color: 'var(--ink3)', marginTop: 2 }}>Your Dashboard</div>
             </div>
             <div className="kpis">
               <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{data.customers.length}</div><div className="kd">in the system</div></div>
@@ -679,6 +691,64 @@ export default function Dashboard() {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              <div className="panel">
+                <h3>Knowledge Base {knowledge.drafts.length > 0 && <span className="cstate" style={{ ['--sc' as string]: 'var(--brand2)' }}>{knowledge.drafts.length} to review</span>}</h3>
+                <div className="psub">What {ASSISTANT_NAME} has learned from your real conversations. Approve a draft and {ASSISTANT_NAME} starts using it. Active answers: {knowledge.active.length}.</div>
+                <div style={{ marginTop: 8 }}>
+                  <button className="btn ghost" onClick={async () => {
+                    const r = await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'import_starter' }) }).then((x) => x.json()).catch(() => null);
+                    if (r?.ok) say(`Starter pack loaded: ${r.imported} added${r.skipped ? `, ${r.skipped} already there` : ''} ✓`);
+                    else say('Could not load the starter pack');
+                    loadKnowledge();
+                  }}>Load starter pack (31 answers)</button>
+                </div>
+                {knowledge.drafts.length === 0 && knowledge.active.length === 0 && (
+                  <div className="mini">Nothing yet. Load the starter pack above, or send your real conversations to teach {ASSISTANT_NAME} how your best answers sound.</div>
+                )}
+                {knowledge.drafts.map((k) => (
+                  <div key={k.id} className="sugcard" style={{ marginTop: 8 }}>
+                    <div className="sugq">Q: {k.question}</div>
+                    <textarea className="edit" style={{ minHeight: 64, marginTop: 6 }} value={knwDrafts[k.id] ?? k.answer} onChange={(e) => setKnwDrafts((d2) => ({ ...d2, [k.id]: e.target.value }))} />
+                    <div className="tbtns">
+                      <button className="btn approve" onClick={async () => {
+                        const body = knwDrafts[k.id] ?? k.answer;
+                        if (body !== k.answer) await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'edit', id: k.id, answer: body }) });
+                        await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'approve', id: k.id }) });
+                        say('Learned ✓'); loadKnowledge();
+                      }}>✓ Approve</button>
+                      <button className="btn ghost" onClick={async () => { await fetch('/api/will/knowledge', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'dismiss', id: k.id }) }); loadKnowledge(); }}>Dismiss</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="panel">
+                <h3>Decision Log</h3>
+                <div className="psub">The most recent things {ASSISTANT_NAME} and you did, with the reasoning attached, so you can see why, not just what. Newest first.</div>
+                {activity.length === 0 && <div className="mini">No activity yet. Once {ASSISTANT_NAME} starts handling messages, every decision shows here.</div>}
+                {activity.map((a) => {
+                  const d = (a.detail ?? {}) as { action?: string; knowledgeUsed?: string[]; guard?: { blocked?: boolean; violations?: string[] }; preview?: string | null; newState?: string | null };
+                  const label = a.action === 'decision'
+                    ? (d.action === 'sent' ? 'Sent a reply' : d.action === 'pending_approval' ? 'Drafted for approval' : d.action === 'human_task' ? 'Handed to you' : d.action || 'Decision')
+                    : a.action.replace(/_/g, ' ');
+                  const blocked = d.guard?.blocked;
+                  return (
+                    <div key={a.id} style={{ padding: '8px 0', borderBottom: '1px solid var(--line)', fontSize: 12.5 }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8 }}>
+                        <span style={{ fontWeight: 600 }}>
+                          <span style={{ color: 'var(--ink3)', fontWeight: 500, textTransform: 'capitalize' }}>{a.actor}</span> · {label}
+                          {blocked && <span className="cstate" style={{ ['--sc' as string]: 'var(--crit)', marginLeft: 6 }}>guard blocked</span>}
+                        </span>
+                        <span style={{ color: 'var(--ink3)', whiteSpace: 'nowrap' }}>{new Date(a.at).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                      </div>
+                      {d.preview && <div style={{ color: 'var(--ink2)', marginTop: 3 }}>&ldquo;{d.preview}&rdquo;</div>}
+                      {d.knowledgeUsed && d.knowledgeUsed.length > 0 && <div className="mini" style={{ marginTop: 2 }}>Used: {d.knowledgeUsed.join(', ')}</div>}
+                      {blocked && d.guard?.violations && <div className="mini" style={{ marginTop: 2, color: 'var(--crit)' }}>{d.guard.violations.join(', ')}</div>}
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="panel">

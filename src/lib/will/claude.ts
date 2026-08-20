@@ -131,6 +131,111 @@ export async function decide(ctx: CustomerContext, history: Turn[]): Promise<Dec
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+// ============================================================
+// Mining: read REAL conversations, extract what customers ask, and draft
+// polished professional answers in the approved voice. Never copies the
+// agent's raw wording — it produces an improved, kind, correct version.
+// ============================================================
+export interface MinedEntry {
+  intent: string; question: string; examples: string[];
+  answer: string; keywords: string[]; tags: string[]; lang: string;
+}
+
+const MINE_TOOL = {
+  name: 'knowledge_entries',
+  description: 'The distilled question→answer knowledge learned from these conversations.',
+  input_schema: {
+    type: 'object',
+    properties: {
+      entries: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            intent: { type: 'string', description: 'short label, e.g. "refund timing"' },
+            question: { type: 'string', description: "the customer's question in clear canonical form" },
+            examples: { type: 'array', items: { type: 'string' }, description: 'real phrasings customers used' },
+            answer: { type: 'string', description: 'the polished, professional, warm answer to send' },
+            keywords: { type: 'array', items: { type: 'string' } },
+            tags: { type: 'array', items: { type: 'string' } },
+            lang: { type: 'string', description: "language code, usually 'en'" },
+          },
+          required: ['intent', 'question', 'answer'],
+        },
+      },
+    },
+    required: ['entries'],
+  },
+} as const;
+
+const MINE_SYSTEM = `You are building a knowledge base for "Working Holiday Tax", an Australian tax service for Working Holiday Makers (backpackers), from real WhatsApp conversations.
+
+These conversations are the business owner's OLD way of working. They are useful for ONE thing only: to see the distinct QUESTIONS and topics that CUSTOMERS raise. They are NOT a model for how to answer. Learn WHAT customers ask, never HOW the old agent replied.
+
+Your job: extract each distinct customer question/topic, and for each recurring or important one, write ONE excellent answer to send in future.
+
+CRITICAL RULES FOR THE ANSWERS:
+- Do NOT copy or imitate the human agent's wording, tone, or approach. The old replies are often rushed, impatient or informal — that is exactly what we are replacing. Produce the OPPOSITE: warm, patient, professional, polite, genuinely helpful, concise.
+- The company's approved messages, boundaries and prices always take precedence over anything in these old conversations. If an old reply conflicts with the boundaries below, ignore the old reply entirely.
+- Stay within the business boundaries: fixed prices are $220 (TFN only) and $385 (TFN + ABN). Guarantee: if the refund is less than the fee, the difference is refunded. Payment is upfront. NEVER invent or negotiate prices, NEVER give personalised tax advice or determine residency/Medicare/deductions/refund amounts before payment, NEVER claim to be a bot/AI, NEVER use an em dash or en dash.
+- Write answers in English.
+- Merge duplicate questions into one entry; set examples to the real phrasings seen; set keywords to the important searchable words; set a short intent label.
+- Only include genuine, reusable questions (skip one-off logistics tied to a single person).
+
+Output strictly by calling the knowledge_entries tool.`;
+
+export async function mineKnowledge(
+  conversations: { messages: { role: string; text: string }[]; converted?: boolean }[],
+): Promise<MinedEntry[]> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key || conversations.length === 0) return [];
+  const out: MinedEntry[] = [];
+  const BATCH = 12;
+  for (let i = 0; i < conversations.length; i += BATCH) {
+    const batch = conversations.slice(i, i + BATCH);
+    const convText = batch.map((c, idx) =>
+      `--- Conversation ${idx + 1}${c.converted ? ' (CONVERTED: customer paid)' : ''} ---\n` +
+      c.messages.map((m) => `${m.role === 'customer' ? 'Customer' : 'Agent'}: ${m.text}`).join('\n'),
+    ).join('\n\n');
+    const body = JSON.stringify({
+      model: process.env.CLAUDE_MODEL ?? 'claude-sonnet-4-5',
+      max_tokens: 4096,
+      system: MINE_SYSTEM,
+      tools: [MINE_TOOL],
+      tool_choice: { type: 'tool', name: 'knowledge_entries' },
+      messages: [{ role: 'user', content: convText.slice(0, 60000) }],
+    });
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        signal: AbortSignal.timeout(90_000),
+        headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+        body,
+      });
+      if (!res.ok) { if (res.status === 429 || res.status >= 500) { await sleep(800); } continue; }
+      const data = await res.json();
+      const tool = (data.content as Array<{ type: string; name?: string; input?: unknown }> | undefined)
+        ?.find((bl) => bl.type === 'tool_use' && bl.name === 'knowledge_entries');
+      const entries = (tool?.input as { entries?: MinedEntry[] } | undefined)?.entries;
+      if (Array.isArray(entries)) {
+        for (const e of entries) {
+          if (!e?.question || !e?.answer) continue;
+          out.push({
+            intent: String(e.intent ?? '').slice(0, 80),
+            question: String(e.question).slice(0, 400),
+            examples: Array.isArray(e.examples) ? e.examples.slice(0, 8).map((s) => String(s).slice(0, 200)) : [],
+            answer: String(e.answer).slice(0, 2000),
+            keywords: Array.isArray(e.keywords) ? e.keywords.slice(0, 16).map((s) => String(s).slice(0, 40)) : [],
+            tags: Array.isArray(e.tags) ? e.tags.slice(0, 8).map((s) => String(s).slice(0, 40)) : [],
+            lang: (typeof e.lang === 'string' && e.lang.length <= 5) ? e.lang : 'en',
+          });
+        }
+      }
+    } catch { /* skip this batch, continue */ }
+  }
+  return out;
+}
+
 // ---------- deterministic mock (no API key) ----------
 const NO_ABN = /\b(?:no|don'?t have|without|never had)\s+(?:an?\s+)?abn\b|only\s+(?:worked\s+)?(?:on\s+)?(?:a\s+)?tfn|just\s+tfn/i;
 const PAYABLE_STATES: CustomerState[] = ['PRICE_SENT', 'PAYMENT_PENDING'];

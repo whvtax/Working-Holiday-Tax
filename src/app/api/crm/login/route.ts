@@ -6,6 +6,7 @@ import {
   generateOtp,
 } from '@/lib/crm-store'
 import { getRedis } from '@/lib/rate-limit'
+import { getClientIp } from '@/lib/get-ip'
 import crypto from 'crypto'
 type RedisClient = import('redis').RedisClientType
 
@@ -41,22 +42,30 @@ export async function POST(req: NextRequest) {
     const redis = await getRedis()
     if (!redis) return NextResponse.json({ ok: false, message: 'Server misconfiguration.' }, { status: 500 })
 
-    if (await isLockedOutRedis(redis as RedisClient)) {
+    // AUTHZ-DOS-01: lockout is keyed per client IP, not globally.
+    const ip = getClientIp(req)
+
+    if (await isLockedOutRedis(redis as RedisClient, ip)) {
       return NextResponse.json({ ok: false, message: 'Too many attempts. Try again later.' }, { status: 401 })
     }
 
     if (!verifyPassword(password, PASSWORD_HASH)) {
-      const fa = await recordFailedAttemptRedis(redis as RedisClient)
+      const fa = await recordFailedAttemptRedis(redis as RedisClient, ip)
       if (fa.locked && ADMIN_EMAIL) await sendSecurityAlert(ADMIN_EMAIL, RESEND_KEY, fa.count)
       return NextResponse.json({ ok: false, message: 'Incorrect password.' }, { status: 401 })
     }
 
-    await resetFailedAttemptsRedis(redis as RedisClient)
+    await resetFailedAttemptsRedis(redis as RedisClient, ip)
 
+    // OTP-BIND-05: bind the OTP to the browser that passed the password step.
+    // A random pre-auth id is stored in an httpOnly cookie; the OTP hash and its
+    // attempt counter are namespaced by that id, so the code is only redeemable
+    // by this browser (not guessable against a single global key).
+    const preAuthId = crypto.randomBytes(24).toString('hex')
     const otp = generateOtp()
     const otpHash = crypto.createHash('sha256').update(otp).digest('hex')
-    await redis.del('crm_otp_attempts')
-    await redis.set('crm_otp', otpHash, { EX: 600 }) // 10 minutes
+    await redis.del(`crm_otp_attempts:${preAuthId}`)
+    await redis.set(`crm_otp:${preAuthId}`, otpHash, { EX: 600 }) // 10 minutes
 
     if (ADMIN_EMAIL) {
       const sent = await sendOtpEmail(ADMIN_EMAIL, RESEND_KEY, otp)
@@ -66,7 +75,15 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ ok: true, otpSent: true })
+    const res = NextResponse.json({ ok: true, otpSent: true })
+    res.cookies.set('crm_preauth', preAuthId, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 600,
+    })
+    return res
 
   } catch (err) {
     console.error('[CRM login]', err)

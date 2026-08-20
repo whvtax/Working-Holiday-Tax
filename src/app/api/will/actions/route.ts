@@ -11,6 +11,7 @@ import { reconcileSchedule } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
+import { deliverOut, sendWhatsAppText } from '@/lib/will/channel';
 
 export const dynamic = 'force-dynamic';
 
@@ -50,6 +51,14 @@ async function humanSend(customer: CustomerRow, rawBody: string): Promise<{ erro
 
 export async function POST(req: Request) {
   if (!sessionValid()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
+  // APPSEC-05: defence-in-depth CSRF check on this state-changing endpoint (on
+  // top of SameSite=Strict on crm_session). Reject a cross-origin Origin; allow
+  // when the header is absent (same-origin fetches and some clients omit it).
+  const origin = req.headers.get('origin');
+  if (origin) {
+    try { if (new URL(origin).host !== new URL(req.url).host) return bad('bad origin', 403); }
+    catch { /* malformed origin header: ignore */ }
+  }
   const store = getStore();
   const parsed = await readJson<ActionBody>(req);
   if ('error' in parsed) return bad(parsed.error, parsed.code);
@@ -58,12 +67,8 @@ export async function POST(req: Request) {
   switch (b.action) {
     case 'approve_message': {
       if (!b.id) return bad('id required');
-      const customers = await store.listCustomers();
-      let msg = null, customer = null;
-      for (const c of customers) {
-        const m = (await store.listMessages(c.id)).find((x) => x.id === b.id);
-        if (m) { msg = m; customer = c; break; }
-      }
+      const msg = await store.getMessageById(b.id);
+      const customer = msg ? await store.getCustomerById(msg.customerId) : null;
       if (!msg || !customer) return bad('message not found', 404);
       if (msg.direction !== 'OUT' || msg.status !== 'PENDING_APPROVAL') return bad('not a pending draft');
 
@@ -99,6 +104,19 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: false, blocked: ['STALE_DRAFT'] });
       }
 
+      // RACE-02: atomically claim the draft (PENDING_APPROVAL -> QUEUED) so a
+      // double-click or two operators cannot both transmit the same message.
+      const claimed = await store.claimMessageForSend(msg.id);
+      if (!claimed) return bad('draft already handled', 409);
+
+      // Transmit the approved draft to WhatsApp, then record the result. In test
+      // mode (no channel credentials) this is a no-op and the draft is marked SENT.
+      const tx = await sendWhatsAppText(customer.waId, msg.body);
+      if (!tx.ok) {
+        await store.setMessageStatus(msg.id, 'FAILED');
+        await store.audit('channel', 'send_failed', { id: msg.id, error: tx.error });
+        return NextResponse.json({ ok: false, blocked: ['SEND_FAILED'], error: tx.error });
+      }
       await store.setMessageStatus(msg.id, 'SENT');
       // Apply the state/income change that was deferred until approval.
       if (msg.meta?.proposedState && canTransition(customer.state, msg.meta.proposedState)) {
@@ -106,7 +124,7 @@ export async function POST(req: Request) {
         if (msg.meta.proposedState === 'PAID') await autoAdvanceToForm(customer.id, await getBank());
       }
       if (msg.meta?.income) await store.updateCustomer(customer.id, { income: msg.meta.income });
-      const fresh = (await store.listCustomers()).find((c) => c.id === customer.id);
+      const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       await store.audit('owner', 'draft_approved', { id: b.id });
       return NextResponse.json({ ok: true });
@@ -114,17 +132,12 @@ export async function POST(req: Request) {
 
     case 'discard_message': {
       if (!b.id) return bad('id required');
-      const customers = await store.listCustomers();
-      for (const c of customers) {
-        const m = (await store.listMessages(c.id)).find((x) => x.id === b.id);
-        if (m) {
-          if (m.direction !== 'OUT' || m.status !== 'PENDING_APPROVAL') return bad('not a pending draft');
-          await store.setMessageStatus(m.id, 'DISCARDED');
-          await store.audit('owner', 'draft_discarded', { id: b.id });
-          return NextResponse.json({ ok: true });
-        }
-      }
-      return bad('message not found', 404);
+      const m = await store.getMessageById(b.id);
+      if (!m) return bad('message not found', 404);
+      if (m.direction !== 'OUT' || m.status !== 'PENDING_APPROVAL') return bad('not a pending draft');
+      await store.setMessageStatus(m.id, 'DISCARDED');
+      await store.audit('owner', 'draft_discarded', { id: b.id });
+      return NextResponse.json({ ok: true });
     }
 
     case 'send_task_reply': {
@@ -134,11 +147,11 @@ export async function POST(req: Request) {
       if (!b.id || typeof b.body !== 'string' || !b.body.trim()) return bad('id and body required');
       const task = (await store.listTasks()).find((t) => t.id === b.id);
       if (!task || task.status !== 'OPEN' || !task.customerId) return bad('task not open', 404);
-      const customer = (await store.listCustomers()).find((c) => c.id === task.customerId);
+      const customer = await store.getCustomerById(task.customerId);
       if (!customer) return bad('customer gone', 404);
       const send = await humanSend(customer, b.body.trim());
       if (send.error) return bad(send.error);
-      await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'HUMAN', status: 'SENT', body: send.body! });
+      await deliverOut(customer, send.body!, 'HUMAN');
       await store.resolveTask(task.id);
       await store.audit('owner', 'task_reply_sent', { taskId: task.id });
       return NextResponse.json({ ok: true });
@@ -148,11 +161,11 @@ export async function POST(req: Request) {
       // Quick manual message to any customer, no chat screen needed.
       // Per spec §9.1 a human send pauses the assistant for that chat.
       if (!b.customerId || typeof b.body !== 'string' || !b.body.trim()) return bad('customerId and body required');
-      const customer = (await store.listCustomers()).find((c) => c.id === b.customerId);
+      const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
       const send = await humanSend(customer, b.body.trim());
       if (send.error) return bad(send.error);
-      await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'HUMAN', status: 'SENT', body: send.body! });
+      await deliverOut(customer, send.body!, 'HUMAN');
       await store.updateCustomer(customer.id, { aiPaused: true });
       await store.audit('owner', 'manual_reply', { customerId: customer.id });
       return NextResponse.json({ ok: true, aiPaused: true });
@@ -163,13 +176,13 @@ export async function POST(req: Request) {
       // H1: fill placeholders and run the human-send safety net so a raw
       // {{AMOUNT}}/{{DOCUMENT}} or a secret never reaches the customer.
       if (!b.customerId || !b.id) return bad('customerId and template id required');
-      const customer = (await store.listCustomers()).find((c) => c.id === b.customerId);
+      const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
       const template = (await store.listTemplates()).find((t) => t.id === b.id || t.key === b.id);
       if (!template) return bad('template not found', 404);
       const send = await humanSend(customer, template.body);
       if (send.error) return bad(send.error);
-      await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'HUMAN', status: 'SENT', body: send.body! });
+      await deliverOut(customer, send.body!, 'HUMAN');
       await store.audit('owner', 'template_sent_manually', { customerId: customer.id, template: template.key });
       return NextResponse.json({ ok: true });
     }
@@ -185,7 +198,7 @@ export async function POST(req: Request) {
       await store.updateCustomer(b.id, { aiPaused: !b.value });
       // L3: resuming the assistant re-arms the follow-up cadence that was
       // cancelled while paused.
-      const c = (await store.listCustomers()).find((x) => x.id === b.id);
+      const c = await store.getCustomerById(b.id);
       if (c && b.value) await reconcileSchedule(c);
       await store.audit('owner', b.value ? 'assistant_resumed' : 'assistant_paused', { customerId: b.id });
       return NextResponse.json({ ok: true });
@@ -200,7 +213,7 @@ export async function POST(req: Request) {
       // Manual stage move by the owner. H3: validate against the state enum.
       // H4: never let a paid customer be pushed back into the sales flow.
       if (!b.customerId || !b.state) return bad('customerId and state required');
-      const customer = (await store.listCustomers()).find((c) => c.id === b.customerId);
+      const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
       if (!ALL_STATES.includes(b.state as CustomerState)) return bad('unknown state');
       const target = b.state as CustomerState;
@@ -220,7 +233,7 @@ export async function POST(req: Request) {
         return bad('that stage jump is not allowed; move one stage at a time');
       }
       await store.setState(customer.id, target, 'HUMAN');
-      const fresh = (await store.listCustomers()).find((c) => c.id === customer.id);
+      const fresh = await store.getCustomerById(customer.id);
       if (fresh) await reconcileSchedule(fresh);
       return NextResponse.json({ ok: true });
     }
@@ -231,7 +244,7 @@ export async function POST(req: Request) {
       if (!b.customerId || typeof b.amountCents !== 'number' || !Number.isFinite(b.amountCents) || b.amountCents < 0) {
         return bad('customerId and a valid amountCents required');
       }
-      const customer = (await store.listCustomers()).find((c) => c.id === b.customerId);
+      const customer = await store.getCustomerById(b.customerId);
       if (!customer) return bad('customer not found', 404);
       if (!['UNDER_REVIEW', 'ESTIMATE_READY', 'FINAL_REVIEW', 'DOCUMENTS_COMPLETE'].includes(customer.state)) {
         return bad('estimate can only be set during review');

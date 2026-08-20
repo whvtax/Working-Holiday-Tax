@@ -4,7 +4,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import {
-  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, SuggestionRow,
+  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, SuggestionRow, KnowledgeRow, AuditRow,
 } from './store';
 import { CustomerState } from './state-machine';
 import { seedCustomers, seedTemplates } from './seed';
@@ -17,8 +17,10 @@ interface Db {
   history: StateHistoryRow[];
   jobs: JobRow[];
   suggestions: SuggestionRow[];
+  knowledge: KnowledgeRow[];
   settings: Record<string, unknown>;
-  audit: { actor: string; action: string; detail: unknown; at: string }[];
+  audit: { id?: string; actor: string; action: string; detail: unknown; at: string }[];
+  processed?: { id: string; at: string }[];
 }
 
 const FILE = path.join(process.cwd(), '.data', 'store.json');
@@ -37,7 +39,9 @@ async function load(): Promise<Db> {
     }
     cache.jobs ??= [];
     cache.suggestions ??= [];
+    cache.knowledge ??= [];
     cache.settings ??= {};
+    cache.processed ??= [];
     for (const c of cache.customers) { c.previousState ??= null; c.lastMessageDirection ??= (c.unread ? 'IN' : 'OUT'); c.botOwned ??= false; c.lang ??= null; }
     for (const t of cache.tasks) t.suggestedReply ??= null;
   } catch {
@@ -49,6 +53,7 @@ async function load(): Promise<Db> {
       history: [],
       jobs: [],
       suggestions: [],
+      knowledge: [],
       settings: {},
       audit: [],
     };
@@ -88,6 +93,14 @@ export class FileStore implements Store {
 
   async getCustomerByWaId(waId: string) {
     return (await load()).customers.find((c) => c.waId === waId) ?? null;
+  }
+
+  async getCustomerById(id: string) {
+    return (await load()).customers.find((c) => c.id === id) ?? null;
+  }
+
+  async getMessageById(id: string) {
+    return (await load()).messages.find((m) => m.id === id) ?? null;
   }
 
   async createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow> {
@@ -145,6 +158,10 @@ export class FileStore implements Store {
     return (await load()).history.filter((h) => h.customerId === customerId);
   }
 
+  async allHistory() {
+    return (await load()).history;
+  }
+
   async addMessage(m: Omit<MessageRow, 'id' | 'createdAt'>): Promise<MessageRow> {
     const db = await load();
     const row: MessageRow = { ...m, id: randomUUID(), createdAt: now() };
@@ -161,6 +178,15 @@ export class FileStore implements Store {
 
   async listMessages(customerId: string) {
     return (await load()).messages.filter((m) => m.customerId === customerId);
+  }
+
+  async claimMessageForSend(id: string): Promise<boolean> {
+    const db = await load();
+    const m = db.messages.find((x) => x.id === id);
+    if (!m || m.status !== 'PENDING_APPROVAL') return false;
+    m.status = 'QUEUED';
+    await persist();
+    return true;
   }
 
   async setMessageStatus(id: string, status: MessageRow['status']) {
@@ -300,6 +326,23 @@ export class FileStore implements Store {
 
   async listJobs() { return (await load()).jobs; }
 
+  async listJobsForCustomer(customerId: string, kinds?: JobRow['kind'][]) {
+    return (await load()).jobs.filter(
+      (j) => j.customerId === customerId && (!kinds || kinds.includes(j.kind)),
+    );
+  }
+
+  async listUpcomingJobs(limit: number) {
+    return (await load()).jobs
+      .filter((j) => j.status === 'SCHEDULED' && j.kind !== 'NIGHTLY')
+      .sort((a, b) => a.runAt.localeCompare(b.runAt))
+      .slice(0, limit);
+  }
+
+  async hasScheduledNightly() {
+    return (await load()).jobs.some((j) => j.kind === 'NIGHTLY' && j.status === 'SCHEDULED');
+  }
+
   async getJob(id: string) {
     return (await load()).jobs.find((j) => j.id === id) ?? null;
   }
@@ -351,9 +394,71 @@ export class FileStore implements Store {
     return n;
   }
 
+  async listKnowledge(status?: KnowledgeRow['status']) {
+    const db = await load();
+    return status ? db.knowledge.filter((k) => k.status === status) : db.knowledge;
+  }
+  async addKnowledge(k: Omit<KnowledgeRow, 'id' | 'createdAt' | 'updatedAt'>): Promise<KnowledgeRow> {
+    const db = await load();
+    const row: KnowledgeRow = { ...k, id: randomUUID(), createdAt: now(), updatedAt: now() };
+    db.knowledge.push(row);
+    await persist();
+    return row;
+  }
+  async updateKnowledge(id: string, patch: Partial<KnowledgeRow>) {
+    const db = await load();
+    const k = db.knowledge.find((x) => x.id === id);
+    if (k) { Object.assign(k, patch); k.updatedAt = now(); }
+    await persist();
+  }
+  async setKnowledgeStatus(id: string, status: KnowledgeRow['status']) {
+    const db = await load();
+    const k = db.knowledge.find((x) => x.id === id);
+    if (k) { k.status = status; k.updatedAt = now(); }
+    await persist();
+  }
+  async deleteKnowledge(id: string) {
+    const db = await load();
+    db.knowledge = db.knowledge.filter((k) => k.id !== id);
+    await persist();
+  }
+
   async audit(actor: string, action: string, detail?: unknown) {
     const db = await load();
-    db.audit.push({ actor, action, detail: detail ?? null, at: now() });
+    db.audit.push({ id: randomUUID(), actor, action, detail: detail ?? null, at: now() });
     await persist();
+  }
+
+  async claimInbound(metaId: string): Promise<boolean> {
+    const db = await load();
+    db.processed ??= [];
+    if (db.processed.some((p) => p.id === metaId)) return false;
+    db.processed.push({ id: metaId, at: now() });
+    await persist();
+    return true;
+  }
+
+  async releaseInbound(metaId: string): Promise<void> {
+    const db = await load();
+    db.processed = (db.processed ?? []).filter((p) => p.id !== metaId);
+    await persist();
+  }
+
+  async purgeProcessedMessages(olderThanMs: number): Promise<number> {
+    const db = await load();
+    const cutoff = Date.now() - olderThanMs;
+    const before = (db.processed ?? []).length;
+    db.processed = (db.processed ?? []).filter((p) => new Date(p.at).getTime() >= cutoff);
+    const removed = before - db.processed.length;
+    if (removed > 0) await persist();
+    return removed;
+  }
+
+  async listAudit(limit = 200): Promise<AuditRow[]> {
+    const db = await load();
+    return db.audit
+      .slice(-limit)
+      .reverse()
+      .map((a) => ({ id: (a as { id?: string }).id ?? '', actor: a.actor, action: a.action, detail: a.detail, at: a.at }));
   }
 }

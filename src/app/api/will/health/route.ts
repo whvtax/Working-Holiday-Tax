@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, getLastPersistError } from '@/lib/will/store';
 import { policyGuard } from '@/lib/will/policy-guard';
+import { channelConfigured, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,14 +48,37 @@ export async function GET() {
 
   // Scheduler: nightly job present and tick recent enough
   try {
-    const jobs = await getStore().listJobs();
-    const nightly = jobs.some((j) => j.kind === 'NIGHTLY' && j.status === 'SCHEDULED');
+    const nightly = await getStore().hasScheduledNightly();
     checks.scheduler = { ok: true, detail: nightly ? 'nightly queued' : 'nightly will queue on next tick' };
   } catch {
     checks.scheduler = { ok: false, detail: 'error' };
   }
 
+  // REL-04: the Vercel cron authorizes /api/will/tick with CRON_SECRET. If it is
+  // unset in production the cron silently 401s and the scheduler never runs, so
+  // surface it as RED rather than letting follow-ups quietly stop.
+  const cronSecretSet = !!(process.env.CRON_SECRET || process.env.WILL_CRON_SECRET);
+  const cronNeeded = process.env.NODE_ENV === 'production';
+  checks.cron = {
+    ok: cronSecretSet || !cronNeeded,
+    detail: cronSecretSet ? 'cron secret set' : (cronNeeded ? 'CRON_SECRET missing — scheduler cron will be rejected' : 'cron secret unset (dev)'),
+  };
+
+  // WhatsApp channel: connected once the Cloud API credentials are set.
+  // Not "broken" when unset — it just means Will is in test mode (nothing sends).
+  // CONFIG-01: if we ARE live-sending but the inbound webhook secrets are unset,
+  // inbound silently 401s/403s — surface that as RED, never green "test mode".
+  const waLive = channelConfigured();
+  const webhookSecretsSet = !!(metaAppSecret() && metaVerifyToken());
+  if (!waLive) {
+    checks.whatsapp = { ok: true, detail: 'test mode (not connected)' };
+  } else if (webhookSecretsSet) {
+    checks.whatsapp = { ok: true, detail: 'connected (live sending + webhook secrets set)' };
+  } else {
+    checks.whatsapp = { ok: false, detail: 'LIVE SENDING but webhook secrets MISSING (META_APP_SECRET / META_VERIFY_TOKEN) — inbound messages will be rejected' };
+  }
+
   const killSwitch = ((await getStore().getSetting('kill_switch').catch(() => false)) === true);
   const allOk = Object.values(checks).every((c) => c.ok);
-  return NextResponse.json({ ok: allOk, checks, killSwitch, usingMock: !hasKey });
+  return NextResponse.json({ ok: allOk, checks, killSwitch, usingMock: !hasKey, whatsappLive: waLive });
 }

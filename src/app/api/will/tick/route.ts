@@ -11,10 +11,7 @@ export async function GET() {
   if (!cronAuthorized()) return NextResponse.json({ ok:false, error:'unauthorized' }, { status:401 });
   await ensureNightly();
   const result = await processDueJobs();
-  const jobs = await getStore().listJobs();
-  const upcoming = jobs
-    .filter((j) => j.status === 'SCHEDULED' && j.kind !== 'NIGHTLY')
-    .sort((a, b) => a.runAt.localeCompare(b.runAt))
-    .slice(0, 20);
+  // PERF-04: fetch only the 20 soonest jobs from the DB, not the whole table.
+  const upcoming = await getStore().listUpcomingJobs(20);
   return NextResponse.json({ ...result, upcoming });
 }

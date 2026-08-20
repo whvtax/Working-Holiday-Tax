@@ -7,7 +7,7 @@
 import { randomUUID } from 'crypto';
 import { getSupabase } from '@/lib/supabase';
 import {
-  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, SuggestionRow,
+  Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, SuggestionRow, KnowledgeRow, AuditRow,
 } from './store';
 import { CustomerState } from './state-machine';
 import { seedTemplates } from './seed';
@@ -179,6 +179,11 @@ export class SupabaseStore implements Store {
     return data ? toCustomer(data) : null;
   }
 
+  async getCustomerById(id: string): Promise<CustomerRow | null> {
+    const { data } = await this.sb().from('will_customers').select('*').eq('id', id).limit(1).maybeSingle();
+    return data ? toCustomer(data) : null;
+  }
+
   async createCustomer(c: Partial<CustomerRow> & { waId: string }): Promise<CustomerRow> {
     const row = {
       id: randomUUID(), wa_id: c.waId, wa_norm: normPhone(c.waId), name: c.name ?? null,
@@ -234,8 +239,15 @@ export class SupabaseStore implements Store {
     const upd: Record<string, unknown> = { state: to, state_changed_at: now() };
     if (CLOSED.includes(to)) upd.previous_state = c.state;
     if (to === 'PAID') upd.paid = true;
-    const { error } = await this.sb().from('will_customers').update(upd).eq('id', id);
+    // CONC-01: optimistic concurrency — only write if the state is still what we
+    // read, so two concurrent transitions cannot clobber each other (lost update).
+    const { error } = await this.sb().from('will_customers').update(upd).eq('id', id).eq('state', c.state);
     if (error) { lastPersistError = error.message; throw error; }
+  }
+
+  async allHistory(): Promise<StateHistoryRow[]> {
+    const { data } = await this.sb().from('will_state_history').select('*');
+    return (data ?? []).map(toHistory);
   }
 
   async history(customerId: string): Promise<StateHistoryRow[]> {
@@ -263,6 +275,19 @@ export class SupabaseStore implements Store {
     const { data } = await this.sb().from('will_messages').select('*')
       .eq('customer_id', customerId).order('created_at', { ascending: true });
     return (data ?? []).map(toMessage);
+  }
+
+  async getMessageById(id: string): Promise<MessageRow | null> {
+    const { data } = await this.sb().from('will_messages').select('*').eq('id', id).limit(1).maybeSingle();
+    return data ? toMessage(data) : null;
+  }
+
+  async claimMessageForSend(id: string): Promise<boolean> {
+    // Atomic: only succeeds if the row is still PENDING_APPROVAL, so two
+    // concurrent approvals cannot both transmit.
+    const { data } = await this.sb().from('will_messages')
+      .update({ status: 'QUEUED' }).eq('id', id).eq('status', 'PENDING_APPROVAL').select('id');
+    return (data ?? []).length > 0;
   }
 
   async setMessageStatus(id: string, status: MessageRow['status']): Promise<void> {
@@ -411,6 +436,27 @@ export class SupabaseStore implements Store {
     return (data ?? []).map(toJob);
   }
 
+  async listJobsForCustomer(customerId: string, kinds?: JobRow['kind'][]): Promise<JobRow[]> {
+    let q = this.sb().from('will_jobs').select('*').eq('customer_id', customerId);
+    if (kinds && kinds.length) q = q.in('kind', kinds);
+    const { data } = await q;
+    return (data ?? []).map(toJob);
+  }
+
+  async listUpcomingJobs(limit: number): Promise<JobRow[]> {
+    const { data } = await this.sb().from('will_jobs').select('*')
+      .eq('status', 'SCHEDULED').neq('kind', 'NIGHTLY')
+      .order('run_at', { ascending: true }).limit(limit);
+    return (data ?? []).map(toJob);
+  }
+
+  async hasScheduledNightly(): Promise<boolean> {
+    const { count } = await this.sb().from('will_jobs')
+      .select('id', { count: 'exact', head: true })
+      .eq('kind', 'NIGHTLY').eq('status', 'SCHEDULED');
+    return (count ?? 0) > 0;
+  }
+
   async getJob(id: string): Promise<JobRow | null> {
     const { data } = await this.sb().from('will_jobs').select('*').eq('id', id).maybeSingle();
     return data ? toJob(data) : null;
@@ -453,9 +499,96 @@ export class SupabaseStore implements Store {
     return data?.length ?? 0;
   }
 
+  async listKnowledge(status?: KnowledgeRow['status']): Promise<KnowledgeRow[]> {
+    let q = this.sb().from('will_knowledge').select('*').order('weight', { ascending: false });
+    if (status) q = q.eq('status', status);
+    const { data } = await q;
+    return (data ?? []).map((r): KnowledgeRow => ({
+      id: r.id as string,
+      intent: (r.intent as string) ?? '',
+      question: (r.question as string) ?? '',
+      examples: (r.examples as string[]) ?? [],
+      answer: (r.answer as string) ?? '',
+      keywords: (r.keywords as string[]) ?? [],
+      tags: (r.tags as string[]) ?? [],
+      lang: (r.lang as string) ?? 'en',
+      weight: (r.weight as number) ?? 1,
+      status: r.status as KnowledgeRow['status'],
+      source: r.source as KnowledgeRow['source'],
+      createdAt: (r.created_at as string) ?? now(),
+      updatedAt: (r.updated_at as string) ?? now(),
+    }));
+  }
+  async addKnowledge(k: Omit<KnowledgeRow, 'id' | 'createdAt' | 'updatedAt'>): Promise<KnowledgeRow> {
+    const row = {
+      id: randomUUID(), intent: k.intent, question: k.question, examples: k.examples,
+      answer: k.answer, keywords: k.keywords, tags: k.tags, lang: k.lang, weight: k.weight,
+      status: k.status, source: k.source, created_at: now(), updated_at: now(),
+    };
+    const { data, error } = await this.sb().from('will_knowledge').insert(row).select('*').single();
+    if (error) { lastPersistError = error.message; throw error; }
+    return (await this.listKnowledge()).find((x) => x.id === (data.id as string))
+      ?? { ...k, id: data.id as string, createdAt: now(), updatedAt: now() };
+  }
+  async updateKnowledge(id: string, patch: Partial<KnowledgeRow>): Promise<void> {
+    const upd: Record<string, unknown> = { updated_at: now() };
+    for (const key of ['answer', 'intent', 'question', 'keywords', 'tags', 'weight', 'lang'] as const) {
+      if (key in patch) upd[key] = (patch as Record<string, unknown>)[key];
+    }
+    await this.sb().from('will_knowledge').update(upd).eq('id', id);
+  }
+  async setKnowledgeStatus(id: string, status: KnowledgeRow['status']): Promise<void> {
+    await this.sb().from('will_knowledge').update({ status, updated_at: now() }).eq('id', id);
+  }
+  async deleteKnowledge(id: string): Promise<void> {
+    await this.sb().from('will_knowledge').delete().eq('id', id);
+  }
+
   async audit(actor: string, action: string, detail?: unknown): Promise<void> {
-    // Audit is written to the CRM's own audit trail if present; a no-op here is
-    // acceptable since every state change is already recorded in will_state_history.
-    void actor; void action; void detail;
+    // Best-effort: the decision log is valuable but must never break a send if
+    // the table is missing or a write fails. Swallow errors deliberately.
+    try {
+      await this.sb().from('will_audit').insert({ actor, action, detail: detail ?? null });
+    } catch { /* audit is non-critical */ }
+  }
+
+  async claimInbound(metaId: string): Promise<boolean> {
+    // Atomic: the UNIQUE primary key means the first insert wins and a duplicate
+    // insert returns a unique-violation (23505) which we treat as "already seen".
+    const { error } = await this.sb().from('will_processed_messages').insert({ meta_id: metaId });
+    if (!error) return true;
+    if ((error as { code?: string }).code === '23505') return false; // duplicate
+    // On an unexpected error, fail OPEN (allow processing) rather than dropping a
+    // real message; at-least-once is safer than at-most-zero for a customer reply.
+    return true;
+  }
+
+  async releaseInbound(metaId: string): Promise<void> {
+    await this.sb().from('will_processed_messages').delete().eq('meta_id', metaId);
+  }
+
+  async purgeProcessedMessages(olderThanMs: number): Promise<number> {
+    const cutoff = new Date(Date.now() - olderThanMs).toISOString();
+    const { data } = await this.sb().from('will_processed_messages').delete().lt('created_at', cutoff).select('meta_id');
+    return (data ?? []).length;
+  }
+
+  async listAudit(limit = 200): Promise<AuditRow[]> {
+    try {
+      const { data } = await this.sb()
+        .from('will_audit')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(limit);
+      return (data ?? []).map((r: Record<string, unknown>) => ({
+        id: String(r.id),
+        actor: String(r.actor),
+        action: String(r.action),
+        detail: r.detail ?? null,
+        at: String(r.created_at),
+      }));
+    } catch {
+      return [];
+    }
   }
 }

@@ -9,6 +9,7 @@ import { schedulerConfig, withinQuietHours, deferToMorning } from './config';
 import { policyGuard } from './policy-guard';
 import { CustomerState } from './state-machine';
 import { formReceivedMessage } from './i18n';
+import { deliverOut } from './channel';
 
 type Flow = 'prePayment' | 'form' | 'signature';
 
@@ -65,9 +66,9 @@ export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
   if (!flow) return;
 
   // How many follow-ups of THIS flow have already been delivered?
-  const jobs = await store.listJobs();
+  const jobs = await store.listJobsForCustomer(customer.id, ['FOLLOW_UP']);
   const doneCount = jobs.filter(
-    (j) => j.customerId === customer.id && j.kind === 'FOLLOW_UP' && j.status === 'DONE' && j.payload.flow === flow,
+    (j) => j.status === 'DONE' && j.payload.flow === flow,
   ).length;
   await scheduleFollowUp(customer.id, flow, doneCount);
 }
@@ -75,8 +76,7 @@ export async function reconcileSchedule(customer: CustomerRow): Promise<void> {
 /** Ensure exactly one nightly maintenance job is queued (idempotent). */
 export async function ensureNightly(): Promise<void> {
   const store = getStore();
-  const jobs = await store.listJobs();
-  if (jobs.some((j) => j.kind === 'NIGHTLY' && j.status === 'SCHEDULED')) return;
+  if (await store.hasScheduledNightly()) return; // PERF-04: cheap existence check
   const cfg = schedulerConfig();
   const next = new Date();
   if (cfg.enforceQuietHours) { next.setDate(next.getDate() + 1); next.setHours(3, 0, 0, 0); }
@@ -120,7 +120,7 @@ async function doProcess(): Promise<TickResult> {
         continue;
       }
       if (!job.customerId) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
-      const customer = (await store.listCustomers()).find((c) => c.id === job.customerId);
+      const customer = await store.getCustomerById(job.customerId);
       if (!customer) { await store.setJobStatus(job.id, 'CANCELLED'); continue; }
 
       if (job.kind === 'AUTO_CLOSE') {
@@ -151,7 +151,7 @@ async function doProcess(): Promise<TickResult> {
               isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
             });
             if (!verdict.allowed) body = formReceivedMessage('en'); // English is guard-safe
-            await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'AI', status: 'SENT', body });
+            await deliverOut(customer, body, 'AI');
           }
           await store.audit('system', 'form_received_confirmed', { customerId: customer.id });
           result.sent.push(`${customer.name ?? customer.waId} · questionnaire received`);
@@ -205,10 +205,14 @@ async function doProcess(): Promise<TickResult> {
         variant = (customer.id.charCodeAt(0) + seq) % 2 === 0 ? 'A' : 'B';
         if (variant === 'B') body = template.variantB;
       }
-      await store.addMessage({ customerId: customer.id, direction: 'OUT', author: 'AI', status: 'SENT', body, meta: template.variantB ? { templateId: template.id, variant } : undefined });
+      // REL-02: mark the job DONE BEFORE sending, so an at-least-once replay
+      // (crash between send and status-write) cannot re-deliver the same nudge.
+      // A follow-up is a non-critical reminder; a rare missed nudge is far better
+      // than spamming the customer with duplicates.
+      await store.setJobStatus(job.id, 'DONE');
+      await deliverOut(customer, body, 'AI', template.variantB ? { templateId: template.id, variant } : undefined);
       if (template.variantB) await store.bumpVariant(template.id, variant, 'sent');
       await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq, variant });
-      await store.setJobStatus(job.id, 'DONE');
       result.sent.push(`${customer.name ?? customer.waId} · ${template.title}`);
       await scheduleFollowUp(customer.id, flow, seq + 1);
     } catch {
@@ -233,8 +237,14 @@ export async function runNightly(): Promise<void> {
     }
   }
   const jobs = await store.listJobs();
-  const orphans = jobs.filter((j) => j.status === 'SCHEDULED' && j.customerId && !customers.some((c) => c.id === j.customerId));
+  // PERF-01: O(jobs) with a Set instead of O(jobs x customers) via .some().
+  const customerIds = new Set(customers.map((c) => c.id));
+  const orphans = jobs.filter((j) => j.status === 'SCHEDULED' && j.customerId && !customerIds.has(j.customerId));
   for (const o of orphans) await store.setJobStatus(o.id, 'CANCELLED');
+
+  // COST-02: purge inbound-idempotency markers older than 30 days so the table
+  // does not grow forever (Meta never retries a message that old).
+  const purged = await store.purgeProcessedMessages(30 * 24 * 60 * 60 * 1000).catch(() => 0);
 
   if (issues.length) {
     await store.addTask({
@@ -243,5 +253,5 @@ export async function runNightly(): Promise<void> {
       severity: 'REVIEW', context: issues.join(' | '), suggestedReply: null,
     });
   }
-  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length });
+  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged });
 }

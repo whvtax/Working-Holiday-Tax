@@ -6,7 +6,6 @@ import { getRedis } from '@/lib/rate-limit'
 import crypto from 'crypto'
 
 const OTP_MAX_ATTEMPTS = 5
-const OTP_ATTEMPT_KEY  = 'crm_otp_attempts'
 const OTP_ATTEMPT_TTL  = 600 // 10 min - matches OTP TTL
 
 export async function POST(req: NextRequest) {
@@ -18,6 +17,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'missing_code' }, { status: 400 })
     }
 
+    // OTP-BIND-05: the code is only redeemable by the browser that passed the
+    // password step, identified by the httpOnly pre-auth cookie set at login.
+    const preAuthId = req.cookies.get('crm_preauth')?.value
+    if (!preAuthId || !/^[a-f0-9]{48}$/.test(preAuthId)) {
+      return NextResponse.json(
+        { ok: false, error: 'invalid_otp', message: 'Session expired. Please log in again.' },
+        { status: 401 }
+      )
+    }
+    const OTP_KEY = `crm_otp:${preAuthId}`
+    const OTP_ATTEMPT_KEY = `crm_otp_attempts:${preAuthId}`
+
     const redis = await getRedis()
     if (!redis) return NextResponse.json({ ok: false, error: 'server_error' }, { status: 500 })
 
@@ -25,14 +36,14 @@ export async function POST(req: NextRequest) {
     const attempts = await redis.incr(OTP_ATTEMPT_KEY)
     if (attempts === 1) await redis.expire(OTP_ATTEMPT_KEY, OTP_ATTEMPT_TTL)
     if (attempts > OTP_MAX_ATTEMPTS) {
-      await redis.del('crm_otp') // invalidate OTP so attacker must restart
+      await redis.del(OTP_KEY) // invalidate OTP so attacker must restart
       return NextResponse.json(
         { ok: false, error: 'too_many_attempts', message: 'Too many attempts. Please log in again.' },
         { status: 429 }
       )
     }
 
-    const storedHash = await redis.get('crm_otp')
+    const storedHash = await redis.get(OTP_KEY)
     if (!storedHash) {
       return NextResponse.json(
         { ok: false, error: 'invalid_otp', message: 'Code expired or not found. Please login again.' },
@@ -53,7 +64,7 @@ export async function POST(req: NextRequest) {
     }
 
     // One-time use - delete OTP and attempt counter immediately
-    await redis.del(['crm_otp', OTP_ATTEMPT_KEY])
+    await redis.del([OTP_KEY, OTP_ATTEMPT_KEY])
 
     const token = createSession()
     const res = NextResponse.json({ ok: true })
@@ -64,6 +75,7 @@ export async function POST(req: NextRequest) {
       path: '/',
       maxAge: 8 * 60 * 60,
     })
+    res.cookies.set('crm_preauth', '', { path: '/', maxAge: 0 }) // consume the pre-auth cookie
     return res
 
   } catch (err) {

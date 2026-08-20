@@ -1,15 +1,18 @@
-// Extract real client IP.
-// On Vercel: the FIRST entry in x-forwarded-for is the real client IP
-// (Vercel overwrites this header on ingress to prevent spoofing).
-// Fallback to x-real-ip when x-forwarded-for is unavailable.
+// Extract the real client IP for rate limiting / lockout keying.
+// DOS-02: `x-forwarded-for` is client-supplied and, depending on ingress
+// behaviour, its leftmost entry can be spoofed (letting an attacker rotate the
+// rate-limit key). Prefer `x-real-ip`, which Vercel sets to the true client
+// address and clients cannot forge through the proxy. Only fall back to XFF —
+// and then the RIGHTMOST hop (closest trusted proxy), never the leftmost
+// attacker-controlled value.
 export function getClientIp(req: Request): string {
+  const real = req.headers.get('x-real-ip')?.trim()
+  if (real) return real
   const forwarded = req.headers.get('x-forwarded-for')
   if (forwarded) {
     const parts = forwarded.split(',').map(s => s.trim()).filter(Boolean)
-    // First entry is the original client (Vercel's edge appends its own IP, but
-    // the original client IP remains first).
-    const first = parts[0]
-    if (first) return first
+    const rightmost = parts[parts.length - 1]
+    if (rightmost) return rightmost
   }
-  return req.headers.get('x-real-ip') ?? 'unknown'
+  return 'unknown'
 }
