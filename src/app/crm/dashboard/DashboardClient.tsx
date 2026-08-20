@@ -1,6 +1,7 @@
 'use client'
 import React from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useRouter } from 'next/navigation'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { WhmSubmissionsToggle } from '@/components/crm/WhmSubmissionsToggle'
 import { CompletionLinkPanel } from '@/components/crm/CompletionLinkPanel'
@@ -219,6 +220,7 @@ function SbButton({label, icon, badge, style, badgeStyle, onClick}: {
 
 
 export default function DashboardClient() {
+  const router = useRouter()
   const [view, setView]           = useState<View>('tasks')
   const [archivedClients, setArchivedClients] = useState<Client[]>([])
   const [referralPartners, setReferralPartners] = useState<{id:string;name:string}[]>([])
@@ -1362,17 +1364,17 @@ export default function DashboardClient() {
 
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',height:'100vh',overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif'},
-    sb:{width:260,background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:'100vh',boxShadow:'2px 0 8px rgba(0,0,0,0.05)',overflowY:'auto',zIndex:50},
+    sb:{width:260,background:'#ffffff',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:'100vh',borderRight:'1px solid #e4ede8',overflowY:'auto',zIndex:50},
     sbLogo:{display:'flex',alignItems:'center',gap:12,padding:'22px 16px 16px'},
-    sbIcon:{width:40,height:40,borderRadius:11,background:'rgba(255,255,255,0.14)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,backdropFilter:'blur(8px)'},
-    sbTitle:{fontSize:14,fontWeight:700,color:'#fff',letterSpacing:'-0.2px'},
-    sbSub:{fontSize:11,color:'rgba(255,255,255,0.5)',marginTop:2,letterSpacing:'0.04em'},
-    sbDiv:{height:1,background:'rgba(255,255,255,0.1)',margin:'4px 16px 10px'},
+    sbIcon:{width:40,height:40,borderRadius:11,background:'#0E5C42',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'#fff'},
+    sbTitle:{fontSize:14,fontWeight:700,color:'#0a1410',letterSpacing:'-0.2px'},
+    sbSub:{fontSize:11,color:'#7a8a82',marginTop:2,letterSpacing:'0.04em'},
+    sbDiv:{height:1,background:'#edf3ef',margin:'4px 16px 10px'},
     sbNav:{display:'flex',flexDirection:'column',gap:4,padding:'0 10px'},
-    sbBtn:{display:'flex',alignItems:'center',gap:11,padding:'11px 13px',borderRadius:9,fontSize:13,fontWeight:500,color:'rgba(255,255,255,0.65)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'transform 150ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1), color 150ms cubic-bezier(0.23,1,0.32,1), border-color 150ms cubic-bezier(0.23,1,0.32,1)'},
-    sbBtnOn:{background:'rgba(255,255,255,0.18)',color:'#fff',fontWeight:600,boxShadow:'inset 0 0 0 1px rgba(255,255,255,0.08)'},
+    sbBtn:{display:'flex',alignItems:'center',gap:11,padding:'11px 13px',borderRadius:9,fontSize:13,fontWeight:500,color:'#587066',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%',transition:'transform 150ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 150ms cubic-bezier(0.23,1,0.32,1), color 150ms cubic-bezier(0.23,1,0.32,1), border-color 150ms cubic-bezier(0.23,1,0.32,1)'},
+    sbBtnOn:{background:'#0E5C42',color:'#fff',fontWeight:600},
     sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
-    sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'rgba(255,255,255,0.5)',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
+    sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'#7a8a82',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
     main:{flex:1,background:'#f0f4f1',marginLeft:260,display:'flex',flexDirection:'column',height:'100vh',overflow:'hidden'},
     page:{padding:'26px 26px 32px',flex:1,overflowY:'auto',minHeight:0},
     pgTitle:{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.5px'},
@@ -1470,9 +1472,9 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
             {/* Global search */}
             <div style={{padding:'0 12px 12px',position:'relative'}}>
               <div style={{position:'relative'}}>
-                <svg style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,0.55)" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="rgba(255,255,255,0.55)" strokeWidth="1.8" strokeLinecap="round"/></svg>
+                <svg style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',pointerEvents:'none'}} width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#aabab2" strokeWidth="1.8"/><path d="M21 21l-4.35-4.35" stroke="#aabab2" strokeWidth="1.8" strokeLinecap="round"/></svg>
                 <input
-                  style={{width:'100%',padding:'9px 12px 9px 34px',background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:9,fontSize:13,color:'#fff',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
+                  style={{width:'100%',padding:'9px 12px 9px 34px',background:'#f7fbf9',border:'1px solid #e4ede8',borderRadius:9,fontSize:13,color:'#0a1410',outline:'none',fontFamily:'inherit',boxSizing:'border-box' as const}}
                   placeholder="Search clients & tasks…"
                   value={globalSearch}
                   onChange={e=>setGlobalSearch(e.target.value)}
@@ -1542,11 +1544,11 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
               <SbButton label="Partners"
                 style={S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ window.location.href = '/crm/partners' }}
+                onClick={()=>{ router.push('/crm/partners') }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
               <SbButton label="Will"
                 style={S.sbBtn} badgeStyle={S.sbBadge}
-                onClick={()=>{ window.location.href = '/crm/whatsapp' }}
+                onClick={()=>{ router.push('/crm/whatsapp') }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M8.5 8.8c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.6 1.4c.1.2 0 .4-.1.5l-.4.5c-.1.1-.2.3 0 .5.3.6.9 1.2 1.6 1.6.2.1.4.1.5 0l.5-.5c.1-.2.3-.2.5-.1l1.4.7c.3.1.4.3.4.5s0 .8-.3 1.1c-.3.3-.9.6-1.4.6-1 0-2.6-.6-3.8-1.9-1.3-1.2-1.9-2.8-1.9-3.8 0-.4.1-.8.3-1.1z" fill="currentColor"/></svg>}/>
             </nav>
           </div>
@@ -1579,7 +1581,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                   {badge > 0 && <span style={{position:'absolute',top:2,right:2,minWidth:16,height:16,borderRadius:8,background:'#f59e0b',color:'#78350f',fontSize:9,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 4px'}}>{badge}</span>}
                 </button>
               ))}
-              <button key="whatsapp" onClick={()=>{ window.location.href = '/crm/whatsapp' }}
+              <button key="whatsapp" onClick={()=>{ router.push('/crm/whatsapp') }}
                 style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:'transparent',color:'#fff',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
                 💬
               </button>
@@ -1631,17 +1633,17 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 return (<>
                   <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:10}}>
                     {[
-                      {label:'Ready to go',value:readyToGoCount,color:'#059669',bg:'#ecfdf5',border:'#a7f3d0',icon:'✅'},
-                      {label:'In Process',value:inProcessCount,color:'#d97706',bg:'#fffbeb',border:'#fde68a',icon:'⏳'},
-                      {label:'Clients',value:totalClients,color:'#1d4ed8',bg:'#eff6ff',border:'#bfdbfe',icon:'👤'},
-                      {label:'Done',value:doneCount,color:'#7c3aed',bg:'#f5f3ff',border:'#ddd6fe',icon:'✓'},
+                      {label:'Ready to go',value:readyToGoCount,icon:'✅'},
+                      {label:'In Process',value:inProcessCount,icon:'⏳'},
+                      {label:'Clients',value:totalClients,icon:'👤'},
+                      {label:'Done',value:doneCount,icon:'✓'},
                     ].map(stat=>(
-                      <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'14px 16px',transition:'transform 0.15s'}}>
+                      <div key={stat.label} data-card-hover style={{background:'#fff',border:'1px solid #e4ede8',borderRadius:12,padding:'14px 16px',boxShadow:'0 1px 2px rgba(11,82,64,0.03)'}}>
                         <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
-                          <div style={{fontSize:11,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
-                          <div style={{fontSize:14,opacity:0.65}}>{stat.icon}</div>
+                          <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em'}}>{stat.label}</div>
+                          <div style={{fontSize:13,opacity:0.4}}>{stat.icon}</div>
                         </div>
-                        <div style={{fontSize:26,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                        <div style={{fontSize:26,fontWeight:700,color:'#0a1410',letterSpacing:'-0.5px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
                       </div>
                     ))}
                   </div>

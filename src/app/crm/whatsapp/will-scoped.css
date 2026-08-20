@@ -84,7 +84,7 @@ header{
 .will-scope .mode.active{background:#fff;color:var(--brand1);border-color:rgba(59,124,224,.35);box-shadow:0 1px 3px rgba(30,32,40,.06)}
 .will-scope .modehint{font-size:11px;color:var(--ink3)}
 .will-scope /* ---------- layout ---------- */
-main{padding:14px 16px 36px;max-width:1240px;margin-left:186px}
+main{padding:14px 16px 36px;max-width:none;margin-left:186px}
 .will-scope .view{display:none;animation:fade 220ms var(--ease-out)}
 .will-scope .view.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}

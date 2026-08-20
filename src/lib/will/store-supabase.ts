@@ -10,6 +10,7 @@ import {
   Store, CustomerRow, MessageRow, TaskRow, TemplateRow, StateHistoryRow, JobRow, SuggestionRow,
 } from './store';
 import { CustomerState } from './state-machine';
+import { seedTemplates } from './seed';
 
 const now = () => new Date().toISOString();
 
@@ -147,6 +148,27 @@ export let lastPersistError: string | null = null;
 export class SupabaseStore implements Store {
   private sb() { return getSupabase(); }
 
+  // Auto-seed the message Library on first use if it's empty, so the templates
+  // are simply "there" after deploy (same as the local build did) with no manual step.
+  private seeded = false;
+  private seedingPromise: Promise<void> | null = null;
+  private async ensureSeeded(): Promise<void> {
+    if (this.seeded) return;
+    if (this.seedingPromise) return this.seedingPromise;
+    this.seedingPromise = (async () => {
+      const { count } = await this.sb().from('will_templates').select('id', { count: 'exact', head: true });
+      if ((count ?? 0) === 0) {
+        const rows = seedTemplates().map((t) => ({
+          id: t.id, key: t.key, category: t.category, title: t.title, body: t.body,
+          requires_meta: t.requiresMeta, versions: t.versions, updated_at: t.updatedAt,
+        }));
+        await this.sb().from('will_templates').insert(rows);
+      }
+      this.seeded = true;
+    })();
+    return this.seedingPromise;
+  }
+
   async listCustomers(): Promise<CustomerRow[]> {
     const { data } = await this.sb().from('will_customers').select('*').order('state_changed_at', { ascending: false });
     return (data ?? []).map(toCustomer);
@@ -280,6 +302,7 @@ export class SupabaseStore implements Store {
   }
 
   async listTemplates(): Promise<TemplateRow[]> {
+    await this.ensureSeeded();
     const { data } = await this.sb().from('will_templates').select('*').order('updated_at', { ascending: false });
     return (data ?? []).map(toTemplate);
   }
