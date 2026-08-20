@@ -12,7 +12,7 @@
   --ink3:#8f97a3;
   --line:rgba(30,32,40,.06);
   --line2:rgba(30,32,40,.10);
-  --brand1:#3b7ce0;
+  --brand1:#0E5C42;
   --brand2:#7a63e8;
   --sales:#c69337;
   --onb:#5a92d8;
@@ -34,7 +34,7 @@
 .will-scope *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 .will-scope{height:100%}
 .will-scope{
-  font-family:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;
+  font-family:"DM Sans",-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;
   font-optical-sizing:auto;
   -webkit-font-smoothing:antialiased;
   background:var(--bg);
@@ -81,7 +81,7 @@ header{
 .will-scope .modelabel{font-size:11px;color:var(--ink3);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
 .will-scope .modes{display:flex;background:var(--surface2);border:1px solid var(--line);border-radius:9px;padding:2px;gap:2px}
 .will-scope .mode{padding:5px 13px;font-size:12px;font-weight:500;color:var(--ink2);border-radius:8px;cursor:pointer;transition:transform 140ms var(--ease-out),background 150ms var(--ease-out),color 150ms var(--ease-out),border-color 150ms var(--ease-out);border:1px solid transparent;background:transparent;white-space:nowrap}
-.will-scope .mode.active{background:#fff;color:var(--brand1);border-color:rgba(59,124,224,.35);box-shadow:0 1px 3px rgba(30,32,40,.06)}
+.will-scope .mode.active{background:#fff;color:var(--brand1);border-color:rgba(14,92,66,.35);box-shadow:0 1px 3px rgba(30,32,40,.06)}
 .will-scope .modehint{font-size:11px;color:var(--ink3)}
 .will-scope /* ---------- layout ---------- */
 main{padding:14px 16px 36px;max-width:none;margin-left:186px}
@@ -216,7 +216,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:186px}
 .will-scope .tctx{font-size:11.5px;color:var(--ink2);margin-top:7px;background:#f4f6f8;border-left:2px solid var(--line2);padding:7px 11px;border-radius:0 9px 9px 0;font-style:italic}
 .will-scope .tbtns{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
 .will-scope .btn.take{background:var(--brand1);color:#fff}
-.will-scope .btn.take:hover{box-shadow:0 2px 8px rgba(59,124,224,.3)}
+.will-scope .btn.take:hover{box-shadow:0 2px 8px rgba(14,92,66,.3)}
 .will-scope /* ---------- library ---------- */
 .libgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:9px}
 .will-scope .libcat{font-size:10.5px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--ink3);margin:18px 0 9px;display:flex;align-items:center;gap:8px}
@@ -265,9 +265,9 @@ main{padding:14px 16px 36px;max-width:none;margin-left:186px}
 .will-scope .genbtn{
   width:100%;margin-top:14px;padding:12px;border:none;border-radius:12px;cursor:pointer;
   background:var(--brand1);color:#fff;font-size:13px;font-weight:600;
-  box-shadow:0 1px 4px rgba(59,124,224,.25);transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out);
+  box-shadow:0 1px 4px rgba(14,92,66,.25);transition:transform 140ms var(--ease-out),box-shadow 200ms var(--ease-out);
 }
-.will-scope .genbtn:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(59,124,224,.35)}
+.will-scope .genbtn:hover{transform:translateY(-1px);box-shadow:0 3px 12px rgba(14,92,66,.35)}
 .will-scope .costrow{display:flex;justify-content:space-between;font-size:11.5px;padding:6px 0;border-bottom:1px solid var(--line);color:var(--ink2)}
 .will-scope .costrow:last-child{border:none}
 .will-scope .costrow b{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -287,8 +287,8 @@ main{padding:14px 16px 36px;max-width:none;margin-left:186px}
 .will-scope .tl:last-child:before{display:none}
 .will-scope .tl .tdot{width:14px;height:14px;border-radius:50%;background:var(--surface3);border:2px solid var(--ink3);flex:none;margin-top:2px;z-index:1}
 .will-scope .tl.done .tdot{background:var(--good);border-color:var(--good);box-shadow:0 0 6px rgba(12,163,12,.35)}
-.will-scope .tl.now .tdot{background:var(--brand1);border-color:var(--brand1);box-shadow:0 0 8px rgba(59,124,224,.55);animation:pulse 2s infinite}
-@keyframes pulse{50%{box-shadow:0 0 14px rgba(59,124,224,.8)}}
+.will-scope .tl.now .tdot{background:var(--brand1);border-color:var(--brand1);box-shadow:0 0 8px rgba(14,92,66,.55);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 14px rgba(14,92,66,.8)}}
 .will-scope .tl .tinfo b{font-size:12.5px;display:block}
 .will-scope .tl .tinfo span{font-size:11px;color:var(--ink3)}
 .will-scope .dbtns{display:flex;gap:9px;margin-top:16px}

@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect, useCallback } from 'react'
+import Link from 'next/link'
 
 type Partner = {
   id: string; name: string; email: string; code: string; createdAt: string
@@ -9,14 +10,14 @@ type Partner = {
 
 const S = {
   shell: { display:'flex', height:'100vh', overflow:'hidden', fontFamily:'"DM Sans",system-ui,sans-serif' } as React.CSSProperties,
-  sb: { width:260, background:'linear-gradient(180deg,#0E5C42 0%,#0a4a35 100%)', display:'flex', flexDirection:'column' as const, flexShrink:0, position:'fixed' as const, top:0, left:0, height:'100vh', overflowY:'auto' as const, zIndex:50 },
+  sb: { width:260, background:'#ffffff', display:'flex', flexDirection:'column' as const, flexShrink:0, position:'fixed' as const, top:0, left:0, height:'100vh', borderRight:'1px solid #e4ede8', overflowY:'auto' as const, zIndex:50 },
   sbLogoRow: { display:'flex', alignItems:'center', gap:12, padding:'22px 16px 16px' },
-  sbTitle: { fontSize:14, fontWeight:700, color:'#fff', letterSpacing:'-0.2px' },
-  sbSub: { fontSize:11, color:'rgba(255,255,255,0.5)', marginTop:2 },
-  sbDiv: { height:1, background:'rgba(255,255,255,0.1)', margin:'4px 16px 10px' },
+  sbTitle: { fontSize:14, fontWeight:700, color:'#0a1410', letterSpacing:'-0.2px' },
+  sbSub: { fontSize:11, color:'#7a8a82', marginTop:2 },
+  sbDiv: { height:1, background:'#edf3ef', margin:'4px 16px 10px' },
   sbNav: { display:'flex', flexDirection:'column' as const, gap:4, padding:'0 10px' },
-  sbBtn: { display:'flex', alignItems:'center', gap:11, padding:'11px 13px', borderRadius:9, fontSize:13, fontWeight:500, color:'rgba(255,255,255,0.65)', cursor:'pointer', border:'none', background:'none', fontFamily:'inherit', width:'100%', textDecoration:'none' as const },
-  sbBtnOn: { background:'rgba(255,255,255,0.18)', color:'#fff', fontWeight:600 },
+  sbBtn: { display:'flex', alignItems:'center', gap:11, padding:'11px 13px', borderRadius:9, fontSize:13, fontWeight:500, color:'#587066', cursor:'pointer', border:'none', background:'none', fontFamily:'inherit', width:'100%', textDecoration:'none' as const },
+  sbBtnOn: { background:'#0E5C42', color:'#fff', fontWeight:600 },
   main: { flex:1, background:'#f0f4f1', marginLeft:260, height:'100vh', overflowY:'auto' as const },
   page: { padding:'26px 26px 40px' },
   pgTitle: { fontSize:22, fontWeight:700, color:'#0a1410', marginBottom:2, letterSpacing:'-0.5px' },
@@ -35,9 +36,9 @@ async function fetchWithTimeout(url: string, init: RequestInit = {}, timeoutMs =
 
 function NavLink({ href, label, icon, active }: { href: string; label: string; icon: React.ReactNode; active: boolean }) {
   return (
-    <a href={href} style={{...S.sbBtn, ...(active ? S.sbBtnOn : {})}}>
+    <Link href={href} style={{...S.sbBtn, ...(active ? S.sbBtnOn : {})}}>
       {icon}{label}
-    </a>
+    </Link>
   )
 }
 
@@ -129,6 +130,13 @@ export default function PartnersClient() {
 
   return (
     <div style={S.shell}>
+      <style>{`
+        :root{--ease-out:cubic-bezier(0.23,1,0.32,1)}
+        button, [role="button"], a{transition:transform 140ms var(--ease-out), background-color 150ms var(--ease-out), color 150ms var(--ease-out), border-color 150ms var(--ease-out), box-shadow 160ms var(--ease-out)}
+        button:not(:disabled):active, [role="button"]:active{transform:scale(0.97)}
+        @media (hover:hover) and (pointer:fine){ [data-card-hover]:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(11,82,64,0.08)} }
+        @media (prefers-reduced-motion: reduce){ *{transition-duration:0.01ms!important} button:active{transform:none} }
+      `}</style>
       <aside style={S.sb}>
         <div style={S.sbLogoRow}>
           <div style={{width:34,height:34,borderRadius:9,flexShrink:0,overflow:'hidden'}}>
@@ -157,8 +165,12 @@ export default function PartnersClient() {
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="1.8"/></svg>}/>
           <NavLink href="/crm/dashboard" label="Archive" active={false}
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M21 8v13H3V8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M23 3H1v5h22V3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
+          <NavLink href="/crm/dashboard" label="Leads" active={false}
+            icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
           <NavLink href="/crm/partners" label="Partners" active={true}
             icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
+          <NavLink href="/crm/whatsapp" label="Will" active={false}
+            icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
         </nav>
       </aside>
 
@@ -187,16 +199,16 @@ export default function PartnersClient() {
 
           <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:16}}>
             {[
-              {label:'Total partners', value:partners.length, color:'#0E5C42', bg:'#e8f5f0', border:'#a7d8c4', icon:'🔗'},
-              {label:'Total paid referrals', value:partners.reduce((s,p)=>s+p.paidReferrals,0), color:'#1d4ed8', bg:'#eff6ff', border:'#bfdbfe', icon:'👤'},
-              {label:'Commission owed', value:`$${partners.reduce((s,p)=>s+p.commission,0)}`, color:'#7c3aed', bg:'#f5f3ff', border:'#ddd6fe', icon:'💰'},
+              {label:'Total partners', value:partners.length, icon:'🔗'},
+              {label:'Total paid referrals', value:partners.reduce((s,p)=>s+p.paidReferrals,0), icon:'👤'},
+              {label:'Commission owed', value:`$${partners.reduce((s,p)=>s+p.commission,0)}`, icon:'💰'},
             ].map(stat=>(
-              <div key={stat.label} style={{background:stat.bg,border:`1px solid ${stat.border}`,borderRadius:11,padding:'14px 16px',transition:'transform 0.15s'}}>
+              <div key={stat.label} data-card-hover style={{background:'#fff',border:'1px solid #e4ede8',borderRadius:12,padding:'14px 16px',boxShadow:'0 1px 2px rgba(11,82,64,0.03)'}}>
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
-                  <div style={{fontSize:11,fontWeight:700,color:stat.color,textTransform:'uppercase' as const,letterSpacing:'0.08em'}}>{stat.label}</div>
-                  <div style={{fontSize:14,opacity:0.65}}>{stat.icon}</div>
+                  <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em'}}>{stat.label}</div>
+                  <div style={{fontSize:13,opacity:0.4}}>{stat.icon}</div>
                 </div>
-                <div style={{fontSize:26,fontWeight:700,color:stat.color,letterSpacing:'-0.5px'}}>{stat.value}</div>
+                <div style={{fontSize:26,fontWeight:700,color:'#0a1410',letterSpacing:'-0.5px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
               </div>
             ))}
           </div>

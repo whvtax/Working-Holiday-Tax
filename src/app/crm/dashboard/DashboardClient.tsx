@@ -262,6 +262,7 @@ export default function DashboardClient() {
   const [statusFilter, setStatusFilter] = useState<Set<ClientStatus>>(new Set())
   const [archiveSearch, setArchiveSearch] = useState('')
   const [taskSearch, setTaskSearch] = useState('')
+  const [taskTileFilter, setTaskTileFilter] = useState<'all'|'ready'|'done'>('all')
   // Remembers which task card was last opened + the list's scroll position, so
   // going back from a client's detail view returns to the same spot instead of
   // jumping back to the top of the list.
@@ -1631,21 +1632,19 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 // Always show stats - even if no tasks yet (provides motivation + overview)
                 const totalClients = Math.max(stats?.totalActiveClients ?? 0, allClients.length)
                 return (<>
-                  <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:10,marginBottom:10}}>
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:10,marginBottom:10}}>
                     {[
-                      {label:'Ready to go',value:readyToGoCount,icon:'✅'},
-                      {label:'In Process',value:inProcessCount,icon:'⏳'},
-                      {label:'Clients',value:totalClients,icon:'👤'},
-                      {label:'Done',value:doneCount,icon:'✓'},
-                    ].map(stat=>(
-                      <div key={stat.label} data-card-hover style={{background:'#fff',border:'1px solid #e4ede8',borderRadius:12,padding:'14px 16px',boxShadow:'0 1px 2px rgba(11,82,64,0.03)'}}>
-                        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:6}}>
-                          <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em'}}>{stat.label}</div>
-                          <div style={{fontSize:13,opacity:0.4}}>{stat.icon}</div>
-                        </div>
+                      {key:'ready',label:'Ready to go',value:readyToGoCount,onClick:()=>{ setView('tasks'); setTaskView('list'); setTaskTileFilter(f=>f==='ready'?'all':'ready') }},
+                      {key:'clients',label:'Clients',value:totalClients,onClick:()=>{ setView('clients') }},
+                      {key:'done',label:'Done',value:doneCount,onClick:()=>{ setView('tasks'); setTaskView('list'); setTaskTileFilter(f=>f==='done'?'all':'done') }},
+                    ].map(stat=>{
+                      const active = (stat.key==='ready'&&taskTileFilter==='ready')||(stat.key==='done'&&taskTileFilter==='done')
+                      return (
+                      <div key={stat.label} data-card-hover onClick={stat.onClick} role="button" style={{background:'#fff',border:`1px solid ${active?'#0E5C42':'#e4ede8'}`,borderRadius:12,padding:'14px 16px',boxShadow:active?'0 0 0 1px #0E5C42 inset':'0 1px 2px rgba(11,82,64,0.03)',cursor:'pointer'}}>
+                        <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:6}}>{stat.label}</div>
                         <div style={{fontSize:26,fontWeight:700,color:'#0a1410',letterSpacing:'-0.5px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
                       </div>
-                    ))}
+                    )})}
                   </div>
                 </>)
               })()}
@@ -1737,8 +1736,18 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 style={{flex:1,overflowY:'scroll',minHeight:0,padding:'8px 26px 16px'}}
               >
 
-              {pendingTasks.length>0 && <>
-                {pendingTasks.map(t=>{
+              {taskTileFilter!=='all' && (
+                <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
+                  <span style={{fontSize:12,color:'#587066',fontWeight:600}}>Showing: {taskTileFilter==='ready'?'Ready to go':'Done'}</span>
+                  <button onClick={()=>setTaskTileFilter('all')} style={{fontSize:11,color:'#0E5C42',background:'#e8f5f0',border:'1px solid #b0d8c8',borderRadius:20,padding:'3px 10px',cursor:'pointer',fontFamily:'inherit',fontWeight:600}}>Show all ×</button>
+                </div>
+              )}
+              {taskTileFilter!=='done' && (() => {
+                const shownPending = taskTileFilter==='ready'
+                  ? pendingTasks.filter(t=>!isTaskInProgress(t.notes) && !(t.reviewerNote && t.reviewerNote.trim()))
+                  : pendingTasks
+                return shownPending.length>0 && <>
+                {shownPending.map(t=>{
                   const isWhv = t.taskType === 'tax-return' && (t.notes||'').includes('Working holiday maker')
                   const isMarried = (t.marital||'').toLowerCase() === 'married'
                   const isReturning = (t.notes||'').includes('🔄 Returning client')
@@ -1827,9 +1836,9 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                     </div>
                   </div>
                 )})}
-              </>}
+              </>})()}
 
-              {doneTasks.length>0 && <>
+              {taskTileFilter!=='ready' && doneTasks.length>0 && <>
                 <div style={{fontSize:11,fontWeight:600,color:'#7a8a82',textTransform:'uppercase',letterSpacing:'0.5px',margin:'14px 0 8px',display:'flex',alignItems:'center',gap:6}}>
                   <span style={{color:'#059669',fontSize:8}}>●</span> Done - {doneTasks.length}
                 </div>
