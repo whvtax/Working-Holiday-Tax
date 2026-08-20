@@ -42,7 +42,7 @@ async function load(): Promise<Db> {
     cache.knowledge ??= [];
     cache.settings ??= {};
     cache.processed ??= [];
-    for (const c of cache.customers) { c.previousState ??= null; c.lastMessageDirection ??= (c.unread ? 'IN' : 'OUT'); c.botOwned ??= false; c.lang ??= null; }
+    for (const c of cache.customers) { c.previousState ??= null; c.lastMessageDirection ??= (c.unread ? 'IN' : 'OUT'); c.botOwned ??= false; c.lang ??= null; c.unreadCount ??= (c.unread ? 1 : 0); c.lastMessageAt ??= (c.lastCustomerMsgAt ?? c.stateChangedAt ?? c.createdAt ?? null); }
     for (const t of cache.tasks) t.suggestedReply ??= null;
   } catch {
     cache = {
@@ -111,7 +111,7 @@ export class FileStore implements Store {
       paid: false, formComplete: false, missingDocs: [], aiPaused: false,
       isLegacy: false, botOwned: true, optedOut: false, estimatedRefundCents: null,
       lastCustomerMsgAt: null, previousState: null, stateChangedAt: now(), lastMessagePreview: null,
-      lastMessageDirection: null, unread: false, lang: null, createdAt: now(),
+      lastMessageDirection: null, unread: false, unreadCount: 0, lastMessageAt: now(), lang: null, createdAt: now(),
     };
     db.customers.push(row);
     await persist();
@@ -170,10 +170,17 @@ export class FileStore implements Store {
     if (c) {
       c.lastMessagePreview = m.body.slice(0, 80);
       c.lastMessageDirection = m.direction;
-      if (m.direction === 'IN') { c.lastCustomerMsgAt = row.createdAt; c.unread = true; }
+      c.lastMessageAt = row.createdAt;
+      if (m.direction === 'IN') { c.lastCustomerMsgAt = row.createdAt; c.unread = true; c.unreadCount = (c.unreadCount ?? 0) + 1; }
     }
     await persist();
     return row;
+  }
+
+  async markCustomerRead(id: string) {
+    const db = await load();
+    const c = db.customers.find((x) => x.id === id);
+    if (c && (c.unread || (c.unreadCount ?? 0) > 0)) { c.unread = false; c.unreadCount = 0; await persist(); }
   }
 
   async listMessages(customerId: string) {

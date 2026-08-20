@@ -28,6 +28,8 @@ export interface CustomerRow {
   lastMessagePreview: string | null;
   lastMessageDirection: 'IN' | 'OUT' | null;
   unread: boolean;
+  unreadCount: number;   // number of unread inbound messages (WhatsApp-style badge); reset to 0 when the chat is opened
+  lastMessageAt: string | null; // time of the most recent message either direction; drives WhatsApp-style most-recent-first ordering
   lang: string | null;   // detected customer language (e.g. 'de','ja'); null until known
   createdAt: string;
 }
@@ -143,6 +145,8 @@ export interface Store {
   /** PERF-01: PK lookup of a single message (includes its customerId). */
   getMessageById(id: string): Promise<MessageRow | null>;
   setMessageStatus(id: string, status: MessageRow['status']): Promise<void>;
+  /** Clear the unread badge for a customer (chat opened / read). */
+  markCustomerRead(id: string): Promise<void>;
   /** RACE-02: atomically move a PENDING_APPROVAL draft to QUEUED. Returns true if
    *  THIS caller won the claim (so only one concurrent approval actually sends). */
   claimMessageForSend(id: string): Promise<boolean>;

@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { sessionValid } from '@/lib/will/auth';
 import { getStore, getLastPersistError } from '@/lib/will/store';
 import { policyGuard } from '@/lib/will/policy-guard';
-import { channelConfigured, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
+import { verifyChannel, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,17 +68,27 @@ export async function GET() {
   // Not "broken" when unset — it just means Will is in test mode (nothing sends).
   // CONFIG-01: if we ARE live-sending but the inbound webhook secrets are unset,
   // inbound silently 401s/403s — surface that as RED, never green "test mode".
-  const waLive = channelConfigured();
+  // Truthful check: actually ask Meta whether the token + number work right now,
+  // rather than trusting that the env vars merely exist. Green means Meta
+  // confirmed the connection; red means it is set but not really working.
+  const wa = await verifyChannel();
   const webhookSecretsSet = !!(metaAppSecret() && metaVerifyToken());
-  if (!waLive) {
-    checks.whatsapp = { ok: true, detail: 'test mode (not connected)' };
-  } else if (webhookSecretsSet) {
-    checks.whatsapp = { ok: true, detail: 'connected (live sending + webhook secrets set)' };
+  if (!wa.configured) {
+    checks.whatsapp = { ok: false, detail: 'TEST MODE — no credentials, messages are NOT being sent' };
+  } else if (!wa.live) {
+    checks.whatsapp = { ok: false, detail: `credentials set but NOT working: ${wa.detail}` };
+  } else if (!webhookSecretsSet) {
+    checks.whatsapp = { ok: false, detail: `sending verified but webhook secrets MISSING (META_APP_SECRET / META_VERIFY_TOKEN) — inbound will be rejected` };
   } else {
-    checks.whatsapp = { ok: false, detail: 'LIVE SENDING but webhook secrets MISSING (META_APP_SECRET / META_VERIFY_TOKEN) — inbound messages will be rejected' };
+    checks.whatsapp = { ok: true, detail: `connected & ${wa.detail}` };
   }
 
   const killSwitch = ((await getStore().getSetting('kill_switch').catch(() => false)) === true);
   const allOk = Object.values(checks).every((c) => c.ok);
-  return NextResponse.json({ ok: allOk, checks, killSwitch, usingMock: !hasKey, whatsappLive: waLive });
+  return NextResponse.json({
+    ok: allOk, checks, killSwitch, usingMock: !hasKey,
+    whatsappLive: wa.live && webhookSecretsSet,
+    whatsappConfigured: wa.configured,
+    whatsappDetail: checks.whatsapp.detail,
+  });
 }

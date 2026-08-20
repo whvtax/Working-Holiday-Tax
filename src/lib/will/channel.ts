@@ -42,6 +42,44 @@ export function channelConfigured(): boolean {
   return !!(waAccessToken() && waPhoneNumberId());
 }
 
+// A truthful "is it REALLY connected" check: not "are the env vars set" but
+// "does Meta actually accept this token + phone number right now". The status
+// dot must reflect reality (an expired/invalid token shows RED, not green).
+// Result is cached briefly so the heartbeat doesn't call Meta on every poll.
+let _verifyCache: { at: number; live: boolean; detail: string } | null = null;
+const VERIFY_TTL_MS = 30_000;
+
+export async function verifyChannel(): Promise<{ configured: boolean; live: boolean; detail: string }> {
+  const token = waAccessToken();
+  const phoneId = waPhoneNumberId();
+  if (!token || !phoneId) return { configured: false, live: false, detail: 'test mode (credentials not set)' };
+
+  const nowMs = Date.now();
+  if (_verifyCache && nowMs - _verifyCache.at < VERIFY_TTL_MS) {
+    return { configured: true, live: _verifyCache.live, detail: _verifyCache.detail };
+  }
+  try {
+    // Cheap read of the phone number itself: succeeds only if the token is valid
+    // AND actually owns this phone number id.
+    const res = await fetch(
+      `https://graph.facebook.com/${GRAPH_VERSION}/${phoneId}?fields=display_phone_number,verified_name,code_verification_status`,
+      { method: 'GET', headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' },
+    );
+    const data = await res.json().catch(() => ({} as Record<string, unknown>));
+    if (res.ok) {
+      const num = (data as { display_phone_number?: string }).display_phone_number
+        || (data as { verified_name?: string }).verified_name || 'connected';
+      _verifyCache = { at: nowMs, live: true, detail: `verified with Meta (${num})` };
+    } else {
+      const err = (data as { error?: { message?: string; code?: number } }).error;
+      _verifyCache = { at: nowMs, live: false, detail: `Meta rejected the credentials: ${err?.message ?? ('HTTP ' + res.status)}` };
+    }
+  } catch (e) {
+    _verifyCache = { at: nowMs, live: false, detail: `could not reach Meta: ${(e as Error).message}` };
+  }
+  return { configured: true, live: _verifyCache.live, detail: _verifyCache.detail };
+}
+
 /** Transmit a plain text message to a WhatsApp number via Meta's Cloud API. */
 export async function sendWhatsAppText(toWaId: string, body: string): Promise<SendResult> {
   const token = waAccessToken();
@@ -66,6 +104,9 @@ export async function sendWhatsAppText(toWaId: string, body: string): Promise<Se
     });
     const data = await res.json().catch(() => ({} as Record<string, unknown>));
     if (!res.ok) {
+      // A real send just failed: drop the cached "verified" status so the health
+      // dot re-checks and reflects reality on the next heartbeat, not 30s later.
+      _verifyCache = null;
       const err = (data as { error?: { message?: string; code?: number } }).error;
       return { ok: false, error: `meta ${res.status}: ${err?.message ?? JSON.stringify(data).slice(0, 200)}` };
     }

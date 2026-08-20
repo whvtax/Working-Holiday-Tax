@@ -16,7 +16,7 @@ import { deliverOut, sendWhatsAppText } from '@/lib/will/channel';
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
-  action: 'approve_message' | 'discard_message' | 'resolve_task' | 'toggle_ai'
+  action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
   | 'update_template' | 'reset_simulator' | 'set_kill_switch' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate';
   id?: string;
   customerId?: string;
@@ -191,6 +191,11 @@ export async function POST(req: Request) {
       if (!b.id) return bad('id required');
       await store.resolveTask(b.id);
       await store.audit('owner', 'task_resolved', { id: b.id });
+      return NextResponse.json({ ok: true });
+
+    case 'mark_read':
+      if (!b.id) return bad('id required');
+      await store.markCustomerRead(b.id);
       return NextResponse.json({ ok: true });
 
     case 'toggle_ai': {

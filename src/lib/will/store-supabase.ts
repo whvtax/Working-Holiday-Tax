@@ -47,6 +47,8 @@ function toCustomer(r: Record<string, unknown>): CustomerRow {
     lastMessagePreview: (r.last_message_preview as string) ?? null,
     lastMessageDirection: (r.last_message_direction as CustomerRow['lastMessageDirection']) ?? null,
     unread: !!r.unread,
+    unreadCount: (r.unread_count as number) ?? (r.unread ? 1 : 0),
+    lastMessageAt: (r.last_message_at as string) ?? (r.last_customer_msg_at as string) ?? (r.state_changed_at as string) ?? null,
     lang: (r.lang as string) ?? null,
     createdAt: (r.created_at as string) ?? now(),
   };
@@ -137,7 +139,7 @@ const CUSTOMER_COL: Record<string, string> = {
   estimatedRefundCents: 'estimated_refund_cents', lastCustomerMsgAt: 'last_customer_msg_at',
   previousState: 'previous_state', stateChangedAt: 'state_changed_at',
   lastMessagePreview: 'last_message_preview', lastMessageDirection: 'last_message_direction',
-  unread: 'unread', lang: 'lang', createdAt: 'created_at',
+  unread: 'unread', unreadCount: 'unread_count', lastMessageAt: 'last_message_at', lang: 'lang', createdAt: 'created_at',
 };
 
 const FORWARD = ['NEW_LEAD','QUALIFIED','PRICE_SENT','PAYMENT_PENDING','PAID','FORM_PENDING','FORM_COMPLETE','DOCUMENTS_COMPLETE','UNDER_REVIEW','ESTIMATE_READY','FINAL_REVIEW','SIGNATURE_PENDING','SIGNED','LODGED','COMPLETED'];
@@ -191,7 +193,7 @@ export class SupabaseStore implements Store {
       paid: false, form_complete: false, missing_docs: [], ai_paused: false,
       is_legacy: false, bot_owned: true, opted_out: false, estimated_refund_cents: null,
       last_customer_msg_at: null, previous_state: null, state_changed_at: now(),
-      last_message_preview: null, last_message_direction: null, unread: false, created_at: now(),
+      last_message_preview: null, last_message_direction: null, unread: false, unread_count: 0, last_message_at: now(), created_at: now(),
     };
     const { data, error } = await this.sb().from('will_customers').insert(row).select('*').single();
     if (error) { lastPersistError = error.message; throw error; }
@@ -265,10 +267,23 @@ export class SupabaseStore implements Store {
     if (error) { lastPersistError = error.message; throw error; }
     const patch: Record<string, unknown> = {
       last_message_preview: m.body.slice(0, 80), last_message_direction: m.direction,
+      last_message_at: row.created_at,
     };
-    if (m.direction === 'IN') { patch.last_customer_msg_at = row.created_at; patch.unread = true; }
+    if (m.direction === 'IN') {
+      patch.last_customer_msg_at = row.created_at;
+      patch.unread = true;
+      // Increment the unread badge. Inbound messages from one customer are
+      // serialized (idempotency-gated), so read-then-write is safe here.
+      const { data: cur } = await this.sb().from('will_customers')
+        .select('unread_count').eq('id', m.customerId).maybeSingle();
+      patch.unread_count = ((cur?.unread_count as number) ?? 0) + 1;
+    }
     await this.sb().from('will_customers').update(patch).eq('id', m.customerId);
     return toMessage(data);
+  }
+
+  async markCustomerRead(id: string): Promise<void> {
+    await this.sb().from('will_customers').update({ unread: false, unread_count: 0 }).eq('id', id);
   }
 
   async listMessages(customerId: string): Promise<MessageRow[]> {

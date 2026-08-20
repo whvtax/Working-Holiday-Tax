@@ -36,6 +36,8 @@ export function seedCustomers(): CustomerRow[] {
     lastMessagePreview: c.msg ?? null,
     lastMessageDirection: (c.unread ? 'IN' : 'OUT') as 'IN' | 'OUT',
     unread: !!c.unread,
+    unreadCount: c.unread ? 1 : 0,
+    lastMessageAt: hoursAgo(parseAge(c.time)),
     lang: null,
     createdAt: hoursAgo(parseAge(c.time) + 48),
   }));

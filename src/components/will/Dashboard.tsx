@@ -21,6 +21,9 @@ interface Health {
   checks: Record<string, { ok: boolean; detail: string }>;
   killSwitch: boolean;
   usingMock: boolean;
+  whatsappLive?: boolean;
+  whatsappConfigured?: boolean;
+  whatsappDetail?: string;
 }
 interface Report {
   generatedAt: string;
@@ -47,6 +50,16 @@ const ICONS: Record<View, React.ReactNode> = {
   learning: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
 };
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
+// WhatsApp-style default avatar. Meta's Cloud API does not expose a customer's
+// profile photo (privacy), so every contact gets this neutral silhouette —
+// exactly like a WhatsApp chat with no picture set.
+const AVATAR = (
+  <svg viewBox="0 0 40 40" width="100%" height="100%" aria-hidden="true">
+    <circle cx="20" cy="20" r="20" fill="#d7dbe0" />
+    <circle cx="20" cy="16" r="7" fill="#fff" />
+    <path d="M7 35c1.5-7 6.8-10 13-10s11.5 3 13 10z" fill="#fff" />
+  </svg>
+);
 
 const timeAgo = (iso: string | null) => {
   if (!iso) return '·';
@@ -57,6 +70,8 @@ const timeAgo = (iso: string | null) => {
 };
 const incLabel = (i: CustomerRow['income']) => (i === 'TFN_ABN' ? 'TFN+ABN' : i === 'TFN' ? 'TFN' : '?');
 const feeOf = (i: CustomerRow['income']) => (i === 'TFN_ABN' ? '$385' : i === 'TFN' ? '$220' : null);
+// Jo's rule: identify customers by their WhatsApp phone number, never the profile name.
+const phoneOf = (waId: string) => (waId.startsWith('+') ? waId : '+' + waId);
 
 async function act(body: Record<string, unknown>) {
   const res = await fetch('/api/will/actions', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
@@ -131,6 +146,12 @@ export default function Dashboard() {
     const d = await res.json();
     if (latestChatReq.current === id) setChatMsgs(d.messages); // race guard
   }, []);
+  // Opening a chat clears its unread badge (WhatsApp-style). Only fired on an
+  // explicit user open, never from the reactive re-load effects below.
+  const openChat = useCallback(async (id: string) => {
+    await loadChat(id);
+    act({ action: 'mark_read', id }).then(() => refresh());
+  }, [loadChat, refresh]);
 
   useEffect(() => { refresh(); }, [refresh, view]);
   // Scroll to and briefly highlight a task opened from the notification bell.
@@ -192,7 +213,7 @@ export default function Dashboard() {
 
     refetchHeavy();
     tickOnce();
-    const pollIv = setInterval(poll, 8000);        // cheap token check
+    const pollIv = setInterval(poll, 3000);        // cheap token check — 3s keeps new inbound messages feeling near-instant
     const tickIv = setInterval(tickOnce, 30000);   // slow scheduler safety net
     const healthIv = setInterval(() => {           // keep status dots fresh even when idle
       if (!hidden()) fetch('/api/will/health').then((r) => r.json()).then((h) => { if (!stop) setHealth(h); }).catch(() => {});
@@ -234,8 +255,10 @@ export default function Dashboard() {
 
   const chatList = [...data.customers]
     .filter((c) => c.lastMessagePreview)
-    .filter((c) => !searchQ || (c.name ?? c.waId).toLowerCase().includes(searchQ.toLowerCase()) || (c.lastMessagePreview ?? '').toLowerCase().includes(searchQ.toLowerCase()))
-    .sort((a, b) => (b.lastCustomerMsgAt ?? '').localeCompare(a.lastCustomerMsgAt ?? ''))
+    .filter((c) => !searchQ || phoneOf(c.waId).toLowerCase().includes(searchQ.toLowerCase()) || (c.lastMessagePreview ?? '').toLowerCase().includes(searchQ.toLowerCase()))
+    // WhatsApp-style: most recent conversation first, bumped by ANY message
+    // (incoming or the owner's own reply), falling back to inbound time.
+    .sort((a, b) => ((b.lastMessageAt ?? b.lastCustomerMsgAt) ?? '').localeCompare((a.lastMessageAt ?? a.lastCustomerMsgAt) ?? ''))
     .slice(0, 30);
 
   const stageColorOf = (s: CustomerState) => STAGE_GROUPS.find((sg) => (sg.states as readonly CustomerState[]).includes(s))?.color ?? '#7a8494';
@@ -292,12 +315,17 @@ export default function Dashboard() {
           </div>
           <div className="hspacer" />
           <div className="health">
-            {health && Object.entries(health.checks).map(([k, v]) => (
+            {health && Object.entries(health.checks).filter(([k]) => k !== 'whatsapp').map(([k, v]) => (
               <span key={k} className="hdot" title={v.detail}>
                 <span className="dot" style={{ background: v.ok ? undefined : 'var(--crit)' }} />
                 <span className="hlabel">{k[0].toUpperCase() + k.slice(1)}</span>
               </span>
             ))}
+            {health && (health.whatsappLive
+              ? <span className="waPill live" title={health.whatsappDetail}>● WhatsApp: Connected</span>
+              : health.whatsappConfigured
+                ? <span className="waPill bad" title={health.whatsappDetail}>● WhatsApp: NOT WORKING — check token</span>
+                : <span className="waPill test" title={health.whatsappDetail || 'Cloud API credentials not active — outbound messages are NOT being sent'}>● WhatsApp: TEST MODE — not sending</span>)}
             {!health && <span className="hdot"><span className="dot" style={{ background: 'var(--warn)' }} /><span className="hlabel">connecting…</span></span>}
           </div>
           <div style={{ position: 'relative' }}>
@@ -386,12 +414,11 @@ export default function Dashboard() {
               {data.customers.filter((c) => (g.states as readonly CustomerState[]).includes(c.state))
                 .sort((a, b) => (g.states as readonly string[]).indexOf(a.state) - (g.states as readonly string[]).indexOf(b.state) || (b.lastCustomerMsgAt ?? '').localeCompare(a.lastCustomerMsgAt ?? ''))
                 .map((c) => (
-                <div key={c.id} className="rowcard" style={{ ['--gc' as string]: g.color }} onClick={() => { setView('chats'); loadChat(c.id); }}>
+                <div key={c.id} className="rowcard" style={{ ['--gc' as string]: g.color }} onClick={() => { setView('chats'); openChat(c.id); }}>
                   <div className="rc-main">
                     <div className="rc-top">
-                      <span className="cname">{c.name ?? c.waId}</span>
+                      <span className="cname">{phoneOf(c.waId)}</span>
                       {c.unread && <span className="unread" />}
-                      <span className="rc-phone">{c.waId.startsWith('+') ? c.waId : ''}</span>
                     </div>
                     {c.lastMessagePreview && <div className="rc-msg">“{c.lastMessagePreview}”</div>}
                   </div>
@@ -416,13 +443,15 @@ export default function Dashboard() {
               <div className="chatlist">
                 <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
                 {chatList.map((c) => (
-                  <div key={c.id} className={`citem ${chatSelId === c.id ? 'sel' : ''}`} onClick={() => loadChat(c.id)}>
-                    <div className="cav">{c.flag}</div>
+                  <div key={c.id} className={`citem ${chatSelId === c.id ? 'sel' : ''} ${c.unreadCount > 0 ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
+                    <div className="cav">{AVATAR}</div>
                     <div className="cinfo">
-                      <div className="cn"><b>{c.name ?? c.waId}</b><time>{timeAgo(c.lastCustomerMsgAt)}</time></div>
+                      <div className="cn"><b>{phoneOf(c.waId)}</b><time>{timeAgo(c.lastCustomerMsgAt)}</time></div>
                       <div className="cm">{c.lastMessagePreview}</div>
                     </div>
-                    <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{STATE_LABELS[c.state]}</span>
+                    {c.unreadCount > 0
+                      ? <span className="unreadbadge" title={`${c.unreadCount} unread`}>{c.unreadCount > 99 ? '99+' : c.unreadCount}</span>
+                      : <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{STATE_LABELS[c.state]}</span>}
                   </div>
                 ))}
               </div>
@@ -430,9 +459,9 @@ export default function Dashboard() {
                 {chatSel ? (
                   <>
                     <div className="chathead">
-                      <div className="cav">{chatSel.flag}</div>
+                      <div className="cav">{AVATAR}</div>
                       <div className="chtitle">
-                        <b>{chatSel.name ?? chatSel.waId}</b>
+                        <b>{phoneOf(chatSel.waId)}</b>
                         <div className="st">
                           <span className="cstate" style={{ ['--sc' as string]: stageColorOf(chatSel.state) }}>{STATE_LABELS[chatSel.state]}</span>
                           <span style={{ fontSize: 10.5, color: 'var(--ink3)' }}>{[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).join(' · ') || 'new lead'}</span>
@@ -516,7 +545,7 @@ export default function Dashboard() {
                     )}
                     <div className="tbtns">
                       {t.customerId && <button className="btn take" disabled={acted.has(t.id) || !draft.trim()} onClick={() => once(t.id, async () => { await act({ action: 'send_task_reply', id: t.id, body: draft }); say('Reply sent & task resolved ✓'); refresh(); })}>➤ Send Reply</button>}
-                      {t.customerId && <button className="btn ghost" onClick={async () => { setView('chats'); loadChat(t.customerId!); await act({ action: 'resolve_task', id: t.id }); refresh(); }}>Open Chat</button>}
+                      {t.customerId && <button className="btn ghost" onClick={async () => { setView('chats'); openChat(t.customerId!); await act({ action: 'resolve_task', id: t.id }); refresh(); }}>Open Chat</button>}
                       {!t.customerId && <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked resolved ✓'); refresh(); }}>Mark Resolved</button>}
                     </div>
                   </div>
@@ -620,7 +649,7 @@ export default function Dashboard() {
                   {upcoming.slice(0, 5).map((j) => {
                     const c = data.customers.find((x) => x.id === j.customerId);
                     const secs = Math.max(0, Math.round((new Date(j.runAt).getTime() - Date.now()) / 1000));
-                    return <div key={j.id} className="costrow"><span>{c?.flag} {c?.name ?? '?'} · {j.kind === 'AUTO_CLOSE' ? 'auto-close' : j.payload.templateKey}</span><b>in {secs < 90 ? secs + 's' : Math.round(secs / 60) + 'm'}</b></div>;
+                    return <div key={j.id} className="costrow"><span>{c?.flag} {c ? phoneOf(c.waId) : '?'} · {j.kind === 'AUTO_CLOSE' ? 'auto-close' : j.payload.templateKey}</span><b>in {secs < 90 ? secs + 's' : Math.round(secs / 60) + 'm'}</b></div>;
                   })}
                 </div>
                 <button className="genbtn" onClick={() => { setReport(null); say('Report refreshed'); }}>↻ Regenerate Report</button>
@@ -791,9 +820,9 @@ export default function Dashboard() {
           return (
             <>
               <div className="dh">
-                <div className="cav">{drawer.flag}</div>
+                <div className="cav">{AVATAR}</div>
                 <div style={{ flex: 1 }}>
-                  <b style={{ fontSize: 15 }}>{drawer.name ?? drawer.waId}</b>
+                  <b style={{ fontSize: 15 }}>{phoneOf(drawer.waId)}</b>
                   <div style={{ marginTop: 3 }}><span className="cstate" style={{ ['--sc' as string]: stageColorOf(drawer.state) }}>{STATE_LABELS[drawer.state]}</span></div>
                 </div>
                 <button className="x" onClick={() => setDrawerId(null)}>✕</button>
@@ -823,7 +852,7 @@ export default function Dashboard() {
                   ))}
                 </div>
                 <div className="dbtns">
-                  <button className="btn take" onClick={() => { setView('chats'); loadChat(drawer.id); setDrawerId(null); }}>💬 Open Chat</button>
+                  <button className="btn take" onClick={() => { setView('chats'); openChat(drawer.id); setDrawerId(null); }}>💬 Open Chat</button>
                   <button className="btn ghost" onClick={async () => { await act({ action: 'toggle_ai', id: drawer.id, value: drawer.aiPaused }); say(drawer.aiPaused ? `${ASSISTANT_NAME} resumed` : `${ASSISTANT_NAME} paused, you have the wheel`); refresh(); }}>✋ {drawer.aiPaused ? `Resume ${ASSISTANT_NAME}` : 'Take Over'}</button>
                 </div>
               </div>
