@@ -439,9 +439,22 @@ export default function DashboardClient() {
 
   useEffect(()=>{ Promise.all([loadTasks(),loadClients(),loadStats({force:true}),loadReferralPartners()]).finally(()=>setLoading(false)) },[loadTasks,loadClients,loadStats])
 
-  // Auto-poll every 20s - keeps all open sessions in sync and surfaces new leads faster
+  // Auto-refresh: poll a cheap change-token every 20s and only reload the heavy
+  // task/client/stats payloads when something actually changed. On any error we
+  // reload anyway, so this is never staler than the old unconditional poll.
   useEffect(()=>{
-    const id = setInterval(()=>{ Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()]) }, 20_000)
+    let last = ''
+    const id = setInterval(async ()=>{
+      let changed = true
+      try {
+        const v = await fetch('/api/crm/version',{cache:'no-store'}).then(r=>r.json())
+        if (v && typeof v.token === 'string' && v.token !== '') {
+          changed = v.token !== last
+          last = v.token
+        }
+      } catch { changed = true }
+      if (changed) Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()])
+    }, 20_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients, loadArchived, loadStats])
 
@@ -1515,6 +1528,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                 style={S.sbBtn} badgeStyle={S.sbBadge}
                 onClick={()=>{ window.location.href = '/crm/partners' }}
                 icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>}/>
+              <SbButton label="WhatsApp"
+                style={S.sbBtn} badgeStyle={S.sbBadge}
+                onClick={()=>{ window.location.href = '/crm/whatsapp' }}
+                icon={<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.7 13.6L3 21l4.5-1.2A9 9 0 1012 3z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M8.5 8.8c.2-.5.4-.5.7-.5h.5c.2 0 .4 0 .6.5l.6 1.4c.1.2 0 .4-.1.5l-.4.5c-.1.1-.2.3 0 .5.3.6.9 1.2 1.6 1.6.2.1.4.1.5 0l.5-.5c.1-.2.3-.2.5-.1l1.4.7c.3.1.4.3.4.5s0 .8-.3 1.1c-.3.3-.9.6-1.4.6-1 0-2.6-.6-3.8-1.9-1.3-1.2-1.9-2.8-1.9-3.8 0-.4.1-.8.3-1.1z" fill="currentColor"/></svg>}/>
             </nav>
           </div>
           <div style={{padding:'54px 16px 20px',marginTop:'auto',paddingBottom:'20px'}}>
@@ -1546,6 +1563,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
                   {badge > 0 && <span style={{position:'absolute',top:2,right:2,minWidth:16,height:16,borderRadius:8,background:'#f59e0b',color:'#78350f',fontSize:9,fontWeight:700,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 4px'}}>{badge}</span>}
                 </button>
               ))}
+              <button key="whatsapp" onClick={()=>{ window.location.href = '/crm/whatsapp' }}
+                style={{position:'relative',width:40,height:40,borderRadius:8,border:'none',background:'transparent',color:'#fff',cursor:'pointer',fontSize:18,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                💬
+              </button>
             </div>
           </div>
 

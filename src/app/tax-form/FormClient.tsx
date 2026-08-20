@@ -505,9 +505,9 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
           <div>
 
             <Field label={T('whatsapp')} required error={errors.waNumber}
-              hint={lang === 'de' ? 'Die WhatsApp-Nummer, die du gerade nutzt.'
-                : lang === 'ja' ? '現在お使いのWhatsApp番号をご記入ください。'
-                : 'The WhatsApp number you\u2019re currently using.'}>
+              hint={lang === 'de' ? 'Die Nummer, unter der wir dich erreichen können.'
+                : lang === 'ja' ? 'ご連絡可能な番号をご記入ください。'
+                : 'The number we can reach you on.'}>
               <input className={`inp ${errors.waNumber ? 'inp-err' : ''}`} type="tel" placeholder="+44 7XXX XXXXXX" autoComplete="tel" inputMode="tel" maxLength={30}
                 value={waNumber} onChange={e => { setWaNumber(e.target.value); setErrors(p => ({...p, waNumber: ''})) }}  onKeyDown={e=>{if(!/^[0-9+\s]$/.test(e.key)&&!['Backspace','Delete','ArrowLeft','ArrowRight','Tab','Home','End'].includes(e.key)&&!(e.ctrlKey||e.metaKey))e.preventDefault()}}/>
             </Field>
@@ -518,11 +518,11 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             </Field>
 
             <Field label={T('givenNames')} required error={errors.fullName}>
-              <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="As it appears on passport" autoComplete="given-name" maxLength={60}
+              <input className={`inp ${errors.fullName ? 'inp-err' : ''}`} type="text" placeholder="Exactly as shown on your passport" autoComplete="given-name" maxLength={60}
                 value={fullName} onChange={e => { setFullName(e.target.value); setErrors(p => ({...p, fullName: ''})) }} />
             </Field>
             <Field label={T('lastName')} required error={errors.lastName}>
-              <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder="e.g. Smith" autoComplete="family-name" maxLength={60}
+              <input className={`inp ${errors.lastName ? 'inp-err' : ''}`} type="text" placeholder="As shown on your passport" autoComplete="family-name" maxLength={60}
                 value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 

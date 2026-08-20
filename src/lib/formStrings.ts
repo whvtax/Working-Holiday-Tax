@@ -43,18 +43,18 @@ export const formStrings = {
 
   // ─ Field labels - shared ─
   firstName:           { en: 'First name (including middle names)', de: 'Vorname (inkl. Zweitnamen)', ja: '名（ミドルネーム含む）' },
-  givenNames:          { en: 'Given Name(s)',                       de: 'Vorname(n)',                ja: '名' },
+  givenNames:          { en: 'Given name(s)',                       de: 'Vorname(n)',                ja: '名' },
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
   email:               { en: 'Email address',                      de: 'E-Mail-Adresse',             ja: 'メールアドレス' },
   dob:                 { en: 'Date of birth',                      de: 'Geburtsdatum',              ja: '生年月日' },
-  whatsapp:            { en: 'WhatsApp Number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
+  whatsapp:            { en: 'WhatsApp number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
   gender:              { en: 'Gender as shown in passport',        de: 'Geschlecht laut Reisepass', ja: 'パスポートに記載の性別' },
   marital:             { en: 'Marital status',                     de: 'Familienstand',             ja: '配偶者の有無' },
   address:             { en: 'Full Australian address (street, suburb, state, postcode)', de: 'Vollständige australische Adresse (Straße, Vorort, Bundesstaat, Postleitzahl)', ja: 'オーストラリアの完全な住所（番地、サバーブ、州、郵便番号）' },
-  addressShort:        { en: 'Full Australian Address', de: 'Vollständige australische Adresse', ja: 'オーストラリアの完全な住所' },
+  addressShort:        { en: 'Australian address', de: 'Australische Adresse', ja: 'オーストラリアの住所' },
   howHeard:            { en: 'How did you hear about us?',         de: 'Wie hast du von uns erfahren?', ja: '当社をどこで知りましたか？' },
   selfieWithPassport:  { en: 'Selfie holding your passport',        de: 'Selfie mit deinem Reisepass in der Hand', ja: 'パスポートを持った自撮り写真' },
   uploadSelfie:        { en: 'Upload selfie holding your passport', de: 'Selfie mit Reisepass in der Hand hochladen', ja: 'パスポートを持った自撮り写真をアップロード' },
@@ -70,11 +70,11 @@ export const formStrings = {
   submitSuper:         { en: 'Submit Super Claim →',               de: 'Superantrag abschicken →',  ja: 'スーパー申請を送信 →' },
   submitting:          { en: 'Submitting…',                        de: 'Wird abgeschickt…',         ja: '送信中…' },
   // Last step of the tax form: the declaration + submit happen on the tax-residency page.
-  checkResidency:      { en: 'Check your tax residency status →',  de: 'Steuerresidenz-Status prüfen →', ja: '税務上の居住区分を確認 →' },
+  checkResidency:      { en: 'Continue to tax residency →',  de: 'Weiter zur Steuerresidenz →', ja: '税務上の居住区分へ進む →' },
   checkResidencyNote:  {
-    en: 'Last step - read what tax residency means, then submit.',
-    de: 'Letzter Schritt - lies, was Steuerresidenz bedeutet, und schick es dann ab.',
-    ja: '最後のステップ - 税務上の居住区分について確認してから送信します。',
+    en: "Last step: we'll explain tax residency, then you can submit.",
+    de: 'Letzter Schritt: Wir erklären dir die Steuerresidenz, dann kannst du absenden.',
+    ja: '最後のステップ：税務上の居住区分についてご説明し、その後送信いただけます。',
   },
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
   timeEstimate:        { en: '⏱ Takes about 2 minutes',            de: '⏱ Dauert etwa 2 Minuten',    ja: '⏱ 約2分で完了' },
@@ -134,20 +134,20 @@ export const formStrings = {
   secureNote:          { en: 'Your information is kept secure and private.', de: 'Deine Daten werden sicher und vertraulich behandelt.', ja: 'お客様の情報は安全かつ機密に管理されます。' },
 
   // ─ Expenses WhatsApp block (tax form) ─
-  emailInvoicesTitle:  { en: 'WhatsApp us any invoices or receipts directly related to earning your income.', de: 'Schicke uns per WhatsApp alle Rechnungen oder Belege, die direkt mit deinem Einkommen zusammenhängen.', ja: '収入に直接関連する請求書または領収書はWhatsAppでお送りください。' },
+  emailInvoicesTitle:  { en: 'Send us any receipts or invoices for your work expenses on WhatsApp.', de: 'Schicke uns Belege oder Rechnungen für deine Arbeitsausgaben per WhatsApp.', ja: '業務経費の領収書や請求書をWhatsAppでお送りください。' },
 
   // ─ Form titles ─
   titleTFN:            { en: 'TFN Application',                     de: 'TFN-Antrag',               ja: 'TFN申請' },
   titleABN:            { en: 'ABN Registration',                    de: 'ABN-Registrierung',        ja: 'ABN登録' },
   titleTax:            {
-    en: 'Answer a few quick questions',
-    de: 'Beantworte ein paar kurze Fragen',
-    ja: 'かんたんな質問にお答えください',
+    en: 'Tell us a bit about yourself',
+    de: 'Erzähl uns ein bisschen über dich',
+    ja: '簡単な自己紹介をお願いします',
   },
   titleTaxSub:         {
-    en: 'to check your eligibility',
-    de: 'um deinen Anspruch zu prüfen',
-    ja: '対象かどうかを確認します',
+    en: 'so we can get started',
+    de: 'damit wir loslegen können',
+    ja: '手続きを始めましょう',
   },
   titleTaxStep2:       { en: 'Almost done!',                         de: 'Fast geschafft!',          ja: 'あと少しです！' },
   titleSuper:          { en: 'Super Claim (DASP)',                  de: 'Superauszahlung (DASP)',   ja: 'スーパー受取（DASP）' },
@@ -311,7 +311,7 @@ export const formStrings = {
     ja: '個人情報',
   },
   homeCountry: {
-    en: 'Home Country',
+    en: 'Home country',
     de: 'Heimatland',
     ja: '出身国',
   },
@@ -321,18 +321,18 @@ export const formStrings = {
     ja: '税務情報',
   },
   primaryJob: {
-    en: 'Primary job in the past year',
+    en: 'Main job in the past year',
     de: 'Hauptjob im letzten Jahr',
     ja: '過去1年間の主な仕事',
   },
   hasMedicare: {
-    en: 'Do you have Medicare in Australia?',
-    de: 'Hast du Medicare in Australien?',
-    ja: 'オーストラリアでメディケア（Medicare）に加入していますか？',
+    en: 'Do you have access to Medicare in Australia?',
+    de: 'Hast du Zugang zu Medicare in Australien?',
+    ja: 'オーストラリアでメディケア（Medicare）を利用できますか？',
   },
   bankStatements: {
-    en: 'Bank statements',
-    de: 'Bankauszüge',
+    en: 'Bank statement',
+    de: 'Bankauszug',
     ja: '銀行明細書',
   },
   uploadBankStatement: {
@@ -341,9 +341,9 @@ export const formStrings = {
     ja: '銀行明細書をアップロード',
   },
   bankStatementHint: {
-    en: 'Account → Manage → View Statements → Attach any one of them.',
-    de: 'Konto → Verwalten → Kontoauszüge anzeigen → einen davon anhängen.',
-    ja: 'Account → Manage → View Statements → いずれかをアップロード。',
+    en: 'Upload an Australian bank statement showing your name, BSB and account number to ensure your refund goes to the correct account.',
+    de: 'Lade einen australischen Kontoauszug hoch, auf dem dein Name, deine BSB und deine Kontonummer zu sehen sind, damit deine Rückerstattung auf das richtige Konto geht.',
+    ja: '氏名・BSB・口座番号が記載されたオーストラリアの銀行明細書をアップロードしてください。還付金が正しい口座に振り込まれるようにするためです。',
   },
   selfieHint: {
     en: 'This verifies your identity. Your photo is kept private and secure, and deleted immediately after verification.',
@@ -351,9 +351,9 @@ export const formStrings = {
     ja: '本人確認のために使用されます。写真は厳重に保護・安全に管理され、確認完了後すぐに削除されます。',
   },
   hasExpenses: {
-    en: 'Do you have work-related expenses?',
-    de: 'Hast du arbeitsbezogene Ausgaben?',
-    ja: '業務関連の経費はありますか？',
+    en: 'Did you have any work-related expenses?',
+    de: 'Hattest du arbeitsbezogene Ausgaben?',
+    ja: '業務関連の経費はありましたか？',
   },
   workingHolidayMakerTax: {
     en: 'Working holiday maker for tax purposes',
