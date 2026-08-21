@@ -468,6 +468,28 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_settings').upsert({ key, value }, { onConflict: 'key' });
   }
 
+  /** Atomic slot claim against a daily limit (migration 029).
+   *
+   *  The counter this replaces was a SELECT then an upsert, which meant every
+   *  concurrent serverless instance read the same value and wrote value+1: the
+   *  count advanced by ~1 instead of N and the cap did not hold. The paid AI
+   *  call it guards is reachable by anyone who messages the business number, so
+   *  the ceiling has to be real.
+   *
+   *  Fails CLOSED: if the function is missing (migration not run) or the call
+   *  errors, we report "exhausted" so the conversation goes to a human rather
+   *  than spending money we cannot account for. */
+  async bumpCounter(key: string, limit: number): Promise<boolean> {
+    try {
+      const { data, error } = await this.sb().rpc('will_bump_counter', { p_key: key, p_limit: limit });
+      if (error) { lastPersistError = `bumpCounter: ${error.message}`; return true; }
+      return data === true;
+    } catch (e) {
+      lastPersistError = `bumpCounter: ${(e as Error).message}`;
+      return true;
+    }
+  }
+
   async addJob(j: Omit<JobRow, 'id' | 'createdAt' | 'status'>): Promise<JobRow> {
     const row = {
       id: randomUUID(), customer_id: j.customerId, kind: j.kind, payload: j.payload,
@@ -618,6 +640,12 @@ export class SupabaseStore implements Store {
 
   async releaseInbound(metaId: string): Promise<void> {
     await this.sb().from('will_processed_messages').delete().eq('meta_id', metaId);
+  }
+
+  async purgeAudit(olderThanMs: number): Promise<number> {
+    const cutoff = new Date(Date.now() - olderThanMs).toISOString();
+    const { data } = await this.sb().from('will_audit').delete().lt('created_at', cutoff).select('id');
+    return data?.length ?? 0;
   }
 
   async purgeProcessedMessages(olderThanMs: number): Promise<number> {

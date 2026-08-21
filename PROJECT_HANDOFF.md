@@ -262,7 +262,7 @@ flow live in `will_settings` and **override** the env vars — a good token goes
 - `npx tsc --noEmit` → clean.
 - `next build` (full production build) → passes. Run this, not just `tsc`: route files are
   validated against a fixed set of allowed exports and `tsc` does not check that.
-- `npx jest` → **228 passing**.
+- `npx jest` → **300 passing**.
 - `npx next lint` → one pre-existing warning in `Dashboard.tsx` (unrelated).
 - Build note: `next/font/google` fetches at build time; in a sandbox without network to Google,
   temp-stub the fonts to build, then restore. On Vercel it builds normally.
@@ -302,3 +302,135 @@ draft to accidentally approve. The chat is paused for the assistant and a human 
 so "are you guys legit?" and "are you able to help with my tax return" must keep flowing normally.
 Note for future edits: JavaScript's `\b` is ASCII-only and silently fails next to accented or
 Hebrew letters. Three patterns were broken by exactly that until the tests caught it.
+
+---
+
+## 12. Later additions, part two
+
+**Templates can actually be sent.** `channel.ts` gained `sendWhatsAppTemplate`; `deliverOut` takes an
+optional `{name, params}`. Every scheduled follow-up now goes as a template, because it is by
+definition reaching someone who has been quiet for a day or more and Meta rejects free text outside
+the 24h window. The nine templates (`fu_pre_*`, `fu_form_*`, `fu_sig_*`) were submitted in WhatsApp
+Manager on 2026-08-21 and the Meta template name is the same string as the Library `key`. Language is
+`WHATSAPP_TEMPLATE_LANG` (default `en`) and must match the approval exactly: a template approved as
+`en` cannot be sent as `en_US`. Note they were all submitted as **Marketing**; the six `form`/`sig`
+ones should be moved to **Utility** via "Category updates" once approved, for cost.
+
+**Approval mode now means approval for everything.** The engine held conversation replies, but the
+scheduler transmitted follow-ups and the questionnaire confirmation on its own, so "Approval" was a
+promise the system did not keep. `inApprovalMode()` in `scheduler.ts` gates both; they become
+PENDING_APPROVAL drafts carrying `meta.waTemplate`, and the approve handler in
+`api/will/actions/route.ts` sends via template when that is present. Fails safe: an unset `ai_mode`
+counts as supervised.
+
+**FOLLOWUP_MODE.** The default config was DEMO: follow-ups at **40 / 90 / 150 seconds** with quiet
+hours disabled. The moment outbound works that would chase a new lead three times in under three
+minutes, at any hour. `FOLLOWUP_MODE=real` is now set in Vercel. Consider inverting the default so
+production is safe without an env var.
+
+**Website forms are wired to Will.** `form-link.ts` + a call in the four form routes (`tax-form`,
+`tfn-form`, `super-form`, `abn-form`). Previously the FORM_RECEIVED handler and its seven-language
+message existed but *nothing ever created the job*, so Will kept chasing people who had already
+filled the form in. Matching is on the last 9 digits (17 tests), and an ambiguous match is treated as
+no match. Best-effort by design: a form submission must never fail because the CRM link failed.
+
+**Audit retention.** `will_audit` has no purge and now receives an `inbound_received` line per
+webhook, including delivery statuses (3-4 per outbound message). Conversations are never touched, but
+this table will outgrow them. Retention of ~90 days is agreed but NOT yet implemented.
+
+**UI.** Fixed app shell (header and side nav never scroll; only `main` scrolls, which sticky could
+not do reliably under `zoom:1.25`). Sidebar 245px to match the CRM's 260px at its 1.18 zoom. Numbers
+at normal weight like WhatsApp. Conversation ground is WhatsApp's `#efeae2`: white incoming bubbles
+had almost no edge on the old `#f2f4f6`. Mode switch is amber for Approval, green for Autopilot.
+
+### Meta support (open)
+Ticket in progress. The agent asked for account details plus a screen recording of the failure. Jo's
+case is strong because the number receives one-time codes from other services (verified with Uber)
+and only Meta's never arrive, which rules out the carrier, the handset and the number. The ask is to
+move the account to identity verification and issue one-time codes by email, which Jo says was done
+for this account once before.
+
+### Closed since (same session)
+- **Audit retention implemented.** `Store.purgeAudit()` (Supabase impl) called from the nightly
+  maintenance at 90 days, and the webhook no longer writes an `inbound_received` line for
+  status-only payloads (delivery/read receipts, 3-4 per outbound message). Conversations untouched.
+- **Task headlines.** `task_reason` is now specified in the tool schema and playbook rule 11b as a
+  5-8 word headline naming what the customer wants. `shortReason()` in the dashboard also trims
+  older paragraph-style reasons for the notification list and the task queue; full text on hover.
+- **Template language.** `sendWhatsAppTemplate` takes the customer's language, normalises it
+  (`normalizeTemplateLang`, handles `pt-br` -> `pt_BR`, garbage -> `en`) and falls back to English
+  when Meta reports that translation does not exist. So a new language starts being used the moment
+  it is approved in WhatsApp Manager, with no deploy, and an unapproved language still gets a
+  message instead of silence. Only English is approved today.
+- **deliverOut actually sends the template.** It accepted a `template` argument and ignored it,
+  always sending free text, which Meta rejects outside the 24h window. Found by auditing every
+  outbound call site rather than trusting the signature.
+
+### Every outbound call site, and what gates it
+| Call site | Gate |
+|---|---|
+| `actions/route.ts` approve draft | the owner clicked approve |
+| `actions/route.ts` x3 (`HUMAN`) | quick send / task reply / manual reply, all owner-initiated |
+| `service.ts:210` | only reached when the engine returns `sent`, which happens only in FULL_AUTO |
+| `scheduler.ts` FORM_RECEIVED | `inApprovalMode()` |
+| `scheduler.ts` FOLLOW_UP | `inApprovalMode()` |
+
+---
+
+## 13. Security audit remediation (2026-08-21)
+
+Full audit report delivered separately. Fixed in code:
+
+**Criticals.** `supabase/migrations/028_will_rls.sql` enables RLS on all twelve `will_*` tables (they
+were created without it from migration 021 onward, breaking a convention 001-016 followed and 013
+retrofitted) and drops the five tables from the `supabase_realtime` publication. RLS-on with zero
+policies is deny-all for anon/authenticated; every server path uses the service-role key, which
+bypasses RLS, so behaviour is unchanged. **This migration must be RUN — the code change alone does
+nothing.**
+
+**Highs.** `/api/crm/logout` now requires a session (it was unauthenticated and revoked EVERY staff
+session globally). `/complete` is excluded from GA4 in `layout.tsx` (its URL carries a live 14-day
+completion token as a path segment, which was being sent to Google as `page_location`). `get-ip.ts`
+validates the IP structurally instead of returning the header verbatim. `service.ts` +
+`029_will_ai_budget.sql` make the daily AI spend cap atomic via `will_bump_counter` — the old
+read-then-write advanced by ~1 instead of N across serverless instances, so the cap did not hold on a
+path any WhatsApp sender can trigger. `bumpCounter` fails CLOSED, so **029 must be run before this
+code ships** or every inbound message becomes a human task.
+
+**Mediums.** Server-side intake validation (`src/lib/intake-validate.ts`) on all five public form
+routes; `safeAmount()` for the client-supplied invoice amount that `db.ts` parses back out as the
+recorded refund figure; connect-route secrets moved from query strings to `Authorization` headers;
+bare-numeral price detection and non-English marker detection in the policy guard; phone numbers
+masked in the webhook audit lines; `.data/` gitignored.
+
+### Cost
+`Dashboard.tsx` poll 3s -> 15s, the CRM poll gained the hidden-tab guard the Will dashboard already
+had plus an in-flight lock, and `VERIFY_TTL_MS` went 30s -> 5min (it was shorter than its 45s caller,
+so every health poll made a live Meta call). Together roughly -70% of the ~950k invocations/month.
+
+### Regressions caught by the verification pass, and fixed
+Worth recording because they were introduced BY the fixes and all three passed typecheck:
+1. The taxStatus enum was exact-match, but the form sends `"Australian resident for tax purposes"` —
+   **every resident submission got a 400** on the main conversion path. Now a vocabulary check.
+2. `BARE_PRICE_RE` originally included `only`/`just`/`for`, so in a tax business it flagged
+   `"for 2024, so we need your payslips"` as a forbidden $2024. Trigger words are money words only,
+   and years are excluded.
+3. `get-ip` IPv6 validation was charset-only (unbounded keyspace survived) and rejected
+   IPv4-mapped/zone-id forms, which would have collapsed every client behind such an ingress into one
+   shared lockout bucket.
+
+`src/lib/__tests__/security-fixes.test.ts` pins all of this: 52 tests asserting both directions.
+
+### NOT fixed — needs a decision
+- **Per-user identity.** `createSession()` still takes no subject and audit rows still say
+  `crm-admin`. Changes the login flow; needs to know how many people and which emails.
+- **Next.js 15.5 upgrade.** 14.2.35 is the latest 14.2.x but every open advisory is fixed only in
+  >=15.5. Note `GHSA-ffhc-5mcf-pf4q` is an XSS affecting apps that use CSP nonces — so upgrade BEFORE
+  enabling `CSP_NONCE_ENABLED`, not after.
+
+### Verify in the live environment (cannot be checked from code)
+- `PASSWORD_SALT` / `CRM_PASSWORD` are not the values documented in `CRM_README.md` (a fixed salt and
+  a default password are printed there; the salt is the sole global PBKDF2 salt).
+- `REDIS_URL` is set, or rate limiting silently degrades to a per-instance in-memory map.
+- Whether the ingress overwrites inbound `X-Real-IP`.
+

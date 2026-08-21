@@ -47,9 +47,9 @@ Once you've made the payment, just send me a quick message and we'll get started
   },
 
   followups_pre_payment: {
-    h24: `Hey! Just checking in. Did you still want us to go through your tax situation?`,
-    d3: `Hey, just checking in again. Is there anything you're unsure about or anything you'd like me to clarify before getting started?`,
-    d7: `Hey! Just wanted to follow up. If you'd still like us to go through your tax situation, just send me a message anytime and we can pick things up from here.`,
+    h24: `Hi {{1}}, still want us to take a look at your tax situation? If anything about how the review works is unclear, just ask and I'll happily explain.`,
+    d3: `Hi {{1}}, the part most people miss on their own is what they're actually entitled to claim. That's exactly what our team goes through with you, and if your refund is less than the fee, we refund the difference.`,
+    d7: `Hi {{1}}, last message from me 😊 If you want your tax looked at later, just text me any time.`,
   },
 
   payment_received: `Perfect, payment received! 🎉
@@ -57,9 +57,9 @@ Please fill out this quick form so we can start reviewing your situation: https:
 Once you've submitted it, we'll go through everything and get back to you within 24 hours.`,
 
   followups_form: {
-    h6: `Hey! Just checking in. We haven't received your form yet. Once you submit it, we can start reviewing your tax situation.`,
-    d3: `Hey! Just following up on your tax form. Once you've completed it, we'll be able to get started with your review.`,
-    d7: `Hey! Just checking in again. Whenever you're ready, complete the form and we'll take it from there.`,
+    h6: `Hi {{1}}, we haven't got your form yet 😊 It only takes about 5 minutes and we can start as soon as it's in.`,
+    d3: `Hi {{1}}, your review is waiting on your form. If any question in it is confusing, tell me which one and I'll walk you through it 😊`,
+    d7: `Hi {{1}}, still waiting on your form to get started. Send it through whenever you can 😊`,
   },
 
   request_abn_detail: `Hey! I've gone through your details. Since you also had ABN income, please send me:
@@ -81,9 +81,9 @@ We'll now send everything for final review. Once approved, I'll send it to you f
   signature_ready: `Your tax return is ready! 🎉 I've emailed it to you for review and signature 📧`,
 
   followups_signature: {
-    h24: `Hey! Just checking in. Your tax return is ready for review and signature. Have you had a chance to check it?`,
-    d3: `Hey! Just following up on your tax return. Let me know if you have any questions before signing.`,
-    d7: `Hey! Just checking in again. Your tax return is still ready for your review and signature. Let me know if you need anything from us.`,
+    h24: `Hi {{1}}, your tax return is ready and just needs your signature before we can lodge it. Let me know if it didn't reach you 😊`,
+    d3: `Hi {{1}}, once you sign, we lodge it with the ATO. If anything in it looks off, tell me and I'll check it 😊`,
+    d7: `Hi {{1}}, your return is still waiting on your signature. Send it through when you can and we'll lodge it 😊`,
   },
 
   lodged: `Your tax return has been lodged successfully! 🎉 Your refund should arrive in your bank account within 14 business days.

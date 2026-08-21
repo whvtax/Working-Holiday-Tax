@@ -205,10 +205,16 @@ export async function POST(req: Request) {
   // afternoon of speculation. Never throws: diagnostics must not break inbound.
   try {
     const snap = inboundSnapshot(payload);
-    await store.audit('channel', 'inbound_received', {
-      ...snap, ourPhoneId: ourPhoneId ?? null, cutoff: inboundCutoffTs() || null,
-      phoneIdMatches: !snap.phoneNumberId || !ourPhoneId || snap.phoneNumberId === ourPhoneId,
-    });
+    // Meta sends a webhook for every delivery and read receipt too, which is
+    // three or four per outbound message and says nothing about why a message
+    // did or did not arrive. Logging those would make this table dwarf the
+    // conversations themselves within a year, so only real traffic is recorded.
+    if (!snap.statusesOnly) {
+      await store.audit('channel', 'inbound_received', {
+        ...snap, ourPhoneId: ourPhoneId ?? null, cutoff: inboundCutoffTs() || null,
+        phoneIdMatches: !snap.phoneNumberId || !ourPhoneId || snap.phoneNumberId === ourPhoneId,
+      });
+    }
   } catch { /* diagnostics only */ }
 
   const items = extract(payload, ourPhoneId);
@@ -229,7 +235,9 @@ export async function POST(req: Request) {
       // Fresh-start filter (Jo's rule): only 100% new customers enter Will. A
       // pre-existing / returning contact is dropped even if they message again.
       if (await store.isBlockedContact(msg.from)) {
-        await store.audit('policy_guard', 'returning_contact_skipped', { from: msg.from });
+        // Masked: this log is readable in the CRM and the snapshot above already
+          // masks senders. Writing the raw number here undid that.
+          await store.audit('policy_guard', 'returning_contact_skipped', { from: maskWa(msg.from) });
         continue; // claim stands, so it is never reconsidered
       }
 
@@ -241,7 +249,7 @@ export async function POST(req: Request) {
         isRateLimited('all', 'will_inbound_global', GLOBAL_INBOUND_MAX),
       ]);
       if (perSender || global) {
-        await store.audit('policy_guard', 'inbound_rate_limited', { from: msg.from, scope: perSender ? 'sender' : 'global' });
+        await store.audit('policy_guard', 'inbound_rate_limited', { from: maskWa(msg.from), scope: perSender ? 'sender' : 'global' });
         continue;
       }
 

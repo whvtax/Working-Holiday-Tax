@@ -9,6 +9,11 @@ out/
 tsconfig.tsbuildinfo
 *.tsbuildinfo
 
+# Local dev store. store-file.ts claimed this was gitignored; it was not.
+# If Supabase env vars are ever absent, the app silently falls back to this
+# file and writes real customer records AND the WhatsApp access token into it.
+.data/
+
 # Env files (real secrets never committed)
 .env
 .env.local

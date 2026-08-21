@@ -69,6 +69,24 @@ const timeAgo = (iso: string | null) => {
   if (s < 86400) return `${Math.round(s / 3600)}h`;
   return `${Math.round(s / 86400)}d`;
 };
+/** One short line for a list row. You scan this list to see WHO is waiting, not
+ *  to read the message, so anything past the first line is noise. */
+const previewLine = (s: string) => {
+  const first = (s || '').split('\n')[0].trim();
+  return first.length > 58 ? `${first.slice(0, 58).trimEnd()}…` : first;
+};
+
+/** A task headline in 8 words or fewer.
+ *
+ *  Will is now asked for a short headline, but tasks written before that, and
+ *  any answer that drifts, still arrive as a paragraph. Cutting to the first
+ *  sentence and then to 8 words keeps the queue scannable either way; the full
+ *  text stays available on hover. */
+const shortReason = (s: string) => {
+  const firstSentence = (s || '').split(/(?<=[.!?])\s/)[0].trim();
+  const words = firstSentence.split(/\s+/).filter(Boolean);
+  return words.length > 8 ? `${words.slice(0, 8).join(' ')}…` : firstSentence;
+};
 const incLabel = (i: CustomerRow['income']) => (i === 'TFN_ABN' ? 'TFN+ABN' : i === 'TFN' ? 'TFN' : '?');
 const feeOf = (i: CustomerRow['income']) => (i === 'TFN_ABN' ? '$385' : i === 'TFN' ? '$220' : null);
 // Jo's rule: identify customers by their WhatsApp phone number, never the profile name.
@@ -222,12 +240,20 @@ export default function Dashboard() {
 
     refetchHeavy();
     tickOnce();
-    const pollIv = setInterval(poll, 3000);        // cheap token check — 3s keeps new inbound messages feeling near-instant
+    // 15s, not 3s. At 3s this one timer was 86% of the dashboard's Vercel
+    // invocations and ~69% of its Supabase load: 1,200 calls/hour x ~5 queries
+    // each, per open tab, forever, with nobody touching the keyboard. Across a
+    // small team that was ~3.2M queries a month to shave a few seconds off a
+    // notification. 15s costs at most 12 extra seconds of inbound latency and
+    // removes roughly three quarters of the baseline cost.
+    const pollIv = setInterval(poll, 15000);
     const tickIv = setInterval(tickOnce, 30000);   // slow scheduler safety net
     const healthIv = setInterval(() => {           // keep status dots fresh even when idle
       if (!hidden()) fetch('/api/will/health').then((r) => r.json()).then((h) => { if (!stop) setHealth(h); }).catch(() => {});
     }, 45000);
-    const clockIv = setInterval(() => setClock((c) => c + 1), 1000);
+    // Skip while hidden: this re-renders the whole dashboard once a second,
+    // and a backgrounded tab has nobody to show a ticking clock to.
+    const clockIv = setInterval(() => { if (!hidden()) setClock((c) => c + 1); }, 1000);
     return () => { stop = true; clearInterval(pollIv); clearInterval(tickIv); clearInterval(healthIv); clearInterval(clockIv); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -318,8 +344,8 @@ export default function Dashboard() {
           <div className="modebar" style={{ padding: 0 }}>
             <span className="modelabel">{ASSISTANT_NAME} Mode</span>
             <div className="modes">
-              <button className={`mode ${mode === 'SUPERVISED' ? 'active' : ''}`} title={`${ASSISTANT_NAME} drafts every message, you approve before it sends`} onClick={() => { setMode('SUPERVISED'); say(`Approval mode: ${ASSISTANT_NAME} drafts, you send`); }}>Approval</button>
-              <button className={`mode ${mode === 'FULL_AUTO' ? 'active' : ''}`} title={`${ASSISTANT_NAME} sends on his own; anything unclear comes to you`} onClick={() => { setMode('FULL_AUTO'); say(`Autopilot: ${ASSISTANT_NAME} sends, escalates anything unclear`); }}>Autopilot</button>
+              <button className={`mode ${mode === 'SUPERVISED' ? 'active supervised' : ''}`} title={`${ASSISTANT_NAME} drafts every message, you approve before anything sends. Includes scheduled follow-ups and templates.`} onClick={() => { setMode('SUPERVISED'); say(`Approval mode: nothing sends without you`); }}>Approval</button>
+              <button className={`mode ${mode === 'FULL_AUTO' ? 'active autopilot' : ''}`} title={`${ASSISTANT_NAME} sends on his own; anything unclear comes to you`} onClick={() => { setMode('FULL_AUTO'); say(`Autopilot: ${ASSISTANT_NAME} sends, escalates anything unclear`); }}>Autopilot</button>
             </div>
           </div>
           <div className="hspacer" />
@@ -368,7 +394,7 @@ export default function Dashboard() {
                         <span style={{ width: 7, height: 7, borderRadius: 4, background: dot, marginTop: 5, flex: 'none' }} />
                         <span style={{ minWidth: 0, flex: 1 }}>
                           <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.customerName ?? 'System'}</span>
-                          <span style={{ display: 'block', fontSize: 11.5, color: 'var(--ink2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.reason}</span>
+                          <span title={t.reason} style={{ display: 'block', fontSize: 11.5, color: 'var(--ink2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{shortReason(t.reason)}</span>
                         </span>
                         <span style={{ fontSize: 9.5, color: 'var(--ink3)', flex: 'none', marginTop: 2 }}>{timeAgo(t.createdAt)}</span>
                       </button>
@@ -435,16 +461,18 @@ export default function Dashboard() {
                   <div className="rc-main">
                     <div className="rc-top">
                       <span className="cname">{phoneOf(c.waId)}</span>
-                      {c.unread && <span className="unread" />}
                     </div>
-                    {c.lastMessagePreview && <div className="rc-msg">“{c.lastMessagePreview}”</div>}
+                    {c.lastMessagePreview && <div className="rc-msg">“{previewLine(c.lastMessagePreview)}”</div>}
                   </div>
                   <div className="rc-side">
                     {c.aiPaused && <span className="chip">✋ manual</span>}
                     {isStuck(c) && <span className="chip stuck">⚠ stuck</span>}
                     {feeOf(c.income) && <span className="chip price">{feeOf(c.income)}</span>}
                     <span className="stagepill" style={{ ['--pc' as string]: g.color }}>{STATE_LABELS[c.state]}</span>
-                    <span className="rc-time">{timeAgo(c.stateChangedAt)}</span>
+                    {/* When the last message actually arrived, not when the
+                        pipeline stage last changed: "2h" should mean 2h since
+                        anyone spoke, which is what you scan this list for. */}
+                    <span className="rc-time">{timeAgo(c.lastMessageAt ?? c.stateChangedAt)}</span>
                   </div>
                 </div>
               ))}
@@ -478,10 +506,16 @@ export default function Dashboard() {
                     <div className="chathead">
                       <div className="cav">{AVATAR}</div>
                       <div className="chtitle">
-                        <b>{phoneOf(chatSel.waId)}</b>
+                        {/* Normal weight, like WhatsApp shows a contact. */}
+                        <span className="chnum">{phoneOf(chatSel.waId)}</span>
                         <div className="st">
                           <span className="cstate" style={{ ['--sc' as string]: stageColorOf(chatSel.state) }}>{STATE_LABELS[chatSel.state]}</span>
-                          <span style={{ fontSize: 10.5, color: 'var(--ink3)' }}>{[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).join(' · ') || 'new lead'}</span>
+                          {/* Only real extra information belongs here. The old
+                              fallback repeated the pipeline stage next to itself
+                              ("NEW LEAD  new lead"), which said nothing twice. */}
+                          {[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).length > 0 && (
+                            <span style={{ fontSize: 10.5, color: 'var(--ink3)' }}>{[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).join(' · ')}</span>
+                          )}
                         </div>
                       </div>
                       <div className={`aitoggle ${chatSel.aiPaused ? 'off' : ''}`} onClick={async () => {
@@ -540,22 +574,31 @@ export default function Dashboard() {
         {view === 'tasks' && (
           <section className="view active">
             <h2 className="vt">Human Tasks</h2>
-            <div className="vsub">Waiting for you. {ASSISTANT_NAME} drafted a suggested answer for each one, edit and send without opening the chat.</div>
+            <div className="vsub">{ASSISTANT_NAME} drafted a suggested answer for each one.</div>
             {openTasks.length === 0 && <div className="sysline" style={{ margin: '18px 0' }}>No open tasks. {ASSISTANT_NAME} has everything under control 🎉</div>}
             {openTasks.map((t) => {
               const col = t.severity === 'URGENT' ? 'var(--crit)' : 'var(--warn)';
-              const icon = t.severity === 'URGENT' ? '🔴' : t.severity === 'CONFLICT' ? '⚠️' : '📄';
+              // No icon: the severity chip already carries the colour and the
+              // word, so an emoji next to it said the same thing twice.
               const draft = taskDrafts[t.id] ?? t.suggestedReply ?? '';
               return (
                 <div key={t.id} id={'task-' + t.id} className="task" style={{ ['--tc' as string]: col, ...(focusTaskId === t.id ? { outline: '2px solid var(--brand1)', outlineOffset: '2px' } : {}) }}>
-                  <div className="ticon">{icon}</div>
                   <div className="tbody">
-                    <div className="trow"><span className="ttitle">{t.reason}</span><span className="tsev">{t.severity}</span></div>
-                    <div className="tmeta">{t.customerName ?? 'System'} · {timeAgo(t.createdAt)} ago</div>
+                    {/* Identity first and small: severity, who, when. The X sits
+                        opposite it so a task you do not want can go in one click. */}
+                    <div className="trow">
+                      <span className="tsev">{t.severity}</span>
+                      <span className="tmeta">{t.customerName ?? 'System'} · {timeAgo(t.createdAt)} ago</span>
+                      <button className="tdismiss" title="Dismiss, I am not answering this"
+                        onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Dismissed'); refresh(); }}>✕</button>
+                    </div>
+                    {/* One line. You are scanning for what this person wants, not
+                        reading an essay; the full text is on hover. */}
+                    <div className="ttitle" title={t.reason}>{shortReason(t.reason)}</div>
                     {t.context && <div className="tctx">&quot;{t.context}&quot;</div>}
                     {t.customerId && (
                       <div className="taskreply">
-                        <div className="mlabel" style={{ margin: '10px 0 5px' }}>Suggested answer, edit freely then send</div>
+                        <div className="mlabel" style={{ margin: '10px 0 5px' }}>Suggested answer</div>
                         <textarea className="edit" style={{ minHeight: 64 }} value={draft}
                           onChange={(e) => setTaskDrafts((d) => ({ ...d, [t.id]: e.target.value }))} />
                       </div>

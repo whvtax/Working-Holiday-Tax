@@ -11,7 +11,7 @@ import { reconcileSchedule } from '@/lib/will/scheduler';
 import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
-import { deliverOut, sendWhatsAppText } from '@/lib/will/channel';
+import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/channel';
 
 export const dynamic = 'force-dynamic';
 
@@ -111,7 +111,14 @@ export async function POST(req: Request) {
 
       // Transmit the approved draft to WhatsApp, then record the result. In test
       // mode (no channel credentials) this is a no-op and the draft is marked SENT.
-      const tx = await sendWhatsAppText(customer.waId, msg.body);
+      // A draft queued by the scheduler carries the approved template it must go
+      // out as, because it is deliberately reaching someone who has been quiet
+      // for a day or more and free-form text is rejected outside Meta's 24h
+      // window. Conversation replies carry nothing and go as plain text.
+      const wa = msg.meta?.waTemplate as { name?: string; params?: string[]; lang?: string | null } | undefined;
+      const tx = wa?.name
+        ? await sendWhatsAppTemplate(customer.waId, wa.name, wa.params ?? [], wa.lang ?? customer.lang)
+        : await sendWhatsAppText(customer.waId, msg.body);
       if (!tx.ok) {
         await store.setMessageStatus(msg.id, 'FAILED');
         await store.audit('channel', 'send_failed', { id: msg.id, error: tx.error });

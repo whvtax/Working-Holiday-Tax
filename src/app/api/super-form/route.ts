@@ -5,7 +5,9 @@ import { isRateLimited } from '@/lib/rate-limit'
 import { uploadFiles } from '@/lib/upload'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import { validateIntake } from '@/lib/intake-validate'
 import crypto from 'crypto'
+import { notifyFormReceived } from '@/lib/will/form-link'
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,6 +25,22 @@ export async function POST(req: NextRequest) {
     // unactionable - reject it instead of creating an empty CRM task.
     if (!fullName || !email || !whatsapp) {
       return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
+    }
+
+    // Format validation, server-side (see lib/intake-validate.ts). The shared
+    // validators used to be imported by client components only, so a direct
+    // POST could write any string into any field.
+    const issues = validateIntake({
+      email,
+      whatsapp,
+      tfn: sanitiseShort(formData.get('tfn')),
+      dob: sanitiseShort(formData.get('dob')),
+      // These routes write `marital` straight to the DB, so it has to be
+      // validated here too. taxStatus is server-hardcoded on this route.
+      marital: sanitiseShort(formData.get('marital')),
+    })
+    if (issues.length) {
+      return NextResponse.json({ ok: false, error: 'invalid_fields', fields: issues }, { status: 400 })
     }
     const existing  = await findExistingClient(email, whatsapp)
     const isReturning = !!existing
@@ -71,6 +89,12 @@ export async function POST(req: NextRequest) {
       reviewedAt:   '',
     })
 
+
+        // Tell Will the questionnaire arrived: this marks the form complete, STOPS
+    // the form reminders (otherwise it keeps chasing someone who already filled
+    // it in) and sends the confirmation in their language. Best effort by
+    // design: the form submission must never fail because the CRM link did.
+    await notifyFormReceived(whatsapp, email)
 
     return NextResponse.json({ ok: true })
   } catch (err) {

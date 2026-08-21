@@ -73,6 +73,35 @@ const AMOUNT_RE = new RegExp(
   'gi',
 );
 
+/**
+ * A bare number used as a PRICE, with no currency marker.
+ *
+ * WHY: AMOUNT_RE only matches a number adjacent to a currency symbol or word,
+ * so the entire forbidden-amount check was defeated by dropping the `$`.
+ * Verified before this existed:
+ *     "Our fee is only 50 for you."          -> no amounts found, passed
+ *     "The price is 50, nothing more."       -> no amounts found, passed
+ *     "we can waive it and charge you 50"    -> no amounts found, passed
+ *
+ * This catches a number that follows price language. Deliberately narrow: it
+ * must sit next to a money word, so ordinary numbers ("2 to 3 weeks", "5
+ * minutes", "form 2") are not swept up.
+ */
+// TRIGGER WORDS ARE MONEY WORDS ONLY. An earlier version also included `only`,
+// `just` and `for`, which are not about money, and in a TAX business that was
+// actively harmful: it flagged "for 2024, so we need your payslips" as a
+// forbidden amount of $2024, and "we just need 2 more documents" as $2.
+// Year mentions are everywhere here, so a year is excluded explicitly too.
+const BARE_PRICE_RE = new RegExp(
+  `\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate)\\b` +
+  `[^.!?\\d]{0,24}?(\\d[\\d.,]*)\\b` +
+  // not a duration, a percentage, a time, or a tax year
+  `(?!\\s*(?:%|percent|weeks?|days?|months?|years?|minutes?|hours?|am|pm))`,
+  'gi',
+);
+/** Four-digit values that are plainly a tax year, not a price. */
+const LOOKS_LIKE_YEAR = /^(19|20)\d{2}$/;
+
 function toCents(raw: string): number | null {
   // Normalise both 1,234.56 and 1.234,56 style groupings.
   let s = raw.trim();
@@ -88,6 +117,14 @@ function amountsInCents(text: string): number[] {
     const c = toCents(m[1] ?? m[2] ?? '');
     if (c != null) out.push(c);
   }
+  // Also catch a price written without any currency marker: "our fee is 50".
+  // Without this the whole forbidden-amount check was bypassed by dropping the $.
+  for (const m of text.matchAll(BARE_PRICE_RE)) {
+    const raw = (m[1] ?? '').trim();
+    if (LOOKS_LIKE_YEAR.test(raw)) continue; // "the fee for 2024" is a year, not a price
+    const c = toCents(raw);
+    if (c != null) out.push(c);
+  }
   return out;
 }
 
@@ -101,6 +138,22 @@ function amountsInCents(text: string): number[] {
 // evidence, non-Latin script and heavy diacritics are hard disqualifiers.
 const ENGLISH_WORDS = /\b(the|you|your|we|our|is|are|to|and|a|of|for|will|can|it|that|this|have|with|be|not|if|please|thanks|thank|hi|hey|hello|need|help|refund|tax|form|fee|pay|paid|once|just|let|know|get|got|back|send|sent|when|what|how|yes|no|but|so|on|in|at|do|does|any|all|from|about|here|there|we'll|you'll|i'll|we're|you're|it's|don't|can't)\b/gi;
 
+/**
+ * Function words that are common in another language and either absent from
+ * English or rare enough that their presence is strong evidence AGAINST English.
+ *
+ * WHY: the English-word test alone misclassified languages that share English
+ * function words and carry no diacritics. Verified failures before this list
+ * existed:
+ *   "De prijs is 220 en dat is alles wat je betaalt."  (Dutch)  -> English
+ *   "Der Preis ist 50, in Ordnung so?"                 (German) -> English
+ * Both cleared the two-hit bar on words like `is`, `in`, `so`. That mattered
+ * because every CONTENT pattern in this guard is English-only: a reply
+ * classified as English in a language the patterns cannot read is a reply with
+ * effectively no content checking at all.
+ */
+const NON_ENGLISH_MARKERS = /\b(de|het|een|zijn|niet|dat|wat|je|jij|maar|ook|nog|jouw|betaal\w*|prijs|bedrag|der|die|das|und|ist|nicht|sie|ich|wir|mit|auf|für|ein|eine|kein\w*|oder|aber|sehr|preis|geld|el|la|los|las|un|una|es|por|para|con|pero|más|muy|tu|su|dinero|precio|le|les|des|du|une|est|pas|vous|nous|avec|pour|mais|très|argent|prix|il|lo|gli|del|della|che|non|sono|con|per|ma|molto|denaro|prezzo|o|os|as|um|uma|não|você|com|para|mas|muito|dinheiro|preço)\b/gi;
+
 export function isConfidentlyEnglish(text: string): boolean {
   const t = text.replace(/https?:\S+/g, ' '); // ignore URLs
   // Any non-Latin script (CJK, Hebrew, Arabic, Cyrillic, Greek, Thai, Hangul) => not English.
@@ -111,7 +164,11 @@ export function isConfidentlyEnglish(text: string): boolean {
   if (accented / letters > 0.03) return false; // diacritics => not English
   // Positive evidence: at least two common English function words must appear.
   const hits = (t.match(ENGLISH_WORDS) || []).length;
-  return hits >= 2;
+  if (hits < 2) return false;
+  // Negative evidence beats positive: a text carrying as many foreign markers as
+  // English ones is not English, however many shared words it happens to use.
+  const foreign = (t.match(NON_ENGLISH_MARKERS) || []).length;
+  return foreign < hits;
 }
 
 /** Back-compat wrapper (now fail-closed): true when the text is NOT confidently English. */

@@ -51,9 +51,26 @@ export function handleIncoming(
 const DEFAULT_AI_DAILY_BUDGET = 3000;
 async function aiBudgetExhausted(): Promise<boolean> {
   const store = getStore();
-  const budget = Number((await store.getSetting('ai_daily_budget')) ?? 0) || DEFAULT_AI_DAILY_BUDGET;
-  const day = new Date().toISOString().slice(0, 10);
-  const key = 'ai_calls:' + day;
+  const raw = await store.getSetting('ai_daily_budget');
+  // An explicit 0 means "stop spending", and must not be swallowed by `||`.
+  // The old expression turned a deliberate 0 back into the 3000 default, so the
+  // budget could not be used as an off switch.
+  const configured = Number(raw);
+  const budget = raw != null && Number.isFinite(configured) && configured >= 0
+    ? configured
+    : DEFAULT_AI_DAILY_BUDGET;
+  if (budget === 0) return true;
+
+  const key = 'ai_calls:' + new Date().toISOString().slice(0, 10);
+
+  // Atomic path (migration 029). The previous read-then-write advanced the
+  // counter by ~1 instead of N under concurrency, because every serverless
+  // instance read the same value before any of them wrote. That made the daily
+  // cap ineffective on exactly the path it exists to protect: a paid model call
+  // triggered by anyone who sends a WhatsApp message to the business number.
+  if (typeof store.bumpCounter === 'function') return store.bumpCounter(key, budget);
+
+  // Fallback for the dev file store, which is single-process by definition.
   const used = Number((await store.getSetting(key)) ?? 0);
   if (used >= budget) return true;
   await store.setSetting(key, used + 1);

@@ -13,6 +13,27 @@ import { deliverOut } from './channel';
 
 type Flow = 'prePayment' | 'form' | 'signature';
 
+/**
+ * Approval mode means approval for EVERYTHING.
+ *
+ * The engine already held conversation replies for approval, but the scheduler
+ * transmitted follow-ups and the questionnaire confirmation on its own. That
+ * made "Approval" a promise the system did not actually keep. Anything the
+ * scheduler wants to say now goes to the approval queue too, and only
+ * Autopilot sends without a human.
+ */
+async function inApprovalMode(): Promise<boolean> {
+  const mode = await getStore().getSetting('ai_mode');
+  return mode !== 'FULL_AUTO'; // fail safe: unknown or unset means ask first
+}
+
+/** The name used in a template's {{1}}. Meta rejects an empty parameter, so a
+ *  customer with no WhatsApp profile name still needs something natural. */
+function greetingName(customer: CustomerRow): string {
+  const first = (customer.name ?? '').trim().split(/\s+/)[0] ?? '';
+  return first.length >= 2 ? first : 'there';
+}
+
 const FLOW_TEMPLATES: Record<Flow, string[]> = {
   prePayment: ['fu_pre_24h', 'fu_pre_3d', 'fu_pre_7d'],
   form: ['fu_form_6h', 'fu_form_3d', 'fu_form_7d'],
@@ -151,7 +172,14 @@ async function doProcess(): Promise<TickResult> {
               isApprovedTemplate: true, estimateFromTeam: customer.estimatedRefundCents,
             });
             if (!verdict.allowed) body = formReceivedMessage('en'); // English is guard-safe
-            await deliverOut(customer, body, 'AI');
+            if (await inApprovalMode()) {
+              await store.addMessage({
+                customerId: customer.id, direction: 'OUT', author: 'AI',
+                status: 'PENDING_APPROVAL', body, meta: {},
+              });
+            } else {
+              await deliverOut(customer, body, 'AI');
+            }
           }
           await store.audit('system', 'form_received_confirmed', { customerId: customer.id });
           result.sent.push(`${customer.name ?? customer.waId} · questionnaire received`);
@@ -205,12 +233,45 @@ async function doProcess(): Promise<TickResult> {
         variant = (customer.id.charCodeAt(0) + seq) % 2 === 0 ? 'A' : 'B';
         if (variant === 'B') body = template.variantB;
       }
+      // Every follow-up lands OUTSIDE Meta's 24h window by definition: we are
+      // messaging someone precisely because they went quiet. Free-form text is
+      // rejected there, so it goes as a pre-approved template. `body` is that
+      // same text with {{1}} filled in, so what we log and show in the CRM is
+      // exactly what the customer receives.
+      const firstName = greetingName(customer);
+      body = body.replace(/\{\{1\}\}/g, firstName);
+      // Their language when that translation is approved in WhatsApp Manager,
+      // English when it is not. channel.ts handles the fallback.
+      const waTemplate = { name: template.key, params: [firstName], lang: customer.lang };
+
       // REL-02: mark the job DONE BEFORE sending, so an at-least-once replay
       // (crash between send and status-write) cannot re-deliver the same nudge.
       // A follow-up is a non-critical reminder; a rare missed nudge is far better
       // than spamming the customer with duplicates.
       await store.setJobStatus(job.id, 'DONE');
-      await deliverOut(customer, body, 'AI', template.variantB ? { templateId: template.id, variant } : undefined);
+
+      const meta = {
+        ...(template.variantB ? { templateId: template.id, variant } : {}),
+        waTemplate,
+      };
+
+      if (await inApprovalMode()) {
+        // Approval mode means approval for EVERYTHING. A scheduled follow-up
+        // used to be the one thing that went out on its own, which quietly
+        // broke the promise the mode makes.
+        await store.addMessage({
+          customerId: customer.id, direction: 'OUT', author: 'AI',
+          status: 'PENDING_APPROVAL', body, meta,
+        });
+        await store.audit('scheduler', 'follow_up_awaiting_approval', {
+          customerId: customer.id, template: template.key, seq,
+        });
+        result.sent.push(`${customer.name ?? customer.waId} · ${template.title} (awaiting approval)`);
+        await scheduleFollowUp(customer.id, flow, seq + 1);
+        continue;
+      }
+
+      await deliverOut(customer, body, 'AI', meta, waTemplate);
       if (template.variantB) await store.bumpVariant(template.id, variant, 'sent');
       await store.audit('scheduler', 'follow_up_sent', { customerId: customer.id, template: template.key, seq, variant });
       result.sent.push(`${customer.name ?? customer.waId} · ${template.title}`);
@@ -246,6 +307,15 @@ export async function runNightly(): Promise<void> {
   // does not grow forever (Meta never retries a message that old).
   const purged = await store.purgeProcessedMessages(30 * 24 * 60 * 60 * 1000).catch(() => 0);
 
+  // The decision log answers "why did it do that?", which is worth days, not
+  // years: if something breaks you find out within a week. It also grows faster
+  // than the conversations do. 90 days is generous for diagnosis and stops the
+  // table from eventually dwarfing the messages.
+  // Customer conversations are NEVER touched by this.
+  const auditPurged = typeof store.purgeAudit === 'function'
+    ? await store.purgeAudit(90 * 24 * 60 * 60 * 1000).catch(() => 0)
+    : 0;
+
   if (issues.length) {
     await store.addTask({
       customerId: null, customerName: null,
@@ -253,5 +323,5 @@ export async function runNightly(): Promise<void> {
       severity: 'REVIEW', context: issues.join(' | '), suggestedReply: null,
     });
   }
-  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged });
+  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged });
 }

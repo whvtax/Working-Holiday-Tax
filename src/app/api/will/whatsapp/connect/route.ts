@@ -19,8 +19,23 @@ export const dynamic = 'force-dynamic';
 const GRAPH = process.env.WHATSAPP_GRAPH_VERSION || 'v21.0';
 const APP_ID = process.env.META_APP_ID || process.env.NEXT_PUBLIC_META_APP_ID || '1388978866435944';
 
-async function graphGet(path: string): Promise<{ ok: boolean; data: Record<string, unknown> }> {
-  const res = await fetch(`https://graph.facebook.com/${GRAPH}/${path}`, { cache: 'no-store' });
+/**
+ * Graph GET.
+ *
+ * SECRETS GO IN THE HEADER, NOT THE QUERY STRING. These calls previously passed
+ * META_APP_SECRET and the business access token as `?access_token=...` query
+ * parameters, which puts live credentials into proxy logs, Meta's own access
+ * logs, and any fetch error string that gets printed. channel.ts already does
+ * this correctly with an Authorization header; this route did not.
+ */
+async function graphGet(
+  path: string,
+  token?: string,
+): Promise<{ ok: boolean; data: Record<string, unknown> }> {
+  const res = await fetch(`https://graph.facebook.com/${GRAPH}/${path}`, {
+    cache: 'no-store',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
   const data = await res.json().catch(() => ({} as Record<string, unknown>));
   return { ok: res.ok, data };
 }
@@ -39,8 +54,17 @@ export async function POST(req: Request) {
   // 1) Exchange an Embedded Signup authorization code for a business token.
   if (!token && body.code) {
     if (!secret) return NextResponse.json({ ok: false, error: 'META_APP_SECRET is not configured on the server' }, { status: 400 });
-    const q = new URLSearchParams({ client_id: APP_ID, client_secret: secret, code: body.code.trim() });
-    const ex = await graphGet(`oauth/access_token?${q.toString()}`);
+    // POST with a form body: the app secret must not travel in a URL.
+    const ex = await (async () => {
+      const res = await fetch(`https://graph.facebook.com/${GRAPH}/oauth/access_token`, {
+        method: 'POST',
+        cache: 'no-store',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ client_id: APP_ID, client_secret: secret, code: body.code!.trim() }).toString(),
+      });
+      const data = await res.json().catch(() => ({} as Record<string, unknown>));
+      return { ok: res.ok, data };
+    })();
     if (!ex.ok || !ex.data.access_token) {
       const err = (ex.data as { error?: { message?: string } }).error;
       return NextResponse.json({ ok: false, error: `code exchange failed: ${err?.message ?? 'unknown'}` }, { status: 400 });
@@ -52,7 +76,7 @@ export async function POST(req: Request) {
 
   // If we were given a WABA but no phone id, look the phone id up from the WABA.
   if (!phoneId && wabaId) {
-    const pn = await graphGet(`${wabaId}/phone_numbers?access_token=${encodeURIComponent(token)}`);
+    const pn = await graphGet(`${wabaId}/phone_numbers`, token);
     const first = ((pn.data as { data?: { id?: string }[] }).data ?? [])[0];
     if (first?.id) phoneId = String(first.id);
   }
@@ -62,11 +86,15 @@ export async function POST(req: Request) {
   // Best-effort: subscribe the app to the WABA so webhooks keep flowing. Never
   // fail the connect over this — inbound may already be wired via coexistence.
   if (wabaId) {
-    try { await fetch(`https://graph.facebook.com/${GRAPH}/${wabaId}/subscribed_apps?access_token=${encodeURIComponent(token)}`, { method: 'POST', cache: 'no-store' }); } catch { /* ignore */ }
+    try {
+      await fetch(`https://graph.facebook.com/${GRAPH}/${wabaId}/subscribed_apps`, {
+        method: 'POST', cache: 'no-store', headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch { /* ignore */ }
   }
 
   // Verify the pair actually works before we celebrate.
-  const check = await graphGet(`${phoneId}?fields=display_phone_number,verified_name&access_token=${encodeURIComponent(token)}`);
+  const check = await graphGet(`${phoneId}?fields=display_phone_number,verified_name`, token);
   if (!check.ok) {
     const err = (check.data as { error?: { message?: string } }).error;
     return NextResponse.json({ ok: false, error: `Meta rejected this token+number: ${err?.message ?? 'unknown'}`, phoneNumberId: phoneId }, { status: 400 });

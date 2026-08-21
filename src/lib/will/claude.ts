@@ -33,7 +33,15 @@ const DECIDE_TOOL = {
       reply_text: { type: 'string', description: 'The WhatsApp message to send, if action=reply.' },
       suggested_reply: { type: 'string', description: 'If action=human_task: your best draft answer for the team member to edit/approve.' },
       new_state: { type: 'string', enum: STATES, description: 'Set only when the customer state should change.' },
-      task_reason: { type: 'string' },
+      task_reason: {
+        type: 'string',
+        description:
+          'A SHORT headline, 5 to 8 words, naming what the customer wants. This is read in a '
+          + 'notification list and a queue, so it must scan in one glance: "Asking if DASP is '
+          + 'included", "Wants refund after paying", "Confused about myGov login". Never a '
+          + 'paragraph, never your reasoning, never a summary of the conversation. Put any detail '
+          + 'in suggested_reply instead.',
+      },
       task_severity: { type: 'string', enum: ['URGENT', 'REVIEW', 'CONFLICT'] },
       confidence: { type: 'number', description: '0..1. Below 0.8 you must choose human_task.' },
     },

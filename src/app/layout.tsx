@@ -294,7 +294,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   // Don't tag the internal CRM/admin area - it's staff usage, not public
   // traffic, and would otherwise pollute GA4's acquisition/behaviour data.
   // (/crm is also disallowed in robots.ts for the same "not public" reason.)
-  const isAdminArea = (headers().get('x-pathname') ?? '').startsWith('/crm')
+  //
+  // /complete is excluded for a DIFFERENT and more serious reason: its URL
+  // carries a live, single-use completion token as a path segment.
+  // gtag('config') fires an automatic page_view whose page_location is the FULL
+  // URL, so Google, and anyone with GA property access, received working tokens
+  // granting write access to a named client's tax record for 14 days. robots
+  // noindex and Referrer-Policy do not help: the URL goes as a request
+  // parameter, not as a referrer. Never tag a page whose path contains a secret.
+  const pathname = headers().get('x-pathname') ?? ''
+  const isAdminArea = pathname.startsWith('/crm') || pathname.startsWith('/complete')
   return (
     <html lang={lang} className={`${playfair.variable} ${dmSans.variable}`}>
       <head>

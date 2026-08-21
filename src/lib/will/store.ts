@@ -41,7 +41,15 @@ export interface MessageRow {
   author: 'CUSTOMER' | 'AI' | 'HUMAN' | 'SYSTEM';
   status: 'SENT' | 'PENDING_APPROVAL' | 'BLOCKED' | 'DISCARDED' | 'FAILED' | 'QUEUED';
   body: string;
-  meta?: { proposedState?: CustomerState; income?: 'TFN' | 'TFN_ABN'; templateId?: string; variant?: 'A' | 'B'; credited?: boolean; providerId?: string; channel?: string; sendError?: string };
+  meta?: {
+    proposedState?: CustomerState; income?: 'TFN' | 'TFN_ABN'; templateId?: string;
+    variant?: 'A' | 'B'; credited?: boolean; providerId?: string; channel?: string; sendError?: string;
+    /** Present on a draft the scheduler queued: it must go out as this
+     *  Meta-approved template, because it is reaching someone who has been
+     *  quiet for a day or more and free text is rejected outside the 24h
+     *  window. Absent on ordinary conversation replies, which go as text. */
+    waTemplate?: { name: string; params: string[]; lang?: string | null };
+  };
   createdAt: string;
 }
 
@@ -218,6 +226,19 @@ export interface Store {
    *  drift. A deploy missing its migrations used to fail completely silently,
    *  so /api/will/health now asks this question rather than assuming. */
   schemaHealth?(): Promise<{ ok: boolean; missing: string[] }>;
+
+  /** Optional: delete decision-log rows older than the cutoff. The log records
+   *  what the system did and why, which is worth days, not years. Customer
+   *  conversations are never touched by this. */
+  purgeAudit?(olderThanMs: number): Promise<number>;
+
+  /** Optional: atomically claim one slot against a counted daily limit.
+   *
+   *  Returns true when the limit is ALREADY spent (caller must not proceed) and
+   *  false when a slot was reserved. This exists because the previous
+   *  read-then-write spend cap did not hold across serverless instances, and it
+   *  guards a paid API call reachable by anyone who messages the business. */
+  bumpCounter?(key: string, limit: number): Promise<boolean>;
 }
 
 import { FileStore, lastPersistError as fileErr } from './store-file';

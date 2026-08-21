@@ -7,6 +7,7 @@ import { createTask, findExistingClient, getCurrentTaxYear } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseShort } from '@/lib/sanitise'
+import { validateIntake } from '@/lib/intake-validate'
 import { isValidSupabaseStorageUrl } from '@/lib/supabase'
 import { findTaskByTfn, normaliseTfn, LEAD_TASK_TYPE } from '@/lib/intake'
 import crypto from 'crypto'
@@ -42,6 +43,12 @@ export async function POST(req: NextRequest) {
     // A lead with no name, no phone and no TFN is unactionable.
     if (!fullName || !whatsapp || !tfn) {
       return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
+    }
+
+    // Format validation, server-side (see lib/intake-validate.ts).
+    const issues = validateIntake({ email, whatsapp, tfn, dob: sanitiseShort(formData.get('dob')) })
+    if (issues.length) {
+      return NextResponse.json({ ok: false, error: 'invalid_fields', fields: issues }, { status: 400 })
     }
 
     const existing = await findExistingClient(email, whatsapp)

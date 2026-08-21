@@ -14,6 +14,11 @@ import { getStore, CustomerRow } from './store';
 
 const GRAPH_VERSION = process.env.WHATSAPP_GRAPH_VERSION || 'v21.0';
 
+/** Language code the message templates were APPROVED under in WhatsApp Manager.
+ *  Meta matches on this exactly: a template approved as `en` cannot be sent as
+ *  `en_US`, it fails with "template does not exist". */
+const TEMPLATE_LANG = process.env.WHATSAPP_TEMPLATE_LANG || 'en';
+
 // CONFIG-01: two env-var naming conventions existed (the code's canonical names
 // and the older names in .env.example). We read BOTH so a deploy using either
 // set works and nothing is silently a no-op. Canonical names win when both set.
@@ -80,7 +85,11 @@ export function channelConfigured(): boolean {
 // dot must reflect reality (an expired/invalid token shows RED, not green).
 // Result is cached briefly so the heartbeat doesn't call Meta on every poll.
 let _verifyCache: { at: number; live: boolean; detail: string } | null = null;
-const VERIFY_TTL_MS = 30_000;
+// Longer than the dashboard's 45s health poll on purpose. At 30s every poll
+// missed the cache and made a live graph.facebook.com request just to keep a
+// status dot green: ~80 Meta API calls an hour per open tab, 42,000 a month.
+// 5 minutes is still far fresher than the failure it reports.
+const VERIFY_TTL_MS = 5 * 60_000;
 
 export async function verifyChannel(): Promise<{ configured: boolean; live: boolean; detail: string }> {
   const { token, phoneId } = await resolveWaCreds();
@@ -112,26 +121,19 @@ export async function verifyChannel(): Promise<{ configured: boolean; live: bool
   return { configured: true, live: _verifyCache.live, detail: _verifyCache.detail };
 }
 
-/** Transmit a plain text message to a WhatsApp number via Meta's Cloud API. */
-export async function sendWhatsAppText(toWaId: string, body: string): Promise<SendResult> {
+/** POST a message payload to Meta and normalise the outcome. Shared by the
+ *  text and template senders so retries, error shape and the health-cache
+ *  invalidation behave identically for both. */
+async function postMessage(payload: Record<string, unknown>): Promise<SendResult> {
   const { token, phoneId } = await resolveWaCreds();
   if (!token || !phoneId) return { ok: true, skipped: true }; // test mode: not connected yet
-
-  const to = (toWaId || '').replace(/[^\d]/g, '');
-  if (!to) return { ok: false, error: 'no recipient number' };
 
   try {
     const res = await fetch(`https://graph.facebook.com/${GRAPH_VERSION}/${phoneId}/messages`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
       cache: 'no-store',
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        recipient_type: 'individual',
-        to,
-        type: 'text',
-        text: { preview_url: false, body: body.slice(0, 4096) },
-      }),
+      body: JSON.stringify(payload),
     });
     const data = await res.json().catch(() => ({} as Record<string, unknown>));
     if (!res.ok) {
@@ -148,6 +150,84 @@ export async function sendWhatsAppText(toWaId: string, body: string): Promise<Se
   }
 }
 
+/** Transmit a plain text message to a WhatsApp number via Meta's Cloud API.
+ *  Only valid INSIDE the 24h customer-service window; outside it Meta rejects
+ *  free-form text and `sendWhatsAppTemplate` is the only way through. */
+export async function sendWhatsAppText(toWaId: string, body: string): Promise<SendResult> {
+  const to = (toWaId || '').replace(/[^\d]/g, '');
+  if (!to) return { ok: false, error: 'no recipient number' };
+  return postMessage({
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to,
+    type: 'text',
+    text: { preview_url: false, body: body.slice(0, 4096) },
+  });
+}
+
+/** Meta rejects template parameters containing newlines, tabs or runs of 4+
+ *  spaces, and the whole send fails with a validation error rather than
+ *  degrading. Names come from WhatsApp profiles, which are free text. */
+/** Will detects a language as a plain code ('de', 'pt'). Meta accepts those, and
+ *  also regional variants; anything unrecognisable falls back to the default so
+ *  a garbled value can never make the send fail. */
+export function normalizeTemplateLang(lang: string | null | undefined): string {
+  const v = (lang || '').trim().toLowerCase().replace('-', '_');
+  if (!v) return TEMPLATE_LANG;
+  if (!/^[a-z]{2}(_[a-z]{2})?$/.test(v)) return TEMPLATE_LANG;
+  return v.length === 5 ? `${v.slice(0, 3)}${v.slice(3).toUpperCase()}` : v;
+}
+
+function sanitizeTemplateParam(v: string): string {
+  return (v || '').replace(/[\r\n\t]+/g, ' ').replace(/ {4,}/g, ' ').trim().slice(0, 60);
+}
+
+/**
+ * Send a pre-approved message template.
+ *
+ * This is the ONLY way to reach a customer who has not written to us in the
+ * last 24 hours, which is every scheduled follow-up worth sending. `name` must
+ * match a template APPROVED in WhatsApp Manager exactly, and the body it was
+ * approved with is what the customer receives: `params` only fills its
+ * {{1}}, {{2}} ... placeholders, in order.
+ */
+export async function sendWhatsAppTemplate(
+  toWaId: string,
+  name: string,
+  params: string[] = [],
+  languageCode?: string | null,
+): Promise<SendResult> {
+  const to = (toWaId || '').replace(/[^\d]/g, '');
+  if (!to) return { ok: false, error: 'no recipient number' };
+  if (!name) return { ok: false, error: 'no template name' };
+
+  const components = params.length
+    ? [{ type: 'body', parameters: params.map((p) => ({ type: 'text', text: sanitizeTemplateParam(p) })) }]
+    : [];
+
+  const attempt = (code: string) => postMessage({
+    messaging_product: 'whatsapp',
+    recipient_type: 'individual',
+    to,
+    type: 'template',
+    template: { name, language: { code }, ...(components.length ? { components } : {}) },
+  });
+
+  // Reach the customer in their own language when that translation has been
+  // approved, and fall back to English when it has not.
+  //
+  // Meta approves a template per language, and rejects a send in a language it
+  // has never seen with "template does not exist". Falling back means a new
+  // language can be added in WhatsApp Manager and simply starts being used,
+  // with no deploy, and a language that was never added still gets a message
+  // instead of silence.
+  const wanted = normalizeTemplateLang(languageCode);
+  const first = await attempt(wanted);
+  if (first.ok || first.skipped || wanted === TEMPLATE_LANG) return first;
+  if (!/does not exist|not exist|132001|template/i.test(first.error ?? '')) return first;
+  return attempt(TEMPLATE_LANG);
+}
+
 /**
  * The single outbound path: transmit to WhatsApp, then record the message with
  * the delivery result. On failure the message is stored as FAILED and a human
@@ -158,6 +238,11 @@ export async function deliverOut(
   body: string,
   author: 'AI' | 'HUMAN',
   meta?: Record<string, unknown>,
+  /** Send as a pre-approved template instead of free text. Required for any
+   *  message outside Meta's 24h window, which is every scheduled follow-up.
+   *  `body` is still what gets logged and shown in the CRM: it must be the
+   *  template's text with the parameters already filled in. */
+  template?: { name: string; params: string[]; lang?: string | null },
 ): Promise<{ ok: boolean; error?: string }> {
   const store = getStore();
   // REL-03 outbox: record the intended message as QUEUED FIRST, so if the send
@@ -168,7 +253,9 @@ export async function deliverOut(
     customerId: customer.id, direction: 'OUT', author, status: 'QUEUED', body,
     meta: { ...(meta ?? {}) },
   });
-  const res = await sendWhatsAppText(customer.waId, body);
+  const res = template?.name
+    ? await sendWhatsAppTemplate(customer.waId, template.name, template.params, template.lang ?? customer.lang)
+    : await sendWhatsAppText(customer.waId, body);
   await store.setMessageStatus(rec.id, res.ok ? 'SENT' : 'FAILED');
   if (!res.ok) {
     await store.audit('channel', 'send_failed', { customerId: customer.id, error: res.error });

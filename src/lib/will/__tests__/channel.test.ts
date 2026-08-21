@@ -53,3 +53,32 @@ describe('CONFIG-01: env var names accept both canonical and alias sets', () => 
     expect(metaVerifyToken()).toBe('vtok');
   });
 });
+
+/**
+ * Template language selection.
+ *
+ * Meta approves a template per language and rejects a send in a language it has
+ * never seen. Will replies in the customer's language, so a German customer
+ * should get German when that translation exists and English when it does not,
+ * never silence.
+ */
+import { normalizeTemplateLang } from '@/lib/will/channel';
+
+describe('normalizeTemplateLang', () => {
+  it('passes through the plain codes Will detects', () => {
+    for (const c of ['de', 'es', 'fr', 'it', 'pt', 'ja']) {
+      expect(normalizeTemplateLang(c)).toBe(c);
+    }
+  });
+
+  it('normalises regional variants to Meta casing', () => {
+    expect(normalizeTemplateLang('pt-br')).toBe('pt_BR');
+    expect(normalizeTemplateLang('EN_gb')).toBe('en_GB');
+  });
+
+  it('falls back to English for missing or unusable values', () => {
+    for (const v of [null, undefined, '', '   ', 'gibberish', '12', 'e']) {
+      expect(normalizeTemplateLang(v)).toBe('en');
+    }
+  });
+});

@@ -447,16 +447,29 @@ export default function DashboardClient() {
   // reload anyway, so this is never staler than the old unconditional poll.
   useEffect(()=>{
     let last = ''
+    // Skip entirely while the tab is hidden. Without this an ops console left
+    // open overnight polled ~4,300 times and ran ~26,000 Supabase queries (two
+    // full-table exact counts per poll) with nobody watching. The Will
+    // dashboard already guards its timers this way; this one was missed.
+    const hidden = () => typeof document !== 'undefined' && document.visibilityState === 'hidden'
+    // A cycle awaits up to four fetches with a 30s timeout each, i.e. longer
+    // than the 20s interval. Without this flag iterations overlap and both
+    // write the shared `last` token, producing duplicate heavy reloads.
+    let inFlight = false
     const id = setInterval(async ()=>{
-      let changed = true
+      if (hidden() || inFlight) return
+      inFlight = true
       try {
-        const v = await fetch('/api/crm/version',{cache:'no-store'}).then(r=>r.json())
-        if (v && typeof v.token === 'string' && v.token !== '') {
-          changed = v.token !== last
-          last = v.token
-        }
-      } catch { changed = true }
-      if (changed) Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()])
+        let changed = true
+        try {
+          const v = await fetch('/api/crm/version',{cache:'no-store'}).then(r=>r.json())
+          if (v && typeof v.token === 'string' && v.token !== '') {
+            changed = v.token !== last
+            last = v.token
+          }
+        } catch { changed = true }
+        if (changed) await Promise.all([loadTasks(), loadClients(), loadArchived(), loadStats()])
+      } finally { inFlight = false }
     }, 20_000)
     return ()=> clearInterval(id)
   },[loadTasks, loadClients, loadArchived, loadStats])

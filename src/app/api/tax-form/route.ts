@@ -6,8 +6,10 @@ import { createTask, findExistingClient } from '@/lib/db'
 import { isRateLimited } from '@/lib/rate-limit'
 import { getClientIp } from '@/lib/get-ip'
 import { sanitiseField, sanitiseShort } from '@/lib/sanitise'
+import { validateIntake, safeAmount } from '@/lib/intake-validate'
 import { isValidSupabaseStorageUrl } from '@/lib/supabase'
 import crypto from 'crypto'
+import { notifyFormReceived } from '@/lib/will/form-link'
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,6 +27,22 @@ export async function POST(req: NextRequest) {
     // unactionable - reject it instead of creating an empty CRM task.
     if (!fullName || !email || !whatsapp) {
       return NextResponse.json({ ok: false, error: 'missing_required_fields' }, { status: 400 })
+    }
+
+    // Format validation, server-side. The shared validators were previously
+    // imported only by client components, so a direct POST could write any
+    // string into any field. Rejects clearly-wrong values, never rewrites them.
+    const issues = validateIntake({
+      email,
+      whatsapp,
+      tfn: sanitiseShort(formData.get('tfn')),
+      dob: sanitiseShort(formData.get('dob')),
+      taxYear: sanitiseShort(formData.get('taxYear')),
+      marital: sanitiseShort(formData.get('marital')),
+      taxStatus: sanitiseShort(formData.get('taxStatus')),
+    })
+    if (issues.length) {
+      return NextResponse.json({ ok: false, error: 'invalid_fields', fields: issues }, { status: 400 })
     }
 
     const existing  = await findExistingClient(email, whatsapp)
@@ -83,12 +101,12 @@ export async function POST(req: NextRequest) {
             const abn = arr.filter(i => i.type === 'abn')
             const parts = []
             if (tfn.length > 0) {
-              const total = tfn.reduce((s,i)=>s+(parseFloat(i.amount)||0),0)
-              parts.push(`💼 TFN Invoices (${tfn.length}): $${total.toFixed(2)} - ${tfn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
+              const total = tfn.reduce((s,i)=>s+Number(safeAmount(i.amount) ?? 0),0)
+              parts.push(`💼 TFN Invoices (${tfn.length}): $${total.toFixed(2)} - ${tfn.map(i=>`$${safeAmount(i.amount) ?? '0.00'} ${sanitiseShort(i.description)}`).join('; ')}`)
             }
             if (abn.length > 0) {
-              const total = abn.reduce((s,i)=>s+(parseFloat(i.amount)||0),0)
-              parts.push(`🏢 ABN Invoices (${abn.length}): $${total.toFixed(2)} - ${abn.map(i=>`$${i.amount} ${sanitiseShort(i.description)}`).join('; ')}`)
+              const total = abn.reduce((s,i)=>s+Number(safeAmount(i.amount) ?? 0),0)
+              parts.push(`🏢 ABN Invoices (${abn.length}): $${total.toFixed(2)} - ${abn.map(i=>`$${safeAmount(i.amount) ?? '0.00'} ${sanitiseShort(i.description)}`).join('; ')}`)
             }
             return parts.join(' | ')
           } catch { return '' }
@@ -99,6 +117,12 @@ export async function POST(req: NextRequest) {
       reviewerNote: '',
       reviewedAt:   '',
     })
+
+        // Tell Will the questionnaire arrived: this marks the form complete, STOPS
+    // the form reminders (otherwise it keeps chasing someone who already filled
+    // it in) and sends the confirmation in their language. Best effort by
+    // design: the form submission must never fail because the CRM link did.
+    await notifyFormReceived(whatsapp, email)
 
     return NextResponse.json({ ok: true })
   } catch (err) {
