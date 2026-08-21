@@ -335,6 +335,14 @@ export default function Dashboard() {
               : health.whatsappConfigured
                 ? <a className="waPill bad" href="/crm/whatsapp/connect" title={`${health.whatsappDetail || ''} — click to reconnect`}>● WhatsApp: NOT WORKING — connect</a>
                 : <a className="waPill test" href="/crm/whatsapp/connect" title={health.whatsappDetail || 'Cloud API credentials not active — click to connect'}>● WhatsApp: TEST MODE — connect</a>)}
+            {/* A missing migration silently dropped 105 real leads once, while
+                every dot up here stayed green the whole time. A tooltip is too
+                easy to miss for a failure that expensive, so it gets an alarm. */}
+            {health?.checks?.schema && !health.checks.schema.ok && (
+              <a className="waPill bad" href="/crm/whatsapp/inbound-check" title={health.checks.schema.detail}>
+                ● DATABASE OUT OF DATE — new customers are being dropped
+              </a>
+            )}
             {!health && <span className="hdot"><span className="dot" style={{ background: 'var(--warn)' }} /><span className="hlabel">connecting…</span></span>}
           </div>
           <div style={{ position: 'relative' }}>

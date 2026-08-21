@@ -48,6 +48,19 @@ const APPROVED_SENTENCES = new Set<string>();
 }
 const isApprovedSentence = (sentence: string) => APPROVED_SENTENCES.has(norm(sentence));
 
+/** Ceiling on the model's OWN prose in one reply, in characters.
+ *
+ *  Approved sentences are excluded from the count, so this is not a limit on
+ *  approved messages however long they are. When the model adapts an approved
+ *  message it is told to change the opening only, so the adapted opening is
+ *  typically all that counts here (~100 characters) and the rest still matches
+ *  the corpus exactly.
+ *
+ *  The target is 1-3 sentences under 40 words (~240 characters). This ceiling
+ *  sits well above that on purpose: the playbook shapes the normal case, and
+ *  this only catches replies that have clearly turned into essays. */
+const MAX_IMPROVISED_CHARS = 450;
+
 // ---------- money (currency-symbol / currency-word agnostic across languages) ----------
 const FIXED_PRICES_CENTS = [22000, 38500];
 // Currency words in the languages backpackers actually use.
@@ -181,6 +194,20 @@ export function policyGuard(text: string, ctx: GuardContext): GuardResult {
   if (SENSITIVE_LEAK.test(text)) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
   if (NON_DOLLAR_CURRENCY.test(text)) violations.push('NON_DOLLAR_CURRENCY');
+
+  // --- length (owner rule: replies must read like a person texting) ---
+  // Only IMPROVISED content is measured. The approved messages carry required
+  // detail (price, guarantee, bank details) and are legitimately long, so any
+  // sentence that comes from the approved corpus is excluded from the count.
+  // What is left is the model's own wording, and on WhatsApp that should be a
+  // few short sentences. Past this much invented prose the reply has stopped
+  // sounding like a team member and started sounding like a chatbot essay.
+  if (!ctx.isApprovedTemplate) {
+    const improvised = splitSentences(text)
+      .filter((s) => !isApprovedSentence(s))
+      .join(' ');
+    if (improvised.length > MAX_IMPROVISED_CHARS) violations.push('REPLY_TOO_LONG');
+  }
 
   // --- sentence-level content checks with approved-corpus exemption ---
   const paid = ctx.paid || POST_PAYMENT_STATES.includes(ctx.state);

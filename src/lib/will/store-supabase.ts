@@ -150,6 +150,37 @@ export let lastPersistError: string | null = null;
 export class SupabaseStore implements Store {
   private sb() { return getSupabase(); }
 
+  // ------------------------------------------------------------------
+  // Schema health.
+  //
+  // A deploy whose migrations were not run is the most expensive failure this
+  // system has had: `last_message_at` was missing, every attempt to create a
+  // NEW customer threw, the webhook caught the error exactly as designed, and
+  // 105 real leads were dropped without a single visible symptom. Every other
+  // health check stayed green throughout.
+  //
+  // So the schema is now verified rather than assumed: one cheap probe per
+  // object, surfaced on the dashboard by /api/will/health.
+  // ------------------------------------------------------------------
+  async schemaHealth(): Promise<{ ok: boolean; missing: string[] }> {
+    const missing: string[] = [];
+    const probes: [string, () => PromiseLike<{ error: unknown }>][] = [
+      ['will_customers.unread_count', () => this.sb().from('will_customers').select('unread_count').limit(1)],
+      ['will_customers.last_message_at', () => this.sb().from('will_customers').select('last_message_at').limit(1)],
+      ['will_known_contacts', () => this.sb().from('will_known_contacts').select('wa_norm').limit(1)],
+      ['will_processed_messages', () => this.sb().from('will_processed_messages').select('meta_id').limit(1)],
+    ];
+    for (const [name, run] of probes) {
+      try {
+        const { error } = await run();
+        if (error) missing.push(name);
+      } catch {
+        missing.push(name);
+      }
+    }
+    return { ok: missing.length === 0, missing };
+  }
+
   // Auto-seed the message Library on first use if it's empty, so the templates
   // are simply "there" after deploy (same as the local build did) with no manual step.
   private seeded = false;

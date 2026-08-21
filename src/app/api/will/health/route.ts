@@ -23,6 +23,30 @@ export async function GET() {
     checks.store = { ok: false, detail: 'unreachable' };
   }
 
+  // Schema: are the columns and tables the code writes to actually there?
+  //
+  // This is the check that would have caught the worst failure this system has
+  // had. A deploy went out without its migrations, `last_message_at` did not
+  // exist, and every attempt to create a NEW customer threw. The webhook caught
+  // the error exactly as designed and dropped the message. 105 real leads were
+  // lost, and every dot on this dashboard stayed green the whole time.
+  try {
+    const store = getStore();
+    if (typeof store.schemaHealth === 'function') {
+      const s = await store.schemaHealth();
+      checks.schema = {
+        ok: s.ok,
+        detail: s.ok
+          ? 'all migrations applied'
+          : `MISSING: ${s.missing.join(', ')} — run the pending files in supabase/migrations. NEW CUSTOMERS ARE BEING DROPPED until you do.`,
+      };
+    } else {
+      checks.schema = { ok: true, detail: 'not applicable (file store)' };
+    }
+  } catch {
+    checks.schema = { ok: false, detail: 'schema check failed' };
+  }
+
   // Guard: self-test, must block a known-bad message and pass a known-good one
   try {
     const badV = policyGuard('Special deal, only $50 for you!', {

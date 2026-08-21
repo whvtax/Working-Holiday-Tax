@@ -255,3 +255,50 @@ describe('the mined knowledge pack is safe to send (content-level)', () => {
     });
   }
 });
+
+/**
+ * REPLY_TOO_LONG — the owner's most frequent complaint is that Will writes
+ * essays. On WhatsApp a real team member sends a couple of short lines, so the
+ * guard caps how much of the model's OWN prose can go out in one message.
+ *
+ * The important half of this suite is that the approved messages still pass:
+ * the price message legitimately carries the fee, the guarantee and the bank
+ * details, and it must never be flagged just for being long.
+ */
+describe('REPLY_TOO_LONG: replies must read like a person texting', () => {
+  it('allows a short, warm reply', () => {
+    expect(has('Hey Sarah! Yes we can help with that. Want me to send the details?', 'REPLY_TOO_LONG')).toBe(false);
+  });
+
+  it('allows a normal multi-sentence answer', () => {
+    const reply = 'Hi Tom! Good question. Most refunds land within two to three weeks once we lodge, '
+      + 'and we handle everything with the ATO for you. Shall I send you the form?';
+    expect(has(reply, 'REPLY_TOO_LONG')).toBe(false);
+  });
+
+  it('flags a rambling improvised essay', () => {
+    const essay = 'I completely understand where you are coming from and I want to reassure you that '
+      + 'we are here to help you every step of the way. Many backpackers feel exactly the same way when '
+      + 'they first get in touch with us, so please know that your question is very common and very '
+      + 'reasonable. What we usually do is take a careful look at your situation, go through everything '
+      + 'in detail, and then come back to you with a clear picture of where you stand. Please feel free '
+      + 'to let me know if you have any other questions at all, I am always happy to help.';
+    expect(has(essay, 'REPLY_TOO_LONG')).toBe(true);
+  });
+
+  it('does NOT flag the approved price messages, which are long for a reason', () => {
+    expect(has(APPROVED.price_tfn, 'REPLY_TOO_LONG')).toBe(false);
+    expect(has(APPROVED.price_tfn_abn, 'REPLY_TOO_LONG')).toBe(false);
+  });
+
+  it('does NOT flag any approved objection response', () => {
+    for (const [key, body] of Object.entries(APPROVED.objections)) {
+      expect([key, has(body as string, 'REPLY_TOO_LONG')]).toEqual([key, false]);
+    }
+  });
+
+  it('does not fire when the message is an explicitly approved template', () => {
+    const essay = 'x'.repeat(2000);
+    expect(has(essay, 'REPLY_TOO_LONG', { isApprovedTemplate: true })).toBe(false);
+  });
+});

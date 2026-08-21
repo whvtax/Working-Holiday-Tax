@@ -112,9 +112,19 @@ confirm only one app remains before generating any token.
 
 ## 5. WhatsApp connection — actual state
 
-**Inbound: was working, currently NOT delivering into Will.** A real customer message on
-2026-08-20 23:46 AEST reached the phone but never appeared in the CRM. Undiagnosed at handoff time —
-use `/crm/whatsapp/inbound-check` (§7), which was built for exactly this and will name the cause.
+**Inbound: BROKEN during the session, now FIXED.** A real customer message on 2026-08-20 23:46 AEST
+reached the phone but never appeared in the CRM. `/crm/whatsapp/inbound-check` named the cause on the
+first load: `Could not find the 'last_message_at' column of 'will_customers' in the schema cache` —
+**105 inbound messages had hit that error**. Migrations 025 and 026 had never been run against
+production, so every attempt to create a NEW customer row threw, the webhook caught it exactly as
+designed, released the idempotency claim and moved on. Existing customers were fine (an UPDATE needs
+no new column), which is why it stayed invisible: it only ate brand-new leads. Then
+`RESET_WILL_FRESH_START.sql` wiped all customers, so from that moment EVERY message was a "new
+customer" and the intermittent bug became total. The reset did not cause this; it exposed it.
+
+Jo ran 025 and 026 during the session and inbound recovered immediately. Verify with the schema dot
+on the dashboard (§11) before assuming it is still fine after any future deploy.
+
 Inbound needs only `META_APP_SECRET` + `META_VERIFY_TOKEN`; it does **not** use the access token.
 
 **Outbound: blocked, by exactly two things.**
@@ -250,7 +260,9 @@ flow live in `will_settings` and **override** the env vars — a good token goes
 ## 9. Verification
 
 - `npx tsc --noEmit` → clean.
-- `npx jest` → **181 passing** (was 180; +1 regression test for bug 3).
+- `next build` (full production build) → passes. Run this, not just `tsc`: route files are
+  validated against a fixed set of allowed exports and `tsc` does not check that.
+- `npx jest` → **228 passing**.
 - `npx next lint` → one pre-existing warning in `Dashboard.tsx` (unrelated).
 - Build note: `next/font/google` fetches at build time; in a sandbox without network to Google,
   temp-stub the fonts to build, then restore. On Vercel it builds normally.
@@ -259,9 +271,34 @@ flow live in `will_settings` and **override** the env vars — a good token goes
 
 ## 10. Suggested first moves for the next session
 
-1. Open `/crm/whatsapp/inbound-check`. Inbound is the only problem costing money right now —
-   customers are writing and Jo cannot see them.
+1. Confirm inbound still works: ask someone whose number has never contacted the business to send a
+   message, and watch it land in the pipeline. If it does not, open `/crm/whatsapp/inbound-check`.
 2. Ask whether the Australian SIM is active and in a device, and whether it is roaming. That one
    answer probably explains three months of missing SMS.
 3. Do not touch "Add phone number" anywhere, and do not delete WABAs or apps.
 4. The payment method on WABA `445188805337133` still needs adding before any send will work.
+
+---
+
+## 11. Later additions (same session)
+
+**Schema health check.** `/api/will/health` now probes that `will_customers.unread_count`,
+`will_customers.last_message_at`, `will_known_contacts` and `will_processed_messages` actually exist
+(`Store.schemaHealth()`, implemented on the Supabase store). A miss turns the dashboard dot red AND
+raises a banner reading "DATABASE OUT OF DATE — new customers are being dropped". This is the check
+that would have caught the 105 lost leads on the first refresh instead of never.
+
+**Reply length.** Owner's most frequent complaint is that Will writes essays. The playbook now has a
+LENGTH section (default 1-3 sentences, under 40 words, an explicit list of banned filler phrases, no
+bullet lists, at most one emoji), and `policy-guard.ts` enforces `REPLY_TOO_LONG` above
+`MAX_IMPROVISED_CHARS` (450) of the model's OWN prose. Approved sentences are excluded from the
+count, so approved messages are never flagged however long they are.
+
+**"Are you a bot?" → human, always.** `identity-question.ts` detects the question on the INBOUND
+message, before the model is called, so no reply is ever generated: no denial, no admission, no
+draft to accidentally approve. The chat is paused for the assistant and a human task is raised with
+`suggestedReply: null`. Covers English, Spanish, Portuguese, French, German, Italian and Hebrew.
+41 tests, most of them negative cases — a false positive dumps a normal tax conversation on a human,
+so "are you guys legit?" and "are you able to help with my tax return" must keep flowing normally.
+Note for future edits: JavaScript's `\b` is ASCII-only and silently fails next to accented or
+Hebrew letters. Three patterns were broken by exactly that until the tests caught it.

@@ -212,6 +212,12 @@ export interface Store {
   /** Reclaim CLAIMED jobs whose lease is older than `olderThanMs` back to SCHEDULED. */
   reclaimStaleJobs(olderThanMs: number): Promise<number>;
   cancelJobsFor(customerId: string, kinds?: JobRow['kind'][]): Promise<number>;
+
+  /** Optional: verify that the columns and tables the code writes to actually
+   *  exist. Implemented by the Supabase store; the file store has no schema to
+   *  drift. A deploy missing its migrations used to fail completely silently,
+   *  so /api/will/health now asks this question rather than assuming. */
+  schemaHealth?(): Promise<{ ok: boolean; missing: string[] }>;
 }
 
 import { FileStore, lastPersistError as fileErr } from './store-file';

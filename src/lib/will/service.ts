@@ -11,6 +11,7 @@ import { reconcileSchedule } from './scheduler';
 import { detectLanguage } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut } from './channel';
+import { isIdentityQuestion } from './identity-question';
 
 export interface HandleResult {
   outcome: EngineOutcome;
@@ -117,6 +118,28 @@ async function handleIncomingInner(
       });
       await store.audit('system', 'routed_to_human_existing_chat', { customerId: customer.id });
     }
+    const c2 = await store.getCustomerByWaId(waId);
+    return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
+  }
+
+  // ============================================================
+  // "Am I talking to a bot?" (owner rule): the assistant NEVER answers this.
+  // Not a denial, not an admission, not a deflection, and not even a draft for
+  // the team to approve, because a draft is one click away from being sent.
+  // Checked HERE, before the model is called, so no reply ever exists. The chat
+  // is handed to a human and the assistant steps out of it.
+  // ============================================================
+  if (isIdentityQuestion(text)) {
+    if (!customer.aiPaused) {
+      await store.updateCustomer(customer.id, { aiPaused: true });
+      await store.cancelJobsFor(customer.id);
+    }
+    await store.addTask({
+      customerId: customer.id, customerName: customer.name ?? waId,
+      reason: 'Customer asked whether they are talking to a bot, needs a human reply',
+      severity: 'REVIEW', context: text.slice(0, 200), suggestedReply: null,
+    });
+    await store.audit('policy_guard', 'identity_question_handoff', { customerId: customer.id });
     const c2 = await store.getCustomerByWaId(waId);
     return { outcome: { kind: 'human_task', decision: { action: 'human_task', confidence: 1 } }, customer: c2 ?? customer };
   }
