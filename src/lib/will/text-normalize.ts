@@ -91,9 +91,24 @@ const EMOJI = /[0-9#*]️?⃣|\p{Regional_Indicator}\p{Regional_Indicator}|\p{Ex
 export function limitEmojis(input: string | null | undefined, allowOne: boolean): string {
   if (!input) return input ?? '';
   let seen = 0;
-  let s = String(input).replace(EMOJI, (m) => {
+  const src = String(input);
+  let s = src.replace(EMOJI, (m: string, offset: number) => {
     seen += 1;
-    return allowOne && seen === 1 ? m : '';
+    if (allowOne && seen === 1) return m;
+    // People use an emoji as a sentence break ("understand 😊 Just make sure").
+    // Simply deleting it jams the two sentences into a run-on ("understand Just").
+    // If the emoji had whitespace on both sides, a letter/number before it with no
+    // sentence punctuation, and an uppercase letter after it, drop a full stop in
+    // its place so the sentences stay separated.
+    const beforeRaw = src.slice(0, offset);
+    const afterRaw = src.slice(offset + m.length);
+    const spacedBoth = /\s$/.test(beforeRaw) && /^\s/.test(afterRaw);
+    const prev = beforeRaw.replace(/\s+$/, '').slice(-1);
+    const next = afterRaw.replace(/^\s+/, '').slice(0, 1);
+    if (spacedBoth && /[A-Za-z0-9)]/.test(prev) && !/[.!?,:;]/.test(prev) && /[A-Z]/.test(next)) {
+      return '.';
+    }
+    return '';
   });
   // Tidy the gaps a removed emoji leaves (double spaces, a space before a comma).
   s = s

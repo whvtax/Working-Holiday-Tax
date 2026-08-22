@@ -112,6 +112,21 @@ describe('limitEmojis (owner rule: one emoji, opening message only)', () => {
     expect(out).toContain('done');
   });
 
+  test('an emoji used as a sentence break becomes a full stop (no run-on)', () => {
+    const out = limitEmojis('I completely understand 😊 Just make sure you compare', false);
+    expect(EMOJI_RE.test(out)).toBe(false);
+    expect(out).toBe('I completely understand. Just make sure you compare');
+  });
+
+  test('an emoji mid-sentence (lowercase after) is just removed, no stray period', () => {
+    const out = limitEmojis('thanks 😊 so much for that', false);
+    expect(out).toBe('thanks so much for that');
+  });
+
+  test('a trailing emoji leaves no stray period', () => {
+    expect(limitEmojis('Talk soon 👍', false)).toBe('Talk soon');
+  });
+
   test('flag (regional indicator pair) is removed', () => {
     const out = limitEmojis('from 🇦🇺 here', false);
     expect(out).toContain('from');

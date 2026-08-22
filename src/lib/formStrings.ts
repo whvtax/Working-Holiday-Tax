@@ -132,7 +132,7 @@ export const formStrings = {
 
   // ─ Success screen ─
   thankYou:            { en: 'Thank you',                            de: 'Vielen Dank',              ja: 'ありがとうございます' },
-  successBody:         { en: "We've received your details and will be in touch shortly.", de: 'Wir haben deine Daten erhalten und melden uns kurzfristig bei dir.', ja: '情報を受領しました。担当者より速やかにご連絡いたします。' },
+  successBody:         { en: "We've received your details. Our team will review everything and message you on WhatsApp about your tax return.", de: 'Wir haben deine Daten erhalten. Unser Team prüft alles und meldet sich per WhatsApp zu deiner Steuererklärung.', ja: '情報を受領しました。担当チームが内容を確認し、タックスリターンについてWhatsAppでご連絡いたします。' },
   msgWhatsApp:         { en: 'Message us on WhatsApp',              de: 'Schreib uns auf WhatsApp', ja: 'WhatsAppでメッセージを送る' },
   followUs:            { en: "Tax, Super & Workers' rights",        de: 'Steuern, Super & Arbeitsrechte', ja: '税金・スーパー・労働者の権利' },
   followSub:           { en: 'Learn one thing every day 🙋',         de: 'Jeden Tag eine Sache lernen 🙋', ja: '毎日ひとつ学びましょう 🙋' },

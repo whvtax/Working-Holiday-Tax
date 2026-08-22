@@ -16,7 +16,7 @@
  * value actually submitted to the CRM is unchanged (see submit-tax-form.ts).
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormLang } from '@/lib/formStrings'
 import { getTaxFormHandoff } from '@/lib/tax-form-handoff'
 import ResidencyDeclaration from '@/components/ui/ResidencyDeclaration'
@@ -25,9 +25,9 @@ import { FormStepper } from '@/components/ui/FormStepper'
 
 const COPY = {
   en: {
-    titleLead: 'Are you an ',
-    titleAccent: 'Australian tax resident',
-    titleTail: '?',
+    titleLead: 'Let’s confirm your ',
+    titleAccent: 'tax residency',
+    titleTail: '',
     intro: 'Tax residency determines which tax rates apply to your income.',
     introEmph: 'It is different from immigration status.',
     whyTitle: 'Why it matters?',
@@ -44,7 +44,7 @@ const COPY = {
       'You have ongoing ties to Australia - a home, ongoing employment, or personal connections.',
     ],
     note: 'If you\u2019re not from one of these countries but meet the other requirements, you can still qualify for Australian tax residency and a refund of up to $700.',
-    quizIntro: 'To be considered an Australian tax resident and have the first $18,200 of your income taxed at 0%, answer "Yes" to the questions below.',
+    quizIntro: 'To be considered an Australian tax resident, which means the first $18,200 of your income is tax free, answer "Yes" to the questions below only if they genuinely apply to you.',
     yesLabel: 'Yes',
     noLabel: 'No',
     questions: [
@@ -54,17 +54,13 @@ const COPY = {
       'Do you have ongoing work in Australia?',
       'Do you have personal or family ties in Australia?',
     ],
-    resultYesTitle: 'Great news!',
-    resultYesBody: 'Based on your answers, you are likely to be considered an Australian tax resident. That means the first $18,200 of your income may be tax free, and you could be due a solid refund. Our team will confirm this when we prepare your return.',
-    resultPartialTitle: 'You may still be eligible',
-    resultPartialBody: 'Because you are not from an eligible country, you would not get the $18,200 tax free threshold. However, based on your answers you may still be considered a tax resident and eligible for around $700 through the low income tax offset. Our team will confirm this when we prepare your return.',
-    resultNoTitle: 'You are a Working Holiday Maker',
-    resultNoBody: 'Based on your answers, you are classed as a Working Holiday Maker for tax purposes. Good news: you may still be due a tax refund, and our team checks every deduction to get you the maximum back.',
+    whmResult: 'Based on your answers, you are a Working Holiday Maker for tax purposes, so the $18,200 tax-free threshold does not apply. Our team will confirm this when we prepare your return.',
+    nonNdaResult: 'Based on your answers, you may be an Australian tax resident, but the $18,200 tax-free threshold does not apply. You may still be entitled to the Low Income Tax Offset of up to $700.',
   },
   de: {
-    titleLead: 'Bist du ',
-    titleAccent: 'australischer Steuerresident',
-    titleTail: '?',
+    titleLead: 'Bestätigen wir deine ',
+    titleAccent: 'Steuerresidenz',
+    titleTail: '',
     intro: 'Die Steuerresidenz bestimmt deinen Steuersatz.',
     introEmph: 'Sie ist nicht dasselbe wie dein Aufenthaltsstatus.',
     whyTitle: 'Warum ist das wichtig?',
@@ -81,7 +77,7 @@ const COPY = {
       'Du hast dauerhafte Bindungen zu Australien - ein Zuhause, eine feste Arbeit oder persönliche Beziehungen.',
     ],
     note: 'Wenn du nicht aus einem dieser Länder kommst, aber die anderen Voraussetzungen erfüllst, kannst du trotzdem als australischer Steuerresident gelten und bis zu $700 zurückbekommen.',
-    quizIntro: 'Um als australischer Steuerresident zu gelten und die ersten $18.200 deines Einkommens mit 0% zu versteuern, beantworte die folgenden Fragen mit "Ja".',
+    quizIntro: 'Um als australischer Steuerresident zu gelten, was bedeutet, dass die ersten $18.200 deines Einkommens steuerfrei sind, beantworte die folgenden Fragen nur dann mit "Ja", wenn sie wirklich auf dich zutreffen.',
     yesLabel: 'Ja',
     noLabel: 'Nein',
     questions: [
@@ -91,17 +87,13 @@ const COPY = {
       'Hast du eine laufende Arbeit in Australien?',
       'Hast du persönliche oder familiäre Bindungen in Australien?',
     ],
-    resultYesTitle: 'Gute Nachrichten!',
-    resultYesBody: 'Basierend auf deinen Antworten wirst du wahrscheinlich als australischer Steuerresident betrachtet. Das bedeutet, die ersten $18.200 deines Einkommens können steuerfrei sein, und dir könnte eine gute Rückerstattung zustehen. Unser Team bestätigt dies bei der Erstellung deiner Steuererklärung.',
-    resultPartialTitle: 'Du könntest trotzdem Anspruch haben',
-    resultPartialBody: 'Da du nicht aus einem berechtigten Land kommst, erhältst du nicht den steuerfreien Betrag von $18.200. Basierend auf deinen Antworten könntest du jedoch trotzdem als Steuerresident gelten und Anspruch auf rund $700 durch den Steuerfreibetrag für geringes Einkommen haben. Unser Team bestätigt dies bei der Erstellung deiner Steuererklärung.',
-    resultNoTitle: 'Du bist ein Working Holiday Maker',
-    resultNoBody: 'Basierend auf deinen Antworten giltst du steuerlich als Working Holiday Maker. Gute Nachrichten: Dir könnte trotzdem eine Steuerrückerstattung zustehen, und unser Team prüft jeden Abzug, um das Maximum für dich herauszuholen.',
+    whmResult: 'Basierend auf deinen Antworten bist du steuerlich ein Working Holiday Maker, daher gilt der steuerfreie Betrag von $18.200 nicht. Unser Team bestätigt dies bei der Erstellung deiner Steuererklärung.',
+    nonNdaResult: 'Basierend auf deinen Antworten bist du möglicherweise australischer Steuerresident, aber der steuerfreie Betrag von $18.200 gilt nicht. Möglicherweise hast du trotzdem Anspruch auf den Low Income Tax Offset von bis zu $700.',
   },
   ja: {
-    titleLead: 'あなたは',
-    titleAccent: '税務上の居住者',
-    titleTail: 'ですか？',
+    titleLead: '',
+    titleAccent: '税務上の居住区分',
+    titleTail: 'を確認しましょう',
     intro: '税務上の居住区分は、所得に適用される税率を決めるものです。',
     introEmph: '在留資格とは異なります。',
     whyTitle: 'なぜ重要なのか？',
@@ -118,7 +110,7 @@ const COPY = {
       '住居、継続的な仕事、個人的なつながりなど、オーストラリアとの結びつきがあること。',
     ],
     note: 'これらの国の出身でなくても、他の条件を満たしていれば、オーストラリア税務居住者として最大$700の還付を受けられる場合があります。',
-    quizIntro: 'オーストラリア税務居住者と見なされ、最初の$18,200の所得が0%課税となるには、以下の質問に「はい」とお答えください。',
+    quizIntro: 'オーストラリア税務居住者と見なされ、最初の$18,200の所得が非課税となるには、本当に当てはまる場合のみ以下の質問に「はい」とお答えください。',
     yesLabel: 'はい',
     noLabel: 'いいえ',
     questions: [
@@ -128,19 +120,16 @@ const COPY = {
       'オーストラリアで継続的な仕事はありますか？',
       'オーストラリアに個人的または家族的なつながりはありますか？',
     ],
-    resultYesTitle: '朗報です！',
-    resultYesBody: 'ご回答に基づくと、あなたはオーストラリア税務居住者と見なされる可能性が高いです。つまり、最初の$18,200の所得が非課税となり、しっかりとした還付が受けられる可能性があります。申告書作成時に当チームが確認します。',
-    resultPartialTitle: 'それでも対象となる可能性があります',
-    resultPartialBody: '対象国の出身ではないため、$18,200の非課税枠は適用されません。ただし、ご回答に基づくと、税務居住者と見なされ、低所得者税額控除により約$700の対象となる可能性があります。申告書作成時に当チームが確認します。',
-    resultNoTitle: 'あなたはワーキングホリデーメーカーです',
-    resultNoBody: 'ご回答に基づくと、税務上あなたはワーキングホリデーメーカーに分類されます。朗報です：それでも税還付を受けられる可能性があり、当チームがあらゆる控除を確認して最大限の還付を目指します。',
+    whmResult: 'ご回答に基づくと、税務上あなたはワーキングホリデーメーカーであるため、$18,200の非課税枠は適用されません。申告書作成時に当チームが確認します。',
+    nonNdaResult: 'ご回答に基づくと、あなたはオーストラリア税務居住者である可能性がありますが、$18,200の非課税枠は適用されません。低所得者税額控除（Low Income Tax Offset）として最大$700を受けられる可能性があります。',
   },
 } as const
 
 // Non-Discrimination-Agreement countries: their working holiday makers can be
-// taxed as residents (the Addy decision). The home country is free text on the
-// form, so match on normalised whole words plus common aliases. Short codes
-// (uk, gb) are matched as whole words only, so "Ukraine" is never a false hit.
+// taxed as residents WITH the $18,200 threshold (the Addy decision). The home
+// country is free text on the form, so match on normalised whole words plus
+// common aliases. Short codes (uk, gb) match as whole words only, so "Ukraine"
+// is never a false hit.
 const NDA_MULTI = ['united kingdom', 'great britain', 'northern ireland']
 const NDA_WORDS = new Set([
   'uk', 'gb', 'britain', 'england', 'scotland', 'wales',
@@ -156,7 +145,7 @@ function isNdaCountry(raw: string): boolean {
   const s = (raw || '')
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')            // strip diacritics (turkiye)
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z\u0590-\u05ff\u3040-\u30ff\u4e00-\u9fff ]/g, ' ')
     .trim()
   if (!s) return false
@@ -171,37 +160,41 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
 }) {
   const c = COPY[lang] ?? COPY.en
 
-  // Whether there's a form mid-flight. Checked after mount because the
-  // hand-off lives in the JS heap and the server render can't see it.
-  //
-  // The content itself is never gated on this: a client whose hand-off is gone
-  // (a reload, or the link opened later) must still see the page they were
-  // sent to, not a blank card. The flag only controls the step indicator.
+  // The form hand-off (present post-payment). Read after mount because it lives
+  // in the JS heap and the server render can't see it. Gives us the step
+  // indicator and the client's home country (for the NDA branch below).
   const [handoff, setHandoff] = useState<ReturnType<typeof getTaxFormHandoff>>(null)
   useEffect(() => { setHandoff(getTaxFormHandoff()) }, [])
   const hasForm = !!handoff
   const homeCountry = (handoff?.payload as { country?: string } | undefined)?.country ?? ''
 
-  // Eligibility quiz. 4 of 5 "Yes" = meets the residency conditions. The home
-  // country (pre-filled from the form) then decides WHICH resident result applies:
-  // an NDA country gets the $18,200 threshold; a non-NDA country is still a resident
-  // but gets the ~$700 low-income result. Fewer than 4 "Yes" = Working Holiday Maker.
-  // The status sent to the CRM is only 'resident' or 'whm' — the submit + PDF
-  // pipeline is byte-for-byte unchanged.
+  // Eligibility quiz. 4 of 5 "Yes" = resident, otherwise Working Holiday Maker.
+  // The result only PRE-SELECTS the declaration below; the client can still change
+  // it, and the CRM submission + PDF run through the identical path as before.
   const [answers, setAnswers] = useState<Array<'yes' | 'no' | null>>(
     () => c.questions.map(() => null),
   )
   const allAnswered = answers.length > 0 && answers.every((a) => a !== null)
+  const answeredCount = answers.filter((a) => a !== null).length
   const yesCount = answers.filter((a) => a === 'yes').length
-  const meetsConditions = allAnswered && yesCount >= 4
-  // A stray SEO visitor with no hand-off has no country; treat as eligible, since
-  // without a hand-off there is nothing to submit anyway (the result is educational).
+  const autoStatus: 'resident' | 'whm' | undefined =
+    allAnswered ? (yesCount >= 4 ? 'resident' : 'whm') : undefined
+  // Unknown country (a stray visitor with no hand-off) is treated as eligible,
+  // since without a hand-off there is nothing to submit anyway.
   const eligibleCountry = homeCountry ? isNdaCountry(homeCountry) : true
-  const resultKind: 'resident' | 'partial' | 'whm' =
-    !meetsConditions ? 'whm' : eligibleCountry ? 'resident' : 'partial'
-  const quizStatus: 'resident' | 'whm' = meetsConditions ? 'resident' : 'whm'
+  // A resident from a non-NDA country still qualifies, but without the $18,200
+  // threshold — so they get their own note (the resident+NDA path gets none).
+  const showNonNdaNote = allAnswered && autoStatus === 'resident' && !eligibleCountry
   const setAnswer = (i: number, val: 'yes' | 'no') =>
     setAnswers((prev) => { const next = [...prev]; next[i] = val; return next })
+
+  // When the last question is answered, glide down to the result + submit so the
+  // client never has to hunt for what comes next (the finish line, where people
+  // otherwise drop off). Fires once, on the false -> true transition.
+  const resultRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (allAnswered) resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [allAnswered])
 
   return (
     <div className="resstep-wrap">
@@ -209,8 +202,7 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
 
       <div className="resstep-card">
         <div className="resstep-header">
-          {/* Progress indicator at the very top, before the title and copy, so the
-              customer sees where they are before reading anything. Only while a
+          {/* Progress indicator at the very top, before the title. Only while a
               form is in flight: a stray visitor isn't on step 3 of anything. */}
           {hasForm && (
             <div style={{ marginBottom: 14 }}>
@@ -224,53 +216,56 @@ export default function ResidencyStep({ lang = 'en', onSubmitted }: {
         </div>
 
         <div className="resstep-body">
-          <p className="resstep-quiz-intro">{c.quizIntro}</p>
+          {/* The green box now holds the quiz instruction itself (the old
+              "Why it matters?" copy was removed). */}
+          <div className="resstep-why">
+            <p className="resstep-why-body">{c.quizIntro}</p>
+          </div>
 
+          {/* Small progress cue: nudges the client to finish all five. */}
+          <div className="resstep-progress">{answeredCount} / {c.questions.length}</div>
+
+          {/* Flowing list: no numbers, a Yes/No toggle on the right, thin
+              separators. Answering pre-selects the declaration below. */}
           <div className="resstep-quiz">
             {c.questions.map((q, i) => (
-              <div key={i} className="resstep-q">
-                <p className="resstep-q-text">
-                  <span className="resstep-q-num">{i + 1}</span>{q}
-                </p>
-                <div className="resstep-q-opts">
+              <div key={i} className="resq">
+                <span className="resq-text">{q}</span>
+                <span className="resq-toggle">
                   {(['yes', 'no'] as const).map((val) => (
                     <button
                       key={val}
                       type="button"
                       aria-pressed={answers[i] === val}
-                      className={`resstep-q-btn resstep-q-${val}${answers[i] === val ? ' is-on' : ''}`}
+                      className={`resq-seg resq-${val}${answers[i] === val ? ' is-on' : ''}`}
                       onClick={() => setAnswer(i, val)}
                     >
                       {val === 'yes' ? c.yesLabel : c.noLabel}
                     </button>
                   ))}
-                </div>
+                </span>
               </div>
             ))}
           </div>
 
-          {allAnswered && (
-            <>
-              <div className={`resstep-result${resultKind === 'resident' ? ' is-win' : resultKind === 'partial' ? ' is-partial' : ''}`}>
-                <p className="resstep-result-title">
-                  {resultKind === 'resident' ? '🎉 ' : ''}
-                  {resultKind === 'resident' ? c.resultYesTitle : resultKind === 'partial' ? c.resultPartialTitle : c.resultNoTitle}
-                </p>
-                <p className="resstep-result-body">
-                  {resultKind === 'resident' ? c.resultYesBody : resultKind === 'partial' ? c.resultPartialBody : c.resultNoBody}
-                </p>
-              </div>
+          {/* Anchor the auto-scroll here, at the top of the result area. */}
+          <div ref={resultRef} />
 
-              {/* Same submission as before: this drives ResidencyDeclaration with the
-                  quiz's verdict, but the CRM submit + PDF run through the identical
-                  submitTaxForm path. Nothing about the pipeline changes. */}
-              <ResidencyDeclaration
-                lang={lang}
-                quizStatus={quizStatus}
-                onSubmitted={onSubmitted}
-              />
-            </>
+          {/* WHM outcome: a short note that the $18,200 threshold does not apply.
+              A resident from an NDA country needs no message (just submit). A
+              resident from a non-NDA country gets the $700 note instead. */}
+          {allAnswered && autoStatus === 'whm' && (
+            <div className="resstep-whmnote resstep-fade">{c.whmResult}</div>
           )}
+          {showNonNdaNote && (
+            <div className="resstep-whmnote resstep-fade">{c.nonNdaResult}</div>
+          )}
+
+          <div className="resstep-divider" />
+
+          {/* Declaration is unchanged (same submit -> CRM -> PDF). The quiz result
+              locks the selection; it is display-only. */}
+          <ResidencyDeclaration lang={lang} onSubmitted={onSubmitted} autoStatus={autoStatus} />
         </div>
       </div>
     </div>
@@ -294,28 +289,23 @@ const styles = `
 
   .resstep-body { padding: 4px 18px 30px; }
 
-  /* --- Eligibility quiz --- */
-  .resstep-quiz-intro { font-size: 13px; font-weight: 600; color: #1A2822; line-height: 1.55; margin: 6px 0 16px; }
-  .resstep-quiz { display: flex; flex-direction: column; gap: 12px; }
-  .resstep-q { background: #F5F9F7; border: 1.5px solid #E2EFEA; border-radius: 14px; padding: 13px 14px; }
-  .resstep-q-text { font-size: 13px; font-weight: 500; color: #1A2822; line-height: 1.5; margin: 0 0 10px; display: flex; gap: 8px; }
-  .resstep-q-num { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: #0B5240; color: #fff; font-size: 11px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
-  .resstep-q-opts { display: flex; gap: 8px; }
-  .resstep-q-btn { flex: 1; min-height: 40px; border-radius: 100px; border: 1.5px solid #D9E7E1; background: #fff; color: #587066; font-size: 13px; font-weight: 600; font-family: inherit; cursor: pointer; transition: all .15s; }
-  .resstep-q-btn:hover { border-color: #0B5240; }
-  .resstep-q-yes.is-on { background: #0B5240; border-color: #0B5240; color: #fff; }
-  .resstep-q-no.is-on { background: #587066; border-color: #587066; color: #fff; }
-
-  /* --- Quiz result banner --- */
-  .resstep-result { margin-top: 18px; border-radius: 16px; padding: 16px 16px; border: 1.5px solid #F0D9A8; background: #FFF8EC; }
-  .resstep-result.is-win { border-color: #A7D9C5; background: #EAF6F1; }
-  .resstep-result.is-partial { border-color: #A9CBE8; background: #EAF2FB; }
-  .resstep-result-title { font-size: 15px; font-weight: 800; color: #7A5A16; line-height: 1.35; margin: 0 0 6px; }
-  .resstep-result.is-win .resstep-result-title { color: #0B5240; }
-  .resstep-result.is-partial .resstep-result-title { color: #1E5490; }
-  .resstep-result-body { font-size: 12.5px; color: #4A5C54; line-height: 1.6; margin: 0; }
-  .resstep-result.is-win .resstep-result-body { color: #235347; }
-  .resstep-result.is-partial .resstep-result-body { color: #234B70; }
+  /* --- Eligibility quiz (flowing list, Yes/No toggle on the right) --- */
+  .resstep-quiz-intro { font-size: 12.5px; font-weight: 600; color: #1A2822; line-height: 1.55; margin: 4px 0 6px; }
+  .resstep-progress { text-align: right; font-size: 11px; font-weight: 700; color: #9AA99F; margin: 0 2px 4px; letter-spacing: .3px; }
+  .resstep-quiz { display: flex; flex-direction: column; }
+  .resq { display: flex; align-items: center; gap: 12px; padding: 13px 2px; border-bottom: 1px solid #EEF3F1; }
+  .resq:last-child { border-bottom: none; }
+  .resq-text { flex: 1; font-size: 13px; color: #1A2822; line-height: 1.4; }
+  .resq-toggle { flex-shrink: 0; display: inline-flex; border: 1.5px solid #D9E7E1; border-radius: 100px; overflow: hidden; }
+  .resq-seg { min-width: 52px; min-height: 44px; text-align: center; padding: 0 4px; font-size: 13px; font-weight: 700; color: #7A8A82; background: #fff; cursor: pointer; border: none; font-family: inherit; transition: background .18s ease, color .18s ease; }
+  .resq-seg:active { transform: scale(.97); }
+  .resq-seg + .resq-seg { border-left: 1.5px solid #D9E7E1; }
+  .resq-yes.is-on { background: #0B5240; color: #fff; }
+  .resq-no.is-on { background: #587066; color: #fff; }
+  .resstep-whmnote { margin-top: 16px; background: #FFF8EC; border: 1.5px solid #F0D9A8; border-radius: 12px; padding: 12px 14px; font-size: 12.5px; color: #4A5C54; line-height: 1.55; }
+  @keyframes resstepFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .resstep-fade { animation: resstepFade .35s ease both; }
+  @media (prefers-reduced-motion: reduce) { .resstep-fade { animation: none; } .resq-seg { transition: none; } }
 
   .resstep-why { background: #EAF6F1; border: 1.5px solid #C8EAE0; border-radius: 14px; padding: 14px 15px; margin-bottom: 14px; }
   .resstep-why-title { font-size: 13px; font-weight: 700; color: #0B5240; margin: 0 0 6px; }
