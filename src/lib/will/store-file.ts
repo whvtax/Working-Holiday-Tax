@@ -225,10 +225,10 @@ export class FileStore implements Store {
     return true;
   }
 
-  async setMessageStatus(id: string, status: MessageRow['status']) {
+  async setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }) {
     const db = await load();
     const m = db.messages.find((x) => x.id === id);
-    if (m) m.status = status;
+    if (m) { m.status = status; if (opts?.restamp) m.createdAt = now(); }
     await persist();
   }
 

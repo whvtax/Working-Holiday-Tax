@@ -365,8 +365,10 @@ export class SupabaseStore implements Store {
     return (data ?? []).length > 0;
   }
 
-  async setMessageStatus(id: string, status: MessageRow['status']): Promise<void> {
-    await this.sb().from('will_messages').update({ status }).eq('id', id);
+  async setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }): Promise<void> {
+    const patch: Record<string, unknown> = { status };
+    if (opts?.restamp) patch.created_at = now();
+    await this.sb().from('will_messages').update(patch).eq('id', id);
   }
 
   async pendingApprovals(): Promise<(MessageRow & { customerName: string | null })[]> {

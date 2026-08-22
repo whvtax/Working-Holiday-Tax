@@ -152,7 +152,10 @@ export interface Store {
   listMessages(customerId: string): Promise<MessageRow[]>;
   /** PERF-01: PK lookup of a single message (includes its customerId). */
   getMessageById(id: string): Promise<MessageRow | null>;
-  setMessageStatus(id: string, status: MessageRow['status']): Promise<void>;
+  /** `restamp` sets the message's created_at to now — used when an approved
+   *  draft is actually sent, so its shown time is the SEND time, not the (older)
+   *  time it was drafted, and it sorts to the bottom of the thread. */
+  setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }): Promise<void>;
   /** Inbound messages in [startIso, endIso), newest last, with the sender's name
    *  and number joined on. Used by the monthly customer-words digest. Bounded by
    *  `limit` so one very busy month cannot pull an unbounded result set into a

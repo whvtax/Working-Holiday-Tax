@@ -226,6 +226,19 @@ async function handleIncomingInner(
     if (inc) await store.updateCustomer(customer.id, { income: inc });
     await deliverOut(customer, outcome.replyText, 'AI');
   } else if (outcome.kind === 'pending_approval' && outcome.replyText) {
+    // This new draft was written against the FULL conversation (every message the
+    // customer has sent so far). Any earlier draft still awaiting approval saw
+    // less, so it is now stale — discard it. That leaves exactly ONE current
+    // proposal, sitting at the bottom of the thread, instead of a stale one
+    // stranded above messages it never read.
+    try {
+      const prior = await store.listMessages(customer.id);
+      for (const pm of prior) {
+        if (pm.direction === 'OUT' && pm.status === 'PENDING_APPROVAL') {
+          await store.setMessageStatus(pm.id, 'DISCARDED');
+        }
+      }
+    } catch { /* non-blocking: worst case a stale draft lingers, never a wrong send */ }
     // Defer the state/income change until the owner approves (stored on the message).
     const inc = inferIncome(outcome.replyText);
     const m = await store.addMessage({

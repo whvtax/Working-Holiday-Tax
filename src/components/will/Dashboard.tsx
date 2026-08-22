@@ -9,7 +9,7 @@ import { ASSISTANT_NAME } from '@/lib/will/config';
 import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import Simulator from './Simulator';
 
-type View = 'pipeline' | 'chats' | 'tasks' | 'library' | 'insights' | 'learning' | 'simulator';
+type View = 'pipeline' | 'chats' | 'outbox' | 'tasks' | 'library' | 'insights' | 'learning' | 'simulator';
 
 interface StateData {
   customers: CustomerRow[];
@@ -51,6 +51,7 @@ const ICONS: Record<View, React.ReactNode> = {
   insights: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>,
   simulator: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>,
   learning: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>,
+  outbox: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>,
 };
 const BELL = <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>;
 // WhatsApp-style default avatar. Meta's Cloud API does not expose a customer's
@@ -151,6 +152,8 @@ export default function Dashboard() {
   const [taskDrafts, setTaskDrafts] = useState<Record<string, string>>({});
   const [acted, setActed] = useState<Set<string>>(new Set());
   const [searchQ, setSearchQ] = useState('');
+  // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
+  const [chatFilter, setChatFilter] = useState('all');
   const [, setClock] = useState(0);
   const msgsRef = useRef<HTMLDivElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -273,6 +276,15 @@ export default function Dashboard() {
   const g = STAGE_GROUPS.find((x) => x.id === group)!;
   const countFor = (states: readonly CustomerState[]) => data.customers.filter((c) => states.includes(c.state)).length;
   const openTasks = data.tasks.filter((t) => t.status === 'OPEN');
+  // ── Outbox: everything that has NOT gone to the customer and is waiting on you.
+  // One place instead of hunting through every chat. Three kinds:
+  //   1. drafts awaiting your approval (Will's proposals)
+  //   2. messages that could not be sent (WhatsApp/Meta rejected them)
+  //   3. drafts the guard blocked before they could go out
+  const pendingDrafts = data.pending;
+  const notSentTasks = openTasks.filter((t) => /send failed|blocked reply|invalid before approval|is stale|draft is stale|policy guard/i.test(t.reason));
+  const outboxCount = pendingDrafts.length + notSentTasks.length;
+  const custById = (id: string | null) => data.customers.find((c) => c.id === id) ?? null;
   // Notifications, most urgent first (URGENT > CONFLICT > REVIEW), then newest.
   const SEV_RANK: Record<string, number> = { URGENT: 0, CONFLICT: 1, REVIEW: 2 };
   const notifTasks = [...openTasks].sort(
@@ -295,9 +307,20 @@ export default function Dashboard() {
   const chatSel = data.customers.find((c) => c.id === chatSelId) ?? null;
   const drawer = data.customers.find((c) => c.id === drawerId) ?? null;
 
+  // Chat-list filter: 'all', 'unread', or a pipeline STAGE-GROUP id.
+  const chatGroupStates = (id: string): readonly CustomerState[] | null => {
+    const g = STAGE_GROUPS.find((x) => x.id === id);
+    return g ? (g.states as readonly CustomerState[]) : null;
+  };
   const chatList = [...data.customers]
     .filter((c) => c.lastMessagePreview)
     .filter((c) => !searchQ || phoneOf(c.waId).toLowerCase().includes(searchQ.toLowerCase()) || (c.lastMessagePreview ?? '').toLowerCase().includes(searchQ.toLowerCase()))
+    .filter((c) => {
+      if (chatFilter === 'all') return true;
+      if (chatFilter === 'unread') return c.unreadCount > 0;
+      const states = chatGroupStates(chatFilter);
+      return states ? states.includes(c.state) : true;
+    })
     // WhatsApp-style: most recent conversation first, bumped by ANY message
     // (incoming or the owner's own reply), falling back to inbound time.
     .sort((a, b) => ((b.lastMessageAt ?? b.lastCustomerMsgAt) ?? '').localeCompare((a.lastMessageAt ?? a.lastCustomerMsgAt) ?? ''))
@@ -336,10 +359,11 @@ export default function Dashboard() {
     <>
       <aside className="side">
         <div className="slogo"><div className="logo"><div className="mark">W</div></div><div className="sname">{ASSISTANT_NAME}<small>Admin</small></div></div>
-        {(['pipeline', 'chats', 'tasks', 'library', 'insights', 'learning', 'simulator'] as View[]).map((v) => (
+        {(['pipeline', 'chats', 'outbox', 'tasks', 'library', 'insights', 'learning', 'simulator'] as View[]).map((v) => (
           <button key={v} className={`ni ${view === v ? 'active' : ''}`} onClick={() => setView(v)}>
             <span className="ic">{ICONS[v]}</span>
             <span className="nl">{v[0].toUpperCase() + v.slice(1)}</span>
+            {v === 'outbox' && outboxCount > 0 && <span className="nbadge" style={{ background: 'var(--warn)' }}>{outboxCount}</span>}
             {v === 'tasks' && openTasks.length > 0 && <span className="nbadge">{openTasks.length}</span>}
             {v === 'learning' && suggestions.length > 0 && <span className="nbadge" style={{ background: 'var(--brand2)' }}>{suggestions.length}</span>}
           </button>
@@ -453,10 +477,11 @@ export default function Dashboard() {
       <main>
         {view === 'pipeline' && (
           <section className="view active">
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--ink)', letterSpacing: '-.2px' }}>Welcome</div>
-              <div style={{ fontSize: 12.5, color: 'var(--ink3)', marginTop: 2 }}>Your Dashboard</div>
-            </div>
+            {/* The "Welcome / Your Dashboard" heading and its gap were removed —
+                they only took space. The KPI row and the pipeline strip are now
+                a STICKY summary: they stay pinned to the top of the view while
+                the customer list below scrolls under them. */}
+            <div style={{ position: 'sticky', top: 0, zIndex: 5, background: 'var(--bg)', paddingTop: 2, marginBottom: 14 }}>
             <div className="kpis">
               <div className="kpi clickable" title="See all conversations" onClick={() => setView('chats')}><div className="kl">Customers</div><div className="kv">{data.customers.length}</div><div className="kd">in the system</div></div>
               <div className="kpi clickable" title="We sent the last message and they went quiet, but never said no. Worth a personal follow-up later." onClick={() => { setView('pipeline'); setGroup('closed'); }}>
@@ -482,6 +507,7 @@ export default function Dashboard() {
               </div>
               <div className="psfoot"><span>Total customers in pipeline</span><b>{data.customers.length}</b></div>
             </div>
+            </div>{/* end sticky summary */}
 
             <div className="rowlist">
               {data.customers.filter((c) => (g.states as readonly CustomerState[]).includes(c.state))
@@ -517,6 +543,15 @@ export default function Dashboard() {
             <div className="chatwrap">
               <div className="chatlist">
                 <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
+                {/* Filter chips: All, Unread, then one per pipeline stage.
+                    Scrolls sideways when they do not all fit. */}
+                <div className="chatfilter">
+                  <button className={`cfchip ${chatFilter === 'all' ? 'on' : ''}`} onClick={() => setChatFilter('all')}>All</button>
+                  <button className={`cfchip ${chatFilter === 'unread' ? 'on' : ''}`} onClick={() => setChatFilter('unread')}>Unread</button>
+                  {STAGE_GROUPS.map((sg) => (
+                    <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(sg.id)}>{sg.label}</button>
+                  ))}
+                </div>
                 {chatList.map((c) => (
                   <div key={c.id} className={`citem ${chatSelId === c.id ? 'sel' : ''} ${c.unreadCount > 0 ? 'hasunread' : ''}`} onClick={() => openChat(c.id)}>
                     <div className="cav">{AVATAR}</div>
@@ -557,16 +592,27 @@ export default function Dashboard() {
                         <div className="switch" />
                       </div>
                     </div>
+                    {/* Quick send: numbered buttons instead of long labels, so the
+                        row never overflows and needs no sideways scroll. Hover a
+                        number to see what it sends (native tooltip). */}
                     <div className="tplchips">
                       <span className="tplchips-label">Quick send:</span>
-                      {QUICK_TEMPLATES.map((key) => {
+                      {QUICK_TEMPLATES.map((key, i) => {
                         const t = data.templates.find((x) => x.key === key);
                         if (!t) return null;
-                        return <button key={key} className="chipbtn" onClick={async () => { const r = await act({ action: 'send_template', customerId: chatSel.id, id: t.id }); say(r?.ok ? 'Template sent ✓' : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); loadChat(chatSel.id); refresh(); }}>{t.title.replace(/ \(.*\)/, '')}</button>;
+                        const label = t.title.replace(/ \(.*\)/, '');
+                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={async () => { const r = await act({ action: 'send_template', customerId: chatSel.id, id: t.id }); say(r?.ok ? `Sent: ${label} ✓` : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); loadChat(chatSel.id); refresh(); }}>{i + 1}</button>;
                       })}
                     </div>
                     <div className="msgs" ref={msgsRef}>
-                      {chatMsgs.filter((m) => m.status !== 'DISCARDED' && m.status !== 'BLOCKED').map((m) => {
+                      {[...chatMsgs].filter((m) => m.status !== 'DISCARDED' && m.status !== 'BLOCKED')
+                        // A draft awaiting approval always renders at the BOTTOM,
+                        // after every real message, so it can never appear stranded
+                        // in the middle of the thread when the customer sent more
+                        // messages after it was drafted. Stable sort keeps normal
+                        // messages in their time order.
+                        .sort((a, b) => (a.status === 'PENDING_APPROVAL' ? 1 : 0) - (b.status === 'PENDING_APPROVAL' ? 1 : 0))
+                        .map((m) => {
                         if (m.status === 'PENDING_APPROVAL') {
                           return (
                             <div key={m.id} className="msg out" style={{ opacity: 0.85, border: '1px dashed rgba(122,99,232,.6)' }}>
@@ -598,6 +644,59 @@ export default function Dashboard() {
                 ) : <div className="sysline" style={{ margin: 20 }}>Select a conversation</div>}
               </div>
             </div>
+          </section>
+        )}
+
+        {view === 'outbox' && (
+          <section className="view active">
+            <h2 className="vt">Outbox</h2>
+            <div className="vsub">Everything that has NOT gone to the customer and is waiting on you.</div>
+
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '10px 0 8px', letterSpacing: '.02em' }}>
+              ✎ Awaiting your approval ({pendingDrafts.length})
+            </div>
+            {pendingDrafts.length === 0 && <div className="sysline" style={{ margin: '6px 0 14px' }}>Nothing waiting for approval 🎉</div>}
+            {pendingDrafts.map((m) => {
+              const c = custById(m.customerId);
+              return (
+                <div key={m.id} className="obcard">
+                  <div className="obhead">
+                    <span className="obwho">{c ? phoneOf(c.waId) : (m.customerName ?? 'Customer')}</span>
+                    {c && <span className="cstate" style={{ ['--sc' as string]: stageColorOf(c.state) }}>{STATE_LABELS[c.state]}</span>}
+                    <span className="obtime">{timeAgo(m.createdAt)} ago</span>
+                  </div>
+                  <div className="obbody">{m.body}</div>
+                  <div className="obbtns">
+                    <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : 'Draft blocked: situation changed')); refresh(); })}>✓ Approve & send</button>
+                    <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); refresh(); })}>✕ Discard</button>
+                    <button className="btn ghost" onClick={() => { setView('chats'); openChat(m.customerId); }}>Open chat →</button>
+                  </div>
+                </div>
+              );
+            })}
+
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--ink2)', margin: '18px 0 8px', letterSpacing: '.02em' }}>
+              ⚠ Didn&apos;t send ({notSentTasks.length})
+            </div>
+            {notSentTasks.length === 0 && <div className="sysline" style={{ margin: '6px 0' }}>Nothing failed or blocked 🎉</div>}
+            {notSentTasks.map((t) => {
+              const c = custById(t.customerId);
+              return (
+                <div key={t.id} className="obcard" style={{ ['--tc' as string]: 'var(--crit)' }}>
+                  <div className="obhead">
+                    <span className="obwho">{c ? phoneOf(c.waId) : (t.customerName ?? 'Customer')}</span>
+                    <span className="tsev" style={{ color: 'var(--crit)' }}>{t.severity}</span>
+                    <span className="obtime">{timeAgo(t.createdAt)} ago</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: 'var(--crit)', margin: '2px 0 6px', fontWeight: 600 }}>{t.reason}</div>
+                  {t.suggestedReply && <div className="obbody">{t.suggestedReply}</div>}
+                  <div className="obbtns">
+                    {t.customerId && <button className="btn ghost" onClick={() => { setView('chats'); openChat(t.customerId!); }}>Open chat →</button>}
+                    <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked done'); refresh(); }}>Mark done</button>
+                  </div>
+                </div>
+              );
+            })}
           </section>
         )}
 

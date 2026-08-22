@@ -1377,9 +1377,17 @@ export default function DashboardClient() {
   })
   }, [archivedClients, archiveSearchResults, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
+  // Whole-CRM visual scale, kept IDENTICAL to the Will dashboard so the two
+  // interfaces feel like one product at the same size. Will uses base 1.25
+  // (see will-scoped.css), and both share the same 0.9375 (= 75/80) fit factor
+  // so that moving Chrome from 75% to 80% leaves everything looking the size you
+  // had at 75%. zoom (not transform:scale) so the fixed sidebar, scrolling and
+  // heights all stay correct.
+  const CRM_ZOOM = 1.25 * 0.9375; // 1.171875 — same as Will
+  const CRM_H = `calc(100vh / ${CRM_ZOOM})`;
   const S: Record<string,React.CSSProperties> = {
-    shell:{display:'flex',height:'calc(100vh / 1.18)',overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif',zoom:1.18},
-    sb:{width:260,background:'#ffffff',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:'calc(100vh / 1.18)',borderRight:'1px solid #e4ede8',overflowY:'auto',zIndex:50},
+    shell:{display:'flex',height:CRM_H,overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif',zoom:CRM_ZOOM},
+    sb:{width:260,background:'#ffffff',display:'flex',flexDirection:'column',flexShrink:0,position:'fixed',top:0,left:0,height:CRM_H,borderRight:'1px solid #e4ede8',overflowY:'auto',zIndex:50},
     sbLogo:{display:'flex',alignItems:'center',gap:12,padding:'22px 16px 16px'},
     sbIcon:{width:40,height:40,borderRadius:11,background:'#0E5C42',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'#fff'},
     sbTitle:{fontSize:14,fontWeight:700,color:'#0a1410',letterSpacing:'-0.2px'},
@@ -1390,7 +1398,7 @@ export default function DashboardClient() {
     sbBtnOn:{background:'#0E5C42',color:'#fff',fontWeight:600},
     sbBadge:{marginLeft:'auto',background:'#f59e0b',color:'#78350f',borderRadius:20,padding:'2px 7px',fontSize:10,fontWeight:700},
     sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'#7a8a82',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
-    main:{flex:1,background:'#f0f4f1',marginLeft:260,display:'flex',flexDirection:'column',height:'calc(100vh / 1.18)',overflow:'hidden'},
+    main:{flex:1,background:'#f0f4f1',marginLeft:260,display:'flex',flexDirection:'column',height:CRM_H,overflow:'hidden'},
     page:{padding:'26px 26px 32px',flex:1,overflowY:'auto',minHeight:0},
     pgTitle:{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.5px'},
     pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
@@ -2476,7 +2484,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={{fontSize:12,fontWeight:500,color:'#0a1410'}}>{displayName(cl.fullName)}</div>
+                                <div style={{fontSize:12,fontWeight:500,color:'#0a1410',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}} onClick={e=>e.stopPropagation()}>
@@ -2505,7 +2513,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333'}}>{cl.country||'-'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#333',whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11}}>
                               {(()=>{
                                 const src = (cl.howHeard||'').trim()
@@ -2529,7 +2537,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 if (!lastTax) return <span style={{color:'#aabab2'}}>-</span>
                                 return (
                                   <div>
-                                    <div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div>
+                                    <div style={{fontWeight:600,color:'#0E5C42',fontSize:12,whiteSpace:'nowrap' as const}}>{lastTax.year}</div>
                                     <div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div>
                                   </div>
                                 )
@@ -2654,7 +2662,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1'}}>
                               <div style={{display:'flex',alignItems:'center',gap:9}}>
                                 <div style={{width:32,height:32,borderRadius:9,background:bg,color:fg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:700,flexShrink:0}}>{initials(cl.fullName)}</div>
-                                <div style={{fontSize:12,fontWeight:500,color:'#7a8a82'}}>{displayName(cl.fullName)}</div>
+                                <div style={{fontSize:12,fontWeight:500,color:'#7a8a82',whiteSpace:'nowrap' as const}}>{displayName(cl.fullName)}</div>
                               </div>
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#333',direction:'ltr',whiteSpace:'nowrap'}}>
@@ -2663,7 +2671,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                                 : '-'}
                             </td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:11,color:'#555'}}>{cl.email||'-'}</td>
-                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555'}}>{cl.country||'-'}</td>
+                            <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12,color:'#555',whiteSpace:'nowrap' as const}}>{cl.country||'-'}</td>
                             <td style={{padding:'11px 14px',borderBottom:'1px solid #f0f4f1',fontSize:12}}>
                               {lastTax
                                 ? <div><div style={{fontWeight:600,color:'#0E5C42',fontSize:12}}>{lastTax.year}</div><div style={{fontSize:11,color:'#555'}}>{fmtCur(lastTax.refundAmount)}</div></div>

@@ -54,6 +54,43 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const decision = await decide(ctx, history);
 
   if (decision.action === 'human_task') {
+    // Jo's rule: even when Will has no ready-made answer — it chose to hand off,
+    // or its confidence was too low to act — it should STILL give you a proposed
+    // reply to work from, instead of an empty task. But a proposal made in this
+    // situation is NEVER sent on its own, in ANY mode: it is always a draft that
+    // waits for your approval. So this returns 'pending_approval' unconditionally
+    // (never 'sent'), regardless of Approval vs Autopilot.
+    //
+    // The proposal still has to clear the Policy Guard. If the model's own draft
+    // breaks a hard rule (a made-up price, a myGov walkthrough, a personal tax
+    // determination, an "are you a bot" answer), it is NOT offered as a one-click
+    // send — it falls through to a plain task for you to handle by hand.
+    const draft = (decision.suggested_reply ?? '').trim();
+    if (draft) {
+      const text = fillPlaceholders(draft, bank);
+      const verdict = policyGuard(text, {
+        ...input.guard,
+        state: ctx.state,
+        paid: ctx.paid,
+        estimateFromTeam: ctx.estimatedRefundCents,
+        isApprovedTemplate: false,
+      });
+      if (verdict.allowed) {
+        // Will may ALSO suggest which pipeline stage to move the customer to
+        // (Jo's rule). It is only a suggestion, applied when Jo approves the
+        // draft — the same server-side transition check as a normal reply, so
+        // an illegal jump is dropped rather than proposed.
+        const suggestedState = decision.new_state && decision.new_state !== ctx.state
+          && canTransition(ctx.state, decision.new_state) ? decision.new_state : undefined;
+        return {
+          kind: 'pending_approval',
+          replyText: text,
+          newState: suggestedState,
+          stateChanged: !!suggestedState,
+          decision,
+        };
+      }
+    }
     return {
       kind: 'human_task',
       decision,

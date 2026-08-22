@@ -127,7 +127,10 @@ export async function POST(req: Request) {
         await store.audit('channel', 'send_failed', { id: msg.id, error: tx.error });
         return NextResponse.json({ ok: false, blocked: ['SEND_FAILED'], error: tx.error });
       }
-      await store.setMessageStatus(msg.id, 'SENT');
+      // restamp: the draft may have waited minutes or hours for approval. The
+      // customer receives it NOW, so its shown time must be now — otherwise it
+      // displays the old draft time and sits above newer customer messages.
+      await store.setMessageStatus(msg.id, 'SENT', { restamp: true });
       // Apply the state/income change that was deferred until approval.
       if (msg.meta?.proposedState && canTransition(customer.state, msg.meta.proposedState)) {
         await store.setState(customer.id, msg.meta.proposedState, 'HUMAN');
