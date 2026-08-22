@@ -99,10 +99,19 @@ header{
 .will-scope .modehint{font-size:11px;color:var(--ink3)}
 .will-scope /* ---------- layout ---------- */
 main{padding:14px 16px 36px;max-width:none;margin-left:245px;
-  /* The only scrolling region: the header above it stays put. */
-  flex:1;min-height:0;overflow-y:auto}
+  /* main fills the space under the fixed top bar and never scrolls itself.
+     Each view decides its own scrolling: normal views scroll internally, the
+     chats view does NOT — only its message list does (WhatsApp Web behaviour),
+     so the chat header and composer stay put while the messages move. */
+  flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 .will-scope .view{display:none;animation:fade 220ms var(--ease-out)}
-.will-scope .view.active{display:block}
+/* A normal (non-chat) view scrolls inside itself and keeps main's padding. */
+.will-scope .view.active{display:block;flex:1;min-height:0;overflow-y:auto}
+/* The chats view is a fixed frame: it fills main exactly and clips, so the
+   only thing that scrolls is the message list inside .chatpane. The negative
+   margins cancel main's padding so the frame reaches the edges like an app. */
+.will-scope main:has(> .chats-view.active){padding:12px}
+.will-scope .view.active.chats-view{display:flex;overflow:hidden}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .will-scope h2.vt{font-size:14.5px;font-weight:650;margin-bottom:3px}
 .will-scope .vsub{font-size:11.5px;color:var(--ink2);margin-bottom:15px}
@@ -170,7 +179,7 @@ main{padding:14px 16px 36px;max-width:none;margin-left:245px;
 .will-scope /* ---------- chats ---------- */
 /* Fills the scrolling region rather than measuring the viewport itself, so the
  * chat list and the message pane scroll internally and the page does not. */
-.chatwrap{display:grid;grid-template-columns:320px 1fr;gap:14px;height:100%;min-height:420px}
+.chatwrap{display:grid;grid-template-columns:320px 1fr;gap:14px;flex:1;min-height:0;width:100%;height:100%}
 .will-scope .chatlist{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow-y:auto;box-shadow:0 1px 3px rgba(30,32,40,.04)}
 .will-scope .search{position:sticky;top:0;background:var(--surface);padding:10px;border-bottom:1px solid var(--line);z-index:2}
 .will-scope .search input{width:100%;background:var(--surface2);border:1px solid var(--line2);color:var(--ink);border-radius:9px;padding:8px 12px;font-size:13px;outline:none}

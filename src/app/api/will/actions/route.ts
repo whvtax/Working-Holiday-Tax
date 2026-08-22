@@ -161,7 +161,11 @@ export async function POST(req: Request) {
       if (!customer) return bad('customer gone', 404);
       const send = await humanSend(customer, b.body.trim());
       if (send.error) return bad(send.error);
-      await deliverOut(customer, send.body!, 'HUMAN');
+      // Only resolve the task if the message actually went out. Before this the
+      // send result was ignored, so a failed send still closed the task and the
+      // customer was left unanswered with no trace on the board.
+      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       await store.resolveTask(task.id);
       await store.audit('owner', 'task_reply_sent', { taskId: task.id });
       return NextResponse.json({ ok: true });
@@ -175,7 +179,12 @@ export async function POST(req: Request) {
       if (!customer) return bad('customer not found', 404);
       const send = await humanSend(customer, b.body.trim());
       if (send.error) return bad(send.error);
-      await deliverOut(customer, send.body!, 'HUMAN');
+      // The send can fail at Meta (outside the 24h window, a bad token, a
+      // rejected number). Before this check the result was ignored and the UI
+      // reported success regardless, so a message that never reached the
+      // customer looked sent. Now the real outcome is returned.
+      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       await store.updateCustomer(customer.id, { aiPaused: true });
       await store.audit('owner', 'manual_reply', { customerId: customer.id });
       return NextResponse.json({ ok: true, aiPaused: true });
@@ -192,7 +201,8 @@ export async function POST(req: Request) {
       if (!template) return bad('template not found', 404);
       const send = await humanSend(customer, template.body);
       if (send.error) return bad(send.error);
-      await deliverOut(customer, send.body!, 'HUMAN');
+      const out = await deliverOut(customer, send.body!, 'HUMAN');
+      if (!out.ok) return bad(`WhatsApp did not accept the message: ${out.error ?? 'unknown error'}`, 502);
       await store.audit('owner', 'template_sent_manually', { customerId: customer.id, template: template.key });
       return NextResponse.json({ ok: true });
     }

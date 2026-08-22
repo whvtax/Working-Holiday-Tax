@@ -320,8 +320,14 @@ export default function Dashboard() {
 
   const sendManual = async (customerId: string, text: string) => {
     if (!text.trim()) return;
-    await act({ action: 'manual_reply', customerId, body: text });
-    say(`Sent. ${ASSISTANT_NAME} paused for this chat, you have the wheel`);
+    const r = await act({ action: 'manual_reply', customerId, body: text });
+    // The server now reports whether WhatsApp actually accepted the message.
+    // Reporting "Sent" on a failure is how a lost message looked delivered.
+    if (r?.ok) {
+      say(`Sent. ${ASSISTANT_NAME} paused for this chat, you have the wheel`);
+    } else {
+      say(`❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`);
+    }
     refresh();
     if (chatSelId === customerId) loadChat(customerId);
   };
@@ -507,7 +513,7 @@ export default function Dashboard() {
         )}
 
         {view === 'chats' && (
-          <section className="view active">
+          <section className="view active chats-view">
             <div className="chatwrap">
               <div className="chatlist">
                 <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
@@ -556,7 +562,7 @@ export default function Dashboard() {
                       {QUICK_TEMPLATES.map((key) => {
                         const t = data.templates.find((x) => x.key === key);
                         if (!t) return null;
-                        return <button key={key} className="chipbtn" onClick={async () => { await act({ action: 'send_template', customerId: chatSel.id, id: t.id }); say('Template sent ✓'); loadChat(chatSel.id); refresh(); }}>{t.title.replace(/ \(.*\)/, '')}</button>;
+                        return <button key={key} className="chipbtn" onClick={async () => { const r = await act({ action: 'send_template', customerId: chatSel.id, id: t.id }); say(r?.ok ? 'Template sent ✓' : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); loadChat(chatSel.id); refresh(); }}>{t.title.replace(/ \(.*\)/, '')}</button>;
                       })}
                     </div>
                     <div className="msgs" ref={msgsRef}>
@@ -567,7 +573,7 @@ export default function Dashboard() {
                               {m.body}
                               <div className="mt"><span className="ai">✎ awaiting your approval</span></div>
                               <div className="abtns" style={{ marginTop: 8 }}>
-                                <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r.blocked ? 'Draft blocked: situation changed' : 'Approved & sent ✓'); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
+                                <button className="btn approve" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { const r = await act({ action: 'approve_message', id: m.id }); say(r?.ok ? 'Approved & sent ✓' : (r?.error ? `❌ Not sent: ${r.error}` : 'Draft blocked: situation changed')); loadChat(chatSel.id); refresh(); })}>✓ Approve</button>
                                 <button className="btn ghost" disabled={acted.has(m.id)} onClick={() => once(m.id, async () => { await act({ action: 'discard_message', id: m.id }); say('Draft discarded'); loadChat(chatSel.id); refresh(); })}>✕ Discard</button>
                               </div>
                             </div>
@@ -576,7 +582,7 @@ export default function Dashboard() {
                         return (
                           <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}`}>
                             {m.body}
-                            <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })} {m.direction === 'OUT' && '✓✓'}</div>
+                            <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
                           </div>
                         );
                       })}
@@ -628,7 +634,7 @@ export default function Dashboard() {
                       </div>
                     )}
                     <div className="tbtns">
-                      {t.customerId && <button className="btn take" disabled={acted.has(t.id) || !draft.trim()} onClick={() => once(t.id, async () => { await act({ action: 'send_task_reply', id: t.id, body: draft }); say('Reply sent & task resolved ✓'); refresh(); })}>➤ Send Reply</button>}
+                      {t.customerId && <button className="btn take" disabled={acted.has(t.id) || !draft.trim()} onClick={() => once(t.id, async () => { const r = await act({ action: 'send_task_reply', id: t.id, body: draft }); say(r?.ok ? 'Reply sent & task resolved ✓' : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); refresh(); })}>➤ Send Reply</button>}
                       {t.customerId && <button className="btn ghost" onClick={async () => { setView('chats'); openChat(t.customerId!); await act({ action: 'resolve_task', id: t.id }); refresh(); }}>Open Chat</button>}
                       {!t.customerId && <button className="btn ghost" onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Marked resolved ✓'); refresh(); }}>Mark Resolved</button>}
                     </div>
