@@ -10,7 +10,7 @@ import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { canTransition, CustomerState } from './state-machine';
 import { resolveAiMode, type AiMode } from './mode';
-import { normaliseWillText } from './text-normalize';
+import { normaliseWillText, firstNameOf } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -49,12 +49,48 @@ export function fillPlaceholders(
   return out;
 }
 
+// ============================================================
+// Owner rule: never repeat the payment request + bank details. Once Will has sent
+// them, it does not send them again unless the customer explicitly asks for them.
+// The customer already has them in the thread; repeating reads as pushy and robotic.
+// ============================================================
+// "Bank details are present" — the concrete, language-independent signals: the
+// BSB, the account number, or the "Payment details" label.
+const BANK_DETAILS_RE = /\b0?62\s?692\b|\b81049952\b|payment details|bank details|bankverbindung|振込先/i;
+// A single line that is part of the bank block, to be removed on a repeat.
+const BANK_LINE_RE = /\b0?62\s?692\b|\b81049952\b|payment details|account name\s*:|^\s*bsb\b|^\s*account\s*:|quick screenshot|once paid|bankverbindung|振込先|口座/i;
+// The customer explicitly asking for payment / bank details (then repeating is fine).
+const CUSTOMER_ASKED_PAYMENT_RE = /\b(bank|bsb|account|pay|payment|transfer|deposit|screenshot|where.*(send|pay)|how.*(pay|transfer)|remind|again|details)\b|振込|支払|口座|bezahl|überweis|kontonummer/i;
+
+/** Remove only the bank-detail lines from a message, leaving any surrounding text
+ *  (a greeting, an answer) intact. Used when the details were already sent and the
+ *  customer did not ask for them again. */
+export function stripBankBlock(text: string): string {
+  return text
+    .split('\n')
+    .filter((line) => !BANK_LINE_RE.test(line.trim()))
+    .join('\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const { ctx, history, mode, bank } = input;
 
-  // Owner emoji rule: at most one emoji, and ONLY in the opening message. This is
-  // the opening message when Will has not sent anything in this conversation yet.
+  // Owner emoji + name rules: at most one emoji and the customer's first name,
+  // BOTH only in the opening message. This is the opening message when Will has
+  // not sent anything in this conversation yet.
   const firstMessage = !history.some((t) => t.role === 'assistant');
+  const custFirstName = firstNameOf(ctx.name);
+
+  // Bank-repeat suppression: if the bank details were already sent earlier AND the
+  // customer is not asking for them right now, strip them from any repeat.
+  const bankAlreadySent = history.some((t) => t.role === 'assistant' && BANK_DETAILS_RE.test(t.text));
+  const lastCustomerText = [...history].reverse().find((t) => t.role === 'customer')?.text ?? '';
+  const suppressBankRepeat = bankAlreadySent && !CUSTOMER_ASKED_PAYMENT_RE.test(lastCustomerText);
+  const applyBankRule = (t: string): string =>
+    suppressBankRepeat && BANK_DETAILS_RE.test(t) ? stripBankBlock(t) : t;
 
   const decision = await decide(ctx, history);
 
@@ -74,8 +110,12 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     if (draft) {
       // Owner rules: no dashes ever, and at most one emoji (opening only). Applied
       // to the model's prose BEFORE placeholders are filled, so a URL/bank value
-      // inserted afterwards keeps any hyphen it legitimately needs.
-      const text = fillPlaceholders(normaliseWillText(draft, { firstMessage }), bank);
+      // inserted afterwards keeps any hyphen it legitimately needs. Then strip a
+      // repeated bank block if the details were already sent.
+      const text = applyBankRule(
+        fillPlaceholders(normaliseWillText(draft, { firstMessage, firstName: custFirstName }), bank),
+      );
+      if (text.trim()) {
       const verdict = policyGuard(text, {
         ...input.guard,
         state: ctx.state,
@@ -97,6 +137,7 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
           stateChanged: !!suggestedState,
           decision,
         };
+      }
       }
     }
     return {
@@ -141,7 +182,13 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // --- fill system-owned placeholders, then guard the final text ---
   // Owner rules (no dashes ever; at most one emoji, opening only) applied to the
   // model's prose before filling, so links and bank details are never mangled.
-  const text = fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage }), bank);
+  // Then strip a repeated bank block if the details were already sent.
+  const text = applyBankRule(
+    fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage, firstName: custFirstName }), bank),
+  );
+  // If the whole reply was just a repeat of the bank details, there is nothing
+  // left worth sending — stay silent rather than send an empty message.
+  if (!text.trim()) return { kind: 'silent', decision };
   const guardCtx: GuardContext = {
     ...input.guard,
     state: ctx.state,

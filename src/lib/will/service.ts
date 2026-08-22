@@ -12,6 +12,7 @@ import { detectLanguage } from './i18n';
 import { retrieveKnowledge } from './knowledge';
 import { deliverOut } from './channel';
 import { isIdentityQuestion } from './identity-question';
+import { firstNameOf } from './text-normalize';
 
 export interface HandleResult {
   outcome: EngineOutcome;
@@ -185,7 +186,9 @@ async function handleIncomingInner(
   // RAG: pull the most relevant learned answers for this exact message.
   const knowledge = await retrieveKnowledge(text, { lang: customer.lang ?? undefined }).catch(() => []);
   const ctx: CustomerContext = {
-    name: customer.name, state: customer.state, income: customer.income,
+    // Owner rule: the model only ever sees the FIRST name, so it can never address
+    // the customer by surname even if a full name was captured from WhatsApp.
+    name: firstNameOf(customer.name) || null, state: customer.state, income: customer.income,
     paid: customer.paid, formComplete: customer.formComplete,
     missingDocs: customer.missingDocs, estimatedRefundCents: customer.estimatedRefundCents,
     knowledge,
@@ -293,8 +296,17 @@ export async function handleInboundNote(
   const store = getStore();
   let customer = await store.getCustomerByWaId(waId);
   if (!customer) {
-    customer = await store.createCustomer({ waId, name: meta?.name ?? null, flag: '💬' });
-    await store.audit('system', 'customer_created', { waId });
+    try {
+      customer = await store.createCustomer({ waId, name: meta?.name ?? null, flag: '💬' });
+      await store.audit('system', 'customer_created', { waId });
+    } catch {
+      // This path runs outside the per-customer mutex, so a text message for the
+      // same brand-new number can create the row a moment earlier and win the
+      // wa_id UNIQUE constraint. That is not an error: re-fetch the row the other
+      // write created and carry on, so the note is still stored, never dropped.
+      customer = await store.getCustomerByWaId(waId);
+      if (!customer) throw new Error('customer create raced and re-fetch failed');
+    }
   }
   await store.addMessage({
     customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,

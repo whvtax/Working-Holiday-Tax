@@ -154,6 +154,8 @@ export default function Dashboard() {
   const [searchQ, setSearchQ] = useState('');
   // Chat-list filter chip: 'all' | 'unread' | a pipeline stage-group id.
   const [chatFilter, setChatFilter] = useState('all');
+  // Whether the chat-header stage badge dropdown (manual stage move) is open.
+  const [stageMenuOpen, setStageMenuOpen] = useState(false);
   const [, setClock] = useState(0);
   const msgsRef = useRef<HTMLDivElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -575,10 +577,44 @@ export default function Dashboard() {
                         {/* Normal weight, like WhatsApp shows a contact. */}
                         <span className="chnum">{phoneOf(chatSel.waId)}</span>
                         <div className="st">
-                          <span className="cstate" style={{ ['--sc' as string]: stageColorOf(chatSel.state) }}>{STATE_LABELS[chatSel.state]}</span>
-                          {/* Only real extra information belongs here. The old
-                              fallback repeated the pipeline stage next to itself
-                              ("NEW LEAD  new lead"), which said nothing twice. */}
+                          {/* The stage badge is a dropdown: click it to move the
+                              customer to ANY pipeline stage, forward or back. */}
+                          <div className="stagepick">
+                            <button
+                              type="button"
+                              className="cstate cstate-btn"
+                              style={{ ['--sc' as string]: stageColorOf(chatSel.state) }}
+                              onClick={() => setStageMenuOpen((o) => !o)}
+                              title="Move stage"
+                            >
+                              {STATE_LABELS[chatSel.state]} <span className="cstate-caret">▾</span>
+                            </button>
+                            {stageMenuOpen && (
+                              <>
+                                <div className="stagemenu-backdrop" onClick={() => setStageMenuOpen(false)} />
+                                <div className="stagemenu">
+                                  {STAGE_GROUPS.flatMap((g) => (g.states as readonly CustomerState[]).map((s) => ({ s, color: g.color }))).map(({ s, color }) => (
+                                    <button
+                                      key={s}
+                                      type="button"
+                                      className={`stagemenu-item${s === chatSel.state ? ' is-current' : ''}`}
+                                      onClick={async () => {
+                                        setStageMenuOpen(false);
+                                        if (s === chatSel.state) return;
+                                        const r = await act({ action: 'set_state', customerId: chatSel.id, state: s, force: true });
+                                        say(r?.ok ? `Moved to ${STATE_LABELS[s]}` : `❌ ${r?.error ?? 'could not move'}`);
+                                        loadChat(chatSel.id); refresh();
+                                      }}
+                                    >
+                                      <span className="stagemenu-dot" style={{ background: color }} />
+                                      <span className="stagemenu-lbl">{STATE_LABELS[s]}</span>
+                                      {s === chatSel.state && <span className="stagemenu-check">✓</span>}
+                                    </button>
+                                  ))}
+                                </div>
+                              </>
+                            )}
+                          </div>
                           {[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).length > 0 && (
                             <span style={{ fontSize: 10.5, color: 'var(--ink3)' }}>{[feeOf(chatSel.income), chatSel.paid ? 'paid ✓' : null].filter(Boolean).join(' · ')}</span>
                           )}

@@ -469,12 +469,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <>
                 <h1 className={`form-title form-title-${lang}`}>{T('titleTax')}</h1>
                 <p className="form-title-sub">{T('titleTaxSub')}</p>
-                {/* "Takes about 2 minutes" sits directly under the subtitle, not
-                    at the bottom where it used to be. At the bottom it answered
-                    a question the customer stopped asking twenty fields ago; the
-                    moment it is worth anything is before they decide to start.
-                    Small and quiet — reassurance, not a headline. */}
-                <p className="form-time-note">{T('timeEstimate')}</p>
               </>
             ) : (
               <h1 className="form-title form-title-short">{T('titleTaxStep2')}</h1>
@@ -573,6 +567,8 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <button type="button" className="submit-btn" onClick={goToStep2}>
               {T('continueButton')}
             </button>
+            {/* Time estimate sits at the bottom, under the button (owner's choice). */}
+            <p className="form-time-note" style={{ textAlign: 'center', marginTop: 10 }}>{T('timeEstimate')}</p>
           </div>
           )}
 

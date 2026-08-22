@@ -31,6 +31,9 @@ interface ActionBody {
   proposedBody?: string;
   goal?: number;
   amountCents?: number;
+  /** set_state only: owner manual override — move to any stage, bypassing the
+   *  one-step-at-a-time guardrails. */
+  force?: boolean;
 }
 
 const bad = (msg: string, code = 400) => NextResponse.json({ error: msg }, { status: code });
@@ -262,6 +265,15 @@ export async function POST(req: Request) {
       if (!ALL_STATES.includes(b.state as CustomerState)) return bad('unknown state');
       const target = b.state as CustomerState;
       if (target === customer.state) return NextResponse.json({ ok: true });
+      // Owner manual override (the clickable stage badge): move a customer to ANY
+      // stage, forward or back, no questions asked. This is a deliberate human
+      // action from the CRM, so the step-by-step guardrails below are bypassed.
+      if (b.force === true) {
+        await store.setState(customer.id, target, 'HUMAN');
+        const f = await store.getCustomerById(customer.id);
+        if (f) await reconcileSchedule(f);
+        return NextResponse.json({ ok: true });
+      }
       const isClosed = ['NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'].includes(target);
       // A paid customer can only move forward within the service flow or be closed,
       // never back into sales (spec §5).

@@ -36,6 +36,7 @@ const COPY = {
     checkQuestion: 'Are you sure you are a working holiday maker for tax purposes?',
     checkYes: 'Yes, I am sure',
     checkNo: 'No, let me read again',
+    confirmLabel: 'I confirm the above is correct',
   },
   de: {
     intro: 'Nach Prüfung dieser Seite und der relevanten ATO-Informationen erkläre ich, dass ich bin:',
@@ -46,6 +47,7 @@ const COPY = {
     checkQuestion: 'Bist du sicher, dass du steuerlich ein Working Holiday Maker bist?',
     checkYes: 'Ja, ich bin sicher',
     checkNo: 'Nein, ich lese nochmal',
+    confirmLabel: 'Ich bestätige, dass die obigen Angaben korrekt sind',
   },
   ja: {
     intro: 'このページと関連するATO情報を確認した上で、以下に該当することを宣言します：',
@@ -56,10 +58,11 @@ const COPY = {
     checkQuestion: '税務上ワーキングホリデーメーカーで間違いありませんか？',
     checkYes: 'はい、間違いありません',
     checkNo: 'いいえ、もう一度読みます',
+    confirmLabel: '上記の内容が正しいことを確認します',
   },
 } as const
 
-export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
+export default function ResidencyDeclaration({ lang = 'en', onSubmitted, quizStatus }: {
   lang?: FormLang
   /**
    * Called instead of navigating, when the caller is already rendering this
@@ -68,6 +71,14 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
    * component - the success screen would never appear.
    */
   onSubmitted?: (firstName: string) => void
+  /**
+   * When the caller (the eligibility quiz) has already determined the status,
+   * the manual "I declare I am" radio is replaced by a single confirm checkbox.
+   * The submission itself is unchanged: it still runs through submitTaxForm with
+   * this exact status, so the CRM record and the PDF are byte-for-byte identical
+   * to the manual path.
+   */
+  quizStatus?: 'resident' | 'whm'
 }) {
   const router = useRouter()
   const [handoff, setHandoff] = useState<TaxFormHandoff | null>(null)
@@ -77,6 +88,7 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   const [showWhmCheck, setShowWhmCheck] = useState(false)
   const [whmAnswered, setWhmAnswered] = useState(false)
   const [whmBlocked, setWhmBlocked] = useState(false)
+  const [confirmed, setConfirmed] = useState(false)
 
   // Read the hand-off after mount only: it lives in the JS heap, so the server
   // render knows nothing about it and rendering it directly would hydrate-mismatch.
@@ -117,15 +129,12 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
    * CRM lets the next client straight through without them reloading. It
    * fails closed: any error keeps the block in place.
    */
-  const whmSubmissionsAllowed = async (): Promise<boolean> => {
-    try {
-      const res = await fetch('/api/form-settings', { cache: 'no-store' })
-      const data = await res.json()
-      return data?.allowWhmSubmissions === true
-    } catch {
-      return false
-    }
-  }
+  // The form is now sent only AFTER payment, so every WHM who reaches this step
+  // has already paid and must be submitted and processed like anyone else. The
+  // old "block WHM submissions" override (and its CRM toggle) is therefore gone,
+  // and WHM submissions always go through. Kept as a function so the call site is
+  // unchanged and the CRM record + PDF pipeline stay byte-for-byte identical.
+  const whmSubmissionsAllowed = async (): Promise<boolean> => true
 
   /** Anonymous count only: no name, no TFN, no documents. */
   const trackBlocked = () => {
@@ -145,8 +154,10 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
   }
 
   const handleSubmit = () => {
-    if (!status) { setError(c.pickOne); return }
-    if (status !== 'whm') { void doSubmit(status); return }
+    // The quiz's verdict wins when present; otherwise the manual radio choice.
+    const picked: Status = quizStatus ?? status
+    if (!picked) { setError(c.pickOne); return }
+    if (picked !== 'whm') { void doSubmit(picked); return }
 
     setLoading(true)
     void whmSubmissionsAllowed().then(allowed => {
@@ -187,6 +198,40 @@ export default function ResidencyDeclaration({ lang = 'en', onSubmitted }: {
           window.scrollTo({ top: 0, behavior: 'smooth' })
         }}
       />
+    )
+  }
+
+  // Quiz mode: the status is already decided, so replace the manual radio with a
+  // single confirm checkbox. The submit path (submitTaxForm -> CRM + PDF) is the
+  // same one the manual radio uses; only the way `picked` is chosen differs.
+  if (quizStatus) {
+    return (
+      <div className="resdecl-wrap">
+        <style>{styles}</style>
+
+        <label className="resdecl-confirm">
+          <input
+            type="checkbox"
+            checked={confirmed}
+            onChange={e => { setConfirmed(e.target.checked); setError('') }}
+            className="resdecl-confirm-box"
+          />
+          <span className="resdecl-confirm-label">{c.confirmLabel}</span>
+        </label>
+
+        {error && <p className="resdecl-error">{error}</p>}
+
+        <button
+          type="button"
+          className="resdecl-submit"
+          onClick={handleSubmit}
+          disabled={loading || !confirmed}
+        >
+          {loading ? t('submitting') : t('submitTax')}
+        </button>
+
+        <p className="resdecl-secure">{c.secure}</p>
+      </div>
     )
   }
 
@@ -273,6 +318,9 @@ const styles = `
   .resdecl-submit:active { transform: scale(.98); opacity: .9; }
   .resdecl-submit:disabled { opacity: .6; cursor: not-allowed; }
   .resdecl-secure { font-size: 11.5px; color: #7a8a82; text-align: center; margin-top: 12px; }
+  .resdecl-confirm { display: flex; align-items: flex-start; gap: 10px; margin-top: 18px; cursor: pointer; }
+  .resdecl-confirm-box { width: 18px; height: 18px; margin: 1px 0 0; accent-color: #0B5240; flex-shrink: 0; cursor: pointer; }
+  .resdecl-confirm-label { font-size: 13px; font-weight: 600; color: #1A2822; line-height: 1.5; }
   .resdecl-check { margin-top: 12px; background: #FFF8EC; border: 1.5px solid #F0D9A8; border-radius: 12px; padding: 13px 14px; }
   .resdecl-check-q { font-size: 12.5px; font-weight: 600; color: #7A5A16; line-height: 1.5; margin: 0 0 10px; }
   .resdecl-check-actions { display: flex; gap: 8px; flex-wrap: wrap; }

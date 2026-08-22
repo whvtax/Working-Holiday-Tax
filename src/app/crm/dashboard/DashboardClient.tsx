@@ -3,7 +3,6 @@ import React from 'react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
-import { WhmSubmissionsToggle } from '@/components/crm/WhmSubmissionsToggle'
 import { LeadsTab } from '@/components/crm/LeadsTab'
 import { canonicalCountry, canonicalSource, groupByCanonical } from '@/lib/normalise-labels'
 
@@ -1608,10 +1607,6 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                 </button>
 
               </div>
-
-              {/* The working-holiday-maker override. Sits at the top of Tasks
-                  on purpose: while it's ON it needs to be impossible to miss. */}
-              <WhmSubmissionsToggle />
 
               {/* Season stats */}
               {(()=>{

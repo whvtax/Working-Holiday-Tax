@@ -81,7 +81,7 @@ export function stripDashes(input: string | null | undefined): string {
 // Matches a full emoji, including skin-tone modifiers and ZWJ sequences, plus a
 // following variation selector or keycap, so a multi-codepoint emoji is removed
 // whole rather than leaving orphaned selector characters behind.
-const EMOJI = /(?:\p{Regional_Indicator}\p{Regional_Indicator})|\p{Extended_Pictographic}(?:️|⃣|[\u{1F3FB}-\u{1F3FF}])?(?:‍\p{Extended_Pictographic}(?:️)?)*/gu;
+const EMOJI = /[0-9#*]️?⃣|\p{Regional_Indicator}\p{Regional_Indicator}|\p{Extended_Pictographic}(?:️|[\u{1F3FB}-\u{1F3FF}])?(?:‍\p{Extended_Pictographic}(?:️|[\u{1F3FB}-\u{1F3FF}])?)*/gu;
 
 /**
  * Enforce the emoji rule on Will-generated text.
@@ -106,8 +106,52 @@ export function limitEmojis(input: string | null | undefined, allowOne: boolean)
   return s;
 }
 
-/** Convenience: the two owner text rules applied together, in the right order
- *  (strip dashes first, then cap emojis), to Will-generated prose. */
-export function normaliseWillText(input: string | null | undefined, opts: { firstMessage: boolean }): string {
-  return limitEmojis(stripDashes(input), opts.firstMessage);
+// ============================================================
+// Owner rule: address the customer by their FIRST name only, and only in the
+// opening message, never in every follow-up. The model is already told this, but
+// this is the deterministic backstop for when it slips.
+// ============================================================
+/** The first word of a name ("Daniel Haas" -> "Daniel"), trimmed. '' if none. */
+export function firstNameOf(name: string | null | undefined): string {
+  if (!name) return '';
+  return String(name).trim().split(/\s+/)[0] ?? '';
+}
+
+const NAME_ESCAPE = /[.*+?^${}()|[\]\\]/g;
+
+/** Remove the customer's first name where it is used to ADDRESS them (a leading
+ *  greeting, a leading vocative, or a trailing ", Name"), leaving the rest of the
+ *  sentence intact. Used on every message after the opening one. Conservative on
+ *  purpose: it does not touch the name mid-sentence, only the address forms. */
+export function stripNameAddress(input: string | null | undefined, firstName: string | null | undefined): string {
+  if (!input || !firstName) return input ?? '';
+  const n = firstName.trim().replace(NAME_ESCAPE, '\\$&');
+  if (!n) return String(input);
+  let s = String(input);
+  // "Hi Daniel," / "Hey Daniel!" / "Hello Daniel" -> keep the greeting, drop name.
+  s = s.replace(new RegExp('^(\\s*)(hi|hey|hello|hiya|dear)\\s+' + n + '\\b[\\s!,.]*', 'i'), '$1$2, ');
+  // Leading vocative: "Daniel, ..." -> "..."
+  s = s.replace(new RegExp('^(\\s*)' + n + '\\s*[,!]\\s*', 'i'), '$1');
+  // Trailing vocative: "... , Daniel." / "... Daniel!" at the very end -> drop name.
+  s = s.replace(new RegExp('[,\\s]+' + n + '\\b\\s*([.!?]*)\\s*$', 'i'), '$1');
+  // Tidy the seams.
+  s = s
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/ +([,.!?;:])/g, '$1')
+    .replace(/(^|\n)[ \t]+/g, '$1')
+    .replace(/[ \t]+(\n|$)/g, '$1')
+    .trim();
+  return s;
+}
+
+/** Convenience: all owner text rules applied together, in the right order — strip
+ *  dashes, cap emojis, then (on non-opening messages) remove the name as address.
+ *  `firstName` is the customer's first name; omit it to skip the name rule. */
+export function normaliseWillText(
+  input: string | null | undefined,
+  opts: { firstMessage: boolean; firstName?: string | null },
+): string {
+  let s = limitEmojis(stripDashes(input), opts.firstMessage);
+  if (!opts.firstMessage && opts.firstName) s = stripNameAddress(s, opts.firstName);
+  return s;
 }

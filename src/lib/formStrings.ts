@@ -83,7 +83,7 @@ export const formStrings = {
     ja: '最後のステップ：税務上の居住区分についてご説明し、その後送信いただけます。',
   },
   continueButton:      { en: 'Continue →',                         de: 'Weiter →',                  ja: '次へ →' },
-  timeEstimate:        { en: '⏱ Takes about 2 minutes',            de: '⏱ Dauert etwa 2 Minuten',    ja: '⏱ 約2分で完了' },
+  timeEstimate:        { en: '⏱ Takes about 1 minute',             de: '⏱ Dauert etwa 1 Minute',     ja: '⏱ 約1分で完了' },
   backButton:          { en: '← Back',                             de: '← Zurück',                   ja: '← 戻る' },
   registeredAgentNo:   { en: 'Registered Tax Agent',              de: 'Registrierter Steueragent',  ja: '登録税理士' },
   registeredTaxAgent:  { en: 'Working holiday specialists',        de: 'Working-Holiday-Spezialisten', ja: 'ワーホリ専門チーム' },

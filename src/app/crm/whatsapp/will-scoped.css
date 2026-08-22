@@ -228,6 +228,19 @@ main{padding:14px 16px 36px;max-width:none;margin-left:245px;
 .will-scope .cn time{font-size:10.5px;color:var(--ink3);flex:none}
 .will-scope .cm{font-size:11px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
 .will-scope .cstate{font-size:9.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:color-mix(in srgb,var(--sc) 14%, transparent);color:var(--sc);flex:none}
+/* Clickable stage badge + manual-move dropdown (owner override). */
+.will-scope .stagepick{position:relative;display:inline-flex}
+.will-scope .cstate-btn{border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:4px}
+.will-scope .cstate-btn:hover{background:color-mix(in srgb,var(--sc) 24%, transparent)}
+.will-scope .cstate-caret{font-size:8px;opacity:.8}
+.will-scope .stagemenu-backdrop{position:fixed;inset:0;z-index:40}
+.will-scope .stagemenu{position:absolute;top:calc(100% + 4px);left:0;z-index:41;min-width:190px;max-height:320px;overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 28px rgba(20,22,30,.18);padding:5px}
+.will-scope .stagemenu-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:none;background:none;font-family:inherit;font-size:12px;color:var(--ink);padding:7px 9px;border-radius:7px;cursor:pointer}
+.will-scope .stagemenu-item:hover{background:var(--surface2)}
+.will-scope .stagemenu-item.is-current{font-weight:700}
+.will-scope .stagemenu-dot{width:9px;height:9px;border-radius:50%;flex:none}
+.will-scope .stagemenu-lbl{flex:1}
+.will-scope .stagemenu-check{color:var(--brand1);font-weight:700}
 .will-scope .chatpane{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 1px 3px rgba(30,32,40,.04)}
 .will-scope .chathead{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--surface2);flex-wrap:wrap}
 .will-scope .chathead .cav{width:34px;height:34px}
