@@ -1377,13 +1377,14 @@ export default function DashboardClient() {
   })
   }, [archivedClients, archiveSearchResults, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
-  // Whole-CRM visual scale, kept IDENTICAL to the Will dashboard so the two
-  // interfaces feel like one product at the same size. Will uses base 1.25
-  // (see will-scoped.css), and both share the same 0.9375 (= 75/80) fit factor
-  // so that moving Chrome from 75% to 80% leaves everything looking the size you
-  // had at 75%. zoom (not transform:scale) so the fixed sidebar, scrolling and
-  // heights all stay correct.
-  const CRM_ZOOM = 1.25 * 0.9375; // 1.171875 — same as Will
+  // Match the VISUAL size of the Will dashboard. Same zoom alone was not enough:
+  // this CRM was designed with larger base type (its stat number is 26px, the
+  // page title 22px) than Will (17px / 14.5px), so at an equal zoom it still
+  // rendered ~1.5x bigger. We divide the zoom by that base-size ratio so the
+  // dominant text — headings, stat numbers, cards — lands on Will's size and the
+  // two feel like one product. Will's own zoom is 1.25 x 0.9375 = 1.171875.
+  const WILL_ZOOM = 1.25 * 0.9375;
+  const CRM_ZOOM = WILL_ZOOM * (17 / 26); // ≈0.766 — main's 26px number → Will's 17px
   const CRM_H = `calc(100vh / ${CRM_ZOOM})`;
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',height:CRM_H,overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif',zoom:CRM_ZOOM},
