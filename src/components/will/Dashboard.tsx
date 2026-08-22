@@ -630,7 +630,7 @@ export default function Dashboard() {
                         return (
                           <div key={m.id} className={`msg ${m.direction === 'IN' ? 'in' : 'out'}`}>
                             {m.body}
-                            <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
+                            <div className="mt">{m.author === 'AI' && <span className="ai">{ASSISTANT_NAME}</span>}{m.author === 'HUMAN' && <span className="ai" style={{ color: 'var(--sig)' }}>you</span>}{new Date(m.createdAt).toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })} {m.direction === 'OUT' && (m.status === 'FAILED' ? <span style={{ color: 'var(--crit)', fontWeight: 600 }}>⚠ not delivered</span> : m.status === 'QUEUED' ? '⏳' : '✓✓')}</div>
                           </div>
                         );
                       })}
@@ -977,7 +977,7 @@ export default function Dashboard() {
                           <span style={{ color: 'var(--ink3)', fontWeight: 500, textTransform: 'capitalize' }}>{a.actor}</span> · {label}
                           {blocked && <span className="cstate" style={{ ['--sc' as string]: 'var(--crit)', marginLeft: 6 }}>guard blocked</span>}
                         </span>
-                        <span style={{ color: 'var(--ink3)', whiteSpace: 'nowrap' }}>{new Date(a.at).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</span>
+                        <span style={{ color: 'var(--ink3)', whiteSpace: 'nowrap' }}>{new Date(a.at).toLocaleString('en-AU', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Australia/Melbourne' })}</span>
                       </div>
                       {d.preview && <div style={{ color: 'var(--ink2)', marginTop: 3 }}>&ldquo;{d.preview}&rdquo;</div>}
                       {d.knowledgeUsed && d.knowledgeUsed.length > 0 && <div className="mini" style={{ marginTop: 2 }}>Used: {d.knowledgeUsed.join(', ')}</div>}

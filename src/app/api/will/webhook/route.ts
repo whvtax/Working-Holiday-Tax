@@ -9,7 +9,7 @@
 //        outbound message as an OUT record.
 // ============================================================
 import { createHmac, timingSafeEqual } from 'crypto';
-import { handleIncoming } from '@/lib/will/service';
+import { handleIncoming, handleInboundNote } from '@/lib/will/service';
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
 import { isRateLimited, getRedis } from '@/lib/rate-limit';
@@ -99,7 +99,53 @@ function verifySignature(rawBody: string, header: string | null): boolean {
   }
 }
 
-interface WaMessage { id: string; from: string; text?: { body: string }; type: string; timestamp?: string; }
+interface WaMessage {
+  id: string; from: string; type: string; timestamp?: string;
+  text?: { body: string };
+  image?: { caption?: string }; video?: { caption?: string };
+  document?: { caption?: string; filename?: string };
+  audio?: unknown; voice?: unknown; sticker?: unknown; location?: unknown; contacts?: unknown;
+  // Present on type:'unsupported' — the reason Meta could not render the message.
+  errors?: { code?: number; title?: string; message?: string }[];
+}
+
+/** One inbound message reduced to something we can always act on. `isText` true
+ *  means run the AI engine on `body`; false means the message carried no text we
+ *  can read (a photo, a voice note, or a Coexistence `unsupported` with no body),
+ *  so it is stored and handed to a human instead of the model. */
+interface InboundItem { msg: WaMessage; name?: string; body: string; isText: boolean; kind: string; }
+
+/** A human-readable stand-in for a message that carries no text body, so a photo
+ *  or voice note still shows in the thread instead of vanishing. */
+function placeholderFor(m: WaMessage): string {
+  const caption = m.image?.caption || m.video?.caption || m.document?.caption || '';
+  let note: string;
+  switch (m.type) {
+    case 'image': note = '📷 [Photo]'; break;
+    case 'video': note = '🎥 [Video]'; break;
+    case 'audio': case 'voice': note = '🎤 [Voice message]'; break;
+    case 'document': note = `📄 [Document${m.document?.filename ? ': ' + m.document.filename : ''}]`; break;
+    case 'sticker': note = '💟 [Sticker]'; break;
+    case 'location': note = '📍 [Location]'; break;
+    case 'contacts': note = '👤 [Contact card]'; break;
+    default: note = '📎 [Message — open WhatsApp to view]';
+  }
+  return caption ? `${note} ${caption}` : note;
+}
+
+/** Non-PII description of a message we could not turn into text, for the audit
+ *  log. This is what tells us, on the next real message, whether Meta ever
+ *  includes a body on a Coexistence `unsupported` payload (it usually does not),
+ *  and which error code it attaches. The body preview is redacted to a length. */
+function describeUndecoded(m: WaMessage): Record<string, unknown> {
+  return {
+    type: m.type,
+    keys: Object.keys(m).filter((k) => k !== 'from'),
+    hasTextBody: !!m.text?.body,
+    textLen: m.text?.body ? m.text.body.length : 0,
+    errors: (m.errors ?? []).map((e) => ({ code: e.code ?? null, title: e.title ?? null })),
+  };
+}
 
 // Coexistence + fresh-start cutoff: when a number joins via coexistence, Meta
 // does a ONE-TIME history sync that pushes old chats into the webhook. Set
@@ -180,8 +226,8 @@ function inboundSnapshot(payload: unknown): Record<string, unknown> {
  *  id while this filter kept matching the old one, silently dropping every
  *  inbound message with no error anywhere. Both directions now resolve the id
  *  the same way. */
-function extract(payload: unknown, ourPhoneId?: string): { msg: WaMessage; name?: string }[] {
-  const out: { msg: WaMessage; name?: string }[] = [];
+function extract(payload: unknown, ourPhoneId?: string): InboundItem[] {
+  const out: InboundItem[] = [];
   try {
     const entries = (payload as { entry?: unknown[] }).entry ?? [];
     for (const e of entries) {
@@ -196,7 +242,19 @@ function extract(payload: unknown, ourPhoneId?: string): { msg: WaMessage; name?
         for (const m of val.messages ?? []) {
           // Drop messages older than the fresh-start cutoff (history sync / backfill).
           if (cutoff && m.timestamp && Number(m.timestamp) < cutoff) continue;
-          if (m.type === 'text' && m.text?.body) out.push({ msg: m, name: nameByWa.get(m.from) });
+          const name = nameByWa.get(m.from);
+          // THE FIX: recover the text whenever a body is present, WHATEVER the
+          // declared type. In WhatsApp Coexistence a plain text message can arrive
+          // tagged `unsupported` while still carrying its `text.body`; the old
+          // strict `type === 'text'` check dropped it silently, losing the lead.
+          if (m.text?.body) {
+            out.push({ msg: m, name, body: m.text.body, isText: true, kind: 'text' });
+            continue;
+          }
+          // No readable text: keep the customer visible with a placeholder and a
+          // human task rather than dropping them. Media and bodiless `unsupported`
+          // both land here.
+          out.push({ msg: m, name, body: placeholderFor(m), isText: false, kind: m.type || 'unknown' });
         }
       }
     }
@@ -296,6 +354,11 @@ export async function POST(req: Request) {
   } catch { /* diagnostics only */ }
 
   const items = extract(payload, ourPhoneId);
+  // Text messages run the AI engine; anything with no readable body (a photo, a
+  // voice note, a bodiless `unsupported`) is handled separately below so it is
+  // never silently dropped.
+  const textItems = items.filter((it) => it.isText);
+  const noteItems = items.filter((it) => !it.isText);
 
   // REL-01: process BEFORE acking (Meta allows ~10s and our work is a few
   // seconds), so a serverless freeze after the response can never drop a
@@ -306,7 +369,7 @@ export async function POST(req: Request) {
   // on the redelivery, so a retry re-runs only what actually failed.
   // COST-01: throttle per-sender and globally before invoking the paid engine.
   let askMetaToRetry = false;
-  for (const { msg, name } of items) {
+  for (const { msg, name, body } of textItems) {
     // Atomic idempotency claim (RACE-01/REL-02): the first delivery of a given
     // Meta id wins; concurrent duplicates get false and are skipped.
     let claimed = false;
@@ -339,7 +402,7 @@ export async function POST(req: Request) {
       // to an engine that treated "not SUPERVISED" as permission to send.
       // resolveAiMode recognises exactly one value as autopilot.
       const mode = resolveAiMode(await store.getSetting('ai_mode'));
-      await handleIncoming(msg.from, msg.text!.body, mode, { name });
+      await handleIncoming(msg.from, body, mode, { name });
       // success: the claim stands, so a Meta retry of the same id is a no-op.
     } catch (e) {
       const error = (e as Error).message?.slice(0, 200) ?? 'unknown';
@@ -373,12 +436,32 @@ export async function POST(req: Request) {
             customerName: customer?.name ?? name ?? maskWa(msg.from),
             reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
             severity: 'URGENT',
-            context: msg.text?.body ?? null,
+            context: body,
             suggestedReply: null,
           });
         } catch { /* the store is the thing that is broken; the audit line stands */ }
       }
     }
+  }
+
+  // Messages with no readable text (a photo, a voice note, or a Coexistence
+  // `unsupported` that carried no body). Will cannot read these, so it does NOT
+  // reply — but the customer must never disappear. Store the placeholder in the
+  // thread and raise ONE task so a human opens WhatsApp and answers. Best-effort:
+  // never blocks the ack, never asks Meta to retry (there is nothing to re-run).
+  for (const { msg, name, body, kind } of noteItems) {
+    try {
+      if (!(await store.claimInbound(msg.id))) continue; // dedupe on the Meta id
+      // For a bodiless `unsupported`, record exactly what Meta sent (no PII), so
+      // we can confirm whether the text was ever recoverable and which error code
+      // Coexistence attached. This is the line that turns "why is it unsupported"
+      // into a definite answer on the next message.
+      if (kind === 'unsupported' || kind === 'unknown') {
+        try { await store.audit('channel', 'inbound_unsupported', { id: msg.id, from: maskWa(msg.from), ...describeUndecoded(msg) }); } catch { /* */ }
+      }
+      await handleInboundNote(msg.from, body, { name });
+      await store.audit('channel', 'inbound_note_stored', { id: msg.id, kind, from: maskWa(msg.from) });
+    } catch { /* best effort: the placeholder is a courtesy, not the lead itself */ }
   }
 
   // Coexistence sync: mirror what the staff member did in the WhatsApp Business

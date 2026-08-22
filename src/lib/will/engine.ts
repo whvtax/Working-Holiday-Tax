@@ -10,6 +10,7 @@ import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { canTransition, CustomerState } from './state-machine';
 import { resolveAiMode, type AiMode } from './mode';
+import { stripDashes } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -67,7 +68,10 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     // send — it falls through to a plain task for you to handle by hand.
     const draft = (decision.suggested_reply ?? '').trim();
     if (draft) {
-      const text = fillPlaceholders(draft, bank);
+      // Owner rule: Will never emits a dash. Strip the model's prose BEFORE the
+      // placeholders are filled, so a URL/bank value inserted afterwards keeps
+      // any hyphen it legitimately needs.
+      const text = fillPlaceholders(stripDashes(draft), bank);
       const verdict = policyGuard(text, {
         ...input.guard,
         state: ctx.state,
@@ -131,7 +135,9 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   }
 
   // --- fill system-owned placeholders, then guard the final text ---
-  const text = fillPlaceholders(decision.reply_text, bank);
+  // Owner rule: strip every dash from the model's prose before filling, so links
+  // and bank details inserted by fillPlaceholders are never mangled.
+  const text = fillPlaceholders(stripDashes(decision.reply_text), bank);
   const guardCtx: GuardContext = {
     ...input.guard,
     state: ctx.state,

@@ -276,6 +276,38 @@ async function handleIncomingInner(
   return { outcome, customer: fresh ?? customer, pendingMessageId };
 }
 
+// ============================================================
+// A customer message Will cannot read as text: a photo, a voice note, or a
+// Coexistence `unsupported` payload with no recoverable body. Will never replies
+// to these (there is nothing to reason about), but the customer must stay
+// visible: create the contact if new, drop the placeholder into the thread, and
+// raise ONE task so a human opens WhatsApp and answers. Deliberately does NOT run
+// the AI engine, the daily budget, or the returning-contact filter — a task is
+// safe for any sender, and the whole point is that nothing gets lost.
+// ============================================================
+export async function handleInboundNote(
+  waId: string,
+  body: string,
+  meta?: { name?: string },
+): Promise<CustomerRow> {
+  const store = getStore();
+  let customer = await store.getCustomerByWaId(waId);
+  if (!customer) {
+    customer = await store.createCustomer({ waId, name: meta?.name ?? null, flag: '💬' });
+    await store.audit('system', 'customer_created', { waId });
+  }
+  await store.addMessage({
+    customerId: customer.id, direction: 'IN', author: 'CUSTOMER', status: 'SENT', body,
+  });
+  await store.addTask({
+    customerId: customer.id, customerName: customer.name ?? meta?.name ?? waId,
+    reason: 'Customer sent a message Will cannot read (photo, voice note, or unsupported type). Open WhatsApp to read it and reply.',
+    severity: 'REVIEW', context: body, suggestedReply: null,
+  });
+  const fresh = await store.getCustomerByWaId(waId);
+  return fresh ?? customer;
+}
+
 /** After payment confirmation (form link just sent), move to FORM_PENDING so the form follow-ups run. */
 export async function autoAdvanceToForm(customerId: string, _bank: { bsb: string; account: string }): Promise<void> {
   const store = getStore();
