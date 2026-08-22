@@ -543,12 +543,13 @@ export default function Dashboard() {
             <div className="chatwrap">
               <div className="chatlist">
                 <div className="search"><input placeholder="Search customers & messages…" value={searchQ} onChange={(e) => setSearchQ(e.target.value)} /></div>
-                {/* Filter chips: All, Unread, then one per pipeline stage.
-                    Scrolls sideways when they do not all fit. */}
+                {/* Filter chips (owner's choice): just the four that matter, so
+                    they fit with no sideways scroll — All (default), Unread, and
+                    the two action stages Estimate and Signature. */}
                 <div className="chatfilter">
                   <button className={`cfchip ${chatFilter === 'all' ? 'on' : ''}`} onClick={() => setChatFilter('all')}>All</button>
                   <button className={`cfchip ${chatFilter === 'unread' ? 'on' : ''}`} onClick={() => setChatFilter('unread')}>Unread</button>
-                  {STAGE_GROUPS.map((sg) => (
+                  {STAGE_GROUPS.filter((sg) => sg.id === 'estimate' || sg.id === 'sig').map((sg) => (
                     <button key={sg.id} className={`cfchip ${chatFilter === sg.id ? 'on' : ''}`} style={{ ['--pc' as string]: sg.color }} onClick={() => setChatFilter(sg.id)}>{sg.label}</button>
                   ))}
                 </div>

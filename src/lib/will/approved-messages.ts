@@ -19,7 +19,7 @@ Payment details:
 Account Name: Simple Tax Services
 BSB: 062692
 Account: 81049952
-Once paid, just send us a quick screenshot and we'll get started 🙌`,
+Once paid, just send us a quick screenshot and we'll get started.`,
 
   price_tfn_abn: `Perfect 😊
 Our team will support you from start to finish and help maximise your tax refund.
@@ -28,7 +28,7 @@ Payment details:
 Account Name: Simple Tax Services
 BSB: 062692
 Account: 81049952
-Once paid, just send us a quick screenshot and we'll get started 🙌`,
+Once paid, just send us a quick screenshot and we'll get started.`,
 
   objections: {
     o1_refund_before_pay: `Absolutely 😊 Working out your expected refund is part of the review. We need to go through your full situation first before we can give you an accurate estimate, which is why we start the review once payment is made. And if your refund ends up being less than our fee, we'll refund the difference, so you're never out of pocket for our service.`,

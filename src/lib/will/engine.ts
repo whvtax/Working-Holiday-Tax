@@ -10,7 +10,7 @@ import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { canTransition, CustomerState } from './state-machine';
 import { resolveAiMode, type AiMode } from './mode';
-import { stripDashes } from './text-normalize';
+import { normaliseWillText } from './text-normalize';
 
 // One definition, in ./mode, used by everything that decides whether a message
 // may leave without the owner. Re-exported so existing importers are unaffected.
@@ -52,6 +52,10 @@ export function fillPlaceholders(
 export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   const { ctx, history, mode, bank } = input;
 
+  // Owner emoji rule: at most one emoji, and ONLY in the opening message. This is
+  // the opening message when Will has not sent anything in this conversation yet.
+  const firstMessage = !history.some((t) => t.role === 'assistant');
+
   const decision = await decide(ctx, history);
 
   if (decision.action === 'human_task') {
@@ -68,10 +72,10 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
     // send — it falls through to a plain task for you to handle by hand.
     const draft = (decision.suggested_reply ?? '').trim();
     if (draft) {
-      // Owner rule: Will never emits a dash. Strip the model's prose BEFORE the
-      // placeholders are filled, so a URL/bank value inserted afterwards keeps
-      // any hyphen it legitimately needs.
-      const text = fillPlaceholders(stripDashes(draft), bank);
+      // Owner rules: no dashes ever, and at most one emoji (opening only). Applied
+      // to the model's prose BEFORE placeholders are filled, so a URL/bank value
+      // inserted afterwards keeps any hyphen it legitimately needs.
+      const text = fillPlaceholders(normaliseWillText(draft, { firstMessage }), bank);
       const verdict = policyGuard(text, {
         ...input.guard,
         state: ctx.state,
@@ -135,9 +139,9 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   }
 
   // --- fill system-owned placeholders, then guard the final text ---
-  // Owner rule: strip every dash from the model's prose before filling, so links
-  // and bank details inserted by fillPlaceholders are never mangled.
-  const text = fillPlaceholders(stripDashes(decision.reply_text), bank);
+  // Owner rules (no dashes ever; at most one emoji, opening only) applied to the
+  // model's prose before filling, so links and bank details are never mangled.
+  const text = fillPlaceholders(normaliseWillText(decision.reply_text, { firstMessage }), bank);
   const guardCtx: GuardContext = {
     ...input.guard,
     state: ctx.state,

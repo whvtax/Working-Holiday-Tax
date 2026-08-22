@@ -1,4 +1,4 @@
-import { stripDashes } from '../text-normalize';
+import { stripDashes, limitEmojis, normaliseWillText } from '../text-normalize';
 
 const DASH_RE = /[-֊־᠆‐‑‒–—―⁃−⸺⸻﹘﹣－]/;
 
@@ -53,5 +53,55 @@ describe('stripDashes (owner rule: Will never emits a dash)', () => {
   test('minus sign and fullwidth dash are stripped', () => {
     const out = stripDashes('price −220 ／ －385');
     expect(DASH_RE.test(out)).toBe(false);
+  });
+});
+
+const EMOJI_RE = /\p{Extended_Pictographic}/u;
+
+describe('limitEmojis (owner rule: one emoji, opening message only)', () => {
+  test('opening message keeps exactly the first emoji', () => {
+    const out = limitEmojis('Hey! 😊 Of course, happy to help 🙌 great 🎉', true);
+    expect(out).toContain('😊');
+    expect(out).not.toContain('🙌');
+    expect(out).not.toContain('🎉');
+  });
+
+  test('non-opening message keeps zero emojis', () => {
+    const out = limitEmojis('Perfect 😊 the fee is $220 🙌', false);
+    expect(EMOJI_RE.test(out)).toBe(false);
+    expect(out).toContain('$220');
+  });
+
+  test('emoji with skin tone / ZWJ sequence is removed whole', () => {
+    const out = limitEmojis('nice 👍🏽 and 👨‍👩‍👧 done', false);
+    expect(EMOJI_RE.test(out)).toBe(false);
+    expect(out).toContain('nice');
+    expect(out).toContain('done');
+  });
+
+  test('spacing is tidied after removal', () => {
+    const out = limitEmojis('Great 🎉 , thanks', false);
+    expect(out).toBe('Great, thanks');
+  });
+
+  test('empty / null input is safe', () => {
+    expect(limitEmojis('', true)).toBe('');
+    expect(limitEmojis(null, false)).toBe('');
+  });
+});
+
+describe('normaliseWillText (both rules together)', () => {
+  test('opening: dashes gone, one emoji kept', () => {
+    const out = normaliseWillText('Hi 😊 — we will help 🙌', { firstMessage: true });
+    expect(DASH_RE.test(out)).toBe(false);
+    expect(out).toContain('😊');
+    expect(out).not.toContain('🙌');
+  });
+
+  test('later message: no dashes, no emoji', () => {
+    const out = normaliseWillText('Sure 😊 - the fee is $220', { firstMessage: false });
+    expect(DASH_RE.test(out)).toBe(false);
+    expect(EMOJI_RE.test(out)).toBe(false);
+    expect(out).toContain('$220');
   });
 });

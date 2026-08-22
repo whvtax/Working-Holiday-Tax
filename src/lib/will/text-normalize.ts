@@ -71,3 +71,43 @@ export function stripDashes(input: string | null | undefined): string {
   s = s.replace(new RegExp(STASH_OPEN + '(\\d+)' + STASH_CLOSE, 'g'), (_, i) => stash[Number(i)] ?? '');
   return s;
 }
+
+// ============================================================
+// Owner rule: Will's messages use at most ONE emoji, and only in the very first
+// message of a conversation (a light opening greeting). Every message after that
+// carries none. A wall of emojis reads as a bot/spam; a single warm one at hello
+// reads as a person. This is enforced deterministically, not left to the model.
+// ============================================================
+// Matches a full emoji, including skin-tone modifiers and ZWJ sequences, plus a
+// following variation selector or keycap, so a multi-codepoint emoji is removed
+// whole rather than leaving orphaned selector characters behind.
+const EMOJI = /(?:\p{Regional_Indicator}\p{Regional_Indicator})|\p{Extended_Pictographic}(?:️|⃣|[\u{1F3FB}-\u{1F3FF}])?(?:‍\p{Extended_Pictographic}(?:️)?)*/gu;
+
+/**
+ * Enforce the emoji rule on Will-generated text.
+ * @param allowOne when true (the opening message only) the FIRST emoji is kept
+ *        and the rest removed; when false every emoji is removed.
+ */
+export function limitEmojis(input: string | null | undefined, allowOne: boolean): string {
+  if (!input) return input ?? '';
+  let seen = 0;
+  let s = String(input).replace(EMOJI, (m) => {
+    seen += 1;
+    return allowOne && seen === 1 ? m : '';
+  });
+  // Tidy the gaps a removed emoji leaves (double spaces, a space before a comma).
+  s = s
+    .replace(/[ \t]{2,}/g, ' ')
+    .replace(/ +([,.!?;:])/g, '$1')
+    .replace(/(^|\n)[ \t]+/g, '$1')
+    .replace(/[ \t]+(\n|$)/g, '$1')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return s;
+}
+
+/** Convenience: the two owner text rules applied together, in the right order
+ *  (strip dashes first, then cap emojis), to Will-generated prose. */
+export function normaliseWillText(input: string | null | undefined, opts: { firstMessage: boolean }): string {
+  return limitEmojis(stripDashes(input), opts.firstMessage);
+}

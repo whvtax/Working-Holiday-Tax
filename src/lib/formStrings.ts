@@ -54,7 +54,7 @@ export const formStrings = {
   // broken field next to every other input that has an example in it. This hint
   // supplies the example instead. Day-first, because that is how Australia and
   // every country these customers come from writes a date.
-  dobHint:             { en: 'For example: 20/20/2000',            de: 'Zum Beispiel: 20.20.2000',  ja: '例：2000/20/20' },
+  dobHint:             { en: 'For example: 20/10/2000',            de: 'Zum Beispiel: 20.10.2000',  ja: '例：2000/10/20' },
   whatsapp:            { en: 'WhatsApp number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
   gender:              { en: 'Gender as shown in passport',        de: 'Geschlecht laut Reisepass', ja: 'パスポートに記載の性別' },

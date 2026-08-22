@@ -531,7 +531,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 
-            <Field label={T('dob')} required error={errors.dob} hint={T('dobHint')}>
+            <Field label={T('dob')} required error={errors.dob}>
               <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date" autoComplete="bday"
                 value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
             </Field>
