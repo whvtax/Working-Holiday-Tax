@@ -52,6 +52,28 @@ const PATTERNS: RegExp[] = [
   // Hebrew (no \b: it is ASCII-only in JavaScript and never fires on Hebrew)
   /(?:אתה|את|זה)\s+(?:בוט|רובוט|בינה\s*מלאכותית|מחשב)/,
   /מדבר(?:ת)?\s+עם\s+(?:בוט|רובוט|אדם|בן\s*אדם|מישהו\s+אמיתי)/,
+
+  // ── Shapes the prefix-anchored patterns above all miss ──────────────────
+  // Every pattern so far requires an opener ("are you", "is this", "am I
+  // talking to"). Real people on WhatsApp drop it. Measured misses:
+  //   "bot or human?"  "u a bot?"  "real person?"  "is there a real human there?"
+  //   "do you use AI to answer?"  "sind Sie ein Mensch?"
+  // A miss is not harmless: it goes to the model, and until now nothing checked
+  // the ANSWER either, so "Haha, real person here 😊" reached the approval queue
+  // as a one-click send — exactly the reply the rule exists to prevent.
+
+  // Bare either/or: "bot or human?", "human or bot", "ai or person?"
+  new RegExp(`\\b(?:${BOT_WORDS})\\s*(?:or|/|\\|)\\s*(?:${HUMAN_WORDS})\\b|\\b(?:${HUMAN_WORDS})\\s*(?:or|/|\\|)\\s*(?:${BOT_WORDS})\\b`, 'i'),
+  // Openerless question: "u a bot?", "real person?", "a human?" — requires the
+  // whole message to be short and to end in a question mark, so it cannot fire
+  // inside a sentence about something else.
+  new RegExp(`^(?:so\\s+|but\\s+|hey\\s+|hi\\s+|sorry\\s+)?(?:are\\s+)?(?:you|u|this|it)?\\s*(?:a|an)?\\s*(?:${BOT_WORDS}|${HUMAN_WORDS})\\s*\\??$`, 'i'),
+  // "is there a real human/person there", "can I talk to a real person"
+  new RegExp(`\\b(?:is\\s+there|can\\s+i\\s+(?:talk|speak|chat)\\s+(?:to|with)|i\\s+want\\s+(?:to\\s+(?:talk|speak)\\s+(?:to|with)\\s+)?)\\b[^.?!]{0,25}\\b(?:${HUMAN_WORDS})\\b`, 'i'),
+  // "do you use AI", "is this AI generated", "are these answers automated"
+  new RegExp(`\\b(?:do\\s+(?:you|u)\\s+use|is\\s+(?:this|it)\\s+(?:being\\s+)?(?:generated|written|answered|powered)\\s+by|are\\s+(?:these|the)\\s+(?:answers|replies|messages))\\b[^.?!]{0,30}\\b(?:${BOT_WORDS})\\b`, 'i'),
+  // German formal address ("Sie"), which the informal "bist du" pattern misses.
+  new RegExp(`\\b(?:sind\\s+sie|ist\\s+das|reden\\s+sie|schreiben\\s+sie)\\b[^.?!]{0,25}\\b(?:${BOT_WORDS}|mensch\\w*|echte\\s+person)\\b`, 'i'),
 ];
 
 /**

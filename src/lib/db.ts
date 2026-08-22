@@ -12,9 +12,9 @@ import crypto from 'crypto'
 export type TaxReturn     = { year: string; refundAmount: number; type: 'refund' | 'owed'; completedAt: string }
 export type SuperReturn   = { year: string; amount: number; completedAt: string }
 export type ServiceRecord = { done: boolean; completedAt: string; notes: string }
-// 'lead' = form 1 submitted, form 2 not yet completed (see lib/intake.ts).
-// It becomes 'tax-return' the moment form 2 lands, so a finished record is
-// identical to one from the original /tax-form.
+// 'lead' is a HISTORICAL task type from the removed two-stage intake, kept only
+// so records created before the change still open in the CRM. Nothing creates
+// one any more: there is a single intake, the full /tax-form.
 export type TaskType      = 'tax-return' | 'super' | 'tfn' | 'abn' | 'lead'
 export type ReviewStatus  = 'pending' | 'approved' | 'rejected'
 

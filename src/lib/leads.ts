@@ -1,8 +1,9 @@
 /**
  * The marketing list.
  *
- * Every submission that carries an email is recorded here, from all three
- * routes: the original /tax-form, form 1 (/start) and form 2 (/complete).
+ * Every submission that carries an email is recorded here. Historically that
+ * meant three routes; since the two-stage intake was removed there is one:
+ * the full /tax-form (plus the standalone TFN / ABN / super forms).
  *
  * Kept in its own table rather than read off crm_tasks, because tasks get
  * marked done, archived and hard-deleted, and markTaskDone strips fields on the

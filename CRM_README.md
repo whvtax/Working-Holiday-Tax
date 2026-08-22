@@ -35,16 +35,36 @@ RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
 # Admin email — OTP codes and security alerts are sent here
 CRM_ADMIN_EMAIL=your@email.com
 
-# Password hash — generate with:
-# node -e "const c=require('crypto'); console.log(c.pbkdf2Sync('your_password','whvtax-salt-2024',100000,64,'sha512').toString('hex'))"
-CRM_PASSWORD_HASH=
+# Admin password (plaintext; it is hashed at runtime with PASSWORD_SALT)
+CRM_PASSWORD=
 
-# Salt for hashing (change in production!)
-PASSWORD_SALT=whvtax-salt-2024
+# Salt for password hashing — generate a fresh random value, never reuse one
+PASSWORD_SALT=
 ```
 
-> **Default development password:** `WHVAdmin2024!`
-> **Change it before deploying to production!**
+> ### Generating these two values
+>
+> `PASSWORD_SALT` is the ONE global salt for the ONE admin password, so a salt
+> that anyone can read defeats its entire purpose: an attacker can precompute
+> hashes for a wordlist offline instead of having to guess online.
+>
+> This file previously printed a real, fixed salt and a default password. Both
+> have been removed and rotated. **Never write either value into a file that
+> lives in the repository** — they belong only in the deployment's environment
+> variables.
+>
+> Generate each one separately:
+>
+> ```bash
+> openssl rand -hex 32                                    # macOS / Linux
+> ```
+> ```powershell
+> -join ((1..64) | ForEach-Object { '0123456789abcdef'[(Get-Random -Max 16)] })
+> ```
+>
+> Changing `PASSWORD_SALT` invalidates the existing password hash, so the salt
+> and the password must always be rotated **together** — otherwise the next
+> login fails and nobody can get in.
 
 ---
 

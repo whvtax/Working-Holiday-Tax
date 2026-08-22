@@ -125,24 +125,24 @@ describe('no negotiation, no invented promises', () => {
 
 describe('tax determination is never made before payment', () => {
   it('blocks declaring residency', () => {
-    expect(has('Based on this you are an Australian resident for tax purposes.', 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(true);
+    expect(has('Based on this you are an Australian resident for tax purposes.', 'TAX_DETERMINATION')).toBe(true);
   });
   it('blocks stating a refund outcome', () => {
-    expect(has('Your refund will be around a thousand dollars.', 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(true);
+    expect(has('Your refund will be around a thousand dollars.', 'TAX_DETERMINATION')).toBe(true);
   });
   it('WILL-AI-01: blocks a foreign/temporary residency determination', () => {
-    expect(has('Based on your dates you are a foreign resident for tax purposes.', 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(true);
-    expect(has("You're a temporary resident, so different rates apply.", 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(true);
+    expect(has('Based on your dates you are a foreign resident for tax purposes.', 'TAX_DETERMINATION')).toBe(true);
+    expect(has("You're a temporary resident, so different rates apply.", 'TAX_DETERMINATION')).toBe(true);
   });
   it('WILL-AI-01: blocks a bare-number refund estimate (no $ sign)', () => {
-    expect(has('Your refund should come to about 1450 give or take.', 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(true);
-    expect(has("You'll get back roughly 2300 this year.", 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(true);
+    expect(has('Your refund should come to about 1450 give or take.', 'TAX_DETERMINATION')).toBe(true);
+    expect(has("You'll get back roughly 2300 this year.", 'TAX_DETERMINATION')).toBe(true);
   });
   it('WILL-AI-01: still allows the plain $220/$385 price (not a refund estimate)', () => {
-    expect(has('Our fee is $220 for a TFN return, or $385 with ABN.', 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(false);
+    expect(has('Our fee is $220 for a TFN return, or $385 with ABN.', 'TAX_DETERMINATION')).toBe(false);
   });
   it('WILL-AI-01: allows a neutral MENTION of residency concept', () => {
-    expect(has('There is a short explanation of who is considered an Australian resident for tax purposes.', 'TAX_DETERMINATION_BEFORE_PAYMENT')).toBe(false);
+    expect(has('There is a short explanation of who is considered an Australian resident for tax purposes.', 'TAX_DETERMINATION')).toBe(false);
   });
 });
 
@@ -243,7 +243,7 @@ describe('the mined knowledge pack is safe to send (content-level)', () => {
   // the context is unpaid; we only assert on the CONTENT violations.
   const CONTENT_CODES = [
     'MYGOV_TROUBLESHOOTING', 'NON_DOLLAR_CURRENCY', 'PRICE_NEGOTIATION',
-    'REFUND_OR_CANCEL_PROMISE', 'TAX_DETERMINATION_BEFORE_PAYMENT',
+    'REFUND_OR_CANCEL_PROMISE', 'TAX_DETERMINATION',
     'DIY_INSTRUCTIONS', 'PLACEHOLDER_LEFTOVER', 'PROMPT_ECHO',
     'SENSITIVE_CONTENT', 'EM_DASH_FORBIDDEN',
   ];

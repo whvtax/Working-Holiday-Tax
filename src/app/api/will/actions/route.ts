@@ -12,16 +12,19 @@ import { fillPlaceholders } from '@/lib/will/engine';
 import { formatAUD } from '@/lib/will/config';
 import { readJson } from '@/lib/will/http';
 import { deliverOut, sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/will/channel';
+import { resolveAiMode } from '@/lib/will/mode';
 
 export const dynamic = 'force-dynamic';
 
 interface ActionBody {
   action: 'approve_message' | 'discard_message' | 'resolve_task' | 'mark_read' | 'toggle_ai'
-  | 'update_template' | 'reset_simulator' | 'set_kill_switch' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate';
+  | 'update_template' | 'reset_simulator' | 'set_kill_switch' | 'set_ai_mode' | 'manual_reply' | 'send_task_reply' | 'send_template' | 'set_state' | 'add_template' | 'delete_template' | 'approve_suggestion' | 'dismiss_suggestion' | 'set_variant_b' | 'set_goal' | 'set_estimate';
   id?: string;
   customerId?: string;
   body?: string;
   value?: boolean;
+  /** Approval / Autopilot. Separate from `value` because it is not a boolean. */
+  mode?: string;
   state?: string;
   title?: string;
   category?: string;
@@ -214,6 +217,22 @@ export async function POST(req: Request) {
       if (c && b.value) await reconcileSchedule(c);
       await store.audit('owner', b.value ? 'assistant_resumed' : 'assistant_paused', { customerId: b.id });
       return NextResponse.json({ ok: true });
+    }
+
+    // The Approval / Autopilot switch. It previously changed nothing but React
+    // state, so the dashboard showed a mode the system had never been told
+    // about — and approval mode held only because the settings row happened to
+    // be absent. Now it is a real, audited, persisted decision.
+    //
+    // Only the two known values are accepted, and anything else is refused
+    // rather than stored, because every reader treats an unrecognised value as
+    // "ask the owner" and a stored typo would be a mode nobody chose.
+    case 'set_ai_mode': {
+      if (b.mode !== 'SUPERVISED' && b.mode !== 'FULL_AUTO') return bad('unknown mode');
+      const mode = resolveAiMode(b.mode);
+      await store.setSetting('ai_mode', mode);
+      await store.audit('owner', mode === 'FULL_AUTO' ? 'ai_mode_autopilot' : 'ai_mode_approval', { mode });
+      return NextResponse.json({ ok: true, mode });
     }
 
     case 'set_kill_switch':

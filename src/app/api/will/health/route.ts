@@ -5,6 +5,7 @@ import { sessionValid } from '@/lib/will/auth';
 import { getStore, getLastPersistError } from '@/lib/will/store';
 import { policyGuard } from '@/lib/will/policy-guard';
 import { verifyChannel, metaAppSecret, metaVerifyToken } from '@/lib/will/channel';
+import { resolveAiMode } from '@/lib/will/mode';
 
 export const dynamic = 'force-dynamic';
 
@@ -108,9 +109,13 @@ export async function GET() {
   }
 
   const killSwitch = ((await getStore().getSetting('kill_switch').catch(() => false)) === true);
+  // The dashboard used to show whichever mode was last clicked in that browser
+  // tab, which was not necessarily the mode the system was actually in. It now
+  // shows the stored truth, resolved by the same function every sender uses.
+  const aiMode = resolveAiMode(await getStore().getSetting('ai_mode').catch(() => null));
   const allOk = Object.values(checks).every((c) => c.ok);
   return NextResponse.json({
-    ok: allOk, checks, killSwitch, usingMock: !hasKey,
+    ok: allOk, checks, killSwitch, aiMode, usingMock: !hasKey,
     whatsappLive: wa.live && webhookSecretsSet,
     whatsappConfigured: wa.configured,
     whatsappDetail: checks.whatsapp.detail,

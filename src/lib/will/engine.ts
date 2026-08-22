@@ -9,8 +9,11 @@ import { decide, Decision, Turn } from './claude';
 import { CustomerContext } from './playbook';
 import { policyGuard, GuardContext } from './policy-guard';
 import { canTransition, CustomerState } from './state-machine';
+import { resolveAiMode, type AiMode } from './mode';
 
-export type AiMode = 'SUPERVISED' | 'FULL_AUTO';
+// One definition, in ./mode, used by everything that decides whether a message
+// may leave without the owner. Re-exported so existing importers are unaffected.
+export type { AiMode };
 
 export interface EngineInput {
   ctx: CustomerContext;
@@ -122,12 +125,17 @@ export async function runEngine(input: EngineInput): Promise<EngineOutcome> {
   // H5: a free-form reply in a language the deterministic guard cannot cover is
   // never auto-sent. In Autopilot it is held for one-click human approval; in
   // Approval mode it already awaits approval. State still advances on approval.
-  if (verdict.unguardedLanguage && mode === 'FULL_AUTO') {
+  if (verdict.unguardedLanguage && resolveAiMode(mode) === 'FULL_AUTO') {
     return { kind: 'pending_approval', replyText: text, newState, stateChanged: !!newState, decision };
   }
 
+  // FAIL SAFE: only the exact string 'FULL_AUTO' transmits. This used to read
+  // `mode === 'SUPERVISED' ? 'pending_approval' : 'sent'`, which sent on every
+  // value that was not exactly 'SUPERVISED' — one wrong string in the settings
+  // row would have put live replies on autopilot silently, while the follow-up
+  // queue kept looking gated. See lib/will/mode.ts.
   return {
-    kind: mode === 'SUPERVISED' ? 'pending_approval' : 'sent',
+    kind: resolveAiMode(mode) === 'FULL_AUTO' ? 'sent' : 'pending_approval',
     replyText: text,
     newState,
     stateChanged: !!newState,

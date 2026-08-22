@@ -43,12 +43,18 @@ export const formStrings = {
 
   // ─ Field labels - shared ─
   firstName:           { en: 'First name (including middle names)', de: 'Vorname (inkl. Zweitnamen)', ja: '名（ミドルネーム含む）' },
-  givenNames:          { en: 'Given name(s)',                       de: 'Vorname(n)',                ja: '名' },
+  givenNames:          { en: 'Given name (s)',                      de: 'Vorname(n)',                ja: '名' },
   lastName:            { en: 'Last name',                          de: 'Nachname',                  ja: '姓' },
   country:             { en: 'Country of passport',                de: 'Land des Reisepasses',      ja: 'パスポート発行国' },
   passport:            { en: 'Passport number',                    de: 'Reisepassnummer',           ja: 'パスポート番号' },
   email:               { en: 'Email address',                      de: 'E-Mail-Adresse',             ja: 'メールアドレス' },
   dob:                 { en: 'Date of birth',                      de: 'Geburtsdatum',              ja: '生年月日' },
+  // A native date input renders EMPTY when it has no value — no placeholder is
+  // possible on `type="date"`, and on iOS it shows a blank box, which reads as a
+  // broken field next to every other input that has an example in it. This hint
+  // supplies the example instead. Day-first, because that is how Australia and
+  // every country these customers come from writes a date.
+  dobHint:             { en: 'For example: 20/20/2000',            de: 'Zum Beispiel: 20.20.2000',  ja: '例：2000/20/20' },
   whatsapp:            { en: 'WhatsApp number',                    de: 'WhatsApp-Nummer',           ja: 'WhatsApp番号' },
   auPhone:             { en: 'Australian phone number',            de: 'Australische Telefonnummer', ja: 'オーストラリアの電話番号' },
   gender:              { en: 'Gender as shown in passport',        de: 'Geschlecht laut Reisepass', ja: 'パスポートに記載の性別' },
@@ -72,7 +78,7 @@ export const formStrings = {
   // Last step of the tax form: the declaration + submit happen on the tax-residency page.
   checkResidency:      { en: 'Continue to tax residency →',  de: 'Weiter zur Steuerresidenz →', ja: '税務上の居住区分へ進む →' },
   checkResidencyNote:  {
-    en: "Last step: we'll explain tax residency, then you can submit.",
+    en: 'Last step: tax residency, then you can submit.',
     de: 'Letzter Schritt: Wir erklären dir die Steuerresidenz, dann kannst du absenden.',
     ja: '最後のステップ：税務上の居住区分についてご説明し、その後送信いただけます。',
   },

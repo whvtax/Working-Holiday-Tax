@@ -105,6 +105,21 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      // The two-stage intake (/start + /complete/<token>) has been removed in
+      // favour of the single full /tax-form. These redirects are NOT for SEO —
+      // both routes were noindex — they exist so a customer who still has one
+      // of those links sitting in their WhatsApp lands on the real form instead
+      // of a 404. A dead link is a lost customer.
+      // Temporary (302) on purpose: these are not canonical URLs and should not
+      // be cached permanently by anyone's browser.
+      {
+        source: '/complete/:token',
+        destination: '/tax-form',
+        permanent: false,
+      },
+      { source: '/start',    destination: '/tax-form',    permanent: false },
+      { source: '/de/start', destination: '/de/tax-form', permanent: false },
+      { source: '/ja/start', destination: '/ja/tax-form', permanent: false },
       // Permanent 301 redirects: old /guides URLs → new /blog URLs
       // Preserves SEO authority of any external links pointing to the old paths.
       {

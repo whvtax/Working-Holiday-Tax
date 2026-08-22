@@ -10,6 +10,8 @@ import { policyGuard } from './policy-guard';
 import { CustomerState } from './state-machine';
 import { formReceivedMessage } from './i18n';
 import { deliverOut } from './channel';
+import { requiresApproval } from './mode';
+import { maybeSendMonthlyDigest } from './digest';
 
 type Flow = 'prePayment' | 'form' | 'signature';
 
@@ -23,8 +25,9 @@ type Flow = 'prePayment' | 'form' | 'signature';
  * Autopilot sends without a human.
  */
 async function inApprovalMode(): Promise<boolean> {
-  const mode = await getStore().getSetting('ai_mode');
-  return mode !== 'FULL_AUTO'; // fail safe: unknown or unset means ask first
+  // Shared with the engine and the webhook so the three can never drift apart
+  // again: unknown, unset or misspelled all mean ask first.
+  return requiresApproval(await getStore().getSetting('ai_mode'));
 }
 
 /** The name used in a template's {{1}}. Meta rejects an empty parameter, so a
@@ -323,5 +326,18 @@ export async function runNightly(): Promise<void> {
       severity: 'REVIEW', context: issues.join(' | '), suggestedReply: null,
     });
   }
-  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged });
+  // Once a calendar month, email the owner everything customers actually typed
+  // last month, so their wording can be turned into knowledge-library entries.
+  // Guarded by a stored month key, not by the schedule, so a missed night simply
+  // sends it the following night and it can never send twice. Never allowed to
+  // break maintenance: a failed digest is retried tomorrow.
+  let digest: string;
+  try {
+    digest = await maybeSendMonthlyDigest(Date.now());
+  } catch (e) {
+    digest = 'failed';
+    await store.audit('nightly', 'digest_failed', { error: (e as Error).message?.slice(0, 200) }).catch(() => {});
+  }
+
+  await store.audit('nightly', 'maintenance_complete', { customers: customers.length, orphanJobsCancelled: orphans.length, issues: issues.length, processedPurged: purged, auditPurged, digest });
 }

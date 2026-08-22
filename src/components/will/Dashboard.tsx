@@ -21,6 +21,8 @@ interface Health {
   ok: boolean;
   checks: Record<string, { ok: boolean; detail: string }>;
   killSwitch: boolean;
+  /** The mode the SYSTEM is in, read from storage — not what this tab clicked. */
+  aiMode?: 'SUPERVISED' | 'FULL_AUTO';
   usingMock: boolean;
   whatsappLive?: boolean;
   whatsappConfigured?: boolean;
@@ -135,7 +137,12 @@ export default function Dashboard() {
   const [goalInput, setGoalInput] = useState<string>('50');
   const [tplText, setTplText] = useState('');
   const [toast, setToast] = useState('');
-  const [mode, setMode] = useState<'SUPERVISED' | 'FULL_AUTO'>('SUPERVISED');
+  // NOT local state any more. This used to be a useState that the two mode
+  // buttons set and nothing else ever read, so the dashboard displayed the last
+  // thing clicked in this tab rather than the mode the system was actually in —
+  // and clicking Autopilot changed the label without changing any behaviour.
+  // It now reflects what is stored, which is what every sender reads.
+  const mode: 'SUPERVISED' | 'FULL_AUTO' = health?.aiMode ?? 'SUPERVISED';
   const [chatSelId, setChatSelId] = useState<string | null>(null);
   const [chatMsgs, setChatMsgs] = useState<MessageRow[]>([]);
   const [upcoming, setUpcoming] = useState<JobRow[]>([]);
@@ -344,8 +351,25 @@ export default function Dashboard() {
           <div className="modebar" style={{ padding: 0 }}>
             <span className="modelabel">{ASSISTANT_NAME} Mode</span>
             <div className="modes">
-              <button className={`mode ${mode === 'SUPERVISED' ? 'active supervised' : ''}`} title={`${ASSISTANT_NAME} drafts every message, you approve before anything sends. Includes scheduled follow-ups and templates.`} onClick={() => { setMode('SUPERVISED'); say(`Approval mode: nothing sends without you`); }}>Approval</button>
-              <button className={`mode ${mode === 'FULL_AUTO' ? 'active autopilot' : ''}`} title={`${ASSISTANT_NAME} sends on his own; anything unclear comes to you`} onClick={() => { setMode('FULL_AUTO'); say(`Autopilot: ${ASSISTANT_NAME} sends, escalates anything unclear`); }}>Autopilot</button>
+              <button className={`mode ${mode === 'SUPERVISED' ? 'active supervised' : ''}`} title={`${ASSISTANT_NAME} drafts every message, you approve before anything sends. Includes scheduled follow-ups and templates.`}
+                onClick={async () => {
+                  if (mode === 'SUPERVISED') return;
+                  const r = await act({ action: 'set_ai_mode', mode: 'SUPERVISED' });
+                  if (!r?.ok) { say('Could not change mode — nothing was changed'); return; }
+                  setHealth((h) => h ? { ...h, aiMode: 'SUPERVISED' } : h);
+                  say(`Approval mode: nothing sends without you`);
+                }}>Approval</button>
+              <button className={`mode ${mode === 'FULL_AUTO' ? 'active autopilot' : ''}`} title={`${ASSISTANT_NAME} sends on his own; anything unclear comes to you`}
+                onClick={async () => {
+                  if (mode === 'FULL_AUTO') return;
+                  // Turning approval OFF is the one switch in this dashboard that
+                  // lets a message reach a customer unread by you. It asks first.
+                  if (!window.confirm(`Autopilot means ${ASSISTANT_NAME} sends messages to customers WITHOUT your approval.\n\nTurn it on?`)) return;
+                  const r = await act({ action: 'set_ai_mode', mode: 'FULL_AUTO' });
+                  if (!r?.ok) { say('Could not change mode — nothing was changed'); return; }
+                  setHealth((h) => h ? { ...h, aiMode: 'FULL_AUTO' } : h);
+                  say(`Autopilot: ${ASSISTANT_NAME} sends, escalates anything unclear`);
+                }}>Autopilot</button>
             </div>
           </div>
           <div className="hspacer" />

@@ -153,6 +153,15 @@ export interface Store {
   /** PERF-01: PK lookup of a single message (includes its customerId). */
   getMessageById(id: string): Promise<MessageRow | null>;
   setMessageStatus(id: string, status: MessageRow['status']): Promise<void>;
+  /** Inbound messages in [startIso, endIso), newest last, with the sender's name
+   *  and number joined on. Used by the monthly customer-words digest. Bounded by
+   *  `limit` so one very busy month cannot pull an unbounded result set into a
+   *  serverless function. */
+  listInboundBetween(
+    startIso: string,
+    endIso: string,
+    limit?: number,
+  ): Promise<(MessageRow & { customerName?: string | null; waId?: string })[]>;
   /** Clear the unread badge for a customer (chat opened / read). */
   markCustomerRead(id: string): Promise<void>;
   /** Fresh-start filter: true if this WhatsApp number is a KNOWN pre-existing

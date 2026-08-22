@@ -26,17 +26,10 @@ export default function PublicShellClient({
   ]
   const isTaxForm = !!pathname && formRoutes.includes(pathname)
 
-  // The two-stage intake (/start and /complete) drops the nav as well as the
-  // footer. Unlike /tax-form, these are reached from a link we sent, not from
-  // browsing the site - there's nothing to navigate back to, and the menu only
-  // offers ways to leave mid-form.
-  const intakeRoutes = ['/start', '/de/start', '/ja/start']
-  const isIntake = !!pathname && (
-    intakeRoutes.includes(pathname) || pathname.startsWith('/complete/')
-  )
-
-  const hideFooter = isCrm || isTaxForm || isIntake
-  const hideNav = isCrm || isIntake
+  // The two-stage intake (/start + /complete/<token>) has been removed: there is
+  // one intake now, the full /tax-form, and it keeps its top nav.
+  const hideFooter = isCrm || isTaxForm
+  const hideNav = isCrm
 
   // Scroll to top on every page navigation
   useEffect(() => {

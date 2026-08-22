@@ -43,11 +43,19 @@ function signed(bodyObj: unknown, secret = SECRET) {
   });
 }
 
-const textPayload = (id: string, phoneId?: string) => ({
+// The per-sender inbound throttle (PER_SENDER_MAX) is real and its in-memory
+// fallback persists across tests in this file, so every test that must actually
+// reach the engine uses a DISTINCT sender. Sharing one number silently drops the
+// 13th message onwards and makes assertions fail for a reason that has nothing
+// to do with what is being tested.
+let _senderSeq = 0;
+const nextSender = () => `6140000${String(1000 + _senderSeq++)}`;
+
+const textPayload = (id: string, phoneId?: string, from = nextSender()) => ({
   entry: [{ changes: [{ value: {
     ...(phoneId ? { metadata: { phone_number_id: phoneId } } : {}),
-    contacts: [{ wa_id: '61400000000', profile: { name: 'Test' } }],
-    messages: [{ id, from: '61400000000', type: 'text', text: { body: 'hello' } }],
+    contacts: [{ wa_id: from, profile: { name: 'Test' } }],
+    messages: [{ id, from, type: 'text', text: { body: 'hello' } }],
   } }] }],
 });
 
@@ -150,10 +158,86 @@ describe('idempotency gate', () => {
     expect(handleIncoming).not.toHaveBeenCalled();
   });
 
-  it('releases the claim if processing throws (so Meta retry reprocesses)', async () => {
+  // REL-03. This test previously asserted `status === 200` on the failure path
+  // and was titled "so Meta retry reprocesses" — which is exactly what a 200
+  // prevents. Meta only redelivers a webhook it did NOT receive a 2xx for, so
+  // acking a failure destroyed the message and made the releaseInbound call
+  // above it meaningless. The bug was pinned by its own test; that is why it
+  // survived. A dropped enquiry is the most expensive failure this system has.
+  it('asks Meta to redeliver when processing throws, and releases the claim', async () => {
     handleIncoming.mockRejectedValueOnce(new Error('boom'));
     const res = await POST(signed(textPayload('err1')));
-    expect(res.status).toBe(200); // still ack
-    expect(releaseInbound).toHaveBeenCalledWith('err1');
+    expect(res.status).toBe(500);                      // non-2xx => Meta retries
+    expect(releaseInbound).toHaveBeenCalledWith('err1'); // so the retry can re-run it
   });
+
+  it('still acks 200 when every message succeeded', async () => {
+    const res = await POST(signed(textPayload('ok1')));
+    expect(res.status).toBe(200);
+    expect(releaseInbound).not.toHaveBeenCalled();
+  });
+
+  it('keeps asking for redelivery while the failure persists', async () => {
+    // Redis is unavailable under test, so noteInboundFailure returns 1 every
+    // time and the retry budget is never exhausted. That is the deliberate
+    // fail-open — "when in doubt, ask Meta to try again" — and it is asserted
+    // here rather than papered over, because a drop costs a customer and a
+    // duplicate costs one wasted engine call.
+    handleIncoming.mockRejectedValue(new Error('permanent'));
+    try {
+      for (let i = 0; i < 3; i++) {
+        const res = await POST(signed(textPayload(`perm${i}`)));
+        expect(res.status).toBe(500);
+      }
+    } finally {
+      handleIncoming.mockResolvedValue({});
+    }
+  });
+
+  it('a failure in one message does not stop the others being processed', async () => {
+    handleIncoming
+      .mockRejectedValueOnce(new Error('boom'))
+      .mockResolvedValueOnce({});
+    const from = nextSender();
+    const payload = {
+      entry: [{ changes: [{ value: {
+        contacts: [{ wa_id: from, profile: { name: 'Test' } }],
+        messages: [
+          { id: 'm1', from, type: 'text', text: { body: 'first' } },
+          { id: 'm2', from, type: 'text', text: { body: 'second' } },
+        ],
+      } }] }],
+    };
+    const res = await POST(signed(payload));
+    expect(handleIncoming).toHaveBeenCalledTimes(2); // the good one still ran
+    expect(res.status).toBe(500);                    // and the bad one is retried
+    expect(releaseInbound).toHaveBeenCalledWith('m1');
+    expect(releaseInbound).not.toHaveBeenCalledWith('m2'); // its claim stands
+  });
+});
+
+// ── REL-03 / approval mode: the value stored in ai_mode decides whether a
+// customer can receive a message the owner never saw. Anything unrecognised
+// must mean "ask first".
+describe('ai_mode is resolved safely before it reaches the engine', () => {
+  const modeArg = () => (handleIncoming.mock.calls[0] as unknown[])[2];
+
+  it('passes SUPERVISED through', async () => {
+    getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? 'SUPERVISED' : undefined));
+    await POST(signed(textPayload('mode1')));
+    expect(modeArg()).toBe('SUPERVISED');
+  });
+
+  it('passes FULL_AUTO through', async () => {
+    getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? 'FULL_AUTO' : undefined));
+    await POST(signed(textPayload('mode2')));
+    expect(modeArg()).toBe('FULL_AUTO');
+  });
+
+  it.each(['AUTOPILOT', 'full_auto', 'Autopilot', 'FULL AUTO', '', true, 1, null, undefined])(
+    'treats %p as approval mode, never as permission to send', async (stored) => {
+      getSetting.mockImplementation(async (k: string) => (k === 'ai_mode' ? stored : undefined));
+      await POST(signed(textPayload(`mode-${String(stored)}`)));
+      expect(modeArg()).toBe('SUPERVISED');
+    });
 });

@@ -202,6 +202,20 @@ export class FileStore implements Store {
     return (await load()).messages.filter((m) => m.customerId === customerId);
   }
 
+  async listInboundBetween(startIso: string, endIso: string, limit = 5000) {
+    const db = await load();
+    const byId = new Map(db.customers.map((c) => [c.id, c]));
+    return db.messages
+      .filter((m) => m.direction === 'IN' && m.createdAt >= startIso && m.createdAt < endIso)
+      .sort((a, b) => (a.createdAt < b.createdAt ? -1 : 1))
+      .slice(0, limit)
+      .map((m) => ({
+        ...m,
+        customerName: byId.get(m.customerId)?.name ?? null,
+        waId: byId.get(m.customerId)?.waId,
+      }));
+  }
+
   async claimMessageForSend(id: string): Promise<boolean> {
     const db = await load();
     const m = db.messages.find((x) => x.id === id);

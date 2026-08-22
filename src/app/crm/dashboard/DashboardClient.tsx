@@ -4,11 +4,12 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import { WhmSubmissionsToggle } from '@/components/crm/WhmSubmissionsToggle'
-import { CompletionLinkPanel } from '@/components/crm/CompletionLinkPanel'
 import { LeadsTab } from '@/components/crm/LeadsTab'
 import { canonicalCountry, canonicalSource, groupByCanonical } from '@/lib/normalise-labels'
 
-// 'lead' = form 1 submitted, awaiting form 2 (see lib/intake.ts)
+// 'lead' is retained ONLY so records created by the old two-stage intake still
+// render. Nothing creates a 'lead' task any more: there is one intake now, the
+// full /tax-form.
 type TaskType = 'tax-return'|'super'|'tfn'|'abn'|'lead'
 type TaxReturn     = { year:string; refundAmount:number; type:'refund'|'owed'; completedAt:string }
 type SuperReturn   = { year:string; amount:number; completedAt:string }
@@ -1870,11 +1871,6 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
               </div>
 
               <div style={{flex:1,overflowY:'auto',minHeight:0,padding:'0 26px 24px'}}>
-
-              {/* Form 1 is in, form 2 isn't: offer the completion link. */}
-              {!activeTask.done && activeTask.taskType === 'lead' && (
-                <CompletionLinkPanel taskId={activeTask.id} firstName={(activeTask.clientName||'').trim().split(/\s+/)[0]} />
-              )}
 
               {/* ── DONE: locked view - only name + 2 actions ── */}
               {activeTask.done && (

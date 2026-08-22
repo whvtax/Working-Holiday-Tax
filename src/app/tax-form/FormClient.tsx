@@ -469,6 +469,12 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
               <>
                 <h1 className={`form-title form-title-${lang}`}>{T('titleTax')}</h1>
                 <p className="form-title-sub">{T('titleTaxSub')}</p>
+                {/* "Takes about 2 minutes" sits directly under the subtitle, not
+                    at the bottom where it used to be. At the bottom it answered
+                    a question the customer stopped asking twenty fields ago; the
+                    moment it is worth anything is before they decide to start.
+                    Small and quiet — reassurance, not a headline. */}
+                <p className="form-time-note">{T('timeEstimate')}</p>
               </>
             ) : (
               <h1 className="form-title form-title-short">{T('titleTaxStep2')}</h1>
@@ -525,7 +531,7 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
                 value={lastName} onChange={e => { setLastName(e.target.value); setErrors(p => ({...p, lastName: ''})) }} />
             </Field>
 
-            <Field label={T('dob')} required error={errors.dob}>
+            <Field label={T('dob')} required error={errors.dob} hint={T('dobHint')}>
               <input className={`inp ${errors.dob ? 'inp-err' : ''}`} type="date" autoComplete="bday"
                 value={dob} onChange={e => { setDob(e.target.value); setErrors(p => ({...p, dob: ''})) }} />
             </Field>
@@ -567,7 +573,6 @@ export function FormClient({ defaultLang = 'en' }: { defaultLang?: FormLang } = 
             <button type="button" className="submit-btn" onClick={goToStep2}>
               {T('continueButton')}
             </button>
-            <p className="form-footer-note" style={{marginTop:10}}>{T('timeEstimate')}</p>
           </div>
           )}
 
@@ -802,6 +807,9 @@ const styles = `
   .spin { animation: spin .8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .form-footer-note { text-align: center; font-size: 11px; color: #8AADA3; margin-top: 14px; line-height: 1.6; }
+  /* Same quiet treatment as the footer note, but sitting under the stepper.
+     Deliberately small: it reassures, it does not compete with the title. */
+  .form-time-note { text-align: center; font-size: 11px; color: #8AADA3; margin: 10px 0 0; line-height: 1.6; }
   .form-success-wrap { min-height: 100dvh; background: #F5F9F7; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 28px; text-align: center; }
   .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #EAF6F1; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
   .success-title { font-size: 26px; font-weight: 900; color: #080F0D; letter-spacing: -0.02em; margin: 0 0 10px; }

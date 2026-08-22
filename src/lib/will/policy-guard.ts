@@ -34,6 +34,27 @@ function collectStrings(v: unknown, out: string[]): void {
   else if (v && typeof v === 'object') Object.values(v).forEach((x) => collectStrings(x, out));
 }
 const norm = (s: string) => s.replace(/\s+/g, ' ').trim().toLowerCase();
+
+/**
+ * Fold non-ASCII digits down to ASCII before any check runs.
+ *
+ * WHY: every numeric pattern in this file uses `\d`, which without the `u` flag
+ * matches ASCII digits ONLY. Verified bypasses before this existed:
+ *     "Our fee is ５０ for you."      (fullwidth)      -> no amount found
+ *     "Our fee is ५० for you."        (Devanagari)     -> no amount found
+ * A customer asking for "prices in my own numerals" is all it took. Covers the
+ * digit blocks a WhatsApp keyboard can actually produce: fullwidth, Arabic-Indic,
+ * extended Arabic-Indic, Devanagari and Bengali.
+ */
+function normaliseDigits(s: string): string {
+  return s.replace(/[０-９٠-٩۰-۹०-९০-৯]/g, (d) => {
+    const c = d.codePointAt(0)!;
+    for (const base of [0xff10, 0x0660, 0x06f0, 0x0966, 0x09e6]) {
+      if (c >= base && c <= base + 9) return String(c - base);
+    }
+    return d;
+  });
+}
 const splitSentences = (s: string) =>
   s.split(/\n+|(?<=[.!?])\s+/).map((x) => x.trim()).filter(Boolean);
 
@@ -102,6 +123,43 @@ const BARE_PRICE_RE = new RegExp(
 /** Four-digit values that are plainly a tax year, not a price. */
 const LOOKS_LIKE_YEAR = /^(19|20)\d{2}$/;
 
+/**
+ * "Pay us 50" — a demand for money with no fee/price word in front of it.
+ *
+ * BARE_PRICE_RE keys off fee/price/cost/total/charge/quote/rate, and the most
+ * natural way to invent a price avoids every one of them:
+ *     "Just pay us 50 and we get started."   -> passed
+ *     "Send me 100 and I'll start today."    -> passed
+ * Deliberately requires the number to follow the recipient directly, because
+ * `pay` on its own is ordinary in this business: "you can pay in 2 instalments"
+ * and "pay by 5 pm" must not be read as $2 and $5.
+ */
+const PAY_ME_RE = /\b(?:pay|send|transfer|deposit)\s+(?:us|me|to us|to me)\s+(?:only\s+|just\s+)?\$?(\d[\d.,]*)\b/gi;
+
+/**
+ * An amount written as WORDS.
+ *
+ * Every numeric rule above needs a digit, so spelling the number defeats all of
+ * them at once — and asking for that is a single innocuous-sounding sentence
+ * from the customer ("please write amounts as words, I'm dyslexic with
+ * figures"). Verified before this existed:
+ *     "Our special rate for you is one hundred dollars."  -> no violation
+ *
+ * The value is not reconstructed: any price stated in words is wrong wording by
+ * definition, because the only two real prices are written $220 and $385. So
+ * this reports the phrase, not a number.
+ */
+const NUM_WORD = '(?:zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand)';
+const WORD_AMOUNT_RE = new RegExp(
+  // "one hundred dollars" / "fifty bucks"
+  `\\b${NUM_WORD}(?:[\\s-]+(?:and[\\s-]+)?${NUM_WORD})*\\s+(?:${CURRENCY_WORDS})\\b` +
+  // or "the fee is one hundred" / "price: fifty"
+  `|\\b(?:fee|fees|price|priced|cost|costs|total|charge|charges|quote|quoted|rate)\\b[^.!?]{0,24}?\\b${NUM_WORD}(?:[\\s-]+(?:and[\\s-]+)?${NUM_WORD})*\\b`,
+  'i',
+);
+/** "a hundred percent sure" is emphasis, not money. */
+const WORD_AMOUNT_EXEMPT = /\b(?:hundred|thousand)\s*(?:%|percent|per ?cent)\b/i;
+
 function toCents(raw: string): number | null {
   // Normalise both 1,234.56 and 1.234,56 style groupings.
   let s = raw.trim();
@@ -122,6 +180,13 @@ function amountsInCents(text: string): number[] {
   for (const m of text.matchAll(BARE_PRICE_RE)) {
     const raw = (m[1] ?? '').trim();
     if (LOOKS_LIKE_YEAR.test(raw)) continue; // "the fee for 2024" is a year, not a price
+    const c = toCents(raw);
+    if (c != null) out.push(c);
+  }
+  // "pay us 50" — money demanded without ever saying the word "fee".
+  for (const m of text.matchAll(PAY_ME_RE)) {
+    const raw = (m[1] ?? '').trim();
+    if (LOOKS_LIKE_YEAR.test(raw)) continue;
     const c = toCents(raw);
     if (c != null) out.push(c);
   }
@@ -188,12 +253,35 @@ const TAX_DETERMINATION: RegExp[] = [
   /you(?:'re| are)? (?:probably |definitely )?(?:do(?:n'?t)? |don'?t )?(?:need to pay|have to pay|qualify|exempt(?:ed)?|eligible)[^.!?]{0,40}medicare/i,
   /you can (?:claim|deduct|write off)/i,
   /you (?:can(?:'?t| ?not)?|won'?t|will(?: not)?|don'?t|do not) owe/i,
-  /your (?:estimated |expected )?refund (?:will|would|should|is going to|is likely|is about|is around)/i,
+  // "your refund will ..." is a determination — EXCEPT when what follows is
+  // process rather than prediction. "Your refund will be paid into the account
+  // you gave us" is the single most ordinary sentence said to a paying
+  // customer, and blocking it would turn routine progress updates into manual
+  // tasks. "Your refund will be around 1800" is still caught: "around" is not
+  // in this list.
+  /your (?:estimated |expected )?refund (?:will|would|should|is going to|is likely|is about|is around)(?!\s+(?:be\s+)?(?:paid|deposited|transferred|sent|processed|issued|released|go|land|arrive|show|take|hit|come)\b)/i,
   /you(?:'ll| will) (?:get|receive)[^.!?]{0,25}(?:refund|\$|back)/i,
   // WILL-AI-01: bare-number refund/return estimates (no $ sign, so the currency
   // guard misses them). Excludes the two fixed prices 220/385.
   /\b(?:your |the )?(?:tax )?(?:refund|return)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
   /\byou(?:'ll| will|'d| would)?\s*(?:get|receive|be getting|be looking at)\b[^.!?]{0,25}\b(?!220\b|385\b)\d{3,6}\b/i,
+  // The phrasings a model actually reaches for when it is hedging, all of which
+  // walked straight past the list above. Verified passes before these existed:
+  //   "Based on your payslips you should get around 3,800 back."
+  //   "You are entitled to the Medicare exemption for your whole stay."
+  //   "Your visa means you're taxed as a resident from day one."
+  /\byou\s+should\s+(?:get|receive|be getting|be entitled|expect)\b/i,
+  // "entitled to" only counts when it names an ACTUAL entitlement. A bare
+  // "entitled to" is the sales language of the approved corpus — "so nothing
+  // you're entitled to is missed", "every dollar you're entitled to" — and
+  // flagging that would block four of the curated knowledge answers, i.e. the
+  // best replies in the system, for saying nothing about anyone's tax at all.
+  /\byou(?:'re| are|'ll be| will be)\s+entitled\s+to\s+(?:the\s+|a\s+|an\s+)?(?:medicare|tax[- ]free|exemption|deduction|rebate|offset|credit|refund of|\$)/i,
+  /\byou(?:'re| are)\s+(?:being\s+)?taxed\s+as\b/i,
+  /\byour\s+(?:visa|situation|case|circumstances)\s+means\b/i,
+  // A hedge is still a determination: "roughly", "around", "ballpark" attached
+  // to a refund is the number the customer will hold us to.
+  /\b(?:roughly|around|about|approximately|ballpark|in the region of)\b[^.!?]{0,15}\b(?!220\b|385\b)\d{3,6}\b[^.!?]{0,15}\b(?:back|refund|return)\b/i,
 ];
 
 const PRICE_NEGOTIATION = /(discount|% ?off|make it \d|do it for \d|special (deal|price|offer)|just for you[^.!?]{0,15}\d|one.time (deal|price|offer))/i;
@@ -212,7 +300,11 @@ const DIY_INSTRUCTIONS = /(do it yourself|lodge (it |your (tax )?return )?(yours
 // when a myGov/ATO-access TERM appears together with a customer-directed STEP
 // cue, and NOT when the sentence is the allowed reassurance ("you don't need
 // myGov, we handle it"), so the approved deflection still sends freely.
-const MYGOV_TERMS = /\b(my ?gov|mygov ?id|ato (?:online|portal|account|login|app|website)|digital id|myid|centrelink|services australia|ihi|individual healthcare identifier|medicare entitlement statement|\bmes\b)\b/i;
+// `my.gov.au` is THE name of the site and `my ?gov` does not match it — the dot
+// is not a space. A complete linking walkthrough that used the real domain
+// passed every check. The ATO's own name is here for the same reason: the old
+// list only matched "ATO" when it was followed by online/portal/account/login.
+const MYGOV_TERMS = /\b(my ?gov|my\.gov(?:\.au)?|mygov ?id|ato (?:online|portal|account|login|app|website)|australian taxation office|\bato\b|digital id|myid|centrelink|services australia|ihi|individual healthcare identifier|medicare entitlement statement|\bmes\b)\b/i;
 const MYGOV_STEP_CUE = /\b(?:log ?in|logging in|sign ?in|signing in|go to|head to|click|tap|press|select|choose|enter (?:your|the)|type in|open (?:the |your )?(?:app|link|page|site|portal|account)|create (?:an? )?(?:account|id|my ?gov ?id|digital id|profile)|set up (?:an? )?(?:account|id)|reset (?:your )?password|apply for (?:an? )?(?:ihi|mes|medicare entitlement|exemption|digital id)|link(?:ing)? (?:your|the) (?:my ?gov|ato|account)|connect (?:your|the) (?:my ?gov|ato)|verify your|follow (?:these|the|this) (?:steps|guide|link)|you (?:need|have|'ll need|will need) to (?:log|sign|go|click|create|apply|link|enter|select|open|reset|submit|set up|verify|connect)|try (?:logging|signing) in|try (?:again|it again)|submit (?:the )?(?:form|application|statement))\b/i;
 const MYGOV_REASSURANCE = /\b(?:do(?:n'?t| not)|does(?:n'?t| not)|no need|never|without|won'?t|will not|you'?ll never|nothing to)\b[^.!?]{0,45}\b(?:need|have to|require|use|access|log ?in|sign ?in|worry|touch|deal with)\b|\b(?:we|our team|i)\b[^.!?]{0,45}\b(?:handle|take care of|takes care of|access|manage|deal with|look after|sort out|do (?:it |everything |all )?for you|on your behalf|through the ato)\b|leave (?:it|that|the my ?gov|everything)[^.!?]{0,25}\b(?:to us|with us|to me)\b/i;
 // Prices are AUD, shown with the $ sign only. Any non-dollar currency next to a
@@ -223,13 +315,31 @@ const NON_DOLLAR_CURRENCY = new RegExp(
   `|\\d[\\d.,]*\\s?(?:€|£|¥|₪|₩|₺|₹|R\\$|(?:euros?|eur|pounds?|libras?|sterline|quid|yen|jpy|francs?|kroner?|kronor?|reais?|pesos?|shekels?|rupees?|won)\\b)`,
   'i',
 );
+/**
+ * Will must never answer "are you a bot?" — it hands off to a human instead.
+ *
+ * That is enforced on the INBOUND message, before the model runs, which is the
+ * right place for it. But the inbound detector is prefix-anchored and misses
+ * "bot or human?", "u a bot?", "real person?", "do you use AI to answer?" — and
+ * when it misses, the question reaches the model and NOTHING here was checking
+ * the answer. A reply like "Haha, real person here 😊" was allowed, and landed
+ * in the approval queue as a one-click send. This is the backstop for that.
+ */
+const AI_IDENTITY_CLAIM =
+  /\b(?:i(?:'| a)?m|i am|this is|you(?:'re| are) (?:talking|speaking|chatting) (?:to|with))\b[^.!?]{0,25}\b(?:a )?(?:real |actual |live |human )?(?:person|human|bot|robot|ai|machine|assistant|chatbot)\b/i;
+const AI_IDENTITY_DENIAL =
+  /\b(?:not|no)\b[^.!?]{0,15}\b(?:a )?(?:bot|robot|ai|machine|chatbot|computer|automated)\b|\b(?:real|actual|genuine) (?:person|human)\s+here\b|\b(?:i'?m|i am) (?:definitely |totally |absolutely )?(?:real|human)\b/i;
+
 const PLACEHOLDER_LEFTOVER = /\{\{[A-Z_]+\}\}/;
 const PROMPT_ECHO = /(master rule|operating rules|non-negotiable boundar|system prompt|objection library|approved messages|# current customer)/i;
 const SENSITIVE_LEAK = /(password|api.?key|access token|secret key|admin (access|panel)|credentials)/i;
 const DASHES = /[—–―−]/; // — – ― −
 
-export function policyGuard(text: string, ctx: GuardContext): GuardResult {
+export function policyGuard(rawText: string, ctx: GuardContext): GuardResult {
   const violations: string[] = [];
+  // Every numeric check below is ASCII-only. Fold first, once, so a non-ASCII
+  // numeral cannot walk past all of them at the same time.
+  const text = normaliseDigits(rawText);
 
   // --- hard gates: is sending allowed at all? ---
   if (ctx.killSwitch) violations.push('KILL_SWITCH_ACTIVE');
@@ -251,6 +361,33 @@ export function policyGuard(text: string, ctx: GuardContext): GuardResult {
   if (SENSITIVE_LEAK.test(text)) violations.push('SENSITIVE_CONTENT');
   if (DASHES.test(text)) violations.push('EM_DASH_FORBIDDEN');
   if (NON_DOLLAR_CURRENCY.test(text)) violations.push('NON_DOLLAR_CURRENCY');
+  if (AI_IDENTITY_CLAIM.test(text) || AI_IDENTITY_DENIAL.test(text)) {
+    violations.push('AI_IDENTITY_ANSWER');
+  }
+
+  // myGov / ATO access, checked across the WHOLE message rather than per
+  // sentence. Per sentence, splitting the walkthrough in two defeated it:
+  //   "No stress about myGov. Open the app, tap Services, then select
+  //    Australian Taxation Office and enter your TFN to link it."
+  // Sentence one carries the term and no instruction; sentence two carries the
+  // instruction and no term; neither is a violation on its own.
+  // Verified safe against the approved corpus: no approved message contains a
+  // myGov term and a step cue together, so this cannot block approved wording.
+  //
+  // Checked per CLAUSE, not per sentence and not per message. Per sentence the
+  // walkthrough could be split in two. Per message, a single reassurance
+  // anywhere excused everything after it ("We take care of it, but go to
+  // my.gov.au and click Link a service"). Per clause, the reassurance excuses
+  // only the clause it is actually in — which is the truthful reading, because
+  // "you never need to log in" and "go to my.gov.au and click" are different
+  // statements even when they share a sentence.
+  if (MYGOV_TERMS.test(text) && MYGOV_STEP_CUE.test(text)) {
+    const clauses = text.split(/[.!?\n]+|,\s+|\s+but\s+/i).map((c) => c.trim()).filter(Boolean);
+    const instructing = clauses.some(
+      (c) => MYGOV_STEP_CUE.test(c) && !MYGOV_REASSURANCE.test(c),
+    );
+    if (instructing) violations.push('MYGOV_TROUBLESHOOTING');
+  }
 
   // --- length (owner rule: replies must read like a person texting) ---
   // Only IMPROVISED content is measured. The approved messages carry required
@@ -259,10 +396,18 @@ export function policyGuard(text: string, ctx: GuardContext): GuardResult {
   // What is left is the model's own wording, and on WhatsApp that should be a
   // few short sentences. Past this much invented prose the reply has stopped
   // sounding like a team member and started sounding like a chatbot essay.
+  // The model's own wording, with newlines flattened to spaces. Two uses:
+  //  1. the length ceiling below;
+  //  2. the money checks, because splitSentences() breaks on `\n+`, so a price
+  //     laid out the way people actually format WhatsApp messages —
+  //         "Our fee:\n50"
+  //     became two sentences, neither of which could match a pattern that needs
+  //     the money word and the number together.
+  const improvised = splitSentences(text)
+    .filter((s) => !isApprovedSentence(s))
+    .join(' ');
+
   if (!ctx.isApprovedTemplate) {
-    const improvised = splitSentences(text)
-      .filter((s) => !isApprovedSentence(s))
-      .join(' ');
     if (improvised.length > MAX_IMPROVISED_CHARS) violations.push('REPLY_TOO_LONG');
   }
 
@@ -272,6 +417,17 @@ export function policyGuard(text: string, ctx: GuardContext): GuardResult {
   if (ctx.estimateFromTeam != null) allowedCents.add(ctx.estimateFromTeam);
 
   let unguardedLanguage = false;
+
+  // Money, re-checked across the flattened improvised text so a line break
+  // cannot hide a price. Same allow-list as the per-sentence pass.
+  for (const cents of amountsInCents(improvised)) {
+    if (!allowedCents.has(cents)) violations.push(`FORBIDDEN_AMOUNT:${(cents / 100).toFixed(2)}`);
+  }
+  // A price spelled out in words. No value is reported: the only correct way to
+  // write a price here is $220 or $385, so words are wrong wording either way.
+  if (WORD_AMOUNT_RE.test(improvised) && !WORD_AMOUNT_EXEMPT.test(improvised)) {
+    violations.push('FORBIDDEN_AMOUNT:written-in-words');
+  }
 
   for (const sentence of splitSentences(text)) {
     // Approved sentences skip the CONTENT-pattern checks, but the CONTEXTUAL
@@ -290,17 +446,22 @@ export function policyGuard(text: string, ctx: GuardContext): GuardResult {
     }
     if (PRICE_NEGOTIATION.test(sentence)) violations.push('PRICE_NEGOTIATION');
 
-    if (!ctx.paid) {
-      for (const p of TAX_DETERMINATION) {
-        if (p.test(sentence)) { violations.push('TAX_DETERMINATION_BEFORE_PAYMENT'); break; }
-      }
-      if (DIY_INSTRUCTIONS.test(sentence)) violations.push('DIY_INSTRUCTIONS');
+    // Personal tax determinations and do-it-yourself instructions are blocked at
+    // EVERY stage. These used to run only `if (!ctx.paid)`, which meant the same
+    // sentence behaved differently depending on a flag the customer sets by
+    // saying "I paid":
+    //   "You are a foreign resident, so no Medicare levy applies to you."
+    //      unpaid -> BLOCKED      paid -> ALLOWED
+    //   "You can claim your boots, tools and phone bill."
+    //      unpaid -> BLOCKED      paid -> ALLOWED
+    // The rule is "Will never makes a personal tax determination", not "not
+    // before payment" — the determination is the team's to make, and after
+    // payment it is worth MORE, not less. Nothing is lost by holding these: a
+    // blocked reply becomes a task carrying the text, for a human to send.
+    for (const p of TAX_DETERMINATION) {
+      if (p.test(sentence)) { violations.push('TAX_DETERMINATION'); break; }
     }
-    // myGov / ATO-access troubleshooting is blocked at every stage (before AND
-    // after payment): the reassurance is allowed, step-by-step help never is.
-    if (MYGOV_TERMS.test(sentence) && MYGOV_STEP_CUE.test(sentence) && !MYGOV_REASSURANCE.test(sentence)) {
-      violations.push('MYGOV_TROUBLESHOOTING');
-    }
+    if (DIY_INSTRUCTIONS.test(sentence)) violations.push('DIY_INSTRUCTIONS');
     if (paid && POST_PAYMENT_SALES.test(sentence)) violations.push('SALES_CONTENT_AFTER_PAYMENT');
     if (!ctx.isApprovedTemplate && REFUND_PROMISE.test(sentence)) violations.push('REFUND_OR_CANCEL_PROMISE');
 

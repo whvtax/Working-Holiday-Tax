@@ -12,7 +12,8 @@ import { createHmac, timingSafeEqual } from 'crypto';
 import { handleIncoming } from '@/lib/will/service';
 import { getStore } from '@/lib/will/store';
 import { metaAppSecret, metaVerifyToken, resolveWaCreds } from '@/lib/will/channel';
-import { isRateLimited } from '@/lib/rate-limit';
+import { isRateLimited, getRedis } from '@/lib/rate-limit';
+import { resolveAiMode } from '@/lib/will/mode';
 
 // REL-01: allow the function up to 60s so a Claude call (30s x up to 2 attempts)
 // completes BEFORE the platform can kill it mid-processing — the atomic
@@ -25,6 +26,45 @@ let _lastSigFailLog = 0;
 // COST-01: bound paid Anthropic calls + DB writes triggered by a public endpoint.
 const PER_SENDER_MAX = 12;   // inbound messages per sender per rate-limit window
 const GLOBAL_INBOUND_MAX = 400; // inbound messages across ALL senders per window
+
+// REL-03: how many times Meta may redeliver one message before we stop asking.
+//
+// Meta redelivers any webhook it does not receive a 2xx for, so returning a
+// non-2xx is the ONLY way to get a failed message back. This handler used to
+// return 200 unconditionally — including from the catch — which meant a single
+// transient Supabase error silently destroyed a customer enquiry, and the
+// `releaseInbound` call in the catch could never do anything, because the retry
+// it was releasing the claim for was never going to arrive.
+//
+// Left unbounded, a permanently-failing message (a column no migration will add
+// back, a poisoned payload) would be redelivered for days. Three attempts
+// recovers every transient fault — a connection blip, a cold database, a deploy
+// mid-flight — and then hands the message to a human instead of looping.
+const MAX_INBOUND_ATTEMPTS = 3;
+const FAILURE_TTL_SECS = 7 * 24 * 60 * 60; // Meta's redelivery horizon
+
+/**
+ * Count failures for one Meta message id and return the attempt number.
+ *
+ * Deliberately NOT stored in Postgres: the reason we are in this code path is
+ * that a Postgres write just failed. Redis is a separate dependency, so a
+ * database outage cannot also destroy the counter that decides whether to retry.
+ * When Redis is unavailable this returns 1 — "always ask Meta to try again" —
+ * which is the same trade `claimInbound` already makes: a duplicate costs one
+ * wasted engine call, a drop costs a customer.
+ */
+async function noteInboundFailure(metaId: string): Promise<number> {
+  try {
+    const redis = await getRedis();
+    if (!redis) return 1;
+    const key = `will:inbound_fail:${metaId}`;
+    const n = await redis.incr(key);
+    if (n === 1) await redis.expire(key, FAILURE_TTL_SECS);
+    return typeof n === 'number' ? n : 1;
+  } catch {
+    return 1;
+  }
+}
 
 /** Constant-time string compare (APPSEC-02 / AUTHZ-INFO-01): avoid leaking token
  *  length/prefix via early-exit `===` on security-sensitive comparisons. */
@@ -221,9 +261,13 @@ export async function POST(req: Request) {
 
   // REL-01: process BEFORE acking (Meta allows ~10s and our work is a few
   // seconds), so a serverless freeze after the response can never drop a
-  // message. The seen-flag is written only AFTER handleIncoming succeeds, so a
-  // failed/never-run message stays un-seen and Meta's retry reprocesses it.
+  // message.
+  // REL-03: if ANY message in this delivery failed and is still within its retry
+  // budget, we answer non-2xx so Meta redelivers the whole payload. Messages that
+  // already succeeded keep their idempotency claim and are skipped as duplicates
+  // on the redelivery, so a retry re-runs only what actually failed.
   // COST-01: throttle per-sender and globally before invoking the paid engine.
+  let askMetaToRetry = false;
   for (const { msg, name } of items) {
     // Atomic idempotency claim (RACE-01/REL-02): the first delivery of a given
     // Meta id wins; concurrent duplicates get false and are skipped.
@@ -253,15 +297,53 @@ export async function POST(req: Request) {
         continue;
       }
 
-      const mode = ((await store.getSetting('ai_mode')) as 'SUPERVISED' | 'FULL_AUTO') ?? 'SUPERVISED';
+      // `??` only caught null/undefined, so any other stored value passed through
+      // to an engine that treated "not SUPERVISED" as permission to send.
+      // resolveAiMode recognises exactly one value as autopilot.
+      const mode = resolveAiMode(await store.getSetting('ai_mode'));
       await handleIncoming(msg.from, msg.text!.body, mode, { name });
       // success: the claim stands, so a Meta retry of the same id is a no-op.
     } catch (e) {
-      // Release the claim so Meta's retry reprocesses this message.
-      if (claimed) { try { await store.releaseInbound(msg.id); } catch { /* */ } }
-      try { await store.audit('channel', 'inbound_error', { id: msg.id, error: (e as Error).message?.slice(0, 200) }); } catch { /* */ }
+      const error = (e as Error).message?.slice(0, 200) ?? 'unknown';
+      const attempt = await noteInboundFailure(msg.id);
+
+      if (attempt < MAX_INBOUND_ATTEMPTS) {
+        // Release the claim AND ask Meta to redeliver. Both halves are required:
+        // releasing alone did nothing, because a 200 meant no retry ever came.
+        if (claimed) { try { await store.releaseInbound(msg.id); } catch { /* */ } }
+        askMetaToRetry = true;
+        try {
+          await store.audit('channel', 'inbound_error', {
+            id: msg.id, error, attempt, willRetry: true,
+          });
+        } catch { /* */ }
+      } else {
+        // Out of retries. KEEP the claim so Meta stops redelivering, and make the
+        // failure loud instead of leaving it as one audit line nobody reads. This
+        // is the same pattern the outbound path already uses when a Meta send
+        // fails: the message text is preserved on a task so the customer can
+        // still be answered by hand.
+        try {
+          await store.audit('channel', 'inbound_dead_letter', {
+            id: msg.id, error, attempt, from: maskWa(msg.from),
+          });
+        } catch { /* */ }
+        try {
+          const customer = await store.getCustomerByWaId(msg.from);
+          await store.addTask({
+            customerId: customer?.id ?? null,
+            customerName: customer?.name ?? name ?? maskWa(msg.from),
+            reason: `A WhatsApp message could not be processed after ${MAX_INBOUND_ATTEMPTS} attempts and needs a manual reply. Error: ${error}`,
+            severity: 'URGENT',
+            context: msg.text?.body ?? null,
+            suggestedReply: null,
+          });
+        } catch { /* the store is the thing that is broken; the audit line stands */ }
+      }
     }
   }
 
+  // REL-03: a non-2xx is what makes Meta redeliver. 200 here was the bug.
+  if (askMetaToRetry) return new Response('Retry', { status: 500 });
   return new Response('OK', { status: 200 });
 }

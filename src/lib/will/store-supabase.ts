@@ -335,6 +335,28 @@ export class SupabaseStore implements Store {
     return data ? toMessage(data) : null;
   }
 
+  async listInboundBetween(
+    startIso: string,
+    endIso: string,
+    limit = 5000,
+  ): Promise<(MessageRow & { customerName?: string | null; waId?: string })[]> {
+    // One query with the customer joined on, rather than a lookup per message:
+    // a busy month is thousands of rows and this runs inside nightly maintenance.
+    // The explicit .limit() matters — without one PostgREST silently caps the
+    // result at 1000 rows and the digest would quietly go incomplete.
+    const { data } = await this.sb().from('will_messages')
+      .select('*, will_customers(name, wa_id)')
+      .eq('direction', 'IN')
+      .gte('created_at', startIso)
+      .lt('created_at', endIso)
+      .order('created_at', { ascending: true })
+      .limit(limit);
+    return (data ?? []).map((row) => {
+      const joined = (row as { will_customers?: { name?: string | null; wa_id?: string } | null }).will_customers;
+      return { ...toMessage(row), customerName: joined?.name ?? null, waId: joined?.wa_id };
+    });
+  }
+
   async claimMessageForSend(id: string): Promise<boolean> {
     // Atomic: only succeeds if the row is still PENDING_APPROVAL, so two
     // concurrent approvals cannot both transmit.
