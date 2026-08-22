@@ -49,16 +49,46 @@ const TASK_COLORS: Record<TaskType,string> = {
   'tax-return':'#0E5C42','super':'#0E5C42','tfn':'#0E5C42','abn':'#c2410c','lead':'#b45309'
 }
 
+// Robust copy that works even where navigator.clipboard is missing, blocked, or
+// rejects (older browsers, non-HTTPS, permission policies). The old code called
+// navigator.clipboard.writeText(...).then(...) with no fallback and no .catch,
+// so on those setups the button silently did nothing — that was "the problem".
+async function copyText(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text)
+      return true
+    }
+  } catch { /* fall through to the legacy method */ }
+  try {
+    const ta = document.createElement('textarea')
+    ta.value = text
+    ta.setAttribute('readonly', '')
+    ta.style.position = 'fixed'
+    ta.style.top = '-1000px'
+    ta.style.opacity = '0'
+    document.body.appendChild(ta)
+    ta.select()
+    ta.setSelectionRange(0, text.length)
+    const ok = document.execCommand('copy')
+    document.body.removeChild(ta)
+    return ok
+  } catch {
+    return false
+  }
+}
+
 function CopyBtn({ text }: { text: string }) {
   const [copied, setCopied] = React.useState(false)
   return (
     <button
-      onClick={(e) => {
+      onClick={async (e) => {
         e.stopPropagation()
-        navigator.clipboard.writeText(text).then(() => {
+        const ok = await copyText(text)
+        if (ok) {
           setCopied(true)
           setTimeout(() => setCopied(false), 1500)
-        })
+        }
       }}
       style={{
         background: 'none', border: 'none', cursor: 'pointer',
@@ -193,7 +223,7 @@ function CopyFieldBtn({ text }: { text: string }) {
   const [copied, setCopied] = React.useState(false)
   return (
     <button
-      onClick={() => navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 1500) })}
+      onClick={async () => { const ok = await copyText(text); if (ok) { setCopied(true); setTimeout(() => setCopied(false), 1500) } }}
       style={{ display: 'flex', alignItems: 'center', gap: 5, padding: '6px 12px', background: copied ? '#EAF6F1' : '#f7fbf9', border: `1.5px solid ${copied ? '#6EE7B7' : '#D4EAE2'}`, borderRadius: 8, cursor: 'pointer', color: copied ? '#059669' : '#587066', fontSize: 11, fontWeight: 600, fontFamily: 'inherit', flexShrink: 0, transition: 'all 0.15s', whiteSpace: 'nowrap' as const }}
       title={`Copy ${text}`}
     >
@@ -1377,14 +1407,14 @@ export default function DashboardClient() {
   })
   }, [archivedClients, archiveSearchResults, archiveSearch, archiveYearFilter, archiveHowHeardFilter, archiveCountryFilter])
 
-  // Match the VISUAL size of the Will dashboard. Same zoom alone was not enough:
-  // this CRM was designed with larger base type (its stat number is 26px, the
-  // page title 22px) than Will (17px / 14.5px), so at an equal zoom it still
-  // rendered ~1.5x bigger. We divide the zoom by that base-size ratio so the
-  // dominant text — headings, stat numbers, cards — lands on Will's size and the
-  // two feel like one product. Will's own zoom is 1.25 x 0.9375 = 1.171875.
-  const WILL_ZOOM = 1.25 * 0.9375;
-  const CRM_ZOOM = WILL_ZOOM * (17 / 26); // ≈0.766 — main's 26px number → Will's 17px
+  // Same zoom as the Will dashboard so BODY text and controls (rows, buttons,
+  // checkboxes) are the same comfortable size in both — 1.25 x 0.9375 = 1.171875.
+  // Shrinking the whole CRM by zoom to match Will's smaller HEADINGS (tried
+  // 0.766) was wrong: it also shrank the tiny controls until they were hard to
+  // click. Instead the oversized headings and stat numbers are toned down
+  // individually below (pgTitle, stat number, page H1), so the big text matches
+  // Will while everything you actually click stays a normal size.
+  const CRM_ZOOM = 1.25 * 0.9375; // 1.171875 — same as Will
   const CRM_H = `calc(100vh / ${CRM_ZOOM})`;
   const S: Record<string,React.CSSProperties> = {
     shell:{display:'flex',height:CRM_H,overflow:'hidden',fontFamily:'"DM Sans",system-ui,sans-serif',zoom:CRM_ZOOM},
@@ -1401,7 +1431,7 @@ export default function DashboardClient() {
     sbLock:{display:'flex',alignItems:'center',gap:8,padding:'11px 13px 18px',fontSize:12,color:'#7a8a82',cursor:'pointer',border:'none',background:'none',fontFamily:'inherit',width:'100%'},
     main:{flex:1,background:'#f0f4f1',marginLeft:260,display:'flex',flexDirection:'column',height:CRM_H,overflow:'hidden'},
     page:{padding:'26px 26px 32px',flex:1,overflowY:'auto',minHeight:0},
-    pgTitle:{fontSize:22,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.5px'},
+    pgTitle:{fontSize:16,fontWeight:700,color:'#0a1410',marginBottom:2,letterSpacing:'-0.3px'},
     pgSub:{fontSize:12,color:'#7a8a82',marginBottom:18},
     card:{background:'#fff',borderRadius:14,border:'1px solid #e4ede8',boxShadow:'0 1px 3px rgba(11,82,64,0.04)'},
     secHead:{fontSize:11,fontWeight:700,color:'#0E5C42',padding:'11px 16px',background:'#f7fbf9',borderBottom:'1px solid #edf3ef',borderRadius:'14px 14px 0 0',display:'flex',alignItems:'center',justifyContent:'space-between',letterSpacing:'0.02em'},
@@ -1610,7 +1640,7 @@ button:not(:disabled):active, [role="button"]:active, [data-task-card]:active{ t
                       return (
                       <div key={stat.label} data-card-hover onClick={stat.onClick} role="button" style={{background:'#fff',border:`1px solid ${active?'#0E5C42':'#e4ede8'}`,borderRadius:12,padding:'14px 16px',boxShadow:active?'0 0 0 1px #0E5C42 inset':'0 1px 2px rgba(11,82,64,0.03)',cursor:'pointer'}}>
                         <div style={{fontSize:10.5,fontWeight:600,color:'#7a8a82',textTransform:'uppercase' as const,letterSpacing:'0.06em',marginBottom:6}}>{stat.label}</div>
-                        <div style={{fontSize:26,fontWeight:700,color:'#0a1410',letterSpacing:'-0.5px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
+                        <div style={{fontSize:19,fontWeight:700,color:'#0a1410',letterSpacing:'-0.3px',fontVariantNumeric:'tabular-nums' as const}}>{stat.value}</div>
                       </div>
                     )})}
                   </div>

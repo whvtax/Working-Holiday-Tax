@@ -371,6 +371,15 @@ export class SupabaseStore implements Store {
     await this.sb().from('will_messages').update(patch).eq('id', id);
   }
 
+  async discardByProviderId(providerId: string): Promise<boolean> {
+    // meta is JSONB; match on meta->>providerId.
+    const { data } = await this.sb().from('will_messages')
+      .update({ status: 'DISCARDED' })
+      .eq('meta->>providerId', providerId)
+      .select('id');
+    return (data?.length ?? 0) > 0;
+  }
+
   async pendingApprovals(): Promise<(MessageRow & { customerName: string | null })[]> {
     const { data } = await this.sb().from('will_messages').select('*').eq('status', 'PENDING_APPROVAL');
     const msgs = (data ?? []).map(toMessage);

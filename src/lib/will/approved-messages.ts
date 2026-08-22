@@ -8,25 +8,27 @@
 // ============================================================
 
 export const APPROVED = {
-  opening: `Hey! 😊 We help hundreds of backpackers every year get their Australian tax sorted properly.
-We'll check your tax residency, what you can claim, Medicare, and make sure you're not missing anything you're entitled to.
-Quick question first: did you only work on a TFN, or did you also earn income through an ABN?`,
+  opening: `Hey! 😊 Of course, happy to help.
+We'll review your situation, including your tax residency, Medicare, and any deductions you may be able to claim, to make sure everything's done correctly.
+Did you work only under a TFN, or did you also have ABN income?`,
 
   price_tfn: `Perfect 😊
-You'll get personal guidance and support from our team from start to finish, with everything reviewed properly for your situation. The total fee is $220.
-If your refund is less than our fee, we'll refund the difference, so you're never out of pocket for our service.
-Please make the payment using the bank details below:
-BSB: {{BSB}}
-Account: {{ACCOUNT}}
-Once you've made the payment, just send me a quick message and we'll get started 😊`,
+Our team will support you from start to finish and help maximise your tax refund.
+The total fee is $220. If your refund is less than $220, we'll refund the difference, so you're never out of pocket for our service.
+Payment details:
+Account Name: Simple Tax Services
+BSB: 062692
+Account: 81049952
+Once paid, just send us a quick screenshot and we'll get started 🙌`,
 
   price_tfn_abn: `Perfect 😊
-Since you also have ABN income, you'll get personal guidance and support from our team for both your TFN and ABN income, with everything reviewed properly for your situation. The total fee is $385.
-If your refund is less than our fee, we'll refund the difference, so you're never out of pocket for our service.
-Please make the payment using the bank details below:
-BSB: {{BSB}}
-Account: {{ACCOUNT}}
-Once you've made the payment, just send me a quick message and we'll get started 😊`,
+Our team will support you from start to finish and help maximise your tax refund.
+The total fee is $385. If your refund is less than $385, we'll refund the difference, so you're never out of pocket for our service.
+Payment details:
+Account Name: Simple Tax Services
+BSB: 062692
+Account: 81049952
+Once paid, just send us a quick screenshot and we'll get started 🙌`,
 
   objections: {
     o1_refund_before_pay: `Absolutely 😊 Working out your expected refund is part of the review. We need to go through your full situation first before we can give you an accurate estimate, which is why we start the review once payment is made. And if your refund ends up being less than our fee, we'll refund the difference, so you're never out of pocket for our service.`,

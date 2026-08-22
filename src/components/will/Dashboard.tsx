@@ -447,7 +447,7 @@ export default function Dashboard() {
                         onMouseLeave={(e) => (e.currentTarget.style.background = 'none')}>
                         <span style={{ width: 7, height: 7, borderRadius: 4, background: dot, marginTop: 5, flex: 'none' }} />
                         <span style={{ minWidth: 0, flex: 1 }}>
-                          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{t.customerName ?? 'System'}</span>
+                          <span style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{(() => { const c = custById(t.customerId); return c ? phoneOf(c.waId) : (t.customerName ?? 'System'); })()}</span>
                           <span title={t.reason} style={{ display: 'block', fontSize: 11.5, color: 'var(--ink2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{shortReason(t.reason)}</span>
                         </span>
                         <span style={{ fontSize: 9.5, color: 'var(--ink3)', flex: 'none', marginTop: 2 }}>{timeAgo(t.createdAt)}</span>
@@ -594,14 +594,16 @@ export default function Dashboard() {
                     </div>
                     {/* Quick send: numbered buttons instead of long labels, so the
                         row never overflows and needs no sideways scroll. Hover a
-                        number to see what it sends (native tooltip). */}
+                        number to see the full text (native tooltip). Clicking a
+                        number does NOT send — it drops the text into the compose
+                        box so you can read it, edit it, and send it yourself. */}
                     <div className="tplchips">
-                      <span className="tplchips-label">Quick send:</span>
+                      <span className="tplchips-label">Quick fill:</span>
                       {QUICK_TEMPLATES.map((key, i) => {
                         const t = data.templates.find((x) => x.key === key);
                         if (!t) return null;
                         const label = t.title.replace(/ \(.*\)/, '');
-                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={async () => { const r = await act({ action: 'send_template', customerId: chatSel.id, id: t.id }); say(r?.ok ? `Sent: ${label} ✓` : `❌ Not sent: ${r?.error ?? r?.message ?? 'WhatsApp rejected it'}`); loadChat(chatSel.id); refresh(); }}>{i + 1}</button>;
+                        return <button key={key} className="chipbtn qsnum" title={label} aria-label={label} onClick={() => { setComposer(t.body); say(`Loaded: ${label} — edit and send`); }}>{i + 1}</button>;
                       })}
                     </div>
                     <div className="msgs" ref={msgsRef}>
@@ -635,9 +637,23 @@ export default function Dashboard() {
                       {chatMsgs.length === 0 && <div className="sysline">No messages stored for this customer yet</div>}
                     </div>
                     <div className="composer">
-                      <input placeholder={`Reply as yourself (pauses ${ASSISTANT_NAME} for this chat)…`} value={composer}
-                        onChange={(e) => setComposer(e.target.value)}
-                        onKeyDown={(e) => { if (e.key === 'Enter' && !e.nativeEvent.isComposing) { sendManual(chatSel.id, composer); setComposer(''); } }} />
+                      {/* WhatsApp-style compose box: multi-line, grows with the
+                          text, keeps line breaks (so a quick-fill template or a
+                          typed paragraph is never flattened into one blob).
+                          Enter sends, Shift+Enter adds a new line. */}
+                      <textarea
+                        placeholder={`Reply as yourself (pauses ${ASSISTANT_NAME} for this chat)…`}
+                        value={composer}
+                        rows={1}
+                        onChange={(e) => { setComposer(e.target.value); const el = e.target as HTMLTextAreaElement; el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 140) + 'px'; }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+                            e.preventDefault();
+                            sendManual(chatSel.id, composer);
+                            setComposer('');
+                            (e.target as HTMLTextAreaElement).style.height = 'auto';
+                          }
+                        }} />
                       <button className="send" onClick={() => { sendManual(chatSel.id, composer); setComposer(''); }}>➤</button>
                     </div>
                   </>
@@ -717,7 +733,9 @@ export default function Dashboard() {
                         opposite it so a task you do not want can go in one click. */}
                     <div className="trow">
                       <span className="tsev">{t.severity}</span>
-                      <span className="tmeta">{t.customerName ?? 'System'} · {timeAgo(t.createdAt)} ago</span>
+                      {/* Show the WhatsApp number (formatted per country, like the
+                          chat) rather than the profile name. */}
+                      <span className="tmeta">{(() => { const c = custById(t.customerId); return c ? phoneOf(c.waId) : (t.customerName ?? 'System'); })()} · {timeAgo(t.createdAt)} ago</span>
                       <button className="tdismiss" title="Dismiss, I am not answering this"
                         onClick={async () => { await act({ action: 'resolve_task', id: t.id }); say('Dismissed'); refresh(); }}>✕</button>
                     </div>

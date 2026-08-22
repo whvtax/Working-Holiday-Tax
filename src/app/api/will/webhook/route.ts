@@ -204,6 +204,44 @@ function extract(payload: unknown, ourPhoneId?: string): { msg: WaMessage; name?
   return out;
 }
 
+/**
+ * Coexistence sync: messages the staff member sends (or deletes) from the
+ * WhatsApp Business APP on the shared number arrive in a SEPARATE webhook field,
+ * `smb_message_echoes`, not `messages`. Meta delivers:
+ *   - text echoes  { from: <business>, to: <customer>, id, timestamp, text.body }
+ *   - revokes      { type:'revoke', revoke:{ original_message_id } }
+ * so that an API/CRM sharing the number stays in sync with what was typed on the
+ * phone. Requires the app to be subscribed to the `smb_message_echoes` webhook
+ * field in Meta. Extracted here and handled in POST.
+ */
+function extractEchoes(payload: unknown): {
+  echoes: { to: string; id: string; body: string }[];
+  revokes: string[];
+} {
+  const echoes: { to: string; id: string; body: string }[] = [];
+  const revokes: string[] = [];
+  try {
+    for (const e of ((payload as { entry?: unknown[] }).entry ?? [])) {
+      for (const ch of ((e as { changes?: unknown[] }).changes ?? [])) {
+        if ((ch as { field?: string }).field !== 'smb_message_echoes') continue;
+        const val = (ch as { value?: { message_echoes?: unknown[] } }).value ?? {};
+        for (const raw of (val.message_echoes ?? [])) {
+          const m = raw as {
+            type?: string; to?: string; id?: string; text?: { body?: string };
+            revoke?: { original_message_id?: string };
+          };
+          if (m.type === 'revoke' && m.revoke?.original_message_id) {
+            revokes.push(m.revoke.original_message_id);
+          } else if (m.type === 'text' && m.text?.body && m.to && m.id) {
+            echoes.push({ to: m.to, id: m.id, body: m.text.body });
+          }
+        }
+      }
+    }
+  } catch { /* malformed: return what we have */ }
+  return { echoes, revokes };
+}
+
 export async function POST(req: Request) {
   // DOS-01: reject oversized bodies as early as possible (Content-Length precheck
   // before buffering), then measure real BYTES (not UTF-16 code units), then
@@ -341,6 +379,34 @@ export async function POST(req: Request) {
         } catch { /* the store is the thing that is broken; the audit line stands */ }
       }
     }
+  }
+
+  // Coexistence sync: mirror what the staff member did in the WhatsApp Business
+  // app. Messages typed on the phone are recorded as outgoing HUMAN messages in
+  // the same thread (so Will shows the full conversation), and messages deleted
+  // on the phone are hidden here too. Best-effort: never blocks the ack.
+  const { echoes, revokes } = extractEchoes(payload);
+  for (const echo of echoes) {
+    try {
+      // Dedupe on the Meta id, reusing the processed-messages table.
+      if (!(await store.claimInbound(echo.id))) continue;
+      // from = the business, to = the customer — so the customer is `to`.
+      const customer = await store.getCustomerByWaId(echo.to);
+      // Only mirror into a conversation Will already knows, so messaging a
+      // brand-new number from the phone does not silently create CRM contacts.
+      if (!customer) continue;
+      await store.addMessage({
+        customerId: customer.id, direction: 'OUT', author: 'HUMAN', status: 'SENT',
+        body: echo.body, meta: { providerId: echo.id, channel: 'app' },
+      });
+      await store.audit('channel', 'app_echo_synced', { id: echo.id, from: maskWa(echo.to) });
+    } catch { /* best effort */ }
+  }
+  for (const rid of revokes) {
+    try {
+      const hit = await store.discardByProviderId(rid);
+      await store.audit('channel', 'app_message_revoked', { id: rid, found: hit });
+    } catch { /* best effort */ }
   }
 
   // REL-03: a non-2xx is what makes Meta redeliver. 200 here was the bug.

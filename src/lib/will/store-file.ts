@@ -232,6 +232,13 @@ export class FileStore implements Store {
     await persist();
   }
 
+  async discardByProviderId(providerId: string) {
+    const db = await load();
+    const m = db.messages.find((x) => x.meta?.providerId === providerId);
+    if (m) { m.status = 'DISCARDED'; await persist(); return true; }
+    return false;
+  }
+
   async pendingApprovals() {
     const db = await load();
     return db.messages

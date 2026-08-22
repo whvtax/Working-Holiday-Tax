@@ -51,7 +51,12 @@ export const CLOSED_STATES: CustomerState[] = ['NOT_INTERESTED', 'WENT_COLD', 'N
 
 /** Allowed forward transitions. Reactivation from closed states returns to the stored previous state. */
 export const TRANSITIONS: Partial<Record<CustomerState, CustomerState[]>> = {
-  NEW_LEAD:            ['QUALIFIED', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
+  // PRICE_SENT is allowed straight from NEW_LEAD because a customer often
+  // answers the TFN/ABN question in their very first message ("only TFN"),
+  // and Will then quotes the price immediately. Without this the model's
+  // proposal was rejected as an "invalid transition" and pushed into Tasks as a
+  // CONFLICT instead of appearing as a normal draft in the chat.
+  NEW_LEAD:            ['QUALIFIED', 'PRICE_SENT', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
   QUALIFIED:           ['PRICE_SENT', 'NOT_INTERESTED', 'WENT_COLD', 'NOT_RELEVANT'],
   PRICE_SENT:          ['PAYMENT_PENDING', 'PAID', 'NOT_INTERESTED', 'WENT_COLD'],
   PAYMENT_PENDING:     ['PAID', 'NOT_INTERESTED', 'WENT_COLD'],

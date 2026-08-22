@@ -156,6 +156,10 @@ export interface Store {
    *  draft is actually sent, so its shown time is the SEND time, not the (older)
    *  time it was drafted, and it sorts to the bottom of the thread. */
   setMessageStatus(id: string, status: MessageRow['status'], opts?: { restamp?: boolean }): Promise<void>;
+  /** Hide the message whose Meta id (meta.providerId) matches — used when the
+   *  staff member deletes ("revokes") a message from the WhatsApp Business app,
+   *  so it disappears from Will too. Returns true if a message was found. */
+  discardByProviderId(providerId: string): Promise<boolean>;
   /** Inbound messages in [startIso, endIso), newest last, with the sender's name
    *  and number joined on. Used by the monthly customer-words digest. Bounded by
    *  `limit` so one very busy month cannot pull an unbounded result set into a
