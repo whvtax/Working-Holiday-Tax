@@ -132,7 +132,10 @@ export function Footer() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 pt-12 sm:pt-16 pb-10 sm:pb-12">
 
           {/* Main grid - 4 columns */}
-          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-6 md:gap-10 mb-10">
+          {/* The three link columns hug their content and the brand column absorbs
+              the slack, so the last column finishes at the container edge and the
+              footer reads as centered on wide screens instead of left weighted. */}
+          <div className="grid grid-cols-1 md:grid-cols-[1.6fr_auto_auto_auto] gap-6 md:gap-16 lg:gap-20 mb-10">
 
             {/* Brand column */}
             <div className="footer-brand-col col-span-2 md:col-span-1">
@@ -216,32 +219,6 @@ export function Footer() {
       {/* ─── Bottom bar - DARK GREEN brand layer ──────────────────────────── */}
       <div style={{ background: '#0B5240' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12 py-5">
-
-
-          {/* Who reviews the work.
-              This is the honest disclosure, and it is the anchor the guide
-              Article schema references as reviewedBy. It sits in the footer so
-              it appears on every page without ever becoming a headline claim:
-              the business is not a registered tax agent, it works under the
-              supervision of one. */}
-          {!isAbout && (
-          <p
-            id="supervising-agent"
-            style={{
-              fontSize: '12.5px',
-              lineHeight: 1.6,
-              color: 'rgba(255,255,255,0.62)',
-              maxWidth: '62ch',
-              marginBottom: '14px',
-            }}
-          >
-            {locale === 'de'
-              ? 'Steuererklärungen werden von unserem Team vorbereitet und vor der Einreichung beim ATO von einem registrierten Steueragenten geprüft und freigegeben.'
-              : locale === 'ja'
-                ? 'タックスリターンは当社チームが作成し、ATOへの提出前に登録税理士が確認し署名します。'
-                : 'Returns are prepared by our team, then reviewed and signed off by a registered tax agent before they are lodged with the ATO.'}
-          </p>
-          )}
 
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-center md:text-left">
 

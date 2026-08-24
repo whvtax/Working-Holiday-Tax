@@ -97,11 +97,11 @@ const IconWhatsApp = () => (<svg width="19" height="19" viewBox="0 0 24 24" fill
 const FIGURES = [
   {
     figure: '45%',
-    body: 'The weeks before your TFN landed with your employer. Withheld at the top rate instead of fifteen. It does not come back unless someone claims it.',
+    body: 'Withheld at the top rate in the weeks before your employer had your TFN. It only comes back when claimed.',
   },
   {
     figure: '$18,200',
-    body: 'Your residency position. British, German and Japanese passports can carry the full tax free threshold. No day count settles it. It is a judgement.',
+    body: 'Your residency position. Qualify as a tax resident and the full tax free threshold is yours.',
   },
   {
     figure: '2%',
@@ -114,27 +114,27 @@ const ANALYSIS = [
   {
     n: '01',
     title: 'Your residency position',
-    body: 'Most working holiday makers tick non resident and never look at it again. If you were a resident for tax purposes and your passport is British, German or Japanese, a non discrimination article in your country’s treaty with Australia can put you on resident rates, which is what the Addy case in the High Court turned on. It is a judgement about how you lived here, not a day count, and it is the largest single number on this page.',
+    body: 'Most people tick a box here and move on. Residency is a judgement, the one the High Court ruled on in the Addy case, and it is the largest single number on this page.',
   },
   {
     n: '02',
     title: 'Every employer, and every week',
-    body: 'Casual and seasonal work leaves a year in pieces: four or five employers, a farm that paid you late, a job you had forgotten about by March. We reconcile the whole year against your ATO record rather than against memory, and that is usually where the weeks withheld at the top rate turn up.',
+    body: 'A working holiday year is messy: several employers, late pay, a job forgotten by March. We rebuild it against your official ATO record, not against memory.',
   },
   {
     n: '03',
     title: 'Medicare, if it applies to you',
-    body: 'The levy is two percent of your income and it comes off by default. If you were not entitled to Medicare for part or all of the year you did not owe it for that period, but the ATO will only take it off with an exemption certificate you have to apply for first. We check whether you qualify and, if you do, we apply for it.',
+    body: 'Two percent comes off by default, whether you owed it or not. Knowing the years it was never yours, and getting it removed, is our job.',
   },
   {
     n: '04',
     title: 'Deductions for the work you actually did',
-    body: 'A blank deductions box is not a saving, it is a decision to give something up. What a fruit picker can claim is not what a barista claims, and neither looks like a FIFO roster or a delivery rider’s kilometres. We ask what the work involved, claim what belongs to it, and leave out what does not.',
+    body: 'A fruit picker, a barista and a delivery rider do not claim the same things. We ask what your work involved, then claim exactly what belongs to it.',
   },
   {
     n: '05',
     title: 'Then it is lodged',
-    body: 'Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO. That part takes minutes. It is the four steps above that decide the number.',
+    body: 'Reviewed and signed off by a registered tax agent before it reaches the ATO. That part takes minutes. The four steps above decide the number.',
   },
 ]
 
@@ -147,11 +147,11 @@ const COMPARISON = [
 ]
 
 const SERVICES = [
-  { n: '01', href: '/tfn',            icon: <IconTFN />,      title: 'TFN Application',  desc: 'Get one before your first payslip, so the top rate never applies to you.' },
-  { n: '02', href: '/abn',            icon: <IconABN />,      title: 'ABN Registration', desc: 'Invoice as a sole trader, with the tax consequences explained first.' },
+  { n: '01', href: '/tfn',            icon: <IconTFN />,      title: 'TFN Application',  desc: 'Get one before your first payslip and skip the top rate.' },
+  { n: '02', href: '/abn',            icon: <IconABN />,      title: 'ABN Registration', desc: 'Invoice as a sole trader, with the tax side explained first.' },
   { n: '03', href: '/tax-return',     icon: <IconReturn />,   title: 'Tax Return',       desc: 'The full analysis above, then lodgement with the ATO.' },
-  { n: '04', href: '/superannuation', icon: <IconSuper />,    title: 'Super Withdrawal', desc: 'Every fund found under your TFN, then one DASP claim when you leave.' },
-  { n: '05', href: '/medicare',       icon: <IconMedicare />, title: 'Medicare Levy',    desc: 'The exemption certificate, if the year says you qualify for one.' },
+  { n: '04', href: '/superannuation', icon: <IconSuper />,    title: 'Super Withdrawal', desc: 'Every fund found, then one DASP claim when you leave.' },
+  { n: '05', href: '/medicare',       icon: <IconMedicare />, title: 'Medicare Levy',    desc: 'The exemption certificate, if your year qualifies for one.' },
 ]
 
 const GUIDES = [
@@ -175,12 +175,8 @@ const FAQS = [
     answer: 'Our fees are flat and never a percentage of your refund. We confirm the fee with you on WhatsApp before anything begins, and it is paid up front. After that we send you the full questionnaire and start the work. If your refund is less than our fee, we refund the difference, so you are never out of pocket.',
   },
   {
-    question: 'Am I a resident for tax purposes on a 417 or 462 visa?',
-    answer: 'It depends on how you actually lived in Australia, not on how long your visa ran for. Plenty of working holiday makers move around constantly and are not residents for tax purposes, but somebody who settled in one town, held one job and lived there as part of a community may well be. If you were a resident and your passport is from a non discrimination treaty country, which includes the United Kingdom, Germany and Japan, resident rates and the full tax free threshold can apply to your income, which is what the Addy case in the High Court established. It is a judgement rather than a checkbox, so we go through your year with you before taking a position on it.',
-  },
-  {
     question: 'What tax rate do working holiday makers pay in Australia?',
-    answer: 'Working holiday makers are taxed at a flat 15% on the first $45,000, then 30% up to $135,000, 37% up to $190,000, and 45% above that. If you never gave your employer a tax file number, they are required to withhold at the top rate instead, which is one of the most common reasons a backpacker ends up owed money. Those rates are the starting point rather than the final word: where you were a resident for tax purposes and your passport is from a non discrimination treaty country, resident rates including the tax free threshold can apply instead.',
+    answer: 'Working holiday makers are taxed at a flat 15% on the first $45,000, then 30% up to $135,000, 37% up to $190,000, and 45% above that. If you never gave your employer a tax file number, they are required to withhold at the top rate instead, which is one of the most common reasons a backpacker ends up owed money.',
   },
   {
     question: 'Can you help me claim my tax refund after I have already left Australia?',
@@ -340,7 +336,7 @@ export default async function HomePage() {
 
           <p className="mx-auto hero-animate-delay"
             style={{ ...LEDE, color: '#4C6459', maxWidth: '46ch', marginBottom: '26px' }}>
-            Five things decide your refund. None of them are on the form.
+            Five things decide your refund. None of them are applied automatically.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -351,7 +347,7 @@ export default async function HomePage() {
               Message us on WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Replies in about an hour. Ask anything first.
+              Replies in about an hour.
             </p>
           </div>
 
@@ -408,7 +404,7 @@ export default async function HomePage() {
               Message us on WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '10px' }}>
-              Replies in about an hour. Ask anything first.
+              Replies in about an hour.
             </p>
           </div>
         </div>
@@ -436,11 +432,6 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-
-          <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
-            British, German and Japanese passports all sit under a non discrimination article, so the residency question
-            applies to almost everyone we work with. <Link href="/tax-residency" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>How residency is decided</Link>.
-          </p>
         </div>
       </section>
 
@@ -453,8 +444,7 @@ export default async function HomePage() {
             If your refund is less than our fee, we refund the difference, so you are never out of pocket.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            The fee is flat and never a percentage of what comes back. We agree it with you on WhatsApp before any work
-            starts, so nothing about it is a surprise later.
+            The fee is flat and never a percentage of what comes back.
           </p>
         </div>
       </section>
@@ -469,8 +459,7 @@ export default async function HomePage() {
             What we go through on every return
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            The same five steps, in the same order, whether your year was one job or six. Four of them happen before
-            anything is typed into a return.
+            The same five steps apply whether you had one job or six. Four of them happen before anything is entered into your tax return.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -508,8 +497,7 @@ export default async function HomePage() {
               style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN only</h3>
               <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
-                Every job put you on a payroll. You handed over a tax file number, tax came off each payslip, and each
-                employer reported an income statement for you.
+                Every job paid you through a payroll, and tax came off each payslip.
               </p>
               <WaLink href={waUrl({ topic: 'tax-return', lang: 'en', tier: 'tfn' })} position="inline" topic="tax-return" lang="en" tier="tfn"
                 className="btn-primary inline-flex items-center justify-center gap-2"
@@ -523,9 +511,7 @@ export default async function HomePage() {
               style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN and ABN</h3>
               <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
-                At some point you invoiced instead of being paid through a payroll. Delivery riding, subcontracting on a
-                site, a farm that paid you against an ABN. Nothing was withheld from that income, and it sits differently
-                on the return.
+                Part of your income was invoiced against an ABN, and nothing was withheld from it.
               </p>
               <WaLink href={waUrl({ topic: 'abn', lang: 'en', tier: 'tfn-abn' })} position="inline" topic="abn" lang="en" tier="tfn-abn"
                 className="btn-primary inline-flex items-center justify-center gap-2"
@@ -605,9 +591,8 @@ export default async function HomePage() {
             Working holiday tax is the only thing we do.
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
-            Every return we prepare belongs to somebody on a 417 or 462 visa, which is why the same four questions come
-            up on all of them. Prepared by our team, reviewed and signed off by a registered tax agent before it is
-            lodged with the ATO.
+            Every return we prepare is for someone on a 417 or 462 visa and is reviewed and signed off by a registered tax
+            agent before being lodged with the ATO.
           </p>
 
           <GoogleReviews lang="en" />
@@ -621,7 +606,7 @@ export default async function HomePage() {
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
               <strong style={{ color: '#080F0D' }}>A tax agent will never ask for your myGov login details.</strong>{' '}
-              Neither will we. We do not need them, and anyone who asks you for them is not us.
+              Anyone who asks for them is not us.
             </p>
           </div>
         </div>
@@ -693,7 +678,7 @@ export default async function HomePage() {
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
           <h2 className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
-            Tell us what your year looked like
+            Tell us about your year
           </h2>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '50ch', marginBottom: '24px' }}>
             Where you worked, roughly when, and whether you ever invoiced under an ABN. That is enough for us to tell you
@@ -706,10 +691,10 @@ export default async function HomePage() {
             Message us on WhatsApp
           </WaLink>
           <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.55)', marginTop: '12px' }}>
-            Replies in about an hour. Ask anything first.
+            Replies in about an hour.
           </p>
           <p style={{ fontSize: '13px', lineHeight: 1.55, color: 'rgba(255,255,255,0.45)', marginTop: '18px', maxWidth: '48ch', marginLeft: 'auto', marginRight: 'auto' }}>
-            Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO.
+            Reviewed and signed off by a registered tax agent before it is lodged with the ATO.
           </p>
         </div>
       </section>

@@ -302,7 +302,7 @@ export default function TFNPage() {
               Message us on WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Replies in about an hour. Ask anything first.
+              Replies in about an hour.
             </p>
           </div>
 
@@ -454,8 +454,7 @@ export default function TFNPage() {
             If your refund is less than our fee, we refund the difference, so you are never out of pocket.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            The fee is flat and never a percentage of what comes back. We agree it with you on WhatsApp before any work
-            starts, so nothing about it is a surprise later.
+            The fee is flat and never a percentage of what comes back.
           </p>
         </div>
       </section>
@@ -478,7 +477,7 @@ export default function TFNPage() {
             Message us on WhatsApp
           </WaLink>
           <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-            Replies in about an hour. Ask anything first.
+            Replies in about an hour.
           </p>
         </div>
       </section>

@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Deductions for my lin
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
   "guaranteeBody": "Working holiday tax is the only thing we do. Your return is prepared by our team, then reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
@@ -324,7 +324,7 @@ const SECTIONS: Section[] = [
     "h2": "Where does it depend on your own situation?",
     "paras": [
       "Some of this is settled and some of it is a judgement about your own facts. Whether your travel counts as itinerant work rather than commuting depends on how your week was structured: how often the site changed, whether there was one base you returned to, and whether your employer required the movement. Two people on the same job title can land on different answers.",
-      "Your residency for tax purposes is the other one, and it is worth more than every deduction on this page put together. British, German and Japanese passports can carry the full tax free threshold under the Addy decision, but only where the person was a resident of Australia for tax purposes. No day count settles that. It turns on what you did with your year."
+      "Your residency for tax purposes is the other one, and it is worth more than every deduction on this page put together. It is a judgement that turns on details most people never think to check, the same question the High Court ruled on in the Addy case, and it is easy to get wrong in both directions. We take a position on it only after going through your year."
     ]
   }
 ]
@@ -384,7 +384,7 @@ const SERVICES = [
     "label": "TFN"
   },
   {
-    "href": "/tax-residency",
+    "href": "/blog/tax-residency-working-holiday-makers",
     "label": "Tax residency"
   }
 ]

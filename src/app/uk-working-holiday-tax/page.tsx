@@ -427,8 +427,7 @@ export default function UKWorkingHolidayTaxPage() {
                 Why this is a judgement, not a calculation
               </p>
               <p style={{ ...ps, margin: 0 }}>
-                No day count settles residency. It turns on what you did with your time: where you lived, how long you stayed
-                in one place, what you kept there, and what your intentions were. Two British travellers with identical earnings can
+                No day count settles residency, and no checklist online can tell you which side of it you were on. Two British travellers with identical earnings can
                 land on opposite answers, and the difference between them is the full tax free threshold and the resident rates for
                 every year involved. Where it applies, it is also possible to go back and amend returns already lodged, within the
                 standard amendment window.
@@ -627,7 +626,7 @@ export default function UKWorkingHolidayTaxPage() {
                 Message us on WhatsApp
               </WaLink>
               <p style={{ fontSize: '13.5px', lineHeight: 1.5, color: 'rgba(255,255,255,0.6)', margin: '10px 0 0', textAlign: 'center' }}>
-                Replies in about an hour. Ask anything first.
+                Replies in about an hour.
               </p>
             </div>
           </div>

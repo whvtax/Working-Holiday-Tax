@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Absetzbare Kosten in 
 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
-  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.",
   "guaranteeBody": "Working-Holiday-Steuer ist das Einzige, was wir machen. Deine Steuererklärung wird von unserem Team vorbereitet und vor der Einreichung beim ATO von einem registrierten Steuerberater geprüft und freigegeben.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
@@ -324,7 +324,7 @@ const SECTIONS: Section[] = [
     "h2": "Wo hängt es von deiner eigenen Situation ab?",
     "paras": [
       "Manches davon ist eindeutig, anderes ist eine Beurteilung deiner konkreten Lage. Ob deine Fahrten als wechselnde Einsatzorte gelten statt als Arbeitsweg, hängt davon ab, wie deine Woche aufgebaut war: wie oft der Einsatzort wechselte, ob es eine feste Basis gab und ob dein Arbeitgeber die Bewegung verlangt hat. Zwei Leute mit derselben Jobbezeichnung können unterschiedlich dastehen.",
-      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie ist mehr wert als alle Abzüge auf dieser Seite zusammen. Britische, deutsche und japanische Pässe können nach der Addy-Entscheidung den vollen Steuerfreibetrag tragen, aber nur wenn die Person steuerlich in Australien ansässig war. Kein Tageszähler entscheidet das. Es kommt darauf an, was du mit deinem Jahr gemacht hast."
+      "Dein steuerlicher Wohnsitz ist die zweite Frage, und sie ist mehr wert als alle Abzüge auf dieser Seite zusammen. Es ist eine Beurteilung, die an Details hängt, an die die meisten nie denken, dieselbe Frage, über die der High Court im Fall Addy entschieden hat, und in beide Richtungen leicht falsch zu beantworten. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind."
     ]
   }
 ]
@@ -384,7 +384,7 @@ const SERVICES = [
     "label": "TFN"
   },
   {
-    "href": "/de/tax-residency",
+    "href": "/de/blog/tax-residency-working-holiday-makers",
     "label": "Steuerlicher Wohnsitz"
   }
 ]

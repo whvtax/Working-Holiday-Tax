@@ -84,7 +84,7 @@ const MYGOV = [
   },
   {
     mygov: 'Residency is a tick box. Nothing tells you which answer is true for you.',
-    us: 'A British, German or Japanese passport can carry the full tax free threshold. We take a position on it and stand behind it.',
+    us: 'Read correctly, residency can change the rates for your whole year. We take a position on it and stand behind it.',
   },
   {
     mygov: 'Deductions are a blank box, and no estimate can fill one in for you.',
@@ -452,10 +452,10 @@ export function CalculatorClient({ faqs = [] }: Props) {
               What makes the real number different from this one?
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
-              Three things, and none of them are on this page. The first is your residency position. A
-              British, German or Japanese passport can carry the full tax free threshold of $18,200 rather
-              than the working holiday maker rate from the first dollar, and no day count settles it. It is
-              a judgement about your circumstances, and it is worth more than everything else combined.
+              Three things, and none of them are on this page. The first is your residency position. Read
+              correctly, it can change which rates apply to your whole year, and it turns on details most
+              people never think to check. It is a judgement about your circumstances, and it is worth more
+              than everything else combined.
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               The second is the Medicare levy. It is 2% of taxable income, it comes off by default, and
@@ -520,7 +520,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             than our fee, we refund the difference, so you are never out of pocket.
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
-            Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged
+            Reviewed and signed off by a registered tax agent before it is lodged
             with the ATO.
           </p>
           <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}
@@ -529,7 +529,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Message us on WhatsApp
           </a>
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '12px' }}>
-            Replies in about an hour. Ask anything first.
+            Replies in about an hour.
           </p>
         </div>
       </section>

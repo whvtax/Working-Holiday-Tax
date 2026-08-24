@@ -79,15 +79,15 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'Your passport and visa',
-    body: 'Which passport you hold and which subclass you were on. That pair decides which rates, which treaty position and which Medicare rules are even open to you, so it is the first thing we ask for.',
+    body: 'Which passport you hold and which subclass you were on. It shapes everything that follows, so we ask for it first.',
   },
   {
     label: 'An Australian bank account',
-    body: 'The ATO pays a tax refund into an Australian account and nowhere else. If yours is already closed, say so at the start, because it changes the order things have to happen in.',
+    body: 'The ATO pays refunds into an Australian account only. If yours is already closed, say so at the start.',
   },
   {
     label: 'Roughly where and when you worked',
-    body: 'A town, the kind of work, rough months. Not employer names spelled correctly, not dates to the day. We match what you tell us against the ATO record and fill in the rest.',
+    body: 'A town, the kind of work, rough months. We match it against the ATO record and fill in the rest.',
   },
 ]
 
@@ -121,7 +121,7 @@ const SEQUENCE = [
   {
     n: '06',
     title: 'It is lodged',
-    body: 'Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged with the ATO. Lodgement itself takes minutes and you do not have to be awake for it.',
+    body: 'Reviewed and signed off by a registered tax agent before it is lodged with the ATO. Lodgement itself takes minutes and you do not have to be awake for it.',
   },
   {
     n: '07',
@@ -222,7 +222,7 @@ export default function TaxReturnPage() {
     name: 'Working Holiday Tax Return Lodgement',
     serviceType: 'Tax return preparation and lodgement',
     description:
-      'Australian tax returns for holders of 417 and 462 working holiday visas. Prepared by our team, reviewed and signed off by a registered tax agent before lodgement with the ATO, including from overseas.',
+      'Australian tax returns for holders of 417 and 462 working holiday visas. Reviewed and signed off by a registered tax agent before lodgement with the ATO, including from overseas.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australia' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 and 462)' },
@@ -310,7 +310,7 @@ export default function TaxReturnPage() {
               Message us on WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Replies in about an hour. Ask anything first.
+              Replies in about an hour.
             </p>
           </div>
 
@@ -388,7 +388,6 @@ export default function TaxReturnPage() {
 
           <p style={{ ...BODY, color: '#4C6459', marginTop: '24px', maxWidth: '60ch' }}>
             More on step 04:{' '}
-            <Link href="/tax-residency" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>how residency is decided</Link>, and{' '}
             <Link href="/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>what an ABN changes</Link> if any of your income was invoiced rather than paid through a payroll.
           </p>
         </div>
@@ -451,7 +450,7 @@ export default function TaxReturnPage() {
             Message us on WhatsApp
           </WaLink>
           <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-            Replies in about an hour. Ask anything first.
+            Replies in about an hour.
           </p>
         </div>
       </section>
@@ -465,7 +464,7 @@ export default function TaxReturnPage() {
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             The questionnaire, the checks and the order above were built around one visa year and nothing else, which is
-            why so little is asked of you and why the awkward cases are not surprises. Prepared by our team, reviewed and
+            why so little is asked of you and why the awkward cases are not surprises. Reviewed and
             signed off by a registered tax agent before it is lodged with the ATO.
           </p>
 

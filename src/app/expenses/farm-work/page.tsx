@@ -67,9 +67,9 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Farm work and fruit p
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "If the refund comes to less than our fee, the difference goes back to you.",
-  "guaranteeBody": "A season of short farm jobs, several contractors and one return is a thing we untangle every week, for people on 417 and 462 visas and nobody else. Prepared by our team, then reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
+  "guaranteeBody": "A season of short farm jobs, several contractors and one return is a thing we untangle every week, for people on 417 and 462 visas and nobody else. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
@@ -213,7 +213,7 @@ const SECTIONS: Section[] = [
     "h2": "What turns on how your season was structured?",
     "paras": [
       "Itinerant work or commuting is a question of fact, and it is worth real money. Sent between three properties by a contractor with no single base is a different position from driving to the same orchard for eleven weeks. How often the site changed, whether the job required the travel, and whether you had a fixed workplace at all decide it.",
-      "Residency is bigger. Chasing harvests region to region looks like the pattern the ATO treats as a foreign resident, while a year settled in one town can point the other way. Where a British, German or Japanese passport holder was an Australian resident for tax purposes, the Addy decision can restore the full tax free threshold and resident rates. A judgement about your year, not a day count, and worth more than every receipt on this page.",
+      "Residency is bigger. It is a judgement, not a formula, the ATO sees it argued wrongly in both directions, and the Addy case in the High Court shows how much can hang on it. It is worth more than every receipt on this page, and we take a position on it only after going through your year.",
       "Farm work also feeds a further visa, and that part is immigration rather than tax. Which industries, postcodes and dates count is set by the Department of Home Affairs and has changed more than once, so check the current official guidance or a registered migration agent before you rely on a job counting. Either way the income still has to be reported correctly."
     ]
   }
@@ -270,7 +270,7 @@ const SERVICES = [
     "label": "TFN"
   },
   {
-    "href": "/tax-residency",
+    "href": "/blog/tax-residency-working-holiday-makers",
     "label": "Tax residency"
   }
 ]

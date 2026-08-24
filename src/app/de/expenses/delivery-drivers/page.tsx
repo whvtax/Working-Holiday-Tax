@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Lieferdienst und Ride
 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
-  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Kommt am Ende weniger Rückerstattung heraus als unser Honorar, erstatten wir die Differenz.",
   "guaranteeBody": "Fahrer auf Lieferplattformen mit 417- und 462-Visum sind ein großer Teil unserer Arbeit, deshalb sind die Fahrtenbuchfrage und die GST-Zeile geklärt, bevor die Erklärung geschrieben wird. Von unserem Team vorbereitet, dann von einem registrierten Steuerberater geprüft und freigegeben.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",

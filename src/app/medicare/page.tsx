@@ -245,7 +245,7 @@ export default function MedicarePage() {
             </div>
 
             <p style={{ fontSize: '13px', color: '#4C6459' }}>
-              Replies in about an hour. Ask anything first.
+              Replies in about an hour.
             </p>
           </div>
         </div>
@@ -393,7 +393,7 @@ export default function MedicarePage() {
                 If your refund is less than our fee, we refund the difference, so you are never out of pocket.
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
-                Prepared by our team, reviewed and signed off by a registered tax agent before it is lodged
+                Reviewed and signed off by a registered tax agent before it is lodged
                 with the ATO.
               </p>
             </div>
@@ -404,7 +404,7 @@ export default function MedicarePage() {
               Message us on WhatsApp
             </WaLink>
             <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
-              Replies in about an hour. Ask anything first.
+              Replies in about an hour.
             </p>
           </div>
         </div>

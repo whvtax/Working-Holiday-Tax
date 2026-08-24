@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "FIFOとキャンプ�
 
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
-  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "ctaSub": "約1時間で返信します。",
   "guaranteeHeading": "料金を下回る還付なら、差額は返金します。お客様の持ち出しはありません。",
   "guaranteeBody": "扱うのは417・462ビザだけなので、Zone Offset、居住区分、3つのファンドに散ったスーパーをまとめて見ます。申告書は当社のチームが作成し、提出の前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",
@@ -276,7 +276,7 @@ const SERVICES = [
     "label": "スーパーアニュエーション"
   },
   {
-    "href": "/ja/tax-residency",
+    "href": "/ja/blog/tax-residency-working-holiday-makers",
     "label": "税務上の居住区分"
   }
 ]

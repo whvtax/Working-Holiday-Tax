@@ -253,9 +253,9 @@ Das Fehlen eines Steuerfreibetrags ist das, was dies von der gewöhnlichen austr
 
 ## Kann ein Working Holiday Maker den Freibetrag je bekommen?
 
-Ja, aber selten, und es hängt an zwei Dingen gleichzeitig statt am Visum. Working Holiday Maker bekommen den Freibetrag von 18.200 $ nicht, außer sie sind australische Steuerresidenten und halten einen Pass aus einem der acht Nichtdiskriminierungs-Abkommensländer, was selten vorkommt.
+Ja, aber selten, und es hängt nicht am Visum. Der Weg dorthin führt über den steuerlichen Wohnsitz, und der ist eine Beurteilung des ganzen Jahres statt eines Kästchens, das man ankreuzt. Dazu kommt eine zweite Bedingung, die von Fall zu Fall verschieden ausgeht und sich ebenfalls nicht am Visum ablesen lässt.
 
-Die acht sind Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen und die Türkei, und dieser Teil ist schlicht eine Tatsache über deinen Pass. Die schwerere Hälfte ist der Wohnsitz, der sich daran entscheidet, wie du hier tatsächlich gelebt hast, und nicht an einer Tageszählung: eine Adresse über Monate, fortlaufende Arbeit bei einem Arbeitgeber, ein Leben mit Routine darin. Wer alle drei Wochen weitergezogen ist, ist kein Resident und die Frage stellt sich gar nicht. Was der Test tatsächlich wiegt, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
+Verlass dich hier auf keine Hostelweisheit, denn die Frage ist in beide Richtungen leicht falsch zu beantworten, und beide Fehler kosten Geld. Warum sie so schwer zu greifen ist, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers). Ob sie sich in deinem Jahr überhaupt stellt, klären wir, nachdem wir dein Jahr durchgegangen sind.
 
 ## Warum zählt die Registrierung deines Arbeitgebers?
 
@@ -273,7 +273,7 @@ Für den Antrag auf eine [TFN](/de/tfn) musst du in Australien sein, er ist kost
 
 Zwei Prozent des zu versteuernden Einkommens, also rund 500 $ bei 25.000 $ Verdienst, und die meisten Berechtigten beantragen sie nie. Australier zahlen zusätzlich zur Einkommensteuer eine Medicare Levy von 2 %, und sie wird Personen mit Anspruch auf Medicare berechnet und nicht Residenten als solchen.
 
-Ob du sie loswirst, hängt an deinem Pass, und zwar in die entgegengesetzte Richtung zur Abkommensfrage oben. Britische und irische Staatsangehörige haben nach den Gesundheitsabkommen in der Regel Anspruch auf Medicare, die Levy gilt also. Deutsche und japanische Staatsangehörige haben in der Regel keinen Anspruch, für sie steht die Befreiung offen. Automatisch ist sie in keinem Fall: Für den Antrag brauchst du ein Medicare Entitlement Statement von Services Australia, dessen Beschaffung Wochen dauert, und dieser Vorlauf ist der ganze Grund, warum sie unbeansprucht bleibt. Die Details stehen in unserem [Guide zur Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers).
+Ob du sie loswirst, hängt an deinem Pass, und zwar oft anders herum, als die Intuition es erwartet. Britische und irische Staatsangehörige haben nach den Gesundheitsabkommen in der Regel Anspruch auf Medicare, die Levy gilt also. Deutsche und japanische Staatsangehörige haben in der Regel keinen Anspruch, für sie steht die Befreiung offen. Automatisch ist sie in keinem Fall: Für den Antrag brauchst du ein Medicare Entitlement Statement von Services Australia, dessen Beschaffung Wochen dauert, und dieser Vorlauf ist der ganze Grund, warum sie unbeansprucht bleibt. Die Details stehen in unserem [Guide zur Medicare-Levy-Befreiung](/de/blog/medicare-levy-working-holiday-makers).
 
 ## Was passiert mit deiner Superannuation?
 
@@ -1091,7 +1091,7 @@ Ein Pauschalsatz bedeutet, dass die Rechnung einfach ist und jede Woche gleich, 
 
 Er liegt zwischen beiden, und genau das verwirrt. Ein australischer Steuerresident zahlt auf die ersten 18.200 $ nichts und danach steigende Sätze. Ein gewöhnlicher Foreign Resident zahlt 30 % ab dem ersten Dollar. Ein Working Holiday Maker zahlt 15 % ab dem ersten Dollar.
 
-Bei typischen Backpacker-Einkommen steht ein Working Holiday Maker also besser da als ein Foreign Resident und schlechter als ein Resident. Die Ausnahme ist die kommerziell entscheidende: Wer als australischer Steuerresident eingestuft wird und einen Pass aus einem der acht Nichtdiskriminierungs-Abkommensländer hält, also Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen oder die Türkei, kann zu Residentensätzen samt der 18.200 $ veranlagt werden. Was darüber entscheidet, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
+Bei typischen Backpacker-Einkommen steht ein Working Holiday Maker also besser da als ein Foreign Resident und schlechter als ein Resident. Die Ausnahme ist die kommerziell entscheidende: In seltenen Konstellationen kann ein Working Holiday Maker am Ende anders veranlagt werden, und dann ändert sich die Rechnung für das ganze Jahr. Ob dein Jahr dazugehört, ist eine Beurteilung, die an Details hängt, an die die meisten nie denken, und sie lässt sich nicht am Visum ablesen. Warum das so ist, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
 
 ## Warum bekommen Leute mit korrekten 15 % trotzdem Erstattungen?
 
@@ -1139,7 +1139,7 @@ Der Satz steht im Gesetz. Was du tatsächlich gezahlt hast und was zurückkommt,
 - Ob jeder Arbeitgeber deine TFN ab der ersten Abrechnung hatte und wie lange eine Lücke lief.
 - Ob jeder Arbeitgeber beim ATO als Working-Holiday-Maker-Arbeitgeber registriert war.
 - Wie die Felder zu Wohnsitz und Working Holiday Maker auf jeder Erklärung ausgefüllt wurden.
-- Welchen Pass du hältst, was sowohl die Addy-Position als auch die Medicare-Frage entscheidet.
+- Welchen Pass du hältst, denn daran hängt die Medicare-Frage.
 - Ob du zusätzlich ABN-Einkommen hattest, von dem gar nichts einbehalten wird.
 - Ob es ein Teiljahr war, denn Teiljahres-Einbehalt schießt routinemäßig über das Ziel hinaus.
 
@@ -1741,7 +1741,7 @@ Ob sich ein Steuerberater lohnt, ist keine allgemeine Frage, sondern eine Frage 
 - Wie viele Arbeitgeber du hattest, denn Einkommen eines vergessenen ist die häufigste Auslassung in einer selbst eingereichten Erklärung.
 - Ob es eine Phase gab, bevor deine TFN beim Arbeitgeber ankam, mit 45 % statt 15 % einbehalten.
 - Welchen Pass du hältst, denn davon hängt ab, ob die Befreiung von der 2-%-Medicare-Abgabe überhaupt verfügbar ist.
-- Ob dein Wohnsitz wirklich klar ist, denn er entscheidet sich an Tatsachen und Umständen und nicht an einer Tageszählung.
+- Ob dein Wohnsitz wirklich klar ist, denn er ist eine Beurteilung des ganzen Jahres und keine Tageszählung, und er wird in beide Richtungen leicht falsch beantwortet.
 - Ob du ABN-Einkommen neben Lohn hast, was sowohl die Berechnung als auch den Papierkram ändert.
 - Ob du Australien bereits verlassen hast, was fast jeden Beschaffungsschritt allein schwerer macht.
 
@@ -1912,62 +1912,39 @@ Zusammengerechnet wird das alles in der [Working-Holiday-Steuererklärung](/de/t
 
   'tax-residency-working-holiday-makers': {
     title: 'Steuerlicher Wohnsitz: was zählt wirklich',
-    description: 'Der steuerliche Wohnsitz entscheidet sich daran, wie du gelebt hast, nicht am Visum. Für deutsche Pässe hängen daran die vollen 18.200 $.',
+    description: 'Der steuerliche Wohnsitz kann die Sätze für dein ganzes Jahr ändern. Warum die Frage schwerer ist, als sie aussieht, und wer sie am Ende beurteilt.',
     body: `
-Wo dein steuerlicher Wohnsitz liegt, entscheidet sich daran, wie du in Australien tatsächlich gelebt hast, nicht an deinem Visum und nicht an einer Tageszählung. Es gibt keine 183-Tage-Regel, die die Sache erledigt.
-
-Die meisten Working Holiday Maker sind keine Residenten, für sie gelten die Working-Holiday-Maker-Sätze: 15 % auf die ersten 45.000 $. Eine Minderheit ist es wirklich, und für acht Pässe ist dieses Ergebnis mehrere tausend Dollar wert, weil es den vollen Freibetrag von 18.200 $ und die Residentensätze darunter mitbringt. Die Einschätzung für dein Jahr trifft der registrierte Steuerberater bei der Erstellung der Erklärung.
+Der steuerliche Wohnsitz ist die eine Frage, die die Sätze für dein gesamtes australisches Jahr ändern kann. Für die meisten Working Holiday Maker bleibt es bei den Working-Holiday-Maker-Sätzen, 15 % auf die ersten 45.000 $. Für eine Minderheit geht das Jahr anders aus, und der Unterschied kann mehrere tausend Dollar betragen. Welche Seite auf dich zutrifft, steht weder im Visum noch auf einem Payslip.
 
 ## Was sind die Working-Holiday-Maker-Sätze?
 
-Sie gelten für Lohneinkommen auf einem 417- oder 462-Visum unabhängig vom Wohnsitz, und genau deshalb wird so verbreitet angenommen, die Wohnsitzfrage spiele keine Rolle. Die Skala lautet 15 % auf die ersten 45.000 $, 30 % von 45.001 bis 135.000 $, 37 % von 135.001 bis 190.000 $ und 45 % darüber. Die Sätze wurden mit dem Working-Holiday-Maker-Reformpaket 2017 gesetzt und funktionieren unabhängig von den gewöhnlichen Wohnsitztests, für ein schlichtes Lohnjahr ändert der Wohnsitz am Grundsatz also nichts.
+Sie gelten für Lohneinkommen auf einem 417- oder 462-Visum: 15 % auf die ersten 45.000 $, 30 % von 45.001 bis 135.000 $, 37 % von 135.001 bis 190.000 $ und 45 % darüber. Die Sätze wurden mit dem Working-Holiday-Maker-Reformpaket 2017 gesetzt, und für die meisten Jahre sind sie das letzte Wort.
 
-Was sie ändert, ist alles darum herum. Für eine kleine Zahl von Menschen ändert sie auch den Satz.
+Für ein kleines Feld von Fällen sind sie es nicht, und dort entscheidet der Wohnsitz. Er ändert außerdem Dinge abseits des Satzes: welche Abzüge offenstehen, wie Anlageeinkommen behandelt wird und ob Auslandseinkommen überhaupt in die Erklärung gehört.
 
-## Welche vier Fakten entscheiden den Wohnsitz?
+## Warum lässt sich der Wohnsitz nicht nachschlagen?
 
-Der Wohnsitz ist ein Test nach Fakten und Lebensumständen, was heißt, dass keine einzelne Antwort die Sache erledigt und keine Schwelle sie auslöst. Vier Dinge über dein Jahr tragen das meiste Gewicht, und alle vier kennst du bereits.
+Weil er keine Checkbox ist, sondern eine Beurteilung, und zwar eine, über die sich sogar Gerichte gestritten haben. Der bekannteste Fall, Addy v Commissioner of Taxation, lief über Jahre und ging über die Instanzen nicht durchgehend in eine Richtung, bis der High Court ihn 2021 entschied. Wenn sich Richter mit denselben Fakten uneins sein können, ist die ehrliche Folgerung, dass ein Nachmittag mit Google die Frage nicht klärt.
 
-**Wo du tatsächlich gelebt hast.** Eine Adresse über Monate, ein Mietvertrag auf deinen Namen, ein Zimmer, in das du zwischen Trips zurückkommst. Oder alle drei Wochen ein anderes Hostel. Sesshaftes Leben stützt den Wohnsitz. Ständige Bewegung tut es nicht, und deshalb scheitert das typische Backpacker-Jahr am Test.
+Der Wohnsitz ist eine Beurteilung, die an Details hängt, an die die meisten nie denken, und in beide Richtungen leicht falsch zu beantworten. Ein Ja, das ein Nein hätte sein müssen, erzeugt eine Schuld. Ein Nein, das ein Ja hätte sein müssen, lässt Geld beim ATO liegen. Beides fällt oft erst Jahre später auf, wenn ein Bescheid geändert wird.
 
-**Ob dein Leben hier eine Routine hatte.** Fortlaufende Arbeit bei einem Arbeitgeber statt bei einer Reihe von ihnen, eine Fitnessmitgliedschaft, ein täglich genutztes Bankkonto, ein Partner, ein Auto, eine WG, zu der du beigetragen hast. Das sind die gewöhnlichen Tatsachen, die der Test wiegt, und keine davon entscheidet allein.
+## Welche Mythen halten sich am hartnäckigsten?
 
-**Dein Pass.** Das ist der Teil, den fast niemand kennt, und er wird unten getrennt behandelt.
+Zwei vor allem, und beide klingen vernünftig. Der erste: Das Visum entscheidet es. Tut es nicht, zwei Leute mit demselben Visum können verschieden veranlagt werden. Der zweite: Eine bestimmte Anzahl von Tagen entscheidet es. Auch darauf ist kein Verlass, und wer seine Position auf eine Tageszählung baut, baut auf Sand.
 
-**Wie lange du geblieben bist und ob am Stück oder in mehreren Abschnitten.** Ein Wohnsitz für einen Teil des Jahres ist ein reales Ergebnis und keine Spitzfindigkeit, und sie ändert, welches Einkommen wie und wann besteuert wird.
+Beide Mythen überleben, weil sie einfach sind. Die tatsächliche Beurteilung ist es nicht, und genau deshalb ist der Wohnsitz der am häufigsten falsch beantwortete Punkt einer selbst eingereichten Erklärung.
 
-## Warum zählt dein Pass?
+## Können zwei gleiche Jahre verschieden ausgehen?
 
-Wegen des Urteils des High Court in Addy v Commissioner of Taxation [2021] HCA 34. Ein Working Holiday Maker, der australischer Steuerresident und Staatsangehöriger eines von acht Nichtdiskriminierungs-Abkommensländern ist, kann zu Residentensätzen besteuert werden, was den Freibetrag von 18.200 $ einschließt. Die acht Länder sind Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen und die Türkei, und diese Liste deckt praktisch die gesamte britische, deutsche und japanische Working-Holiday-Bevölkerung ab.
+Ja, und das ist der Teil, den kaum jemand glaubt, bis er ihn sieht. Zwei Reisende mit nahezu identischen Jahren, ähnlichem Einkommen und ähnlichen Stationen können auf entgegengesetzten Seiten der Wohnsitzfrage landen, weil die Beurteilung am Gesamtbild hängt und nicht an einzelnen Eckdaten. Was bei dem einen den Ausschlag gibt, kann bei der anderen fehlen, ohne dass es von außen auffällt.
 
-Anders gesagt: Wenn du das auf Deutsch liest, ist die Pass-Hälfte schon erledigt.
+Deshalb ist jede Pauschalaussage über Backpacker und Wohnsitz mit Vorsicht zu lesen, auch die gut gemeinte aus dem Hostel-Gruppenchat. Sie beschreibt das Jahr einer anderen Person.
 
-Die Bedingung, die die Arbeit macht, ist die erste. Du musst nach den gewöhnlichen Tests australischer Steuerresident sein, bevor das Abkommensargument überhaupt zur Verfügung steht, und Hostelhopping bringt dich nicht dorthin. Ein Resident aus jedem anderen Land bleibt Resident, bekommt aber den Freibetrag nicht und landet in der Regel stattdessen beim Low Income Tax Offset. Dieselbe Feststellung zum Wohnsitz, sehr unterschiedliches Geld.
+## Wie wird die Frage bei uns beantwortet?
 
-## Gilt der Steuerfreibetrag nun oder nicht?
+Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind. Die Beurteilung geschieht bei der Erstellung deiner [Steuererklärung](/de/tax-return), am ganzen Jahr statt an einer einzelnen Angabe, und wir nehmen die Position ein, die sich gegenüber dem ATO vertreten lässt. Jede Erklärung wird vor der Einreichung von einem registrierten Steuerberater geprüft und freigegeben.
 
-Hier ist der Satz, der in jedem Fall stimmt. Working Holiday Maker bekommen den Freibetrag von 18.200 $ nicht, außer sie sind australische Steuerresidenten und halten einen Pass aus einem der acht Nichtdiskriminierungs-Abkommensländer, was selten vorkommt.
-
-Das heißt, die richtige Antwort auf der Withholding Declaration lautet für fast alle, dass der Freibetrag nicht gilt, denn ihn dort falsch anzukreuzen erzeugt während des Jahres eine Schuld, unabhängig davon, wie die Wohnsitzfrage am Ende ausgeht. Wohnsitz und Abkommensposition werden beim Bescheid geklärt, nicht in der Lohnbuchhaltung.
-
-## Was ändert der Wohnsitz sonst noch?
-
-Mehr, als die meisten erwarten, selbst dort, wo sich der Lohnsatz nicht bewegt. Manche Abzüge stehen nur Residenten offen. Kapitalgewinne und Anlageeinkommen werden anders behandelt. Ob Auslandseinkommen überhaupt erklärt werden muss, hängt daran. Und der Medicare-Anspruch, der die Levy von 2 % und ihre Befreiung steuert, liegt daneben.
-
-Für jemanden, dessen einziges australisches Einkommen Lohn ist und der hier nichts besitzt, ist die praktische Wirkung klein. Für jemanden, der vierzehn Monate blieb, den größten Teil davon einen Job hatte, eine Wohnung mit Mietvertrag hatte und einen britischen, deutschen oder japanischen Pass hält, ist es die größte Einzelzahl der Erklärung.
-
-## Welche Umstände wiegen bei deiner Beurteilung?
-
-Der Wohnsitz wird nicht nach Checkliste bewertet und keine einzelne Tatsache erledigt sie, und genau deshalb lässt sie sich nicht nachschlagen. Das sind die Umstände, die bei der Beurteilung deines eigenen Jahres das Gewicht tragen.
-
-- Ob du eine feste Basis hattest oder ständig unterwegs warst. Das ist der schwerste Einzelfaktor.
-- Ob dein Pass zu den acht Abkommensnationalitäten gehört, was entscheidet, ob eine Feststellung zum Wohnsitz überhaupt etwas zusätzlich wert ist.
-- Ob du länger als zwölf Monate geblieben bist, und ob am Stück statt in mehreren Abschnitten.
-- Ob du einen australischen Partner, einen Mietvertrag auf deinen Namen oder ein auf dich zugelassenes Auto hast.
-- Ob für einen Teil des Jahres ein Wohnsitz bestand und für einen Teil nicht, was ein Teiljahresergebnis erzeugt statt einer einzigen Antwort.
-- Ob du Auslandseinkommen oder Anlagen hast, wo die Folgen weit über den Lohnsatz hinausgehen.
-
-Keines davon ist für sich ein Ja oder Nein. Genau das bedeutet ein Test nach Fakten und Lebensumständen, und deshalb ist der Wohnsitz der am häufigsten falsch beantwortete Punkt einer selbst eingereichten [Steuererklärung als Working Holiday Maker](/de/tax-return). Du kannst deine [Steuererstattung schätzen](/de/calculator), auf Basis der gewöhnlichen Working-Holiday-Sätze als Ausgangswert, bevor der Wohnsitz ermittelt ist.
+Bis dahin rechnet der [Erstattungsrechner](/de/calculator) mit den gewöhnlichen Working-Holiday-Sätzen als Ausgangswert, und das ist für eine erste Zahl auch der richtige Ansatz. Auf der Withholding Declaration während des Jahres ist die vorsichtige Antwort fast immer die richtige, denn die Wohnsitzfrage wird beim Bescheid geklärt und nicht in der Lohnbuchhaltung.
 `,
   },
 
@@ -2005,9 +1982,9 @@ Fünf Fakten über dein eigenes Jahr entscheiden fast alles, und vier davon kenn
 
 ## Wo hört es auf, Rechnen zu sein?
 
-Es hört beim Wohnsitz auf, dort werden auf dieser Seite die größten Unterschiede entschieden und dort hilft kein Rechner. Der Wohnsitz ist ein Test nach Fakten und Lebensumständen ohne Tageszählung, die ihn klärt, und für Staatsangehörige eines der acht Nichtdiskriminierungs-Abkommensländer kann ein Residentenstatus den Freibetrag von 18.200 $ ins Spiel bringen.
+Es hört beim Wohnsitz auf, dort werden auf dieser Seite die größten Unterschiede entschieden und dort hilft kein Rechner. Der steuerliche Wohnsitz ist eine Beurteilung des ganzen Jahres und keine Angabe, die man irgendwo abliest, und in seltenen Fällen ändert er die Sätze für alles, was du verdient hast.
 
-Diese acht sind Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen und die Türkei, und zusammen decken sie fast jeden Backpacker ab, der das hier liest. Ein Resident aus einem anderen Land ist weiterhin Resident, bekommt den Freibetrag aber nicht. Die vier Fakten, die darüber entscheiden, stehen in unserem Guide zum [steuerlichen Wohnsitz auf dem Working-Holiday-Visum](/de/blog/tax-residency-working-holiday-makers).
+Genau deshalb ist er der Punkt, an dem selbst eingereichte Erklärungen am häufigsten danebenliegen, in beide Richtungen. Zwei Reisende mit fast identischen Jahren können hier auf entgegengesetzten Seiten landen. Warum das so ist, steht in unserem Guide zum [steuerlichen Wohnsitz auf dem Working-Holiday-Visum](/de/blog/tax-residency-working-holiday-makers), und festgelegt wird die Position erst, nachdem dein ganzes Jahr durchgegangen wurde.
 
 ## Wann kommt die Erstattung an?
 
@@ -2164,9 +2141,9 @@ Das ist die ehrliche Antwort, und sie gehört klar gesagt statt umschifft. Für 
 
 ## Wann wird er verfügbar?
 
-Verfügbar wird er, wenn du für das Jahr australischer Steuerresident bist, und das ist eine Minderheit der Working Holiday Maker tatsächlich. Der Wohnsitz entscheidet sich daran, wie du hier wirklich gelebt hast, und nicht am Visum oder an einer Tageszählung, und sie ist ein echter Befund und keine Formalie.
+Verfügbar wird er, wenn du für das Jahr australischer Steuerresident bist, und das ist eine Minderheit der Working Holiday Maker tatsächlich. Der Wohnsitz ist ein echter Befund und keine Formalie, eine Beurteilung, die an Details hängt, an die die meisten nie denken, und die sich weder am Visum noch an einer Tageszählung festmachen lässt.
 
-Für einen Residenten, der zugleich Staatsangehöriger eines der acht Nichtdiskriminierungs-Abkommensländer ist, ist das wertvollere Ergebnis meist der Freibetrag von 18.200 $ und nicht LITO. Diese acht sind Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen und die Türkei. Für einen Residenten aus einem anderen Land ist LITO von bis zu 700 $ in der Regel das, was der Wohnsitz stattdessen wert ist. Die vier Tatsachen, die das entscheiden, stehen in unserem Guide zum [steuerlichen Wohnsitz](/de/blog/tax-residency-working-holiday-makers).
+Was ein festgestellter Wohnsitz am Ende wert ist, fällt zudem von Person zu Person verschieden aus. Für manche Residenten ist das wertvollere Ergebnis nicht LITO, sondern eine insgesamt günstigere Veranlagung des Jahres, für andere ist LITO von bis zu 700 $ das, was der Wohnsitz wert ist. Welcher Fall vorliegt, lässt sich nicht aus einer Tabelle ablesen. Warum die Frage schwerer ist, als sie aussieht, steht in unserem Guide zum [steuerlichen Wohnsitz](/de/blog/tax-residency-working-holiday-makers).
 
 ## Was kannst du stattdessen geltend machen?
 
@@ -2193,9 +2170,9 @@ Bei dieser Kombination hört eine Erklärung auf, ein Formular zu sein, und wird
 
 ## Was entscheidet deine Position?
 
-Zwei Tatsachen, und nur zwei. Ob du für das Jahr oder einen Teil davon australischer Steuerresident warst, entschieden daran, wo du tatsächlich gewohnt hast, ob dein Leben hier eine Routine hatte, wie lange du geblieben bist und ob es ein Stück oder mehrere waren. Und deine Staatsangehörigkeit, denn bei den acht Abkommensländern erzeugt ein festgestellter Wohnsitz den Freibetrag statt des Offsets.
+Am Ende dein Wohnsitz für das Jahr, und der ist keine Tatsache, die du einfach nennen kannst, sondern eine Beurteilung, die getroffen werden muss. Sie hängt an Umständen, an die die meisten nie denken, und sie kann bei fast gleichen Jahren verschieden ausgehen.
 
-Keine der beiden ist ein Kästchen, das man beim ersten Lesen zuversichtlich ankreuzt. Besonders der Wohnsitz ist ein ganzheitlicher Test ohne Zahlenschwelle, und genau deshalb ist sie der Posten, der auf einer selbst eingereichten Erklärung am häufigsten falsch beantwortet wird, und deshalb bewegt sie mehr Geld als sämtliche Offsets in diesem Guide zusammen. Sie gehört bei der Vorbereitung der [Steuererklärung](/de/tax-return) sauber geklärt.
+Das ist kein Kästchen, das man beim ersten Lesen zuversichtlich ankreuzt. Genau deshalb ist der Wohnsitz der Posten, der auf einer selbst eingereichten Erklärung am häufigsten falsch beantwortet wird, und deshalb bewegt er mehr Geld als sämtliche Offsets in diesem Guide zusammen. Wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind, bei der Vorbereitung der [Steuererklärung](/de/tax-return).
 `,
   },
 
@@ -2403,9 +2380,9 @@ Das ist der mechanische Grund, warum Jahre mit mehreren Arbeitgebern so oft schi
 
 ## Was fragt die Wohnsitzfrage auf dem Formular eigentlich?
 
-Sie fragt dieselbe Frage, die später über deine Erstattung entscheidet, gestellt zum denkbar schlechtesten Zeitpunkt. Der steuerliche Wohnsitz ist nicht der aufenthaltsrechtliche und auch keine Tageszählung. Er ist ein Test über Tatsachen und Umstände, also darüber, wie du hier tatsächlich gelebt hast.
+Sie fragt dieselbe Frage, die später über deine Erstattung entscheidet, gestellt zum denkbar schlechtesten Zeitpunkt. Der steuerliche Wohnsitz ist nicht der aufenthaltsrechtliche, und er ist auch keine Tageszählung, auf die man sich verlassen könnte. Er ist eine Beurteilung, die sich erst mit Blick auf das ganze Jahr sicher treffen lässt.
 
-Für die meisten Working Holiday Maker ist die Working-Holiday-Maker-Antwort die richtige und das Wohnsitzfeld unkompliziert. Für jemanden im zweiten oder dritten Jahr mit einem gesetzten Leben an einem Ort ist es das womöglich wirklich nicht, und dann zählt zusätzlich der Pass. Was der Test wiegt, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
+Für die meisten Working Holiday Maker ist die Working-Holiday-Maker-Antwort die richtige und das Wohnsitzfeld unkompliziert. Bei einem längeren Aufenthalt ist es womöglich weniger einfach, als es aussieht, und die Frage ist in beide Richtungen leicht falsch zu beantworten. Warum sie so schwer zu greifen ist, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
 
 ## Was, wenn es falsch ausgefüllt wurde?
 
@@ -2862,7 +2839,7 @@ Alles, was über den korrekten Satz hinaus einbehalten wurde, kommt über deine 
     title: 'Freibetrag 18.200 $: gilt er für dich?',
     description: 'Working Holiday Maker zahlen ab dem ersten Dollar 15 %. Wer im TFN-Formular den Freibetrag ankreuzt, baut Steuerschulden auf. Und die eine Ausnahme.',
     body: `
-Working Holiday Maker bekommen den Freibetrag von 18.200 $ nicht, außer sie sind australische Steuerresidenten und halten einen Pass aus einem der acht Nichtdiskriminierungs-Abkommensländer, was selten vorkommt.
+Working Holiday Maker bekommen den Freibetrag von 18.200 $ nicht, außer in einer seltenen Ausnahme, die an zwei Bedingungen zugleich hängt und nur eine Minderheit erreicht.
 
 Für fast alle lautet die Antwort auf der Withholding Declaration deshalb Nein. Ein Ja erzeugt Schulden statt einer Ersparnis.
 
@@ -2882,9 +2859,9 @@ Bei 1.000 $ pro Woche liegt der korrekte Einbehalt bei etwa 150 $. Mit fälschli
 
 ## Wie lautet die Ausnahme genau?
 
-Zwei Bedingungen müssen zusammen erfüllt sein, und beide sind anspruchsvoll. Du musst nach den gewöhnlichen Tests zu Lebensumständen australischer Steuerresident sein, und du musst einen Pass aus einem der acht Nichtdiskriminierungs-Abkommensländer halten: Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen oder die Türkei.
+Zwei Bedingungen müssen zusammen erfüllt sein, und beide sind anspruchsvoll. Die erste ist der steuerliche Wohnsitz: Du musst für das Jahr australischer Steuerresident sein, und das ist eine Beurteilung, die an Details hängt, an die die meisten nie denken, und in beide Richtungen leicht falsch zu beantworten. Die zweite Bedingung fällt von Person zu Person verschieden aus und lässt sich ebenfalls nicht am Visum ablesen.
 
-Das folgt aus dem Urteil des High Court in Addy v Commissioner of Taxation [2021] HCA 34. Die Pass-Hälfte ist leicht zu prüfen, und Deutschland steht auf der Liste. Die Wohnsitzhälfte ist es nicht, und daran scheitern die meisten Ansprüche, denn ein Jahr Hostels und eine Reihe von Arbeitgebern begründet keinen Wohnsitz. Was der Wohnsitztest tatsächlich gewichtet, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers), und die endgültige Einschätzung trifft der registrierte Steuerberater bei der Erstellung der Steuererklärung, nicht du selbst im Juli.
+Der Hintergrund ist ein Urteil des High Court, Addy v Commissioner of Taxation [2021] HCA 34, ein Fall, über den die Gerichte jahrelang gestritten haben. Wenn selbst Richter sich uneins waren, ist das kein Anspruch, den man sich im Hostel selbst zuspricht. Warum die Frage so schwer zu greifen ist, steht in der [Wohnsitzprüfung für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers). Die endgültige Position wird erst bei der Erstellung der Steuererklärung bezogen, nachdem dein ganzes Jahr durchgegangen wurde, und jede Erklärung wird vor der Einreichung von einem registrierten Steuerberater geprüft und freigegeben.
 
 So oder so wird die Frage beim Bescheid geklärt, nicht in der Lohnbuchhaltung. Auch wer am Ende qualifizieren könnte, sollte während des Jahres Nein ankreuzen.
 
@@ -2904,8 +2881,8 @@ Die anderen Richtungen bedeuten etwas anderes. Rund 45 % heißt, deine TFN liegt
 
 Für fast alle lautet die Antwort auf dem Formular Nein, und die Ausnahme ist eng genug, dass sie während des Jahres nichts daran ändern sollte. Das sind die Fakten, die über beide Hälften entscheiden.
 
-- Dein Pass, denn nur acht Nationalitäten können die Ausnahme überhaupt erreichen.
-- Ob du wirklich an einem Ort mit einer Routine gelebt hast, was die Wohnsitzhälfte und die schwierigere ist.
+- Ob dein Jahr die Wohnsitzhälfte überhaupt tragen kann, was die schwierigere der beiden ist und sich nicht zuverlässig selbst beurteilen lässt.
+- Ob die zweite Bedingung in deinem Fall erfüllt ist, was geprüft gehört statt geraten.
 - Wie viele Arbeitgeber eine Erklärung mit der falschen Antwort bekommen haben.
 - Wie lange der falsche Satz lief, bevor er auffiel, denn daran hängt die ganze Größe des Problems.
 - Ob du zusätzlich ABN-Einkommen hast, das unversteuert zufließt und dieselbe Lücke vergrößert.
@@ -6249,15 +6226,15 @@ Schwerer werden Belege und Erreichbarkeit. Dienstpläne und Payslips in einem Sy
 
   'backpacker-tax-history-australia': {
     title: 'Die Backpackersteuer: Geschichte und Stand',
-    description: 'Seit 2017 gilt der Satz von 15 % ab dem ersten Dollar. Ein Urteil zu Doppelbesteuerungsabkommen hat für einige Pässe später Ausnahmen eröffnet.',
+    description: 'Seit 2017 gilt der Satz von 15 % ab dem ersten Dollar. Ein Urteil des High Court hat später für manche Fälle Ausnahmen eröffnet.',
     body: `
-Die Backpackersteuer ist der pauschale Satz auf Einkommen aus den Subclasses 417 und 462: 15 % auf die ersten 45.000 $, ohne Freibetrag. So ist der Satz seit dem 1. Januar 2017. Was einzelne Fälle bis heute entscheidet, ist das, was der High Court 2021 dazu gesagt hat, und das hängt an deinem Pass.
+Die Backpackersteuer ist der pauschale Satz auf Einkommen aus den Subclasses 417 und 462: 15 % auf die ersten 45.000 $, ohne Freibetrag. So ist der Satz seit dem 1. Januar 2017. Was einzelne Fälle bis heute anders ausgehen lässt, ist das, was der High Court 2021 dazu gesagt hat, und ob es dich betrifft, ist eine Einzelfallfrage.
 
 ## Wie hoch ist der Satz heute?
 
 Er beträgt fünfzehn Prozent ab dem ersten Dollar bis 45.000 $ und darüber die Foreign-Resident-Skala. Beide Visumsklassen werden identisch behandelt, und fast jeder Working Holiday Maker verdient innerhalb der ersten Stufe, 15 % ist also die Zahl, die praktisch zählt.
 
-Das Fehlen eines Freibetrags ist das strukturelle Merkmal, das dies von gewöhnlicher australischer Besteuerung trennt. Ein Resident zahlt auf die ersten 18.200 $ nichts, ein Working Holiday Maker zahlt darauf 15 %. Dieser eine Unterschied ist für jeden, den er trifft, rund 2.730 $ im Jahr wert, und deshalb ist die Abkommensfrage weiter unten nicht akademisch.
+Das Fehlen eines Freibetrags ist das strukturelle Merkmal, das dies von gewöhnlicher australischer Besteuerung trennt. Ein Resident zahlt auf die ersten 18.200 $ nichts, ein Working Holiday Maker zahlt darauf 15 %. Dieser eine Unterschied ist für jeden, den er trifft, rund 2.730 $ im Jahr wert, und deshalb ist das Urteil weiter unten nicht akademisch.
 
 - 15 % auf Einkommen bis 45.000 $
 - 30 % von 45.001 $ bis 135.000 $
@@ -6266,9 +6243,9 @@ Das Fehlen eines Freibetrags ist das strukturelle Merkmal, das dies von gewöhnl
 
 ## Wie war die Lage vor 2017?
 
-Vor 2017 entschied der Wohnsitz alles. Ein Working Holiday Maker, der als australischer Steuerresident veranlagt wurde, zahlte gewöhnliche Residentensätze mit dem Freibetrag von 18.200 $, und wer als Nichtresident veranlagt wurde, zahlte 32,5 % ab dem ersten Dollar, zwei Leute mit identischer Arbeit konnten also sehr unterschiedliche Rechnungen bekommen, je nachdem wie sie gelebt hatten.
+Vor 2017 entschied der Wohnsitz alles. Ein Working Holiday Maker, der als australischer Steuerresident veranlagt wurde, zahlte gewöhnliche Residentensätze mit dem Freibetrag von 18.200 $, und wer als Nichtresident veranlagt wurde, zahlte 32,5 % ab dem ersten Dollar. Zwei Leute mit identischer Arbeit konnten also sehr unterschiedliche Rechnungen bekommen, und die Grenze zwischen beiden war schon damals eine Beurteilung und keine klare Linie.
 
-Eine große Zahl von Backpackern erfüllte die Wohnsitzkriterien tatsächlich, besonders diejenigen, die an einem Ort blieben und durchgehend arbeiteten, und die Regierung betrachtete die daraus folgenden niedrigen Steuerrechnungen als unbeabsichtigtes Ergebnis und nicht als Politik. Diese Sicht erzeugte den Vorschlag von 2016.
+Eine große Zahl von Backpackern wurde damals tatsächlich als Residenten veranlagt, und die Regierung betrachtete die daraus folgenden niedrigen Steuerrechnungen als unbeabsichtigtes Ergebnis und nicht als Politik. Diese Sicht erzeugte den Vorschlag von 2016.
 
 ## Wie kam der Satz von 2017 zustande?
 
@@ -6278,21 +6255,21 @@ Die Einigung war der 15-%-Satz ab dem 1. Januar 2017. Er kam nicht allein: Dasse
 
 ## Was hat der High Court in Addy entschieden?
 
-Er hat entschieden, dass der 15-%-Satz nicht auf eine britische Staatsangehörige angewendet werden konnte, wo ein Australier in derselben Lage weniger gezahlt hätte. In Addy v Commissioner of Taxation [2021] HCA 34 hielt der High Court fest, dass es gegen den Nichtdiskriminierungsartikel des Steuerabkommens mit dem Vereinigten Königreich verstößt, einen Working Holiday Maker, der australischer Steuerresident war, ab dem ersten Dollar mit 15 % zu besteuern, wenn ein australischer Staatsangehöriger mit Wohnsitz hier bei derselben Arbeit den Freibetrag gehabt hätte.
+Er hat entschieden, dass der 15-%-Satz nicht in jedem Fall das letzte Wort ist. In Addy v Commissioner of Taxation [2021] HCA 34 ging es um eine Working Holiday Makerin, die als australische Steuerresidentin veranlagt worden war, und der High Court gab ihr am Ende recht. Die Begründung ist Juristenfutter. Was für dich zählt, ist die Folge: Seitdem können einzelne Fälle anders ausgehen, als die Satztabelle vermuten lässt, und zwar für das ganze Jahr.
 
 Der Fall lief über Jahre und ging nicht durchgehend in eine Richtung: Die Steuerpflichtige obsiegte 2019 in erster Instanz, verlor vor dem Full Federal Court und gewann 2021 vor dem High Court. Die Gesetzgebung wurde danach nicht geändert, die Lage steht also so, wie das Gericht sie hinterlassen hat, und wird Fall für Fall angewendet statt über eine Änderung des Satzes.
 
-## Wessen Pass hilft Addy tatsächlich?
+## Wem hilft Addy tatsächlich?
 
-Er hilft Staatsangehörigen der acht Länder, deren Abkommen mit Australien denselben Nichtdiskriminierungsartikel enthalten: Großbritannien, Deutschland, Japan, Chile, Finnland, Israel, Norwegen und die Türkei. Diese Liste deckt den größten Teil der Working-Holiday-Bevölkerung ab, und deshalb hat die Entscheidung so viel Gewicht.
+Einer Minderheit, und wer dazugehört, lässt sich nicht an einer Liste ablesen. Die erste Hürde ist der steuerliche Wohnsitz, und die meisten Working Holiday Maker nehmen sie nicht. Der Wohnsitz ist eine Beurteilung des ganzen Jahres, die an Details hängt, an die die meisten nie denken, und die bei fast identischen Jahren verschieden ausgehen kann. Dazu kommt eine zweite Bedingung, die von Person zu Person verschieden ausfällt.
 
-Die Staatsangehörigkeit allein genügt nicht, und hier hört die Analyse meist auf für Leute, die von dem Fall lesen und eine Erstattung erwarten. Working Holiday Maker bekommen den Freibetrag von 18.200 $ nicht, außer sie sind australische Steuerresidenten und halten einen Pass aus einem der acht Nichtdiskriminierungs-Abkommensländer, was selten vorkommt. Der Wohnsitz entscheidet sich an den Tatsachen, wie du hier tatsächlich gelebt hast, und nicht an einer Tageszählung, die Frage lautet also, ob dein Jahr gesetzt aussah: eine Adresse, fortlaufende Arbeit, ein Leben mit Routine darin. Das ist eine Beurteilung deiner eigenen Umstände und nichts, was die Satztabelle beantworten kann.
+Wer von dem Fall liest und eine Erstattung erwartet, überspringt meist genau diese Prüfung. Ob dein Jahr trägt, ist eine Beurteilung deiner eigenen Umstände und nichts, was die Satztabelle oder ein Forum beantworten kann.
 
 ## Was ändert das alles an deiner Erklärung?
 
-Für die meisten nichts, und das gehört klar gesagt. Wer alle paar Wochen weitergezogen ist und mehrere kurze Jobs hatte, ist kein australischer Steuerresident, der 15-%-Satz gilt, und die Erstattung kommt aus dem Überabzug und der Medicare-Levy-Befreiung und nicht aus Addy.
+Für die meisten nichts, und das gehört klar gesagt. Für die meisten gilt der 15-%-Satz, und die Erstattung kommt aus dem Überabzug und der Medicare-Levy-Befreiung und nicht aus Addy.
 
-Wo es etwas ändert, ändert es viel. Ein Wohnsitz nach Addy bringt für einen Staatsangehörigen der acht Länder den Freibetrag von 18.200 $ mit sich, und ein Resident aus einem anderen Land gilt zwar ebenso als ansässig, bekommt den Freibetrag aber nicht und landet meist beim Low Income Tax Offset. Derselbe Befund, sehr unterschiedliches Geld, entschieden allein davon, welcher Pass in der Schublade liegt. Das ist die Verzweigung, die vor Abgabe einer [Steuererklärung](/de/tax-return) zu prüfen ist, denn später zu ändern ist schwerer, als es einmal richtig zu machen. Ob es in deinem Fall trägt, entscheidet sich an der [Wohnsitzprüfung](/de/blog/tax-residency-working-holiday-makers), und alte Bescheide lassen sich innerhalb der normalen Berichtigungsfrist noch korrigieren.
+Wo es etwas ändert, ändert es viel, und zwar für das ganze Jahr. Genau deshalb gehört die Frage geprüft, bevor eine [Steuererklärung](/de/tax-return) abgegeben wird, denn später zu ändern ist schwerer, als es einmal richtig zu machen. Ob dein Fall trägt, entscheidet sich an der [Wohnsitzprüfung](/de/blog/tax-residency-working-holiday-makers), und wir legen uns dort erst fest, nachdem wir dein Jahr durchgegangen sind. Alte Bescheide lassen sich innerhalb der normalen Berichtigungsfrist noch korrigieren.
 `,
   },
 
@@ -6439,7 +6416,7 @@ Die Gesamtlage wird in der [Working-Holiday-Steuererklärung](/de/tax-return) er
     title: 'Zweites oder drittes Visum: Steuerfolgen',
     description: 'Am Steuersatz ändert ein zweites oder drittes Visum nichts. Deine TFN bleibt bestehen, aber Super, Wohnsitzfrage und DASP-Zeitpunkt verschieben sich.',
     body: `
-Der Satz ändert sich nicht. Ein Zweit- oder Drittjahresvisum 417 oder 462 wird weiterhin zu Working-Holiday-Maker-Sätzen besteuert, 15 % auf die ersten 45.000 $. Ändern kann sich dein Wohnsitz, denn ein längerer und sesshafterer Aufenthalt ist genau das, worauf der Wohnsitztest schaut, und dort bewegt sich das Geld.
+Der Satz ändert sich nicht. Ein Zweit- oder Drittjahresvisum 417 oder 462 wird weiterhin zu Working-Holiday-Maker-Sätzen besteuert, 15 % auf die ersten 45.000 $. Ändern kann sich deine Wohnsitzlage, denn je länger ein Aufenthalt wird, desto weniger selbstverständlich ist die Antwort vom Vorjahr, und dort bewegt sich das Geld.
 
 ## Warum bleibt der Satz gleich, wenn sich alles andere geändert hat?
 
@@ -6449,11 +6426,11 @@ Das ist der Teil, von dem die Leute annehmen, sie wüssten ihn schon, und den si
 
 ## Wo verschiebt sich der Wohnsitz wirklich?
 
-In den Fakten, die ein zweites oder drittes Jahr fast nebenbei erzeugt. Der Wohnsitz entscheidet sich daran, wie du tatsächlich gelebt hast, und nicht am Visum oder an einer Tageszählung, und ein Backpacker im dritten Jahr mit Mietvertrag in einer Stadt, einem langfristigen Arbeitgeber, einem Auto, einem täglich genutzten Bankkonto und einem Partner sieht deutlich anders aus als jemand im ersten Jahr, der alle drei Wochen das Hostel wechselt.
+In Details, an die die meisten nie denken. Der steuerliche Wohnsitz ist eine Beurteilung des ganzen Jahres, keine Tageszählung und keine Visumsfrage, und ein zweites oder drittes Jahr ist selten eine Kopie des ersten. Was letztes Jahr eine schnelle Antwort war, ist dieses Jahr womöglich keine mehr, und die Frage ist in beide Richtungen leicht falsch zu beantworten.
 
-Ist der Wohnsitz festgestellt, wird der Pass zum entscheidenden Faktor. Nach dem Urteil des High Court in Addy v Commissioner of Taxation kann ein Working Holiday Maker, der australischer Steuerresident und Staatsangehöriger Großbritanniens, Deutschlands, Japans, Chiles, Finnlands, Israels, Norwegens oder der Türkei ist, zu Residentensätzen samt dem Freibetrag von 18.200 $ veranlagt werden. Ein Resident aus jedem anderen Land bleibt Resident, bekommt den Freibetrag aber nicht.
+Und sie ist keine Kleinigkeit. Seit dem Urteil des High Court in Addy v Commissioner of Taxation kann die Wohnsitzlage in einzelnen Fällen ändern, nach welchen Sätzen ein ganzes Jahr veranlagt wird, und zwei Backpacker mit fast identischen Jahren können am Ende verschieden veranlagt werden.
 
-Nichts davon ist automatisch, und nichts davon ist ein Ja oder Nein an einer einzelnen Tatsache. Was tatsächlich entscheidet, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
+Nichts davon ist automatisch, und nichts davon ist ein Ja oder Nein an einer einzelnen Tatsache. Warum die Frage so schwer zu greifen ist, steht in unserem Guide zum [steuerlichen Wohnsitz für Working Holiday Maker](/de/blog/tax-residency-working-holiday-makers).
 
 ## Brauchst du eine neue TFN?
 
@@ -6485,8 +6462,8 @@ Wer mit sauberer Akte abreist, kassiert die letzte Erstattung und den DASP ohne 
 
 Der Satz steht über Visumsjahre hinweg fest. Fast alles andere an einer Erklärung für das zweite oder dritte Jahr entscheiden Fakten, die nur dich betreffen.
 
-- Ob dein Lebensmuster sesshaft genug geworden ist, um die Wohnsitzfrage überhaupt aufzuwerfen.
-- Welchen Pass du hältst, denn das entscheidet, ob der Wohnsitz auch den Freibetrag von 18.200 $ bringt.
+- Ob die Wohnsitzfrage in deinem Jahr noch so einfach ist wie im ersten, was sich nicht von selbst beantwortet.
+- Ob sich daraus für die Veranlagung etwas ergibt, was von Fall zu Fall verschieden ausgeht und geprüft gehört.
 - Ob ein früheres Steuerjahr nicht eingereicht blieb, was weiterhin zu holen ist.
 - Ob du zwischen Visa DASP beantragt hast, was sich nicht umkehren lässt.
 - Wie viele Superfonds inzwischen Beiträge auf deinen Namen halten.

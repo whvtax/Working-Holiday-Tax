@@ -67,9 +67,9 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Cleaning work" })
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "If your refund is less than our fee, we refund the difference. You are never out of pocket.",
-  "guaranteeBody": "Cleaning returns land on our desk every week, and every one of them belongs to somebody on a 417 or 462 visa. Prepared by our team, then reviewed and signed off by a registered tax agent before it goes to the ATO.",
+  "guaranteeBody": "Cleaning returns land on our desk every week, and every one of them belongs to somebody on a 417 or 462 visa. Reviewed and signed off by a registered tax agent before it goes to the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",

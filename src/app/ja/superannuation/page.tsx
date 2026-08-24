@@ -286,7 +286,7 @@ export default function JapaneseSuperannuationPage() {
             </div>
 
             <p style={{ fontSize: '13px', color: '#4C6459' }}>
-              返信は約1時間以内。まず質問だけでも大丈夫です。
+              返信は約1時間以内。
             </p>
           </div>
         </div>
@@ -519,7 +519,7 @@ export default function JapaneseSuperannuationPage() {
           WhatsAppで相談する
         </WaLink>
         <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
-          返信は約1時間以内。まず質問だけでも大丈夫です。
+          返信は約1時間以内。
         </p>
       </Answer>
 

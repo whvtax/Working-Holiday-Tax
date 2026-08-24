@@ -110,7 +110,7 @@ const CATEGORY_INTRO: Record<string, CategoryIntro> = {
   'tax-return': {
     paragraphs: [
       'The Australian financial year runs from 1 July to 30 June, and anyone who earned income inside it lodges a return. These guides cover deadlines and penalties, deductions and what needs a receipt, tax residency, amendments to a year already lodged, lodging after you have flown home, and what actually decides the size of a refund.',
-      'This is the category for somebody deciding whether to lodge it themselves or hand it over, so the facts that move the number are all here. Your tax residency, which is settled on how you actually lived in Australia and not on a day count. Whether your nationality changes which rates apply once residency is settled. The weeks withheld at 45 per cent before a TFN reached payroll. The Medicare position. And the deductions that belong to the work you genuinely did. None of those can be looked up in a table. Every one of them has to be worked out against your own year.',
+      'This is the category for somebody deciding whether to lodge it themselves or hand it over, so the facts that move the number are all here. Your tax residency, which is a judgement about your year rather than something a visa or a day count settles. What that judgement turns out to be worth in your particular case, which varies more than most people expect. The weeks withheld at 45 per cent before a TFN reached payroll. The Medicare position. And the deductions that belong to the work you genuinely did. None of those can be looked up in a table. Every one of them has to be worked out against your own year.',
     ],
     service: { path: '/tax-return', label: 'What we go through on every tax return' },
   },

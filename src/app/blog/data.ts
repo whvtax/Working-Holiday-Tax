@@ -1138,7 +1138,7 @@ Above $45,000 the rate rises: 30% from $45,001 to $135,000, 37% to $190,000, and
 
 It sits between the two, which is why the comparison confuses people. An Australian tax resident pays nothing on the first $18,200 and then rising rates. An ordinary foreign resident pays 30% from the first dollar. A working holiday maker pays 15% from the first dollar.
 
-So at typical backpacker earnings a working holiday maker does better than a foreign resident and worse than a resident. The exception is the one that matters commercially: someone who is assessed as an Australian tax resident and holds a passport from one of the eight non discrimination treaty countries, being the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway or Turkey, can be taxed at resident rates including the $18,200 threshold. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers what decides that.
+So at typical backpacker earnings a working holiday maker does better than a foreign resident and worse than a resident. There is a narrow exception where a year is assessed differently and better treatment follows, but it hangs on a residency judgement that is easy to call wrongly in both directions, and a position is only taken after the whole year has been reviewed. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it is not a box you can tick yourself.
 
 ## Why do people with correct 15% withholding still get refunds?
 
@@ -1186,7 +1186,7 @@ The rate is fixed by statute. What you actually paid, and what comes back, is de
 - Whether every employer had your TFN from the first pay, and how long any gap ran.
 - Whether each employer was registered with the ATO as a working holiday maker employer.
 - How the residency and working holiday maker boxes on each declaration were completed.
-- Which passport you hold, which decides both the Addy position and the Medicare levy question.
+- Which passport you hold, which decides the Medicare levy question and can matter elsewhere in ways that are assessed case by case.
 - Whether you also had ABN income, which carries no withholding at all.
 - Whether the year was a part year, since part year withholding routinely overshoots.
 
@@ -1571,7 +1571,7 @@ Whether an agent is worth it is not a general question, it is a question about y
 - How many employers you had, since income from a forgotten one is the most common omission on a self lodged return.
 - Whether there was a period before your TFN reached the employer, withheld at 45% instead of 15%.
 - Which passport you hold, which decides whether the 2% Medicare levy exemption is even available.
-- Whether your residency position is genuinely clear, since it is decided on facts and circumstances rather than a day count.
+- Whether your residency position is genuinely clear, since it is a judgement about your whole year and no day count settles it.
 - Whether you have ABN income alongside wages, which changes both the calculation and the paperwork.
 - Whether you have already left Australia, which makes almost every retrieval step harder to do alone.
 
@@ -3007,9 +3007,9 @@ This is the mechanical reason multi employer years go wrong so often. Four jobs 
 
 ## What does the residency question on the form actually ask?
 
-The same question that later decides your refund, asked at the worst possible moment. Residency for tax purposes is not immigration residency and it is not a day count. It is a facts and circumstances test about how you actually lived here.
+The same question that later decides your refund, asked at the worst possible moment. Residency for tax purposes is not immigration residency and it is not a day count. It is a judgement made on the whole of a year, and the details that swing it are rarely the ones people expect.
 
-For most working holiday makers the working holiday maker answer is the right one and the residency box is straightforward. For someone in a second or third year with a settled life in one place it genuinely may not be, and the passport then matters as well. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) sets out what the test weighs.
+For most working holiday makers the working holiday maker answer is the right one and the residency box is straightforward. For someone in a second or third year it genuinely may not be, and calling it wrongly is expensive in either direction. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it is not a question to answer on instinct.
 
 ## What if it was filled in wrong?
 
@@ -3375,65 +3375,54 @@ Where tax was owed rather than refunded, interest accrues and the debt follows t
  title:
  "Are You a Tax Resident of Australia?",
  description:
- "Residency is decided on how you lived here, not your visa and not a day count. Four facts decide it, and for eight passports it is worth thousands.",
+ "Residency can change the rates applied to your whole year. It is a judgement rather than a checkbox, and it is easy to get wrong in both directions.",
  category: "Tax Return",
  date: "24 May 2025",
  readTime: 6,
  body: `
-Tax residency is decided on how you actually lived in Australia, not on your visa and not on a day count. There is no 183 day rule that settles it.
+Tax residency is the question with the widest reach on a working holiday tax return. It can change the rates applied to your entire year, which is why it deserves more care than any other item on the return, and why it is the item most often answered wrongly by people who were sure of their answer.
 
-Most working holiday makers are not residents, so the working holiday maker rates apply: 15% on the first $45,000. A minority genuinely are, and for eight passports that finding is worth thousands, because it carries the full $18,200 tax free threshold and the resident rates underneath it. The registered agent makes the call on your year when the return is prepared.
+Most working holiday makers are taxed at the working holiday maker rates: 15% on the first $45,000. A minority are assessed differently, and for some of them the difference is worth thousands. Which side of that line you fall on is a judgement, not a lookup, and every return prepared here is reviewed and signed off by a registered tax agent before a position is taken.
 
 ## What are the working holiday maker rates?
 
-They apply to wage income earned on a 417 or 462 visa regardless of residency, which is why the residency question is so widely assumed not to matter. The scale is 15% on the first $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000, and 45% above that. The rates were set by the 2017 working holiday maker reform package and they operate independently of the ordinary residency tests, so for a straightforward year of wages residency changes nothing about the headline rate.
+They apply to wage income earned on a 417 or 462 visa. The scale is 15% on the first $45,000, 30% from $45,001 to $135,000, 37% from $135,001 to $190,000, and 45% above that. The rates were set by the 2017 working holiday maker reform package, and for a straightforward year of wages they are the whole story.
 
-What it changes is everything around it. For a small number of people it changes the rate too.
+What residency changes is everything around them. For a small number of people it changes the rate too.
 
-## What four facts decide residency?
+## Why is residency so hard to pin down?
 
-Residency is a facts and circumstances test, which means no single answer settles it and no threshold triggers it. Four things about your year carry most of the weight, and you already know all four.
+Because it is a judgement that has been fought over at the highest level. The question of how working holiday makers should be taxed went all the way to the High Court of Australia in Addy v Commissioner of Taxation, and the fact that experienced judges disagreed with each other on the way up tells you what kind of question this is. It is not one you resolve with a search and a checklist.
 
-**Where you actually lived.** One address for months, a lease in your name, a room you came back to between trips. Or a different hostel every three weeks. Settled living supports residency. Constant movement does not, and this is why the typical backpacker year fails the test.
+Residency turns on details of your year that most people never think to check, weighed together rather than ticked off one by one. No single fact settles it, and the facts that end up mattering are frequently not the ones people guess.
 
-**Whether your life here had a routine.** Ongoing work with one employer rather than a string of them, a gym membership, a bank account used daily, a partner, a car, a share house you contributed to. These are the ordinary facts the test weighs, and none of them is decisive alone.
+## What do people get wrong about it?
 
-**Your passport.** This is the part almost nobody knows and it is dealt with separately below.
+Two assumptions do most of the damage, and both are unreliable.
 
-**How long you stayed, and whether it was one stretch or several.** Part year residency is a real outcome, not a technicality, and it changes which income is taxed which way and when.
+The first is that the visa decides it. It does not. Holding a 417 or 462 tells you almost nothing about how your year will be assessed.
 
-## Why does your passport matter?
+The second is that a day count decides it. People arrive convinced that some number of days in the country settles the matter, and it does not. There is no count you can do on a calendar that answers the question.
 
-Because of the High Court's decision in Addy v Commissioner of Taxation [2021] HCA 34. A working holiday maker who is an Australian tax resident and who is a national of one of eight non-discrimination treaty countries can be taxed at resident rates, which includes the $18,200 tax free threshold. The eight countries are the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway and Turkey, and that list covers effectively the entire British, German and Japanese working holiday population.
+Both myths survive because they are simple. The real assessment is not, and answering the item on either assumption is how returns end up wrong in both directions: people who claim a position they cannot hold, and people who quietly overpay by never realising a better position existed.
 
-Which is to say: if you are reading this in German or Japanese, the passport half is already done.
+## How close can two years be and still land differently?
 
-The condition that does the work is the first one. You have to be an Australian tax resident on the ordinary tests before the treaty argument becomes available at all, and hostel hopping does not get you there. A resident from any other country still qualifies as a resident but does not get the threshold, and is usually looking at the low income tax offset instead. Same residency finding, very different money.
+Very close. Two travellers can arrive in the same month, earn similar money, leave in the same week, and be correctly assessed on opposite sides of the line, because the assessment weighs parts of their years that look identical from the outside and are not. That is the honest reason self assessed residency answers go wrong so often: the difference is invisible until someone who knows what to look for goes through the year.
 
 ## Does the tax free threshold apply or not?
 
-Here is the sentence that is true in every case. Working holiday makers do not get the $18,200 tax free threshold, unless they are Australian tax residents and hold a passport from one of the eight non-discrimination treaty countries, which is uncommon.
-
-That means the correct answer on the withholding declaration for almost everyone is that the threshold does not apply, because getting it wrong there creates a debt during the year regardless of how the residency question eventually resolves. The residency and treaty position is settled at assessment, not in payroll.
+For almost everyone the answer on the withholding declaration is that it does not apply, because answering otherwise creates a debt during the year regardless of how the residency question eventually resolves. The residency position is settled at assessment, not in payroll, and never by the form you fill in on your first day.
 
 ## What else does residency change?
 
-More than most people expect, even where the wage rate does not move. Some deductions are only available to residents. Capital gains and investment income are treated differently. Whether foreign income has to be declared at all turns on it. And Medicare entitlement, which drives the 2% levy and its exemption, sits alongside it.
-
-For someone whose only Australian income is wages and who owns nothing here, the practical effect is small. For someone who stayed fourteen months, held one job for most of it, rented a place with a lease and holds a British, German or Japanese passport, it is the single largest number on the return.
+More than most people expect, even where the wage rate does not move. Some deductions are only available to residents. Capital gains and investment income are treated differently. Whether foreign income has to be declared at all turns on it. And on the years where the finding goes the other way, it can be the single largest number on the return.
 
 ## Which side of the residency line are you on?
 
-Residency is not scored on a checklist and no single fact settles it, which is exactly why it cannot be looked up. These are the circumstances that carry the weight in an assessment of your own year.
+That is not a question this page can answer, and it is not a question you can safely answer about yourself, in either direction. What can be said is what the stakes are: the rates applied to your whole year, the deductions available to you, and the treatment of everything you earned outside your wages.
 
-- Whether you had a settled home base or moved constantly. This is the heaviest single factor.
-- Whether your passport is one of the eight treaty nationalities, which decides whether a resident finding is worth anything extra.
-- Whether you stayed more than twelve months, or in one continuous stretch rather than several.
-- Whether you have an Australian partner, a lease in your name, or a car registered to you.
-- Whether part of the year was resident and part was not, which produces a part year outcome rather than a single answer.
-- Whether you have foreign income or investments, where the consequences run well beyond the wage rate.
-
-None of these is a yes or no on its own. That is precisely what a facts and circumstances test means, and it is why residency is the most commonly mis-answered item on a self lodged [working holiday tax return](/tax-return). You can [estimate your tax refund](/calculator) on the ordinary working holiday rates as a baseline before the residency position is worked out.
+The way a defensible position is reached is by going through your year in full, weighing the details that actually carry weight, and taking a position that stands up if the ATO asks about it. That is how the residency item is handled in every [working holiday tax return](/tax-return) prepared here, reviewed and signed off by a registered tax agent. You can [estimate your tax refund](/calculator) on the ordinary working holiday rates as a baseline while the position is worked out.
  `,
  },
 
@@ -3536,9 +3525,9 @@ Five facts about your own year decide almost all of it, and you already know fou
 
 ## Where does it stop being arithmetic?
 
-It stops being arithmetic at the residency item, which is where the largest differences on this site are decided and where no calculator helps. Residency is a facts and circumstances test with no day count that settles it, and for a national of one of the eight non-discrimination treaty countries a resident finding can bring the $18,200 tax free threshold into play.
+It stops being arithmetic at the residency item, which is where the largest differences on this site are decided and where no calculator helps. Residency is a judgement about a year as a whole, it turns on details most people never think to check, and it is easy to get wrong in both directions.
 
-Those eight are the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway and Turkey, and between them they cover almost every backpacker who reads this. A resident from anywhere else is still a resident but does not get the threshold. Our guide to [tax residency on a working holiday visa](/blog/tax-residency-working-holiday-makers) sets out the four facts that decide it.
+For some people a residency finding changes the rates applied to everything they earned, which is why the item is treated with so much care and why a position is only taken after the year has been gone through properly. Our guide to [tax residency on a working holiday visa](/blog/tax-residency-working-holiday-makers) covers why it cannot be self assessed with confidence.
 
 ## When does the refund arrive?
 
@@ -3953,7 +3942,7 @@ Anything withheld above the correct rate comes back through your [working holida
  date: "29 July 2026",
  readTime: 5,
  body: `
-Working holiday makers do not get the $18,200 tax free threshold, unless they are Australian tax residents and hold a passport from one of the eight non-discrimination treaty countries, which is uncommon.
+Working holiday makers do not get the $18,200 tax free threshold. A narrow exception exists, it is uncommon, and whether it applies cannot be judged from the outside.
 
 So for almost everyone the answer on the withholding declaration is no. Ticking yes creates a debt rather than a saving.
 
@@ -3973,9 +3962,9 @@ On $1,000 a week, correct withholding is about $150. With the threshold wrongly 
 
 ## What is the exception, exactly?
 
-Two conditions have to hold together, and both are demanding. You have to be an Australian tax resident on the ordinary facts and circumstances tests, and you have to hold a passport from one of the eight non-discrimination treaty countries: the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway or Turkey.
+Narrower than almost everyone who has heard of it assumes. It traces back to the High Court's decision in Addy v Commissioner of Taxation [2021] HCA 34, and it hangs on a residency judgement that turns on details most people never think to check. Most claims to it fail, and they usually fail on facts the claimant felt confident about.
 
-That comes from the High Court's decision in Addy v Commissioner of Taxation [2021] HCA 34. The passport half is easy to check. The residency half is not, and it is where most claims fail, because a year of hostels and a string of employers does not establish residency. See [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) for what the residency test actually weighs, and expect the registered agent to make the final call on it when the return is prepared rather than settling it yourself in July.
+See [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) for why the question resists self assessment, and expect the final call to be made when the return is prepared and reviewed by a registered tax agent, rather than settled by you in July.
 
 Either way it is settled at assessment, not in payroll. Even someone who might ultimately qualify should answer no during the year.
 
@@ -3995,8 +3984,8 @@ The other directions tell you something different. Around 45% means your TFN is 
 
 For almost everyone the answer on the declaration is no, and the exception is narrow enough that it should not change how you fill the form in during the year. These are the facts that decide both halves.
 
-- Your passport, since only eight nationalities can ever reach the exception.
-- Whether you were genuinely settled in one place with a routine, which is the residency half and the harder half.
+- How your year as a whole would be assessed for residency, which is a judgement rather than a checklist.
+- Details of your circumstances that rarely look important until someone who knows the area goes through them.
 - How many employers received a declaration with the wrong answer.
 - How long the wrong rate ran before it was caught, which is the whole size of the problem.
 - Whether you also have ABN income, which is untaxed as it arrives and compounds the same shortfall.
@@ -4941,9 +4930,9 @@ That is the honest answer, and it is worth saying plainly rather than hedging. F
 
 ## When does it become available?
 
-It becomes available when you are an Australian tax resident for the year, which a minority of working holiday makers genuinely are. Residency is decided on how you actually lived here rather than on your visa or on a day count, and it is a real finding rather than a technicality.
+It becomes available when you are an Australian tax resident for the year, which a minority of working holiday makers genuinely are. Residency is a judgement rather than a technicality, it is not settled by your visa or by anything you can count on a calendar, and it is easy to call wrongly in both directions.
 
-For a resident who is also a national of one of the eight non-discrimination treaty countries, the more valuable outcome is usually the $18,200 tax free threshold rather than LITO. Those eight are the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway and Turkey. For a resident from anywhere else, LITO of up to $700 is generally what the residency finding is worth instead. Our guide to [tax residency](/blog/tax-residency-working-holiday-makers) sets out the four facts that decide it.
+What a resident finding is then worth varies more than people expect. For some it is worth considerably more than LITO, for others LITO of up to $700 is the whole of it, and which outcome applies is assessed case by case when the return is prepared. Our guide to [tax residency](/blog/tax-residency-working-holiday-makers) covers why the question is harder than it looks.
 
 ## What can you claim instead?
 
@@ -4970,9 +4959,9 @@ The combination is where a return stops being a form and starts being a calculat
 
 ## What decides your position?
 
-Two facts, and only two. Whether you were an Australian tax resident for the year or any part of it, which is decided on where you actually lived, whether your life here had a routine, how long you stayed and whether it was one stretch or several. And your nationality, because for the eight treaty countries a resident finding produces the tax free threshold rather than the offset.
+Mostly one question: whether you were an Australian tax resident for the year or any part of it. That is a judgement that turns on details most people never think to check, and what a resident finding is then worth depends on circumstances that are weighed case by case rather than read off a table.
 
-Neither is a box you tick with confidence on a first reading. Residency in particular is a holistic test with no numeric threshold, which is precisely why it is the item most often answered wrongly on a self lodged return, and why it moves more money than every offset in this guide combined. It is worth resolving properly when the [tax return](/tax-return) is prepared.
+It is not a box you tick with confidence on a first reading. Residency is a holistic judgement with no numeric threshold, which is precisely why it is the item most often answered wrongly on a self lodged return, and why it moves more money than every offset in this guide combined. It is worth resolving properly when the [tax return](/tax-return) is prepared.
 `,
  }, {
  slug: "appealing-ato-decision-australia",
@@ -5430,7 +5419,7 @@ What gets harder is evidence and contact. Rosters and payslips left in a system 
  slug: "backpacker-tax-history-australia",
  title: "The Backpacker Tax: From High Court to 15%",
  description:
- "The 15% backpacker tax started in 2017 and survived a High Court challenge in 2021, which left it standing for most people but not for eight nationalities.",
+ "The 15% backpacker tax started in 2017 and was tested in the High Court in 2021. The rate survived, with consequences that are still assessed case by case.",
  category: "Tax Return" as const,
  date: "14 October 2025",
  readTime: 6,
@@ -5441,7 +5430,7 @@ The backpacker tax is the flat rate applied to subclass 417 and 462 income: 15% 
 
 Fifteen per cent from the first dollar up to $45,000, then the foreign resident scale above it. Both visa subclasses are treated identically, and almost every working holiday maker earns inside the first bracket, so 15% is the number that matters in practice.
 
-The absence of a tax free threshold is the structural feature that separates this from ordinary Australian taxation. A resident pays nothing on the first $18,200; a working holiday maker pays 15% on it. That single difference is worth about $2,730 a year to anyone it applies to, which is why the treaty question below is not academic.
+The absence of a tax free threshold is the structural feature that separates this from ordinary Australian taxation. A resident pays nothing on the first $18,200; a working holiday maker pays 15% on it. That single difference is worth about $2,730 a year to anyone it applies to, which is why the residency question below is not academic.
 
 - 15% on income up to $45,000
 - 30% from $45,001 to $135,000
@@ -5450,9 +5439,9 @@ The absence of a tax free threshold is the structural feature that separates thi
 
 ## What was the position before 2017?
 
-Residency decided everything. A working holiday maker assessed as an Australian tax resident paid ordinary resident rates with the $18,200 threshold, and one assessed as a non-resident paid 32.5% from the first dollar, so two people doing identical work could face very different bills depending on how they had lived.
+Residency decided everything. A working holiday maker assessed as an Australian tax resident paid ordinary resident rates with the $18,200 threshold, and one assessed as a non-resident paid 32.5% from the first dollar, so two people doing identical work could face very different bills. Which side a given backpacker fell on was a judgement, and it was contested then for the same reasons it is contested now.
 
-A large number of backpackers did qualify as residents, particularly those who stayed in one place and worked steadily, and the government regarded the resulting low tax bills as an unintended outcome rather than a policy. That view is what produced the 2016 proposal.
+A large number of backpackers did qualify as residents, and the government regarded the resulting low tax bills as an unintended outcome rather than a policy. That view is what produced the 2016 proposal.
 
 ## How did the 2017 rate come about?
 
@@ -5462,21 +5451,21 @@ The settlement was the 15% rate from 1 January 2017. It did not arrive alone: th
 
 ## What did the High Court decide in Addy?
 
-That the 15% rate could not be applied to a British national in circumstances where an Australian in the same position would have paid less. In *Addy v Commissioner of Taxation* [2021] HCA 34 the High Court held that taxing a working holiday maker who was an Australian tax resident at 15% from the first dollar, when a resident Australian national doing the same work would have had the tax free threshold, breached the non-discrimination article of the United Kingdom tax treaty.
+That the 15% rate could not lawfully be applied to the particular taxpayer before it. In *Addy v Commissioner of Taxation* [2021] HCA 34 the High Court found for the taxpayer on grounds that turn on how an individual's whole year is assessed, which is precisely why the decision cannot be read as a general rule about backpacker tax.
 
 The case ran for years and did not go one way throughout: the taxpayer succeeded at first instance in 2019, lost in the Full Federal Court, and won in the High Court in 2021. The legislation was not amended afterwards, so the position stands as the court left it and is applied case by case rather than through a change in the rate.
 
-## Whose passport does Addy actually help?
+## Who does Addy actually help?
 
-Nationals of the eight countries whose treaties with Australia contain the same non-discrimination article: the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway and Turkey. That list covers most of the working holiday population, which is why the decision mattered so much.
+Fewer people than the headlines suggested, and rarely the people who assume it covers them. Whether the decision reaches a particular working holiday maker depends on an assessment of their whole year, and that assessment goes wrong in both directions when people attempt it on their own.
 
-Nationality alone is not enough, and this is where the analysis usually stops for people who read about the case and expect a refund. Working holiday makers do not get the $18,200 tax free threshold unless they are Australian tax residents and hold a passport from one of the eight non-discrimination treaty countries, which is uncommon. Residency is decided on the facts of how you actually lived here rather than on a day count, so the question is whether your year looked settled: one address, ongoing work, a life with a routine in it. That is a judgement about your own circumstances, not something the rate table can answer.
+The analysis usually stops too early for people who read about the case and expect a refund. The question is a judgement about your own circumstances, turning on details most people never think to check, and it is not something the rate table or the case name can answer. A position is taken only after the year has been gone through in full.
 
 ## What does any of this change on your return?
 
-For most people, nothing, and it is worth saying so plainly. If you moved every few weeks and worked several short jobs, you are not an Australian tax resident, the 15% rate applies, and your refund comes from over-withholding and the Medicare levy exemption rather than from *Addy*.
+For most people, nothing, and it is worth saying so plainly. Most working holiday makers are not Australian tax residents, the 15% rate applies, and the refund comes from over-withholding and the Medicare levy exemption rather than from *Addy*.
 
-Where it does change things it changes them substantially. A resident finding under Addy brings the $18,200 threshold with it for a national of the eight countries, and a resident from any other country gets the residency finding without the threshold, usually landing on the Low Income Tax Offset instead. Same finding, very different money, decided entirely by which passport is in the drawer. That is the branch worth checking before a [tax return](/tax-return) is lodged, because amending later is harder than getting it right once.
+Where it does change things it changes them substantially, and in ways that differ from person to person for reasons that are not obvious from the outside. That is the branch worth having checked before a [tax return](/tax-return) is lodged, because amending later is harder than getting it right once, and the position taken has to be one that can be defended.
 `,
  }, {
  slug: "how-to-check-super-balance-working-holiday",
@@ -6204,7 +6193,7 @@ This is where multi employer years get amended unnecessarily. Lodging in early J
  date: "24 November 2025",
  readTime: 6,
  body: `
-The rate does not change. A second or third year 417 or 462 visa is still taxed at working holiday maker rates, 15% on the first $45,000. What can change is your residency position, because a longer and more settled stay is exactly what the residency test looks at, and that is where the money moves.
+The rate does not change. A second or third year 417 or 462 visa is still taxed at working holiday maker rates, 15% on the first $45,000. What can change is your residency position, because a longer stay turns a question that was once a formality into a genuine judgement, and that is where the money moves.
 
 ## Why does the rate stay the same when everything else has changed?
 
@@ -6214,11 +6203,11 @@ That is the part people assume they already know and get right. What they get wr
 
 ## Where does residency genuinely start to shift?
 
-In the facts a second or third year produces almost by accident. Tax residency is decided on how you actually lived rather than on your visa or on a day count, and a third year backpacker with a lease in one city, one long term employer, a car, a bank account used daily and a partner looks materially different from a first year moving hostel every three weeks.
+In a second or third year, quietly and without any obvious moment where it happens. Tax residency is not settled by your visa or by a day count, and a longer stay produces exactly the kind of year where the judgement can genuinely land either way. Two multi year backpackers whose years look almost identical from the outside can be correctly assessed on opposite sides of the line.
 
-If residency is established, the passport becomes the deciding factor. Following the High Court's decision in Addy v Commissioner of Taxation, a working holiday maker who is an Australian tax resident and a national of the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway or Turkey can be taxed at resident rates including the $18,200 tax free threshold. A resident from any other country is still a resident but does not get the threshold.
+If residency is established, what that finding is worth varies from person to person, for reasons that are assessed case by case. The area has been fought all the way to the High Court in Addy v Commissioner of Taxation, which is a fair measure of how far from obvious the answers are.
 
-None of it is automatic and none of it is a yes or no on a single fact. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) sets out what actually decides it.
+None of it is automatic and none of it is a yes or no on a single fact. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it has to be assessed rather than assumed.
 
 ## Do you need a new TFN?
 
@@ -6250,8 +6239,8 @@ The people who leave with clean records collect their final refund and their DAS
 
 The rate is fixed across visa years. Almost everything else about a second or third year return is decided by facts specific to you.
 
-- Whether your living pattern has become settled enough to raise the residency question at all.
-- Which passport you hold, since that decides whether residency also brings the $18,200 threshold.
+- Whether your residency position deserves a fresh look, which after a longer stay it usually does.
+- What a residency finding would be worth in your particular case, which varies more than people expect.
 - Whether any earlier financial year was left unlodged, which is still recoverable.
 - Whether you claimed DASP between visas, which cannot be reversed.
 - How many super funds now hold contributions in your name.
@@ -9125,9 +9114,9 @@ The absence of a tax free threshold is what separates this from ordinary Austral
 
 ## Can a working holiday maker ever get the tax free threshold?
 
-Yes, but rarely, and it turns on two things at once rather than on the visa. Working holiday makers do not get the $18,200 tax free threshold unless they are Australian tax residents and hold a passport from one of the eight non-discrimination treaty countries, which is uncommon.
+Yes, but rarely, and never on the strength of the visa alone. The exception exists, it is uncommon, and it hangs on a residency judgement that has been contested as far as the High Court.
 
-The eight are the United Kingdom, Germany, Japan, Chile, Finland, Israel, Norway and Turkey, and that part is simply a fact about your passport. The harder half is residency, which is decided on how you actually lived here rather than on a day count: one address for months, ongoing work with one employer, a life with a routine in it. Someone who moved every three weeks is not a resident and the question does not arise. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) sets out what the test actually weighs.
+Residency is not settled by a day count or by anything you can read off a calendar, and it is misjudged in both directions by people who felt sure of their answer. Our guide to [tax residency for working holiday makers](/blog/tax-residency-working-holiday-makers) covers why it is assessed rather than assumed, and a position is taken only after the whole year has been reviewed.
 
 ## Why does your employer's registration matter?
 
@@ -9145,7 +9134,7 @@ You must be in Australia to apply for a [TFN](/tfn), the application is free and
 
 Two per cent of taxable income, which is about $500 on $25,000 of earnings, and most people who qualify never claim it. Australians pay a 2% Medicare levy on top of income tax, and it is charged to people entitled to Medicare rather than to residents as such.
 
-Whether you can remove it depends on your passport, in the opposite direction to the treaty question above. A British or Irish national is generally entitled to Medicare under the reciprocal health care arrangements, so the levy applies. German and Japanese nationals generally are not entitled, so the exemption is available to them. It is not automatic in either case: claiming it requires a Medicare Entitlement Statement from Services Australia, which takes weeks to obtain, and that lead time is the whole reason it goes unclaimed. Our [Medicare levy exemption guide](/blog/medicare-levy-working-holiday-makers) covers the detail.
+Whether you can remove it depends on your passport, and often in the opposite direction to what people expect. A British or Irish national is generally entitled to Medicare under the reciprocal health care arrangements, so the levy applies. German and Japanese nationals generally are not entitled, so the exemption is available to them. It is not automatic in either case: claiming it requires a Medicare Entitlement Statement from Services Australia, which takes weeks to obtain, and that lead time is the whole reason it goes unclaimed. Our [Medicare levy exemption guide](/blog/medicare-levy-working-holiday-makers) covers the detail.
 
 ## What happens to your superannuation?
 

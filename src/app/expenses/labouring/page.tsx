@@ -67,9 +67,9 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Labour hire and wareh
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "If the fee ends up above the refund, the difference comes back to you.",
-  "guaranteeBody": "Pulling four agencies and a forgotten single shift into one return is ordinary work here, and every client is on a 417 or a 462. Prepared by our team, then reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
+  "guaranteeBody": "Pulling four agencies and a forgotten single shift into one return is ordinary work here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",

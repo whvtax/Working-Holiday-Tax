@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "建設と現場作業
 
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
-  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "ctaSub": "約1時間で返信します。",
   "guaranteeHeading": "還付金より料金のほうが高くついたら、差額は返金します。持ち出しにはなりません。",
   "guaranteeBody": "現場の申告、資格の更新、ユートをめぐる線引き。どれもここでは毎週の仕事で、お客様は全員417・462ビザの方です。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",

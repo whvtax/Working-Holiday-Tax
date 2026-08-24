@@ -67,9 +67,9 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "FIFO and camp work" }
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "A refund smaller than our fee means we refund the difference. You are never out of pocket.",
-  "guaranteeBody": "417 and 462 visas are the only tax work we take, so the zone offset, the residency position and the super sitting in three funds all get looked at together. Prepared by our team, then reviewed and signed off by a registered tax agent before lodgement.",
+  "guaranteeBody": "417 and 462 visas are the only tax work we take, so the zone offset, the residency position and the super sitting in three funds all get looked at together. Reviewed and signed off by a registered tax agent before lodgement.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
@@ -276,7 +276,7 @@ const SERVICES = [
     "label": "Superannuation"
   },
   {
-    "href": "/tax-residency",
+    "href": "/blog/tax-residency-working-holiday-makers",
     "label": "Tax residency"
   }
 ]

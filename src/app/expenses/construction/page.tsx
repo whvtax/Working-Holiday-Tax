@@ -67,9 +67,9 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Construction and site
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "Refund smaller than our fee? We refund the difference, so you are never out of pocket.",
-  "guaranteeBody": "Site returns, ticket renewals and the ute argument are a weekly job here, and every client is on a 417 or a 462. Prepared by our team, then reviewed and signed off by a registered tax agent before anything reaches the ATO.",
+  "guaranteeBody": "Site returns, ticket renewals and the ute argument are a weekly job here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before anything reaches the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",

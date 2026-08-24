@@ -97,11 +97,11 @@ const IconWhatsApp = () => (<svg width="19" height="19" viewBox="0 0 24 24" fill
 const FIGURES = [
   {
     figure: '45 %',
-    body: 'Die Wochen, bevor deine TFN bei deinem Arbeitgeber angekommen ist. Einbehalten zum Höchstsatz statt zu fünfzehn Prozent. Das kommt nicht zurück, wenn es niemand geltend macht.',
+    body: 'Zum Höchstsatz einbehalten, bevor deine TFN beim Arbeitgeber war. Das kommt nur zurück, wenn es jemand geltend macht.',
   },
   {
     figure: '18.200 $',
-    body: 'Dein steuerlicher Wohnsitz. Britische, deutsche und japanische Pässe können den vollen Steuerfreibetrag tragen. Kein Tagezählen entscheidet das. Es ist eine Beurteilung.',
+    body: 'Dein steuerlicher Wohnsitz. Giltst du als steuerlich ansässig, gehört der volle Freibetrag dir.',
   },
   {
     figure: '2 %',
@@ -113,27 +113,27 @@ const ANALYSIS = [
   {
     n: '01',
     title: 'Dein steuerlicher Wohnsitz',
-    body: 'Die meisten Working Holiday Maker kreuzen an, dass sie keine Steuerresidenten sind, und schauen nie wieder hin. Wenn du steuerlich ansässig warst und einen britischen, deutschen oder japanischen Pass hast, kann ein Nichtdiskriminierungsartikel im Abkommen deines Landes mit Australien die Sätze für Ansässige eröffnen. Genau darum ging es im Fall Addy vor dem High Court. Das ist eine Beurteilung, wie du hier gelebt hast, kein Tagezählen, und es ist die größte einzelne Zahl auf dieser Seite.',
+    body: 'Die meisten setzen hier ein Häkchen und denken nie wieder daran. Der Wohnsitz ist eine Beurteilung, über die sogar der High Court im Fall Addy entschieden hat, und die größte Zahl auf dieser Seite.',
   },
   {
     n: '02',
     title: 'Jeder Arbeitgeber, jede Woche',
-    body: 'Saison- und Gelegenheitsarbeit hinterlässt ein Jahr in Einzelteilen: vier oder fünf Arbeitgeber, eine Farm, die spät gezahlt hat, ein Job, den du im März schon vergessen hattest. Wir gleichen das ganze Jahr mit deinen ATO-Daten ab und nicht mit deinem Gedächtnis. Genau dort tauchen die Wochen zum Höchstsatz auf.',
+    body: 'Ein Working-Holiday-Jahr ist unordentlich: mehrere Arbeitgeber, späte Zahlungen, vergessene Jobs. Wir rechnen das ganze Jahr gegen deinen offiziellen ATO-Datensatz ab, nicht gegen dein Gedächtnis.',
   },
   {
     n: '03',
     title: 'Medicare, falls es dich betrifft',
-    body: 'Die Levy ist zwei Prozent deines Einkommens und wird standardmäßig abgezogen. Wenn du für einen Teil des Jahres oder für das ganze Jahr keinen Anspruch auf Medicare hattest, hast du sie für diesen Zeitraum nicht geschuldet. Das ATO streicht sie aber nur mit einer Befreiungsbescheinigung, die vorher beantragt werden muss. Wir prüfen, ob du sie bekommst, und beantragen sie dann.',
+    body: 'Zwei Prozent gehen standardmäßig ab, ob du sie geschuldet hast oder nicht. Zu erkennen, in welchen Jahren sie nie deine war, und sie entfernen zu lassen, ist unser Job.',
   },
   {
     n: '04',
     title: 'Abzüge für die Arbeit, die du wirklich gemacht hast',
-    body: 'Ein leeres Abzugsfeld ist keine Ersparnis, sondern die Entscheidung, auf etwas zu verzichten. Was ein Erntehelfer absetzen kann, ist nicht das, was ein Barista absetzt, und beides sieht anders aus als eine FIFO-Schicht oder die Kilometer eines Lieferfahrers. Wir fragen, was die Arbeit umfasst hat, setzen an, was dazugehört, und lassen weg, was nicht dazugehört.',
+    body: 'Ein Fruit Picker, ein Barista und ein Fahrer setzen nicht dasselbe ab. Wir fragen, woraus deine Arbeit bestand, und machen genau das geltend, was dazugehört.',
   },
   {
     n: '05',
     title: 'Dann wird eingereicht',
-    body: 'Vorbereitet von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird. Dieser Teil dauert Minuten. Über den Betrag entscheiden die vier Schritte davor.',
+    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie zum ATO geht. Dieser Teil dauert Minuten. Die vier Schritte davor entscheiden die Zahl.',
   },
 ]
 
@@ -145,11 +145,11 @@ const COMPARISON = [
 ]
 
 const SERVICES = [
-  { n: '01', href: '/de/tfn',            icon: <IconTFN />,      title: 'TFN beantragen',    desc: 'Vor der ersten Abrechnung beantragen, damit der Höchstsatz dich nie trifft.' },
-  { n: '02', href: '/de/abn',            icon: <IconABN />,      title: 'ABN-Registrierung', desc: 'Als Selbstständiger abrechnen, mit den steuerlichen Folgen vorher erklärt.' },
-  { n: '03', href: '/de/tax-return',     icon: <IconReturn />,   title: 'Steuererklärung',   desc: 'Die komplette Analyse von oben, danach die Einreichung beim ATO.' },
-  { n: '04', href: '/de/superannuation', icon: <IconSuper />,    title: 'Superauszahlung',   desc: 'Alle Fonds unter deiner TFN gefunden, dann ein DASP-Antrag zur Abreise.' },
-  { n: '05', href: '/de/medicare',       icon: <IconMedicare />, title: 'Medicare Levy',     desc: 'Die Befreiungsbescheinigung, wenn dein Jahr sie hergibt.' },
+  { n: '01', href: '/de/tfn',            icon: <IconTFN />,      title: 'TFN beantragen',    desc: 'Vor dem ersten Payslip, ohne Wochen zum Höchstsatz.' },
+  { n: '02', href: '/de/abn',            icon: <IconABN />,      title: 'ABN-Registrierung', desc: 'Rechnungen stellen, Steuerliches vorher erklärt.' },
+  { n: '03', href: '/de/tax-return',     icon: <IconReturn />,   title: 'Steuererklärung',   desc: 'Die Analyse oben, dann die Einreichung beim ATO.' },
+  { n: '04', href: '/de/superannuation', icon: <IconSuper />,    title: 'Superauszahlung',   desc: 'Alle Fonds gefunden, ein DASP-Antrag zur Abreise.' },
+  { n: '05', href: '/de/medicare',       icon: <IconMedicare />, title: 'Medicare Levy',     desc: 'Die Befreiung, wenn dein Jahr die Bedingungen erfüllt.' },
 ]
 
 const GUIDES = [
@@ -173,12 +173,8 @@ const FAQS = [
     answer: 'Unsere Gebühren sind pauschal und niemals ein Prozentsatz deiner Rückerstattung. Wir bestätigen die Gebühr per WhatsApp, bevor irgendetwas beginnt, und sie wird im Voraus bezahlt. Danach schicken wir dir den vollständigen Fragebogen und starten die Arbeit. Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.',
   },
   {
-    question: 'Bin ich mit einem 417 oder 462 Visum steuerlich in Australien ansässig?',
-    answer: 'Das hängt davon ab, wie du in Australien tatsächlich gelebt hast, nicht davon, wie lange dein Visum lief. Viele Working Holiday Maker ziehen ständig weiter und sind nicht steuerlich ansässig, aber wer sich an einem Ort niedergelassen hat, einen Job hatte und dort Teil einer Umgebung war, kann es sehr wohl sein. Warst du ansässig und hast einen Pass aus einem Land mit Nichtdiskriminierungsartikel, wozu Großbritannien, Deutschland und Japan gehören, können die Sätze für Ansässige samt vollem Steuerfreibetrag gelten. Genau das hat der Fall Addy vor dem High Court festgestellt. Es ist eine Beurteilung und kein Kästchen, deshalb gehen wir dein Jahr vorher mit dir durch.',
-  },
-  {
     question: 'Welchen Steuersatz zahlen Working Holiday Maker in Australien?',
-    answer: 'Working Holiday Maker zahlen pauschal 15 % auf die ersten 45.000 $, dann 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Wenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten, und das ist einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen. Diese Sätze sind allerdings der Ausgangspunkt und nicht das letzte Wort: Warst du steuerlich ansässig und kommt dein Pass aus einem Land mit Nichtdiskriminierungsartikel, können stattdessen die Sätze für Ansässige samt Steuerfreibetrag gelten.',
+    answer: 'Working Holiday Maker zahlen pauschal 15 % auf die ersten 45.000 $, dann 30 % bis 135.000 $, 37 % bis 190.000 $ und 45 % darüber. Wenn du deinem Arbeitgeber keine TFN gegeben hast, muss er stattdessen zum Höchstsatz einbehalten, und das ist einer der häufigsten Gründe, warum Backpacker am Ende Geld zurückbekommen.',
   },
   {
     question: 'Könnt ihr mir auch helfen, wenn ich Australien schon verlassen habe?',
@@ -326,7 +322,7 @@ export default async function GermanHomePage() {
 
           <p className="mx-auto hero-animate-delay"
             style={{ ...LEDE, color: '#4C6459', maxWidth: '46ch', marginBottom: '26px' }}>
-            Fünf Dinge entscheiden über deine Rückerstattung. Keins davon steht im Formular.
+            Fünf Dinge entscheiden über deine Rückerstattung. Keins davon passiert automatisch.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -337,7 +333,7 @@ export default async function GermanHomePage() {
               Schreib uns auf WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Antwort in ca. einer Stunde. Frag einfach.
+              Antwort in etwa einer Stunde.
             </p>
           </div>
 
@@ -395,7 +391,7 @@ export default async function GermanHomePage() {
               Schreib uns auf WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '10px' }}>
-              Antwort in ca. einer Stunde. Frag einfach.
+              Antwort in etwa einer Stunde.
             </p>
           </div>
         </div>
@@ -423,12 +419,6 @@ export default async function GermanHomePage() {
               </div>
             ))}
           </div>
-
-          <p style={{ fontSize: '13px', lineHeight: 1.55, color: '#4C6459', marginTop: '22px', maxWidth: '62ch' }}>
-            Britische, deutsche und japanische Pässe fallen alle unter einen Nichtdiskriminierungsartikel, deshalb
-            betrifft die Wohnsitzfrage fast jeden, mit dem wir arbeiten.{' '}
-            <Link href="/de/tax-residency" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>Wie der Wohnsitz bestimmt wird</Link>.
-          </p>
         </div>
       </section>
 
@@ -441,8 +431,7 @@ export default async function GermanHomePage() {
             Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt. Wir vereinbaren es mit dir auf
-            WhatsApp, bevor die Arbeit beginnt, damit später nichts daran überrascht.
+            Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
           </p>
         </div>
       </section>
@@ -457,8 +446,7 @@ export default async function GermanHomePage() {
             Was wir bei jeder Steuererklärung durchgehen
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '30px' }}>
-            Dieselben fünf Schritte, in derselben Reihenfolge, ob dein Jahr aus einem Job bestand oder aus sechs. Vier
-            davon passieren, bevor überhaupt etwas in die Erklärung getippt wird.
+            Dieselben fünf Schritte gelten, ob du einen Job hattest oder sechs. Vier davon passieren, bevor überhaupt etwas in deine Steuererklärung eingetragen wird.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -496,8 +484,7 @@ export default async function GermanHomePage() {
               style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>Nur TFN</h3>
               <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
-                Jeder Job lief über eine Lohnabrechnung. Du hast eine TFN abgegeben, bei jeder Abrechnung wurde Steuer
-                einbehalten, und jeder Arbeitgeber hat ein Income Statement für dich gemeldet.
+                Jeder Job lief über eine Lohnabrechnung, und bei jedem Payslip wurde Steuer einbehalten.
               </p>
               <WaLink href={waUrl({ topic: 'tax-return', lang: 'de', tier: 'tfn' })} position="inline" topic="tax-return" lang="de" tier="tfn"
                 className="btn-primary inline-flex items-center justify-center gap-2"
@@ -511,9 +498,7 @@ export default async function GermanHomePage() {
               style={{ padding: '22px 20px', border: '1px solid #E2EFE9', boxShadow: '0 1px 2px rgba(7,58,45,.06)' }}>
               <h3 className="font-semibold text-ink" style={{ fontSize: '16px', marginBottom: '8px' }}>TFN und ABN</h3>
               <p style={{ ...BODY, color: '#2A3C34', marginBottom: '18px', flex: 1 }}>
-                Irgendwann hast du Rechnungen gestellt, statt über die Lohnabrechnung bezahlt zu werden. Lieferdienst,
-                Subunternehmer auf dem Bau, eine Farm, die gegen eine ABN gezahlt hat. Von diesem Einkommen wurde nichts
-                einbehalten, und es steht anders in der Erklärung.
+                Ein Teil deines Einkommens lief über eine ABN, und davon wurde nichts einbehalten.
               </p>
               <WaLink href={waUrl({ topic: 'abn', lang: 'de', tier: 'tfn-abn' })} position="inline" topic="abn" lang="de" tier="tfn-abn"
                 className="btn-primary inline-flex items-center justify-center gap-2"
@@ -573,9 +558,8 @@ export default async function GermanHomePage() {
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
-            Jede Erklärung, die wir vorbereiten, gehört jemandem mit 417- oder 462-Visum. Deshalb tauchen bei allen
-            dieselben vier Fragen auf. Vorbereitet von unserem Team, geprüft und freigegeben von einem registrierten
-            Steuerberater, bevor sie beim ATO eingereicht wird.
+            Jede Erklärung, die wir vorbereiten, ist für jemanden mit 417- oder 462-Visum und wird von einem registrierten
+            Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
           </p>
 
           <GoogleReviews lang="de" />
@@ -589,7 +573,7 @@ export default async function GermanHomePage() {
             </svg>
             <p style={{ ...BODY, color: '#2A3C34' }}>
               <strong style={{ color: '#080F0D' }}>Ein registrierter Steuerberater fragt niemals nach deinen myGov-Logindaten.</strong>{' '}
-              Wir auch nicht. Wir brauchen sie nicht, und wer dich danach fragt, sind nicht wir.
+              Wer dich danach fragt, sind nicht wir.
             </p>
           </div>
         </div>
@@ -661,7 +645,7 @@ export default async function GermanHomePage() {
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
           <h2 className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
-            Erzähl uns, wie dein Jahr aussah
+            Erzähl uns von deinem Jahr
           </h2>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '50ch', marginBottom: '24px' }}>
             Wo du gearbeitet hast, ungefähr wann, und ob du jemals über eine ABN abgerechnet hast. Das reicht uns, um
@@ -674,10 +658,10 @@ export default async function GermanHomePage() {
             Schreib uns auf WhatsApp
           </WaLink>
           <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.55)', marginTop: '12px' }}>
-            Antwort in ca. einer Stunde. Frag einfach.
+            Antwort in etwa einer Stunde.
           </p>
           <p style={{ fontSize: '13px', lineHeight: 1.55, color: 'rgba(255,255,255,0.45)', marginTop: '18px', maxWidth: '50ch', marginLeft: 'auto', marginRight: 'auto' }}>
-            Vorbereitet von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim
+            Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim
             ATO eingereicht wird.
           </p>
         </div>

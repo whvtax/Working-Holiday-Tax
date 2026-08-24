@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "飲食、バー、キ
 
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
-  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "ctaSub": "約1時間で返信します。",
   "guaranteeHeading": "料金が還付金を上回った分は、こちらでお返しします。",
   "guaranteeBody": "4店舗、4通のインカムステートメント、4つのファンドに散ったスーパー。飲食では珍しくない1年で、お客様は全員417・462ビザの方です。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",

@@ -79,15 +79,15 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'Dein Pass und dein Visum',
-    body: 'Welchen Pass du hast und auf welchem Subclass du warst. Dieses Paar entscheidet, welche Steuersätze, welche Abkommensposition und welche Medicare-Regeln für dich überhaupt infrage kommen. Deshalb fragen wir zuerst danach.',
+    body: 'Welchen Pass du hast und auf welchem Subclass du warst. Davon hängt alles Weitere ab, deshalb fragen wir zuerst.',
   },
   {
     label: 'Ein australisches Bankkonto',
-    body: 'Das ATO zahlt eine Steuerrückerstattung auf ein australisches Konto aus und sonst nirgendwohin. Wenn deins schon geschlossen ist, sag es gleich am Anfang, denn dadurch ändert sich die Reihenfolge.',
+    body: 'Das ATO zahlt Erstattungen nur auf ein australisches Konto. Ist deins schon zu, sag es gleich am Anfang.',
   },
   {
     label: 'Ungefähr wo und wann du gearbeitet hast',
-    body: 'Ein Ort, die Art der Arbeit, grobe Monate. Keine korrekt geschriebenen Firmennamen, keine taggenauen Daten. Wir gleichen das mit den ATO-Daten ab und ergänzen den Rest.',
+    body: 'Ein Ort, die Art der Arbeit, grobe Monate. Wir gleichen alles mit den ATO-Daten ab und ergänzen den Rest.',
   },
 ]
 
@@ -121,7 +121,7 @@ const SEQUENCE = [
   {
     n: '06',
     title: 'Es wird eingereicht',
-    body: 'Vorbereitet von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten, und du musst dafür nicht wach sein.',
+    body: 'Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird. Das Einreichen selbst dauert Minuten, und du musst dafür nicht wach sein.',
   },
   {
     n: '07',
@@ -222,7 +222,7 @@ export default function TaxReturnPageDE() {
     name: 'Steuererklärung für Working Holiday Maker einreichen',
     serviceType: 'Steuererklärung Vorbereitung und Einreichung',
     description:
-      'Australische Steuererklärungen für Inhaber von 417- und 462-Visa. Vorbereitet von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird, auch aus dem Ausland.',
+      'Australische Steuererklärungen für Inhaber von 417- und 462-Visa. Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO eingereicht wird, auch aus dem Ausland.',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'Australien' },
     audience: { '@type': 'Audience', audienceType: 'Working Holiday Maker (Subclass 417 und 462)' },
@@ -310,7 +310,7 @@ export default function TaxReturnPageDE() {
               Schreib uns auf WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Antwort in ca. einer Stunde. Frag einfach.
+              Antwort in etwa einer Stunde.
             </p>
           </div>
 
@@ -388,7 +388,6 @@ export default function TaxReturnPageDE() {
 
           <p style={{ ...BODY, color: '#4C6459', marginTop: '24px', maxWidth: '60ch' }}>
             Mehr zu Schritt 04:{' '}
-            <Link href="/de/tax-residency" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>wie der Wohnsitz bestimmt wird</Link>, und{' '}
             <Link href="/de/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>was eine ABN ändert</Link>, falls ein Teil deines Einkommens abgerechnet statt ausgezahlt wurde.
           </p>
         </div>
@@ -451,7 +450,7 @@ export default function TaxReturnPageDE() {
             Schreib uns auf WhatsApp
           </WaLink>
           <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-            Antwort in ca. einer Stunde. Frag einfach.
+            Antwort in etwa einer Stunde.
           </p>
         </div>
       </section>

@@ -78,7 +78,7 @@ const MYGOV = [
   },
   {
     mygov: 'Der Residentenstatus ist ein Häkchen. Welche Antwort für dich stimmt, steht nirgends.',
-    us: 'Ein deutscher Pass kann den vollen Steuerfreibetrag tragen. Wir legen uns darauf fest und stehen dafür ein.',
+    us: 'Richtig eingeordnet, kann der Wohnsitz die Sätze für dein ganzes Jahr ändern. Wir legen uns fest und stehen dafür ein.',
   },
   {
     mygov: 'Werbungskosten sind ein leeres Feld, und keine Schätzung füllt es für dich.',
@@ -434,10 +434,10 @@ export function CalculatorClient({ faqs = [] }: Props) {
               Was macht die echte Zahl anders als diese?
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
-              Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Mit einem
-              deutschen Pass kann der volle Freibetrag von 18.200 $ gelten statt des Working Holiday Satzes
-              ab dem ersten Dollar, und kein Tageszähler entscheidet das. Es ist eine Beurteilung deiner
-              Umstände, und sie ist mehr wert als alles andere zusammen.
+              Drei Dinge, und keins davon steht auf dieser Seite. Erstens dein Residentenstatus. Richtig
+              eingeordnet, kann er die Sätze für dein ganzes Jahr ändern, und er hängt an Details, an die
+              die meisten nie denken. Es ist eine Beurteilung deiner Umstände, und sie ist mehr wert als
+              alles andere zusammen.
             </p>
             <p style={{ fontSize: '15px', lineHeight: 1.7, color: '#2A3C34', marginBottom: '14px' }}>
               Zweitens die Medicare Levy. Sie beträgt 2 % des zu versteuernden Einkommens, wird
@@ -512,7 +512,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Schreib uns auf WhatsApp
           </a>
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', marginTop: '12px' }}>
-            Antwort in etwa einer Stunde. Frag erst mal alles, was du wissen willst.
+            Antwort in etwa einer Stunde.
           </p>
         </div>
       </section>

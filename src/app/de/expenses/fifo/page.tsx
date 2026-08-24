@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "FIFO und Camp-Arbeit"
 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
-  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Deckt die Rückerstattung unser Honorar nicht, erstatten wir dir den Rest. Du zahlst nie drauf.",
   "guaranteeBody": "417 und 462 sind die einzigen Visa, für die wir Steuerarbeit annehmen, deshalb werden Zone Offset, Wohnsitzfrage und die Super in drei Fonds zusammen angesehen. Von unserem Team vorbereitet, dann von einem registrierten Steuerberater geprüft und freigegeben, vor der Einreichung.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
@@ -276,7 +276,7 @@ const SERVICES = [
     "label": "Superannuation"
   },
   {
-    "href": "/de/tax-residency",
+    "href": "/de/blog/tax-residency-working-holiday-makers",
     "label": "Steuerlicher Wohnsitz"
   }
 ]

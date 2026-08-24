@@ -67,9 +67,9 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Delivery driving and 
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "Come out with a refund smaller than our fee and we refund the difference.",
-  "guaranteeBody": "Platform riders on 417 and 462 visas are a large part of what we do, which is why the logbook question and the GST line get settled before the return is written. Prepared by our team, then reviewed and signed off by a registered tax agent before it is lodged.",
+  "guaranteeBody": "Platform riders on 417 and 462 visas are a large part of what we do, which is why the logbook question and the GST line get settled before the return is written. Reviewed and signed off by a registered tax agent before it is lodged.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",

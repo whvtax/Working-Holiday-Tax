@@ -300,7 +300,7 @@ export default function ABNPageJA() {
               WhatsAppで相談する
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              約1時間で返信します。まず質問だけでも大丈夫です。
+              約1時間で返信します。
             </p>
           </div>
 
@@ -445,7 +445,7 @@ export default function ABNPageJA() {
             還付金が当社の料金を下回った場合は、差額を返金します。お客様が損をすることはありません。
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '40ch', marginTop: '16px' }}>
-            料金は定額制で、還付額に対する歩合ではありません。作業を始める前にWhatsAppで金額を確認しますので、あとから金額で驚くことはありません。
+            料金は定額制で、還付額に対する歩合ではありません。
           </p>
         </div>
       </section>
@@ -467,7 +467,7 @@ export default function ABNPageJA() {
             WhatsAppで相談する
           </WaLink>
           <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-            約1時間で返信します。まず質問だけでも大丈夫です。
+            約1時間で返信します。
           </p>
         </div>
       </section>

@@ -281,7 +281,7 @@ export default function GermanSuperannuationPage() {
             </div>
 
             <p style={{ fontSize: '13px', color: '#4C6459' }}>
-              Antwort in etwa einer Stunde. Frag erst mal alles, was du wissen willst.
+              Antwort in etwa einer Stunde.
             </p>
           </div>
         </div>
@@ -581,7 +581,7 @@ export default function GermanSuperannuationPage() {
           Schreib uns auf WhatsApp
         </WaLink>
         <p style={{ fontSize: '13px', color: '#4C6459', marginTop: '10px' }}>
-          Antwort in etwa einer Stunde. Frag erst mal alles, was du wissen willst.
+          Antwort in etwa einer Stunde.
         </p>
       </Answer>
 

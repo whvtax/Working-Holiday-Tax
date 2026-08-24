@@ -303,7 +303,7 @@ export default function ABNPageDE() {
               Schreib uns auf WhatsApp
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              Antwort in ca. einer Stunde. Frag einfach.
+              Antwort in etwa einer Stunde.
             </p>
           </div>
 
@@ -459,8 +459,7 @@ export default function ABNPageDE() {
             Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
           </p>
           <p className="mx-auto" style={{ ...BODY, color: 'rgba(255,255,255,0.72)', maxWidth: '52ch', marginTop: '16px' }}>
-            Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt. Wir vereinbaren es mit dir auf
-            WhatsApp, bevor die Arbeit beginnt, damit später nichts daran überrascht.
+            Das Honorar ist pauschal und niemals ein Prozentsatz von dem, was zurückkommt.
           </p>
         </div>
       </section>
@@ -483,7 +482,7 @@ export default function ABNPageDE() {
             Schreib uns auf WhatsApp
           </WaLink>
           <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-            Antwort in ca. einer Stunde. Frag einfach.
+            Antwort in etwa einer Stunde.
           </p>
         </div>
       </section>

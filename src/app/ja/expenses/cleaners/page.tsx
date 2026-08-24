@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "清掃の仕事" })
 
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
-  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "ctaSub": "約1時間で返信します。",
   "guaranteeHeading": "還付金が料金を下回ったら、差額はお返しします。お客様の持ち出しにはなりません。",
   "guaranteeBody": "清掃のタックスリターンは毎週この机に届きます。しかもそのすべてが417・462ビザの方のものです。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",

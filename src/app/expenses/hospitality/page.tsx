@@ -67,9 +67,9 @@ const WA = waUrl({ topic: 'expenses', lang: "en", detail: "Hospitality, bar and 
 
 const UI = {
   "ctaLabel": "Message us on WhatsApp",
-  "ctaSub": "Replies in about an hour. Ask anything first.",
+  "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "We pay back the difference whenever the fee comes to more than the refund.",
-  "guaranteeBody": "Four venues, four income statements and super in four funds is the usual hospitality year here, and every client is on a 417 or a 462. Prepared by our team, then reviewed and signed off by a registered tax agent before it reaches the ATO.",
+  "guaranteeBody": "Four venues, four income statements and super in four funds is the usual hospitality year here, and every client is on a 417 or a 462. Reviewed and signed off by a registered tax agent before it reaches the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",

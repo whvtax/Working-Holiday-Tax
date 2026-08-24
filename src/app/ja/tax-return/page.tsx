@@ -76,15 +76,15 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'パスポートとビザの情報',
-    body: 'どの国のパスポートで、どのサブクラスだったか。この組み合わせで、適用され得る税率も、租税条約上の立場も、メディケアの扱いも決まります。だから最初に伺います。',
+    body: 'どの国のパスポートで、どのサブクラスだったか。ここからすべてが決まるので、最初に伺います。',
   },
   {
     label: 'オーストラリアの銀行口座',
-    body: 'ATOはタックスリターンの還付金をオーストラリアの口座にしか支払いません。すでに解約している場合は進める順番が変わるので、最初の時点で教えてください。',
+    body: '還付金はオーストラリアの口座にのみ支払われます。解約済みの場合は最初に教えてください。',
   },
   {
     label: 'いつどこで働いたかのおおよそ',
-    body: '町の名前、仕事の種類、だいたいの月。会社名の正確な綴りも、日付まで正確な記録も要りません。伺った内容をATOの記録と突き合わせ、足りない部分は当社が埋めます。',
+    body: '町の名前、仕事の種類、だいたいの月。ATOの記録と突き合わせ、足りない部分は当社が埋めます。',
   },
 ]
 
@@ -306,7 +306,7 @@ export default function TaxReturnPageJA() {
               WhatsAppで相談する
             </WaLink>
             <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-              約1時間で返信します。まず質問だけでも大丈夫です。
+              約1時間で返信します。
             </p>
           </div>
 
@@ -377,9 +377,7 @@ export default function TaxReturnPageJA() {
           </ol>
 
           <p style={{ ...BODY, color: '#4C6459', marginTop: '24px', maxWidth: '44ch' }}>
-            手順04について詳しくは{' '}
-            <Link href="/ja/tax-residency" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>居住区分の決まり方</Link>
-            、そして収入の一部を給与ではなく請求で受け取っていた場合は{' '}
+            収入の一部を給与ではなく請求で受け取っていた場合は{' '}
             <Link href="/ja/abn" style={{ color: '#0B5240', fontWeight: 600, textDecoration: 'underline' }}>ABNで何が変わるか</Link>
             もご覧ください。
           </p>
@@ -440,7 +438,7 @@ export default function TaxReturnPageJA() {
             WhatsAppで相談する
           </WaLink>
           <p style={{ fontSize: '13.5px', color: '#4C6459', marginTop: '12px' }}>
-            約1時間で返信します。まず質問だけでも大丈夫です。
+            約1時間で返信します。
           </p>
         </div>
       </section>

@@ -293,7 +293,7 @@ Summary: Cash income without payslips can and must be declared. How to reconstru
 URL: https://workingholidaytax.com.au/blog/tax-residency-working-holiday-makers
 Category: Tax Return
 Published: 24 May 2025
-Summary: Residency is decided on how you lived here, not your visa and not a day count. Four facts decide it, and for eight passports it is worth thousands.
+Summary: Residency can change the rates applied to your whole year. It is a judgement rather than a checkbox, and it is easy to get wrong in both directions.
 
 ### Tax Refund or Super Refund? You Claim Both
 URL: https://workingholidaytax.com.au/blog/what-is-a-tax-refund-australia
@@ -341,7 +341,7 @@ Summary: A tax debt can be put on an instalment plan, but interest keeps running
 URL: https://workingholidaytax.com.au/blog/backpacker-tax-history-australia
 Category: Tax Return
 Published: 14 October 2025
-Summary: The 15% backpacker tax started in 2017 and survived a High Court challenge in 2021, which left it standing for most people but not for eight nationalities.
+Summary: The 15% backpacker tax started in 2017 and was tested in the High Court in 2021. The rate survived, with consequences that are still assessed case by case.
 
 ### Worked Without a TFN? Reclaim the 45%
 URL: https://workingholidaytax.com.au/blog/tax-return-without-tfn-australia
@@ -1161,7 +1161,7 @@ Summary: Bar bezahltes Einkommen ist steuerpflichtig und gehört in die Erkläru
 URL: https://workingholidaytax.com.au/de/blog/tax-residency-working-holiday-makers
 Category: Tax Return
 Published: 24 May 2025
-Summary: Der steuerliche Wohnsitz entscheidet sich daran, wie du gelebt hast, nicht am Visum. Für deutsche Pässe hängen daran die vollen 18.200 $.
+Summary: Der steuerliche Wohnsitz kann die Sätze für dein ganzes Jahr ändern. Warum die Frage schwerer ist, als sie aussieht, und wer sie am Ende beurteilt.
 
 ### Steuererstattung: wann steht sie dir zu?
 URL: https://workingholidaytax.com.au/de/blog/what-is-a-tax-refund-australia
@@ -1209,7 +1209,7 @@ Summary: Das ATO vereinbart Ratenzahlungen, auch wenn du längst abgereist bist.
 URL: https://workingholidaytax.com.au/de/blog/backpacker-tax-history-australia
 Category: Tax Return
 Published: 14 October 2025
-Summary: Seit 2017 gilt der Satz von 15 % ab dem ersten Dollar. Ein Urteil zu Doppelbesteuerungsabkommen hat für einige Pässe später Ausnahmen eröffnet.
+Summary: Seit 2017 gilt der Satz von 15 % ab dem ersten Dollar. Ein Urteil des High Court hat später für manche Fälle Ausnahmen eröffnet.
 
 ### Ohne TFN gearbeitet: so kommt Steuer zurück
 URL: https://workingholidaytax.com.au/de/blog/tax-return-without-tfn-australia
@@ -2025,11 +2025,11 @@ Category: Tax Return
 Published: 27 November 2024
 Summary: 現金で給料を受け取っても税金の義務はなくなりません。申告すべき内容と、申告しない場合のリスクを解説します。
 
-### ワーホリは税務上の居住者？日本人が知っておくべきNDA国の特典
+### ワーホリは税務上の居住者？1年の税額を左右する判断
 URL: https://workingholidaytax.com.au/ja/blog/tax-residency-working-holiday-makers
 Category: Tax Return
 Published: 24 May 2025
-Summary: 居住性は日数ではなく、実際にどう暮らしたかで決まります。日本は非差別条項8か国のひとつなので、居住者と判断されれば18,200ドルの免税枠まで届きます。
+Summary: 税務上の居住区分はビザでも日数でも決まらない総合判断で、1年全体の税額を変え得ます。よくある誤解と、提出前に確認すべき理由を解説します。
 
 ### タックスリファンド（還付金）とは？もらえるか確認する方法
 URL: https://workingholidaytax.com.au/ja/blog/what-is-a-tax-refund-australia

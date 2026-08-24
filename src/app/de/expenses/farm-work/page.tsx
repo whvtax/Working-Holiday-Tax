@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "de", detail: "Farmarbeit und Fruit 
 
 const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
-  "ctaSub": "Antwort in etwa einer Stunde. Frag ruhig erst nach.",
+  "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Fällt die Rückerstattung kleiner aus als unser Honorar, geht die Differenz an dich zurück.",
   "guaranteeBody": "Eine Saison aus kurzen Farmjobs, mehreren Contractors und einer Erklärung entwirren wir jede Woche, für Leute auf 417 und 462 und sonst niemanden. Von unserem Team vorbereitet, dann von einem registrierten Steuerberater geprüft und freigegeben, bevor beim ATO eingereicht wird.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
@@ -213,7 +213,7 @@ const SECTIONS: Section[] = [
     "h2": "Was hängt daran, wie deine Saison aufgebaut war?",
     "paras": [
       "Ob deine Fahrten als wechselnde Einsatzorte statt als Arbeitsweg gelten, ist eine Tatsachenfrage, und es geht um echtes Geld. Wer von einem Contractor ohne feste Basis zwischen drei Betrieben geschickt wird, steht anders da als jemand, der elf Wochen zur selben Plantage gefahren ist. Wie oft der Ort wechselte, ob der Job das Reisen verlangte und ob es überhaupt einen festen Arbeitsplatz gab, entscheidet die Frage.",
-      "Der steuerliche Wohnsitz ist größer. Von Region zu Region den Ernten hinterherzuziehen sieht nach dem Muster aus, das das ATO als ausländisch ansässig behandelt, während ein Jahr an einem Ort in die andere Richtung zeigen kann. War ein britischer, deutscher oder japanischer Passinhaber steuerlich in Australien ansässig, kann die Addy-Entscheidung den vollen Steuerfreibetrag und die Sätze für Ansässige zurückbringen. Eine Beurteilung deines Jahres, kein Tageszähler, und mehr wert als jeder Beleg auf dieser Seite.",
+      "Der steuerliche Wohnsitz ist größer. Er ist eine Beurteilung, keine Formel, das ATO sieht ihn in beide Richtungen falsch angesetzt, und der Fall Addy vor dem High Court zeigt, wie viel daran hängen kann. Er ist mehr wert als jeder Beleg auf dieser Seite, und wir legen uns erst fest, nachdem wir dein Jahr durchgegangen sind.",
       "Farmarbeit zahlt außerdem auf ein weiteres Visum ein, und dieser Teil ist Einwanderungsrecht, kein Steuerrecht. Welche Branchen, Postleitzahlen und Zeiträume zählen, legt das Department of Home Affairs fest, und die Regeln haben sich mehr als einmal geändert. Prüf die aktuellen offiziellen Angaben oder frag einen registrierten Migration Agent, bevor du dich darauf verlässt, dass ein Job zählt. So oder so muss das Einkommen korrekt gemeldet werden."
     ]
   }
@@ -270,7 +270,7 @@ const SERVICES = [
     "label": "TFN"
   },
   {
-    "href": "/de/tax-residency",
+    "href": "/de/blog/tax-residency-working-holiday-makers",
     "label": "Steuerlicher Wohnsitz"
   }
 ]

@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "派遣と倉庫の仕
 
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
-  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "ctaSub": "約1時間で返信します。",
   "guaranteeHeading": "料金が還付金を超えた場合、その差額は返金します。",
   "guaranteeBody": "4社のエージェンシーと、忘れられた1日だけのシフトを1つの申告にまとめるのは、ここでは普通の仕事です。お客様は全員417・462ビザの方。申告書は当社のチームが作成し、ATOへ提出する前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",

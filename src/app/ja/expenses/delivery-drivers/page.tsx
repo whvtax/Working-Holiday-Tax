@@ -67,7 +67,7 @@ const WA = waUrl({ topic: 'expenses', lang: "ja", detail: "デリバリーとラ
 
 const UI = {
   "ctaLabel": "WhatsAppで相談する",
-  "ctaSub": "約1時間で返信します。まず質問だけでも大丈夫です。",
+  "ctaSub": "約1時間で返信します。",
   "guaranteeHeading": "還付金が料金に届かなかった場合、その差額はお返しします。",
   "guaranteeBody": "417・462ビザのプラットフォーム配達員は、当社の仕事の大きな部分を占めます。だから運転日誌の選択とGSTの線引きは、申告書を書き始める前に片づきます。作成は当社のチーム、提出前に登録税理士が確認して承認します。",
   "faqHeading": "よくある質問",
