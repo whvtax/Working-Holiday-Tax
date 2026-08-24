@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Steuererklärung Australien ohne myGov (417 & 462)',
     description:
-      'Dein Pass und deine Bankdaten. Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein. Rückerstattung in 14 Werktagen.',
+      'Deine Daten und wohin die Erstattung gehen soll. Wir lesen die ATO-Daten, bereiten die Erklärung vor, du unterschreibst, wir reichen ein. Rückerstattung in 14 Werktagen.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -79,7 +79,7 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'Dein Pass und dein Visum',
-    body: 'Welchen Pass du hast und auf welchem Subclass du warst. Davon hängt alles Weitere ab, deshalb fragen wir zuerst.',
+    body: 'Welcher Pass und welcher Subclass. Davon hängt alles Weitere ab, deshalb fragen wir zuerst.',
   },
   {
     label: 'Ein australisches Bankkonto',
@@ -293,7 +293,7 @@ export default function TaxReturnPageDE() {
 
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(27px, 4.6vw, 41px)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: '16px' }}>
-            <span style={{ display: 'block' }}>Dein Pass und deine Bankdaten.{' '}</span>
+            <span style={{ display: 'block' }}>Deine Daten und wohin die Erstattung gehen soll.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>Den Rest übernehmen wir.{' '}</span>
           </h1>
 
@@ -435,7 +435,7 @@ export default function TaxReturnPageDE() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
             Fang mit einer Nachricht an, nicht mit einem Formular
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
@@ -458,11 +458,11 @@ export default function TaxReturnPageDE() {
       {/* ── 7. VERTRAUEN ─────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Der Fragebogen, die Prüfungen und die Reihenfolge oben sind um ein einziges Visumsjahr herum gebaut. Deshalb
             wird dir so wenig abverlangt, und deshalb sind die unangenehmen Fälle für uns keine Überraschung. Vorbereitet
             von unserem Team, geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim ATO

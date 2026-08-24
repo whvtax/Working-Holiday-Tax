@@ -75,17 +75,17 @@ const FAILURE_POINTS = [
   {
     n: '01',
     title: '申請書の氏名が入国記録と一致していない',
-    body: 'ATOは申請内容を、内務省が保持しているビザの記録と照合します。ミドルネームを省いた、旧姓のままだった、ビザ発給後にパスポートを更新した、姓名の順序が違う。こうした小さなずれのどれか一つで、申請は手作業の審査に回るか、そのまま差し戻されます。一度提出して1か月待つ書類でそれを知るのは、あまりに遅い方法です。',
+    body: 'ATOは申請内容をビザの記録と照合します。ミドルネームの省略、更新したパスポート、姓名の順序の違いだけで、手作業の審査行きか差し戻しになります。',
   },
   {
     n: '02',
     title: '4週間後にその住所で郵便を受け取れない',
-    body: 'TFNはオーストラリア国内の住所宛ての手紙で届き、ATOは発行までに最大28日をかけます。ワーホリの方は移動します。6泊だけのホステルのベッド、すでに出たシェアハウス、シーズンが終わった農場。手紙はそこに届き、誰も転送してくれません。1か月後にも機能する住所を選ぶことは、記入欄ではなく判断です。',
+    body: 'TFNは国内住所宛ての手紙で届き、発行まで最大28日かかります。その間に移動してしまうと、手紙は置き去りになり、誰も転送してくれません。',
   },
   {
     n: '03',
     title: 'ビザが有効になる前に申請してしまった',
-    body: 'TFNは、ワーキングホリデービザが有効な状態でオーストラリアに入国してから申請します。出発前ではありません。早すぎる申請は静かに止まったままになりがちで、多くの場合、すでに働き始めて最高税率で給与が支払われてから、数週間後に気づくことになります。',
+    body: '申請は、ビザが有効な状態で入国してからです。早すぎる申請は静かに止まり、気づくのは数週間後、45%で引かれ始めてからです。',
   },
 ]
 
@@ -283,7 +283,7 @@ export default function TFNPageJA() {
           </h1>
 
           <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '40ch', marginBottom: '26px' }}>
-            雇用主が番号を受け取るまで、給与は15%ではなく45%で源泉徴収されます。時給25ドルなら1時間あたり約7.50ドル、その期間はずっとです。
+            雇用主が番号を受け取るまで、給与は15%ではなく45%で源泉徴収されます。
           </p>
 
           <div className="hero-animate-delay-2">
@@ -313,7 +313,7 @@ export default function TFNPageJA() {
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(21px, 2.5vw, 29px)', lineHeight: 1.45, letterSpacing: '-0.01em', marginBottom: '14px' }}>
             <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>申請フォームのどこにも、</span>
-            <span style={{ display: 'block' }}>45%だった数週間の話は出てきません。</span>
+            <span style={{ display: 'block' }}>その間に何を失うかは出てきません。</span>
           </h2>
 
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '42ch', marginBottom: '22px' }}>
@@ -350,11 +350,8 @@ export default function TFNPageJA() {
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '14px' }}>
             TFNが届く前に働き始めると、いくら失いますか。
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '16px' }}>
-            タックスファイルナンバーを受け取っていない雇用主は、45,000ドルまでのワーキングホリデー税率15%ではなく、最高税率の45%で源泉徴収しなければなりません。番号を渡す期限は就労開始から28日で、過ぎても警告は届きません。
-          </p>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
-            この金額が消えるわけではありません。ATOのもとに残り、6月30日以降の申告ですべての雇用主分を突き合わせて請求したときに戻ります。
+            28日以内に雇用主へTFNを渡さないと、ワーキングホリデーの15%ではなく45%で源泉徴収されます。引かれすぎた税金は消えるわけではなく、6月30日以降にタックスリターンを提出すれば戻る場合があります。
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -364,7 +361,7 @@ export default function TFNPageJA() {
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>28日</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>就労開始から番号を渡すまでの期限。ATOが発行に要する目安も同じ日数です。</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>雇用主にTFNを渡す期限であり、ATOが発行にかける目安でもあります。</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.02em', marginBottom: '10px' }}>申告1回</p>
@@ -384,7 +381,7 @@ export default function TFNPageJA() {
             ワーホリのTFN申請はなぜ通らないのですか。
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '30px' }}>
-            多くの方はそのまま通ります。通らない理由はほぼ次の3つで、代償はどれも同じです。届かない手紙を待ちながら、もう1か月を最高税率で過ごすことになります。
+            フォームは短く、たいていはそのまま通ります。問題が起きる場合はほぼ次の3つのどれかで、いずれも届かない手紙を待つ間、もう1か月45%で課税され続けることになりかねません。
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -413,7 +410,7 @@ export default function TFNPageJA() {
             当社が行うこと
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '44ch', marginBottom: '26px' }}>
-            パスポートとビザの情報をWhatsAppでお送りいただくだけです。以下はすべて当社側で行います。
+            必要な情報をWhatsAppでお送りいただくだけです。以下はすべて当社側で行います。
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -472,12 +469,12 @@ export default function TFNPageJA() {
       {/* ── 7. 信頼 ──────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
-            提出するTFN申請は、すべて417・462ビザの方のものです。だからこそ、つまずく箇所はいつも同じ3つです。タックスリターンは当社のチームが作成し、登録税理士が確認・承認したうえでATOに提出します。
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+            提出するTFN申請は、すべて417・462ビザの方のものです。だからこそ、つまずく箇所はいつも同じ3つです。タックスリターンは登録税理士が確認・承認したうえでATOに提出します。
           </p>
           <GoogleReviews lang="ja" />
         </div>
@@ -533,7 +530,7 @@ export default function TFNPageJA() {
       <NextStep
         eyebrow="次のステップ"
         heading="45%で引かれた期間は申告で戻ります"
-        body="番号が登録されたら、次はすべての雇用主分を突き合わせて、引かれすぎた分を取り戻すタックスリターンです。"
+        body="番号が登録されたら、引かれすぎた分を取り戻すのはタックスリターンです。"
         cta="タックスリターンの流れ →"
         href="/ja/tax-return"
       />

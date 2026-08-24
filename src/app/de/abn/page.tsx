@@ -76,17 +76,17 @@ const THE_SPLIT = [
   {
     n: '01',
     title: 'Es wurde nichts einbehalten, die Steuer bleibt trotzdem offen',
-    body: 'Lohn kommt bei dir an, nachdem die Steuer schon abgezogen wurde. Rechnungen nicht. Jeder Dollar, den du über deine ABN bekommst, erreicht dich vollständig, und die Steuer darauf wird einmal fällig, am Jahresende mit der Steuererklärung. Wer ein halbes Jahr auf Lohnabrechnung und ein halbes Jahr auf Rechnung gearbeitet hat, wird davon am häufigsten überrascht, weil die Lohnhälfte nach Rückerstattung aussieht und die Rechnungshälfte still das Gegenteil ist.',
+    body: 'Lohn kommt bei dir an, nachdem die Steuer schon abgezogen wurde. Rechnungen nicht. Jeder ABN-Dollar erreicht dich vollständig, und die Steuer darauf wird am Jahresende fällig. Die Lohnhälfte eines gemischten Jahres sieht nach Rückerstattung aus, die Rechnungshälfte ist still das Gegenteil.',
   },
   {
     n: '02',
     title: 'Aus Werbungskosten werden Betriebsausgaben, mit anderen Regeln',
-    body: 'Als Angestellter setzt du beruflich veranlasste Kosten ab. Als Selbstständiger ziehst du die Kosten des Betriebs ab, was eine breitere Kategorie mit strengeren Nachweisen ist: Kilometer im Fahrtenbuch, Werkzeug, Handy und Daten anteilig zwischen privat und geschäftlich, Versicherungen, und die Provision, die eine Plattform einbehalten hat, bevor das Geld dich erreicht hat. Der Lieferfahrer, der nie einen Kilometer aufgeschrieben hat, und der, der es getan hat, landen am Jahresende nicht an derselben Stelle.',
+    body: 'Als Angestellter setzt du beruflich veranlasste Kosten ab. Als Selbstständiger ziehst du die Kosten des Betriebs ab, eine breitere Kategorie mit strengeren Nachweisen. Der Fahrer, der nie einen Kilometer aufgeschrieben hat, und der, der es getan hat, landen nicht an derselben Stelle.',
   },
   {
     n: '03',
     title: 'GST ist eine Entscheidung, keine Formalie',
-    body: 'Registrierungspflicht besteht ab einem Umsatz von 75.000 $, was die meisten Working Holiday Maker nie erreichen, also sollten die meisten auch nicht registriert sein. Die Ausnahme, die viele erwischt, ist Rideshare: Wer Taxi- oder Fahrdienstleistungen anbietet, muss sich ab dem ersten Dollar für GST registrieren, unabhängig vom Umsatz. Für Essenslieferungen mit dem Rad gilt diese Regel nicht. Registriert zu sein, obwohl du es nicht musst, bringt dir BAS-Pflichten, die du nicht gebraucht hättest, und nicht registriert zu sein, obwohl du müsstest, ist schlimmer.',
+    body: 'Die meisten Working Holiday Maker erreichen die 75.000-$-Umsatzgrenze nie, also sollten die meisten nicht registriert sein. Rideshare ist die Ausnahme, die viele erwischt, und eine falsche Position bedeutet BAS-Pflichten, die du nicht gebraucht hättest, oder schlimmer, welche, die fehlen.',
   },
   {
     n: '04',
@@ -468,7 +468,7 @@ export default function ABNPageDE() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
             Beschreib uns die Arbeit
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
@@ -490,14 +490,13 @@ export default function ABNPageDE() {
       {/* ── 7. VERTRAUEN ─────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Deshalb sehen wir dieselben ABN-Konstruktionen immer wieder: der Farmvertrag, die Lieferplattform, die
-            Baustelle, die alle als Subunternehmer bezahlt. Steuererklärungen werden von unserem Team vorbereitet, dann
-            von einem registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
+            Baustelle, die alle als Subunternehmer bezahlt.
           </p>
           <GoogleReviews lang="de" />
         </div>

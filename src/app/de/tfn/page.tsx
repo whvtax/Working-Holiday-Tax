@@ -76,17 +76,17 @@ const FAILURE_POINTS = [
   {
     n: '01',
     title: 'Der Name im Antrag passt nicht zu den Einreisedaten',
-    body: 'Das ATO gleicht deinen Antrag mit dem Datensatz ab, den die australische Einwanderungsbehörde zu deinem Visum führt. Ein weggelassener zweiter Vorname, ein Geburtsname, ein Pass, der nach der Visumserteilung neu ausgestellt wurde, eine andere Reihenfolge der Namen: Jede dieser Kleinigkeiten schickt den Antrag in die manuelle Prüfung oder direkt zurück. Bei einem Formular, das du einmal ausfüllst und dann vier Wochen abwartest, ist das eine langsame Art, davon zu erfahren.',
+    body: 'Das ATO gleicht deinen Antrag mit deinem Visumsdatensatz ab. Ein fehlender zweiter Vorname, ein neuer Pass oder eine andere Namensreihenfolge schickt ihn in die manuelle Prüfung oder direkt zurück.',
   },
   {
     n: '02',
     title: 'Die Adresse nimmt in vier Wochen keine Post mehr an',
-    body: 'Deine TFN kommt als Brief an eine australische Adresse, und das ATO nimmt sich dafür bis zu 28 Tage Zeit. Backpacker ziehen weiter. Ein Hostelbett für sechs Nächte, eine WG, aus der du längst raus bist, eine Farm, auf der die Saison vorbei ist: Der Brief geht dorthin und niemand leitet ihn nach. Eine Adresse zu wählen, die in einem Monat noch funktioniert, ist eine echte Entscheidung und kein Formularfeld.',
+    body: 'Deine TFN kommt als Brief an eine australische Adresse, und die Ausstellung kann bis zu 28 Tage dauern. Bist du bis dahin weitergezogen, bleibt der Brief liegen und niemand leitet ihn nach.',
   },
   {
     n: '03',
     title: 'Der Antrag lief, bevor das Visum aktiv war',
-    body: 'Eine TFN beantragst du, wenn du mit aktiviertem Working Holiday Visum in Australien bist, nicht vor dem Abflug. Zu früh eingereichte Anträge sind die, die leise versanden, und die meisten merken es erst Wochen später, wenn sie längst arbeiten und der Lohn zum Höchstsatz ausgezahlt wird.',
+    body: 'Beantragt wird in Australien mit aktiviertem Visum, nicht vor dem Abflug. Zu frühe Anträge versanden leise, und du merkst es erst Wochen später, bei 45 %.',
   },
 ]
 
@@ -284,8 +284,7 @@ export default function TFNPageDE() {
           </h1>
 
           <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
-            Solange dein Arbeitgeber die Nummer nicht hat, werden 45 % deines Lohns einbehalten statt 15 %. Bei 25 $
-            die Stunde sind das rund 7,50 $, jede Stunde, so lange die Lücke läuft.
+            Solange dein Arbeitgeber die Nummer nicht hat, werden 45 % deines Lohns einbehalten statt 15 %.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -315,7 +314,7 @@ export default function TFNPageDE() {
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
             <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Im Antrag steht kein Wort{' '}</span>
-            <span style={{ display: 'block' }}>über die Wochen mit 45 %.{' '}</span>
+            <span style={{ display: 'block' }}>darüber, was das Warten kostet.{' '}</span>
           </h2>
 
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '56ch', marginBottom: '22px' }}>
@@ -354,14 +353,10 @@ export default function TFNPageDE() {
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '24ch', marginBottom: '14px' }}>
             Was kostet es, ohne TFN anzufangen?
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
-            Ein Arbeitgeber, dem keine Steuernummer vorliegt, muss zum Höchstsatz von 45 % einbehalten statt zu den 15 %
-            für Working Holiday Maker auf die ersten 45.000 $. Ab Arbeitsbeginn hast du 28 Tage, sie abzugeben, und
-            niemand warnt dich, wenn sie um sind.
-          </p>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '28px' }}>
-            Das Geld ist nicht verloren. Es liegt beim ATO, bis eine nach dem 30. Juni eingereichte Erklärung jeden
-            Arbeitgeber abgleicht und es zurückholt.
+            Hat dein Arbeitgeber deine TFN nicht innerhalb von 28 Tagen, muss er 45 % einbehalten statt der 15 % für
+            Working Holiday Maker. Die zu viel gezahlte Steuer ist nicht verloren und kann mit der Steuererklärung nach
+            dem 30. Juni zurückkommen.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -371,7 +366,7 @@ export default function TFNPageDE() {
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>28 Tage</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>Hast du ab Arbeitsbeginn, um die Nummer abzugeben. So lange gibt sich auch das ATO für die Ausstellung.</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>Um deinem Arbeitgeber die TFN zu geben, und für das ATO, sie auszustellen.</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '31px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>1 Erklärung</p>
@@ -391,8 +386,8 @@ export default function TFNPageDE() {
             Warum scheitern TFN-Anträge von Backpackern?
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
-            Die meisten kommen ohne Probleme durch. Wenn nicht, liegt es fast immer an einem von drei Punkten, und alle
-            drei kosten dasselbe: noch einen Monat zum Höchstsatz, während du auf einen Brief wartest.
+            Das Formular ist kurz und meist unkompliziert. Wenn etwas schiefgeht, liegt es fast immer an einem von drei
+            Punkten, und jeder kann einen weiteren Monat mit 45 % bedeuten, während du auf einen Brief wartest, der nie kommt.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -421,7 +416,7 @@ export default function TFNPageDE() {
             Was wir dagegen tun
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
-            Du schickst uns deinen Pass und deine Visumsdaten auf WhatsApp. Alles Weitere passiert auf unserer Seite.
+            Du schickst uns deine Daten auf WhatsApp. Alles Weitere passiert auf unserer Seite.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -480,13 +475,13 @@ export default function TFNPageDE() {
       {/* ── 7. VERTRAUEN ─────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Jeder TFN-Antrag, den wir einreichen, gehört jemandem mit 417- oder 462-Visum. Deshalb gehen bei allen
-            dieselben drei Dinge schief. Steuererklärungen werden von unserem Team vorbereitet, dann von einem
+            dieselben drei Dinge schief. Steuererklärungen werden von einem
             registrierten Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht werden.
           </p>
           <GoogleReviews lang="de" />
@@ -543,7 +538,7 @@ export default function TFNPageDE() {
       <NextStep
         eyebrow="Was kommt als Nächstes"
         heading="Die Wochen mit 45 % kommen über die Erklärung zurück"
-        body="Sobald die Nummer hinterlegt ist, folgt die zweite Hälfte: die Steuererklärung, die jeden Arbeitgeber abgleicht und den zu viel einbehaltenen Teil zurückholt."
+        body="Sobald die Nummer hinterlegt ist, holt die Steuererklärung den zu viel einbehaltenen Teil zurück."
         cta="Wie die Erklärung läuft →"
         href="/de/tax-return"
       />

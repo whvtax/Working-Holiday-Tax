@@ -138,10 +138,10 @@ const ANALYSIS = [
 ]
 
 const COMPARISON = [
-  { mygov: 'Du kreuzt ein Feld zum Wohnsitz an',                us: 'Wir finden heraus, was für dich tatsächlich stimmt' },
-  { mygov: 'Von der Medicare-Befreiung steht dort nichts',      us: 'Wir beantragen die Bescheinigung, wenn du sie bekommst' },
+  { mygov: '15 % Steuer ab dem ersten Dollar',                us: 'Wir finden heraus, was für dich tatsächlich stimmt' },
+  { mygov: 'Von der Medicare-Befreiung steht dort nichts',      us: 'Wir helfen beim Antrag, wenn du die Bedingungen erfüllst' },
   { mygov: 'Abzüge sind ein leeres Feld',                       us: 'Wir wissen, was deine Art von Arbeit absetzen kann' },
-  { mygov: 'Du brauchst ein Konto und einen australischen Ausweis', us: 'Du brauchst nichts. Wir regeln das mit dem ATO' },
+  { mygov: 'Du brauchst ein Konto und eine aktive Handynummer', us: 'Du brauchst nichts. Wir regeln das mit dem ATO' },
 ]
 
 const SERVICES = [
@@ -321,7 +321,7 @@ export default async function GermanHomePage() {
           </h1>
 
           <p className="mx-auto hero-animate-delay"
-            style={{ ...LEDE, color: '#4C6459', maxWidth: '46ch', marginBottom: '26px' }}>
+            style={{ ...LEDE, color: '#4C6459', maxWidth: '72ch', marginBottom: '26px' }}>
             Fünf Dinge entscheiden über deine Rückerstattung. Keins davon passiert automatisch.
           </p>
 
@@ -553,19 +553,19 @@ export default async function GermanHomePage() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(22px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working-Holiday-Steuer ist das Einzige, was wir machen.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Jede Erklärung, die wir vorbereiten, ist für jemanden mit 417- oder 462-Visum und wird von einem registrierten
             Steuerberater geprüft und freigegeben, bevor sie beim ATO eingereicht wird.
           </p>
 
           <GoogleReviews lang="de" />
 
-          <div className="rounded-[12px] flex gap-3"
-            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3 mx-auto"
+            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
@@ -641,7 +641,7 @@ export default async function GermanHomePage() {
       </section>
 
       {/* ── ABSCHLUSS-CTA ────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#0B5240' }}>
+      <section className="py-10 lg:py-12" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
           <h2 className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(22px, 3vw, 30px)', lineHeight: 1.26, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
@@ -659,10 +659,6 @@ export default async function GermanHomePage() {
           </WaLink>
           <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.55)', marginTop: '12px' }}>
             Antwort in etwa einer Stunde.
-          </p>
-          <p style={{ fontSize: '13px', lineHeight: 1.55, color: 'rgba(255,255,255,0.45)', marginTop: '18px', maxWidth: '50ch', marginLeft: 'auto', marginRight: 'auto' }}>
-            Geprüft und freigegeben von einem registrierten Steuerberater, bevor sie beim
-            ATO eingereicht wird.
           </p>
         </div>
       </section>

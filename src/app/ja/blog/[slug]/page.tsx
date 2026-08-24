@@ -913,7 +913,7 @@ export default function JapaneseGuidePage({ params }: Props) {
               417・462ビザ保持者だけを専門に扱うWorking Holiday Taxチームが執筆し、ATOおよびFair Workの最新ガイダンスに基づいて確認しています。一般的な情報であり、個別の税務アドバイスではありません。
             </p>
             <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.85, margin: '10px 0 0', fontWeight: 400 }}>
-              当チームが作成した申告書は、ATOへ提出する前に登録税理士が確認し、承認します。
+              申告書は、ATOへ提出する前に登録税理士が確認し、承認します。
             </p>
             <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.7, margin: '12px 0 0', fontWeight: 400 }}>
               公開日 {formatGuideDateJa(guide.date)}{reviewedDate ? ` · 確認日 ${formatGuideDateJa(reviewedDate)}` : ''}

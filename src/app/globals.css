@@ -3054,7 +3054,6 @@ a:focus-visible, button:focus-visible {
   .guide-cta { padding: 26px 26px 28px; }
   .guide-cta-heading { font-size: 25px; }
   .guide-cta-btn { width: auto; min-width: 280px; padding: 0 28px; }
-  .guide-cta-under { text-align: left; }
 }
 @media (prefers-contrast: more) {
   .guide-cta { border-color: #080F0D; border-width: 2px; }
@@ -3144,3 +3143,19 @@ html[lang^="ja"] .section-label { letter-spacing: 0.04em !important; }
 .nav-dark .nav-link:hover { color: #FFFFFF !important; }
 .nav-dark .nav-link::after { background: #F9D88A !important; }
 .nav-dark .nav-cta:hover { background: #C47E10 !important; color: #FFFFFF !important; }
+
+
+/* ── Reply line under every WhatsApp button ─────────────────
+   Jo, Aug 2026: the small line under a CTA button centers under
+   the BUTTON, in every language, everywhere. The button and the
+   line become one shrink wrapped column, so this holds in left
+   aligned sections as well as centered heroes. */
+div:has(> .btn-primary + p) {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+}
+div:has(> .btn-primary + p) > p {
+  text-align: center;
+}

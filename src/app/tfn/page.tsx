@@ -80,17 +80,17 @@ const FAILURE_POINTS = [
   {
     n: '01',
     title: 'The name on the form is not the name immigration holds',
-    body: 'The ATO matches your application against the record the Department of Home Affairs holds for your visa. A middle name you left out, a maiden name, a passport renewed since the visa was granted, a name written in a different order: any of those can send the application into manual checking or straight back to you. On a form you fill in once and then wait a month on, it is a slow way to find out.',
+    body: 'The ATO matches your application against your visa record. A missing middle name, a renewed passport or names in a different order can send it into manual checking or straight back.',
   },
   {
     n: '02',
     title: 'The address will not be holding your post in four weeks',
-    body: 'Your TFN arrives as a letter, posted to an Australian address, and the ATO can take up to 28 days to issue it. Backpackers move. A hostel bed you had for six nights, a share house you left, a farm you have already finished at: the letter goes there and nobody forwards it. Choosing an address that will still work in a month is a real decision, not a form field.',
+    body: 'Your TFN arrives as a letter to an Australian address, and issuing can take up to 28 days. If you have moved on by then, the letter sits there and nobody forwards it.',
   },
   {
     n: '03',
     title: 'It was lodged before the visa was active',
-    body: 'You apply for a TFN once you are in Australia on an activated working holiday visa, not before you fly. Applications lodged too early are the ones that quietly go nowhere, and the person who lodged it usually finds out weeks later, after they have already started a job and pay is coming through at the top rate.',
+    body: 'You apply once you are in Australia on an activated visa, not before you fly. Applications lodged too early quietly go nowhere, and you find out weeks later at 45%.',
   },
 ]
 
@@ -290,8 +290,7 @@ export default function TFNPage() {
           </h1>
 
           <p className="hero-lede hero-animate-delay" style={{ ...LEDE, color: '#4C6459', maxWidth: '50ch', marginBottom: '26px' }}>
-            Until your employer has the number, 45% of your pay is withheld instead of 15%. On a $25 job that is about
-            $7.50 an hour, every hour, for as long as the gap runs.
+            Until your employer has the number, 45% of your pay is withheld instead of 15%.
           </p>
 
           <div className="hero-animate-delay-2">
@@ -321,7 +320,7 @@ export default function TFNPage() {
           <h2 className="font-serif font-black text-ink"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
             <span style={{ display: 'block', color: '#2A3C34', fontWeight: 400 }}>Nowhere in the application{' '}</span>
-            <span style={{ display: 'block' }}>does anyone mention the weeks at 45%.{' '}</span>
+            <span style={{ display: 'block' }}>does anyone mention what the wait costs.{' '}</span>
           </h2>
 
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '22px' }}>
@@ -358,14 +357,9 @@ export default function TFNPage() {
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '22ch', marginBottom: '14px' }}>
             What does it cost to start work before your TFN arrives?
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '16px' }}>
-            An employer with no tax file number on file must withhold at the top rate of 45%, not the 15% working holiday
-            maker rate that applies to the first $45,000. You have 28 days from starting a job to hand it over, and
-            nobody warns you when they are up.
-          </p>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '28px' }}>
-            The money is not gone. It sits with the ATO until a return lodged after 30 June reconciles every employer you
-            had and claims it back.
+            If your employer does not have your TFN within 28 days, they must withhold 45% instead of the 15% Working
+            Holiday Maker rate. The extra tax is not lost and may be refunded when you lodge your tax return after 30 June.
           </p>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -375,7 +369,7 @@ export default function TFNPage() {
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>28 days</p>
-              <p style={{ ...BODY, color: '#2A3C34' }}>From starting a job to give your employer the number. Also what the ATO allows itself to issue it.</p>
+              <p style={{ ...BODY, color: '#2A3C34' }}>To give your employer your TFN, and for the ATO to issue it.</p>
             </div>
             <div style={{ borderTop: '2px solid #0B5240', paddingTop: '16px' }}>
               <p className="font-serif font-black text-forest-500" style={{ fontSize: '33px', lineHeight: 1, letterSpacing: '-0.03em', marginBottom: '10px' }}>1 return</p>
@@ -395,9 +389,8 @@ export default function TFNPage() {
             Why do working holiday TFN applications fail?
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '60ch', marginBottom: '30px' }}>
-            The form is short and most people get through it without trouble. When it does go wrong, it is almost always
-            one of three things, and all three cost the same thing: another month at the top rate while you wait for a
-            letter that is not coming.
+            The form is short and usually straightforward. When something goes wrong, it is almost always one of three
+            issues, and each can mean another month taxed at 45% while you wait for a letter that never arrives.
           </p>
 
           <ol className="flex flex-col" style={{ gap: '22px' }}>
@@ -426,7 +419,7 @@ export default function TFNPage() {
             What we do about it
           </h2>
           <p style={{ ...BODY, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
-            You send us your passport and your visa details on WhatsApp. Everything below happens on our side.
+            You send us your details on WhatsApp. Everything below happens on our side.
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -485,13 +478,13 @@ export default function TFNPage() {
       {/* ── 7. TRUST ─────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working holiday tax is the only thing we do.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Every TFN application we lodge belongs to somebody on a 417 or 462 visa, which is why the same three things
-            go wrong on all of them. Returns are prepared by our team, reviewed and signed off by a registered tax agent
+            go wrong on all of them. Returns are reviewed and signed off by a registered tax agent
             before they are lodged with the ATO.
           </p>
           <GoogleReviews lang="en" />
@@ -548,7 +541,7 @@ export default function TFNPage() {
       <NextStep
         eyebrow="What is next"
         heading="The weeks at 45% come back through a return"
-        body="Once the number is on file, the second half of the job is the tax return that reconciles every employer you had and claims the excess back."
+        body="Once the number is on file, the tax return is what claims the excess back."
         cta="How the return works →"
         href="/tax-return"
       />

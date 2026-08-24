@@ -769,7 +769,7 @@ export default function GuidePage({ params }: Props) {
               Written by the Working Holiday Tax team and checked against current ATO and Fair Work guidance. General information, not personal tax advice.
             </p>
             <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.65, margin: '10px 0 0', fontWeight: 400 }}>
-              Tax returns prepared by our team are reviewed and signed off by a registered tax agent before they are lodged with the ATO.
+              Tax returns are reviewed and signed off by a registered tax agent before they are lodged with the ATO.
             </p>
             <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6, margin: '12px 0 0', fontWeight: 400 }}>
               Published {guide.date}{reviewedDate ? ` · Reviewed ${reviewedDate}` : ''}

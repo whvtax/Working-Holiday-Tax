@@ -600,7 +600,7 @@ export default function UKWorkingHolidayTaxPage() {
               If your refund is less than our fee, we refund the difference, so you are never out of pocket.
             </h2>
             <p style={{ fontSize: '15px', lineHeight: 1.62, color: 'rgba(255,255,255,0.78)', margin: 0 }}>
-              Working holiday tax is the only thing we do. Your return is prepared by our team, then reviewed and signed off by a
+              Working holiday tax is the only thing we do. Your return is reviewed and signed off by a
               registered tax agent before it is lodged with the ATO.
             </p>
             <div style={{ marginTop: '18px' }}>

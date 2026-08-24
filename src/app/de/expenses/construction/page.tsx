@@ -69,7 +69,7 @@ const UI = {
   "ctaLabel": "Schreib uns auf WhatsApp",
   "ctaSub": "Antwort in etwa einer Stunde.",
   "guaranteeHeading": "Rückerstattung kleiner als unser Honorar? Dann erstatten wir die Differenz, du zahlst nie drauf.",
-  "guaranteeBody": "Baustellenerklärungen, Ticketverlängerungen und der Streit um den Ute sind hier Wochengeschäft, und jeder Kunde ist auf einem 417 oder 462. Von unserem Team vorbereitet, dann von einem registrierten Steuerberater geprüft und freigegeben, bevor etwas beim ATO ankommt.",
+  "guaranteeBody": "Baustellenerklärungen, Ticketverlängerungen und der Streit um den Ute sind hier Wochengeschäft, und jeder Kunde ist auf einem 417 oder 462. Von einem registrierten Steuerberater geprüft und freigegeben, bevor etwas beim ATO ankommt.",
   "faqHeading": "Fragen, die uns dazu gestellt werden",
   "guidesHeading": "Danach lesenswert",
   "otherJobs": "Anderer Job? Hier sind alle Berufe.",

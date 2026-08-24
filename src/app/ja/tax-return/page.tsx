@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   // タイトルはモバイルの検索結果に収まる長さにしています。
   title: 'タックスリターン代行｜417・462ビザ',
   description:
-    'パスポートとオーストラリアの銀行口座だけ。給与明細は不要です。ATOの記録から作成し、還付金は約14営業日で届きます。',
+    '必要な情報と振込先だけ。給与明細は不要です。ATOの記録から作成し、還付金は約14営業日で届きます。',
   keywords: [
     'タックスリターン 代行 オーストラリア',
     'オーストラリア タックスリターン 申請',
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'タックスリターン代行の流れ｜417・462ビザ',
     description:
-      'パスポートと銀行口座だけ。ATOの記録を確認して申告書を作成し、あなたが署名したうえで提出します。還付金は提出から約14営業日で届きます。',
+      '必要な情報と還付金の振込先だけ。ATOの記録を確認して申告書を作成し、あなたが署名したうえで提出します。還付金は提出から約14営業日で届きます。',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
     card: 'summary_large_image',
     title: 'タックスリターン代行の流れ｜417・462ビザ',
-    description: 'パスポートと口座だけ。給与明細は不要。提出から約14営業日で還付金が届きます。',
+    description: '必要な情報と振込先だけ。給与明細は不要。提出から約14営業日で還付金が届きます。',
   },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' } },
 }
@@ -118,7 +118,7 @@ const SEQUENCE = [
   {
     n: '06',
     title: '提出',
-    body: '当社のチームが作成し、登録税理士が確認・承認したうえでATOに提出します。提出そのものは数分で終わり、そのときにあなたが起きている必要はありません。',
+    body: '登録税理士が確認・承認したうえでATOに提出します。提出そのものは数分で終わり、そのときにあなたが起きている必要はありません。',
   },
   {
     n: '07',
@@ -219,7 +219,7 @@ export default function TaxReturnPageJA() {
     name: 'ワーキングホリデー向けタックスリターン代行',
     serviceType: 'タックスリターンの作成と提出',
     description:
-      '417・462ビザ保持者のオーストラリアのタックスリターン。当社のチームが作成し、登録税理士が確認・承認したうえでATOに提出します。帰国後の日本からのご依頼にも対応します。',
+      '417・462ビザ保持者のオーストラリアのタックスリターン。登録税理士が確認・承認したうえでATOに提出します。帰国後の日本からのご依頼にも対応します。',
     provider: { '@id': `${SITE_URL}/#business` },
     areaServed: { '@type': 'Country', name: 'オーストラリア' },
     audience: { '@type': 'Audience', audienceType: 'ワーキングホリデーメーカー（サブクラス417・462）' },
@@ -290,7 +290,7 @@ export default function TaxReturnPageJA() {
 
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(26px, 4.4vw, 38px)', lineHeight: 1.36, letterSpacing: '-0.01em', marginBottom: '16px' }}>
-            <span style={{ display: 'block' }}>パスポートと銀行口座だけ。</span>
+            <span style={{ display: 'block' }}>必要な情報と、還付金の振込先だけ。</span>
             <span style={{ display: 'block', color: '#0B5240' }}>あとは当社が進めます。</span>
           </h1>
 
@@ -425,7 +425,7 @@ export default function TaxReturnPageJA() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '26ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '14px' }}>
             フォームではなく、メッセージから始めてください
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
@@ -446,11 +446,11 @@ export default function TaxReturnPageJA() {
       {/* ── 7. 信頼 ──────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
             質問票も、確認する項目も、上の順序も、たった1種類のビザの1年のために組み立てたものです。だからあなたにお願いすることが少なく、面倒な事例も当社にとっては想定内です。
           </p>
 

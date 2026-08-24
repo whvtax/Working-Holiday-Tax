@@ -140,10 +140,10 @@ const ANALYSIS = [
 
 /** Approved 22 Aug. Verbatim, including the fourth row about access and effort. */
 const COMPARISON = [
-  { mygov: 'You tick a residency box',                     us: 'We work out which one is actually true for you' },
-  { mygov: 'Nothing mentions the Medicare exemption',      us: 'We apply for the certificate if you qualify' },
+  { mygov: '15% tax applies from your first dollar',                     us: 'We work out whether that is actually true for you' },
+  { mygov: 'Nothing mentions the Medicare exemption',      us: 'We help with the application if you qualify' },
   { mygov: 'Deductions are a blank box',                   us: 'We know what your line of work can claim' },
-  { mygov: 'You need an account and Australian ID',        us: 'You need nothing. We deal with the ATO' },
+  { mygov: 'You need an account, an active phone number',        us: 'You need nothing. We deal with the ATO' },
 ]
 
 const SERVICES = [
@@ -335,7 +335,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="mx-auto hero-animate-delay"
-            style={{ ...LEDE, color: '#4C6459', maxWidth: '46ch', marginBottom: '26px' }}>
+            style={{ ...LEDE, color: '#4C6459', maxWidth: '72ch', marginBottom: '26px' }}>
             Five things decide your refund. None of them are applied automatically.
           </p>
 
@@ -586,19 +586,19 @@ export default async function HomePage() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working holiday tax is the only thing we do.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Every return we prepare is for someone on a 417 or 462 visa and is reviewed and signed off by a registered tax
             agent before being lodged with the ATO.
           </p>
 
           <GoogleReviews lang="en" />
 
-          <div className="rounded-[12px] flex gap-3"
-            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3 mx-auto"
+            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '1px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
@@ -674,7 +674,7 @@ export default async function HomePage() {
       </section>
 
       {/* ── CLOSING CTA ──────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#0B5240' }}>
+      <section className="py-10 lg:py-12" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
           <h2 className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(23px, 3vw, 31px)', lineHeight: 1.24, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
@@ -692,9 +692,6 @@ export default async function HomePage() {
           </WaLink>
           <p style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.55)', marginTop: '12px' }}>
             Replies in about an hour.
-          </p>
-          <p style={{ fontSize: '13px', lineHeight: 1.55, color: 'rgba(255,255,255,0.45)', marginTop: '18px', maxWidth: '48ch', marginLeft: 'auto', marginRight: 'auto' }}>
-            Reviewed and signed off by a registered tax agent before it is lodged with the ATO.
           </p>
         </div>
       </section>

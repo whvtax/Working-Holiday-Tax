@@ -210,7 +210,7 @@ export default function MedicarePage() {
             <span aria-current="page">Medicare</span>
           </nav>
 
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
 
             <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
@@ -254,7 +254,7 @@ export default function MedicarePage() {
       {/* ── THE OBJECTION, ANSWERED ABOUT THE LEVY ─────────────────────────── */}
       <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
 
             <p className="font-medium uppercase"
               style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
@@ -301,7 +301,7 @@ export default function MedicarePage() {
       {/* ── WHAT GOES WRONG ALONE ──────────────────────────────────────────── */}
       <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={H2}>
               Why is the levy on your assessment at all?
             </h2>
@@ -326,7 +326,7 @@ export default function MedicarePage() {
       {/* ── THE DETERMINANT ────────────────────────────────────────────────── */}
       <section id="who-is-exempt" className="py-8 lg:py-11" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={H2}>
               Who is exempt from the Medicare levy?
             </h2>
@@ -340,7 +340,7 @@ export default function MedicarePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[880px]" style={{ marginTop: '20px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[880px] mx-auto" style={{ marginTop: '20px' }}>
             <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '8px' }}>
                 From an agreement country
@@ -372,7 +372,7 @@ export default function MedicarePage() {
       {/* ── WHAT WE DO ─────────────────────────────────────────────────────── */}
       <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={H2}>
               What do we do about it?
             </h2>
@@ -448,7 +448,7 @@ export default function MedicarePage() {
       {/* ── FAQ ────────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[760px]">
+          <div className="max-w-[760px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
               Common questions about the levy and the exemption
             </h2>
@@ -463,7 +463,7 @@ export default function MedicarePage() {
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
             Go deeper on Medicare and health cover
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
             {[
               { href: '/blog/medicare-levy-working-holiday-makers', label: 'The Medicare levy exemption for working holiday makers' },
               { href: '/blog/countries-with-medicare-agreement-australia', label: 'Which countries have a health care agreement with Australia' },

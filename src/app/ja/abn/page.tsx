@@ -76,17 +76,17 @@ const THE_SPLIT = [
   {
     n: '01',
     title: '源泉徴収がないので、税金はあとから残ります',
-    body: '給与は税金が引かれた状態で振り込まれますが、請求書はそうではありません。ABNで受け取った金額はそのまま全額があなたに届き、その分の税金は年度末のタックスリターンで一度に精算します。半年を給与、半年を請求書で働いた方が最も驚くのはここです。給与の半分は還付に見えるのに、請求書の半分は静かにその逆になっているからです。',
+    body: '給与は税金が引かれた状態で届きますが、請求書はそうではありません。ABNの収入は全額届き、税金は年度末に一度に精算します。給与の半分は還付に見え、請求書の半分は静かにその逆です。',
   },
   {
     n: '02',
     title: '控除は「必要経費」に変わり、ルールも変わります',
-    body: '被雇用者としては仕事に関連する支出を控除します。個人事業主としては事業を営むための費用を差し引きます。範囲は広くなりますが、求められる記録は厳しくなります。走行距離の記録、工具、私用と業務で按分した携帯電話と通信費、保険料、そして入金前にプラットフォームが差し引いた手数料。走行距離を一度も記録しなかった配達員と、記録していた配達員では、年度末の結果は同じになりません。',
+    body: '被雇用者は仕事関連の支出を控除し、個人事業主は事業の費用を差し引きます。範囲は広く、求められる記録は厳しくなります。走行距離を記録しなかった配達員と、記録していた配達員では、年度末の結果は同じになりません。',
   },
   {
     n: '03',
     title: 'GSTは手続きではなく、選んだ立場です',
-    body: '売上が75,000ドルに達すると登録義務が生じます。ほとんどのワーキングホリデーメーカーはそこに届かないため、本来は登録しないほうが自然です。例外として多くの方が引っかかるのがライドシェアです。タクシーや配車サービスを提供する場合は、売上額にかかわらず最初の1ドルから登録が必要です。自転車でのフードデリバリーにこのルールは適用されず、75,000ドルの基準が使われます。必要ないのに登録するとBAS（事業活動報告）の義務が生じ、必要なのに登録していない場合はさらに深刻です。',
+    body: 'ほとんどのワーホリの方は売上75,000ドルの基準に届かないため、本来は登録しないのが自然です。例外がライドシェアで、ここで立場を間違えると不要なBASの義務が生じるか、さらに深刻な場合は必要な登録が抜けます。',
   },
   {
     n: '04',
@@ -454,7 +454,7 @@ export default function ABNPageJA() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '14px' }}>
             その仕事の内容を教えてください
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '42ch', marginBottom: '24px' }}>
@@ -475,12 +475,12 @@ export default function ABNPageJA() {
       {/* ── 7. 信頼 ──────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
-            だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。タックスリターンは当社のチームが作成し、登録税理士が確認・承認したうえでATOに提出します。
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '44ch', marginBottom: '28px' }}>
+            だからこそ、同じABNの形を何度も見ています。ファームの請負契約、配達プラットフォーム、全員を下請け扱いにする建設現場。
           </p>
           <GoogleReviews lang="ja" />
         </div>

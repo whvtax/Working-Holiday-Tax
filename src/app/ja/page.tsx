@@ -154,10 +154,10 @@ const ANALYSIS = [
 ]
 
 const COMPARISON = [
-  { mygov: '居住区分にチェックを入れるだけ',                 us: 'どちらが本当に当てはまるかを見極めます' },
-  { mygov: 'メディケア税の免除については何も出てきません',   us: '対象であれば証明書を申請します' },
+  { mygov: '最初の1ドルから15%の税率がかかります',                 us: 'それが本当に正しいかを見極めます' },
+  { mygov: 'メディケア税の免除については何も出てきません',   us: '対象であれば申請をサポートします' },
   { mygov: '控除欄は空白のまま',                             us: 'あなたの仕事で何が申請できるかを把握しています' },
-  { mygov: 'アカウントとオーストラリアのIDが必要です',       us: 'あなたは何も必要ありません。ATOとは当社がやり取りします' },
+  { mygov: 'アカウントと有効な電話番号が必要です',       us: 'あなたは何も必要ありません。ATOとは当社がやり取りします' },
 ]
 
 const SERVICES = [
@@ -337,7 +337,7 @@ export default async function JapaneseHomePage() {
           </h1>
 
           <p className="mx-auto hero-animate-delay"
-            style={{ ...LEDE, color: '#4C6459', maxWidth: '34ch', marginBottom: '26px' }}>
+            style={{ ...LEDE, color: '#4C6459', maxWidth: '58ch', marginBottom: '26px' }}>
             還付額を決めるのは5つ。どれも自動では反映されません。
           </p>
 
@@ -564,18 +564,18 @@ export default async function JapaneseHomePage() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
 
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(21px, 2.4vw, 28px)', lineHeight: 1.5, letterSpacing: '-0.01em', marginBottom: '12px' }}>
             ワーキングホリデーの税金だけを扱っています。
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '46ch', marginBottom: '28px' }}>
             作成するタックスリターンはすべて417・462ビザの方のもので、登録タックスエージェントが確認・承認したうえでATOに提出されます。
           </p>
 
           <GoogleReviews lang="ja" />
 
-          <div className="rounded-[12px] flex gap-3"
-            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A' }}>
+          <div className="rounded-[12px] flex gap-3 mx-auto"
+            style={{ marginTop: '28px', padding: '16px 18px', background: '#FDF0D5', border: '1px solid #F9D88A', width: 'fit-content', maxWidth: '100%' }}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, marginTop: '2px' }}>
               <path d="M12 2L2 22h20L12 2z" stroke="#B8770C" strokeWidth="1.8" strokeLinejoin="round" />
               <line x1="12" y1="10" x2="12" y2="15" stroke="#B8770C" strokeWidth="1.8" strokeLinecap="round" />
@@ -651,7 +651,7 @@ export default async function JapaneseHomePage() {
       </section>
 
       {/* ── 最後のCTA ────────────────────────────────────────────────────── */}
-      <section className="py-12 lg:py-16" style={{ background: '#0B5240' }}>
+      <section className="py-10 lg:py-12" style={{ background: '#0B5240' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 text-center reveal">
           <h2 className="font-serif font-black text-white mx-auto"
             style={{ fontSize: 'clamp(21px, 2.8vw, 29px)', lineHeight: 1.5, letterSpacing: '-0.01em', maxWidth: '24ch', marginBottom: '14px' }}>

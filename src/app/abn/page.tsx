@@ -78,17 +78,17 @@ const THE_SPLIT = [
   {
     n: '01',
     title: 'Nothing was withheld, so the tax is still owed',
-    body: 'Wages arrive with tax already taken out. Invoices do not. Every dollar paid against your ABN reaches you whole, and the tax on it is settled once, at the end of the year, when the return is lodged. People who worked half a year on payslips and half on invoices are the ones caught out by this, because the payslip half looks like a refund and the invoice half quietly is not.',
+    body: 'Wages arrive with tax already taken out. Invoices do not. Every dollar paid against your ABN reaches you whole, and the tax on it is settled once, at the end of the year. The payslip half of a mixed year looks like a refund, and the invoice half quietly is not.',
   },
   {
     n: '02',
     title: 'Deductions become business expenses, and the rules differ',
-    body: 'As an employee you claim work related expenses. As a sole trader you deduct the costs of running the business, which is a wider category with tighter records behind it: kilometres in a logbook, tools, phone and data apportioned between private and business use, insurance, fees taken by a platform before the money ever reached you. The delivery rider who never logged a kilometre and the one who did will not end the year in the same place.',
+    body: 'As an employee you claim work related expenses. As a sole trader you deduct the costs of running the business, a wider category with tighter records behind it. The delivery rider who never logged a kilometre and the one who did will not end the year in the same place.',
   },
   {
     n: '03',
     title: 'GST is a position, not a formality',
-    body: 'Registration is required once turnover reaches $75,000, which most working holiday makers never approach, so most should not be registered. Rideshare driving is the exception that catches people: anyone providing taxi or ride sourcing travel has to register for GST from the first dollar, regardless of turnover. Food delivery on a bike does not carry that rule. Being registered when you should not be means BAS obligations you did not need, and not being registered when you should be is worse.',
+    body: 'Most working holiday makers never approach the $75,000 turnover line, so most should not be registered. Rideshare is the exception that catches people, and getting the position wrong means BAS obligations you did not need, or worse, ones you missed.',
   },
   {
     n: '04',
@@ -468,7 +468,7 @@ export default function ABNPage() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
             Tell us what the work looks like
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
@@ -490,14 +490,13 @@ export default function ABNPage() {
       {/* ── 7. TRUST ─────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working holiday tax is the only thing we do.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             Which means we see the same ABN arrangements over and over: the farm contract, the delivery platform, the
-            site that pays everyone as a subcontractor. Returns are prepared by our team, reviewed and signed off by a
-            registered tax agent before they are lodged with the ATO.
+            site that pays everyone as a subcontractor.
           </p>
           <GoogleReviews lang="en" />
         </div>

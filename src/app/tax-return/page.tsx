@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     siteName: 'Working Holiday Tax',
     title: 'Lodge Your Working Holiday Tax Return (417 & 462)',
     description:
-      'Your passport and your bank details. We read the ATO record, prepare the return, you sign it, it is lodged, and the refund lands in about 14 business days.',
+      'Your details and where to deposit your refund. We read the ATO record, prepare the return, you sign it, it is lodged, and the refund lands in about 14 business days.',
   },
   twitter: {
     images: [`${SITE_URL}/og-image.png`],
@@ -79,7 +79,7 @@ const IconWhatsApp = () => (
 const NEEDED = [
   {
     label: 'Your passport and visa',
-    body: 'Which passport you hold and which subclass you were on. It shapes everything that follows, so we ask for it first.',
+    body: 'Which passport you hold and which subclass you were on. It shapes everything, so we ask first.',
   },
   {
     label: 'An Australian bank account',
@@ -293,7 +293,7 @@ export default function TaxReturnPage() {
 
           <h1 className="font-serif font-black text-ink hero-animate"
             style={{ fontSize: 'clamp(30px, 5vw, 43px)', lineHeight: 1.08, letterSpacing: '-0.025em', marginBottom: '16px' }}>
-            <span style={{ display: 'block' }}>Your passport and your bank details.{' '}</span>
+            <span style={{ display: 'block' }}>Your details and where to deposit your refund.{' '}</span>
             <span style={{ display: 'block', color: '#0B5240' }}>We take it from there.{' '}</span>
           </h1>
 
@@ -435,7 +435,7 @@ export default function TaxReturnPage() {
       <section className="py-12 lg:py-16" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[780px] mx-auto px-5 md:px-8 reveal">
           <h2 className="font-serif font-black text-ink"
-            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', maxWidth: '20ch', marginBottom: '14px' }}>
+            style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '14px' }}>
             Start with a message, not a form
           </h2>
           <p style={{ ...BODY, color: '#2A3C34', maxWidth: '56ch', marginBottom: '24px' }}>
@@ -458,11 +458,11 @@ export default function TaxReturnPage() {
       {/* ── 7. TRUST ─────────────────────────────────────────────────────── */}
       <section className="py-12 lg:py-16 bg-white">
         <div className="max-w-[1000px] mx-auto px-5 md:px-8 reveal">
-          <h2 className="font-serif font-black text-ink"
+          <h2 className="font-serif font-black text-ink text-center"
             style={{ fontSize: 'clamp(23px, 2.6vw, 30px)', lineHeight: 1.22, letterSpacing: '-0.02em', marginBottom: '12px' }}>
             Working holiday tax is the only thing we do.
           </h2>
-          <p style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
+          <p className="text-center mx-auto" style={{ ...BODY, color: '#2A3C34', maxWidth: '58ch', marginBottom: '28px' }}>
             The questionnaire, the checks and the order above were built around one visa year and nothing else, which is
             why so little is asked of you and why the awkward cases are not surprises. Reviewed and
             signed off by a registered tax agent before it is lodged with the ATO.

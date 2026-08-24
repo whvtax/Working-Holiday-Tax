@@ -201,7 +201,7 @@ export default function GermanMedicarePage() {
             <span aria-current="page">Medicare</span>
           </nav>
 
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
 
             <div className="inline-flex items-center gap-2 mb-3 lg:mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-forest-500" aria-hidden="true" />
@@ -246,7 +246,7 @@ export default function GermanMedicarePage() {
       {/* ── DER EINWAND, KONKRET ZUR LEVY ──────────────────────────────────── */}
       <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
 
             <p className="font-medium uppercase"
               style={{ fontSize: '10.5px', letterSpacing: '0.15em', color: '#16775C', marginBottom: '12px' }}>
@@ -294,7 +294,7 @@ export default function GermanMedicarePage() {
       {/* ── WAS ALLEIN SCHIEFGEHT ──────────────────────────────────────────── */}
       <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={H2}>
               Warum steht die Levy überhaupt auf deiner Veranlagung?
             </h2>
@@ -320,7 +320,7 @@ export default function GermanMedicarePage() {
       {/* ── DER ENTSCHEIDENDE PUNKT ────────────────────────────────────────── */}
       <section id="who-is-exempt" className="py-8 lg:py-11" style={{ background: '#F5F9F7' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={H2}>
               Wer ist von der Medicare Levy befreit?
             </h2>
@@ -335,7 +335,7 @@ export default function GermanMedicarePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[880px]" style={{ marginTop: '20px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[880px] mx-auto" style={{ marginTop: '20px' }}>
             <div className="rounded-2xl" style={{ padding: '20px', background: '#fff', border: '1.5px solid #C8EAE0' }}>
               <p className="font-semibold text-ink" style={{ fontSize: '15px', marginBottom: '8px' }}>
                 Aus einem Abkommensland
@@ -368,7 +368,7 @@ export default function GermanMedicarePage() {
       {/* ── WAS WIR TUN ────────────────────────────────────────────────────── */}
       <section className="py-8 lg:py-11" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={H2}>
               Was machen wir damit?
             </h2>
@@ -389,7 +389,7 @@ export default function GermanMedicarePage() {
                 Wenn deine Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz, du zahlst also nie drauf.
               </p>
               <p style={{ fontSize: '14px', lineHeight: 1.65, color: '#4C6459' }}>
-                Von unserem Team vorbereitet, von einem registrierten Steuerberater geprüft und freigegeben,
+                Von einem registrierten Steuerberater geprüft und freigegeben,
                 bevor es beim ATO eingereicht wird.
               </p>
             </div>
@@ -444,7 +444,7 @@ export default function GermanMedicarePage() {
       {/* ── FAQ ────────────────────────────────────────────────────────────── */}
       <section className="py-10 lg:py-14" style={{ background: '#fff' }}>
         <div className="max-w-[1280px] mx-auto px-5 md:px-8 lg:px-12">
-          <div className="max-w-[760px]">
+          <div className="max-w-[760px] mx-auto">
             <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '18px' }}>
               Häufige Fragen zur Levy und zur Befreiung
             </h2>
@@ -459,7 +459,7 @@ export default function GermanMedicarePage() {
           <h2 className="font-serif font-black text-ink" style={{ ...H2, marginBottom: '16px' }}>
             Mehr zu Medicare und Krankenversicherung
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-[900px] mx-auto">
             {[
               { href: '/de/blog/medicare-levy-working-holiday-makers', label: 'Die Medicare Levy Befreiung für Working Holiday Maker' },
               { href: '/de/blog/countries-with-medicare-agreement-australia', label: 'Welche Länder ein Abkommen mit Australien haben' },

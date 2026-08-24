@@ -503,7 +503,7 @@ export function CalculatorClient({ faqs = [] }: Props) {
             Rückerstattung niedriger ist als unser Honorar, erstatten wir dir die Differenz.
           </p>
           <p className="mx-auto" style={{ fontSize: '13.5px', color: 'rgba(255,255,255,0.6)', lineHeight: 1.65, marginBottom: '22px', maxWidth: '46ch' }}>
-            Von unserem Team vorbereitet, von einem registrierten Steuerberater geprüft und freigegeben,
+            Von einem registrierten Steuerberater geprüft und freigegeben,
             bevor es beim ATO eingereicht wird.
           </p>
           <a href={waHref} target="_blank" rel="noopener noreferrer" onClick={onWaTap}

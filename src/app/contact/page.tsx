@@ -77,7 +77,7 @@ const blockers: { q: string; a: string; link?: { href: string; label: string } }
   },
   {
     q: 'Is this legitimate?',
-    a: 'It is a fair question to ask a website. Your return is prepared by our team, then reviewed and signed off by a registered tax agent before it is lodged with the ATO. The terms you would be agreeing to are published in full on our client agreement, and the reviews on our Google listing are from working holiday makers we have actually worked with.',
+    a: 'It is a fair question to ask a website. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO. The terms you would be agreeing to are published in full on our client agreement, and the reviews on our Google listing are from working holiday makers we have actually worked with.',
     link: { href: '/client-agreement', label: 'Read the client agreement' },
   },
 ]

@@ -202,6 +202,8 @@ export function GuideCta({
       <p className="guide-cta-eyebrow">{c.eyebrow}</p>
       <p className="guide-cta-heading" id={`guide-cta-${slug}`}>{c.heading}</p>
       <p className="guide-cta-body">{c.body}</p>
+      {/* The under line centers under the button, not under the card. */}
+      <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', maxWidth: '100%' }}>
       <a
         href={href}
         target="_blank"
@@ -215,6 +217,7 @@ export function GuideCta({
         {c.cta}
       </a>
       <p className="guide-cta-under">{c.under}</p>
+      </div>
     </aside>
   )
 }

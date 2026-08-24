@@ -916,7 +916,7 @@ export default function GermanGuidePage({ params }: Props) {
               und anhand der aktuellen Vorgaben von ATO und Fair Work geprüft. Allgemeine Informationen, keine persönliche Steuerberatung.
             </p>
             <p style={{ fontSize: '15px', color: '#2A3C34', lineHeight: 1.65, margin: '10px 0 0', fontWeight: 400 }}>
-              Steuererklärungen, die unser Team vorbereitet, werden vor der Einreichung beim ATO von einem registrierten Steuerberater geprüft und freigegeben.
+              Steuererklärungen werden vor der Einreichung beim ATO von einem registrierten Steuerberater geprüft und freigegeben.
             </p>
             <p style={{ fontSize: '13px', color: '#4C6459', lineHeight: 1.6, margin: '12px 0 0', fontWeight: 400 }}>
               Veröffentlicht {formatGuideDateDe(guide.date)}{reviewedDate ? ` · Geprüft ${formatGuideDateDe(reviewedDate)}` : ''}

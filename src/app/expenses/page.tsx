@@ -69,7 +69,7 @@ const UI = {
   "ctaLabel": "Message us on WhatsApp",
   "ctaSub": "Replies in about an hour.",
   "guaranteeHeading": "If your refund is less than our fee, we refund the difference, so you are never out of pocket.",
-  "guaranteeBody": "Working holiday tax is the only thing we do. Your return is prepared by our team, then reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
+  "guaranteeBody": "Working holiday tax is the only thing we do. Your return is reviewed and signed off by a registered tax agent before it is lodged with the ATO.",
   "faqHeading": "Questions people ask about this",
   "guidesHeading": "Worth reading next",
   "otherJobs": "A different job? Every occupation is here.",
